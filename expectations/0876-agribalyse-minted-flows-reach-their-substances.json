@@ -1,0 +1,582 @@
+{
+  "schema_version": 1,
+  "description": "The first build to merge AGRIBALYSE 3.2 (1 September 2026, b0b8d76) minted 119 flows for 92 substances that no issue had looked at (#190). Read row by row against that build and the shared build of `main`, the 92 fall into a few resolution methods, and this file states -- one entry per fix -- what each row should reach once its method is applied. The first group is 37 rows whose substance a sibling list already reaches by registry number: AGRIBALYSE ships the name without the number (`Benzovindiflupyr`, `Steatite`, the eight `in mixed ore` metals), with a number nothing resolves (`Arsenic (V)`), or with the number EF 3.1 itself got wrong and has since corrected (`Vanadium (V)`), and the fix in `agribalyse-3.2-manual-fixes.json` writes the number the siblings carry. One of them, `Tetramethyl ammonium hydroxide`, is the same habit BAFU already had a fix for, so that fix moved to `simapro-lineage-manual-fixes.json` and applies to both. Drop the pending flags when the shared build first merges agribalyse-3.2.",
+  "expectations": [
+    {
+      "id": "0876-vanadium-v-reaches-pentavalent-vanadium",
+      "issue": 876,
+      "title": "AGRIBALYSE's Vanadium (V) rows reach the published Vanadium(5+) by EF's corrected number",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Vanadium (V)"
+      },
+      "expect": {
+        "row_count": 12,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "same_substance": true,
+        "target_cas": "22537-31-1",
+        "target_name": "Vanadium(5+)"
+      },
+      "pending": true,
+      "comment": "AGRIBALYSE writes 15121-26-3 -- vanadium(2+)'s number, the one EF 3.1 shipped on its own `vanadium (v)` flows until #49 corrected it -- on all twelve rows, and on the build of 1 September 2026 they minted a substance the merge then renamed `Vanadium(2+)`: pentavalent vanadium published as the divalent ion in eleven compartments. The fix replaces the number with 22537-31-1, the one the published `Vanadium(5+)` carries. `basis: cas` is claimed so that a later change reaching the substance by reading the roman numeral off the name would fail here: the number is corrected, the name is not interpreted."
+    },
+    {
+      "id": "0876-no-flow-is-published-as-vanadium-2",
+      "issue": 876,
+      "title": "No flow is published under the divalent ion's name",
+      "subject": {
+        "kind": "flow",
+        "name": "Vanadium(2+)"
+      },
+      "expect": {
+        "exists": false
+      },
+      "pending": true,
+      "comment": "The build of 1 September 2026 published eleven `Vanadium(2+)` flows, every one of them AGRIBALYSE's pentavalent vanadium under the wrong number. No merged list inventories the divalent ion, so with the number corrected nothing should mint under this name."
+    },
+    {
+      "id": "0876-arsenic-v-reaches-arsenic-5",
+      "issue": 876,
+      "title": "AGRIBALYSE's Arsenic (V) rows reach the published Arsenic(5+) by the number its siblings carry",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Arsenic (V)"
+      },
+      "expect": {
+        "row_count": 4,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "same_substance": true,
+        "target_cas": "17428-41-0",
+        "target_name": "Arsenic(5+)"
+      },
+      "pending": true,
+      "comment": "AGRIBALYSE writes 61805-96-7, a number no registry this project consults resolves; EF 3.1 and BAFU write 17428-41-0 for the same name and reach `Arsenic(5+)`. On the build of 1 September 2026 the name hit the published label and was refused, correctly, because the row's number disagreed with the substance's, and four `Arsenic (V)` flows were minted beside it."
+    },
+    {
+      "id": "0876-chromium-iv-reaches-ecoinvents-substance",
+      "issue": 876,
+      "title": "AGRIBALYSE's Chromium (IV) row reaches the Chromium IV substance ecoinvent 3.8's row made",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "3ae94d3d-bede-5a17-96ef-c0442a0e2c76"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "15723-28-1",
+        "target_name": "Chromium IV"
+      },
+      "pending": true,
+      "comment": "ecoinvent 3.8's one `Chromium IV` row, in urban air with 15723-28-1, minted the published substance; AGRIBALYSE's one row is the same name in the same compartment with the state in parentheses and no number, and on the build of 1 September 2026 it minted a second. Selected by uuid because the two spellings differ only in punctuation."
+    },
+    {
+      "id": "0876-benzovindiflupyr-reaches-efs-substance",
+      "issue": 876,
+      "title": "AGRIBALYSE's Benzovindiflupyr rows reach the fungicide EF 3.1 publishes under its systematic name",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Benzovindiflupyr"
+      },
+      "expect": {
+        "row_count": 4,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "same_substance": true,
+        "target_cas": "1072957-71-1"
+      },
+      "pending": true,
+      "comment": "The published substance carries `Benzovindiflupyr` as a synonym and 1072957-71-1 as its number; ecoinvent's rows reach it through curated targets. AGRIBALYSE's four rows ship neither number nor curated target, the synonym hit is refused against the missing number, and the build of 1 September 2026 minted a factor-less duplicate in agricultural soil, forestry soil, groundwater and unspecified water. The substance is the claim, not a factor on every flow: on the build of a36695e the agricultural-soil and unspecified-water flows carry factors and the forestry-soil and groundwater ones do not, which is EF's characterisation and not this row's business."
+    },
+    {
+      "id": "0876-zeta-cypermethrin-air-reaches-cypermethrin",
+      "issue": 876,
+      "title": "AGRIBALYSE's Zeta-cypermethrin air row reaches Cypermethrin by the number ecoinvent's nine rows carry",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "6471efc2-0d4e-522b-8c31-bc5b8e96bcaa"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "52315-07-8",
+        "target_name": "Cypermethrin"
+      },
+      "pending": true,
+      "comment": "Zeta-cypermethrin has no registry number of its own; ecoinvent 3.8 and 3.12 write cypermethrin's 52315-07-8 on all nine of their rows and reach `Cypermethrin`, which holds the name as a synonym on their account. AGRIBALYSE's two rows ship no number and minted a factor-less duplicate on the build of 1 September 2026. Selected by uuid because the build records a row that reached a substance by number under that substance's name, `Cypermethrin`, and the vendor's spelling is not findable in `merge_outcomes`."
+    },
+    {
+      "id": "0876-zeta-cypermethrin-soil-reaches-cypermethrin",
+      "issue": 876,
+      "title": "AGRIBALYSE's Zeta-cypermethrin soil row reaches Cypermethrin too",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "ed99d7f0-2b09-5863-a5df-9e38ca92693e"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "52315-07-8",
+        "target_name": "Cypermethrin"
+      },
+      "pending": true,
+      "comment": "The agricultural-soil sibling of the row above."
+    },
+    {
+      "id": "0876-bicarbonate-ion-reaches-hydrogencarbonate",
+      "issue": 876,
+      "title": "AGRIBALYSE's Bicarbonate, ion row reaches hydrogencarbonate by ecoinvent's number",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Bicarbonate, ion"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "71-52-3"
+      },
+      "pending": true,
+      "comment": "ecoinvent 3.8 ships this exact spelling with 71-52-3 and reaches `hydrogencarbonate`, which has an ocean flow -- the compartment AGRIBALYSE's one row is in. Selected by the vendor's name because the merge records the row under the charge-normalised spelling on the build of 1 September 2026 and may again."
+    },
+    {
+      "id": "0876-phosphorus-oxychloride-reaches-phosphoric-trichloride",
+      "issue": 876,
+      "title": "AGRIBALYSE's Phosphorus oxychloride row reaches EF's Phosphoric Trichloride by its number",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Phosphorus oxychloride"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "10025-87-3",
+        "target_name": "Phosphoric Trichloride"
+      },
+      "pending": true,
+      "comment": "ecoinvent 3.8 and 3.12 ship the same spelling with 10025-87-3 and reach EF's substance by it; nothing reaches EF's spelling by name."
+    },
+    {
+      "id": "0876-steatite-reaches-steatite-in-ground",
+      "issue": 876,
+      "title": "AGRIBALYSE's Steatite row reaches the published Steatite, In Ground by ecoinvent's number",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Steatite"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "14378-12-2",
+        "target_name": "Steatite, In Ground"
+      },
+      "pending": true,
+      "comment": "ecoinvent 3.12's `Steatite` carries 14378-12-2 and reaches the published resource by it; AGRIBALYSE's row, same name, same compartment, no number, minted a second on the build of 1 September 2026."
+    },
+    {
+      "id": "0876-dioxins-teq-reaches-tcdd",
+      "issue": 876,
+      "title": "AGRIBALYSE's Dioxins (TEQ) row reaches 2,3,7,8-tetrachlorodibenzo-p-dioxin, the substance a toxic equivalent is measured as",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Dioxins (TEQ)"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "1746-01-6",
+        "target_characterised": true
+      },
+      "pending": true,
+      "comment": "ecoinvent names the same measurement `Dioxins, measured as 2,3,7,8-tetrachlorodibenzo-p-dioxin`, gives it TCDD's 1746-01-6, and reaches the one dioxin flow that carries factors. AGRIBALYSE's abbreviation minted a factor-less `Dioxins (TEQ)` in air on the build of 1 September 2026. The water row `Dioxins (unspec.)` is deliberately not claimed here: it is not stated as a toxic equivalent."
+    },
+    {
+      "id": "0876-mixed-ore-metals-reach-their-elements",
+      "issue": 876,
+      "title": "AGRIBALYSE's eight graded in-mixed-ore rows reach eight elemental resources by the numbers ecoinvent 3.8 carries",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name_contains": "in mixed ore"
+      },
+      "expect": {
+        "row_count": 13,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "substance_count": 9,
+        "target_context_display": "Resource → Ground"
+      },
+      "pending": true,
+      "comment": "AGRIBALYSE ships fourteen graded `in mixed ore` rows. Six of them -- a second copper grade, two gold grades, lead, zinc and a second silver grade -- carry the element's number and already reached the elements; the eight this fix is about ship no number, and minted eight graded-ore resources beside the elements on the build of 1 September 2026. ecoinvent 3.8 ships the same names with `, in ground` appended and the element's number on every one. Thirteen rows rather than fourteen are selected here because the palladium row, once it reaches `Palladium`, is recorded under the substance's name and the vendor's spelling is no longer findable; it has its own claim below. Nine substances over the thirteen: cobalt, copper, gold, lead, nickel, platinum, rhodium, silver and zinc -- copper, gold and silver each collect two grades."
+    },
+    {
+      "id": "0876-palladium-in-mixed-ore-reaches-palladium",
+      "issue": 876,
+      "title": "The palladium row of the eight reaches Palladium",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "ddabcb44-4da0-568e-a2e3-89186d75c523"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "7440-05-3",
+        "target_name": "Palladium",
+        "target_context_display": "Resource → Ground"
+      },
+      "pending": true,
+      "comment": "Selected by uuid: the build records this row as `Palladium` once it reaches the element, so the group claim above cannot see it by name."
+    },
+    {
+      "id": "0876-cobalt-in-mixed-ore-reaches-cobalt",
+      "issue": 876,
+      "title": "The cobalt row of the eight reaches Cobalt",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Cobalt, Co 5.0E-2%, in mixed ore"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "7440-48-4",
+        "target_name": "Cobalt"
+      },
+      "pending": true,
+      "comment": "The worked example of the eight, named so the group claim above cannot pass on eight rows reaching eight wrong elements."
+    },
+    {
+      "id": "0876-palladium-234m-reaches-protactinium-234m",
+      "issue": 876,
+      "title": "AGRIBALYSE's Palladium-234m row reaches Protactinium-234m, the nuclide the name misspells",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "acb30f3b-3401-52c6-b8c7-1a923c65365d"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "label",
+        "target_name": "Protactinium-234m"
+      },
+      "pending": true,
+      "comment": "EF 3.1's typo, corrected on EF's rows in `ef-3.1-manual-fixes.json` and inherited by AGRIBALYSE through SimaPro's copy of the EF list. Selected by uuid because the fix renames the row, so the build does not record it under the vendor's spelling. The uuid is the one the extraction gives the row; it is checked against the vendor file in `tests/test_manual_fixes.py`."
+    },
+    {
+      "id": "0876-tmah-reaches-tetramethylammonium-hydroxide",
+      "issue": 876,
+      "title": "AGRIBALYSE's Tetramethyl ammonium hydroxide row reaches the published substance by the lineage fix BAFU's row already used",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "03c96208-cea4-5bdc-b0c2-aaa8165968d3"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "75-59-2",
+        "target_name": "Tetramethylammonium hydroxide"
+      },
+      "pending": true,
+      "comment": "The same spelling BAFU ships, bare of the number both times. BAFU's fix (#103) moved from its own file to `simapro-lineage-manual-fixes.json` on the strength of the second occurrence, so this row and BAFU's are corrected by one entry."
+    },
+    {
+      "id": "0876-bafus-tmah-row-still-reaches-the-substance",
+      "issue": 876,
+      "title": "BAFU's Tetramethyl ammonium hydroxide row still reaches the published substance after its fix moved to the lineage file",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "93dae8f1-6c8b-5f7e-9541-c4d5fe4eccc2"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "75-59-2"
+      },
+      "comment": "The leave-alone half of the move: a fix that changes file must not change what it does. Holds on the shared build of 1 September 2026 before the move, and must go on holding."
+    },
+    {
+      "id": "0876-nmvoc-fr-reaches-the-substance",
+      "issue": 876,
+      "title": "AGRIBALYSE's NMVOC, FR row reaches Non-methane Volatile Organic Compounds once the country is read off the name",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "5c4f81f7-ad98-5c3a-9bd0-d9f715c544d5"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "label",
+        "target_name": "Non-methane Volatile Organic Compounds",
+        "target_characterised": true
+      },
+      "pending": true,
+      "comment": "`NMVOC, non-methane volatile organic compounds, FR`, unspecified air. The base label is the spelling BAFU ships and reaches the substance by. The geography splitter would read the place off, but this list's adapter never calls it (#192): whitelisting the base label changed nothing between the build of 1 September 2026 and the build of a36695e, both of which published the row as a flow with the country code in the name. The base label as a synonym is what places it. Selected by uuid so the claim survives whichever mechanism ends up reading the row."
+    },
+    {
+      "id": "0876-nmvoc-rer-reaches-the-substance",
+      "issue": 876,
+      "title": "AGRIBALYSE's NMVOC, RER row reaches Non-methane Volatile Organic Compounds once the region is read off the name",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "954d84b4-07a5-555b-abaf-e0bbc5a2df01"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "label",
+        "target_name": "Non-methane Volatile Organic Compounds",
+        "target_characterised": true
+      },
+      "pending": true,
+      "comment": "The `, RER` sibling of the row above: a region rather than a country, placed by the same synonym."
+    },
+    {
+      "id": "0876-nitrogen-oxides-cn-reaches-nitrogen-oxides",
+      "issue": 876,
+      "title": "AGRIBALYSE's Nitrogen oxides, CN row reaches Nitrogen Oxides",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "a18f23c0-3232-5851-a83c-72ad09694bac"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "label",
+        "target_name": "Nitrogen Oxides",
+        "target_characterised": true
+      },
+      "pending": true,
+      "comment": "One row, unspecified air, published as `Nitrogen Oxides, CN` on the build of 1 September 2026 and again on the build of a36695e. ecoinvent 3.12's `Nitrogen oxides` rows reach the substance on the label, and the base label as a synonym gives this row the same route; the splitter that would read `CN` off is not run for this list (#192). Selected by uuid."
+    },
+    {
+      "id": "0876-sulfur-oxides-fr-reaches-sulfur-oxides",
+      "issue": 876,
+      "title": "AGRIBALYSE's Sulfur oxides, FR row reaches Sulfur Oxides",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "49028c29-1f48-5b52-a769-80e9cea7016e"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "label",
+        "target_name": "Sulfur Oxides",
+        "target_characterised": true
+      },
+      "pending": true,
+      "comment": "One row, unspecified air, published as `Sulfur Oxides, FR` on the builds of 1 September 2026 and a36695e. ecoinvent's and Stepwise's `Sulfur oxides` rows reach the substance on the label, and the synonym gives this row the same route. Selected by uuid for the reason the nitrogen oxides row is."
+    },
+    {
+      "id": "0876-no-flow-carries-a-country-code-in-its-name",
+      "issue": 876,
+      "title": "No published flow is named with AGRIBALYSE's country code on the end",
+      "subject": {
+        "kind": "flow",
+        "name": "Nitrogen Oxides, CN"
+      },
+      "expect": {
+        "exists": false
+      },
+      "pending": true,
+      "comment": "The build of 1 September 2026 published `Nitrogen Oxides, CN`, `Sulfur Oxides, FR` and two `NMVOC, ..., FR/RER` flows. One is claimed for the four; they trace to one mechanism and vanish together."
+    },
+    {
+      "id": "0876-metals-unspecified-reaches-bafus-bucket",
+      "issue": 876,
+      "title": "AGRIBALYSE's Metals (unspecified) row reaches the Metals, Unspecified substance BAFU's row made, in water",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "461f218c-85ea-574e-8e48-b1fe5956b17f"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "label",
+        "target_name": "Metals, Unspecified",
+        "target_context_display": "Environmental → Water → Unknown"
+      },
+      "pending": true,
+      "comment": "BAFU's bucket has one flow, to air; AGRIBALYSE's row is to water, so with the synonym in place the merge adds a water flow to the existing substance rather than minting a second substance, which is what the build of 1 September 2026 did. The substance is the claim; the flow is necessarily new."
+    },
+    {
+      "id": "0876-discarded-fish-reach-ecoinvents-buckets",
+      "issue": 876,
+      "title": "AGRIBALYSE's two discarded-fish rows reach the two substances ecoinvent's rows made",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name_contains": "Discarded fish"
+      },
+      "expect": {
+        "row_count": 2,
+        "outcome": "algorithm",
+        "basis": "label",
+        "distinct_substances": true,
+        "substance_count": 2,
+        "target_context_display": "Environmental → Water → Ocean"
+      },
+      "pending": true,
+      "comment": "Demersal and pelagic, each the same flow as ecoinvent's `Discarded fish, ..., to ocean` with the compartment left off the name. On the build of 1 September 2026 both minted beside the substances ecoinvent's rows had already made."
+    },
+    {
+      "id": "0876-discarded-demersal-fish-reaches-the-demersal-bucket",
+      "issue": 876,
+      "title": "The demersal row of the two reaches Discarded Fish, Demersal, To Ocean",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "8ddc342c-750e-560a-bd8d-136164ec2d1e"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "label",
+        "target_name": "Discarded Fish, Demersal, To Ocean"
+      },
+      "pending": true,
+      "comment": "Named so the group claim above cannot pass on the two rows swapping buckets."
+    },
+    {
+      "id": "0876-anhydrite-reaches-calcium-sulfate",
+      "issue": 876,
+      "title": "AGRIBALYSE's Anhydrite row reaches Calcium Sulfate the way ecoinvent's Anhydrite, in ground does",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "2a6cbde0-6983-56b8-bd11-b6eabff2c499"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "label",
+        "target_name": "Calcium Sulfate",
+        "target_context_display": "Resource → Ground"
+      },
+      "pending": true,
+      "comment": "Both rows carry the mineral's 14798-04-0, a number the list does not index; ecoinvent's reaches the compound on its published name, carried as a synonym, and this fix gives AGRIBALYSE's row the same synonym. `basis: label` is claimed so that a change reaching the compound by rewriting the mineral's number would fail here: the number the vendor wrote is kept."
+    },
+    {
+      "id": "0876-gangue-bauxite-reaches-inert-rock",
+      "issue": 876,
+      "title": "AGRIBALYSE's Gangue, bauxite row reaches Inert Rock, the flow ecoinvent's gangue rows are sent to",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "72d3f0b6-98a6-5f02-8138-c8264d382bea"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_name": "Inert Rock",
+        "target_context_display": "Resource → Ground"
+      },
+      "pending": true,
+      "comment": "ecoinvent 3.8's `Gangue, bauxite, in ground` and `Gangue, in ground` and 3.12's `Gangue` all reach EF's `Inert Rock` by curated targets; AGRIBALYSE's row is the ecoinvent 2 spelling with nothing the algorithm can read, and minted a `Gangue, Bauxite` resource on the build of 1 September 2026. The first row of `agribalyse-3.2-match-overrides.json`, and the first curated target the list has."
+    },
+    {
+      "id": "0876-kaolin-ore-reaches-kaolin",
+      "issue": 876,
+      "title": "AGRIBALYSE's Kaolin ore row reaches EF's kaolin ground resource",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "92ebfea0-c068-5a09-9cd0-f033cd0a1e21"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_name": "Kaolin",
+        "target_cas": "1332-58-7",
+        "target_context_display": "Resource → Ground"
+      },
+      "pending": true,
+      "comment": "The ore of the material EF publishes as `kaolin`, in the same compartment and unit, sent at parity the way ecoinvent 3.8's `Kaolinite, 24% in crude ore, in ground` is sent to `Kaolinite`. Minted a `Kaolin Ore` resource on the build of 1 September 2026."
+    },
+    {
+      "id": "0876-mineral-oil-reaches-white-mineral-oil",
+      "issue": 876,
+      "title": "AGRIBALYSE's Mineral oil row reaches the characterised White Mineral Oil (petroleum) flow ecoinvent's rows reach",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "2966bf15-6506-56c3-ba6e-8cd8616eeafd"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_name": "White Mineral Oil (petroleum)",
+        "target_context_display": "Environmental → Ground → Agricultural",
+        "target_characterised": true
+      },
+      "pending": true,
+      "comment": "ecoinvent 3.8 and 3.12 ship `Mineral oil` to agricultural soil without a number and reach EF's flow by curated targets. AGRIBALYSE writes 8012-95-1 -- paraffin oils, a registry entry no list publishes a substance under -- and the name hit EF's substance only as a synonym, refused against a number the row disagrees with; the build of 1 September 2026 minted a factor-less `Mineral Oil` beside a flow carrying four factors. `prepared` is claimed so that the row is seen to reach the flow by decision and not by a rewritten number."
+    },
+    {
+      "id": "0876-process-particulates-reach-the-above-ten-window",
+      "issue": 876,
+      "title": "AGRIBALYSE's Particulates, > 10 um (process) row reaches Particles (> PM10) by its size window",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "c131aef2-53b8-573d-a256-464147836a7c"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "particulate_size_class",
+        "target_name": "Particles (> PM10)"
+      },
+      "pending": true,
+      "comment": "The above-ten fraction with a source category in the name, which is the shape BAFU's `(stationary)` PM10 row has and #153 reads through `particulate-flow-classes.json`: the window is the identity, the category is recorded beside it. AGRIBALYSE's 27 particle rows were not in the table at all -- the generator did not read the list -- and this one, whose spelling no other list has, minted a substance of its own on the build of 1 September 2026. The table now carries 25 AGRIBALYSE rows; `diesel soot` and `SPM` are left unplaced, on purpose, for #190 to decide."
+    },
+    {
+      "id": "0876-agribalyse-particle-rows-read-by-window",
+      "issue": 876,
+      "title": "Every AGRIBALYSE particle row the class table carries reaches its flow by its size window",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name_contains": "Particulates, <"
+      },
+      "expect": {
+        "outcome": "algorithm",
+        "basis": "particulate_size_class",
+        "row_count": {
+          "at_least": 10
+        }
+      },
+      "pending": true,
+      "comment": "The other 24 rows in the table are BAFU's spellings verbatim -- `Particulates, < 2.5 um`, `Particulates, > 2.5 um, and < 10um`, `Particulates, < 10 um (stationary)` -- and reached their flows by name on the build of 1 September 2026, which is the route #153 replaced for BAFU because a name is not the vendor's statement of the window. With the list in the table they reach the same flows on the same basis BAFU's rows do. The below-ten and below-2.5 spellings are the ones selected here."
+    }
+  ]
+}

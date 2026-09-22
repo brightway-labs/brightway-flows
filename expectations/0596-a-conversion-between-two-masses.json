@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "description": "Zirconium is a metal. Baddeleyite is the mineral it is mined from -- zirconium dioxide as it occurs in the ground -- and a kilogram of baddeleyite contains 740 grams of zirconium. ecoinvent's implementation of EF 3.1 states one resource-depletion number twice, on the two weighing bases: 5.44e-06 per kilogram of zirconium and 4.0273e-06 per kilogram of baddeleyite. Divide the second by zirconium's share and you get the first. It is one number, stated twice.\n\nBoth ecoinvent flows were mapped onto EF 3.1's single `zirconium` flow, the model holds one factor per flow and category, so two numbers arrived where one could be kept and **neither was published** -- reported instead as a collision 1.35x apart. See #118.\n\n#596 named two ways out and asked which: convert baddeleyite's inventory to zirconium metal, or separate the substances. Separating is what this does, on the same argument #324 used for gypsum -- each substance is published with the factor its own publisher stated for it, and nothing is converted into anything. The conversion *mechanism* is fixed alongside it, because a curator could write a kilogram-to-kilogram factor, have the merge record it, and watch the factor pass drop it.\n\nMeasured on the unbounded build of 21 August 2026 at `a00386e`, merging ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026 v1, against the build of `f27d89b`.",
+  "expectations": [
+    {
+      "id": "0596-the-ore-is-its-own-substance",
+      "issue": 596,
+      "title": "Baddeleyite is published as the mineral it is, not as the metal refined from it",
+      "subject": {
+        "kind": "substance",
+        "label": "Baddeleyite"
+      },
+      "expect": {
+        "exists": true,
+        "flow_count": 1
+      },
+      "comment": "The substance did not exist before this change: ecoinvent's two baddeleyite rows were sent to EF 3.1's elemental `zirconium` by the correspondence table, so a kilogram of ore was published as a kilogram of metal. EF 3.1 carries no resource flow for zirconium dioxide under either registration -- it ships 1314-23-4 as `zirconium dioxide` in thirteen compartments and every one of them is an emission -- so there was nothing to repoint at and the row is declined.\n\nOne flow, because both releases extract it from the same place: `natural resource / in ground`, which this list publishes as `Resource → Ground`. A second flow would mean the two releases had been read as two substances, which is what the paired renumbering in `ecoinvent-3.8-manual-fixes.json` and `ecoinvent-3.9.1-manual-fixes.json` exists to prevent -- those releases register the flow 1314-23-4 where 3.10.1 onwards register the mineral 12036-23-6."
+    },
+    {
+      "id": "0596-zirconiums-own-number-is-published-again",
+      "issue": 596,
+      "title": "The ecoinvent Centre's resource-depletion factor for zirconium is published",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Zirconium",
+        "context_display": "Resource → Ground",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "ecoinvent Centre"
+      },
+      "expect": {
+        "amount": "5.44E-06"
+      },
+      "comment": "**This is the number the collision was suppressing, and it is the point of the change.** Before, ecoinvent stated this factor twice against one consensus flow -- once for zirconium and once for baddeleyite -- so the pair collided and *neither* was published under the ecoinvent Centre's implementation. Only the JRC's 5.44e-06 survived, and the consensus published it marked `sole`, the label that means nobody else states it. That was wrong twice over: ecoinvent states it too, and states the same number.\n\nWith baddeleyite separated, ecoinvent's zirconium row stands alone on the flow and is published. The consensus factor is unchanged in value and changed in provenance -- `agreed` rather than `sole` -- which is #118's \"the provenance is wrong, not just the coverage\". `agreed` cannot be claimed here directly, so the claim is made on the ecoinvent Centre's own row, whose existence is what changed.\n\n`5.44E-06` to three figures, which is what ecoinvent states and what the JRC states."
+    },
+    {
+      "id": "0596-the-ore-keeps-the-number-stated-about-the-ore",
+      "issue": 596,
+      "title": "Baddeleyite carries the factor ecoinvent stated per kilogram of baddeleyite",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Baddeleyite",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "ecoinvent Centre"
+      },
+      "expect": {
+        "amount": "4.0273E-06"
+      },
+      "comment": "The other half, and the reason separating is better than converting. 4.0273e-06 is per kilogram of *baddeleyite*, and it stays that way: nothing is multiplied, and the inventory is not restated as zirconium metal. A reader looking up the ore finds the number its publisher stated about the ore.\n\nOnly the ecoinvent Centre states it -- the JRC characterises no such flow -- so the consensus publishes nothing for it yet and the row waits in the `proposed-factor` queue, which is where an ecoinvent-only number belongs until somebody rules on it. That is a separate decision from this one and is deliberately not claimed here."
+    },
+    {
+      "id": "0596-zirconium-no-longer-collides",
+      "issue": 596,
+      "title": "The ecoinvent Centre states no two colliding numbers about zirconium",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_ecoinvent_centre_factor-collision",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "Restated twice. The original claim bounded this measure at 4 -- the zirconium pair plus three others -- and #141's retirement of the correspondence tables cleared every collision, which removed the measure key from the build entirely and turned the claim unresolved. The first rewrite replaced it with a count of the Baddeleyite substance, which kept a subject but lost the bound: nothing then limited implementer factor-collisions at all, and a new collision would have been invisible here. Found by review on #336. `value_when_absent` is the fix: the measure vanishes at zero because the stats table writes no row for nothing, the selector says so, and the bound is what it always should have been -- no implementer states two colliding numbers about one flow."
+    }
+  ]
+}

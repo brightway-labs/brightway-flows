@@ -1,0 +1,127 @@
+{#
+  One object's history, rendered twice over.
+
+  This file is the whole response for `?fragment=1` and is included by the two
+  standalone pages. Written once so the `<details>` a reader expands and the
+  page they land on with JavaScript off cannot drift apart.
+
+  It extends nothing and carries no <html>: a fragment is a fragment.
+#}
+{% import "partials/table.html" as t %}
+
+{% if not history.available %}
+<p class="muted">
+  This database has no <code>changelog</code> table, so it cannot say what
+  happened. Rebuild it.
+</p>
+{% elif not history.changes.total %}
+<p class="muted">Nothing changed this.</p>
+{% else %}
+
+{% if history.fields %}
+<section class="section">
+  <div class="section__header">
+    <h2>By field</h2>
+    <span class="muted">{{ history.fields | length }} field{{ "" if history.fields | length == 1 else "s" }}</span>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Field</th>
+          <th scope="col" class="num">Changes</th>
+          <th scope="col">Written by</th>
+          <th scope="col">Latest note</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in history.fields %}
+        <tr>
+          <td class="mono">{{ entry.field_name }}</td>
+          <td class="num">{{ entry.change_count | thousands }}</td>
+          <td>{{ entry.transformers | join(", ") }}</td>
+          <td class="muted">{{ entry.latest_comment or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">
+    Where several steps wrote one field, the last one won — and the log below
+    shows the sequence.
+  </p>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="section__header">
+    <h2>Changes</h2>
+    <span class="muted">{{ history.changes.total | thousands }}</span>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col" class="num">#</th>
+          <th scope="col">Step</th>
+          <th scope="col">Field</th>
+          <th scope="col">From</th>
+          <th scope="col">To</th>
+          <th scope="col">Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for change in history.changes.rows %}
+        <tr>
+          <td class="num muted">{{ change.change_index | thousands }}</td>
+          <td class="mono">{{ change.transformer }}</td>
+          <td class="mono">{{ change.field_name }}</td>
+          <td class="value-cell"><span class="value value--old">{{ change.old_value | short_value }}</span></td>
+          <td class="value-cell"><span class="value value--new">{{ change.new_value | short_value }}</span></td>
+          <td class="muted">{{ change.comment or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% if history.activities %}
+<section class="section">
+  <div class="section__header">
+    <h2>PROV-O trail</h2>
+    <span class="muted">{{ history.activities | length | thousands }} activities</span>
+  </div>
+  <p class="muted">
+    One activity per change: which version of the flow it consumed, and which it
+    produced. The values are on the change with the same number — stored once,
+    not twice.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Activity</th>
+          <th scope="col">Field</th>
+          <th scope="col">Agent</th>
+          <th scope="col">Used</th>
+          <th scope="col">Generated</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for activity in history.activities %}
+        <tr>
+          <td class="mono muted">{{ activity.activity_id }}</td>
+          <td class="mono">{{ activity.field_name }}</td>
+          <td class="mono">{{ activity.agent_id }}</td>
+          <td class="mono muted">{{ activity.used_entity_id }}</td>
+          <td class="mono muted">{{ activity.generated_entity_id }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+{% endif %}

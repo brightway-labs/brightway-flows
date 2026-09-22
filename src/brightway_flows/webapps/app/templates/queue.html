@@ -1,0 +1,90 @@
+{#
+  One queue.
+
+  One template for all eight: they differ in which columns they render, and
+  those come from `QueueDefinition.columns`. The ETL app had eight templates.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = definition.title %}
+{% set active_section = "queue" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ definition.title }}</h1>
+  <p class="page__lede">{{ definition.question }}</p>
+  <p class="muted mono">{{ definition.name }}</p>
+</header>
+
+<form class="filters" method="get" action="{{ url_for('queue.detail', name=definition.name) }}">
+  {# The severity is held by the chips below; searching must not drop it. #}
+  <input type="hidden" name="severity" value="{{ severity }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Anything in the row…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('queue.detail', {'name': definition.name}) }}
+  </div>
+</form>
+
+{#
+  The severity badge as a one-click filter.
+
+  The dropdown could already do this and nobody used it: a curator opens a queue
+  to find the blocking rows, and "blocking" is a word on the rows rather than a
+  word in a menu. The counts are of this queue under this search.
+#}
+{{ t.badge_filter("Severity", "severity", severity, badges,
+                  'queue.detail', dict(args, name=definition.name),
+                  all_count=badge_total) }}
+
+{% if page.rows %}
+{{ t.pager(page, 'queue.detail', dict(args, name=definition.name)) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Severity</th>
+        {% for column in definition.columns %}
+        <th scope="col">{{ column.label }}</th>
+        {% endfor %}
+        <th scope="col">Links</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in page.rows %}
+      <tr>
+        <td><span class="tag tag--{{ item.severity }}">{{ item.severity }}</span></td>
+        {% for column in definition.columns %}
+        {% set lines = item.value_lines(column) %}
+        <td {% if column.mono %}class="mono"{% endif %}>
+          {%- if lines is none -%}
+          {{ item.value(column.path) | short_value }}
+          {%- else -%}
+          {%- for line in lines %}<div>{{ line | short_value }}</div>{% else %}—{% endfor -%}
+          {%- endif -%}
+        </td>
+        {% endfor %}
+        <td>
+          {% if item.uuid %}{{ t.flow_link(item.uuid, "flow") }}{% endif %}
+          {% if item.flow_object_id %}{{ t.substance_link(item.flow_object_id, "substance") }}{% endif %}
+          {% if item.payload.get("pubchem_page_url") %}
+          <a href="{{ item.payload['pubchem_page_url'] }}" rel="noreferrer">PubChem</a>
+          {% endif %}
+          {% if not item.uuid and not item.flow_object_id
+                and not item.payload.get("pubchem_page_url") %}
+          <span class="muted">—</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'queue.detail', dict(args, name=definition.name)) }}
+{% else %}
+{{ t.nothing_matches("Nothing in this queue." if not query and not severity
+                     else "Nothing matches these filters.") }}
+{% endif %}
+{% endblock %}

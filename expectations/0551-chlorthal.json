@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent 3.12 ships Chlorthal -- a weedkiller, registry number 2136-79-0 -- as seven flows, one for each place it can end up in the environment. In the 2026-08-18 build of `fa1f4aa` six of them are published as `Herbicides, Unspecified` and the seventh, the emission to agricultural soil, as `Pesticides, Unspecified`; ecoinvent 3.8 ships only the farm-soil flow and it goes to the pesticide bucket there too. It is the same chemical in every row, and the only thing that decided which of two substances a reader gets is the compartment.\n\nThe split comes from the prepared correspondence table `ecoinvent-3.11-biosphere-EF-3.1-biosphere`, which describes itself as GLAD mappings plus 'extra manual and algorithmic matches, not complete'. Two rows of a guess disagree with the other six rows of the same guess, so there is no external authority to argue with. Moving the farm-soil rows into the herbicide bucket would not be a fix -- both buckets are catch-alls, and `Pesticides, Unspecified` carries no characterisation factor at all, so an emission of Chlorthal to a field scores nothing today while the same substance emitted to air scores the herbicide number. What settles it is publishing Chlorthal as Chlorthal, which is #76's fix and which this file states for this substance. See #316, #76, #46, #206.",
+  "expectations": [
+    {
+      "id": "0551-chlorthal-is-one-substance",
+      "issue": 551,
+      "title": "Every ecoinvent row carrying 2136-79-0 reaches one substance, whatever compartment it is in",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "cas": "2136-79-0"},
+      "expect": {"same_substance": true},
+      "comment": "The compartment half, stated as the group question rather than the row question: `same_target` would be wrong here, because the eight rows are in seven different contexts and should reach seven different flows. What they must not do is reach two different *substances*. In the 2026-08-18 build of `fa1f4aa` they reach two -- six on `Herbicides, Unspecified` and the two agricultural-soil rows, one from each release, on `Pesticides, Unspecified`."
+    },
+    {
+      "id": "0551-chlorthal-is-published-as-chlorthal",
+      "issue": 551,
+      "title": "The ecoinvent rows carrying 2136-79-0 are published as `Chlorthal`",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "cas": "2136-79-0"},
+      "expect": {"target_name": "Chlorthal"},
+      "comment": "The positive half, and the reason the previous claim is not satisfied by moving the two farm-soil rows into the herbicide bucket. Both buckets are catch-alls; a named weedkiller published under either of them is the defect #76 is about, and Chlorthal is one of the 79 named substances counted there. EF 3.1 carries no flow for 2136-79-0 in any context, so there is nothing to rewrite the table's target to: the seven prepared rows are declined in `ecoinvent-match-overrides.json` and the merge's addition path mints the flows."
+    },
+    {
+      "id": "0551-chlorthal-still-says-it-is-a-herbicide",
+      "issue": 551,
+      "title": "Chlorthal says it is used as a herbicide, now that no catch-all says it for it",
+      "subject": {"kind": "substance", "cas": "2136-79-0"},
+      "expect": {"roles": "herbicide"},
+      "comment": "What the catch-all was carrying, and what has to survive it. Chlorthal has a curated `herbicide` assertion in `curated-chebi-roles.json`, sourced to PPDB's record for 2136-79-0, and it was inert before this change because no published substance carried that registry number -- the rows reached the buckets instead. This expectation reported `unresolved` on every build up to `fa1f4aa` for that reason, which is the right status and not the same thing as unmet."
+    }
+  ]
+}

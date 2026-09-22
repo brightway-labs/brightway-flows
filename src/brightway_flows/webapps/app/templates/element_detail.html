@@ -1,0 +1,176 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% import "partials/flow_object_views.html" as v %}
+{% set page_title = element.name %}
+{% set active_section = "substances" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ element.name }} <span class="mono muted">{{ element.symbol }}</span></h1>
+  <p class="page__lede">
+    Element {{ element.atomic_number }} — {{ element.status_label }}.
+  </p>
+</header>
+
+{{ v.views('elements') }}
+
+<div class="detail-columns">
+  <section class="section">
+    <div class="section__header"><h2>Identity</h2></div>
+    <dl class="facts">
+      <dt>Atomic number</dt><dd class="mono">{{ element.atomic_number }}</dd>
+      <dt>Symbol</dt><dd class="mono">{{ element.symbol }}</dd>
+      {% if element.most_abundant_neutron_number is not none %}
+      <dt>Most abundant neutron number</dt>
+      <dd class="mono">{{ element.most_abundant_neutron_number }}</dd>
+      {% endif %}
+      <dt>Flow object</dt>
+      <dd>
+        {% if element.flow_object_id %}
+        {{ t.substance_link(element.flow_object_id) }}
+        {% else %}
+        <span class="muted">None. No flow object carries this atomic number.</span>
+        {% endif %}
+      </dd>
+      {% if element.flow_object_id %}
+      <dt>Elementary flows</dt>
+      <dd class="mono">{{ element.linked_flows | thousands }}</dd>
+      {% endif %}
+      {% if element.pubchem_page_url %}
+      <dt>PubChem</dt>
+      <dd><a class="mono" href="{{ element.pubchem_page_url }}" rel="noreferrer">{{ element.pubchem_page_url }}</a></dd>
+      {% endif %}
+    </dl>
+  </section>
+</div>
+
+<section class="section">
+  <div class="section__header">
+    <h2>Nuclides and ions</h2>
+    <span class="muted">
+      {{ element.nuclides | length | thousands }} nuclides,
+      {{ element.ions | length | thousands }} ions
+    </span>
+  </div>
+  <p class="section__note">
+    A nuclide and an ion of an element are flow objects in their own right —
+    <em>{{ element.symbol }}</em> and each of the records below are separate
+    substances, resolved separately and characterised separately. What holds
+    them together is a statement on the child naming this element as its
+    parent, which is why they are drawn under it rather than beside it.
+  </p>
+
+  {% if element.nuclides or element.ions %}
+  <ul class="tree tree--element">
+    <li class="tree__item">
+      <div class="tree__row">
+        <span class="tree__name">{{ element.name }}</span>
+        <span class="tree__count">{{ element.atomic_number }}</span>
+        {% if element.flow_object_id %}{{ t.substance_link(element.flow_object_id) }}{% endif %}
+      </div>
+
+      <ul class="tree">
+        {% if element.nuclides %}
+        <li class="tree__item">
+          <div class="tree__row">
+            <span class="tree__name">Nuclides</span>
+            <span class="tree__count">{{ element.nuclides | length }}</span>
+          </div>
+          <ul class="tree">
+            {% for item in element.nuclides %}
+            <li class="tree__item">
+              <div class="tree__row">
+                <a class="tree__name" href="{{ url_for('substances.detail', flow_object_id=item.flow_object_id) }}">{{ item.name }}</a>
+                {% if item.nuclide %}<span class="tag">{{ item.nuclide }}</span>{% endif %}
+                <span class="muted">{{ item.linked_flows | thousands }} flows</span>
+              </div>
+              {% if item.half_life or item.decay_modes %}
+              <p class="tree__note">
+                {% if item.half_life %}Half life {{ item.half_life }}.{% endif %}
+                {% if item.decay_modes %} Decay {{ item.decay_modes }}.{% endif %}
+                {% if item.chemlin_url %}
+                <a class="mono" href="{{ item.chemlin_url }}" rel="noreferrer">chemlin</a>
+                {% endif %}
+              </p>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          {% if element.short_lived_not_in_list %}
+          {# Stated, not left as a gap between two numbers.  Without it a
+             table showing one nuclide reads as a claim that the element has
+             one isotope. #}
+          <p class="tree__note muted">
+            {{ element.short_lived_not_in_list | thousands }} further nuclides are
+            known and are not in this list: they are too short-lived for an
+            inventory to carry, and their absence is a decision rather than a
+            gap.
+          </p>
+          {% endif %}
+        </li>
+        {% endif %}
+
+        {% if element.ions %}
+        <li class="tree__item">
+          <div class="tree__row">
+            <span class="tree__name">Ions</span>
+            <span class="tree__count">{{ element.ions | length }}</span>
+          </div>
+          <ul class="tree">
+            {% for item in element.ions %}
+            <li class="tree__item">
+              <div class="tree__row">
+                <a class="tree__name" href="{{ url_for('substances.detail', flow_object_id=item.flow_object_id) }}">{{ item.name }}</a>
+                <span class="tag">{{ item.type_label }}</span>
+                <span class="muted">{{ item.linked_flows | thousands }} flows</span>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% endif %}
+      </ul>
+    </li>
+  </ul>
+  {% else %}
+  <p class="muted">
+    No nuclide and no ion of {{ element.name }} is published as its own flow
+    object.
+    {% if element.short_lived_not_in_list %}
+    {{ element.short_lived_not_in_list | thousands }} nuclides are known and
+    none of them is carried.
+    {% endif %}
+  </p>
+  {% endif %}
+</section>
+
+{% if element.nuclides %}
+<section class="section">
+  <div class="section__header"><h2>Nuclide detail</h2></div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Nuclide</th>
+          <th scope="col" class="num">Mass number</th>
+          <th scope="col">Half life</th>
+          <th scope="col">Decay modes</th>
+          <th scope="col" class="num">Bq/g</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in element.nuclides %}
+        <tr>
+          <td><a href="{{ url_for('substances.detail', flow_object_id=item.flow_object_id) }}">{{ item.name }}</a></td>
+          <td class="num mono">{{ item.mass_number if item.mass_number is not none else "—" }}</td>
+          <td class="mono">{{ item.half_life or "—" }}</td>
+          <td class="mono">{{ item.decay_modes or "—" }}</td>
+          <td class="num mono">{{ item.specific_activity | amount }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

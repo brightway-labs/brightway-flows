@@ -1,0 +1,28 @@
+{#
+  The documentation is not where the application looked.
+
+  Its own empty state rather than the database one: a checkout with no `docs/`
+  is a different problem from a checkout with no build, and telling a reader to
+  run the pipeline would be an answer to a question they did not ask.
+#}
+{% extends "layout.html" %}
+{% set page_title = "No documentation" %}
+{% set active_section = "docs" %}
+
+{% block content %}
+<div class="empty">
+  <h1>No documentation here</h1>
+  <p>
+    The pages are read from the project's <code>docs/</code> directory, and it
+    is not at:
+  </p>
+  <pre><code>{{ docs_path }}</code></pre>
+  <p class="muted">
+    The application serves the documentation of the checkout it is running
+    from. An installed package carries the code and not the pages, so run it
+    from a checkout, or point it at one:
+  </p>
+  <pre><code>BRIGHTWAY_FLOWS_DOCS_DIR=/path/to/brightway-flows/docs \
+  uv run brightway-flows webapp</code></pre>
+</div>
+{% endblock %}

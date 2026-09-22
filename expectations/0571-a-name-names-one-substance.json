@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 calls a refrigerant `HFE-143a`, and also publishes the same substance, in the same eleven compartments, as `Methyl trifluoromethyl ether`. Once the list works out that the two are one substance -- they share CAS 421-14-7 -- one of those names becomes the substance's name and the other used to go nowhere. Somebody holding an inventory written against EF 3.1 searched the published list for `HFE-143a` and found nothing.\n\nThe mapping was never lost: `elementary_flow_sources` records which source flow reached which substance and under what name. What was lost is the ability to find a substance by a name a vendor actually publishes.\n\nThe pass that fixes it establishes one property -- **a published name names exactly one substance** -- and that property is what does the filtering. A name two substances both reach cannot be carried, because nobody can say which was meant: `Arsenic Ion` reaches both `Arsenic` and `Arsenic(5+)`, and `Methane` reaches both `Methane (fossil)` and `Methane (land use change)`. The same property is enforced over names the pass did not write, which is why the two claims about withdrawal are here: 888 synonyms named more than one substance before it ran.\n\nTwo further tests reject a name that describes a place rather than a substance. `Hafnium, In Ground` is not another name for hafnium -- it is hafnium in a compartment the flow already states -- and `Aluminium, 24% In Bauxite, 11% In Crude Ore, In Ground` states an ore grade, which is a property of the deposit.",
+  "expectations": [
+    {
+      "id": "0571-a-name-names-one-substance",
+      "issue": 571,
+      "title": "No published name answers for two different substances, after the transform",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.carry_member_names.synonyms_naming_two_substances"
+      },
+      "expect": {
+        "equals": 0
+      },
+      "comment": "The whole property, counted off the records after the pass has run rather than tracked while it runs, so the number describes what is published. On the 2026-08-18 build before this change, 888 strings were a synonym of more than one substance and 49 were a synonym of one and the name of another: a reader searching for `camphor` got two answers and no way to tell which was meant.\n\nThe transform's own answer, about the base list before any vendor list is merged onto it. The claim below is the one about what is published."
+    },
+    {
+      "id": "0571-a-name-names-one-substance-once-merged",
+      "issue": 571,
+      "title": "No published name answers for two different substances",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.merge_member_name_synonyms.synonyms_naming_two_substances"
+      },
+      "expect": {
+        "equals": 0
+      },
+      "comment": "The same property asked of the whole published list rather than of the transform's output, and the one that matters: the merge adds substances and adds synonyms to substances the transform already wrote, so the transform's answer is about a list nobody consumes. Reported `unresolved` on a build that merges nothing, which is right -- that build has no merge to ask.\n\nIt is not the whole of uniqueness, and the pass is careful to say so. 18 names are the *preferred* label of two substances at once — `Fenoxycarb` and `Metaldehyde` among them, each published twice under two registry numbers, and `Particles (> PM10)` beside `Particles (PM10)`, which are two size windows whose names differ only in characters the canonical form drops. Neither of a pair can give way, because a substance has to be called something, so they are counted apart under `names_shared_by_two_substances` and left alone. (This sentence cited `Camphor` and `Chlordane` off the 2026-08-18 build until #167. Camphor is still in the population, under `Bornan-2-one` and `(+)-bornan-2-one`; chlordane is not, and was not before #167 renamed it either. Re-measured on the build of 29 August 2026.) Folding them in here would make this claim impossible to hold and would report a defect this pass cannot answer as its own failure."
+    },
+    {
+      "id": "0571-hfe-143a-is-findable-again",
+      "issue": 571,
+      "title": "`HFE-143a` is a name that finds the substance again",
+      "subject": {
+        "kind": "substance",
+        "cas": "421-14-7"
+      },
+      "expect": {
+        "alt_label": "HFE-143a"
+      },
+      "comment": "The example the issue opens with, and the one an inventory is most likely to hold. EF 3.1 publishes this substance twice, as `HFE-143a` over five flows and as `Methyl trifluoromethyl ether` over eleven; the chemical name is the longer string and wins the substance's name, so before this change the designation was published nowhere at all."
+    },
+    {
+      "id": "0571-n-hfe-7200-is-findable-again",
+      "issue": 571,
+      "title": "`n-HFE-7200` still finds the ether it names",
+      "subject": {
+        "kind": "substance",
+        "cas": "163702-05-4"
+      },
+      "expect": {
+        "alt_label": "n-HFE-7200"
+      },
+      "comment": "The same shape with two designations rather than a designation and a chemical name: EF 3.1 publishes `HFE-569sf2` and `n-HFE-7200` for one substance, and an inventory may hold either."
+    },
+    {
+      "id": "0571-hg-02-is-findable-again",
+      "issue": 571,
+      "title": "`HG-02` still finds the hydrofluoropolyether it names",
+      "subject": {
+        "kind": "substance",
+        "cas": "205367-61-9"
+      },
+      "expect": {
+        "alt_label": "HG-02"
+      },
+      "comment": "The case where the surviving flows are the ones EF named with a long IUPAC-style string, so the short industry designation is the name that would have been lost -- the opposite way round from `HFE-143a`, and lost for the same reason."
+    },
+    {
+      "id": "0571-a-shared-synonym-is-withdrawn",
+      "issue": 571,
+      "title": "A synonym that named two substances is published for neither",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.carry_member_names.synonyms_withdrawn"
+      },
+      "expect": {
+        "at_least": 800
+      },
+      "comment": "The half of the property that is about names this pass did not write. 888 strings named more than one substance on the build before it, most of them stereoisomer pairs sharing a common name -- `camphor` on both camphor objects, `menthol` on both menthols. A bound rather than an exact figure because the population is not this change's and will move with the sources; what must not move is the measure above it, which has to be zero."
+    },
+    {
+      "id": "0571-a-place-is-not-a-name",
+      "issue": 571,
+      "title": "A source name that says where the flow is does not become a name for the substance",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.merge_member_name_synonyms.rejected_names_a_place"
+      },
+      "expect": {
+        "at_least": 20
+      },
+      "comment": "The bound moved from 300 to 100 during #141, with a comment claiming the retirement dried the population up. Review on #336 checked that story against the recorded baselines and it was false: the measure reads 111 on main and 111 on the retirement build -- the retirement changed it by exactly zero, and the 300-odd figure belonged to an earlier state of the sources. The bound is a floor under the population, not a claim that it shrank; what must not move is the measure above it, which has to stay zero. The guard is unchanged and firing.\n\n**This measure is one list's pass, not the build's total.** `carry_member_names` runs inside `merge_source_list`, once per list, and `replace_stage_stats` rewrites that stage's rows -- so what `run_stats` holds is whatever list merged last. The floor of 100 was a floor under BAFU's pass, which merges last at priority 200 and rejected 111. Stepwise 2006 merges after it at 300 (#169) and rejects 27, so the same code doing the same thing reads 27 on the build of 29 August 2026 (`20260829T1158418340740000`). Restated to 20, a floor under that population on the same reasoning as before, and the number will move again for the same reason if a list is registered after Stepwise. Making it a build total is a change to how a per-list merge stage records anything, and belongs with the stage rather than here."
+    }
+  ]
+}

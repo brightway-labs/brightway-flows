@@ -1,0 +1,298 @@
+{
+  "https://vocab.brightway.one/flow-contexts/econ": [
+    "Economic"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-indr-indu": [
+    "Environmental",
+    "Air",
+    "Indoor",
+    "Industrial"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-indr-nepe": [
+    "Environmental",
+    "Air",
+    "Indoor",
+    "Near-person"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-indr-resi": [
+    "Environmental",
+    "Air",
+    "Indoor",
+    "Residential"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-indr-unkn": [
+    "Environmental",
+    "Air",
+    "Indoor"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-unkn": [
+    "Environmental",
+    "Air"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-aicrhe": [
+    "Environmental",
+    "Air",
+    "Aircraft cruise height"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-grle-ru10pesq": [
+    "Environmental",
+    "Air",
+    "Ground level",
+    "Rural (<1000 people/square mile)"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-grle-unkn": [
+    "Environmental",
+    "Air",
+    "Ground level"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq": [
+    "Environmental",
+    "Air",
+    "Ground level",
+    "Urban (>1000 people/square mile)"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-hist15me": [
+    "Environmental",
+    "Air",
+    "High stack, >150 meters"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-hist15me-ru10pesq": [
+    "Environmental",
+    "Air",
+    "High stack, >150 meters",
+    "Rural (<1000 people/square mile)"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-hist15me-ur10pesq": [
+    "Environmental",
+    "Air",
+    "High stack, >150 meters",
+    "Urban (>1000 people/square mile)"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-lote": [
+    "Environmental",
+    "Air",
+    "Long-term"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-lost25me-ru10pesq": [
+    "Environmental",
+    "Air",
+    "Low stack, <25 meters",
+    "Rural (<1000 people/square mile)"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-lost25me-unkn": [
+    "Environmental",
+    "Air",
+    "Low stack, <25 meters"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-lost25me-ur10pesq": [
+    "Environmental",
+    "Air",
+    "Low stack, <25 meters",
+    "Urban (>1000 people/square mile)"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq": [
+    "Environmental",
+    "Air",
+    "Medium stack, <150 meters",
+    "Rural (<1000 people/square mile)"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-unkn": [
+    "Environmental",
+    "Air",
+    "Medium stack, <150 meters"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ur10pesq": [
+    "Environmental",
+    "Air",
+    "Medium stack, <150 meters",
+    "Urban (>1000 people/square mile)"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-biot": [
+    "Environmental",
+    "Biotic"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-agri": [
+    "Environmental",
+    "Ground",
+    "Agricultural"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-bala": [
+    "Environmental",
+    "Ground",
+    "Barren land"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-comm": [
+    "Environmental",
+    "Ground",
+    "Commercial"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-fore": [
+    "Environmental",
+    "Ground",
+    "Forest"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-gras": [
+    "Environmental",
+    "Ground",
+    "Grassland"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-indu": [
+    "Environmental",
+    "Ground",
+    "Industrial"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-noag": [
+    "Environmental",
+    "Ground",
+    "Non-agricultural"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-resi": [
+    "Environmental",
+    "Ground",
+    "Residential"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-shru": [
+    "Environmental",
+    "Ground",
+    "Shrubland"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-silv": [
+    "Environmental",
+    "Ground",
+    "Silvicultural"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-snanic": [
+    "Environmental",
+    "Ground",
+    "Snow and Ice"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-unkn": [
+    "Environmental",
+    "Ground"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-grou-wetl": [
+    "Environmental",
+    "Ground",
+    "Wetland"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-othe": [
+    "Environmental",
+    "Other"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-prod": [
+    "Environmental",
+    "Product"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-wate-sewatr": [
+    "Environmental",
+    "Water",
+    "Secondary water treatment"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-wate-wawatrpl": [
+    "Environmental",
+    "Water",
+    "Waste-water treatment plant"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-wate-ocea": [
+    "Environmental",
+    "Water",
+    "Ocean"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-wate-coaqwifo": [
+    "Environmental",
+    "Water",
+    "Confined aquifer with fossil groundwater"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-wate-lake": [
+    "Environmental",
+    "Water",
+    "Lake"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-wate-rive": [
+    "Environmental",
+    "Water",
+    "River"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-wate-suwa": [
+    "Environmental",
+    "Water",
+    "Surface water"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-wate-unaq": [
+    "Environmental",
+    "Water",
+    "Unconfined aquifer"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-wate-unkn": [
+    "Environmental",
+    "Water"
+  ],
+  "https://vocab.brightway.one/flow-contexts/envi-wate-lote": [
+    "Environmental",
+    "Water",
+    "Long-term"
+  ],
+  "https://vocab.brightway.one/flow-contexts/imassc": [
+    "Impact Assessment Score"
+  ],
+  "https://vocab.brightway.one/flow-contexts/inin": [
+    "Inventory Indicator"
+  ],
+  "https://vocab.brightway.one/flow-contexts/laus-occu": [
+    "Land Use",
+    "Occupation"
+  ],
+  "https://vocab.brightway.one/flow-contexts/laus-tran": [
+    "Land Use",
+    "Transformation"
+  ],
+  "https://vocab.brightway.one/flow-contexts/reso-air": [
+    "Resource",
+    "Air"
+  ],
+  "https://vocab.brightway.one/flow-contexts/reso-biot": [
+    "Resource",
+    "Biotic"
+  ],
+  "https://vocab.brightway.one/flow-contexts/reso-grou": [
+    "Resource",
+    "Ground"
+  ],
+  "https://vocab.brightway.one/flow-contexts/reso-wate": [
+    "Resource",
+    "Water"
+  ],
+  "https://vocab.brightway.one/flow-contexts/reso-wate-suwa": [
+    "Resource",
+    "Water",
+    "Surface water"
+  ],
+  "https://vocab.brightway.one/flow-contexts/reso-wate-lake": [
+    "Resource",
+    "Water",
+    "Lake"
+  ],
+  "https://vocab.brightway.one/flow-contexts/reso-wate-rive": [
+    "Resource",
+    "Water",
+    "River"
+  ],
+  "https://vocab.brightway.one/flow-contexts/reso-wate-ocea": [
+    "Resource",
+    "Water",
+    "Ocean"
+  ],
+  "https://vocab.brightway.one/flow-contexts/reso-wate-unaq": [
+    "Resource",
+    "Water",
+    "Unconfined aquifer"
+  ],
+  "https://vocab.brightway.one/flow-contexts/reso-wate-coaqwifo": [
+    "Resource",
+    "Water",
+    "Confined aquifer with fossil groundwater"
+  ],
+  "https://vocab.brightway.one/flow-contexts/soci": [
+    "Social"
+  ]
+}

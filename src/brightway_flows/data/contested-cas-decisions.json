@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "description": "Rulings on registry numbers that more than one flow name claims within one source list. A ruling is final either way and outranks every rule in `flow_layers/contested_cas.py`, the same contract as `preferred-label-decisions.json`: the rules propose and a curator decides.\n\nKeyed on the number. `names` records the name set the ruling was written about -- it is not part of the key, because a number carried by a fifth name is still the same number, but a changed set is logged so that a ruling written about different data does not go on being obeyed silently.\n\nThe entries below are the groups the source list's own characterisation factors separate: two names given different factors for the same method in the same context are two substances, whatever the number says. They are stated here rather than left to the rule so that the evidence is on the record and so that a curator can overturn one without editing code.\n\nOnly groups the CAS branch actually fuses are ruled on. Water and methane are contested on this measure too, and are not here: the material and qualifier axes separate them before the CAS is consulted, so a `separate` ruling would not change what they resolve to -- it would only move the unqualified member off its published `cas:` identifier for no gain. Merges this project made deliberately are *not* listed: a `cas_numbers` entry in a `*-manual-fixes.json` is already that ruling, and is read directly. See #34.",
+  "decisions": [
+    {
+      "cas": "114772-54-2",
+      "names": [
+        "(bromomethylphenyl-4')-2 benzonitrile",
+        "4'-bromomethylbiphenyl-2-carbonitrile"
+      ],
+      "decision": "separate",
+      "comment": "Two spellings of a bromomethyl biphenyl carbonitrile -- `(bromomethylphenyl-4')-2 benzonitrile` and `4'-bromomethylbiphenyl-2-carbonitrile` -- with freshwater ecotoxicity 9.3 against 5128. The names plausibly denote one substance; the factors differ by a factor of 549. Separated because publishing one factor as the other is the larger error, and because a disagreement this size inside EF 3.1 is a finding to surface rather than to average away. Worth reporting upstream. (#34)"
+    },
+    {
+      "cas": "1885-48-9",
+      "names": [
+        "hfe-245cb2",
+        "hfe-245fa1",
+        "hfe-245fa2"
+      ],
+      "decision": "separate",
+      "comment": "Three hydrofluoroethers, GWP100 747, 934 and 878. The narrowest of the four ether groups and still a 25% spread, well past anything rounding explains. Common Chemistry names 1885-48-9 `2,2,2-Trifluoroethyl difluoromethyl ether`. (#34)"
+    },
+    {
+      "cas": "31795-24-1",
+      "names": [
+        "methylsilanetriol, potassium salt",
+        "potassium methylsilanetriolate"
+      ],
+      "decision": "separate",
+      "comment": "`methylsilanetriol, potassium salt` and `potassium methylsilanetriolate`, freshwater ecotoxicity 2.8e-4 against 3.9e-4. The smallest divergence ruled on here at 40%, and still twenty times the tolerance. (#34)"
+    },
+    {
+      "cas": "371756-75-1",
+      "names": [
+        "1,4-benzenedisulfonic acid, 2,2'-[1,2-ethenediylbis[(3-sulfo-4,1-phenylene)imino[6-[bis(2-hydroxypropyl)amino]-1,3,5-triazine-4,2-diyl]imino]]bis-, hexasodium salt",
+        "producto p0310"
+      ],
+      "decision": "separate",
+      "comment": "A hexasodium triazine dye and `producto p0310`, a product code, on one number. Freshwater ecotoxicity of 1.4e-23 against 1.9e-3 -- twenty orders of magnitude. Whatever the relationship between the two rows, one characterisation is not a rounding of the other, and publishing them as one substance means publishing one of the two factors as the other's. (#34)"
+    },
+    {
+      "cas": "382-34-3",
+      "names": [
+        "hfe-356mec3",
+        "hfe-356pcc3",
+        "hfe-356pcf2",
+        "hfe-356pcf3"
+      ],
+      "decision": "separate",
+      "comment": "Four hydrofluoroethers on one number. EF 3.1 gives them GWP100 of 264 (`hfe-356mec3`), 277 (`hfe-356pcc3`), 831 (`hfe-356pcf2`) and 484 (`hfe-356pcf3`) -- four values for what the number says is one substance, so EF is asserting four substances and mis-stating the registry number on three of them. The designation suffix is the ether arrangement, which is what makes them distinct. Common Chemistry names 382-34-3 `1,1,2,3,3,3-Hexafluoropropyl methyl ether`, one specific ether, so at most one of the four holds it legitimately. Fusing them deprecated 24 of the 45 flows, 22 of those onto a different substance's factors. Which designation keeps the number is #19's code table to decide; that this one cannot stand for all four is decided here. (#34, #256)"
+    },
+    {
+      "cas": "406-78-0",
+      "names": [
+        "hfe-347mcc3",
+        "hfe-347mcf2",
+        "hfe-347pcf2"
+      ],
+      "decision": "separate",
+      "comment": "Three hydrofluoroethers, GWP100 576, 963 and 980. Common Chemistry names 406-78-0 `1,1,2,2-Tetrafluoro-1-(2,2,2-trifluoroethoxy)ethane`, a single ether. Same shape as 382-34-3 and the same remedy. (#34)"
+    },
+    {
+      "cas": "4245-76-5",
+      "names": [
+        "1-methyl-3-nitro-guanidine",
+        "3-methyl-1-nitroguanidine"
+      ],
+      "decision": "separate",
+      "comment": "`1-methyl-3-nitro-guanidine` and `3-methyl-1-nitroguanidine`, freshwater ecotoxicity 317 against 838. As with 114772-54-2 the two names read as one substance under different locant conventions, and EF characterises them 2.6x apart. Separated on the same reasoning. (#34)"
+    },
+    {
+      "cas": "55349-01-4",
+      "names": [
+        "e96096",
+        "troythix 150acs tech."
+      ],
+      "decision": "separate",
+      "comment": "`e96096` and `troythix 150acs tech.`, two trade designations, freshwater ecotoxicity 4.9e-21 against 9.6e-6. Common Chemistry names the number `N,N'-1,6-Hexanediylbis[12-hydroxyoctadecanamide]` and neither designation is among its synonyms, so nothing but the number connects them and the factors say the number is wrong on one of them. (#34)"
+    },
+    {
+      "cas": "8006-64-2",
+      "names": [
+        "gum turpentine",
+        "turpentine"
+      ],
+      "decision": "separate",
+      "comment": "`gum turpentine` and `turpentine`, freshwater ecotoxicity 7.5e-4 against 0.67. Both are UVCBs and the number is Common Chemistry's `Turpentine oil`; the names are close enough that a synonym rule would merge them, which is exactly why the factors have to be allowed to speak. A mixture's composition varies by source, and EF is characterising two of them. (#34)"
+    },
+    {
+      "cas": "84011-06-3",
+      "names": [
+        "hfe-236ea2",
+        "hfe-236fa"
+      ],
+      "decision": "separate",
+      "comment": "`hfe-236ea2` at GWP100 2,590 and `hfe-236fa` at 1,100, on one number: a factor of 2.35 between two flows the merge published as one substance. 12 of the 22 flows were deprecated, 11 of them across the pair, and because the survivor is chosen by factor count then identifier sort the redirects run both ways -- a consumer holding HFE-236ea2's urban-air identifier is sent to 1,100 and one holding HFE-236fa's high-stack identifier to 2,590. Common Chemistry has no record for 84011-06-3 at all, so nothing external adjudicates it and the factors are the whole of the evidence. This is the pair #256's dropped climate factors come from. (#34, #256)"
+    },
+    {
+      "cas": "89182-60-5",
+      "names": [
+        "1-deoxy-1-formamido-d-glucitol",
+        "n-fas"
+      ],
+      "decision": "separate",
+      "comment": "`1-deoxy-1-formamido-d-glucitol` and `n-fas`, human toxicity non-cancer 2.9e-8 against 3.4e-8, a 19% spread across all four air contexts. The smallest divergence in the set and the one closest to being a rounding artefact -- it is not: rounding to three significant figures bounds the error at 0.5%. (#34)"
+    },
+    {
+      "cas": "7440-44-0",
+      "names": [
+        "carbon",
+        "carbon, organic, in soil or biomass stock"
+      ],
+      "decision": "separate",
+      "comment": "The element and an accounting stock. `carbon` is elemental carbon released to soil, air and water -- seven flows, EF's own releases plus rows ecoinvent and BAFU added. `carbon, organic, in soil or biomass stock` is not that substance: it is the carbon held in soil organic matter and standing biomass, the quantity land-use modelling tracks as a stock that grows or shrinks, filed as a resource in the ground and fed by ecoinvent's own pair of rows -- `Carbon, Organic, Decrease In Soil Or Biomass Stock` and `...Increase...` -- which say in their names that this is a ledger, not a chemical. The registry number is the element's, carried onto the stock the way a mixture carries a constituent's, and it is the only thing the two names share. Neither carries a characterisation factor, so the factor signal that separates most groups is silent here and the merge stood. Anything reading the substance layer -- molecular formula, roles, one-substance-in-one-place checks -- was getting the element's answers for the stock. (#116)"
+    },
+    {
+      "cas": "7440-15-5",
+      "names": [
+        "rhenium",
+        "rhenium(2+)"
+      ],
+      "decision": "separate",
+      "comment": "The metal and its dissolved ion. `rhenium` is one resource flow in the ground -- ecoinvent ships it as `Rhenium, In Crude Ore, In Ground`, which is the metal in its ore -- and `rhenium(2+)` is EF's thirteen emission rows for the charged form the metal takes once dissolved. The same distinction #49 established for vanadium and arsenic, where it changes characterisation factors tenfold; for rhenium no second registry number exists to force the question, because CAS has no separate entry for the cation, so both names carry the element's 7440-15-5 and the CAS branch fused them -- one substance record answering both `what is taken out of the ground` and `what is toxic once dissolved`. Resource and emission rows never share a context, so the factor signal cannot speak and the merge stood until this ruling. Common Chemistry names 7440-15-5 `Rhenium`, the element, which is the resource flow and not the thirteen. (#116)"
+    }
+  ]
+}

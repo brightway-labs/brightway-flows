@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent names individual pesticides; EF 3.1 has a flow called `Insecticides, Unspecified` and one called `Herbicides, Unspecified`. Routing a named substance to a catch-all publishes Chlorfenapyr and Novaluron as the same substance, which is not a rounding error -- their characterisation factors differ by orders of magnitude, and a consumer reading the consensus list cannot tell the two apart. See #76 and #206.\n\nTwo mechanisms did the collapsing, and the fix retires both together: thirty positive mappings in `ecoinvent-unmatched-pesticide-groupings.json`, which was this project's own decision, and 307 rows of the prepared correspondence table, answered by decline rows in `ecoinvent-match-overrides.json`. Retiring one alone would have left the same substance published specifically in the contexts one mechanism covered and collapsed in the contexts the other did, which is the shape #206 and #46 are about. Measured on the 2026-08-18 build of `fa1f4aa`: 619 source rows reached the five catch-alls, 551 of them -- 79 distinct named substances -- being specific chemicals.",
+  "expectations": [
+    {
+      "id": "0405-named-insecticides-are-not-fused",
+      "issue": 405,
+      "title": "Two differently named ecoinvent insecticides are never published as the same substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name_contains": "Chlorfenapyr"
+      },
+      "expect": {"target_name": "Chlorfenapyr"},
+      "comment": "In the 2026-08-18 build of `fa1f4aa` Chlorfenapyr lands on `Insecticides, Unspecified`, together with 22 other distinct ecoinvent names across 168 rows. One name is used here rather than the whole population because the expectation has to be a statement somebody can check by reading the output: Chlorfenapyr is a specific insecticide and the consensus list should say so. Its eight rows arrive by the prepared correspondence table -- seven `prepared` and one `algorithm` -- so this is the table half of the fix."
+    },
+    {
+      "id": "0405-herbicide-catch-all-not-a-dumping-ground",
+      "issue": 405,
+      "title": "Publishing the named pesticides as themselves leaves no ecoinvent row unplaced",
+      "subject": {"kind": "measure", "key": "merge.ecoinvent-3.12.unmatched"},
+      "expect": {"equals": 0},
+      "comment": "**Rewritten 2026-08-18, keeping its id.** What this entry used to hold was a placeholder, and it said so: it pinned `merge.ecoinvent-3.12.on_existing_flow` at 9,685 because the claim actually wanted -- 'how many distinct source names reach the herbicide catch-all' -- had no measure, and because a fix that emptied the bucket by failing to place its rows at all should not pass unnoticed.\n\nThe placement measure cannot survive the fix that it was watching. 498 rows stop landing on an existing EF 3.1 flow by design and are minted instead, so `on_existing_flow` falls by about that much and a floor of 9,600 would fail for exactly the right reason. The half worth keeping is the guard, and `unmatched` states it directly and without a threshold anybody has to maintain: every ecoinvent 3.12 row is still placed somewhere, so the catch-alls were emptied by publishing the substances rather than by dropping them. The population claim the placeholder wanted is now made row by row, by the four named-substance entries in this file and by #316, #46 and #206's own files."
+    },
+    {
+      "id": "0405-kaolin-is-published-as-an-insecticide",
+      "issue": 405,
+      "title": "Kaolin says it is used as an insecticide, so it does not need a catch-all to say so",
+      "subject": {"kind": "substance", "cas": "1332-58-7"},
+      "expect": {"roles": "insecticide"},
+      "comment": "Publishing a named pesticide as itself is only lossless if the substance still says which pesticide class it belongs to -- that is the whole reason the catch-alls exist, and a consumer reads the class to find the characterisation factor. Kaolin is the substance where nothing said it: it is a clay that works by coating the leaf so insects will not settle, and ChEBI gives it only `antidiarrhoeal drug` and `excipient`, neither of which this list publishes. The curated assertion, from PPDB's insecticide index on the same registry number ecoinvent ships, is what makes this true; before it, the substance carried no role at all."
+    },
+    {
+      "id": "0405-a-named-insecticide-keeps-saying-what-it-is-for",
+      "issue": 405,
+      "title": "Chlorfenapyr says it is used as an insecticide, whether or not it is still filed under the catch-all",
+      "subject": {"kind": "substance", "cas": "122453-73-0"},
+      "expect": {"roles": "insecticide"},
+      "comment": "The other half of the claim above, on the substance this file's first expectation is about, and before the fix it reported `unresolved` rather than `unmet` for a reason worth reading: in the builds up to `fa1f4aa` no flow object carried 122453-73-0 at all. Chlorfenapyr existed only as a source reference on the catch-all, so there was nothing to bear a role. ChEBI already asserts `insecticide` for that number, so the role arrives with the substance and no curation is needed for it; this expectation is here so that the change which finally publishes Chlorfenapyr as itself cannot do it by dropping what the substance is used for. A specific flow that says nothing about its class is not an improvement on a catch-all that says nothing about the substance."
+    },
+    {
+      "id": "0405-the-groupings-half-is-retired-too",
+      "issue": 405,
+      "title": "Beflubutamid, which this project's own curated file put in the herbicide bucket, is published as Beflubutamid",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "cas": "113614-08-7"
+      },
+      "expect": {"target_name": "Beflubutamid", "same_substance": true},
+      "comment": "The other collapsing mechanism, and the one this project owned. Beflubutamid's seven rows reached `Herbicides, Unspecified` through the thirty positive mappings in `ecoinvent-unmatched-pesticide-groupings.json` -- outcome `manual-addition`, not `prepared` -- so a fix that only answered the correspondence table would have left it and 29 other substances exactly where they were. Named here rather than one of the other 29 because it is the first row of that file and its route is unambiguous: no prepared row mentions it at all.\n\nThe twelve `not_pesticide` rows of that file survive the change and are now the whole of it. They place nothing -- a row naming no target flow object is dropped when the file is read -- and what they do is record a decision, which `tests/test_pesticide_roles.py` makes load-bearing by asserting that none of the twelve carries an agrochemical role. That is a test rather than an expectation because it is a claim about the curated files, not about a build."
+    }
+  ]
+}

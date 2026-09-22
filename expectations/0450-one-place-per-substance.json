@@ -1,0 +1,444 @@
+{
+  "schema_version": 1,
+  "description": "Where a substance is *released* is a fact about the process, and two release contexts on one substance are two ordinary flows. Where it is *taken from* is a fact about the substance: peat comes out of the ground, wood off a living tree, and no process chooses. So a substance filed in two intake places is two answers to a question that has one, and the list publishes both -- two flows that look equally authoritative, are told apart by a compartment a reader has no reason to distrust, and cannot be added together. The `substance-in-two-places` check added by #87 reported nine of them on the build of 25 August 2026 (run 20260825T060541, merge 58da3bd3, head b03c940). This file says, one substance at a time, that each is published in exactly one place, and names the source row that put it in the second one so that a regression says which rule stopped working rather than only that a count moved.\n\nFour of the nine had a characterisation factor on one side and nothing on the other, which is the cost this issue was opened to describe as hypothetical: `Groundwater` and `Water` carry 209 factors on the flow EF 3.1 ships and none on the flow the merge minted beside it, so an inventory reaching the minted half scored zero against every water-use method. `Peat` and `Platinum` carry one each. The other five cost nothing today and are here because the first time somebody characterises one of them, whichever half they pick is the half the other's inventories miss.\n\nTwo of the nine are decisions rather than filing slips, and this file is where they are recorded. **Green water** is rainfall held in soil: EF 3.1 files it as a resource taken from air, because that is how it arrives, and ecoinvent 3.12 files it in the ground, because that is where a plant reaches it. Both readings have something behind them and the list has to pick one; it picks EF's, which is the flow the base list already publishes and the only one a method could characterise without this project minting a target for it. **Peat** is the same shape with the factor attached: EF 3.1 files peat as a ground resource and characterises it there, ecoinvent 3.12 files its own row as biotic, and peat is dug out of a bog. Both are stated here as `count: 1` rather than as claims about the row alone, so that a later rule which moved the row somewhere new again would fail rather than pass for having emptied the context this one names.\n\nSee #89, `docs/reference/harmonisation-steps.md` § 'One substance, one place', and `0450-withdrawal-water-bodies.json` for the withdrawal-body half of the same issue.",
+  "expectations": [
+    {
+      "id": "0450-no-substance-is-published-in-two-places",
+      "issue": 450,
+      "title": "No substance is published in two places it cannot be in at once",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.merge_substance_places.substances_in_two_places",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "The whole issue in one number, and the one claim here that a tenth substance arriving would fail. 9 on the build of b03c940. `value_when_absent` is stated because the stage writes no row when the count is zero, and a bound over a missing key would turn unresolved at exactly the moment it started holding."
+    },
+    {
+      "id": "0450-no-split-has-the-factors-on-one-side",
+      "issue": 450,
+      "title": "No substance has the characterisation factors on one of its two places and nothing on the other",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.merge_substance_places.splits_with_the_factors_on_one_side",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "The subset that costs published numbers rather than only tidiness. 4 on the build of b03c940 -- groundwater and water at 209 factors each, peat and platinum at one. Stated separately from the count above because these four are the ones an inventory can be scored wrongly by today, and a change that fixed the cheap five and left one of these would still be reported met by that claim alone."
+    },
+    {
+      "id": "0450-groundwater-is-only-in-the-aquifer",
+      "issue": 450,
+      "title": "Groundwater is published only as water drawn from an unconfined aquifer",
+      "subject": {
+        "kind": "flow",
+        "name": "Groundwater"
+      },
+      "expect": {
+        "count": 1,
+        "context_display": "Resource → Water → Unconfined aquifer",
+        "characterised": true
+      },
+      "comment": "Two flows on the build of b03c940: EF 3.1's `4f462198-40cd-4184-8733-86648a20dc3f` with 209 factors, and `52c537179e1a0c291fc1ddf44fd02082808d21fa` in `Resource → Ground` with none, minted for three BAFU rows. Water pumped out of an aquifer is not a mineral dug out of rock, and the ground compartment is the only thing that ever said it was."
+    },
+    {
+      "id": "0450-bafu-process-water-in-the-ground-is-water",
+      "issue": 450,
+      "title": "BAFU's process water filed in the ground is water of no stated body, like its four siblings",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "1cb76acd-05eb-5243-a882-de030c4836d0"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Water",
+        "target_context_display": "Resource → Water → Unknown",
+        "target_characterised": true
+      },
+      "comment": "`Water, process, unspecified natural origin/kg`, `resources / in ground`, 60 datasets. `unspecified natural origin` is BAFU saying it does not record where the water came from, which is the opposite of saying it came out of the ground -- the same reading #117 gave the cooling-water row filed in the same compartment. Its four siblings under this name in `resources / land`, `resources / unspecified` and `resources / in water` already reach EF 3.1's water withdrawal and its 209 factors; this row reached a minted `Groundwater` in `Resource → Ground` with none. In 54 of its 60 datasets the land and unspecified rows appear beside it, so BAFU is writing one withdrawal twice rather than describing two."
+    },
+    {
+      "id": "0450-bafu-well-water-in-the-ground-is-from-an-aquifer",
+      "issue": 450,
+      "title": "BAFU's well water filed in the ground is groundwater from an unconfined aquifer",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "dd30b001-a2f2-5c50-b459-405d4e23e25d"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Groundwater",
+        "target_context_display": "Resource → Water → Unconfined aquifer",
+        "target_characterised": true
+      },
+      "comment": "`Water, well, RER`, `resources / in ground`, 6 datasets. BAFU ships a second RER row of the same name in `resources / in water` in 14 datasets, and in all 6 of the ground datasets both rows appear together. The rule this expectation is about places the row in water of no stated body; the withdrawal rule then reads `well` into the material and refines the body to an unconfined aquifer, which is the same two steps its in-water siblings already take. Claimed as the aquifer rather than as unstated water so that a fix which stopped at the compartment would still fail here."
+    },
+    {
+      "id": "0450-bafu-unspecified-well-water-is-from-an-aquifer",
+      "issue": 450,
+      "title": "The well water BAFU files under no compartment at all is groundwater too",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "c13a514d-6615-592c-b0d2-af333adec22b"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Groundwater",
+        "target_context_display": "Resource → Water → Unconfined aquifer",
+        "target_characterised": true
+      },
+      "comment": "`Water, well`, `resources / unspecified`, 10 datasets, every one of which also carries the `resources / in water` row of the same name. `unspecified` is the absence of a statement about origin, not a statement of ground origin -- the reading #83 gave BAFU's other catch-all compartment and the mapping file's own comment already gives this one."
+    },
+    {
+      "id": "0450-water-is-not-published-as-an-economic-flow",
+      "issue": 450,
+      "title": "Water is not published twice, once as a resource and once as an economic flow",
+      "subject": {
+        "kind": "flow",
+        "name": "Water",
+        "context_display": "Economic"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "`a8373c2f8937f72f43c9cc7976c1e02523fcff83` on the build of b03c940, minted for BAFU's five `Water, embodied in product, <country>` rows, carrying no factor while EF 3.1's water resource carries 209. Stated as a flow that must not exist rather than as `count: 1` on the name, because `Water` is also published in seven release contexts that are all ordinary and none of this issue's business."
+    },
+    {
+      "id": "0450-bafu-embodied-water-is-a-water-resource",
+      "issue": 450,
+      "title": "The water BAFU counts as embodied in a product is water taken from the environment",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Water, Embodied In Product"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 5,
+        "same_target": true,
+        "target_name": "Water",
+        "target_context_display": "Resource → Water → Unknown"
+      },
+      "comment": "Five rows, one per country -- CH in 9 datasets, ES, KE, MX and PE in one each -- all carrying water's registry number 7732-18-5. `same_target` because five spellings of one country-tagged row reaching five flows would be #65's defect wearing this one's answer.\n\nWorth stating plainly what this expectation does and does not settle. It settles that embodied water is not a second substance sitting in the economic dimension where nothing can characterise it. It does not settle whether a method *should* score it as a withdrawal: `economic issues` is BAFU being honest that this is an accounting entry, and an entry that lands on the flow carrying 209 factors is now scored like one. That is #69's question -- does this list carry accounting entries, and how are they marked -- and it is asked more sharply by this row landing here than it was by the row sitting in a context with no factors at all."
+    },
+    {
+      "id": "0450-peat-is-only-a-ground-resource",
+      "issue": 450,
+      "title": "The peat EF characterises is the energetic peat, and it is published once",
+      "subject": {
+        "kind": "flow",
+        "name": "Peat"
+      },
+      "expect": {
+        "count": 1,
+        "context_display": "Resource → Ground",
+        "unit": "MJ",
+        "characterised": true
+      },
+      "comment": "EF 3.1 ships two peat flows and they are two substances. `peat` is a non-renewable *energy* resource from the ground, measured in megajoules, and carries `Resource use, fossils` at 1.0 -- peat burned as a fuel, counted by its energy content. `Peat, in ground` is a renewable *material* resource, measured in kilograms, and carries no factor -- peat dug and sold as a growing medium, counted by its mass. This claim is about the first, and `unit: MJ` is what tells them apart: a mass of horticultural peat and a megajoule of fuel peat are not one substance measured two ways.\n\nAn earlier revision of this file claimed ecoinvent's kilogram row landed here. That was wrong and is the reason `unit` is now claimed: it merged the two peats, crossed a unit, and dropped the ecoinvent Centre's own factor for the material peat. See `0450-horticultural-peat-is-published-once` for the other half."
+    },
+    {
+      "id": "0450-ecoinvent-peat-is-the-horticultural-one",
+      "issue": 450,
+      "title": "The peat ecoinvent files as biotic is horticultural peat, and reaches EF's flow for it",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "uuid": "c5035ce2-5ee5-431f-a287-4b25da42be74"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Peat, Horticulture",
+        "target_context_display": "Resource → Biotic",
+        "target_unit": "kg"
+      },
+      "comment": "ecoinvent ships one peat flow -- kilograms, `natural resource / biotic` -- and it is peat sold as a growing medium, not peat burned as a fuel. It is renamed to `Peat, horticulture` in every ecoinvent fixes file that ships this uuid, and EF 3.1's own material peat is renamed with it, so the two are one substance rather than two spellings of one thing. Before that, 3.8 reached EF's flow (it spells the row `Peat, in ground`) and 3.9.1 through 3.12 did not (they spell it `Peat`), so one vendor flow was two published substances depending on which release was merged.\n\nThe rename is the whole fix: the compartments already agree, so no context rule is needed and none is written. `target_unit: kg` is the claim that matters -- sending this row to the megajoule flow, which an earlier revision of this file asked for, crosses a unit and drops the ecoinvent Centre's factor for it, 9.76 per kilogram, which is peat's calorific value and is wrong by an order of magnitude against megajoules. Pinned to 3.12 because ecoinvent reuses flow identifiers between releases; the rename is on every release that ships this uuid."
+    },
+    {
+      "id": "0450-platinum-is-not-a-biotic-resource",
+      "issue": 450,
+      "title": "Platinum is not published as something taken from a living thing",
+      "subject": {
+        "kind": "flow",
+        "name": "Platinum",
+        "context_display": "Resource → Biotic"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "`d126f0846a6655eb02feca849b7d9a7f09073f2d` on the build of b03c940, minted for one BAFU row. Platinum is a metal mined out of rock; biotic means living, or made by something living. Stated as a flow that must not exist because platinum is also published in twelve emission contexts, all ordinary."
+    },
+    {
+      "id": "0450-bafu-biotic-platinum-is-mined",
+      "issue": 450,
+      "title": "BAFU's platinum filed as biotic is the platinum everybody else mines",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "c553eed2-4503-5e24-9175-c710b92d0582"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Platinum",
+        "target_context_display": "Resource → Ground",
+        "target_characterised": true
+      },
+      "comment": "`Platinum`, `resources / biotic`, carrying platinum's registry number 7440-06-4, in one dataset -- the same dataset as BAFU's own `resources / unspecified` platinum row, which already reaches EF 3.1's ground flow. One dataset counting platinum twice under two compartments."
+    },
+    {
+      "id": "0450-basalt-is-only-a-ground-resource",
+      "issue": 450,
+      "title": "Basalt is published only as rock taken from the ground",
+      "subject": {
+        "kind": "flow",
+        "name": "Basalt"
+      },
+      "expect": {
+        "count": 1,
+        "context_display": "Resource → Ground"
+      },
+      "comment": "Three flows on the build of b03c940 -- EF 3.1's ground flow, and two minted for BAFU rows filed as `biotic` and `in air`. Basalt is volcanic rock. BAFU files it in the ground in 102 datasets and in each of the other two compartments in one, and all three rows are in the same single dataset. No factor on any of the three, so nothing published changes; this is the count and the reader."
+    },
+    {
+      "id": "0450-bafu-biotic-basalt-is-rock",
+      "issue": 450,
+      "title": "BAFU's basalt filed as biotic is rock",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "b226e506-4d57-50ee-92c1-f7b0cc344613"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Basalt",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "`Basalt`, `resources / biotic`, 1 dataset."
+    },
+    {
+      "id": "0450-bafu-airborne-basalt-is-rock",
+      "issue": 450,
+      "title": "BAFU's basalt filed as taken from the air is the same rock",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "a8c0c6e7-47cd-56eb-b9c1-e29b295230e2"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Basalt",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "`Basalt`, `resources / in air`, 1 dataset -- the same dataset as the biotic row above and as the in-ground row. Written as its own expectation rather than folded into the one above because they are two compartments and a fix could reach one without the other."
+    },
+    {
+      "id": "0450-biomass-energy-is-only-biotic",
+      "issue": 450,
+      "title": "The energy in wood is published only as something taken from a living thing",
+      "subject": {
+        "kind": "flow",
+        "name": "Biomass"
+      },
+      "expect": {
+        "count": 1,
+        "context_display": "Resource → Biotic"
+      },
+      "comment": "Three flows on the build of b03c940 -- EF 3.1's biotic flow, which ecoinvent and BAFU's own 394-dataset biotic row all reach, and two minted for BAFU rows filed as `in air` (7 datasets) and `unspecified` (19). The energy in a tree is a biotic resource wherever the row was filed. The `resource correction` row of the same family was already sent here by #69's fix, whose comment says these two strays are #89's question rather than its own; this is that question being answered, and the ground flow it left published is the flow this claim retires."
+    },
+    {
+      "id": "0450-bafu-airborne-biomass-energy-is-biotic",
+      "issue": 450,
+      "title": "The energy BAFU files as taken from the air is the energy in wood",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "d00a990d-15ae-5ea8-95ff-08c2afd27568"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Biomass",
+        "target_context_display": "Resource → Biotic"
+      },
+      "comment": "`Energy, gross calorific value, in biomass`, `resources / in air`, 7 datasets, every one of which also carries the biotic row."
+    },
+    {
+      "id": "0450-bafu-unspecified-biomass-energy-is-biotic",
+      "issue": 450,
+      "title": "The energy BAFU files under no compartment at all is the same energy in wood",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "feece912-d5e6-5bb7-bac0-166faf4f9552"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Biomass",
+        "target_context_display": "Resource → Biotic"
+      },
+      "comment": "`Energy, gross calorific value, in biomass`, `resources / unspecified`, 19 datasets, every one of which also carries the biotic row. This is the row the compartment rule sent to `Resource → Ground`, which is what `resources / unspecified` maps to and what the mapping file's own comment flags for review."
+    },
+    {
+      "id": "0450-green-water-is-only-an-air-resource",
+      "issue": 450,
+      "title": "Green water is published only as water arriving from the air",
+      "subject": {
+        "kind": "flow",
+        "name": "Green water"
+      },
+      "expect": {
+        "count": 1,
+        "context_display": "Resource → Air"
+      },
+      "comment": "The second of the two decisions this file records, and the one with the least behind it either way. Green water is rainfall held in soil and used by plants. EF 3.1 files it as a resource taken from air, because precipitation is how it arrives; ecoinvent 3.12's `Water, green` says it is taken from the ground, because that is where a plant's roots reach it. Neither list is making a mistake and no factor is attached on either side, so this is a choice rather than a correction. It goes to EF's flow because EF 3.1 is the base list and the flow it already publishes is the one a method would characterise, and because two flows nobody can add together is worse than either answer.\n\nThis reverses `0450-green-water-stays-in-the-ground` in `0450-withdrawal-water-bodies.json`, which pinned the row in the ground so that a widening of the groundwater compartment rule could not sweep it up by accident. That was the right claim while the question was open and the wrong one to keep once it was answered: it is rewritten in place, keeping its id, rather than deleted."
+    },
+    {
+      "id": "0450-ecoinvent-green-water-is-rain",
+      "issue": 450,
+      "title": "The green water ecoinvent files in the ground reaches EF's green water",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "uuid": "36dfb44d-db99-4cc5-bfb7-f266d69abf3e"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Green water",
+        "target_context_display": "Resource → Air"
+      },
+      "comment": "`Water, green`, `natural resource / in ground`, one row, in 3.11 and 3.12 only -- 3.8, 3.9.1 and 3.10.1 do not ship it. Pinned to 3.12 for the same reason the peat row is: the rule is written for the merged release, and a release merged later needs its own row.\n\nThis is the row `0450-withdrawal-water-bodies.json` deliberately left in place when #315 moved ecoinvent's other water-in-the-ground row, on the ground that the disagreement was #89's to settle. It is settled here."
+    },
+    {
+      "id": "0450-landfill-carbon-is-only-an-inventory-indicator",
+      "issue": 450,
+      "title": "The carbon put into a landfill is published once, as the accounting entry it is",
+      "subject": {
+        "kind": "flow",
+        "name": "Organic Carbon, Placed In Landfill"
+      },
+      "expect": {
+        "count": 1,
+        "context_display": "Inventory Indicator"
+      },
+      "comment": "Two flows on the build of b03c940, both minted: ecoinvent 3.12's, from `inventory indicator / waste`, and BAFU's, from `resources / in ground` in 66 datasets. Organic carbon placed in a landfill is not taken out of the environment -- it counts what went *into* one -- and ecoinvent has already said so in its own compartment. This is the only family in the issue where neither place is EF 3.1's, so the choice is between two source lists' readings rather than between a vendor's row and the base list, and ecoinvent's is the one that describes the thing. Whether such entries belong in this list at all is #69."
+    },
+    {
+      "id": "0450-bafu-landfill-carbon-is-not-a-resource",
+      "issue": 450,
+      "title": "BAFU's landfill carbon is not something taken out of the ground",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "c31ff9aa-30f6-5793-8c0a-607e039d1b27"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Organic Carbon, Placed In Landfill",
+        "target_context_display": "Inventory Indicator"
+      },
+      "comment": "`Organic carbon, placed in landfill`, `resources / in ground`, 66 datasets and never in any other compartment -- so unlike the rest of this issue's BAFU rows there is no majority filing to appeal to, and the reading comes from ecoinvent's compartment for the same name."
+    },
+    {
+      "id": "0450-landfill-waste-mass-is-only-an-inventory-indicator",
+      "issue": 450,
+      "title": "The waste put into a landfill is published once, as the accounting entry it is",
+      "subject": {
+        "kind": "flow",
+        "name": "Waste Mass, Total, Placed In Landfill"
+      },
+      "expect": {
+        "count": 1,
+        "context_display": "Inventory Indicator"
+      },
+      "comment": "The same shape as the carbon row above: ecoinvent 3.12 books it as `inventory indicator / waste`, BAFU as `resources / in ground` in 72 datasets, and the list published both readings."
+    },
+    {
+      "id": "0450-bafu-landfill-waste-mass-is-not-a-resource",
+      "issue": 450,
+      "title": "BAFU's landfill waste mass is not something taken out of the ground",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "6301844f-2f4d-5352-980a-3e16dbb0e8dc"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Waste Mass, Total, Placed In Landfill",
+        "target_context_display": "Inventory Indicator"
+      },
+      "comment": "`Waste mass, total, placed in landfill`, `resources / in ground`, 72 datasets."
+    },
+    {
+      "id": "0450-horticultural-peat-is-published-once",
+      "issue": 450,
+      "title": "The peat sold as a growing medium is published once, in kilograms, as a biotic resource",
+      "subject": {
+        "kind": "flow",
+        "name": "Peat, Horticulture"
+      },
+      "expect": {
+        "count": 1,
+        "context_display": "Resource → Biotic",
+        "unit": "kg"
+      },
+      "comment": "The material peat: EF 3.1's `Peat, in ground` and ecoinvent's `Peat` are one flow of one substance, renamed so a reader can tell it from the peat EF characterises in megajoules.\n\n**No context rule.** EF files it under `Resources from biosphere` and ecoinvent under `natural resource / biotic`, and both compartments map to `Resource → Biotic`, so the renamed rows meet on EF's flow with nothing moved. An earlier revision of #89 sent every peat row to `Resource → Ground` on the reasoning that peat is dug out of a bog. That is true and was the wrong thing to act on: it collapsed the distinction the source lists draw between the two peats, leaving the *name* as the only thing telling them apart where EF separates them by compartment and by unit as well. `context_display` and `unit` are both claimed here for that reason -- together they are what says the two peats are still two."
+    },
+    {
+      "id": "0450-the-ecoinvent-factor-for-horticultural-peat-survives",
+      "issue": 450,
+      "title": "The ecoinvent Centre's own factor for horticultural peat is still published",
+      "subject": {
+        "kind": "flow",
+        "name": "Peat, Horticulture"
+      },
+      "expect": {
+        "ecoinvent_factors": 1,
+        "jrc_factors": 0
+      },
+      "comment": "The ecoinvent Centre's implementation of EF 3.1 states `Resource use, fossils` at 9.76 for this flow, per kilogram, which is peat's calorific value. The JRC states nothing for it -- EF characterises the megajoule flow instead -- so the two counts together say which peat this is.\n\nWritten because this factor is what an earlier revision of #89 lost: with the row on the megajoule flow, 9.76 per kilogram is wrong by an order of magnitude and stops being published, which is a published number disappearing rather than moving. A claim about a count rather than the value, because the value is the ecoinvent Centre's to state and this is only asking that the list still carries it."
+    },
+    {
+      "id": "0450-bafu-peat-is-the-fuel",
+      "issue": 450,
+      "title": "Every peat row BAFU ships reaches the peat EF characterises as a fuel",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name_contains": "peat"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_name": "Peat",
+        "target_context_display": "Resource → Ground",
+        "target_unit": "MJ"
+      },
+      "comment": "BAFU ships three peat rows -- a kilogram under `resources / biotic` in 134 datasets, a kilogram under `resources / in ground` in one, and `Energy, from peat` in megajoules in one -- and all three are the energy carrier. The archive says so rather than the name: the biotic row is the extraction input to `Peat, at mine`, one kilogram per kilogram, and that dataset is filed under `fuels / peat` and feeds `Peat, burned in power plant` and `Electricity, peat, at power plant`. Nothing in the release uses peat as a growing medium.\n\n`same_substance` is the claim, not `same_target`: BAFU's peat is one substance however it is measured, and the two kilogram rows reaching the megajoule flow is a *unit* crossing rather than a second substance. #87 sent the biotic row to the material peat, where the units agreed and no crossing arose, which was the wrong reason to leave it alone -- it agreed with the wrong substance. Renaming the material peat to `Peat, horticulture` is what made that visible."
+    },
+    {
+      "id": "0450-bafu-peat-kilograms-are-converted-to-energy",
+      "issue": 450,
+      "title": "BAFU's kilograms of peat are converted to megajoules, not left crossing",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "0417d728-9c64-5755-9685-e547485968d4"
+      },
+      "expect": {
+        "outcome": "matched",
+        "unit_mismatch": false,
+        "target_name": "Peat",
+        "target_unit": "MJ"
+      },
+      "comment": "EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass, deliberately: the target carries `Resource use, fossils`, which is defined per megajoule, and BAFU records the same extraction as a mass. The substance is the same and only the quantity basis differs.\n\n`unit_mismatch: False` is the claim, and it is the one worth making. A kilogram row reaching a megajoule flow *with a stated conversion* is not a unit crossing the merge has to report -- the factor resolves it, and the row lands carrying the conversion rather than carrying a disagreement. 9.76 MJ/kg, the IPCC 2006 Guidelines Vol. 2 Table 1.2 default for peat, stated in `bafu-2026-v1-match-overrides.json` and published as `qudt:conversionMultiplier`. Without it the row would land on a per-megajoule factor as though one kilogram were one megajoule, understating peat by about a factor of ten -- which is what an unconverted crossing means and why #78 counts them.\n\nSo this claim fails in both directions that matter: if the conversion is dropped the row starts reporting a mismatch, and if the row is sent somewhere else `target_name` and `target_unit` catch it."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 2,
+  "decisions": [
+    {
+      "list_name": "ecoinvent",
+      "list_version": "",
+      "source_uuid": "f06815cb-65ca-4446-8ea9-329ae0252c29",
+      "prepared_target_elementary_flow_id": "23ec75d2-71c5-4d61-ab7c-cdc3a153c662",
+      "decision": "mapped",
+      "expected_context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ru10pesq",
+      "target_flow_object_id": "fo-cbafd0520a782e39",
+      "expected_context_elementary_ids": [],
+      "updated_at": "2026-03-08T21:02:15.031315+00:00"
+    }
+  ],
+  "updated_at": "2026-03-08T21:02:15.031339+00:00"
+}

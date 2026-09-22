@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent ships eight rows named `Ioxynil methyl ester` carrying CAS 2436-73-9. That number is not an ioxynil compound's: every ioxynil is a diiodobenzonitrile, and 2436-73-9 contains no iodine. It is the methyl ester of MCPA -- PubChem CID 17089, C10H11ClO3, and what Wikidata resolves the number to via P231 (`mcpa-methyl`, Q27275530). Ioxynil's own number is 1689-83-4, and ecoinvent's three other ioxynil flows all carry correct numbers, which is what makes the fourth stand out. The project's decision is that the registry number is right and the name is wrong, so the name is corrected at source to `MCPA-methyl` -- the ISO 1750 common name, and the spelling ecoinvent already uses for the same parent acid's other derivatives, `MCPA-sodium` and `MCPA-thioethyl`. See #46.",
+  "expectations": [
+    {
+      "id": "0326-no-row-is-named-for-an-ioxynil-ester",
+      "issue": 326,
+      "title": "No ecoinvent row is published as `Ioxynil methyl ester`",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Ioxynil methyl ester"},
+      "expect": {"row_count": 0},
+      "comment": "In the 2026-08-17 build (run 20260817T1641, head fcc535d, merging ecoinvent 3.12 and 3.8) there are eight such rows -- seven from 3.12 and one from 3.8 -- and every one of them asserts a name and a registry number that belong to two different molecules. The name is the half that is wrong, so this claims the name is gone. The old spelling is deliberately *not* retained as an alternative label: `retain_original_as_synonym` is for a name the substance genuinely has where only the preferred one was wrong, and `Ioxynil methyl ester` is not a name MCPA-methyl has under any authority -- it names a different substance, which is the whole of this issue."
+    },
+    {
+      "id": "0326-the-substance-is-mcpa-methyl",
+      "issue": 326,
+      "title": "The rows carrying CAS 2436-73-9 are published as `MCPA-methyl`",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "MCPA-methyl"},
+      "expect": {"row_count": {"at_least": 8}},
+      "comment": "The positive half. Eight is what 3.12 and 3.8 supply together; all five registered versions ship the row under the same UUIDs, so a build merging more of them finds more. Stated as a lower bound for that reason. No collision to merge into: ecoinvent already ships MCPA (94-74-6, published as `(4-Chloro-2-methylphenoxy)acetic acid`), MCPA-sodium and MCPA-thioethyl, but no methyl ester under any spelling."
+    },
+    {
+      "id": "0326-one-substance-not-two-buckets",
+      "issue": 326,
+      "title": "The rows carrying CAS 2436-73-9 all reach one substance",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "cas": "2436-73-9"},
+      "expect": {"same_substance": true},
+      "comment": "The routing half, which the rename does not touch and is not meant to: the merge keys a prepared row on its source UUID, so correcting a name cannot move a row. In the builds up to `fa1f4aa` the eight rows reached two substances -- six landed on `Herbicides, Unspecified` and the two emitted to agricultural soil on `Pesticides, Unspecified`, in both releases -- because the prepared correspondence table splits them that way. That table is not an ecoinvent product and carries no authority: `ecoinvent-3.11-biosphere-EF-3.1-biosphere` is curated in `randonneur_data` and describes itself as GLAD mappings plus \"extra manual and algorithmic matches\", not complete. The split is a best guess made when nobody had looked at this substance, which is why overriding it costs nothing but a decision. `Chlorthal` (2136-79-0) is split identically and is #316. Moving rows between catch-alls would be no fix at all; what settles it is publishing the substance as itself, which is #76, and the seven prepared rows are declined in `ecoinvent-match-overrides.json` under the name the table still uses for it, `Ioxynil methyl ester`. **Flag dropped 2026-08-18, with that work.**"
+    }
+  ]
+}

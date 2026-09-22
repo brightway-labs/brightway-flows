@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "description": "AGRIBALYSE's three `Carbon, organic, in soil or biomass stock` rows carry the element's number 7440-44-0, which #116 ruled groups nothing, and fell through to the tail of their name onto a minted `Carbon` resource under elemental carbon: 2,278 datasets read as digging the element out of the ground. Three curated targets in `agribalyse-3.2-match-overrides.json` send them to EF 3.1's stock flow, as ecoinvent's Increase row is sent (#116), and the read-only lookup, which already placed them there by name, agrees with the build again. The rows are a ledger, not an emission: every dataset that carries one already ships the same carbon as CO2 on its own air row at 44/12 of the stock amount, so the stock flow -- which EF 3.1 characterises at nothing -- is where they belong, and this change moves no characterised number anywhere (#195).",
+  "expectations": [
+    {
+      "id": "0915-the-three-rows-reach-the-stock-flow",
+      "issue": 915,
+      "title": "AGRIBALYSE's three soil carbon stock rows reach EF 3.1's `Carbon, Organic, In Soil Or Biomass Stock` by curated target",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Carbon, organic, in soil or biomass stock"
+      },
+      "expect": {
+        "row_count": 3,
+        "outcome": "prepared",
+        "same_target": true,
+        "target_uuid": "26f9293f-8c18-4f3b-a334-e57a8ecda895",
+        "target_name": "Carbon, Organic, In Soil Or Biomass Stock"
+      },
+      "comment": "On the shared build of 3 September 2026 (d1df4ed) all three reached a minted `Carbon` in Resource → Ground, basis `cas+designation`. The bare-`Resources` and the re-filed `land` rows are coarser than the target's ground context, which the prepared machinery publishes on the target rather than minting a second place (#89's one-place rule).\n\nThe `land` row is the peat row, and it is the one #195 proposed to send to `Carbon dioxide, land transformation` instead. It occurs once, in `Peat degradation emissions on grassland, per kg CO2 {GLO} - Adapted from WFLDB`, at 1*12/44 = 0.2727 kg, beside that dataset's own `Carbon dioxide, land transformation` at 1 kg -- the same carbon, since 0.2727 kg is 12/44 of 1 kg of CO2, and beside `Energy, from peat` at 34.9*12/44 = 9.518 MJ, which is that carbon again at the vendor's 34.9 MJ per kg C. On the same build the dataset reads 1.0585 kg CO2eq, 1.0000 from the CO2 row on EF's `Carbon Dioxide (land Use Change)` and 0.0585 from its N2O at 273; adding the stock row to the CO2 flow would take it to 1.3312, 25.8% more, for carbon already published. The stock flow carries no EF 3.1 factor at all, so this target settles the row's identity and changes no score."
+    },
+    {
+      "id": "0915-no-carbon-resource-is-minted-for-them",
+      "issue": 915,
+      "title": "Elemental carbon has no resource flow in the ground any more",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon",
+        "context_display": "Resource → Ground"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "The flow `5cdcf97e…` existed only because these three rows minted it. With them on the stock flow nothing mints it, and elemental carbon is back to its releases, which `0588-elemental-carbon-keeps-its-releases` counts."
+    }
+  ]
+}

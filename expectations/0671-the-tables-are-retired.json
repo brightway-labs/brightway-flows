@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent's prepared correspondence tables are retired (#141, plans/retire-prepared-correspondence.md): every ecoinvent row is now decided by this project's own matching, the element/ion rule (§3a), and the curated rows in ecoinvent-match-overrides.json. These claims pin the retirement's load-bearing outcomes: the #130 twins resolve onto the substances their own registration names; the element/ion rule's landings hold in every compartment; the origin-qualifier wall held where ecoinvent marks the qualifier by uuid alone; the joins the table used to carry (heat, the buckets, the size fractions) survive as this project's stated rows; and the ore conversion this project already ruled on still converts. Measured on the retirement build of 2026-08-23. The factor movements are the flows' movements: no factor changed its value on a flow that stayed put, but flows that moved took and surfaced factors -- factors_published shifts by a few dozen in six hundred and seventy thousand, and the proposed-factor queue grows from 132 to 204 because flows the tables had hidden behind wrong matches now ask their own factor questions.",
+  "expectations": [
+    {
+      "id": "0671-metaldehyde-reaches-the-characterised-twin",
+      "issue": 671,
+      "title": "ecoinvent's metaldehyde lands on the metaldehyde the JRC characterised",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Metaldehyde"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_cas": "108-62-3"
+      },
+      "comment": "The #130 twin: with the table retired the rows follow their own registration, 108-62-3, to the entry carrying the JRC's factors, instead of EF's uncharacterised duplicate (9002-91-9). The substance is the claim: one row lands on a factorless duplicate *flow* of the right substance, and joining the twin objects flow-by-flow is #130's work, not the retirement's."
+    },
+    {
+      "id": "0671-fenpropimorph-reaches-one-substance-in-both-releases",
+      "issue": 671,
+      "title": "ecoinvent's fenpropimorph is one substance in 3.8 and 3.12 alike",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Fenpropimorph"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_cas": "67564-91-4"
+      },
+      "comment": "The #130 twin plus a stale 3.8 registration: 3.12 registers the racemate 67564-91-4 and 3.8 registered the skeleton, so without the manual fix the retirement would split one fungicide by release."
+    },
+    {
+      "id": "0671-nickel-ii-is-the-ion-in-every-compartment",
+      "issue": 671,
+      "title": "Nickel II is nickel(2+) in air and soil, not only in water",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Nickel II"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_name": "Nickel(2+)"
+      },
+      "comment": "Plan §3a clause 2: the name decides, charge-normalised, in every compartment alike. The table used to send the air and soil rows to the element."
+    },
+    {
+      "id": "0671-bare-zinc-follows-its-canonical-identity",
+      "issue": 671,
+      "title": "3.8's bare zinc rows follow the newest release's identity to zinc(2+)",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.8",
+        "name": "Zinc II"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Zinc(2+)"
+      },
+      "comment": "§3a clause 1: 3.8 ships these uuids as elemental `Zinc` (7440-66-6) and 3.12 renumbers them 23713-49-7; the canonical-identities file substitutes the newest identity before matching, so the recorded name here is already the canonical one."
+    },
+    {
+      "id": "0671-the-generic-ion-is-its-own-substance",
+      "issue": 671,
+      "title": "Copper ion lands on a generic copper-ion substance, not on the element and not on a guessed charge",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Copper ion"
+      },
+      "expect": {
+        "outcome": "placed",
+        "same_substance": true,
+        "target_name": "Copper, Ion"
+      },
+      "comment": "§3a clause 4: 3.12 deleted the number deliberately, and picking Cu(2+) for it would be the reinterpretation the rule refuses. The object is minted, on the `Arsenic, Ion` precedent."
+    },
+    {
+      "id": "0671-the-qualifier-wall-held",
+      "issue": 671,
+      "title": "ecoinvent's land-use-change methane stays on the land-use-change substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "9541a975-800f-4fed-9edf-28f6e411a015"
+      },
+      "expect": {
+        "outcome": "prepared",
+        "target_name": "Methane (land Use Change)"
+      },
+      "comment": "ecoinvent marks the qualifier by uuid alone -- the row is named plain `Methane` with the unqualified gas's number -- so the join lives in ecoinvent-match-overrides.json now that the table is gone. If this row is UNRESOLVED the uuid has changed and the override family needs re-deriving."
+    },
+    {
+      "id": "0671-the-heat-join-survives",
+      "issue": 671,
+      "title": "ecoinvent's waste heat is EF's waste heat, not a second heat",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Heat, Waste"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_name": "Waste Heat"
+      },
+      "comment": "Heat has no registry number, so the name join the table used to carry is stated in ecoinvent-match-overrides.json; without it the retirement shadow build minted a duplicate substance for all 27 rows."
+    },
+    {
+      "id": "0671-the-ore-conversion-still-converts",
+      "issue": 671,
+      "title": "Every TiO2-in-ore spelling converts to elemental titanium at the stated factor",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name_contains": "TiO2"
+      },
+      "expect": {
+        "outcome": "prepared",
+        "same_substance": true,
+        "target_name": "Titanium"
+      },
+      "comment": "The 0.599 kg/kg conversion this file has carried since #260 -- plus the fourth sibling spelling, which the shadow build showed landing unconverted on titanium dioxide while its three siblings converted."
+    },
+    {
+      "id": "0671-a-minted-ion-has-one-spelling",
+      "issue": 671,
+      "title": "The five minted generic-ion substances share one spelling",
+      "subject": {
+        "kind": "substance",
+        "label": "Antimony, Ion"
+      },
+      "expect": {
+        "exists": true,
+        "flow_count": 15
+      },
+      "comment": "The follow-up named on #141 as minted-ion label harmonisation. The creation path took whichever vendor spelling arrived first, so five substances of one shape (Antimony, Arsenic, Copper, Iron, Tin) published as `X Ion` while the module that matches them spells `X, Ion` and `Thiocyanate, Ion` already publishes that shape. Renamed through `flow-object-overrides.json` names entries -- the #335 mechanism -- with the old spellings kept as alternative labels. Antimony carries the claim for the family (one selector, one substance); the other four moved in the same change and their own expectations (0396's two, 0617's, 0627's, and the #131 claim in this file) pin them under the new spelling. flow_count 14 says renamed, not replaced: the same substance, every flow following it per #7. Fails before the rename lands, which is the fail-first this project's discipline wants. Fifteen since #198: AGRIBALYSE's eleven `Antimony, ion` rows, the element's number taken off them, reach this substance by name, and one of them is in a river, a compartment none of the fourteen had. Still renamed, not replaced: the same substance, one flow more."
+    }
+  ]
+}

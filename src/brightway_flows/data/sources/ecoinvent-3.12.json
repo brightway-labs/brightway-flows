@@ -1,0 +1,27 @@
+{
+  "list_name": "ecoinvent",
+  "list_version": "3.12",
+  "role": "source",
+  "merge_priority": 100,
+  "adapter": "brightway_flows.integrations.ecoinvent:fetch",
+  "flow_iri_prefix": "https://vocab.brightway.one/ecoinvent/3.12/flow/",
+  "prepared_match_table": null,
+  "lcia": {
+    "adapter": "brightway_flows.integrations.ecoinvent_lcia:fetch",
+    "factors": "ecoinvent-3.12-lcia-factors.json",
+    "implemented_by": "ecoinvent Centre",
+    "methods": [
+      {
+        "name": "EF v3.1",
+        "no_long_term": "EF v3.1 no LT"
+      }
+    ]
+  },
+  "inputs": {
+    "flows": "ecoinvent-biosphere-flows-3.12.json",
+    "manual_fixes": "ecoinvent-3.12-manual-fixes.json",
+    "manual_additions": "ecoinvent-unmatched-pesticide-groupings.json",
+    "additional_flows": "ecoinvent-3.12-additional-flows.json",
+    "match_overrides": "ecoinvent-match-overrides.json"
+  }
+}

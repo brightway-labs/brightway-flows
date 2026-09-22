@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "description": "BAFU's nine remaining carbon dioxide rows, and the four defects they carried. Two are a missing registry number — the #127 pattern, corrected the same way: `Carbon dioxide, biogenic` at `low. pop.` minted a second biogenic carbon dioxide (#134), and `Carbon dioxide, land transformation` at `unspecified` fell to label matching (#136). Two need a curated target because no rule can reach one: `in air` is a compartment rather than an origin (#135), and the unqualified rows say nothing at all, their being fossil resting on evidence in BAFU's own datasets (#139 §17). Rows are selected by source uuid, not by name: BAFU spells one substance several ways and the merge records a place-stripped name for some rows, so a name selector conflates flows that this file is about keeping apart. Measured on a full build against merge base 09b1c37, where the carbon dioxide family ends up exactly as #139 §16 predicted — 17 biogenic, 16 fossil, 12 land use change, 8 carbon into a pool, 2 resource correction, and none at all on the substance that states no origin.",
+  "expectations": [
+    {
+      "id": "0661-bafu-biogenic-carbon-dioxide-is-one-substance",
+      "issue": 661,
+      "title": "BAFU's three biogenic carbon dioxide rows reach the substance EF characterises",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Carbon dioxide, biogenic"},
+      "expect": {"row_count": 3, "same_substance": true, "target_substance_id": "fo-c830feb8dfc643a1"},
+      "comment": "Three rows, one per compartment. Two reached `Carbon Dioxide (biogenic)` already, on `cas+qualifier`; the `low. pop.` row carried no registry number, so the qualifier had nothing to narrow and the row minted a second biogenic carbon dioxide with one flow and no factor. Giving the name its number is what the other two already have. `same_substance` is the claim that matters — three rows of one substance reaching one substance."
+    },
+    {
+      "id": "0661-the-minted-duplicate-is-gone",
+      "issue": 661,
+      "title": "There is no second biogenic carbon dioxide",
+      "subject": {"kind": "substance", "label": "Carbon Dioxide, Biogenic"},
+      "expect": {"count": 0},
+      "comment": "The negative half. Stated as an absence because that is what the fix produces: nothing renames the duplicate, it stops being created."
+    },
+    {
+      "id": "0662-the-in-air-row-with-a-number-reaches-biogenic-uptake",
+      "issue": 662,
+      "title": "BAFU's carbon dioxide in air reaches EF's biogenic uptake from air",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "94b15b96-c2b5-5dfc-acb4-0cec3414d037"},
+      "expect": {"row_count": 1, "target_substance_id": "fo-c830feb8dfc643a1", "target_context_display": "Resource → Air"},
+      "comment": "`resources / in air`, the one of BAFU's three that carries 124-38-9. Its number found carbon dioxide and nothing in `in air` is a qualifier, so the label branch matched unqualified `Carbon Dioxide` — the substance that declines to say where the carbon came from. ecoinvent's flow of the same name already reaches this EF row through its own correspondence table, and #257 settled that as right. Both substance and compartment are claimed here because this is the row where the two agree."
+    },
+    {
+      "id": "0662-the-two-numberless-in-air-rows-leave-their-invented-substance",
+      "issue": 662,
+      "title": "The other two `in air` rows join the same substance",
+      "subject": {"kind": "substance", "label": "Carbon Dioxide, In Air"},
+      "expect": {"count": 0},
+      "comment": "Neither row carries a registry number, so between them they minted `Carbon Dioxide, In Air` — a substance named for a compartment, which is a thing this list holds in the context and not in the name. Curated targets take both to `Carbon Dioxide (biogenic)`; what they do **not** yet fix is the compartment, and the file's own note says so: BAFU files them under `resources / biotic` and `resources / unspecified`, which map to `Resource → Biotic` and `Resource → Ground`. Carbon dioxide taken from the air is neither. That is BAFU's own classification carried faithfully, and correcting it would mean overruling a source's compartment on the strength of a flow name — a general question this change does not settle. #135 stays open for it."
+    },
+    {
+      "id": "0663-land-transformation-is-land-use-change",
+      "issue": 663,
+      "title": "BAFU's land-transformation carbon dioxide picks up EF's +1",
+      "subject": {"kind": "source_row", "list": "bafu", "name_contains": "Land Transformation"},
+      "expect": {"row_count": 2, "same_substance": true, "target_substance_id": "fo-c39139738b531191"},
+      "comment": "The rows in this whole family that changed a score. `land transformation` is BAFU's spelling of the carbon EF calls `land use change` and ecoinvent books as `from soil or biomass stock`; the qualifier vocabulary matched on `land use` and so read neither row as anything, and both landed on unqualified carbon dioxide, which this list characterises nowhere. A BAFU inventory that cleared land scored zero for it. Both now reach the flow where EF states +1 and ecoinvent agrees."
+    },
+    {
+      "id": "0669-bafu-unqualified-carbon-dioxide-is-fossil-low-pop",
+      "issue": 669,
+      "title": "BAFU's unqualified carbon dioxide is published as fossil",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "2c3a4703-fb4e-5333-b38d-ed5c4e05f304"},
+      "expect": {"row_count": 1, "target_substance_id": "fo-130030e87e592b4c"},
+      "comment": "14 exchanges of 5,635, on one flow id distinct from `Carbon dioxide, fossil`, always an emission to air. Where real mass sits behind it, it is provably fossil, and BAFU's own published EF 3.1 result puts the mass in `Climate change (fossil)` at CF 1 — so mapping it to an uncharacterised substance would break their quicklime-with-CCS dataset by a factor of four rather than being neutral. Any residual doubt is score-neutral at the aggregate: EF gives fossil and land-use-change carbon dioxide the same +1 under `Climate change`."
+    },
+    {
+      "id": "0669-bafu-unqualified-carbon-dioxide-is-fossil-unspecified",
+      "issue": 669,
+      "title": "The same for the row carrying thirteen of the fourteen exchanges",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "8658d26b-02b4-5e39-b010-15ed7c1eb2ed"},
+      "expect": {"row_count": 1, "target_substance_id": "fo-130030e87e592b4c"},
+      "comment": "Air / unspecified, and the bulk of the population. Stated separately from its `low. pop.` sibling because the two are curated one row at a time and a single claim covering both would pass while one of them regressed."
+    },
+    {
+      "id": "0669-nothing-is-published-as-carbon-dioxide-of-unstated-origin",
+      "issue": 669,
+      "title": "No source row in any list reaches unqualified carbon dioxide",
+      "subject": {"kind": "substance", "id": "fo-82a29244dccbaefc"},
+      "expect": {"exists": true, "flow_count": 7},
+      "comment": "The whole family's shape in one claim. Seven flows, all of them EF's own — three soil and four water — and the three this project had minted for source rows are gone with the rows that made them. The substance survives because EF ships it; what it stops being is a bucket this list fills. It is characterised by nobody, which is the right answer for carbon dioxide that declines to say where its carbon came from.\n\nUnmet on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`): nine flows, the two extra minted in air by AGRIBALYSE's plain `Carbon dioxide` rows (#194). Pending until that is ruled.",
+      "pending": true
+    }
+  ]
+}

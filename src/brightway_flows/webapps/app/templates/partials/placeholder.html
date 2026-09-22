@@ -1,0 +1,23 @@
+{#
+  The one place an undecided fact reaches a page.
+
+  `plans/public-site.md` §0's first rule: nothing writes a version, a licence
+  or an address into a template by hand.  A page calls this with the value
+  from `publication.py` and the text to show while that value is still
+  `None` -- an amber dashed chip, so a value nobody has typed in yet reads as
+  "not decided" rather than as an empty space a reader has to notice on their
+  own.
+
+  *label* is shown inside the chip's brackets exactly as given: usually the
+  fact's name in capitals ("DATA LICENCE"), but a shape that reads better
+  than a name is fine too -- the version chip in the masthead passes
+  "v1.0.0" rather than "VERSION", because a reader recognises a version
+  number's shape faster than the word.
+#}
+{% macro placeholder(value, label) %}
+{%- if value -%}
+{{ value }}
+{%- else -%}
+<span class="placeholder" title="Not yet decided">[{{ label }}]</span>
+{%- endif -%}
+{% endmacro %}

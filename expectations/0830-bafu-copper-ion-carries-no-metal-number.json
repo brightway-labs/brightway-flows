@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "BAFU 2026 v1 ships `Copper ion` on three rows. The two numberless ones -- air `unspecified` and water `unspecified` -- land by name on `Copper, Ion`, the ion of unstated charge that ecoinvent's fourteen `Copper ion` rows also reach. The third, air `high. pop.`, carries 7440-50-8, copper the metal; a stated number outranks a name, so on the 2026-08-29 build of `54b0f9d` it landed on `Copper` beside BAFU's own plain `Copper` row in the same compartment. One BAFU name, two substances, and the row most explicit about being an ion was the one published as the metal.\n\nBAFU's archive writes the metal's number on all 38 exchanges of that row and no number on the eleven exchanges of the other two, so this is a consistent statement on one row rather than a stray exchange (#168's shape), and it is corrected the way `Nitrogen, organic bound` was: the number is removed in `bafu-2026-v1-manual-fixes.json`, and the row falls to the name its siblings already land on. Not replaced with a charged ion's number, because `Copper ion` states no charge and ecoinvent deleted the number from the same spelling on purpose. See #183.",
+  "expectations": [
+    {
+      "id": "0830-bafu-copper-ion-in-populated-air-is-the-ion",
+      "issue": 830,
+      "title": "BAFU's Copper ion in high-population air lands with its two numberless siblings",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "32892430-739d-5fde-9a96-441ecc8153f0"},
+      "expect": {"outcome": "algorithm", "basis": "label", "target_name": "Copper, Ion", "target_substance_id": "fo-436304b385710fab"},
+      "comment": "The row the issue names. Before: `algorithm` on `basis: cas`, 7440-50-8, landing on `Copper`. Claiming `basis: label` says the number is gone and the name decided -- a later change that reached the ion by reinterpreting the number would fail here. A first draft claimed `label+preferred-name`, the basis its two siblings record; measured on the build of 2026-08-30 at 53c2165 the row lands on plain `label`, because by the time BAFU is merged `Copper Ion` is already an alternative label on the substance ecoinvent's rows minted, so the row's own name hits directly and the preferred-name step is never needed. Same substance, same flow, one step shorter."
+    },
+    {
+      "id": "0830-bafu-copper-ion-is-one-substance",
+      "issue": 830,
+      "title": "BAFU's three Copper ion rows reach one substance",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Copper ion"},
+      "expect": {"row_count": 3, "same_substance": true, "target_substance_id": "fo-436304b385710fab"},
+      "comment": "The claim that matters: one BAFU name reaching one substance, in three compartments. Two of the three held before; the third is what this file is about."
+    },
+    {
+      "id": "0830-bafu-plain-copper-stays-the-metal",
+      "issue": 830,
+      "title": "BAFU's plain Copper row in the same compartment still reaches the metal",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "275c37d7-dcb8-538a-899c-6c30dfebc6cc"},
+      "expect": {"outcome": "algorithm", "basis": "cas", "target_cas": "7440-50-8", "target_name": "Copper"},
+      "comment": "The leave-alone half. BAFU's `Copper` in `emissions to air / high. pop.` carries 7440-50-8 and means the metal -- 484 of its 1,024 exchanges write the number and the rest write nothing -- and the fix is keyed on the `Copper ion` row's uuid, so this one cannot move. Here so that a fix later loosened to the name would fail."
+    }
+  ]
+}

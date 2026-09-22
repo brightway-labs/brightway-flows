@@ -1,0 +1,439 @@
+{
+  "schema_version": 1,
+  "source_version": "3.2",
+  "description": "Nothing to add: AGRIBALYSE is a process export, so its flows are the rows its processes exchange and there is no second file shipping rows the adapter cannot see. What this file holds is the refusal of one whole compartment: the 43 `Final waste flows` rows, extracted like every other compartment and refused here on the record (#189), so that a consumer counting ADEME's rows against the associations sees a decision rather than an oversight -- the #115 lesson. `excluded_rows_are_in_the_fetch` is set for Stepwise's reason: the fetch produces these rows on every run, and their removal at load is the ordinary path, not news.",
+  "flows": [],
+  "excluded_rows_are_in_the_fetch": true,
+  "excluded": [
+    {
+      "uuid": "555d7dc9-58d4-585a-a65e-0ec7c61d6d62",
+      "name": "Aluminium waste",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "28bad38e-9d07-582e-ada4-ed1515e605ef",
+      "name": "Bauxite residue, from aluminium production",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "02d54e3d-94b8-5a1c-9e4a-782c7fc6f10c",
+      "name": "Carcass meal",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "c27c54ec-1829-5cfb-ac1a-6912a72fc329",
+      "name": "Cathode iron ingots waste",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "bd5eeec7-75d6-585d-88cf-1a06f82dbd33",
+      "name": "Cathode loss",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "c8de77c8-746b-5250-8627-becc72fda5d6",
+      "name": "Chemical waste, inert",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "33078ca7-8cab-5187-92eb-63a353b10702",
+      "name": "Chemical waste, unspecified",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "4aef410a-8443-50a2-9455-01923b8c6b2c",
+      "name": "Coal ash",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "6410b8f8-b73c-50a8-a103-ee492edd4c9e",
+      "name": "Coal tailings",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "04077deb-3483-55e3-9b8c-e19cb5582a35",
+      "name": "Demolition waste, unspecified",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "5d2b494b-d889-5258-8910-22b5ecf019ff",
+      "name": "Dross",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "a94dae5c-a269-5dbf-abd8-359fe380069c",
+      "name": "Dross for recycling",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "e3d32aa5-c523-551f-b45e-049b989e8557",
+      "name": "Dust, unspecified",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "bf4627da-07c7-53c9-b6a4-6e3ef909cbd3",
+      "name": "Jarosite",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "c6bafa60-e59d-5a02-bd38-186c628560a3",
+      "name": "Mineral waste",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "daaf4057-6438-5fd9-8397-c23b59067880",
+      "name": "Mineral waste, from mining",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "52937684-bf25-57c6-aab5-d3a1820c28e0",
+      "name": "Municipal waste, unspecified",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "d6f07d22-579a-5179-b7d1-1325103c702e",
+      "name": "Oil waste",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "9b8e42cd-a602-57d2-881e-9dbe0c123f99",
+      "name": "Organic carbon, placed in landfill",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "07ea363c-8711-551f-babb-86ed7f5a872e",
+      "name": "Packaging waste, metal",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "d7e4d906-4357-58ae-ac0b-a5f04d0b2ffe",
+      "name": "Packaging waste, paper and board",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "ef3c7a5f-6eed-5b86-9303-8f285f2c930a",
+      "name": "Packaging waste, plastic",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "6f26e1cb-0c56-5080-9820-9b1d3879ba50",
+      "name": "Packaging waste, wood",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "9e8fa1f5-cd16-5d56-a267-167f94db50bc",
+      "name": "Plastic waste",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "9c6b2a5e-57ab-5930-bb2f-af9661c5716d",
+      "name": "Production waste, not inert",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "4784088c-a61c-5de2-8025-886c9705d5de",
+      "name": "Refractory",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "3ca304a5-2940-5816-9299-71227a978fe5",
+      "name": "Slags",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "6e00a652-fdae-555e-aa2d-16ce5c35287c",
+      "name": "Slags and ashes",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "b8a4b371-b0b7-57b8-8ea9-076c4a83002d",
+      "name": "Spoil, unspecified",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "c89d6007-c283-5ab4-a511-fd0e83bee68c",
+      "name": "Tailings, unspecified",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "ade4db41-a761-59a1-b20a-e6d3a6f6c8a5",
+      "name": "Waste in bioactive landfill",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "466c4845-37df-592a-b6dc-b2aa04f7932b",
+      "name": "Waste in incineration",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "0eae39b1-31c4-5da1-93b7-eb9d2c3b264a",
+      "name": "Waste in inert landfill",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "e4590255-4973-5c5d-a161-17cb4838efe0",
+      "name": "Waste mass, total, placed in landfill",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "c3e3a097-83f0-5e4f-a1af-5ca7e92e02fc",
+      "name": "Waste, final, inert",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "ee19960d-2fb1-5cd1-9b8f-b41d195e322f",
+      "name": "Waste, industrial",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "386103d0-b903-5c5f-8d7a-8d2cbda1fc90",
+      "name": "Waste, inorganic",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "22fa9c22-adb7-5efc-a971-c0fca2f76c61",
+      "name": "Waste, nuclear, high active/m3",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "m3",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "b3d8b50e-8c07-5dac-b336-6e16ba36166f",
+      "name": "Waste, nuclear, low and medium active/m3",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "m3",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "715c6828-6d62-551c-8877-e24dd7c2c2fc",
+      "name": "Waste, organic",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "27b89f41-b402-5319-8014-d32bab90035b",
+      "name": "Waste, toxic",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "750e32ed-5627-54e5-bd56-705ff3930360",
+      "name": "Zinc slag, unspecified",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    },
+    {
+      "uuid": "f641494c-4e09-5ef9-a194-70e82cd5953b",
+      "name": "Zinc waste",
+      "context": [
+        "Final waste flows"
+      ],
+      "unit": "kg",
+      "reason": "A SimaPro `Final waste flows` row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus context vocabulary has no waste compartment for it to land in (EF 3.1, BAFU, Stepwise and ecoinvent's biosphere ship none). The 43 rows of the compartment are refused together; see #189 for the decision and the two alternatives it weighed.",
+      "comment": "One of the 43 `Final waste flows` rows refused together under #189, option 1 (refuse and record). Enumerated from AGB32_final.CSV (SimaPro 9.6.0.1 export, 20,440 processes) on 2026-09-01: 43 distinct flows over 4,640 exchange rows, every one with a trailing substance block, 41 in kilograms and the two nuclear-waste rows in cubic metres, none carrying a registry number, none ever minted a consensus flow (verified against the first five-list build, b0b8d76). The uuid is the adapter's own derivation over (name, compartment, subcompartment, unit), so the record names exactly the row the fetch produces."
+    }
+  ]
+}

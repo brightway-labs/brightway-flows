@@ -1,0 +1,164 @@
+name: A row reaches the wrong substance
+description: A row from a source list is published as the wrong substance, as several, or as none at all.
+labels: ["matching"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when the substance is **right in your list and wrong in ours** — a
+        pesticide published as a generic bucket, a class of chemicals published as one of
+        its members, a row that minted a substance of its own instead of joining the one
+        it belongs to.
+
+        If the row reaches the right substance and the published *name* or *registry
+        number* is wrong, that is [a flow is not that
+        chemical](https://github.com/brightway-labs/brightway-flows/issues/new?template=wrong-identity.yml)
+        instead.
+
+        **Write the title so it means something to somebody who has not read the issue.**
+        Name the substance, the list and the count: `Twelve ecoinvent amine-oxide rows are
+        published as lauramine oxide`, not `A mapping is wrong`.
+
+  - type: input
+    id: published-flow
+    attributes:
+      label: What it is published as
+      description: The flow on the website that the row currently reaches — its UUID, or the page's address.
+      placeholder: 0a1b2c3d-… · Dodecyl(dimethyl)amine Oxide
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source-list
+    attributes:
+      label: Which source list the row is from
+      options:
+        - EF 3.1
+        - ecoinvent
+        - BAFU 2026 v1
+        - Stepwise 2006
+        - AGRIBALYSE 3.2
+        - GLAD's correspondence mapping
+        - GreenDelta's EF 3.1 implementation
+        - EXIOBASE
+        - A list of my own
+    validations:
+      required: true
+
+  - type: input
+    id: source-release
+    attributes:
+      label: Which release
+      description: >-
+        Required, and not a formality. A flow identifier can keep its name and change its
+        substance between two releases of the same list, so a claim about a UUID means
+        nothing without the release it was read in. See
+        [The identifier stayed and the substance changed](https://github.com/brightway-labs/brightway-flows/blob/main/docs/findings/identifier-reuse.md).
+      placeholder: "3.12"
+    validations:
+      required: true
+
+  - type: textarea
+    id: source-row
+    attributes:
+      label: The row as your list ships it
+      description: Copy it rather than describing it. Leave a field blank if the list ships it blank — a missing registry number is itself evidence.
+      value: |
+        uuid:
+        name:
+        CAS:
+        EC:
+        compartment:
+        unit:
+    validations:
+      required: true
+
+  - type: input
+    id: expected-target
+    attributes:
+      label: Which substance should it reach?
+      description: >-
+        The name, and the registry number if you have one. If the answer is *none of them —
+        this substance is not in the list*, write that.
+      placeholder: Amine oxides — no registry number; the class, not a member of it
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: witnesses
+    attributes:
+      label: What says so
+      description: >-
+        Every finding in this project is settled by one or more of these. Tick the ones you
+        are relying on, and say what each of them says in the box below.
+      options:
+        - label: The registry number on the row
+        - label: The synonyms the source list ships with the flow
+        - label: The characterisation factors on the flow
+        - label: A registry's structure or formula — Common Chemistry, ChEBI, PubChem
+        - label: Another source list's row for the same substance
+        - label: A later release of this same list, which changed or withdrew the field
+        - label: The vendor's own comment on the row
+
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: What each witness says
+      description: >-
+        This is the part no machine can supply, and the part the decision will be recorded
+        under. A one-line assertion with no evidence cannot be checked and will not be
+        acted on.
+      placeholder: >-
+        ecoinvent 3.9.1 renames this flow `Amine oxides` under the same identifier and
+        ships it with no registry number at all, and 3.10.1 onwards keep it that way — so
+        the list that published the number withdrew it.
+    validations:
+      required: true
+
+  - type: input
+    id: claim
+    attributes:
+      label: One sentence that should be true of the output
+      description: >-
+        Write it as a claim, in words somebody who has not opened the repository can follow.
+        If this is fixed, this sentence becomes an `expectations/` file and is graded
+        against every build from then on.
+      placeholder: ecoinvent's `Amine oxides` rows are published as the class and not as lauramine oxide
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: A proposed fix, if you have one
+      description: >-
+        **Optional.** Reporting a problem does not require solving it. If you do have the
+        answer, a match override is a row in the source list's
+        `src/brightway_flows/data/<list>-match-overrides.json`, and filling this in is
+        what lets a maintainer have CI build the list with your row applied and show you
+        every row that moved.
+      render: json
+      placeholder: |
+        {
+          "source_uuid": "b157329c-4179-5491-97c4-649900954ffa",
+          "decision": "decline",
+          "comment": "…"
+        }
+
+  - type: input
+    id: build
+    attributes:
+      label: Which build you were looking at
+      description: The version or revision at the foot of the page. Leave it blank if you are unsure.
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **What happens next.** A maintainer approves a CI run — runs are not automatic, so
+        there may be a wait. It measures this claim against the reference build and, if you
+        proposed a fix, builds the list with your row applied and diffs it against that
+        reference. The result is a workflow run with an artifact attached: every row that
+        moved, the grade for the claim above, and the build hashes. Nothing is written to
+        the repository until a pull request is merged.

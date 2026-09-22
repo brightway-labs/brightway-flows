@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "source_version": "2006-1.09",
+  "description": "Nothing to add: Stepwise 2006 is a SimaPro method file, so its flows are the rows its own factors characterise and there is no second file shipping rows the adapter does not read. What this file holds is the other half -- nine rows the list looked at and refused: six `Chlordane, gamma-` rows (#167) and three injury counts (#173).",
+  "flows": [],
+  "excluded_rows_are_in_the_fetch": true,
+  "excluded": [
+    {
+      "uuid": "540ddfe4-9f93-5af2-bbe7-c912be0cac60",
+      "name": "Chlordane, gamma-",
+      "context": ["Air", "(unspecified)"],
+      "unit": "kg",
+      "reason": "Gamma-chlordane is not a substance anybody inventories in its own right. In the environmental literature the name means trans-chlordane, which Stepwise 2006 ships as its own row, `Chlordane, trans-` (CAS 5103-74-2), in this same compartment and with the same characterisation factor. The registry number on this row, 5566-34-7, is not a chlordane at all: it belongs to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene (EC 226-938-2), a compound with two chlorines on one carbon where chlordane has one each on two, and no inventory reports it. Mapping the row onto trans-chlordane would state the same number twice in one compartment; publishing it under its own number would add a substance no inventory means and split chlordane a fourth way. So it is refused, and nothing is lost: every factor it carries is already published against `Chlordane, trans-`.",
+      "comment": "Measured 2026-08-29 against Stepwise2006_v1.09.csv and the build of d10ddf3 in this worktree. The file holds 84 chlordane factor rows: four names -- `Chlordane` (12789-03-6), `Chlordane, cis-` (5103-71-9), `Chlordane, gamma-` (5566-34-7) and `Chlordane, trans-` (5103-74-2) -- across 21 (category, compartment) groups in 4 of the method's 19 impact categories. In all 21 groups the four amounts are byte-identical, and there is no group where gamma appears and trans does not, so the gamma rows add no number the list would otherwise not have. Without this file the six rows are unmatched by registry number and mint a flow object of their own: run bd36e853 published them as fo-2247a69a283f2f72, `Chlordane, Gamma-`, six flows and no characterisation factors. That object exists in no released build -- Stepwise is registered on this branch and merged nowhere else -- so there is no consensus identifier to withdraw. Ruled in #167; the four names the list does keep are the subject of the renames in flow-object-overrides.json."
+    },
+    {
+      "uuid": "8e673c48-80f8-5aeb-9c19-ab7fd2895eb0",
+      "name": "Chlordane, gamma-",
+      "context": ["Soil", "(unspecified)"],
+      "unit": "kg",
+      "reason": "Gamma-chlordane is not a substance anybody inventories in its own right. In the environmental literature the name means trans-chlordane, which Stepwise 2006 ships as its own row, `Chlordane, trans-` (CAS 5103-74-2), in this same compartment and with the same characterisation factor. The registry number on this row, 5566-34-7, is not a chlordane at all: it belongs to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene (EC 226-938-2), a compound with two chlorines on one carbon where chlordane has one each on two, and no inventory reports it. Mapping the row onto trans-chlordane would state the same number twice in one compartment; publishing it under its own number would add a substance no inventory means and split chlordane a fourth way. So it is refused, and nothing is lost: every factor it carries is already published against `Chlordane, trans-`.",
+      "comment": "One of the six rows ruled on in #167; the evidence is recorded on the Air row above."
+    },
+    {
+      "uuid": "ee5fcddd-1668-5972-8618-16801d18a42f",
+      "name": "Chlordane, gamma-",
+      "context": ["Soil", "agricultural"],
+      "unit": "kg",
+      "reason": "Gamma-chlordane is not a substance anybody inventories in its own right. In the environmental literature the name means trans-chlordane, which Stepwise 2006 ships as its own row, `Chlordane, trans-` (CAS 5103-74-2), in this same compartment and with the same characterisation factor. The registry number on this row, 5566-34-7, is not a chlordane at all: it belongs to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene (EC 226-938-2), a compound with two chlorines on one carbon where chlordane has one each on two, and no inventory reports it. Mapping the row onto trans-chlordane would state the same number twice in one compartment; publishing it under its own number would add a substance no inventory means and split chlordane a fourth way. So it is refused, and nothing is lost: every factor it carries is already published against `Chlordane, trans-`.",
+      "comment": "One of the six rows ruled on in #167; the evidence is recorded on the Air row above."
+    },
+    {
+      "uuid": "b63cdc56-5210-5004-92a8-908a2d820dc1",
+      "name": "Chlordane, gamma-",
+      "context": ["Water", "(unspecified)"],
+      "unit": "kg",
+      "reason": "Gamma-chlordane is not a substance anybody inventories in its own right. In the environmental literature the name means trans-chlordane, which Stepwise 2006 ships as its own row, `Chlordane, trans-` (CAS 5103-74-2), in this same compartment and with the same characterisation factor. The registry number on this row, 5566-34-7, is not a chlordane at all: it belongs to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene (EC 226-938-2), a compound with two chlorines on one carbon where chlordane has one each on two, and no inventory reports it. Mapping the row onto trans-chlordane would state the same number twice in one compartment; publishing it under its own number would add a substance no inventory means and split chlordane a fourth way. So it is refused, and nothing is lost: every factor it carries is already published against `Chlordane, trans-`.",
+      "comment": "One of the six rows ruled on in #167; the evidence is recorded on the Air row above."
+    },
+    {
+      "uuid": "2e3042f5-4b3e-5876-b9d2-afa13b49ce43",
+      "name": "Chlordane, gamma-",
+      "context": ["Water", "groundwater"],
+      "unit": "kg",
+      "reason": "Gamma-chlordane is not a substance anybody inventories in its own right. In the environmental literature the name means trans-chlordane, which Stepwise 2006 ships as its own row, `Chlordane, trans-` (CAS 5103-74-2), in this same compartment and with the same characterisation factor. The registry number on this row, 5566-34-7, is not a chlordane at all: it belongs to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene (EC 226-938-2), a compound with two chlorines on one carbon where chlordane has one each on two, and no inventory reports it. Mapping the row onto trans-chlordane would state the same number twice in one compartment; publishing it under its own number would add a substance no inventory means and split chlordane a fourth way. So it is refused, and nothing is lost: every factor it carries is already published against `Chlordane, trans-`.",
+      "comment": "One of the six rows ruled on in #167; the evidence is recorded on the Air row above."
+    },
+    {
+      "uuid": "99439a29-84f6-5f55-a527-99fdd1740122",
+      "name": "Chlordane, gamma-",
+      "context": ["Water", "groundwater, long-term"],
+      "unit": "kg",
+      "reason": "Gamma-chlordane is not a substance anybody inventories in its own right. In the environmental literature the name means trans-chlordane, which Stepwise 2006 ships as its own row, `Chlordane, trans-` (CAS 5103-74-2), in this same compartment and with the same characterisation factor. The registry number on this row, 5566-34-7, is not a chlordane at all: it belongs to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene (EC 226-938-2), a compound with two chlorines on one carbon where chlordane has one each on two, and no inventory reports it. Mapping the row onto trans-chlordane would state the same number twice in one compartment; publishing it under its own number would add a substance no inventory means and split chlordane a fourth way. So it is refused, and nothing is lost: every factor it carries is already published against `Chlordane, trans-`.",
+      "comment": "One of the six rows ruled on in #167; the evidence is recorded on the Air row above."
+    },
+    {
+      "uuid": "2d507c7d-8784-5199-b3e5-272f7601c281",
+      "name": "Injuries, fatal",
+      "context": ["Social", "(unspecified)"],
+      "unit": "p",
+      "reason": "An injury is not an emission and not a resource. This row counts people hurt -- it is measured in persons, where every other row of every list this project merges is measured in a mass, a volume, an energy or an area-time -- and it is filed under a `Social` compartment that says nothing about the environment. Stepwise 2006 is an endpoint method and counting injuries is a reasonable thing for one to do; this list is a list of environmental flows, and an injury count published beside carbon dioxide and cadmium would say the two are the same kind of thing. So the row is refused, and nothing is lost that this list could have carried: the only factor Stepwise states for it belongs to `Injuries, road or work`, a category whose whole subject is the three rows refused here, and which now says plainly that it characterises nothing this list publishes.",
+      "comment": "Measured on the four-list build of 2026-08-29 (`20260829T1158418340740000`: ecoinvent 3.12, ecoinvent 3.8, BAFU 2026 v1 and Stepwise 2006). Stepwise ships three rows in `Social / (unspecified)`, all counted in persons -- `Injuries, fatal`, `Injuries, non-fatal, at work` and `Injuries, non-fatal, road` -- and no other row of the list is in that compartment. All three were unmatched, minted a flow of their own in `https://vocab.brightway.one/flow-contexts/soci` (`3ce6876f9dba7e2de3dbc742ebed4f1f5f14424c`, `248da71ef02eb2d8286c22f17068a3159ecc9033` and `c31cbbb8be9f3133861a3d5013f020aeaee116f9` in that order), and each carried one published factor under `Injuries, road or work`: 1.0, 0.00075 and 0.0078. Those three flows exist in no build of `main` -- the shared build of 505ba28 merges three lists and not Stepwise -- so there is no consensus identifier to withdraw. Refusing them takes the published Stepwise factor count from 9,624 to 9,621 and leaves `Injuries, road or work` with none, which is the honest answer for a category counting something this list does not carry. The context rule that put them in `soci` goes with them, as ecoinvent's did in #115: a mapping for a compartment no flow has claims a decision nobody makes. Ruled in #173; that nothing at all is published in `soci` is #115's standing claim, and this is the first row that had to be argued against it."
+    },
+    {
+      "uuid": "2162552b-abcd-50e9-9c1e-fe6d6ffb7459",
+      "name": "Injuries, non-fatal, at work",
+      "context": ["Social", "(unspecified)"],
+      "unit": "p",
+      "reason": "An injury is not an emission and not a resource. This row counts people hurt -- it is measured in persons, where every other row of every list this project merges is measured in a mass, a volume, an energy or an area-time -- and it is filed under a `Social` compartment that says nothing about the environment. Stepwise 2006 is an endpoint method and counting injuries is a reasonable thing for one to do; this list is a list of environmental flows, and an injury count published beside carbon dioxide and cadmium would say the two are the same kind of thing. So the row is refused, and nothing is lost that this list could have carried: the only factor Stepwise states for it belongs to `Injuries, road or work`, a category whose whole subject is the three rows refused here, and which now says plainly that it characterises nothing this list publishes.",
+      "comment": "One of the three injury rows ruled on in #173; the evidence is recorded on the `Injuries, fatal` row above."
+    },
+    {
+      "uuid": "5f177c64-720c-5230-b3a4-807633eb0a22",
+      "name": "Injuries, non-fatal, road",
+      "context": ["Social", "(unspecified)"],
+      "unit": "p",
+      "reason": "An injury is not an emission and not a resource. This row counts people hurt -- it is measured in persons, where every other row of every list this project merges is measured in a mass, a volume, an energy or an area-time -- and it is filed under a `Social` compartment that says nothing about the environment. Stepwise 2006 is an endpoint method and counting injuries is a reasonable thing for one to do; this list is a list of environmental flows, and an injury count published beside carbon dioxide and cadmium would say the two are the same kind of thing. So the row is refused, and nothing is lost that this list could have carried: the only factor Stepwise states for it belongs to `Injuries, road or work`, a category whose whole subject is the three rows refused here, and which now says plainly that it characterises nothing this list publishes.",
+      "comment": "One of the three injury rows ruled on in #173; the evidence is recorded on the `Injuries, fatal` row above."
+    }
+  ]
+}

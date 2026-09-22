@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "description": "The list takes ecoinvent's −1 for carbon entering a long-lived land carbon pool, as `derivation: ruled` naming the ecoinvent Centre. Eight factors: four soil compartments under `Climate change` and again under its land-use part. It is adopted rather than inherited, because EF's carbon model has no row for a removal into a pool — JRC130796 Table 3 is three origins by two directions and a removal is only expressible as a resource from air. It is ecoinvent's documented rule rather than a slip: their Table 4 maps the flow with the fossil factor and a negative sign, unconditionally, and their EF chapter says EF's carbon exchanges follow that section. Measured by `characterise` on the build below: published factors 323,195 → 323,203, `ruled` 24 → 32, and both rulings applied with none stale. See #139 §11 for the seven rules this ruling was written against.",
+  "expectations": [
+    {
+      "id": "0669-the-pool-credit-is-published-in-agricultural-soil",
+      "issue": 669,
+      "title": "Carbon into an agricultural soil pool is credited −1, on the record",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "ea393e84cefb468c6bcaaa28d4a039dfe0048764",
+        "category": "Climate change",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {"count": 1, "amount": "-1", "derivation": "ruled"},
+      "comment": "`ruled` and not `sole` is the whole claim. `sole` would say only one implementation spoke and this list carried the number through; `ruled` says a curator read the reasoning and took it, and points at the file where the reasoning lives. The distinction matters here more than anywhere else in the layer, because the number is ecoinvent's own rather than the method's."
+    },
+    {
+      "id": "0669-the-pool-credit-is-published-under-land-use",
+      "issue": 669,
+      "title": "The credit is filed under land use and land use change, not under biogenic",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "5463d357780187f1bbf93d59aeb8f4069cb3a1cd",
+        "category": "Climate change-Land use and land use change",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {"count": 1, "amount": "-1", "derivation": "ruled"},
+      "comment": "Silvicultural soil, a compartment EF 3.1 has no flow for at all, under the sub-category ecoinvent files both legs of its stock accounting in — and where EF files its own land-use pair. Publishing it under `Climate change-Biogenic` would restate the contradiction this whole change removes, since EF's biogenic carbon is neutral in both directions. Stated on the minted compartment rather than the agricultural one so that the two expectations do not test the same flow twice."
+    },
+    {
+      "id": "0669-ef-keeps-the-only-credit-its-own-model-states",
+      "issue": 669,
+      "title": "EF's land-use-change uptake from air is untouched",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "b3d7c693-6465-4aec-86cb-68b4e457fc98",
+        "category": "Climate change",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {"count": 1, "amount": "-1", "derivation": "sole"},
+      "comment": "The guard, and the reason the new substance had to exist. This is the single negative number in JRC130796 Table 3 — `carbon dioxide (land use change)` taken as a resource from air — and it is still `sole`, still the JRC's, still reached by no vendor row. Two −1s now exist in the carbon family and they are different claims by different publishers about different flows: if this one ever reads `ruled`, or the other ever reads `sole`, the two have been confused."
+    }
+  ]
+}

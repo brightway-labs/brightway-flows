@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "description": "Where a forestry or industrial soil emission is published must not depend on whether EF 3.1 happens to ship the substance. EF has no forestry soil compartment and folds industrial soil into non-agricultural soil, so the correspondence tables point ecoinvent's `soil / forestry` and `soil / industrial` rows at `Emissions to non-agricultural soil`. That is the nearest flow EF has and the right thing for a table to say; reading the compartment off it as well as the substance is what split the compartment. On the 2026-08-15 build (run 2b3cb84e8019440e9a0dffb35e08a319, merging ecoinvent 3.8, ecoinvent 3.12 and BAFU 2026-v1), 916 of ecoinvent's 993 `soil / forestry` rows came out as non-agricultural because a table covered them and 72 as silvicultural because none did, and 92 of its 96 `soil / industrial` rows were pulled off the compartment all 48 of BAFU's stayed on. Atrazine and pyrethrins are both sprayed on forest, both filed by ecoinvent in `soil / forestry`, and came out in different compartments. The table now decides the substance and the compartment stays the row's own. See #84.",
+  "expectations": [
+    {
+      "id": "0431-atrazine-on-forest-soil-is-published-on-forest-soil",
+      "issue": 431,
+      "title": "Atrazine sprayed on forest soil is published as an emission to forestry soil",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "context": [
+          "soil",
+          "forestry"
+        ],
+        "name": "Atrazine"
+      },
+      "expect": {
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-silv"
+      },
+      "comment": "The row that moves, and half of #84's worked example: ecoinvent 3.12 flow 8354bde6-ab9f-5c21-ad79-07dbab26cd22, `soil / forestry`, kg, CAS 1912-24-9. EF ships an atrazine flow in non-agricultural soil, the correspondence table named it, and the merge read the compartment off the target as well as the substance -- so ecoinvent said the herbicide went on forest soil and the list said it went on soil that is merely not farmland. On the 2026-08-15 build it landed on `Environmental -> Ground -> Non-agricultural` with 6 characterisation factors."
+    },
+    {
+      "id": "0431-pyrethrins-on-forest-soil-is-published-on-forest-soil",
+      "issue": 431,
+      "title": "Pyrethrins sprayed on forest soil is published in the same place as atrazine",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "context": [
+          "soil",
+          "forestry"
+        ],
+        "name": "Pyrethrins"
+      },
+      "expect": {
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-silv"
+      },
+      "comment": "The other half of the worked example, and the row that does not move: ecoinvent 3.12 flow 4e17d2aa-8e0c-5b49-9d62-5409d4012748, CAS 8003-34-7. Nothing about the two emissions differs -- both are insecticide or herbicide sprayed on forest, both filed by ecoinvent in `soil / forestry` -- and they came out in different compartments because EF happens to ship an atrazine flow in non-agricultural soil and no pyrethrins flow. Stated so that a change closing the split by moving pyrethrins to join atrazine would not pass."
+    },
+    {
+      "id": "0431-ecoinvent-industrial-soil-glyphosate-is-industrial",
+      "issue": 431,
+      "title": "Glyphosate spilled on industrial soil is published as an industrial emission, from either list",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "context": [
+          "soil",
+          "industrial"
+        ],
+        "name": "Glyphosate"
+      },
+      "expect": {
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-indu"
+      },
+      "comment": "The between-lists half of #84, on one substance both lists file in industrial soil. ecoinvent's rows in 3.8 and 3.12 are the same flow b4f9a201-2a20-4f41-a572-eabc98c75e1b, and both were published on `Ground -> Non-agricultural` with 4 factors while BAFU's industrial glyphosate sat on `Ground -> Industrial` -- the same emission from two lists in two places, with neither list having said anything wrong. Named rather than claimed of the whole compartment because a row may still be coarsened onto `Ground -> Unknown` where the substance has a flow there and none in industrial soil, which is a coarsening rather than a contradiction and is allowed on purpose."
+    },
+    {
+      "id": "0431-bafu-forestry-soil-stays-silvicultural",
+      "issue": 431,
+      "title": "Every BAFU emission to forestry soil is published as an emission to forestry soil",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "context": [
+          "emissions to soil",
+          "forestry"
+        ]
+      },
+      "expect": {
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-silv"
+      },
+      "comment": "BAFU's two rows -- `Oils, biogenic` and `Oils, unspecified` -- were already there, because BAFU has no correspondence table to pull them off it. Stated anyway: this decision is about the compartment across every list at once, and a change that made ecoinvent agree with BAFU by moving BAFU somewhere else would satisfy the two expectations above and nothing else."
+    },
+    {
+      "id": "0431-bafu-industrial-soil-stays-industrial",
+      "issue": 431,
+      "title": "Every BAFU emission to industrial soil is published as an industrial emission",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "context": [
+          "emissions to soil",
+          "industrial"
+        ]
+      },
+      "expect": {
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-indu"
+      },
+      "comment": "All 48 of BAFU's industrial rows stayed on the compartment they named while 92 of ecoinvent's 96 were pulled onto non-agricultural. This is the side that was already right, and the side ecoinvent's rows now join."
+    },
+    {
+      "id": "0431-industrial-soil-glyphosate-is-one-flow",
+      "issue": 431,
+      "title": "An industrial soil emission of glyphosate is one flow, whichever list it came from",
+      "subject": {
+        "kind": "flow",
+        "name": "Glyphosate",
+        "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-indu"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "Landing in the same compartment is what makes two lists meet; this is the check that they meet on one flow rather than minting a second beside it. It held before the change too -- BAFU created the flow and ecoinvent's rows were elsewhere -- and it is here as the invariant the fix must not break, because bringing a second list onto a compartment is exactly the move that produces a duplicate flow when the two lists resolve the substance differently."
+    },
+    {
+      "id": "0431-a-forest-soil-emission-carries-no-characterisation-factors",
+      "issue": 431,
+      "title": "An emission to forestry soil is characterised by this list, with the number the substance already carries in the compartment EF does have",
+      "subject": {
+        "kind": "flow",
+        "name": "Atrazine",
+        "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-silv"
+      },
+      "expect": {
+        "exists": true,
+        "characterised": false,
+        "jrc_factors": 0,
+        "ecoinvent_factors": 6,
+        "consensus_factors": 9
+      },
+      "comment": "Rewritten for the third time, and the previous version said what would cause it: \"if a ruling adopts them, `consensus_factors` becomes 6 and this expectation is rewritten again -- that is what the queue is for.\" No ruling did; the `restated` rule did, which is the same answer reached without a curator reading six identical questions.\n\nThe JRC still characterises no forestry compartment, because EF 3.1's flow list has none -- `jrc_factors` stays 0, and `characterised` stays false because that column is `elementary_flows.lcia_factor_count` and keeps the JRC's meaning. The ecoinvent Centre still states 6. What changed is that this list now publishes all six, as `derivation: restated`: every one of the six numbers is one this build already publishes for atrazine in non-agricultural soil, so ecoinvent is carrying EF's own factor into a compartment EF cannot express rather than proposing a number of its own. Nothing here is inherited: the amount published is ecoinvent's stated row, and a flow whose number nobody states publishes nothing still. Nine on 2026-09-01, not six: the three more are Stepwise 2006's, carried into silvicultural soil from Stepwise's unspecified soil by `data/context-carry-rules.json` -- the same convention for every method -- and `ecoinvent_factors` stays 6 because they are not ecoinvent's."
+    }
+  ]
+}

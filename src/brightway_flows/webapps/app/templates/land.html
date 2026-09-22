@@ -1,0 +1,266 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% import "partials/flow_object_views.html" as v %}
+{% set page_title = "Land" %}
+{% set active_section = "substances" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Land occupation and transformation</h1>
+  <p class="page__lede">
+    What the land is, how it is used, and which way it crossed the system
+    boundary — as fields on the flow object rather than as words inside its
+    name.
+  </p>
+</header>
+
+{{ v.views('land') }}
+
+<section class="section">
+  <div class="section__header"><h2>What a land flow says</h2></div>
+  <p class="section__note">
+    A land flow says five things. Until this taxonomy the list had somewhere to
+    put two of them.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">What a land flow says</th>
+          <th scope="col">For example</th>
+          <th scope="col">Where it lives</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>How much land, for how long</td>
+          <td>1 m²·a</td>
+          <td>the unit</td>
+        </tr>
+        <tr>
+          <td>Which side of the boundary</td>
+          <td>occupation, or transformation</td>
+          <td>the context</td>
+        </tr>
+        <tr>
+          <td>Which way the transformation runs</td>
+          <td><em>from</em> forest, or <em>to</em> forest</td>
+          <td>the <strong>direction</strong></td>
+        </tr>
+        <tr>
+          <td>What the land is</td>
+          <td>forest, cropland, seabed, urban</td>
+          <td>the <strong>cover</strong></td>
+        </tr>
+        <tr>
+          <td>How the land is used</td>
+          <td>irrigated, intensive, organic, clear-cut</td>
+          <td>fifteen <strong>qualifier</strong> axes</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="section__note">
+    The last three had nowhere to be, so they lived in a comma-separated flow
+    name — and a name is a string that three source lists spell three ways.
+    <code>arable, non-irrigated, intensive</code>,
+    <code>annual crop, non-irrigated, intensive</code> and BAFU’s spelling of
+    the second were three flow objects for one piece of land. Worse, a balanced
+    pair of factors — <em>from forest, primary</em> at −396.7 against
+    <em>to forest, primary</em> at +396.7 — was held apart by nothing but the
+    words <em>from</em> and <em>to</em>, in a field the deduplication does not
+    read.
+  </p>
+  <p class="section__note">
+    Now each is a field, and two names that decompose to the same fields are
+    the same class with no crosswalk row required. The direction being a field
+    is what keeps the balanced pair apart: they are different values, so they
+    mint different objects.
+  </p>
+  <div class="cards">
+    <div class="card">
+      <span class="card__label">Published land classes</span>
+      <span class="card__value">{{ overview.total | thousands }}</span>
+      <span class="card__note">reached by a source flow; the axes permit far more</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Covers in use</span>
+      <span class="card__value">{{ overview.covers | thousands }}</span>
+      <span class="card__note">what the land is, before anything about its use</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Land flows</span>
+      <span class="card__value">{{ overview.flows | thousands }}</span>
+      <span class="card__note">resolving to one of these classes</span>
+    </div>
+    {% for direction, count in overview.by_direction.items() %}
+    <div class="card">
+      <span class="card__label">{{ direction }}</span>
+      <span class="card__value">{{ count | thousands }}</span>
+      <span class="card__note">classes in this direction</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% if overview.unreadable %}
+  <div class="notice notice--warn">
+    <p>
+      {{ overview.unreadable | thousands }} land classes in this build name an
+      axis value this checkout does not declare. The database was written by a
+      build whose taxonomy has since changed; they are counted here rather than
+      dropped, because a page showing fewer classes would look like a smaller
+      taxonomy rather than an older one.
+    </p>
+  </div>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>The classes</h2></div>
+  <p class="section__note">
+    Every axis is an independent question about one piece of land, so the
+    filters are read together: <em>Cover: Forest</em> with
+    <em>Intensity: Intensive</em> is intensively managed forest, not everything
+    that is either. Only values this build reaches are offered — a dropdown
+    naming a regime no flow states would invite a filter that selects nothing
+    and look no different from one that is broken.
+  </p>
+
+  <form class="filters" method="get" action="{{ url_for('land.index') }}">
+    <div class="filters__selects">
+      {% for axis, label, _enum in axes %}
+      {% set options = overview.axis_options(axis) %}
+      {% if options %}
+      {{ t.select(axis, label, filters[axis], options) }}
+      {% endif %}
+      {% endfor %}
+      {{ t.reset('land.index') }}
+    </div>
+  </form>
+
+  {{ t.filter_chips(active_filters, 'land.index', filters) }}
+
+  {% if overview.rows %}
+  <p class="section__note">
+    {{ overview.rows | length | thousands }} of
+    {{ overview.total | thousands }} classes.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Class</th>
+          <th scope="col">Direction</th>
+          <th scope="col">Cover</th>
+          <th scope="col">Stated qualifiers</th>
+          <th scope="col">Reached by</th>
+          <th scope="col" class="num">Flows</th>
+          <th scope="col" class="num">CFs</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in overview.rows %}
+        <tr>
+          <td>
+            {# Indented by how many qualifiers the class states, which is its
+               depth in the generated hierarchy: dropping the most specific
+               qualifier gives the parent. #}
+            <span class="tree__indent" style="--depth: {{ row.depth }}"></span>
+            <a href="{{ url_for('substances.detail', flow_object_id=row.flow_object_id) }}">{{ row.label }}</a>
+            {% if row.deprecated_flows %}
+            <span class="tag tag--info">{{ row.deprecated_flows }} retired</span>
+            {% endif %}
+            <span class="mono muted term">{{ row.key }}</span>
+          </td>
+          <td>{{ row.direction.value }}</td>
+          <td>
+            <a href="{{ url_for('land.index', cover=row.cover.value) }}">{{ row.cover.value }}</a>
+          </td>
+          <td>
+            {% for axis, value in row.qualifiers.items() %}
+            <a class="chip" href="{{ url_for('land.index', **{axis: value.value}) }}">
+              <span class="chip__label">{{ axis | replace('_', ' ') }}</span>
+              <span class="chip__value">{{ value.value }}</span>
+            </a>
+            {% else %}
+            <span class="muted">—</span>
+            {% endfor %}
+          </td>
+          <td>{{ row.sources | join(", ") or "—" }}</td>
+          <td class="num">{{ row.linked_flows | thousands }}</td>
+          <td class="num">{{ row.lcia_factor_count | thousands }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  {{ t.nothing_matches("No published land class states all of those.") }}
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>Where the classes are anchored</h2></div>
+  <p class="section__note">
+    Nothing here is invented. Each axis <em>value</em> cites a published class
+    once — not each of the {{ overview.total | thousands }} classes that mention
+    it — and a class’s citations are computed from its fields, so two classes
+    that share a field share that field’s citation exactly and cannot drift
+    apart.
+  </p>
+  <p class="section__note">
+    Three authorities, split by what they can actually type.
+    <strong>ENVO</strong> types the terrestrial cover, because the whole built
+    environment is a single class in IUCN GET and the source lists characterise
+    a traffic area and a dump site differently. <strong>IUCN GET</strong> types
+    the aquatic cover, because ENVO’s terrestrial branch does not reach the sea
+    floor or a canal. <strong>AGROVOC</strong> types the regime — irrigated
+    against rainfed, intensive against organic, clear-felled against coppiced —
+    because neither of the other two says anything about how land is worked.
+    Which authority a cover cites follows its realm and is a build error rather
+    than a preference.
+  </p>
+  <p class="section__note">
+    <strong><code>exactMatch</code> is earned, not assumed.</strong> Most covers
+    are honestly a close or broad match, because our value is narrower or
+    coarser than the published class; most regimes are a related match, because
+    the AGROVOC concept is a <em>practice</em> and our field says the land is
+    under it. And where the hierarchy says one class sits under another, that
+    edge is generated by dropping a field — so the whole hierarchy is this
+    project’s, and no edge can be published as ENVO’s or GET’s that they do not
+    assert.
+  </p>
+  {% if overview.rows %}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Class</th>
+          <th scope="col">Cites</th>
+          <th scope="col">Authority</th>
+          <th scope="col">As</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in overview.rows[:40] %}
+        {% for anchor in row.anchor_rows %}
+        <tr>
+          <td>{% if loop.first %}{{ row.label }}{% endif %}</td>
+          <td><a class="mono" href="{{ anchor.iri }}" rel="noreferrer">{{ anchor.label }}</a></td>
+          <td>{{ anchor.authority.value }}</td>
+          <td class="mono muted">{{ anchor.predicate }}</td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if overview.rows | length > 40 %}
+  <p class="muted">
+    The first 40 of {{ overview.rows | length | thousands }} classes. Narrow the
+    filters above to see the rest — and each class’s own page lists its
+    citations in full.
+  </p>
+  {% endif %}
+  {% endif %}
+</section>
+{% endblock %}

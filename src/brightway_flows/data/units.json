@@ -1,0 +1,668 @@
+[
+  {
+    "iri": "https://vocab.brightway.one/units/unit/EUR",
+    "label": "Euro",
+    "definition": "THe currency of the European Union.",
+    "conversion_multiplier": 1.0,
+    "notation": "EUR",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/EUR",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Currency"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M3",
+    "label": "Cubic Metre",
+    "definition": "The SI unit of volume, equal to 1.0e6 cm3, 1000 liters, 35.3147 ft3, or 1.30795 yd3. A cubic meter holds about 264.17 U.S. liquid gallons or 219.99 British Imperial gallons.",
+    "conversion_multiplier": 1.0,
+    "notation": "m3",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M3",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Volume"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/HA",
+    "label": "Hectare",
+    "definition": "The customary metric unit of land area, equal to 100 ares. One hectare is a square hectometer, that is, the area of a square 100 meters on each side: exactly 10 000 square meters or approximately 107 639.1 square feet, 11 959.9 square yards, or 2.471 054 acres.",
+    "conversion_multiplier": 10000.0,
+    "notation": "ha",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M2",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Area"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-PER-MOL",
+    "label": "Kilogram per Mole",
+    "definition": "The unit $\\textit{}$, symbol $kg/mol$, is the base SI unit for molar mass.\n  In chemistry, the molar mass $M$ is defined as the mass of a given substance (chemical element or chemical compound) divided by its amount of substance. \n  It is a physical property of a given substance.  \n  However, for historical reasons, molar masses are almost always expressed in $g/mol$. \n  As an example, the molar mass of water is approximately: $18.01528(33) \\; g/mol$.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg/mol",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-PER-MOL",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MolarMass"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/GM-PER-MOL",
+    "label": "Gram per Mole",
+    "definition": "0.01-fold of the SI base unit kilogram divided by the SI base unit mol",
+    "conversion_multiplier": 0.001,
+    "notation": "g/mol",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-PER-MOL",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MolarMass"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M2",
+    "label": "Square Metre",
+    "definition": "The S I unit of area is the square metre.",
+    "conversion_multiplier": 1.0,
+    "notation": "m2",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M2",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Area"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/J-PER-KiloGM",
+    "label": "Joule per Kilogram",
+    "definition": "A $\\textit{Joule Per Kilogram}$, ($J/kg$), is a unit in the category of total energy per unit mass, commonly known as specific enthalpy. \n  It is also known as $\\textit{joules per kilogram}$.  \n  The unit has a dimension of $L2T^{-2}$ where $L$ is length, and $T$ is time. \n  This unit is the standard SI unit in this category.",
+    "conversion_multiplier": 1.0,
+    "notation": "J/kg",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/J-PER-KiloGM",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/SpecificEnergy"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/MegaJ-PER-KiloGM",
+    "label": "Megajoule per Kilogram",
+    "definition": "1,000,000-fold of the derived SI unit joule divided by the SI base unit kilogram",
+    "conversion_multiplier": 1000000.0,
+    "notation": "MJ/kg",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/J-PER-KiloGM",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/SpecificEnergy"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-PER-L",
+    "label": "Kilogram per Litre",
+    "definition": "SI base unit kilogram divided by the unit litre",
+    "conversion_multiplier": 1000.0,
+    "notation": "kg/l",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-PER-L",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Density"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-PER-KiloGM",
+    "label": "Kilogram per Kilogram",
+    "definition": "SI base unit kilogram divided by the SI base unit kilogram",
+    "conversion_multiplier": 1.0,
+    "notation": "kg/kg",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-PER-KiloGM",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassRatio"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-PER-M3",
+    "label": "Kilogram per Cubic Metre",
+    "definition": "Kilogram per cubic metre is an SI derived unit of density, defined by mass in kilograms divided by volume in cubic metres. The official SI symbolic abbreviation is $kg \\cdot m^{-3}$, or equivalently either $kg/m^3$.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg/m3",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-PER-M3",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassConcentration"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/YR",
+    "label": "Year",
+    "definition": "A year is any of the various periods equated with one passage of Earth about the Sun, and hence of roughly 365 days. The familiar calendar has a mixture of 365- and 366-day years, reflecting the fact that the time for one complete passage takes about 365¼ days; the precise value for this figure depends on the manner of defining the year.",
+    "conversion_multiplier": 31557600.0,
+    "notation": "yr",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/SEC",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Time"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/HR",
+    "label": "Hour",
+    "definition": "The hour (common symbol: h or h) is a unit of measurement of time. In modern usage, an hour comprises 60 minutes, or 3,600 seconds. It is approximately 1/24 of a mean solar day. An hour in the Universal Coordinated Time (UTC) time standard can include a negative or positive leap second, and may therefore have a duration of 3,599 or 3,601 seconds for adjustment purposes. Although it is not a standard defined by the International System of Units, the hour is a unit accepted for use with SI, represented by the symbol h.",
+    "conversion_multiplier": 3600.0,
+    "notation": "hr",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/SEC",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Time"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/SEC",
+    "label": "Second",
+    "definition": "The $Second$ (symbol: $s$) is the base unit of time in the International System of Units (SI) and is also a unit of time in other systems of measurement. Between the years1000 (when al-Biruni used seconds) and 1960 the second was defined as $1/86400$ of a mean solar day (that definition still applies in some astronomical and legal contexts). Between 1960 and 1967, it was defined in terms of the period of the Earth's orbit around the Sun in 1900, but it is now defined more precisely in atomic terms.\nUnder the International System of Units (via the International Committee for Weights and Measures, or CIPM), since 1967 the second has been defined as the duration of ${9192631770}$ periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of the caesium 133 atom.In 1997 CIPM added that the periods would be defined for a caesium atom at rest, and approaching the theoretical temperature of absolute zero, and in 1999, it included corrections from ambient radiation.",
+    "conversion_multiplier": 1.0,
+    "notation": "s",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/SEC",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Time"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM",
+    "label": "Kilogram",
+    "definition": "The kilogram or kilogramme (SI symbol: kg), also known as the kilo, is the base unit of mass in the International System of Units and is defined as being equal to the mass of the International Prototype Kilogram (IPK), which is almost exactly equal to the mass of one liter of water. The avoirdupois (or international) pound, used in both the Imperial system and U.S. customary units, is defined as exactly 0.45359237 kg, making one kilogram approximately equal to 2.2046 avoirdupois pounds.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Mass"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/GM",
+    "label": "Gram",
+    "definition": "One thousandth of a kilogram. The mass base of this file is the kilogram, so the gram is a scale of it: Stepwise 2006 states 263 of its human-toxicity and ecotoxicity factors per gram where the flow they are about is inventoried in kilograms.",
+    "conversion_multiplier": 0.001,
+    "notation": "g",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Mass"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-DAY",
+    "conversion_multiplier": 86400.0,
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-SEC",
+    "definition": "Kilogram over one day, used for example in storage",
+    "notation": "kg.d",
+    "label": "Kilogram day",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassTime"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-SEC",
+    "conversion_multiplier": 1.0,
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassTime",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-SEC",
+    "definition": "Kilogram over one second, used for example in storage",
+    "notation": "kg.s",
+    "label": "Kilogram second"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/L",
+    "label": "Litre",
+    "definition": "The $litre$ (American spelling: $\\textit{liter}$; SI symbol $l$ or $L$) is a non-SI metric system unit of volume equal to $1 \\textit{cubic decimetre}$ ($dm^3$), 1,000 cubic centimetres ($cm^3$) or $1/1000 \\textit{cubic metre}$. If the lower case \"L\" is used as the symbol, it is sometimes rendered as a cursive \"l\" to help distinguish it from the capital \"I\", although this usage has no official approval by any international bureau.",
+    "conversion_multiplier": 0.001,
+    "notation": "l",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M3",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Volume"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/MegaJ",
+    "label": "Megajoule",
+    "definition": "1,000,000-fold of the derived unit joule",
+    "conversion_multiplier": 1000000.0,
+    "notation": "MJ",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/J",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/J",
+    "label": "Joule",
+    "definition": "$\\textit{Joule}$ is the SI unit of work or energy, defined to be the work done by a force of one newton acting to move an object through a distance of one meter in the direction in which the force is applied. \n  Equivalently, since kinetic energy is one half the mass times the square of the velocity, one joule is the kinetic energy of a mass of two kilograms moving at a velocity of $1 m/s$.",
+    "conversion_multiplier": 1.0,
+    "notation": "J",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/J",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/BQ",
+    "label": "Becquerel",
+    "definition": "The $\\textit{Becquerel}$ is the SI derived unit of activity, usually meaning radioactivity.\n  Radioactivity is caused when atoms disintegrate, ejecting energetic particles. \n  One becquerel is the radiation caused by one disintegration per second; \n  this is equivalent to about $27.0270 \\text{picocuries (pCi)}$. \n  The unit is named for a French physicist, Antoine-Henri Becquerel (1852-1908), \n  the discoverer of radioactivity. \n  Note: both the becquerel and the hertz are basically defined as one event per second, \n  yet they measure different things. \n  The hertz is used to measure the rates of events that happen periodically in a fixed and definite cycle. \n  The becquerel is used to measure the rates of events that happen sporadically and unpredictably, \n  not in a definite cycle.",
+    "conversion_multiplier": 1.0,
+    "notation": "Bq",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/BQ",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Activity"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloBQ",
+    "label": "Kilobecquerel",
+    "definition": "1 000-fold of the SI derived unit becquerel",
+    "conversion_multiplier": 1000.0,
+    "notation": "kBq",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/BQ",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Activity"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/FRACTION",
+    "label": "Fraction",
+    "definition": "Fraction is a unit for 'Dimensionless Ratio' expressed as the value of the ratio itself.",
+    "conversion_multiplier": 1.0,
+    "notation": "/",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/FRACTION",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/DimensionlessRatio"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/NUM",
+    "label": "Number",
+    "definition": "\"Number\" is a unit for  'Dimensionless' expressed as (\\#$.",
+    "conversion_multiplier": 1.0,
+    "notation": "#",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/NUM",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/StoichiometricNumber"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloM",
+    "label": "Kilometre",
+    "definition": "A common metric unit of length or distance. One kilometer equals exactly 1000 meters, about 0.621 371 19 mile, 1093.6133 yards, or 3280.8399 feet. Oddly, higher multiples of the meter are rarely used; even the distances to the farthest galaxies are usually measured in kilometers.",
+    "conversion_multiplier": 1000.0,
+    "notation": "km",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Length"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M",
+    "label": "Metre",
+    "definition": "The metric and SI base unit of distance.  The 17th General Conference on Weights and Measures in 1983 defined the meter as that distance that makes the speed of light in a vacuum equal to exactly 299 792 458 meters per second. The speed of light in a vacuum, $c$, is one of the fundamental constants of nature. The meter is equal to approximately 1.093 613 3 yards, 3.280 840 feet, or 39.370 079 inches.",
+    "conversion_multiplier": 1.0,
+    "notation": "m",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Length"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloW-HR",
+    "label": "Kilowatt Hour",
+    "definition": "The kilowatt hour, or kilowatt-hour, (symbol $kW \\cdot h$, $kW h$ or $kWh$) is a unit of energy equal to 1000 watt hours or 3.6 megajoules. For constant power, energy in watt hours is the product of power in watts and time in hours. The kilowatt hour is most commonly known as a billing unit for energy delivered to consumers by electric utilities.",
+    "conversion_multiplier": 3600000.0,
+    "notation": "kwh",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/J",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloM-TONNE",
+    "label": "Kilometre Kilogram",
+    "conversion_multiplier": 1000000.0,
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M-KiloGM",
+    "definition": "One metric tonne carried over a distance of one kilometer",
+    "notation": "t.km",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/LengthMass"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M-KiloGM",
+    "label": "Metre Kilogram",
+    "definition": "product of SI base units metre and kilogram given as dimensional product dim Q = L**$a} M**$b} T**$g} I**$d} $TH**$e} N**$z} J**$i}",
+    "conversion_multiplier": 1.0,
+    "notation": "m.kg",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M-KiloGM",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/LengthMass"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M2-YR",
+    "label": "Square meter-year",
+    "conversion_multiplier": 31557600.0,
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M2-SEC",
+    "definition": "Square meter-year",
+    "notation": "m2.a",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/AreaTime"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M2-SEC",
+    "label": "Square meter-second",
+    "conversion_multiplier": 1.0,
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/AreaTime",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M2-SEC",
+    "definition": "Square meter-second",
+    "notation": "m2.s"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M-YR",
+    "label": "Metre-year",
+    "conversion_multiplier": 31557600.0,
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M-SEC",
+    "definition": "Meter over one year",
+    "notation": "m.a",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/LengthTime"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/MOL",
+    "label": "Mole",
+    "definition": "The $\\textit{mole}$ is a unit of measurement used in chemistry to express amounts of a chemical substance. \n  The official definition, adopted as part of the SI system in 1971, is that one mole of a substance contains just as many elementary entities (atoms, molecules, ions, or other kinds of particles) as there are atoms in 12 grams of carbon-12 (carbon-12 is the most common atomic form of carbon, consisting of atoms having 6 protons and 6 neutrons).\n  This corresponds to a value of $6.02214179(30) \\times 10^{23}$ elementary entities of the substance. \n  It is one of the base units in the International System of Units, and has the unit symbol $mol$. \n  A Mole is the SI base unit of the amount of a substance (as distinct from its mass or weight). \n  Moles measure the actual number of atoms or molecules in an object. \n  An earlier name is gram molecular weight, because one mole of a chemical compound is the same number of grams as the molecular weight of a molecule of that compound measured in atomic mass units.",
+    "conversion_multiplier": 1.0,
+    "notation": "mole",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/MOL",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/AmountOfSubstance"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/SCM_1ATM_15DEG_C_ISO",
+    "label": "Standard cubic metre (1 ATM 15°)",
+    "conversion_multiplier": 42.38,
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/MOL",
+    "definition": "A standard cubic metre as defined by ISO 91:2017, generally applicable within the oil and gas sectors. The reference conditions for an ISO standard cubic metre are 15 degrees Celsius at 1 standard atmosphere (atm), equivalent to 101.325 kilopascals (kPa) of pressure following ISO 2533:1975.",
+    "notation": "sm3",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/AmountOfSubstance"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloM-YR",
+    "label": "Kilometre-year",
+    "conversion_multiplier": 31557600000.0,
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M-SEC",
+    "definition": "Kilometer over one year",
+    "notation": "km.a",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/LengthTime"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M-SEC",
+    "label": "Meter-second",
+    "conversion_multiplier": 1.0,
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/LengthTime",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M-SEC",
+    "definition": "Meter over one second",
+    "notation": "m.s"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/PERSON-KiloM",
+    "label": "Person-Kilometer",
+    "conversion_multiplier": 1000.0,
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/PERSON-M",
+    "definition": "Transport of one person over one kilometer. Does not depend on mass of person or duration of transport.",
+    "notation": "p.km",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/PassengerTransport"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M3-SEC",
+    "conversion_multiplier": 1.0,
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/VolumeTime",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M3-SEC",
+    "definition": "One cubic meter over one second",
+    "label": "Cubic meter second",
+    "notation": "m3.s"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M3-YR",
+    "conversion_multiplier": 31557600.0,
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M3-SEC",
+    "definition": "One cubic meter over one year",
+    "label": "Cubic meter year",
+    "notation": "m3.a",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/VolumeTime"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/PERSON-M",
+    "label": "Person-Meter",
+    "conversion_multiplier": 1.0,
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/PassengerTransport",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/PERSON-M",
+    "definition": "Transport of one person over one meter. Does not depend on mass of person or duration of transport.",
+    "notation": "p.m"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/MOL-H+eq",
+    "label": "Mole H+-eq.",
+    "definition": "An amount of substance equivalent to the acidifcation potential of one mole of protons.",
+    "conversion_multiplier": 1.0,
+    "notation": "mole H+eq.",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/MOL-H+eq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/AmountOfProtons",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-CO2eq",
+    "label": "Kilogram CO2-eq.",
+    "definition": "A mass of substance with a global warming potential equivalent to one kilogram of carbon dioxide.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg CO2eq.",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-CO2eq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassCO2Equivalent",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-Peq",
+    "label": "Kilogram P-eq.",
+    "definition": "A mass of substance with a freshwater eutrophication potential equivalent to one kilogram of phosphorus.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg Peq.",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-Peq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassPhosphorusEquivalent",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/MOL-Neq",
+    "label": "Mole N-eq.",
+    "definition": "An amount of substance with a terrestrial eutrophication potential equivalent to one mole of nitrogen.",
+    "conversion_multiplier": 1.0,
+    "notation": "mole Neq.",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/MOL-Neq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/AmountOfNitrogen",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-Neq",
+    "label": "Kilogram N-eq.",
+    "definition": "A mass of substance with a marine eutrophication potential equivalent to one kilogram of nitrogen.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg Neq.",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-Neq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassNitrogenEquivalent",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/CTUH",
+    "label": "Comparative Toxic Unit human health",
+    "definition": "Comparative Toxic Unit (CTU) is a standardized metric used to quantify the potential toxic impacts of chemical emissions on humans. It measures damage per kilogram of substance emitted.",
+    "conversion_multiplier": 1.0,
+    "notation": "CTUh",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/CTUH",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/ComparativeToxicityHumans",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/CTUE",
+    "label": "Comparative Toxic Unit freshwater ecosystems",
+    "definition": "Comparative Toxic Unit (CTU) is a standardized metric used to quantify the potential toxic impacts of chemical emissions on freshwater ecosystems. It measures damage per kilogram of substance emitted.",
+    "conversion_multiplier": 1.0,
+    "notation": "CTUe",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/CTUE",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/ComparativeToxicityEcosystems",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloBQ-U235eq",
+    "label": "Kilobecquerel U235-eq.",
+    "definition": "A unit which measures the impact of ionizing radioactivity relative to the damage from one kilobecquerel of Uranium 235.",
+    "conversion_multiplier": 1.0,
+    "notation": "kBq-U235eq.",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloBQ-U235eq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/RadioactivityImpactEquivalent",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/SQI",
+    "label": "Soil Quality Index",
+    "definition": "A dimensionless index which measures soil quality, usually normalized to have values between zero and one.",
+    "conversion_multiplier": 1.0,
+    "notation": "SQI",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/SQI",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/SoilQuality",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/DiseaseIncidence",
+    "label": "Disease Incidence",
+    "definition": "A measure of the number of disease cases caused by air pollution. Used in the EF 3.0 and 3.1 LCIA methods.",
+    "conversion_multiplier": 1.0,
+    "notation": "DI",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/DiseaseIncidence",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/DiseaseIncidence",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M3-H2Oeq-Deprived",
+    "label": "Cubic meters of water deprivation equivalent",
+    "definition": "A measure of water deprivation equivalent to the global impact of deprivation by one cubic meter of water.",
+    "conversion_multiplier": 1.0,
+    "notation": "M3-H2Oeq",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M3-H2Oeq-Deprived",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/WaterDeprivation",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-SBeq",
+    "label": "Kilogram Antimony-eq.",
+    "definition": "A measure of resource use equivalent to one kilogram of Antimony.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg SBeq.",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-SBeq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/ResourceUse",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-CFC11eq",
+    "label": "Kilogram Trichlorofluoromethane-eq.",
+    "definition": "A measure of ozone depletion potential equivalent to one kilogram of trichlorofluoromethane (CFC-11).",
+    "conversion_multiplier": 1.0,
+    "notation": "kg CFC11eq.",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-CFC11eq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/OzoneDepletionPotential",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-NMVOCeq",
+    "label": "Kilogram NMVOC-eq.",
+    "definition": "A mass of substance with the photochemical oxidant formation equivalent to one kilogram of non-methane volatile organic chemicals.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg NMVOCeq.",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-NMVOCeq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/PhotochemicalOxidantFormation",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-YR",
+    "label": "Kilogram year",
+    "definition": "Kilogram over one year, used for example in storage or residence-time calculations.",
+    "conversion_multiplier": 31557600.0,
+    "notation": "kg.a",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-SEC",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassTime"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/TONNE",
+    "label": "Tonne",
+    "definition": "The metric tonne, one thousand kilograms. SimaPro spells it `ton`, which is the metric tonne there and not the short or long ton; Stepwise 2006 writes its seven carbon rows in it while every other mass row in the list is kilograms.",
+    "conversion_multiplier": 1000.0,
+    "notation": "t",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Mass"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/HA-YR",
+    "label": "Hectare-year",
+    "definition": "One hectare occupied for one year: the land-occupation quantity a hectare at a time rather than a square metre at a time. Stepwise 2006 writes two of its forty-one occupation flows in it and the other thirty-nine in square metre-years.",
+    "conversion_multiplier": 315576000000.0,
+    "notation": "ha.a",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M2-SEC",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/AreaTime"
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-C2H3CLeq",
+    "label": "Kilogram C2H3Cl-eq.",
+    "definition": "A mass of substance with a human-toxicity potential equivalent to one kilogram of vinyl chloride, the reference substance of the IMPACT 2002+ human-toxicity model Stepwise 2006 carries forward.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg C2H3Cl-eq",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-C2H3CLeq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassVinylChlorideEquivalent",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-TEGeq-Water",
+    "label": "Kilogram triethylene glycol-eq. into water",
+    "definition": "A mass of substance with an aquatic-ecotoxicity potential equivalent to one kilogram of triethylene glycol emitted to water. Told apart from the soil equivalence, which is a different reference compartment and not a scale of this one.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg TEG-eq w",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-TEGeq-Water",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassTriethyleneGlycolEquivalentWater",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-TEGeq-Soil",
+    "label": "Kilogram triethylene glycol-eq. into soil",
+    "definition": "A mass of substance with a terrestrial-ecotoxicity potential equivalent to one kilogram of triethylene glycol emitted to soil.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg TEG-eq s",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-TEGeq-Soil",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassTriethyleneGlycolEquivalentSoil",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-PM25eq",
+    "label": "Kilogram PM2.5-eq.",
+    "definition": "A mass of substance with a respiratory-inorganics potential equivalent to one kilogram of particulate matter under 2.5 micrometres.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg PM2.5-eq",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-PM25eq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassPM25Equivalent",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/KiloGM-NO3eq",
+    "label": "Kilogram nitrate-eq.",
+    "definition": "A mass of substance with an aquatic-eutrophication potential equivalent to one kilogram of nitrate.",
+    "conversion_multiplier": 1.0,
+    "notation": "kg NO3-eq",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-NO3eq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/MassNitrateEquivalent",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/BQ-C14eq",
+    "label": "Becquerel C-14-eq.",
+    "definition": "An activity with an ionising-radiation potential equivalent to one becquerel of carbon-14. Not a scale of the kilobecquerel U-235 equivalence EF 3.1 counts in: a different reference nuclide.",
+    "conversion_multiplier": 1.0,
+    "notation": "Bq C-14-eq",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/BQ-C14eq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/RadioactivityCarbon14Equivalent",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M2-UES",
+    "label": "Square meter unprotected ecosystem",
+    "definition": "An area of ecosystem left unprotected -- exposed above its critical load -- for a year, the damage unit the EDIP acidification and terrestrial eutrophication models Stepwise 2006 uses are counted in.",
+    "conversion_multiplier": 1.0,
+    "notation": "m2 UES",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M2-UES",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/UnprotectedEcosystemArea",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/PDF-M2-YR",
+    "label": "Potentially disappeared fraction square meter-year",
+    "definition": "The fraction of species potentially disappeared over one square metre for one year: the damage unit Stepwise 2006 counts land occupation in.",
+    "conversion_multiplier": 1.0,
+    "notation": "PDF.m2.a",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/PDF-M2-YR",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/PotentiallyDisappearedFractionAreaTime",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/PERSON-PPM-HR",
+    "label": "Person-ppm-hour",
+    "definition": "One person exposed to one part per million for one hour, the exposure unit Stepwise 2006 counts respiratory organics in.",
+    "conversion_multiplier": 1.0,
+    "notation": "pers.ppm.h",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/PERSON-PPM-HR",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/PersonExposure",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/M2-PPM-HR",
+    "label": "Square meter-ppm-hour",
+    "definition": "One square metre of vegetation exposed to one part per million for one hour, the exposure unit Stepwise 2006 counts photochemical ozone damage to vegetation in.",
+    "conversion_multiplier": 1.0,
+    "notation": "m2.ppm.h",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/M2-PPM-HR",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/AreaExposure",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/MegaJ-Primary",
+    "label": "Megajoule primary energy",
+    "definition": "A megajoule of energy counted at the primary carrier rather than as delivered. An indicator unit rather than a scale of the joule: what it counts is an accounting boundary, not an amount of energy.",
+    "conversion_multiplier": 1.0,
+    "notation": "MJ primary",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/MegaJ-Primary",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/PrimaryEnergy",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/MegaJ-Extra",
+    "label": "Megajoule additional extraction energy",
+    "definition": "The extra energy a future extraction of a mineral will need because this extraction lowered the ore grade, which is how Stepwise 2006 counts mineral depletion.",
+    "conversion_multiplier": 1.0,
+    "notation": "MJ extra",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/MegaJ-Extra",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/AdditionalExtractionEnergy",
+    "lcia": true
+  },
+  {
+    "iri": "https://vocab.brightway.one/units/unit/FatalInjuryEq",
+    "label": "Fatal injury-eq.",
+    "definition": "An injury count weighted to the equivalent number of fatal injuries, the unit Stepwise 2006 counts road and workplace injuries in.",
+    "conversion_multiplier": 1.0,
+    "notation": "fatal inj-eq",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/FatalInjuryEq",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/FatalInjuryEquivalent",
+    "lcia": true
+  }
+]

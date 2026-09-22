@@ -1,0 +1,32 @@
+{
+  "list_name": "bafu",
+  "list_version": "2026-v1",
+  "role": "source",
+  "merge_priority": 200,
+  "simapro_origin": true,
+  "simapro": {
+    "geography_split": "extraction"
+  },
+  "adapter": "brightway_flows.integrations.bafu:fetch",
+  "flow_iri_prefix": "https://vocab.brightway.one/bafu/2026-v1/flow/",
+  "prepared_match_table": null,
+  "concept_associations": null,
+  "lcia": {
+    "adapter": "brightway_flows.integrations.greendelta_lcia:fetch",
+    "factors": "bafu-greendelta-lcia-factors.json",
+    "implemented_by": "GreenDelta",
+    "resolve_through": ["ecoinvent-3.12", "ecoinvent-3.8", "EF-3.1"],
+    "methods": [
+      {
+        "name": "EF 3.1 Method (adapted)"
+      }
+    ]
+  },
+  "inputs": {
+    "flows": "bafu-2026-v1.json",
+    "manual_fixes": "bafu-2026-v1-manual-fixes.json",
+    "manual_additions": null,
+    "additional_flows": null,
+    "match_overrides": "bafu-2026-v1-match-overrides.json"
+  }
+}

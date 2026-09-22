@@ -1,0 +1,337 @@
+{#
+  One flow.
+
+  The page it replaces had fourteen stacked sections with no way to navigate
+  them, three of which were history. History moves behind `/flows/<uuid>/changes`
+  in Phase 3; a link stands in its place, and nothing here queries for it.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = flow.name or flow.uuid %}
+{% set active_section = "flows" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ flow.name or "(no name)" }}</h1>
+  <p class="page__lede mono">{{ flow.uuid }}</p>
+  {% if flow.is_deprecated %}
+  <div class="notice notice--warn">
+    <div class="notice__title">Deprecated</div>
+    <p>
+      {% if flow.replaced_by_uuid %}
+      Replaced by {{ t.flow_link(flow.replaced_by_uuid) }}.
+      {% else %}
+      No replacement is recorded.
+      {% endif %}
+    </p>
+  </div>
+  {% endif %}
+</header>
+
+<section class="section">
+  <div class="section__header"><h2>Identity</h2></div>
+  <dl class="facts">
+    <dt>Substance</dt>
+    <dd>
+      {% if flow.flow_object_id %}
+      {{ t.substance_link(flow.flow_object_id) }}
+      {% if flow.type_label %}<span class="muted">{{ flow.type_label }}</span>{% endif %}
+      {% else %}<span class="muted">not resolved</span>{% endif %}
+    </dd>
+    {#
+      Beside the type, not inside it. The chemical class of a qualified
+      substance is the same as its base substance's -- biogenic CO2 is a
+      `NeutralMolecule` and so is fossil CO2 -- so this is the only fact on the
+      page that says why the two are held apart.
+    #}
+    {% if flow.origin_qualifier %}
+    <dt>Origin qualifier</dt>
+    <dd>
+      <a href="{{ url_for('flows.index', qualifier=flow.origin_qualifier) }}">{{ flow.origin_qualifier }}</a>
+    </dd>
+    {% endif %}
+    <dt>Source</dt><dd>{{ flow.source or "—" }}</dd>
+    <dt>Unit</dt><dd class="mono">{{ flow.unit or "—" }}</dd>
+    <dt>Context</dt><dd>{{ flow.context_display or "—" }}</dd>
+    <dt>CAS</dt><dd class="mono">{{ flow.cas_numbers | join(", ") or "—" }}</dd>
+    <dt>EC</dt><dd class="mono">{{ flow.ec_numbers | join(", ") or "—" }}</dd>
+  </dl>
+</section>
+
+{% if flow.context %}
+<section class="section">
+  <div class="section__header"><h2>Context</h2></div>
+  <dl class="facts">
+    {% for key, value in flow.context | dictsort %}
+    <dt>{{ key | replace("_", " ") | capitalize }}</dt><dd>{{ value }}</dd>
+    {% endfor %}
+  </dl>
+</section>
+{% endif %}
+
+{% if flow.alt_labels %}
+<section class="section">
+  <div class="section__header">
+    <h2>Alternative labels</h2>
+    <span class="muted">{{ flow.alt_labels | length | thousands }}</span>
+  </div>
+  <ul class="labels">
+    {% for label in flow.alt_labels %}<li>{{ label }}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="section__header">
+    <h2>Source lists</h2>
+    <span class="muted">{{ flow.sources | length | thousands }}</span>
+  </div>
+  {% if flow.sources %}
+  {# Load-bearing now that the input layer is gone: this is the only place a
+     flow's origin appears. #}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">List</th>
+          <th scope="col">Version</th>
+          <th scope="col">Source flow</th>
+          <th scope="col">Name there</th>
+          <th scope="col">Why this flow</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#
+          The last column is why the merge holds this row to be this flow --
+          the same CAS number, a curator's mapping table, a compartment nothing
+          else fitted. It was in the database all along, as the hyphenated
+          category names the merge writes; `match_reasons` turns those into a
+          sentence so the page says what it means rather than what it stored.
+        #}
+        {% for reference in flow.sources %}
+        <tr>
+          <td>{{ reference.list_name }}</td>
+          <td class="mono">{{ reference.list_version }}</td>
+          <td class="mono">{{ reference.source_flow_uuid or "—" }}</td>
+          <td>{{ reference.source_flow_name or "—" }}</td>
+          <td>{{ reference.match_reason or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No source list references recorded.</p>
+  {% endif %}
+</section>
+
+{% if flow.concept_associations %}
+<section class="section">
+  <div class="section__header">
+    <h2>Concept associations</h2>
+    <span class="muted">{{ flow.concept_associations | length | thousands }}</span>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Source list</th>
+          <th scope="col">Source flow</th>
+          <th scope="col">Name there</th>
+          <th scope="col">Compartment there</th>
+          <th scope="col">Match</th>
+          <th scope="col" class="num">Conversion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#
+          Every cell here reads the published JSON-LD through a filter rather
+          than a key of its own: an association is a `xkos:ConceptAssociation`,
+          and the list, the flow and the name are all inside its
+          `xkos:sourceConcept`. Asked for as flat keys, four of the columns
+          printed an em dash on every flow in the list.
+        #}
+        {% for association in flow.concept_associations %}
+        <tr>
+          <td>{{ association | source_list or "—" }}</td>
+          <td class="mono">{{ association | source_flow_uuid or "—" }}</td>
+          <td>{{ association | source_flow_name or "—" }}</td>
+          <td>{{ association | source_flow_context or "—" }}</td>
+          <td class="mono">{{ association | match_type or "—" }}</td>
+          <td class="num">{{ association | conversion_multiplier or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+{#
+  What every implementation of every method says this flow is worth.
+
+  **After the concept associations, not before them.** What a flow *is* -- its
+  substance, its compartment, the concepts it is tied to -- is what a reader
+  needs before a number about it means anything, and the factor table is the
+  longest thing on the page.
+
+  **One row per factor.** The method is the first column and the implementation
+  is a column of its own, so a second method characterising this flow adds rows
+  rather than a set of columns that are empty for the first one.
+#}
+{% if factors %}
+<section class="section">
+  <div class="section__header">
+    <h2>Characterisation factors</h2>
+    <span class="muted">{{ factors | length | thousands }}</span>
+  </div>
+  {#
+    The counts, here rather than in the identity: how many factors an
+    implementation states about a flow is not part of what the flow *is*, and
+    beside the table it is a summary of what follows.
+  #}
+  {% if flow.factor_counts %}
+  <ul class="sources">
+    {% for count in flow.factor_counts %}
+    <li class="sources__row">
+      <span class="sources__label">{{ count.implemented_by }}</span>
+      <span class="sources__value">
+        {{ count.factors | thousands }}
+        {%- if count.zeros %}
+        <span class="muted">({{ count.non_zero_factors | thousands }} non-zero)</span>
+        {%- endif %}
+      </span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <p class="page__lede">
+    Every implementation that says anything about this flow.
+    <em>Published as</em> is what this list did with the row: where more than one
+    implementation states a number and they agree it publishes it as
+    <span class="mono">agreed</span>; where only one speaks, as
+    <span class="mono">sole</span>; where they disagree it publishes nothing and
+    <a href="{{ url_for('queue.index') }}">asks</a>.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{{ t.sort_header('Method', 'method', sort, 'flows.detail', args) }}</th>
+          <th scope="col">{{ t.sort_header('Implementation', 'implementation', sort, 'flows.detail', args) }}</th>
+          <th scope="col">{{ t.sort_header('Category', 'category', sort, 'flows.detail', args) }}</th>
+          <th scope="col">{{ t.sort_header('Place', 'place', sort, 'flows.detail', args) }}</th>
+          <th scope="col" class="num">{{ t.sort_header('Factor', 'amount', sort, 'flows.detail', args) }}</th>
+          <th scope="col">{{ t.sort_header('Published as', 'published', sort, 'flows.detail', args) }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in factors %}
+        <tr>
+          <td>{{ row.method or "—" }}</td>
+          <td>{{ row.implemented_by }}</td>
+          <td>{{ row.category }}</td>
+          <td class="mono">{{ row.geography or "—" }}</td>
+          <td class="num mono">{{ row.amount | amount }}</td>
+          <td>
+            {% if row.derivation %}{{ row.derivation }}
+            {% else %}<span class="muted">—</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">
+    <a href="{{ url_for('factors.differences', q=flow.uuid) }}">
+      This flow in the difference report</a>
+  </p>
+</section>
+{% endif %}
+
+
+<section class="section">
+  <div class="section__header"><h2>History</h2></div>
+  {#
+    A `<details>` wrapping a plain link. Script upgrades it to fetch the
+    fragment on first open and caches it; with JavaScript off the link works
+    and lands on the full page.
+
+    Nothing above this point reads a history table -- which is the point, and
+    what `test_webapp_sections.py` asserts.
+  #}
+  <details data-fragment="{{ url_for('changes.flow', uuid=flow.uuid, fragment=1) }}">
+    <summary>
+      The change log and the PROV-O trail
+      <span class="muted">({{ flow.change_count | thousands }} consensus changes)</span>
+    </summary>
+    <div data-fragment-target>
+      <p>
+        <a href="{{ url_for('changes.flow', uuid=flow.uuid) }}">Open the changes page</a>
+      </p>
+    </div>
+  </details>
+  <p class="muted">
+    These are the heaviest sections of this page and the least often read, so
+    the page does not pay for them until you ask.
+  </p>
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>Full record</h2></div>
+  <details>
+    <summary>Flow JSON</summary>
+    <pre class="json"><code>{{ flow.flow_json | pretty_json }}</code></pre>
+  </details>
+</section>
+
+{#
+  The three things that can be wrong about a flow, each opening its own form
+  with the identifier and the build already filled in.
+
+  This is what About promises when it says every flow page has a link that
+  opens a pre-filled issue, and the filling in is the point: answering one of
+  these used to begin with transcribing what the page was already showing.
+  `test_issue_templates.py` asserts that each `template=` here is a file that
+  exists, because a dangling one is a dead end nobody sees.
+#}
+<section class="section">
+  <div class="section__header"><h2>Something wrong here?</h2></div>
+  <p>
+    A flow can be wrong in three ways, and they are decided differently. Pick
+    the one that matches what you are looking at.
+  </p>
+  {#
+    `urlencode` percent-encodes, so what it returns holds nothing autoescaping
+    would touch -- but the ampersand joining the two parameters is written as
+    `&amp;` in the markup rather than built into a variable, which would be
+    escaped a second time and arrive at GitHub as a literal `&amp;`.
+
+    `published-flow` is the field id on each form, which is what GitHub fills
+    from the query string.
+  #}
+  {% set flow_ref = (flow.uuid ~ (" · " ~ flow.name if flow.name else "")) | urlencode %}
+  {% set report_url = repository_url ~ "/issues/new?template=" %}
+  <ul>
+    <li>
+      <a href="{{ report_url }}wrong-match.yml&amp;published-flow={{ flow_ref }}">A row from my list should not reach this flow</a>
+    </li>
+    <li>
+      <a href="{{ report_url }}wrong-identity.yml&amp;published-flow={{ flow_ref }}">This flow is not that chemical</a>
+    </li>
+    <li>
+      <a href="{{ report_url }}wrong-place.yml&amp;published-flow={{ flow_ref }}">The compartment or the unit is wrong</a>
+    </li>
+    {% if factors %}
+    <li>
+      <a href="{{ report_url }}wrong-factor.yml&amp;published-flow={{ flow_ref }}">One of these characterisation factors cannot be this substance's</a>
+    </li>
+    {% endif %}
+  </ul>
+  <p class="muted">
+    You do not need to run a build or clone anything. Name the row and say what
+    your evidence is; the measurement is done for you.
+    <a href="{{ repository_url }}/blob/main/CONTRIBUTING.md">How contributing works</a>
+  </p>
+</section>
+{% endblock %}

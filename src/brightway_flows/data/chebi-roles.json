@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "description": "Roles this project publishes on a flow object, as `RO:0000087 has role`. An allow-list over ChEBI's role tree, whose majority is biomedical and groups nothing an LCA asks about. Labels, definitions and `broader` are read from chebi.json.gz by tools/generate_chebi_roles.py; the membership is a judgement recorded in plans/pesticide-taxonomy.md.",
+  "predicate": "http://purl.obolibrary.org/obo/RO_0000087",
+  "roles": [
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_25944",
+      "curie": "CHEBI:25944",
+      "label": "pesticide",
+      "definition": "Strictly, a substance intended to kill pests. In common usage, any substance used for controlling, preventing, or destroying animal, microbiological or plant pests.",
+      "broader": [],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_33286",
+      "curie": "CHEBI:33286",
+      "label": "agrochemical",
+      "definition": "An agrochemical is a substance that is used in agriculture or horticulture.",
+      "broader": [],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_24527",
+      "curie": "CHEBI:24527",
+      "label": "herbicide",
+      "definition": "A substance used to destroy plant pests.",
+      "broader": [
+        "http://purl.obolibrary.org/obo/CHEBI_25944"
+      ],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_24127",
+      "curie": "CHEBI:24127",
+      "label": "fungicide",
+      "definition": "A substance used to destroy fungal pests.",
+      "broader": [
+        "http://purl.obolibrary.org/obo/CHEBI_25944"
+      ],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_24852",
+      "curie": "CHEBI:24852",
+      "label": "insecticide",
+      "definition": "Strictly, a substance intended to kill members of the class <em>Insecta</em>.  In common usage, any substance used for preventing, destroying, repelling or controlling insects.",
+      "broader": [
+        "http://purl.obolibrary.org/obo/CHEBI_25944"
+      ],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_22153",
+      "curie": "CHEBI:22153",
+      "label": "acaricide",
+      "definition": "A substance used to destroy pests of the subclass <em>Acari</em> (mites and ticks).",
+      "broader": [
+        "http://purl.obolibrary.org/obo/CHEBI_25944"
+      ],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_26155",
+      "curie": "CHEBI:26155",
+      "label": "plant growth regulator",
+      "definition": "A chemical, natural or artificial, that can affect the rate of growth of a plant.",
+      "broader": [],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_25491",
+      "curie": "CHEBI:25491",
+      "label": "nematicide",
+      "definition": "A substance used to destroy pests of the phylum <em>Nematoda</em> (roundworms).",
+      "broader": [
+        "http://purl.obolibrary.org/obo/CHEBI_25944"
+      ],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_33287",
+      "curie": "CHEBI:33287",
+      "label": "fertilizer",
+      "definition": "A fertilizer is any substance that is added to soil or water to assist the growth of plants.",
+      "broader": [
+        "http://purl.obolibrary.org/obo/CHEBI_33286"
+      ],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_33288",
+      "curie": "CHEBI:33288",
+      "label": "rodenticide",
+      "definition": "A substance used to destroy rodent pests.",
+      "broader": [
+        "http://purl.obolibrary.org/obo/CHEBI_25944"
+      ],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_33904",
+      "curie": "CHEBI:33904",
+      "label": "molluscicide",
+      "definition": "A substance used to destroy pests of the phylum <em>Mollusca</em>.",
+      "broader": [
+        "http://purl.obolibrary.org/obo/CHEBI_25944"
+      ],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_22583",
+      "curie": "CHEBI:22583",
+      "label": "antifeedant",
+      "definition": "A substance that prevents pests from feeding.",
+      "broader": [
+        "http://purl.obolibrary.org/obo/CHEBI_25944"
+      ],
+      "family": "agrochemical_use"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_78298",
+      "curie": "CHEBI:78298",
+      "label": "environmental contaminant",
+      "definition": "Any minor or unwanted substance introduced into the environment that can have undesired effects.",
+      "broader": [],
+      "family": "environmental_fate"
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/CHEBI_77853",
+      "curie": "CHEBI:77853",
+      "label": "persistent organic pollutant",
+      "definition": "Any environmental contaminant that is resistant to environmental degradation through photolytic, biological or chemical processes. Such substances can have significant impact on health and the environment, as they persist in the environment, bioaccumulate in animal tissue and so biomagnify in food chains.",
+      "broader": [
+        "http://purl.obolibrary.org/obo/CHEBI_78298"
+      ],
+      "family": "environmental_fate"
+    }
+  ]
+}

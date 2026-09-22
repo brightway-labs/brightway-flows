@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Formula mismatches" %}
+{% set active_section = "checks" %}
+{% set args = {'q': query} %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Formula mismatches</h1>
+  <p class="page__lede">
+    A substance whose molecular formula disagrees with a ChEBI record it cites
+    as a source. Precomputed by the pipeline; the page this replaces loaded the
+    whole ChEBI index on every request.
+  </p>
+  <p class="page__lede">
+    <strong>Two strings disagreeing is not yet a defect</strong>, and the two
+    right-hand columns say which kind of disagreement this is. Where the
+    formulas came from is often the whole answer: hydrogen-3 publishes
+    <code>H2</code> because PubChem describes the bulk gas and RDKit agrees with
+    it, while the ChEBI record it cites is <em>ditritium</em> and says
+    <code>T2</code> — one substance, two descriptions, and nothing wrong with
+    either. <em>Supplied</em> says what else was taken from that record, which
+    is how a wrong citation shows itself: a record that gave this substance its
+    formula, its mass and its structure is a record this substance is being
+    claimed to <em>be</em>.
+  </p>
+</header>
+
+{{ t.search_form('checks.formula_mismatches', query, "Name, formula, ChEBI…") }}
+
+{% if page.rows %}
+{{ t.pager(page, 'checks.formula_mismatches', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Substance</th>
+        <th scope="col">Formula</th>
+        <th scope="col">Where it came from</th>
+        <th scope="col">Disagrees with</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>{{ t.substance_link(row.flow_object_id, row.name or row.flow_object_id) }}</td>
+        <td class="mono">{{ row.flow_formula }}</td>
+        <td>
+          {#
+            Every formula the substance holds, not only the one published: a
+            substance whose structure is not settled carries several, and where
+            the one it declined is the ChEBI record's own string, the two
+            records are describing different things rather than either being
+            wrong.
+          #}
+          {% for origin in row.origins %}
+          <div class="sources__row">
+            <span class="sources__label">
+              <span class="mono">{{ origin.formula }}</span>
+              {% if not origin.published %}
+              <span class="tag tag--info">also held</span>
+              {% endif %}
+            </span>
+            <span class="sources__value">
+              {% if origin.derived_from %}
+              <span class="mono muted">{{ origin.derived_from | join(", ") }}</span>
+              {% elif origin.attested_by %}
+              <span class="muted">{{ origin.attested_by | join(", ") }}</span>
+              {% else %}
+              <span class="muted">no step recorded</span>
+              {% endif %}
+            </span>
+          </div>
+          {% else %}
+          <span class="muted">this build recorded no provenance for it</span>
+          {% endfor %}
+        </td>
+        <td>
+          {% for match in row.matches %}
+          <div>
+            <span class="mono">{{ match.formula }}</span>
+            {% if match.url %}
+            <a href="{{ match.url }}" rel="noreferrer">{{ match.label }}</a>
+            {% else %}
+            <span class="muted">{{ match.label }}</span>
+            {% endif %}
+            <span class="tag tag--blocking">{{ "%.2f" | format(match.score) }}</span>
+            {% if match.cas_numbers %}
+            <span class="muted mono">{{ match.cas_numbers | join(", ") }}</span>
+            {% endif %}
+            {% if match.supplied %}
+            <div class="muted">supplied {{ match.supplied | join(", ") }}</div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="muted">
+  A pair is listed when its similarity falls below
+  {{ "%.2f" | format(page.rows[0].threshold) }}. Stereoisomers share a formula
+  and score 1.0; lithium against lithium hydride scores about 0.5.
+</p>
+{{ t.pager(page, 'checks.formula_mismatches', args) }}
+{% else %}
+{{ t.nothing_matches("No substance disagrees with a ChEBI record it cites.") }}
+{% endif %}
+{% endblock %}

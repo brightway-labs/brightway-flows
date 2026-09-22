@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "description": "When the build attaches a source row to the flow a curator had already chosen, it writes a record of the decision. Every other kind of record has always carried the place the build read the row's compartment as; the prepared kind alone did not, and on the build of 30 August 2026 that left 427 of the 23,005 stored decisions with no place written down. Whoever reads those decisions back must work the place out a second time, outside the build, where a rule that fired during the build -- one keyed to a vendor's flow identifier, say -- cannot fire again.\n\n#869 adds the missing field. This file claims the result as data: on a build made with the field in place, no stored decision needs its place re-derived. The count means exactly that: it counts matched records whose detail carries no place field at all. A record whose field is present but empty -- the build itself could resolve no place -- is not counted, because remaking the build would not change it; and rows the merge refused are not decisions and are outside the count entirely. The shared build of 1 September 2026 was the first made with this code and read zero; the field itself is covered by tests/test_merge_store.py against a fresh database.",
+  "expectations": [
+    {
+      "id": "0869-no-stored-decision-needs-its-place-re-derived",
+      "issue": 869,
+      "title": "Every stored decision carries the place the build resolved",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.recorded_name.resolved_without_recorded_context"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "427 on the build of 30 August 2026, all of them prepared rows -- the one record kind that did not write its resolved place down. Zero on the build of 1 September 2026, the first made with the field in place, and the pending flag was dropped with that recording as this comment prescribed. The reader's re-derivation stays as a fallback for builds made before the field existed, so old builds keep working; this claim is about builds made after. No value_when_absent on purpose: the measure is emitted (at zero included) whenever the merge tables can be read, so its absence means the assessment never computed it -- a partial build, or the recorded-name measures skipped on a database error -- and that must read as unresolved, not as this claim being met."
+    }
+  ]
+}

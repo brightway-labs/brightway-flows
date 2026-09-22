@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "description": "A couple of dozen AGRIBALYSE 3.2 rows carry no registry number and spell their substance differently from the published name -- an abbreviation with the full name in parentheses (`COD (Chemical Oxygen Demand)`), a family-first mineral (`Clay, bentonite`), a missing registry number under a shared English name (`Silicon tetrafluoride`), a punctuation variant (`Hydrocarbons, unspecified` for EF's `Hydrocarbons (unspecified)`). Every one of these substances is already published, with flows in the exact compartments the rows use; on the first five-list build (1 September 2026, b0b8d76) the 29 rows minted 27 duplicate substances' flows beside the originals instead of reaching them, none carrying a factor. The fixes give each row what its siblings in other lists already carry -- the full published name as a synonym, or the substance's registry number -- in agribalyse-3.2-manual-fixes.json, and the mints go with them. Drop the pending flags when the shared build first merges agribalyse-3.2.",
+  "expectations": [
+    {
+      "id": "0853-the-river-cod-row-reaches-chemical-oxygen-demand",
+      "issue": 853,
+      "title": "AGRIBALYSE's river COD row reaches the published Chemical Oxygen Demand river flow by its synonym",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "cf8f4c7c-5059-5cbb-a8a4-88f4da128bb5"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "matched",
+        "basis": "label",
+        "target_name": "Chemical Oxygen Demand"
+      },
+      "pending": true,
+      "comment": "2,470 processes exchange this row, the busiest of the family. ecoinvent and BAFU spell the same measurement `COD, Chemical Oxygen Demand` and reach this substance because their rows carry the full name as a synonym; the fix writes the same synonym on this list's rows. On the build of 1 September 2026 the row minted a `COD (Chemical Oxygen Demand)` flow in the river context instead -- a factor-less duplicate of a substance published in every compartment the family uses."
+    },
+    {
+      "id": "0853-the-silicon-rows-reach-efs-substance-by-number",
+      "issue": 853,
+      "title": "AGRIBALYSE's Silicon tetrafluoride rows reach EF's Silicon Tetrafluoride by the registry number the vendor left off",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "57286c53-1ed5-53f7-9baa-a30b67b09a86"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "matched",
+        "basis": "cas",
+        "target_cas": "7783-61-1",
+        "target_name": "Silicon Tetrafluoride"
+      },
+      "comment": "ecoinvent and BAFU ship the same English spelling with 7783-61-1 and reach EF's flows by the number; AGRIBALYSE ships the name bare, and the build of 1 September 2026 minted a `Silicon Tetrafluoride` substance beside EF's. The fix adds the number to the two rows. Whether the published label should be the standard English spelling rather than EF's `Silicium` is a preferred-label question left open on the issue.\n\nRenamed on 2026-09-02: #187's second fix (cc8ad91) made `Silicon Tetrafluoride` the published name of EF's flow, so the target is named by its current spelling. The row still lands on it by the same registry number, verified on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`)."
+    },
+    {
+      "id": "0853-the-hydrocarbons-rows-reach-efs-bucket",
+      "issue": 853,
+      "title": "AGRIBALYSE's Hydrocarbons, unspecified rows reach EF's published bucket rather than minting a punctuation twin",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "aa0d4e41-c313-566b-85e5-dcbfa55965ef"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "matched",
+        "basis": "label",
+        "target_name": "Hydrocarbons (unspecified)"
+      },
+      "pending": true,
+      "comment": "Issue #187 set this family aside as possibly absent from the published list; it is not -- EF 3.1 publishes `Hydrocarbons (unspecified)`, with factors, in all seven compartments the rows use, and ecoinvent's and BAFU's rows with this exact comma spelling reach it through their correspondence tables. The punctuation was the whole gap. The river row claimed here is one of seven; on the build of 1 September 2026 all seven minted a factor-less `Hydrocarbons, Unspecified` beside EF's bucket."
+    },
+    {
+      "id": "0853-no-vendor-spelling-is-published-as-a-flow",
+      "issue": 853,
+      "title": "No flow is published under the vendor spellings this family corrects",
+      "subject": {
+        "kind": "flow",
+        "name": "COD (Chemical Oxygen Demand)"
+      },
+      "expect": {
+        "exists": false
+      },
+      "pending": true,
+      "comment": "The build of 1 September 2026 published this vendor spelling as a flow name in five water compartments (and its FR variant with the country code in the name). With the synonym in place the merge finds the existing substance before the mint stage is reached, so the duplicate never comes into being. One spelling stands for the family: the same claim holds for the BOD5, AOX, Clay, Silicon and Hydrocarbons spellings, whose duplicates all trace to the same mechanism and vanish with the same fix."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+# A maintainer opening an issue about the build itself should not have to pick a
+# card, so blank issues stay on. The forms are for somebody arriving from the
+# website with one row that looks wrong.
+blank_issues_enabled: true
+
+contact_links:
+  - name: How a flow is decided
+    url: https://github.com/brightway-labs/brightway-flows/blob/main/docs/deciding/index.md
+    about: The reasoning behind the decisions, before you report one as wrong. A good many surprises here are documented choices.
+  - name: What we have found
+    url: https://github.com/brightway-labs/brightway-flows/blob/main/docs/findings/index.md
+    about: The classes of error already found in the source lists, each with a worked example. Your case may be one of them.
+  - name: Known limitations
+    url: https://github.com/brightway-labs/brightway-flows/blob/main/docs/reference/limitations.md
+    about: Where the published output is still known to be wrong, and why it has not been fixed yet.

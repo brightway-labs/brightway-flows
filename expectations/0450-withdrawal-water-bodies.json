@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "description": "BAFU withdraws water from a lake, a river, a well and the sea, and writes which in the flow *name* -- `Water, lake`, `Water, river`, `Water, well`, `Water, salt, ocean`. Its compartment says only `resources / in water`, which is water of no stated body. Reading the name into the material says which kind of water each is; for a withdrawal that also says where it came from, because water taken from a lake was taken from a lake. Without that step each row landed in `Resource → Water → Unknown` and the list held two withdrawal flows for one substance, differing only in whether anybody had said which body it came from. The rule refines an unstated body and never overrides a stated one. See #89, and `water-taxonomy-overview.md` §2 and §5.\n\nThe same question on ecoinvent's side, found while measuring #48 on the base build of 17 August 2026 (run 20260817T0820, merge 2ba04e9d, head 8667385, merging ecoinvent 3.12 and 3.8). ecoinvent files one withdrawal of `Water, unspecified natural origin` under `natural resource / in ground`, which maps wholesale to `Resource -> Ground` -- right for the ores, minerals and fossil fuels that fill that compartment, and wrong for the one row in it that is water drawn from an aquifer. Left alone the row minted a second `Groundwater` flow in `Resource -> Ground` carrying no characterisation factor, while EF 3.1's `ground water`, which ecoinvent's own correspondence table names as its target, carries 209. So groundwater was published in two places and the half ecoinvent reached scored nothing against every water-use method. The merge was right to refuse the target -- `Ground` and `Water` are different media, and `context_contradicts` says so -- but the row's own compartment was the coarse half, not the target. A per-flow rule sends it where its four `natural resource / in water` siblings already go, exactly as #83 did for BAFU's water filed under land and under `unspecified`. `Water, green` is filed in the same compartment and stays there: green water is rainfall held in soil, ecoinvent and EF genuinely disagree about it, and that disagreement is this issue's to settle rather than a compartment rule's.",
+  "expectations": [
+    {
+      "id": "0450-bafu-lake-water-is-withdrawn-from-a-lake",
+      "issue": 450,
+      "title": "BAFU's `Water, lake` is lake water taken from a lake",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Water, lake"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Lake water",
+        "target_context_display": "Resource → Water → Lake"
+      },
+      "comment": "2 rows. On a build of main these matched plain `Water`, which is the collapse the material axis exists to stop -- lake water and water are different substances. Assigning the material fixes the substance and leaves the body unstated; the withdrawal rule then supplies the body the name already gave, and the rows join EF 3.1's own lake-water withdrawal rather than sitting beside it in a second flow."
+    },
+    {
+      "id": "0450-bafu-river-water-is-withdrawn-from-a-river",
+      "issue": 450,
+      "title": "BAFU's `Water, river` is river water taken from a river",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Water, river"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "River water",
+        "target_context_display": "Resource → Water → River"
+      },
+      "comment": "4 rows, stated separately from the lake because they failed differently on main: one matched plain `Water` and three were reported `multiple-flow-object-candidates`, which is the same defect showing up as a wrong answer and as no answer depending on whether enrichment happened to find the row a registry number."
+    },
+    {
+      "id": "0450-bafu-well-water-is-withdrawn-from-an-aquifer",
+      "issue": 450,
+      "title": "BAFU's `Water, well` is groundwater taken from an unconfined aquifer",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Water, well",
+        "context": [
+          "resources",
+          "in water"
+        ]
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Groundwater",
+        "target_context_display": "Resource → Water → Unconfined aquifer"
+      },
+      "comment": "4 rows. `Water, well` is ecoinvent's `Water, well, in ground` with the compartment left out of the name, and on main these minted a substance called `Water, Well` beside the `Groundwater` the list already holds. The compartment is named in the subject because BAFU files two more `Water, well` rows in `resources / in ground` and `resources / unspecified`, which harmonise to `Resource → Ground` -- not a water compartment, so the withdrawal rule does not reach them and they stay where BAFU put them. That split is this issue's own question."
+    },
+    {
+      "id": "0450-a-discharge-keeps-the-body-bafu-stated",
+      "issue": 450,
+      "title": "Water discharged to a river is water, and the river is where it went",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Water",
+        "context": [
+          "emissions to water",
+          "river"
+        ]
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Water",
+        "target_context_display": "Environmental → Water → River",
+        "row_count": 54,
+        "same_target": true
+      },
+      "comment": "54 rows, and the half of the rule that must not move. A discharge does not become river water on arrival: the material is plain water and the river is the body it went to, which BAFU states in its own compartment and which is therefore believed. Held here so that a later widening of the withdrawal rule to emissions would fail rather than quietly reclassify 54 releases.\n\nIt was scoped to `unit: m3` and 53 rows for one build, because the 54th is a kilogram and the only water flow in this compartment is EF 3.1's in cubic metres, so it went up to water of no stated body instead -- #78's question rather than this rule's. #78 answered it: the kilogram row is carried in cubic metres with the density stated, and all 54 now reach one flow. The scoping is gone, and `same_target` is what replaced it."
+    },
+    {
+      "id": "0450-ecoinvent-groundwater-is-withdrawn-from-an-aquifer",
+      "issue": 450,
+      "title": "The water ecoinvent draws from the ground is groundwater taken from an unconfined aquifer",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "478e8437-1c21-4032-8438-872a6b5ddcdf"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Groundwater",
+        "target_context_display": "Resource → Water → Unconfined aquifer",
+        "target_characterised": true,
+        "same_target": true
+      },
+      "comment": "ecoinvent flow 478e8437-1c21-4032-8438-872a6b5ddcdf, `Water, unspecified natural origin`, `natural resource / in ground`, m3, CAS 7732-18-5 -- one row, identical in all five registered releases, reaching this merge from 3.12 and 3.8. On the build of 8667385 both rows landed on 5f8e5c9e5c67d1a5b917af73073707f2d6132187, a `Groundwater` flow in `Resource -> Ground` that exists only because they minted it and that carries no factor, having been refused 4f462198-40cd-4184-8733-86648a20dc3f -- EF 3.1's `ground water`, the flow their own correspondence table names, carrying 209. The selector recorded the refusal as `prepared-target;context-not-publishable` with `rejected_contradicting_context_iri: reso-wate-unaq`. `target_characterised` is claimed because a flow reached and a number carried are the two halves of this, and the first without the second is what the row already had; `same_target` because the 3.8 and 3.12 rows are one flow of one vendor and reaching two would be a second defect wearing the first's answer."
+    },
+    {
+      "id": "0450-groundwater-is-published-in-one-place",
+      "issue": 450,
+      "title": "Groundwater is published in one place, not two",
+      "subject": {
+        "kind": "flow",
+        "name": "Groundwater"
+      },
+      "expect": {
+        "count": 1,
+        "characterised": true
+      },
+      "comment": "The condition this issue is about, stated about the substance rather than the row that produced it. Two live `Groundwater` flows on the build of 8667385 -- EF 3.1's in `Resource -> Water -> Unconfined aquifer` with 209 factors, and the merge-minted one in `Resource -> Ground` with none -- reported by the #87 check as `Groundwater is published in 2 places`. Stated separately from the row claim because a fix that moved the row somewhere else again would satisfy neither, and a fix that moved it onto EF's flow while leaving the minted twin standing would satisfy the row claim alone."
+    },
+    {
+      "id": "0450-green-water-stays-in-the-ground",
+      "issue": 450,
+      "title": "Green water is filed where the list decided, not where ecoinvent's compartment put it",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "uuid": "36dfb44d-db99-4cc5-bfb7-f266d69abf3e"
+      },
+      "expect": {
+        "target_context_display": "Resource → Air"
+      },
+      "comment": "Rewritten by #89, keeping its id so the baseline keeps this question's history. It used to claim `Resource → Ground` -- the half that must not move, and the reason the groundwater rule was written per-flow rather than about every water row in the ground compartment. That was the right claim while the question was open: green water is rainfall held in soil, EF 3.1 files it as a resource from air and ecoinvent 3.12 files it in the ground, both readings have something behind them, and a compartment rule that swept up every water row would have decided it silently and in the direction nobody argued for.\n\n#450 answered it, because leaving it open meant publishing green water in two places that cannot be added together. The list takes EF's reading: it is the base list, its flow is the one a method would characterise, and precipitation is how green water arrives. The claim is kept here, pointing the other way, so that the rule which now moves this row is still watched by the check that used to hold it still -- and so that a future widening of the groundwater compartment rule, which would send it to `Resource -> Water`, fails here rather than passing quietly. The substance-level claim is `0450-green-water-is-only-an-air-resource` in `0450-one-place-per-substance.json`."
+    }
+  ]
+}

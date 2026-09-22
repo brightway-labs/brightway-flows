@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "description": "Three substances carried two climate numbers apiece, or none, because the JRC's EF 3.1 and ecoinvent's implementation of it read IPCC AR6 differently. Two of those splits are one number printed twice -- AR6's Chapter 7 Table 7.15 assesses CFC-11 at `6226 ±2297` and HFC-134a at `1526 ±577`, and the supplementary Table 7.SM.7 rounds them to 6230 and 1530 -- so `lcia-rounded-printings.json` publishes the precise value in the two compartments where only the rounded transcription had a flow. The third is not: AR6 assesses sulfur hexafluoride with a 3200-year lifetime and prints 25200, ecoinvent's 24300 is that radiative efficiency with a lifetime near 1000 years, and a ruling publishes the method's own publisher's number. After both, each substance states one number in every compartment it is published in. See #342.",
+  "expectations": [
+    {
+      "id": "0724-sulfur-hexafluoride-is-worth-something-in-unspecified-air",
+      "issue": 724,
+      "title": "An SF6 emission to unspecified air is characterised at all",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sulfur hexafluoride",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Climate change",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "25200",
+        "derivation": "ruled"
+      },
+      "comment": "The compartment an inventory writes to when it does not say where the emission went, and the one the disagreement blocked: before the ruling this list published nothing here, so the most potent greenhouse gas either implementation characterises scored zero. 25200 is AR6 Table 7.SM.7's own GWP100, which is the table EF 3.1's climate category names."
+    },
+    {
+      "id": "0724-and-in-the-fossil-sub-category",
+      "issue": 724,
+      "title": "The same emission is characterised under `Climate change-Fossil`",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sulfur hexafluoride",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Climate change-Fossil",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "25200",
+        "derivation": "ruled"
+      },
+      "comment": "Both queue items are ruled, so both are claimed. A ruling on the aggregate and not on the sub-category that adds up to it would publish a substance into one and not the other."
+    },
+    {
+      "id": "0724-sulfur-hexafluoride-states-one-number-everywhere",
+      "issue": 724,
+      "title": "The compartment where only the JRC speaks states the same number as the rest",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sulfur hexafluoride",
+        "context_display": "Environmental → Air → Aircraft cruise height",
+        "category": "Climate change",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "25200",
+        "derivation": "sole"
+      },
+      "comment": "ecoinvent has no flow here, so this row was never blocked and never changed: it published 25200 before the ruling and after it. Claimed anyway, because the point of the ruling is that the substance now carries one number in all six air compartments, and that is only true if this one still agrees with the four the ruling filled. Its derivation stays `sole` -- nobody contested it here."
+    },
+    {
+      "id": "0724-ecoinvent-still-states-its-own-number",
+      "issue": 724,
+      "title": "ecoinvent's 24,300 is still published under ecoinvent's name",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sulfur hexafluoride",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Climate change",
+        "implemented_by": "ecoinvent Centre"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "24300"
+      },
+      "comment": "A ruling picks what this list publishes and erases nobody. ecoinvent's number reflects a shorter atmospheric lifetime than AR6 assessed, which is probably the better science and is certainly the newer; a practitioner who wants it can see it here and say so in their assessment."
+    },
+    {
+      "id": "0724-cfc-11-is-one-number-at-cruise-height-too",
+      "issue": 724,
+      "title": "CFC-11 is worth 6,226 in every air compartment, not 6,230 in two of them",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Trichlorofluoromethane",
+        "context_display": "Environmental → Air → Aircraft cruise height",
+        "category": "Climate change",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "6226",
+        "derivation": "refined"
+      },
+      "comment": "One of the two compartments ecoinvent has no flow for, where the JRC's rounded transcription used to go out unopposed. `derivation: refined` rather than `sole` says a curated printing acted, and points at the file that cites the two AR6 tables."
+    },
+    {
+      "id": "0724-hfc-134a-likewise",
+      "issue": 724,
+      "title": "HFC-134a is worth 1,526 indoors, as it is everywhere else",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "1,1,1,2-Tetrafluoroethane",
+        "context_display": "Environmental → Air → Indoor",
+        "category": "Climate change",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "1526",
+        "derivation": "refined"
+      },
+      "comment": "The refrigerant, and the other of the two substances AR6 prints twice. Indoor air rather than cruise height, so that both of the compartments the refinement reaches are claimed across the two substances."
+    },
+    {
+      "id": "0724-the-jrc-still-prints-what-the-supplement-prints",
+      "issue": 724,
+      "title": "The JRC's implementation still states 6,230 for CFC-11",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Trichlorofluoromethane",
+        "context_display": "Environmental → Air → Aircraft cruise height",
+        "category": "Climate change",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "6230"
+      },
+      "comment": "The transcription is not touched. 6230 is exactly what Table 7.SM.7 prints, the JRC transcribed it correctly, and a reader comparing this list against EF 3.1 has to see the difference rather than have it quietly reconciled -- the stance the moved-factor and contradicted-factor machinery already takes."
+    },
+    {
+      "id": "0724-only-the-two-documented-substances-are-refined",
+      "issue": 724,
+      "title": "Eight factors are refined, and not one more",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_rounded_printings_refined",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "equals": 8
+      },
+      "comment": "Two substances, two categories, two compartments each. Claimed exactly rather than bounded below, because the guardrail is the count: 97 (substance, category) groups on this build publish two values agreeing within 2%, and 93 of them are freshwater ecotoxicity where the two values are two compartments' own numbers. A refinement that grew past eight without a curator adding a cited row would be this file having become a tolerance rule."
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "comment": "Quantities the source lists report as elementary flows that are not substances: their value is fixed by the analytical procedure that produces it, and it sums over many substances or over none. Curated rather than matched by pattern. A rule reading 'X as Y' out of a label is the kind that works on the names it was written against and fails on the next list -- 'Alkoxylation Reaction Product of Glycerin as Starter' is a molecule, and 'Occup. as Forest Land' is land use. Every entry here is a decision someone made about one named quantity, and the reason is next to it. See docs/reference/semantic-types.md and issue #68.\n\nNames are matched case- and whitespace-insensitively against a flow object's preferred label and its alternative labels, so a source's own spelling and the title-cased preferred label both hit. Which label matched is recorded on the object.\n\n`expressed_as` is the substance the number is reported in terms of; `sums_over` is the grouping class whose members it counts. Both are preferred labels resolved against the built list, and both are optional -- COD has neither, and that absence is a fact about COD.",
+  "measurements": [
+    {
+      "id": "chemical_oxygen_demand",
+      "label": "Chemical oxygen demand",
+      "definition": "The mass of oxygen a chemical oxidant consumes in breaking down everything oxidisable in a sample. A measure of how much organic matter a discharge carries, made by oxidising all of it at once and weighing the oxygen that took.",
+      "names": [
+        "Chemical Oxygen Demand",
+        "COD, Chemical Oxygen Demand"
+      ],
+      "expressed_as": "Oxygen",
+      "sums_over": null,
+      "comment": "The oxygen is not in the discharge. It is what a laboratory's dichromate would consume, so this is not a mixture of anything -- which is why `ImpreciseChemicalMixture`, ChemROF's 'macroscopic polyatomic entity', is the wrong answer and not merely an imprecise one.\n\nBAFU carries CAS 17612-50-9 on its row. That number names no compound, nothing else in the list holds it, and Common Chemistry does not index it. It is withdrawn here for the same reason #57 withdrew dinitrogen's number from `Nitrogen, Organic Bound`: there is nothing to correct it to. While it was there it typed the row `ImpreciseChemicalMixture` through rule 10, which asks only whether a registry identifier is present."
+    },
+    {
+      "id": "biochemical_oxygen_demand",
+      "label": "Biochemical oxygen demand",
+      "definition": "The same quantity as chemical oxygen demand, measured by letting bacteria do the oxidising over five days rather than a chemical oxidant at once. Reported as a mass of oxygen.",
+      "names": [
+        "Biological Oxygen Demand",
+        "BOD5, Biological Oxygen Demand"
+      ],
+      "expressed_as": "Oxygen",
+      "sums_over": null,
+      "comment": "The five days are part of the definition, not an incidental detail: BOD5 and BOD20 are different numbers for the same water. A quantity whose value depends on how long you waited is a procedure's answer, not a property of a substance."
+    },
+    {
+      "id": "total_organic_carbon",
+      "label": "Total organic carbon",
+      "definition": "The mass of carbon held in organic form in a sample, whatever compounds it happens to be in.",
+      "names": [
+        "Total Organic Carbon",
+        "TOC, Total Organic Carbon"
+      ],
+      "expressed_as": "Carbon",
+      "sums_over": null,
+      "comment": "The carbon really is in the discharge, unlike COD's oxygen -- but it is one element counted across an unstated set of molecules, so the number is not the mass of any substance either. No `sums_over`: the list carries no grouping class for 'organic compounds'."
+    },
+    {
+      "id": "dissolved_organic_carbon",
+      "label": "Dissolved organic carbon",
+      "definition": "Total organic carbon restricted to what passes a filter -- the same measurement with a filtration step in front of it.",
+      "names": [
+        "DOC, Dissolved Organic Carbon"
+      ],
+      "expressed_as": "Carbon",
+      "sums_over": null,
+      "comment": "Separate from total organic carbon rather than merged into it: the filter is what makes the two numbers different, and a process reporting both is not reporting one thing twice."
+    },
+    {
+      "id": "adsorbable_organic_halogen",
+      "label": "Adsorbable organic halogen",
+      "definition": "The halogen held in organic compounds that stick to activated carbon, counted as though all of it were chlorine.",
+      "names": [
+        "AOX, Adsorbable Organic Halogen as Cl"
+      ],
+      "expressed_as": "Chlorine",
+      "sums_over": "Adsorbable Organic Halogen Compounds",
+      "comment": "The one entry with both links, and the pair is the point. EF 3.1 carries `Adsorbable Organic Halogen Compounds`, which is a class of molecules and is correctly typed `MoleculeGroupingClass`; BAFU carries this, which is the same molecules weighed as chlorine. They are not the same kind of thing and nothing said how they relate. Bromine and iodine in the sample are counted at chlorine's atomic weight, which is what `expressed_as` records."
+    },
+    {
+      "id": "acidity",
+      "label": "Acidity",
+      "definition": "How much acid a discharge carries, summed over every acid in it and reported as hydrogen ions, with no statement of which acids they came from.",
+      "names": [
+        "Acidity, Unspecified",
+        "Acid (as H+)"
+      ],
+      "expressed_as": null,
+      "sums_over": null,
+      "comment": "EF's `Acid (as H+)` is the worst case in this file. It arrived with CAS 12408-02-5 -- the hydron -- and was published as a `NeutralMolecule` carrying that ion's formula, SMILES, InChI, InChIKey, two masses and an IUPAC name, over 12 elementary flows. Sulfuric acid's mass counted at the proton's weight is not the proton, and every one of those values described a substance the row is not. The number is withdrawn and so are the properties it pulled in.\n\n`expressed_as` is deliberately null. The hydrogen ion has no flow object of its own once this row stops being it, and pointing at the element `Hydrogen` would name the wrong thing: a proton is not a hydrogen atom. Nothing is better than something wrong here."
+    },
+    {
+      "id": "btex_as_benzene",
+      "label": "BTEX, expressed as benzene",
+      "definition": "Benzene, toluene, ethylbenzene and xylene measured together as one figure and reported as though the whole of it were benzene. They travel together as the light aromatic fraction of petrol, so a laboratory often reports one number rather than four.",
+      "names": [
+        "Benzene (as BTEX)"
+      ],
+      "expressed_as": "Benzene",
+      "sums_over": null,
+      "comment": "Not benzene, and not mergeable with it. All 8 BAFU datasets carrying this row also carry `Benzene`, `Toluene`, `Benzene, ethyl-`, `Xylene`, `m-Xylene` and `o-Xylene` -- and the benzene row is in the same compartment, `emissions to water / unspecified`. Merging the two would sum benzene with a total that already contains it, in one process, in one compartment.\n\nThe identity cost is the larger one. Benzene's flow object carries 71 characterisation factors; benzene is the IARC Group 1 carcinogen of the four and toluene and the xylenes are not. Giving this row benzene's identity applies those factors to a mass that is mostly not benzene, and after the merge nothing can tell which flows were totals.\n\nNothing was holding it apart: the row has no CAS, and the name is not `Benzene`, so no rule reached it. That is an accident, not a decision. This is the decision.\n\nNo `sums_over`: the list carries no grouping class over the four, and inventing one to point at would be minting a concept to satisfy a link rather than because anything needs it."
+    },
+    {
+      "id": "total_nitrogen",
+      "label": "Total nitrogen",
+      "definition": "Every nitrogen-bearing species in a discharge at once -- nitrate, ammonium, the nitrogen inside proteins -- weighed as nitrogen.",
+      "names": [
+        "Nitrogen, Total (excluding N2)"
+      ],
+      "expressed_as": "Nitrogen",
+      "sums_over": null,
+      "comment": "`excluding N2` in the name is the source telling you this is a procedure's scope rather than a substance's identity. `expressed_as` will not resolve today: the list has `Dinitrogen` but no elemental `Nitrogen` object, and the unresolved reason is recorded rather than the link being quietly dropped."
+    },
+    {
+      "id": "organic_bound_nitrogen",
+      "label": "Organic-bound nitrogen",
+      "definition": "The nitrogen a discharge carries inside its organic matter -- proteins, urea, amino acids -- summed and reported as a mass of nitrogen.",
+      "names": [
+        "Nitrogen, Organic Bound"
+      ],
+      "expressed_as": "Nitrogen",
+      "sums_over": null,
+      "comment": "The case #57 fixed, and the reason this file exists. It reached the pipeline holding CAS 7727-37-9, dinitrogen's, which fused it with the nitrogen-gas rows and renamed them all `Dinitrogen`; a reader looking up organic-bound nitrogen was told it is the inert gas, with the gas's structure. #57 removed the number in the per-source manual fixes and the label rule then caught it. It is stated here so the answer no longer depends on a regex over the label."
+    },
+    {
+      "id": "nitrogenous_matter",
+      "label": "Nitrogenous matter",
+      "definition": "Nitrogen-bearing matter of unstated composition, weighed as nitrogen.",
+      "names": [
+        "Nitrogenous Matter (unspecified, As N)"
+      ],
+      "expressed_as": "Nitrogen",
+      "sums_over": null,
+      "comment": "Typed `MoleculeGroupingClass` until now, off the `unspecified` in its label. That is the near miss worth naming: a class over molecules would be right for `Nitrogenous Matter` on its own, and `(as N)` is what makes this a mass of one element instead."
+    },
+    {
+      "id": "total_phosphorus",
+      "label": "Total phosphorus",
+      "definition": "Every phosphorus-bearing species in a sample at once, weighed as phosphorus.",
+      "names": [
+        "Phosphorus, Total"
+      ],
+      "expressed_as": "Phosphorus",
+      "sums_over": null,
+      "comment": "The counterpart of total nitrogen, and the standard pair a wastewater plant reports for nutrient load."
+    },
+    {
+      "id": "dissolved_solids",
+      "label": "Dissolved solids",
+      "definition": "What is left when a filtered sample is evaporated and the residue weighed: everything dissolved in the water, whatever it was.",
+      "names": [
+        "Dissolved Solids"
+      ],
+      "expressed_as": null,
+      "sums_over": null,
+      "comment": "Defined by the procedure down to the drying temperature. No `expressed_as`: the residue is weighed as itself, not rebased onto an element."
+    },
+    {
+      "id": "suspended_solids",
+      "label": "Suspended solids",
+      "definition": "The mass a filter retains from a sample -- everything carried in the water without being dissolved in it.",
+      "names": [
+        "Suspended Solids, Unspecified"
+      ],
+      "expressed_as": null,
+      "sums_over": null,
+      "comment": "The complement of dissolved solids, and the same procedure read off the other side of the filter. Typed `MoleculeGroupingClass` until now, off `unspecified`; the retained mass is mostly mineral and biological particles rather than a class of molecules."
+    },
+    {
+      "id": "particulate_matter",
+      "label": "Particulate matter",
+      "definition": "Airborne particles selected by how far they travel in an instrument rather than by what they are made of. PM2.5 is everything below an aerodynamic diameter of 2.5 micrometres, of any composition.",
+      "names": [
+        "Particles (PM0.2)",
+        "Particles (PM0.2 - PM2.5)",
+        "Particles (PM2.5)",
+        "Particles (PM2.5 - PM10)",
+        "Particles (PM10)",
+        "Particles (> PM10)",
+        "Particles (unspecified size)"
+      ],
+      "expressed_as": null,
+      "sums_over": null,
+      "comment": "One entry for seven names because they are one quantity cut at different sizes: a size band is a setting of the measurement, not a different kind of thing. The aerodynamic diameter is not a length either -- it is the diameter of the unit-density sphere that settles at the same speed -- so even the selection criterion is defined by an instrument. Which cut each one is, is `particulate-size-classes.json`'s question; this file answers the other one, and `tests/test_particulate_is_not_a_substance.py` fails if the two stop covering the same seven flows.\n\n`Particles (unspecified size)` is the seventh, and it is the one that needed this entry rather than merely fitting it. It is the size-unstated total -- BAFU's `Particulates` and `Particulates, unspecified`, and the same two names from Stepwise 2006 -- published as one substance by #153. It carries no registry number, no formula and no structure, so every chemistry rule falls through to rule 8, which reads the word `unspecified` in a label and answers `MoleculeGroupingClass`. That is what the vendor rows were typed before this file existed, and it was measured happening again to the new name on the build of 25 August 2026: a class of molecules, for a mass of particles of unstated composition. Naming it here is what stops it."
+    }
+  ]
+}

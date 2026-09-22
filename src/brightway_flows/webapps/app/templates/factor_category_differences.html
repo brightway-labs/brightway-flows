@@ -1,0 +1,229 @@
+{#
+  One impact category, narrowed to two of its implementations.
+
+  The category page is as many implementations wide as there are and lists every
+  factor under the category. This is the other question: pick two of them, and
+  show only the rows where they state different numbers.
+
+  **The headline is the agreement**, as it is on the whole-method report. A page
+  that opens on the rows two teams disagree about, and does not say how many they
+  agree about, turns a modelling choice into an accusation.
+
+  The two are chosen from the data and named nowhere here: which implementations
+  a category has is what `characterise` wrote, and a template that spelled two of
+  them would go on comparing those two after a third was loaded.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = detail.name ~ " — differences" %}
+{% set active_section = "factors" %}
+{% set category_args = {'method': detail.method_slug, 'version': detail.version,
+                        'slug': detail.slug} %}
+
+{% block content %}
+<header class="page__header">
+  <p class="muted">
+    <a href="{{ url_for('factors.index') }}">Characterisation factors</a>
+    → <a href="{{ url_for('factors.category', **category_args) }}">{{ detail.name }}</a>
+    → Differences
+  </p>
+  {% if comparison.comparable %}
+  <h1>{{ comparison.left }} against {{ comparison.right }}</h1>
+  <p class="page__lede">
+    Under <strong>{{ detail.name }}</strong>, {{ detail.label }}. Only the rows
+    where the two state different numbers, widest first.
+    <strong>A difference is not an error</strong> — competent teams rendering one
+    method against different flow lists will differ, and most of these are
+    modelling choices.
+  </p>
+  {% else %}
+  <h1>{{ detail.name }}</h1>
+  {% endif %}
+</header>
+
+{#
+  Two selects and not a chip per pair: with three implementations there are three
+  pairs and with six there are fifteen, and a control whose size is the square of
+  the data is the shape this section keeps removing. Neither carries a blank
+  option, because "compare with nothing" is not a state this page has.
+#}
+<form class="filters" method="get"
+      action="{{ url_for('factors.category_differences', **category_args) }}">
+  <input type="hidden" name="q" value="{{ query }}">
+  <div class="filters__selects">
+    {% for side, selected in (('left', comparison.left), ('right', comparison.right)) %}
+    <div class="filters__field">
+      <label for="pair-{{ side }}">{{ 'Compare' if side == 'left' else 'With' }}</label>
+      <select id="pair-{{ side }}" name="{{ side }}" data-autosubmit>
+        {% for name in detail.implementations %}
+        <option value="{{ detail.slugs.get(name, '') }}"
+                {% if name == selected %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endfor %}
+    <button class="button" type="submit">Compare</button>
+  </div>
+</form>
+
+{% if not comparison.comparable %}
+<div class="notice">
+  <p class="notice__title">Nothing to compare here</p>
+  <p>
+    A comparison needs two different implementations that both state a factor
+    under this category. Pick two above, or go back to
+    <a href="{{ url_for('factors.category', **category_args) }}">everything
+      published under {{ detail.name }}</a>.
+  </p>
+</div>
+{% else %}
+
+{#
+  The agreement first, then what is one-sided, then the disagreements. An
+  implementation states factors the other does not because their flow lists are
+  different sizes, which is not a disagreement and is why it is a count here
+  rather than a row below.
+#}
+<div class="cards">
+  <div class="card">
+    <span class="card__label">Both state a number</span>
+    <span class="card__value">{{ comparison.shared | thousands }}</span>
+    <span class="card__note">
+      flow and place pairs under this category
+    </span>
+  </div>
+  <div class="card">
+    <span class="card__label">The same number</span>
+    <span class="card__value">{{ comparison.identical | thousands }}</span>
+    <span class="card__note">
+      {% if comparison.shared %}
+      {{ (comparison.agreement * 100) | round(1) }}% of them, exactly — same
+      float, full precision
+      {% else %}
+      nothing to agree about yet
+      {% endif %}
+    </span>
+  </div>
+  <div class="card{% if not comparison.differing %} card--empty{% endif %}">
+    <span class="card__label">Different numbers</span>
+    <span class="card__value">{{ comparison.differing | thousands }}</span>
+    <span class="card__note">
+      {% if comparison.differing %}the rows below{% else %}
+      they state the same number everywhere they both speak{% endif %}
+    </span>
+  </div>
+  {% for name in comparison.pair %}
+  <div class="card{% if not comparison.only.get(name) %} card--empty{% endif %}">
+    <span class="card__label">Only {{ name }}</span>
+    <span class="card__value">{{ comparison.only.get(name, 0) | thousands }}</span>
+    <span class="card__note">
+      stated here and nowhere in the other's list — a difference of flow lists,
+      not of numbers
+    </span>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="chips">
+  <span class="muted">Band</span>
+  <a class="chip {% if not band %}chip--active{% endif %}"
+     href="{{ url_for('factors.category_differences', **dict(args, band='', page=1)) }}">
+    <span class="chip__label">All</span>
+    <span class="chip__value">{{ comparison.differing | thousands }}</span>
+  </a>
+  {% for slug, label, count in comparison.bands %}
+  <a class="chip {% if band == slug %}chip--active{% endif %}"
+     href="{{ url_for('factors.category_differences', **dict(args, band=slug, page=1)) }}">
+    <span class="chip__label">{{ label }}</span>
+    <span class="chip__value">{{ count | thousands }}</span>
+  </a>
+  {% endfor %}
+</div>
+
+<form class="filters" method="get"
+      action="{{ url_for('factors.category_differences', **category_args) }}">
+  <input type="hidden" name="left" value="{{ detail.slugs.get(comparison.left, '') }}">
+  <input type="hidden" name="right" value="{{ detail.slugs.get(comparison.right, '') }}">
+  <input type="hidden" name="band" value="{{ band }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Flow, compartment or identifier…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('factors.category_differences', category_args) }}
+  </div>
+</form>
+
+{% if page.rows %}
+{{ t.pager(page, 'factors.category_differences', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">{{ t.sort_header('Flow', 'flow', sort, 'factors.category_differences', args) }}</th>
+        <th scope="col">Place</th>
+        {% for name in comparison.pair %}
+        <th scope="col" class="num">{{ name }}</th>
+        {% endfor %}
+        <th scope="col" class="num">{{ t.sort_header('Apart', 'ratio', sort, 'factors.category_differences', args) }}</th>
+        {#
+          What this list published about the row — its next question, and one the
+          two columns above cannot answer. Left out where this list is itself one
+          of the two, because then its number is already a column.
+        #}
+        {% if not comparison.includes_ours %}
+        <th scope="col" class="num">Published</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          {{ t.flow_link(row.elementary_flow_uuid, row.flow_name or row.elementary_flow_uuid) }}
+          {% if row.context_display %}
+          <div class="muted">{{ row.context_display }}</div>
+          {% endif %}
+        </td>
+        <td class="mono">{{ row.geography or "—" }}</td>
+        {% for name in comparison.pair %}
+        <td class="num mono">{{ row.amounts[name] | amount }}</td>
+        {% endfor %}
+        <td class="num">
+          {{ row.ratio | ratio }}
+          <div class="muted">{{ row.band | replace('-', ' ') }}</div>
+          {% if row.higher %}<div class="muted">{{ row.higher }} higher</div>{% endif %}
+        </td>
+        {% if not comparison.includes_ours %}
+        <td class="num mono">
+          {% if row.queued %}<span class="tag tag--blocking">queued</span>
+          {% else %}{{ row.ours | amount }}
+          <div class="muted">{{ row.derivation or "—" }}</div>{% endif %}
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'factors.category_differences', args) }}
+{% elif comparison.differing %}
+{{ t.nothing_matches("No difference under this category matches this filter.") }}
+{% else %}
+<div class="notice">
+  <p>
+    These two state the same number everywhere they both speak under
+    {{ detail.name }}. Everything published here is on
+    <a href="{{ url_for('factors.category', **category_args) }}">the category's
+      own page</a>.
+  </p>
+</div>
+{% endif %}
+{% endif %}
+
+<p class="muted">
+  <a href="{{ url_for('factors.differences', q=detail.slug) }}">
+    This category in the whole-method difference report</a> — every implementation
+  that states a row, banded by the widest pair among them.
+</p>
+{% endblock %}

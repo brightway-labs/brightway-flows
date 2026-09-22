@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "description": "Somebody outside this project has a flow list and one question about every row of it: **which consensus flow is this?** Until now the only way to ask was to add the list as a `SourceList`, fetch it and run a build -- the better part of an hour, writing to the results database, and requiring the list to be a first-class citizen of this project before anyone could find out whether it was worth adding. `brightway_flows.lookup` answers the question in under a millisecond a row, against a build that has already happened, writing nothing. See #328 and `plans/lookup-api.md`.\n\nThe whole capability rests on one claim: **an answer from the lookup is the answer a build would have given.** It is not a second implementation of matching -- it calls `resolve_flow_object` and `_select_elementary_flow`, the merge's own two functions, which are already pure -- but the row it hands them is assembled from what a caller supplies rather than from an enriched source flow, and that assembly is where it could be wrong.\n\nSo the claim is measured rather than argued. `merge_outcomes` holds every question this API answers, with the build's answer beside it: 16,953 rows on the 21 August 2026 build. The replay rebuilds a query from each one, asks, and counts by *how the build decided the row*, because the buckets are not equally answerable and lumping them would hide that.\n\nThe expectations below are the shape of that result. The one that matters most is not an agreement rate: it is `lookup.evidence.other_flow`, which counts rows the lookup places on a flow the build did not choose. It should be nothing. Where the lookup differs from the build it should **decline**, because a wrong match is silent and an unmatched row is reviewable -- and an unmatched row comes back naming every substance it could have been.\n\nMeasured on the unbounded three-list build of 21 August 2026 at `8be43a3`: EF 3.1 with ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026-v1 merged.",
+  "expectations": [
+    {
+      "id": "0641-the-lookup-never-places-a-row-somewhere-else",
+      "issue": 641,
+      "title": "No row the lookup can answer for is put on a flow the build did not choose",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.evidence.other_flow"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "**The safety claim, and the only one of these that is about correctness rather than coverage.**\n\nThe `evidence` bucket is the 2,519 rows the build matched on something a query carries -- a CAS number, an EC number, a name, a SimaPro spelling. For those the lookup has exactly what the build had, so a divergence is a defect in the lookup and nothing else.\n\n0 on the 21 August 2026 build. 2,490 of the 2,519 reach the flow the build recorded and the other 29 are declined; not one is placed elsewhere. That is the property the merge's own conservatism exists to protect and the one a caller depends on: they can act on a match, and they can review a decline, but a confident wrong answer is neither.\n\nA bound of zero rather than a rate, because this is not a coverage number that may drift with the vocabulary. One row appearing here is one row a caller would be told belongs somewhere it does not.\n\nFive on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`). Three are AGRIBALYSE's soil carbon stock rows, which the build put on the element and the lookup puts on EF's stock flow (#195). Two are ecoinvent 3.12's `Rhodium III` and `Palladium II`, which the build put on the elements by label before AGRIBALYSE minted the ions with those registry numbers, and which the lookup now reaches by number (#190 group G). Pending until both are settled; the property is unchanged.",
+      "pending": true
+    },
+    {
+      "id": "0641-the-lookup-reproduces-the-rows-it-can-answer-for",
+      "issue": 641,
+      "title": "The lookup reaches the same consensus flow for the rows it has the evidence for",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.evidence.same_flow"
+      },
+      "expect": {
+        "at_least": 2450
+      },
+      "comment": "2,490 of 2,519 on the 21 August 2026 build -- 98.9%, and 2,488 of them by the same route as well as to the same flow.\n\nNot 2,519, and the shortfall is the replay's limit rather than the lookup's. `merge_outcomes` records a row's *name*, and matching is done on every name a row is known by; a row that matched on a synonym, on an alternative label enrichment found, or on a product-catalogue code cannot be reconstructed from what was stored. BAFU's `Copper Ion` is one: the build matched it through catalogue codes on `Copper` (`1.65EDCU12-100FA` among them) which no column keeps against the row. Replaying with the names `basis_value` does keep raises the figure to 2,495 and drops the declines from 29 to 23.\n\nThe bound is 40 rows below the measurement, which is room for a vocabulary change to move a handful without failing the build, and tight enough that a change breaking a whole route -- the SimaPro spellings, say, or the CAS narrowing -- shows immediately. The exact number is in `baseline.json`, which is where a movement belongs in a diff."
+    },
+    {
+      "id": "0641-a-row-the-merge-had-to-create-a-flow-for-finds-it",
+      "issue": 641,
+      "title": "A row the merge created a consensus flow for now resolves to that flow",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.created.same_flow"
+      },
+      "expect": {
+        "at_least": 830
+      },
+      "comment": "840 of 842 on the 21 August 2026 build.\n\nThese are the rows no consensus flow existed for, so the merge made one. Replayed against the *finished* build that flow is there, and the row finds it. `plans/lookup-api.md` §5.1 expects `matched=False` for this bucket, which is right about the build as it stood before the merge and wrong about the one being read.\n\nIt is worth claiming because it is the strongest single piece of evidence that the two agree about where a row belongs: for 840 rows the merge said \"this row needs a flow of its own, here is what it should look like\", and the lookup, given nothing but the row, arrives at exactly that flow. A change that moved these would mean the lookup and the merge had stopped agreeing about what a row *is*, not merely about which existing flow is nearest."
+    },
+    {
+      "id": "0641-the-curated-water-rows-are-declined-and-not-guessed",
+      "issue": 641,
+      "title": "A water row whose kind only a curated table knows is declined rather than guessed at",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.material.other_flow"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "**The documented limit, stated as a claim about what the lookup does *not* do.**\n\nWhich kind of water a row is comes from a table keyed on the vendor's own flow identifier, and a caller's row has none -- deriving the kind from the name is precisely what the water taxonomy exists to avoid. So 100 of the 288 water rows are declined, and every kind of water shares 7732-18-5, which means a lookup willing to guess would have twelve substances to guess between.\n\n0 on the 21 August 2026 build: it guesses at none of them. The 188 it does place are the ones the algorithm reaches by another route -- a name that identifies the body, an origin qualifier -- and those it places on the flow the build chose.\n\nA caller who knows may state `FlowQuery.material` with the published concept id, and then the row routes through the same exclusive branch the merge uses. The one who does not gets the twelve candidates with their labels, which is what picking between them takes. A pending flag sat here briefly during #141, written against a mid-series shadow build where lookup.material.other_flow read 2; the final retirement build reads 0 and the claim is met, so the flag was stale -- left in place it would have muted a real future failure of exactly this guard. Removed by review on #336."
+    },
+    {
+      "id": "0641-the-curated-land-rows-are-declined-and-not-guessed",
+      "issue": 641,
+      "title": "A land row whose class only a curated table knows is declined rather than guessed at",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.land_class.other_flow"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "The same claim for land, and the bucket where the shortfall is largest: 19 of 98 rows placed, 79 declined, none guessed at.\n\nLand is worse off than water for a reason worth stating: a land flow carries no registry number at all, so once the curated class is unavailable there is no second route to it. A water row at least has a CAS to narrow from. `FlowQuery.land_class` takes a published land-use key -- `occupation/agriculture` -- and routes through the merge's own exclusive branch.\n\nHeld as a bound of zero rather than as a coverage target because coverage here is not something the lookup can improve without inventing a name-derived land taxonomy, which is what `plans/land-class-taxonomy.md` exists to avoid."
+    },
+    {
+      "id": "0641-the-algorithm-mostly-agrees-with-the-curated-tables",
+      "issue": 641,
+      "title": "The algorithm alone reaches the same flow as the correspondence table for most rows",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.prepared.same_flow"
+      },
+      "expect": {
+        "at_least": 240
+      },
+      "comment": "This compared the algorithm's answers against 13,206 published table rows; #141 retired the tables, and the prepared universe is now the ~250 rows this project authors in ecoinvent-match-overrides.json. The claim keeps its meaning at the new scale: the lookup, replaying the authored rows, reaches the same flow for nearly all of them -- 268 on the 2026-08-23 build."
+    },
+    {
+      "id": "0641-every-recorded-row-is-answerable",
+      "issue": 641,
+      "title": "Every row the build recorded is asked again, and none of them raises",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.rows"
+      },
+      "expect": {
+        "at_least": 16000
+      },
+      "comment": "16,953 on the 21 August 2026 build: every row of `merge_outcomes`, with no exclusions.\n\nThis is the guard on all six claims above -- a replay that quietly stopped covering a list would make every rate look fine. It is also a claim in its own right, and one that failed while this was being written: the enrichment chain ran `default_context_mapping`, which *raises* on a name whose compartment's rules do not recognise it. BAFU ships a row called `Uranium` in `resources / land`, and one row raising killed the whole batch of 16,953.\n\nA build is entitled to stop there. Somebody asking a question is not: the answer they need is \"this row could not be placed, and here is why\" -- for that row, not for the two thousand batched with it. The step was withheld, and this measure is what would notice if another one like it were added."
+    },
+    {
+      "id": "0641-a-simapro-name-that-carries-its-unit-still-finds-its-flow",
+      "issue": 641,
+      "title": "A row whose name carries its unit or its place still reaches the flow the build gave it",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.shipped.bafu-2026-v1.placed"
+      },
+      "expect": {
+        "at_least": 5
+      },
+      "comment": "**The measure the other six cannot take.** Every expectation above replays the name `merge_outcomes` recorded, and for a SimaPro-shaped list that is not the name the vendor wrote: `SourceList.load_flows` has already taken the unit back out of it, so BAFU's `Wood, unspecified, standing/m3` is recorded as `Wood, unspecified, standing`. The replay therefore never asked the question an outside caller asks, and could not see that a caller's row arrives with the unit still in the name and reaches nothing at all.\n\nThis one asks under the shipped name, read out of the vendor's own file and paired by uuid. On the 21 August 2026 three-list build at `20ad511`, 11 of BAFU's 2,679 recorded rows carry a unit or a place in the name, and 6 of them reach the flow the build recorded. The other 5 are water rows whose kind only a curated table keyed on the vendor's uuid knows, which is §6.1's documented limit and not this rule's business.\n\nThe bound is 5 rather than 6 so that one water row gaining a curated material does not fail the build, and is tight enough that a change breaking preparation drops it to nothing -- because before this change every one of the 11 reached nothing at all.\n\nAsked cold over the whole vendor file rather than over the recorded rows, this is worth four more placed rows: 2,087 to 2,091 without registry numbers and 2,387 to 2,391 with them, which is the table in `docs/using/matching-your-own-list.md`."
+    },
+    {
+      "id": "0641-preparing-a-name-never-moves-a-row",
+      "issue": 641,
+      "title": "Rewriting a row's name can give it a match and can never move one it already had",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.shipped.bafu-2026-v1.elsewhere"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "**The safety claim for preparation, and the reason it is written the way it is.**\n\nTaking the unit or the place out of a name could have been a replacement: swap the caller's spelling for the derived one and look that up. It is not. The derived name goes *in front of* the caller's, and the spelling as sent stays among the synonyms -- which is exactly what `_strip_unit_suffixes` does with the vendor's, and for the same reason: matching looks a row up under every name it is known by. So preparation can only add a way for a row to match, and cannot take one away or send it elsewhere.\n\n0 on the 21 August 2026 build, and measured rather than argued: asking BAFU's whole file with preparation and without it places 4 more rows, loses none, and moves none to a different flow.\n\nA bound of zero rather than a rate, for the reason `0641-the-lookup-never-places-a-row-somewhere-else` is one -- a row appearing here is a row a caller would be told belongs somewhere it does not, on the strength of a name this project derived rather than one they sent."
+    }
+  ]
+}

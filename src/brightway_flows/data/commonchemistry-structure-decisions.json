@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "description": "Rulings on CAS numbers CAS Common Chemistry answers for with a definite molecular formula and no InChIKey. That shape is genuinely ambiguous and the pipeline cannot resolve it: an unspecified isomer such as 1300-21-6 `Dichloroethane` (C2H4Cl2) and a specific molecule Common Chemistry happens to lack a key for, such as 10028-15-6 `Ozone` (O3), are indistinguishable in the record. 319 cached records have this shape. The default is to do nothing, so a substance is only ever denied a structure by a ruling written here. Numbers whose formula Common Chemistry gives as `Unspecified` need no entry -- that is CAS stating the composition is indefinite, and the pipeline acts on it directly. `comment` is mandatory and must say why the number is ambiguous; an entry without one is ignored and reported as if unlisted. See `brightway_flows.transformers.enrich_references`.",
+  "isomer_ambiguous": [
+    {
+      "cas": "1300-21-6",
+      "name": "Dichloroethane",
+      "molecular_formula": "C2H4Cl2",
+      "comment": "Skeletal isomer unstated: the substituent positions are not given and each arrangement has its own registry number."
+    },
+    {
+      "cas": "25322-20-7",
+      "name": "Tetrachloroethane",
+      "molecular_formula": "C2H2Cl4",
+      "comment": "Skeletal isomer unstated: the substituent positions are not given and each arrangement has its own registry number."
+    },
+    {
+      "cas": "25321-22-6",
+      "name": "Dichlorobenzene",
+      "molecular_formula": "C6H4Cl2",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "25321-14-6",
+      "name": "Dinitrotoluene",
+      "molecular_formula": "C7H6N2O4",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "12002-48-1",
+      "name": "Trichlorobenzene",
+      "molecular_formula": "C6H3Cl3",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "25586-43-0",
+      "name": "Chloronaphthalene",
+      "molecular_formula": "C10H7Cl",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "1321-94-4",
+      "name": "Methylnaphthalene",
+      "molecular_formula": "C11H10",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "25167-83-3",
+      "name": "Tetrachlorophenol",
+      "molecular_formula": "C6H2Cl4O",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "25167-82-2",
+      "name": "Trichlorophenol",
+      "molecular_formula": "C6H3Cl3O",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "25167-81-1",
+      "name": "Dichlorophenol",
+      "molecular_formula": "C6H4Cl2O",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "1321-12-6",
+      "name": "Nitrotoluene",
+      "molecular_formula": "C7H7NO2",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "25340-17-4",
+      "name": "Diethylbenzene",
+      "molecular_formula": "C10H14",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "25168-05-2",
+      "name": "Chlorotoluene",
+      "molecular_formula": "C7H7Cl",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "29797-40-8",
+      "name": "Dichloromethylbenzene",
+      "molecular_formula": "C7H6Cl2",
+      "comment": "Positional isomer unstated: the name carries no locants, and CAS registers the specific isomers under their own numbers."
+    },
+    {
+      "cas": "25167-67-3",
+      "name": "Butene",
+      "molecular_formula": "C4H8",
+      "comment": "Double-bond position unstated: an n-ene with no locant. The specific alkenes have their own registry numbers."
+    },
+    {
+      "cas": "25339-56-4",
+      "name": "Heptene",
+      "molecular_formula": "C7H14",
+      "comment": "Double-bond position unstated: an n-ene with no locant. The specific alkenes have their own registry numbers."
+    },
+    {
+      "cas": "25264-93-1",
+      "name": "Hexene",
+      "molecular_formula": "C6H12",
+      "comment": "Double-bond position unstated: an n-ene with no locant. The specific alkenes have their own registry numbers."
+    },
+    {
+      "cas": "25377-83-7",
+      "name": "Octene",
+      "molecular_formula": "C8H16",
+      "comment": "Double-bond position unstated: an n-ene with no locant. The specific alkenes have their own registry numbers."
+    },
+    {
+      "cas": "26952-14-7",
+      "name": "Hexadecene",
+      "molecular_formula": "C16H32",
+      "comment": "Double-bond position unstated: an n-ene with no locant. The specific alkenes have their own registry numbers."
+    },
+    {
+      "cas": "27070-58-2",
+      "name": "Octadecene",
+      "molecular_formula": "C18H36",
+      "comment": "Double-bond position unstated: an n-ene with no locant. The specific alkenes have their own registry numbers."
+    },
+    {
+      "cas": "1329-99-3",
+      "name": "Phellandrene",
+      "molecular_formula": "C10H16",
+      "comment": "Double-bond position unstated: an n-ene with no locant. The specific alkenes have their own registry numbers. Phellandrene is the alpha/beta mixture."
+    },
+    {
+      "cas": "26952-21-6",
+      "name": "Isooctanol",
+      "molecular_formula": "C8H18O",
+      "comment": "Chain branching unstated: an 'iso-' or unlocanted alkyl name covers a family of branched isomers, not one of them."
+    },
+    {
+      "cas": "27458-92-0",
+      "name": "Isotridecanol",
+      "molecular_formula": "C13H28O",
+      "comment": "Chain branching unstated: an 'iso-' or unlocanted alkyl name covers a family of branched isomers, not one of them."
+    },
+    {
+      "cas": "27458-94-2",
+      "name": "Isononanol",
+      "molecular_formula": "C9H20O",
+      "comment": "Chain branching unstated: an 'iso-' or unlocanted alkyl name covers a family of branched isomers, not one of them."
+    },
+    {
+      "cas": "25339-17-7",
+      "name": "Isodecanol",
+      "molecular_formula": "C10H22O",
+      "comment": "Chain branching unstated: an 'iso-' or unlocanted alkyl name covers a family of branched isomers, not one of them."
+    },
+    {
+      "cas": "30399-84-9",
+      "name": "Isostearic acid",
+      "molecular_formula": "C18H36O2",
+      "comment": "Chain branching unstated: an 'iso-' or unlocanted alkyl name covers a family of branched isomers, not one of them."
+    },
+    {
+      "cas": "43133-95-5",
+      "name": "Methylpentane",
+      "molecular_formula": "C6H14",
+      "comment": "Chain branching unstated: an 'iso-' or unlocanted alkyl name covers a family of branched isomers, not one of them."
+    },
+    {
+      "cas": "31394-54-4",
+      "name": "Isoheptane",
+      "molecular_formula": "C7H16",
+      "comment": "Chain branching unstated: an 'iso-' or unlocanted alkyl name covers a family of branched isomers, not one of them."
+    },
+    {
+      "cas": "30899-19-5",
+      "name": "Pentanol",
+      "molecular_formula": "C5H12O",
+      "comment": "Chain branching unstated: an 'iso-' or unlocanted alkyl name covers a family of branched isomers, not one of them."
+    },
+    {
+      "cas": "28553-12-0",
+      "name": "Diisononyl phthalate",
+      "molecular_formula": "C26H42O4",
+      "comment": "Commercial branched-alcohol ester: the alcohol is a branched-chain mixture, so the ester is a family of structures."
+    },
+    {
+      "cas": "26761-40-0",
+      "name": "Diisodecyl phthalate",
+      "molecular_formula": "C28H46O4",
+      "comment": "Commercial branched-alcohol ester: the alcohol is a branched-chain mixture, so the ester is a family of structures."
+    },
+    {
+      "cas": "25322-68-3",
+      "name": "Polyethylene glycol",
+      "molecular_formula": "(C2H4O)nH2O",
+      "comment": "A polymer: chain length is not fixed, so there is no single structure."
+    },
+    {
+      "cas": "37353-75-6",
+      "name": "α,α′-[(1-Methylethylidene)di-4,1-phenylene]bis[ω-hydroxypoly[oxy(methyl-1,2-ethanediyl)]]",
+      "molecular_formula": "(C3H6O)n(C3H6O)nC15H16O2",
+      "comment": "A polymer: chain length is not fixed, so there is no single structure."
+    }
+  ],
+  "specific": []
+}

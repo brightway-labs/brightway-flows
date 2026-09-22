@@ -1,0 +1,229 @@
+{#
+  The factors section landing page: a section per characterised method, its
+  implementations as cards, a row per impact category, and a link into each one.
+
+  Keyed on our category name, which is what makes the table readable at all --
+  the JRC calls it `Ecotoxicity, freshwater` and ecoinvent calls it
+  `ecotoxicity: freshwater`, and without the crosswalk this would be 50 rows
+  that never line up.
+
+  **Two columns and not one per implementation.** The old table put every
+  implementation in a column of its own, which reads well at three and stops
+  reading at six: EF 3.1 is one of the methods this section will hold and the
+  JRC and ecoinvent are two of the lists it will read, so a table whose width is
+  the number of publishers is a table that has to be redesigned every time one
+  is added. What is on the page instead is the one column that is always there
+  -- what *this list* publishes -- and beside it a stack of what each input
+  states, one line per implementation. Adding a fourth adds a line, not a
+  column, and no template has to know its name.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Factors" %}
+{% set active_section = "factors" %}
+{% set stats = overview.run.stats %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Characterisation factors</h1>
+  <p class="page__lede">
+    Every implementation of every method this build was characterised against,
+    published unchanged, and beside them <strong>this list's own</strong>: it
+    publishes what nobody disputes and asks a curator about the rest, which is
+    what the <a href="{{ url_for('queue.index') }}">factor queues</a> are.
+  </p>
+  <p class="muted">
+    From <span class="mono">characterise</span> run
+    <span class="mono">{{ overview.run.run_id[:8] }}</span>
+    {% if overview.run.finished_at %}at {{ overview.run.finished_at | timestamp }}{% endif %}
+    {% if overview.run.build_run_id %}
+    against build <span class="mono">{{ overview.run.build_run_id }}</span>{% endif %}.
+  </p>
+</header>
+
+{% for method in overview.methods %}
+<section class="section">
+  <div class="section__header">
+    <h2>{{ method.label }}</h2>
+    <span class="muted">{{ method.categories | length | thousands }} categories</span>
+  </div>
+  <p class="page__lede">
+    Every one is <em>long term</em>: this list publishes no short-timeframe set,
+    because excluding a source list's long-term compartments is that list's
+    convention and not this one's. Follow a category for the factors under it.
+  </p>
+  {#
+    One card per implementation of *this* method, ours first. An implementation
+    that published nothing says why on its own card rather than showing a bare
+    zero: a zero here reads as "the file was empty", and the reason it is usually
+    not that is that the factors named flows this build never merged.
+
+    Inside the method section and not above it, because "ecoinvent Centre —
+    26,479 factors" is a fact about one method: the same implementer rendering a
+    second method states a different number, and one card for both would be the
+    two added together.
+  #}
+  <div class="cards">
+    {% for implementation in method.summaries %}
+    <div class="card{% if implementation.silent %} card--empty{% endif %}">
+      <span class="card__label">
+        {{ implementation.implemented_by }}
+        {% if implementation.ours %}<span class="tag tag--ok">this list</span>{% endif %}
+      </span>
+      <span class="card__value">{{ implementation.factors | thousands }}</span>
+      <span class="card__note">
+        {% if implementation.silent %}
+          factors published.
+          {% if implementation.stated %}
+          Its own file states {{ implementation.stated | thousands }}, and
+          {% if implementation.merged == 0 %}
+          none of the flows they name was merged into this build — so there is
+          nothing for them to be published against.
+          {% else %}
+          {{ implementation.unreached | thousands }} of the flows they name reached
+          no consensus flow.
+          {% endif %}
+          {% if implementation.unreached %}
+          <a href="{{ url_for('factors.findings', kind='flow-not-reached') }}">Which
+            flows</a>.
+          {% endif %}
+          {% else %}
+          nothing was read for this implementation.
+          {% endif %}
+        {% else %}
+          factors, {{ implementation.non_zero | thousands }} of them non-zero.
+          {%- if implementation.unpublished %}
+          Its own file states {{ implementation.stated | thousands }}:
+          {{ implementation.unpublished | thousands }} did not reach this layer.
+          {%- endif %}
+        {% endif %}
+      </span>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Category</th>
+          <th scope="col">Unit</th>
+          <th scope="col">Protects</th>
+          {#
+            The consensus column is named from the data too, but it is the one
+            column the layout guarantees: this list always publishes an
+            implementation of a method it characterised, even where every factor
+            in it came from one publisher.
+          #}
+          {% for name in method.ours %}
+          <th scope="col" class="num">{{ name }}</th>
+          {% endfor %}
+          <th scope="col">Implementations read</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in method.categories %}
+        <tr>
+          <td>
+            {% if row.linkable %}
+            <a href="{{ url_for('factors.category', method=row.method_slug,
+                                version=row.version, slug=row.slug) }}">{{ row.name }}</a>
+            {% else %}{{ row.name }}{% endif %}
+            {% if row.indicator %}<div class="muted">{{ row.indicator }}</div>{% endif %}
+          </td>
+          <td class="mono">{{ row.unit or "—" }}</td>
+          <td class="muted">{{ row.area_of_protection }}</td>
+          {% for name in method.ours %}
+          {% set count = row.count(name) %}
+          <td class="num">
+            {% if count and count.factors %}
+            {{ count.factors | thousands }}
+            <div class="muted">{{ count.flows | thousands }} flows</div>
+            {% else %}<span class="muted">—</span>{% endif %}
+          </td>
+          {% endfor %}
+          <td>
+            {#
+              A stack rather than a column each. One line per implementation, so
+              a sixth is a sixth line and nothing has to be laid out again.
+            #}
+            <ul class="sources">
+              {% for name in method.inputs %}
+              {% set count = row.count(name) %}
+              <li class="sources__row">
+                <span class="sources__label">{{ name }}</span>
+                <span class="sources__value">
+                  {% if count and count.factors %}{{ count.factors | thousands }}
+                  {% else %}<span class="muted">—</span>{% endif %}
+                </span>
+              </li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% else %}
+<div class="notice"><p>No method has been characterised against this build.</p></div>
+{% endfor %}
+
+<section class="section">
+  <div class="section__header">
+    <h2>Where the published implementations differ</h2>
+    <span class="muted">{{ stats.get('difference_shared', 0) | thousands }} compared</span>
+  </div>
+  <p class="page__lede">
+    The headline is the agreement: across every method characterised, the
+    {{ compared | length }} implementations that state a row agree
+    <em>exactly</em> — same float, full precision — on
+    {{ stats.get('difference_identical', 0) | thousands }} of the
+    {{ stats.get('difference_shared', 0) | thousands }} rows more than one of
+    them states. A difference is not an error; most are modelling choices
+    between competent teams.
+  </p>
+  {#
+    Four cards and not one per band. `2x`, `10x`, `100x` and `over-100x` are one
+    answer — these do not agree about this number — split four ways, and four
+    cards say four times over what one says once. The line that carries meaning
+    is the 2% this project already draws between a rounding and a disagreement.
+    Every row still carries its exact band and its exact ratio; only the summary
+    is grouped.
+  #}
+  <div class="cards">
+    {% for slug, label, count in bands %}
+    <a class="card card--link{% if not count %} card--empty{% endif %}"
+       href="{{ url_for('factors.differences', band=slug) }}">
+      <span class="card__label">{{ label }}</span>
+      <span class="card__value">{{ count | thousands }}</span>
+    </a>
+    {% endfor %}
+  </div>
+  <p>
+    <a class="button" href="{{ url_for('factors.differences') }}">The whole report</a>
+    <a class="button" href="{{ url_for('factors.coverage') }}">Coverage across contexts</a>
+  </p>
+</section>
+
+<section class="section">
+  <div class="section__header">
+    <h2>What the run found</h2>
+  </div>
+  <p class="page__lede">
+    Things <span class="mono">characterise</span> did not silently resolve. None
+    of them is a factor this list changed: where two numbers cannot both be
+    published, neither is.
+  </p>
+  <div class="cards">
+    {% for finding in findings %}
+    <a class="card card--link"
+       href="{{ url_for('factors.findings', kind=finding.kind) }}">
+      <span class="card__label">{{ finding.title }}</span>
+      <span class="card__value">{{ finding.count | thousands }}</span>
+      <span class="card__note">{{ finding.finds }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

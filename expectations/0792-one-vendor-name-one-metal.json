@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "description": "BAFU names a metal in thirteen to fifteen compartments and means the element in all of them. This list publishes twelve or thirteen of those rows as the element and one or two as the ion, and the whole of the difference is one subcompartment: `unspecified`, in air and in water.\n\nThe cause is not a ruling. Eleven BAFU rows carry **two** registry numbers rather than one -- the element's and an ion's -- because the extraction unions what BAFU's own processes wrote, and BAFU's processes do not agree. For `Chromium` to unspecified water, **122** exchanges in 122 processes write 7440-47-3, one exchange in one process writes 18540-29-9, and nine write no number at all. The merge then reads `cas_numbers[0]` -- `rows.py` says in a comment that a source list supplies at most one -- and the five-digit ion numbers sort before 7439- and 7440-, so the single stray exchange decides the substance for all 123.\n\nThe correction is the one the extractor was written to expect: it keeps both numbers on purpose, so that a manual fix can choose, and eleven fixes in `bafu-2026-v1-manual-fixes.json` now do. This is the mirror of #146 -- there BAFU wrote the element's number beside `Cadmium II`, a name that states the ion, and the name was the half that was right; here BAFU writes the ion's number beside `Cadmium`, a name that states the element, and the name is again the half that is right, with 97 to 99 per cent of BAFU's own exchanges agreeing with it.\n\nMeasured on the build of 2026-08-29 (`20260829T0723544328260000`, `9718911`). Every claim below fails on it: each metal reaches two substances there rather than one.\n\nWhat it costs in published numbers: nothing. The element and its +2 ion carry the same six factors in `Environmental -> Air -> Unknown` and `Environmental -> Water -> Unknown` -- the JRC states chromium in unspecified water at 12,274 CTUe and 5.2671e-05 CTUh, which is exactly what `Chromium(6+)` carries. This is #146's reason for fixing, unchanged: one name means one thing.\n\nThe twelfth ambiguous row is left alone. `Sulfur dioxide` to unspecified air carries `2025884` beside 7446-09-5, and `2025884` is not a registry number in any format; the row matches on its EC number and reaches `Sulfur Dioxide` either way, so nothing about the substance is in doubt.",
+  "expectations": [
+    {
+      "id": "0792-chromium-in-unspecified-water-is-the-element",
+      "issue": 792,
+      "title": "BAFU's `Chromium` emitted to unspecified water is published as chromium, not as chromium(VI)",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "2516d6e7-cccb-5d0e-bd0e-4d9e9e1fb644"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Chromium",
+        "target_context_display": "Environmental → Water → Unknown"
+      },
+      "comment": "The row the issue is named for, and the sharpest of the eleven: BAFU's other four chromium-in-water rows -- groundwater, lake, ocean, river -- all reach `Chromium` on 7440-47-3, and this one reached `Chromium(6+)` on 18540-29-9, so the same emission was the metal in a river and the carcinogenic hexavalent form in unspecified water.\n\n`basis: cas` is claimed as well as the target because the number is what should answer here and the row has one: an outcome that reached `Chromium` by reading the name would be the right flow found the wrong way, and #146 declined to break number-over-name for exactly that reason. What changed is which of the row's own two numbers is read, not whether a number is read."
+    },
+    {
+      "id": "0792-bafu-cadmium-is-one-substance",
+      "issue": 792,
+      "title": "BAFU's fifteen rows named `Cadmium` are one substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Cadmium"
+      },
+      "expect": {
+        "substance_count": 1
+      },
+      "comment": "Two before: thirteen rows on `Cadmium` and two -- air unspecified and water unspecified -- on `Cadmium(2+)`. `substance_count` rather than `same_target`, because the fifteen rows are in fifteen compartments and reaching fifteen flows is correct; it is reaching two *substances* that is not. The count is exactly one rather than at most one so that the claim fails in both directions: three would be a new spelling appearing, and zero would be the rows ceasing to match at all.\n\nBAFU ships `Cadmium II` separately, in air, high population, and #146 gave that row 22537-48-0 on the same reasoning read the other way. So the vendor does distinguish the ion from the metal by name, and this list can too."
+    },
+    {
+      "id": "0792-bafu-chromium-is-one-substance",
+      "issue": 792,
+      "title": "BAFU's thirteen rows named `Chromium` are one substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Chromium"
+      },
+      "expect": {
+        "substance_count": 1
+      },
+      "comment": "Two before: twelve on `Chromium` and one on `Chromium(6+)`. Chromium is the one metal of the six whose stray exchange is in water only, and the one where BAFU ships both ionic spellings of its own -- `Chromium III` under 16065-83-1 and `Chromium VI` under 18540-29-9, five rows and nine, each reaching its own substance and untouched by this change. That is what makes the plain-`Chromium` row's reading unambiguous: BAFU has a name for the hexavalent form and this is not it."
+    },
+    {
+      "id": "0792-bafu-lead-is-one-substance",
+      "issue": 792,
+      "title": "BAFU's fifteen rows named `Lead` are one substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Lead"
+      },
+      "expect": {
+        "substance_count": 1
+      },
+      "comment": "Two before: thirteen on `Lead`, two on `Lead(2+)`. 268 of BAFU's exchanges write 7439-92-1 for lead to unspecified air against five that write 14280-50-3, and 131 against four in unspecified water."
+    },
+    {
+      "id": "0792-bafu-mercury-is-one-substance",
+      "issue": 792,
+      "title": "BAFU's fifteen rows named `Mercury` are one substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Mercury"
+      },
+      "expect": {
+        "substance_count": 1
+      },
+      "comment": "Two before: thirteen on `Mercury`, two on `Mercury(2+)`. 201 exchanges against four in unspecified air, 97 against three in unspecified water."
+    },
+    {
+      "id": "0792-bafu-nickel-is-one-substance",
+      "issue": 792,
+      "title": "BAFU's fourteen rows named `Nickel` are one substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Nickel"
+      },
+      "expect": {
+        "substance_count": 1
+      },
+      "comment": "Two before: twelve on `Nickel`, two on `Nickel(2+)`. 213 exchanges against six in unspecified air, 124 against three in unspecified water."
+    },
+    {
+      "id": "0792-bafu-zinc-is-one-substance",
+      "issue": 792,
+      "title": "BAFU's fifteen rows named `Zinc` are one substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Zinc"
+      },
+      "expect": {
+        "substance_count": 1
+      },
+      "comment": "Two before: thirteen on `Zinc`, two on `Zinc(2+)`. 257 exchanges against four in unspecified air, 159 against three in unspecified water."
+    },
+    {
+      "id": "0792-the-ion-bafu-names-is-still-the-ion",
+      "issue": 792,
+      "title": "BAFU's `Cadmium II` still reaches the cadmium(2+) ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Cadmium II"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Cadmium(2+)"
+      },
+      "comment": "The half this change must not move, and the reason the six claims above are safe: BAFU has a spelling for the ion, and a fix that read every BAFU metal as the element would take this row with it. It is #146's row and it keeps #146's answer.\n\nStated as a claim rather than left to the diff because the two changes pull in opposite directions on the same file, and a later sweep that tidied one of them would break the other silently."
+    },
+    {
+      "id": "0792-chromium-vi-in-unspecified-water-is-untouched",
+      "issue": 792,
+      "title": "BAFU's `Chromium VI` in unspecified water still reaches `Chromium(6+)`",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "b298c2f3-8a93-53e4-a7c8-160cbb3856a9"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Chromium(6+)",
+        "target_context_display": "Environmental → Water → Unknown"
+      },
+      "comment": "The flow the corrected row is leaving, in the compartment it is leaving it in. `Chromium(6+)` in unspecified water is not an artefact of the defect and does not go away with it: BAFU states hexavalent chromium in that compartment under its own name and its own number, one of nine such rows, and that is the row the JRC's 12,274 CTUe belongs to.\n\nIt is here so that the diff for this issue cannot be read as \"BAFU no longer reports chromium VI to water\", which would be the wrong lesson and a real regression if it were ever true."
+    }
+  ]
+}

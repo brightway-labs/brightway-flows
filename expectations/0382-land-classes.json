@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "description": "A land flow says five things and the list had slots for two. Which way a transformation runs, what the land is, and how it is used all lived in a comma-separated name that three source lists spell three ways -- so one piece of ground was three flow objects, and a balanced pair of characterisation factors was held apart by nothing but the words `from` and `to` inside a label, in a field the deduplication does not read. Each is now a field on the flow object. Two names that decompose to the same fields are the same class with no crosswalk row required, and two directions are two values, so they cannot collapse. Measured against the full build of 19 August 2026 -- EF 3.1 base, ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026 v1 merged -- against a build of the same inputs at commit eddd2db, where this branch left main.",
+  "expectations": [
+    {
+      "id": "0382-bafu-intensive-arable-reaches-ef",
+      "issue": 382,
+      "title": "BAFU's intensively farmed rain-fed cropland reaches the flow EF 3.1 already publishes for it, instead of creating a second one",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Occupation, annual crop, non-irrigated, intensive"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "land_class",
+        "target_name": "Cropland, non-irrigated, intensive",
+        "target_characterised": true
+      },
+      "comment": "Before this change the row created a flow of its own, because there was no field in which BAFU's `annual crop, non-irrigated, intensive` and EF 3.1's `arable, non-irrigated, intensive` could be seen to be one thing. They decompose onto the same axes -- cropland, held without irrigation, farmed intensively -- so they mint the same identifier and meet, and the row now inherits the 213 characterisation factors EF's flow carries. `basis` is `land_class` rather than a registry number because a land flow has no registry number: this axis is the only evidence there has ever been."
+    },
+    {
+      "id": "0382-bafu-forest-reaches-ef",
+      "issue": 382,
+      "title": "BAFU's unqualified forest reaches EF 3.1's forest",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Occupation, forest, unspecified"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "land_class",
+        "target_name": "Forest",
+        "row_count": 2
+      },
+      "comment": "Two rows, because BAFU files one land class in more than one compartment -- this one in `resources / land` and in `resources / unspecified` -- and the context mapping now routes both to the land dimension. They are one class arriving by two routes rather than two classes being merged, which is why the fold is recorded in land-flow-groupings.json rather than declined. A stated `unspecified` use is the absence of a statement and not a statement, so BAFU's `forest, unspecified` and EF's bare `forest` are the same class."
+    },
+    {
+      "id": "0382-bafu-land-rows-mostly-match",
+      "issue": 382,
+      "title": "Most of BAFU's land rows now land on a flow the list already has, where almost none of them used to",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name_contains": "Occupation,"
+      },
+      "expect": {
+        "not_outcome": "unmatched"
+      },
+      "comment": "The headline of #66 \u00a71.3. Of BAFU's 152 land rows, 8 reached an existing flow on the build of commit eddd2db and 87 do here; the other 65 create a flow, down from 144. Every one of those 144 was a duplicate of a class EF 3.1 already published, because a land class had no field and BAFU's spelling could not be recognised as EF's. The claim here is the weaker and more durable one -- that no land row is left unplaced -- because the exact split between matching and creating moves whenever a vendor adds a class."
+    },
+    {
+      "id": "0382-the-balanced-pair-is-two-substances",
+      "issue": 382,
+      "title": "Transformation from primary forest and transformation to primary forest are two substances, not one",
+      "subject": {
+        "kind": "flow",
+        "name": "From forest, primary"
+      },
+      "expect": {
+        "exists": true,
+        "deprecated": false,
+        "characterised": true,
+        "substance_id": "fo-54806a7dd7b8e94a"
+      },
+      "comment": "EF 3.1 characterises this pair at -396.7 and +396.7 in one context and one unit. Until direction became a field the only thing keeping the two from looking identical to the pipeline was the words `from` and `to` inside a label, and `pipeline/deduplication.py` signs on every semantic field but six -- not on the label. That is the same shape as #31, where a collapsed pair inflated a water use result by a factor of 434. Direction is a field precisely so that correctness stops resting on two strings being spelled differently: they are different values, so they mint different objects. The `to` half is fo-162b80fc3620aef5."
+    },
+    {
+      "id": "0382-the-other-half-of-the-pair-is-live",
+      "issue": 382,
+      "title": "The `to` half of the primary-forest pair is published in its own right",
+      "subject": {
+        "kind": "flow",
+        "name": "To forest, primary"
+      },
+      "expect": {
+        "exists": true,
+        "deprecated": false,
+        "characterised": true,
+        "substance_id": "fo-162b80fc3620aef5"
+      },
+      "comment": "Stated separately from its partner rather than as one claim about the pair, because a check that asks about only one half cannot report the failure it exists to catch: a collapse retires one of the two, and the survivor looks perfectly healthy. Across the whole build 94 from/to pairs are published and none has a dead half."
+    },
+    {
+      "id": "0382-a-land-class-is-not-a-substance",
+      "issue": 382,
+      "title": "A land class is typed as an environmental class rather than left unclassified or published as a class of molecules",
+      "subject": {
+        "kind": "substance",
+        "label": "Cropland, non-irrigated, intensive"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "ENVO_01000892"
+      },
+      "comment": "ENVO's `area of cropland`. Before this, every land flow in the build was typed `land_use_not_a_chemical_entity` -- correct, and the end of what the typing had to say about a piece of ground -- and two BAFU forests were worse than untyped: they reached a rule that reads the label and were published as classes of molecules. A land class is not a substance and it is not nothing; it is an environmental class held under a set of agricultural practices, and the type now says so. The citation is computed from the `cover` field, so every class whose cover is cropland cites the same ENVO term and they cannot drift apart."
+    },
+    {
+      "id": "0382-grassland-is-not-meadow",
+      "issue": 382,
+      "title": "Grassland, pasture-or-meadow, and the class that is both, stay three substances",
+      "subject": {
+        "kind": "substance",
+        "label": "Pasture"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "ENVO_01000891"
+      },
+      "comment": "EF ships all three and they are three different pieces of ground. `grassland` and `grassland/pasture/meadow` carry 426 characterisation factors each with every value identical, which is what first suggested they were one class -- but `pasture/meadow` carries 427, and not one of the 426 it shares with grassland has the same amount. A meadow is mown and a pasture is grazed, which is why ENVO files both under `area of pastureland or hayfields` and files grassland somewhere else entirely; and `grassland/pasture/meadow` is the union of the two, which ENVO has no class for at all. ecoinvent draws the same line on a different axis -- `grassland, natural` against `pasture, man made` -- so it is not EF's idiosyncrasy. Reading the union as plain grassland asserted that grassland takes in hayfields, which is the one statement the three-way split denies, and it retired three of EF's flows onto three others. The union cover cites ENVO's `grassland area` as a related match rather than an equivalence, because neither containment holds."
+    },
+    {
+      "id": "0382-the-combined-grassland-class-is-its-own-flow",
+      "issue": 382,
+      "title": "EF's `grassland/pasture/meadow` is published as itself rather than as grassland",
+      "subject": {
+        "kind": "flow",
+        "name": "Grassland, pasture or meadow"
+      },
+      "expect": {
+        "exists": true,
+        "deprecated": false,
+        "characterised": true
+      },
+      "comment": "The class that is grassland and pastureland and hayfields at once. It was folded onto plain grassland until the cover was added, which retired this flow and both of its transformation directions onto EF's grassland flows -- three retirements, all of them a claim that grassland is meadow. It is published in its own right now, and the one land flow this build still retires is EF's `Occup. as Forest land`, which carries no characterisation factor at all."
+    }
+  ]
+}

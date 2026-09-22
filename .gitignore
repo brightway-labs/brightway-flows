@@ -1,0 +1,31 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# MkDocs build output
+site/
+
+# Agent tooling: the skills are checked in, the local settings and the
+# worktrees are not.
+.claude/*
+!.claude/skills/
+
+# Per-worktree data directory (tools/seed_data_dir.py)
+.data/
+
+# `py2opsin` writes its OPSIN input into the working directory, so a build run
+# from a checkout leaves this behind. It is a build artifact, and an untracked
+# one makes `git status --porcelain` dirty -- which stamps the build as coming
+# from a modified tree and makes it useless as a comparison side (#101).
+py2opsin_temp_input.txt
+
+# Before-side scratch for build comparisons (tools/compare_merge_outcomes.py)
+.before/
+.before-data/

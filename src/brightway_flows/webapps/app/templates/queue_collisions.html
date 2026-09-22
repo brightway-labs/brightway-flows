@@ -1,0 +1,145 @@
+{#
+  The elementary-flow collision queue.
+
+  The one queue the shared `queue.html` cannot render: its item is a group of
+  live flows, not a row, and the question -- two flows, or one? -- is answered
+  by reading what each flow carries against what the two disagree on. Through
+  the shared template it would have been a column of UUIDs (#61).
+
+  One section per group; one row per flow; one column per field the flows do
+  not agree on, marked where deduplication is the thing reading it.
+
+  The flow marked "would be kept" is the one deduplication's own ranking would
+  keep -- if what holds the group apart ever went away. Nothing in this queue
+  is collapsing today: the report runs after the deduplication pass (#58).
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = definition.title %}
+{% set active_section = "queue" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ definition.title }}</h1>
+  <p class="page__lede">{{ definition.question }}</p>
+  <p class="muted mono">{{ definition.name }}</p>
+</header>
+
+{#
+  Not `search_form`: that macro builds its action with `url_for(endpoint)`, and
+  this page's endpoint takes the queue name.
+#}
+<form class="filters" method="get"
+      action="{{ url_for('queue.detail', name=definition.name) }}">
+  {# The severity is held by the chips below; searching must not drop it. #}
+  <input type="hidden" name="severity" value="{{ severity }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Substance, context or identifier…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('queue.detail', {'name': definition.name}) }}
+  </div>
+</form>
+
+{#
+  The severity badge as a one-click filter.
+
+  The dropdown could already do this and nobody used it: a curator opens a queue
+  to find the blocking rows, and "blocking" is a word on the rows rather than a
+  word in a menu. The counts are of this queue under this search.
+#}
+{{ t.badge_filter("Severity", "severity", severity, badges,
+                  'queue.detail', dict(args, name=definition.name),
+                  all_count=badge_total) }}
+
+{% if page.rows %}
+{{ t.pager(page, 'queue.detail', dict(args, name=definition.name)) }}
+
+{% for group in page.rows %}
+<section class="section">
+  <div class="section__header">
+    <h2>{{ group.title }}</h2>
+  </div>
+  <dl class="facts">
+    <dt>Substance</dt>
+    <dd>{{ t.substance_link(group.flow_object_id) }}</dd>
+    <dt>Context</dt>
+    <dd>{{ group.context_display or group.context_iri }}</dd>
+    <dt>Unit</dt>
+    <dd class="mono">{{ group.unit or "—" }}</dd>
+    <dt>Held apart by</dt>
+    <dd>
+      {% for entry in group.holding_apart %}
+      <span class="tag tag--review">{{ entry.label }}</span>
+      {% else %}
+      <span class="tag tag--blocking">nothing deduplication compares</span>
+      {% endfor %}
+    </dd>
+  </dl>
+
+  {% if group.missing %}
+  <div class="notice notice--warn">
+    <p>
+      Not in this database:
+      {% for uuid in group.missing %}<span class="mono">{{ uuid }}</span>{% endfor %}.
+      The queue was written by an earlier run than the flows were.
+    </p>
+  </div>
+  {% endif %}
+
+  {% if group.flows %}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Flow</th>
+          <th scope="col">Shipped as</th>
+          <th scope="col">Source list</th>
+          <th scope="col" class="num">Factors</th>
+          {% for entry in group.fields %}
+          <th scope="col">
+            {{ entry.label }}
+            {% if entry.holds_apart %}
+            <span class="tag tag--review">holds apart</span>
+            {% endif %}
+            {% if entry.same_text %}
+            <div class="muted">same text, different record</div>
+            {% elif entry.differences_only %}
+            <div class="muted">only what is not shared</div>
+            {% endif %}
+          </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for flow in group.flows %}
+        <tr>
+          <td>
+            {{ t.flow_link(flow.uuid) }}
+            {% if flow.would_be_kept %}
+            <span class="tag tag--review">would be kept</span>
+            {% endif %}
+          </td>
+          <td>{{ flow.provided_name or "—" }}</td>
+          <td>{{ flow.source or "—" }}</td>
+          <td class="num">{{ flow.lcia_factor_count | thousands }}</td>
+          {% for value in flow.values %}
+          <td>{{ value | short_value }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</section>
+{% endfor %}
+
+{{ t.pager(page, 'queue.detail', dict(args, name=definition.name)) }}
+{% else %}
+{{ t.nothing_matches("Nothing in this queue: no substance has two live flows in one context and unit."
+                     if not query and not severity
+                     else "Nothing matches these filters.") }}
+{% endif %}
+{% endblock %}

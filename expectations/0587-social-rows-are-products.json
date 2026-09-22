@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent 3.8's apos and consequential releases carry three elementary exchanges its cutoff export does not, all in a `social / unspecified` compartment ecoinvent uses nowhere else. #25 added them as source rows the fetch could not see, and the merge minted a consensus flow for each. They should never have been added: all three are *products*.\n\nEach duplicates an intermediate exchange -- `venting of argon, crude, liquid` is `ccde15d5-179a-4bf2-a323-17fb1e056261`, `venting of nitrogen, liquid` is `1adfc43f-187a-4153-996c-aced5301536a`, `residual wood, dry` is `019600be-f3ce-4399-9e31-19cdc087ed5f` -- and every one of those three products is carried, under one uuid, by every release from 3.8 to 3.12 in every system model. The elementary duplicates are carried by exactly one file in any release: 3.8 apos's `MasterData/ElementaryExchanges.xml`. No dataset in that release references them, and 3.9.1 removed all three.\n\nSo the three rows are refused, in `ecoinvent-3.8-additional-flows.json`'s `excluded` list rather than deleted, and the three consensus flows they minted are withdrawn. What this file states is the build-side half: those identifiers are not published, and nothing takes their place.\n\nThe published half is not stateable here, because it is not about a build's flows. That a consumer counting ecoinvent 3.8's master data against the correspondence learns *why* three are missing is carried by `brightway:excludedSourceConcept` on the `ecoinvent-3.8` correspondence and by a `source-row-withdrawn` record in `redirects`, and both are covered in `tests/test_correspondences.py` and `tests/test_flow_redirects.py`.",
+  "expectations": [
+    {
+      "id": "0587-venting-of-argon-is-not-published",
+      "issue": 587,
+      "title": "The flow minted from `venting of argon, crude, liquid` is gone",
+      "subject": {
+        "kind": "flow",
+        "uuid": "3b5f85d9601a67605e692bb34b268dd3e2b6e41c"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Published in the artifact of 19 August 2026 as `Venting Of Argon, Crude, Liquid` in `https://vocab.brightway.one/flow-contexts/soci`, source `ecoinvent algorithm addition`, with no CAS, no synonyms and no properties -- the whole record ecoinvent ships for it is a name, a unit and a compartment, because it is a product entry that strayed into the elementary list. Named by uuid because what has to stop is the identifier being published, not a name being used."
+    },
+    {
+      "id": "0587-venting-of-nitrogen-is-not-published",
+      "issue": 587,
+      "title": "The flow minted from `venting of nitrogen, liquid` is gone",
+      "subject": {
+        "kind": "flow",
+        "uuid": "e3378e2056920fcd33aaa3650e0c8ae90e47468d"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "As above. The intermediate exchange it duplicates, `1adfc43f-187a-4153-996c-aced5301536a`, keeps that uuid in all eleven ecoSpold02 releases cached on this machine, which is the asymmetry the whole ruling rests on: ecoinvent carries its products forward and never carried these."
+    },
+    {
+      "id": "0587-residual-wood-is-not-published",
+      "issue": 587,
+      "title": "The flow minted from `residual wood, dry` is gone",
+      "subject": {
+        "kind": "flow",
+        "uuid": "a2b1125471a3d31a3094deb35114e6e62d809d73"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "As above, and the clearest of the three: ecoinvent renamed the product to `residual wood, dry, measured as dry volume` in 3.12 while keeping uuid `019600be-f3ce-4399-9e31-19cdc087ed5f`. A product being renamed under a stable uuid is ordinary; the elementary duplicate was never renamed because it was never carried forward at all."
+    },
+    {
+      "id": "0587-nothing-is-published-in-the-social-context",
+      "issue": 587,
+      "title": "No flow is published in the social context",
+      "subject": {
+        "kind": "flow",
+        "context_iri": "https://vocab.brightway.one/flow-contexts/soci"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "The three above were the only inhabitants of `soci` in any build, and each was there because a mapping put ecoinvent 3.8's `social / unspecified` compartment onto it. That mapping is gone too. Stated about the context rather than about the three flows so that the next row landing there has to be argued for rather than arriving on the strength of a rule written for records nobody should have added.\n\nThat happened on 2026-08-29. Stepwise 2006 joined the merge with three injury counts in a `Social / (unspecified)` compartment of its own, this check read 3, and the argument went against them: an injury is not an environmental flow, so the rows are refused and their context rule is gone the way ecoinvent's went. See #173, and `0809-injuries-are-not-environmental-flows.json` for what is claimed about them. The check did the job it was written for, which is why it is stated about the context and not about three uuids."
+    }
+  ]
+}

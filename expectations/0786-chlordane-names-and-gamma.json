@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "description": "Chlordane is an insecticide, banned almost everywhere since the 1990s and still turning up in inventories of older farming and building work. It reaches this list four times over, and until #167 not one of the four names said which chlordane it was.\n\n| registry number | what it names | published as, before |\n|---|---|---|\n| 57-74-9 | chlordane the compound, no arrangement in space stated | `Chlordane , Pur` |\n| 12789-03-6 | technical chlordane, the product as manufactured and sprayed | `Chlordane` |\n| 5103-71-9 | cis-chlordane, also called alpha-chlordane | `(1α,2α,3aα,4β,7β,7aα)-1,2,4,5,6,7,8,8-octachloro-…` |\n| 5103-74-2 | trans-chlordane, also called beta- or gamma-chlordane | `(1α,2β,3aα,4β,7β,7aα)-1,2,4,5,6,7,8,8-octachloro-…` |\n\n`Chlordane , Pur` is ECHA's string for EC Inventory entry 200-349-0, stray space and untranslated French included; the two IUPAC strings differ from each other in one Greek letter in the middle of ninety characters. So the compound and the mixture were told apart only by a word no English reader would read as a qualifier, and the two isomers not at all.\n\nThe compound and the mixture stay two substances -- CAS itself declines to give 12789-03-6 a substance record, which is what a registry does when a number names a manufactured product -- and all four are renamed so that the name says which is which. Every previous name survives as an alternative label, so an inventory written against any of the four source lists still resolves.\n\nStepwise 2006 brings a fifth name, `Chlordane, gamma-`, under CAS 5566-34-7. It is refused at ingestion. The number belongs to a different compound entirely, gamma-chlordane in the literature means trans-chlordane, and Stepwise states the identical factor for `Chlordane, trans-` in every compartment where the gamma row appears -- 21 (category, compartment) groups, four names, byte-identical amounts, and no group carrying gamma without trans. The refusal is published on the Stepwise correspondence under `brightway:excludedSourceConcept`, which is covered in `tests/test_correspondences.py` rather than here.\n\nWhat does not change: the technical mixture still has no EF 3.1 characterisation factors, because EF has no flow for 12789-03-6 to take one from. Whether a factor may travel from the compound to the manufactured product is a question about factors and belongs with #156.",
+  "expectations": [
+    {
+      "id": "0786-the-compound-is-published-as-pure",
+      "issue": 786,
+      "title": "CAS 57-74-9 is published as `Chlordane, pure`",
+      "subject": {
+        "kind": "substance",
+        "cas": "57-74-9"
+      },
+      "expect": {
+        "count": 1,
+        "label": "Chlordane, pure",
+        "flow_count": 13
+      },
+      "comment": "Measured on the build of 28 August 2026 at commit d10ddf3 (run bd36e853): published as `Chlordane , Pur` over 13 flows, the string ECHA displays for EC Inventory entry 200-349-0 copied into EF 3.1 with the space before the comma intact. Of 8,056 distinct EF 3.1 flow names exactly four put a space before a comma and the other three are EC Inventory strings too. `pur` is French for pure and the distinction it draws is the right one to keep -- 57-74-9 is the compound, 12789-03-6 the manufactured product -- so the qualifier is kept, in English. The flow count is a guard: a rename that split or merged the substance would show here."
+    },
+    {
+      "id": "0786-the-mixture-is-published-as-technical",
+      "issue": 786,
+      "title": "CAS 12789-03-6 is published as `Chlordane, technical`",
+      "subject": {
+        "kind": "substance",
+        "cas": "12789-03-6"
+      },
+      "expect": {
+        "count": 1,
+        "label": "Chlordane, technical",
+        "flow_count": 9,
+        "flow_type": "ImpreciseChemicalMixture"
+      },
+      "comment": "Measured on the same build: published as bare `Chlordane` over 9 flows, already typed as an imprecise mixture and already carrying 12789-03-6 from ecoinvent's own flow record. It is this substance an ecoinvent or Stepwise inventory writing `Chlordane` means, so bare `Chlordane` is demoted to an alternative label rather than dropped. `flow_type` is claimed because the typing is the evidence for the name: the list already holds this as a mixture, and CAS holds no substance record for the number at all."
+    },
+    {
+      "id": "0786-cis-is-published-under-its-own-name",
+      "issue": 786,
+      "title": "CAS 5103-71-9 is published as `Chlordane, cis-`",
+      "subject": {
+        "kind": "substance",
+        "cas": "5103-71-9"
+      },
+      "expect": {
+        "count": 1,
+        "label": "Chlordane, cis-",
+        "flow_count": 15
+      },
+      "comment": "Measured on the same build: published as `(1α,2α,3aα,4β,7β,7aα)-1,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene`, because EF's IUPAC string beat ecoinvent's `Cis-chlordane` on length. `Chlordane, cis-` is the spelling ecoinvent, SimaPro and Stepwise all use and was already an alternative label on this object."
+    },
+    {
+      "id": "0786-trans-is-published-under-its-own-name",
+      "issue": 786,
+      "title": "CAS 5103-74-2 is published as `Chlordane, trans-`",
+      "subject": {
+        "kind": "substance",
+        "cas": "5103-74-2"
+      },
+      "expect": {
+        "count": 1,
+        "label": "Chlordane, trans-",
+        "flow_count": 15
+      },
+      "comment": "As for cis, and its published name differed from cis's in one Greek letter in the middle of ninety characters, which is the whole argument for renaming both. This is also the substance the name gamma-chlordane means; the four gamma labels it carries -- `γ-Chlordane`, `γ-Chlordan`, `trans-γ-Chlordane`, `trans-gamma-Chlordane` -- stay, because nothing else in the list answers to the name once the Stepwise gamma rows are refused."
+    },
+    {
+      "id": "0786-no-substance-is-published-under-5566-34-7",
+      "issue": 786,
+      "title": "No substance is published under CAS 5566-34-7",
+      "subject": {
+        "kind": "substance",
+        "cas": "5566-34-7"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "The whole of the gamma ruling, stated on the number because the number is what the claim is about. On the build of 28 August 2026 the six Stepwise `Chlordane, gamma-` rows matched nothing and minted `fo-2247a69a283f2f72`, published as `Chlordane, Gamma-` over 6 flows with no characterisation factors. 5566-34-7 is registered to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene, EC 226-938-2, InChIKey `JBZJEPYXXVKOKF-UHFFFAOYSA-N` -- two chlorines on one carbon where chlordane has one each on two, so not a stereoisomer of `BIWJNBZANLAXMG` at all, and not a substance any inventory reports. The rows are refused in `stepwise-2006-additional-flows.json` rather than mapped onto trans-chlordane, which would state the same number twice in one compartment."
+    },
+    {
+      "id": "0786-stepwise-chlordane-reaches-the-technical-mixture",
+      "issue": 786,
+      "title": "Stepwise's plain `Chlordane` rows reach the technical mixture, on the registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "name": "Chlordane"
+      },
+      "expect": {
+        "row_count": 6,
+        "same_substance": true,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_substance_id": "fo-8010c326e15ed772"
+      },
+      "comment": "Already true on the build of 28 August 2026 and stated so it stays true: Stepwise writes `Chlordane` / 12789-03-6 and ecoinvent writes the same pair, so the six rows land on the mixture by registry number with no override. Recorded because #207 proposed pinning these rows onto `fo-4755007857e353ff`, the EF object under 57-74-9, which is the other one of the two -- and because the renames here move both names the selector could have read. `basis` is claimed as well as the target: reaching the same substance by name instead would be the wrong answer arrived at by luck."
+    }
+  ]
+}

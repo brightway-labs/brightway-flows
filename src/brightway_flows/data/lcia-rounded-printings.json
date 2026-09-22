@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "method": "ef",
+  "description": "An implementation's amount that is a rounded printing of a number its own source states more precisely, and the precise value this list publishes instead. Read by `brightway_flows.lcia.precision`, applied to the consensus implementation only, and keyed on (category slug, substance) the way a ruling is -- the claim is about a substance in every compartment it is published in.\n\nBoth rows here are AR6 printing one assessment twice. Table 7.15, in the body of Chapter 7, states CFC-11's hundred-year global warming potential as `6226 ±2297` and HFC-134a's as `1526 ±577`. Table 7.SM.7, in the supplementary material, prints 6230 and 1530 -- the same assessment at three significant figures. EF 3.1 as the JRC published it carries the supplement's numbers; ecoinvent's implementation of the same method carries the chapter's. Where both speak the merge already keeps the precise one and calls it `agreed`; where only the JRC has a flow -- aircraft cruise height and indoor air -- the rounded number went out unopposed, so this list published 6230 for CFC-11 at cruise height and 6226 for CFC-11 everywhere else. One substance, one category, two numbers, and nothing on the page to say they are the same number. See #342.\n\n`prints` is matched exactly rather than approximately. A row is a claim about one printed number, and a tolerance here would rewrite factors the row was never written about: 97 (substance, category) groups on the 2026-08-25 build publish two values agreeing within 2%, and 93 of them are freshwater ecotoxicity, where the two values are two compartments' own numbers and both are computed and correct.\n\n`stated_about` records what every implementation stated when the row was written, and a build that states something else sends the question back rather than obeying a decision taken about other numbers -- the same contract `lcia-factor-rulings.json` and `lcia-misattributed-factors.json` hold.\n\nWhat is deliberately not here: sulfur hexafluoride. Its two numbers are not one number printed twice. AR6 assesses SF6 with a 3200-year atmospheric lifetime and prints 25200 in Table 7.SM.7; ecoinvent's 24300 is AR6's own radiative efficiency with a lifetime near 1000 years, which reproduces their GWP-20 (18200), GWP-100 (24300) and GWP-500 (29000) to three significant figures where AR6's lifetime reproduces none of them. That is a disagreement about the atmosphere rather than about a printing, and it was settled by a ruling in `lcia-factor-rulings.json`.",
+  "printings": [
+    {
+      "flow_object_id": "fo-a40881b1029ff99c",
+      "category_slug": "climate-change",
+      "substance": "Trichlorofluoromethane",
+      "category": "Climate change",
+      "implemented_by": "European Commission — JRC",
+      "prints": 6230.0,
+      "states": 6226.0,
+      "primary_source": "IPCC AR6 WGI Chapter 7, Table 7.15 (`6226 ±2297`); the rounded printing is Table 7.SM.7 (`6230`)",
+      "stated_about": {
+        "European Commission — JRC": [
+          6230.0
+        ],
+        "ecoinvent Centre": [
+          6226.0
+        ]
+      },
+      "comment": "CFC-11 is the reference substance of the ozone-depletion indicator and an ordinary greenhouse gas in this one; the number at issue is its GWP100. AR6 states it in two places. Chapter 7's Table 7.15, `Emission metrics for selected species`, prints `6226 ±2297` with the uncertainty the assessment carries. The supplementary Table 7.SM.7 prints `6230`, three significant figures of the same value, and the two captions say as much: 7.15's points at the supplement for the full table, and 7.SM.7 is that table.\n\nThe JRC's EF 3.1 states 6230 in all six air compartments; ecoinvent's implementation states 6226 in the four its own flow list has. In those four the merge already publishes 6226 as `agreed` -- 0.06% apart is inside `FACTOR_TOLERANCE`, and `agreed` keeps the more precise number. In the two ecoinvent has no flow for, aircraft cruise height and indoor air, the JRC is alone and 6230 went out as `sole`. This row publishes 6226 there too, so the substance carries one number.\n\nWhat this does not claim is that the JRC transcribed anything wrongly: 6230 is exactly what Table 7.SM.7 prints, and their implementation goes on saying so under their own name. Nor is it a rule about numbers that are close. It is two documents, cited above, saying one thing at two precisions.\n\nOne caution for a reader checking the arithmetic against the supplement: 7.SM.7's CFC-11 row reads `5560`, not `6230`, because that row uses the unadjusted radiative efficiency of 0.259 W m-2 ppb-1. The 12% difference is the tropospheric adjustment, which Chapter 7 §7.3.2 assesses as non-zero for CFC-11 and which Table 7.15 includes -- 6226/5560 is 1.12. Both implementations use the adjusted value, so this row is about the rounding and not about that.\n\nAnother printing is not another row. If AR7 restates the substance, `stated_about` ends this claim rather than carrying it forward. (#342)"
+    },
+    {
+      "flow_object_id": "fo-9a8a2ec4f7948ae5",
+      "category_slug": "climate-change",
+      "substance": "1,1,1,2-Tetrafluoroethane",
+      "category": "Climate change",
+      "implemented_by": "European Commission — JRC",
+      "prints": 1530.0,
+      "states": 1526.0,
+      "primary_source": "IPCC AR6 WGI Chapter 7, Table 7.15 (`1526 ±577`); the rounded printing is Table 7.SM.7 (`1530`)",
+      "stated_about": {
+        "European Commission — JRC": [
+          1530.0
+        ],
+        "ecoinvent Centre": [
+          1526.0
+        ]
+      },
+      "comment": "HFC-134a is the refrigerant, and the case is CFC-11's exactly. AR6's Table 7.15 states its GWP100 as `1526 ±577`; Table 7.SM.7 prints `1530`, and the whole 7.SM.7 row -- lifetime 14 years, radiative efficiency 0.167, GWP20 4140 against the chapter's 4144 -- is the chapter's row at three significant figures.\n\nThe JRC states 1530 in six air compartments, ecoinvent 1526 in four, the merge publishes 1526 in those four as `agreed`, and this row publishes 1526 in the remaining two rather than leaving the substance with two numbers 0.26% apart.\n\nUnlike CFC-11 there is no tropospheric-adjustment subtlety here: 7.SM.7's radiative efficiency and the chapter's are the same, and 1530 is 1526 rounded and nothing else. (#342)"
+    },
+    {
+      "flow_object_id": "fo-a40881b1029ff99c",
+      "category_slug": "climate-change-fossil",
+      "substance": "Trichlorofluoromethane",
+      "category": "Climate change-Fossil",
+      "implemented_by": "European Commission — JRC",
+      "prints": 6230.0,
+      "states": 6226.0,
+      "primary_source": "IPCC AR6 WGI Chapter 7, Table 7.15 (`6226 ±2297`); the rounded printing is Table 7.SM.7 (`6230`)",
+      "stated_about": {
+        "European Commission — JRC": [
+          6230.0
+        ],
+        "ecoinvent Centre": [
+          6226.0
+        ]
+      },
+      "comment": "The fossil sub-category, which both implementations fill with the same number they state for the aggregate -- a synthetic halocarbon of industrial origin belongs in it, and neither publisher differentiates the two. Written as its own row rather than inferred from the aggregate's, because a category slug is what this file is keyed on and a substance that stopped being filed under `Climate change-Fossil` should stop being refined there rather than silently keep a rewrite. The reasoning is the row above's. (#342)"
+    },
+    {
+      "flow_object_id": "fo-9a8a2ec4f7948ae5",
+      "category_slug": "climate-change-fossil",
+      "substance": "1,1,1,2-Tetrafluoroethane",
+      "category": "Climate change-Fossil",
+      "implemented_by": "European Commission — JRC",
+      "prints": 1530.0,
+      "states": 1526.0,
+      "primary_source": "IPCC AR6 WGI Chapter 7, Table 7.15 (`1526 ±577`); the rounded printing is Table 7.SM.7 (`1530`)",
+      "stated_about": {
+        "European Commission — JRC": [
+          1530.0
+        ],
+        "ecoinvent Centre": [
+          1526.0
+        ]
+      },
+      "comment": "The fossil sub-category for HFC-134a. Both implementations file the refrigerant here with the number they state for the aggregate, as they do for every synthetic halocarbon, and this row refines the same two compartments -- aircraft cruise height and indoor air -- for the same reason: 1530 is Table 7.SM.7's three significant figures of the `1526 ±577` Table 7.15 assesses. Written out rather than deferred to the aggregate's row because this file is keyed on the category slug, and a substance that stopped being filed under `Climate change-Fossil` should stop being refined there rather than silently keep a rewrite nobody re-checked. (#342)"
+    }
+  ]
+}

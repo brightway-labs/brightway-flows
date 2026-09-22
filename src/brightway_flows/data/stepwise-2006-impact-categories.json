@@ -1,0 +1,416 @@
+{
+  "method": {
+    "slug": "stepwise-2006",
+    "name": "Stepwise",
+    "version": "2006",
+    "label": "Stepwise 2006",
+    "description": "The Stepwise 2006 method as SimaPro's 1.09 export ships it: 19 categories carried forward to quality-adjusted life years and to 2003 euros, with the IPCC 2021 global warming numbers and a corrected nature occupation model."
+  },
+  "implementations": [
+    {
+      "slug": "twenty-zero-lca",
+      "name": "2.-0 LCA consultants",
+      "role": "reference",
+      "decides": true,
+      "release": "Stepwise2006 v1.09",
+      "source": "the SimaPro {methods} CSV export, method Stepwise_2006_IPCC2021_CorrectedNatureOccupation",
+      "factors": {
+        "from": "source-list",
+        "list": "stepwise-2006-1.09",
+        "method": "Stepwise_2006_IPCC2021_CorrectedNatureOccupation"
+      }
+    },
+    {
+      "slug": "brightway-flows",
+      "name": "brightway-flows",
+      "role": "consensus",
+      "decides": false,
+      "source": "ours, derived from the deciding implementations, each factor saying how",
+      "factors": {
+        "from": "derived"
+      }
+    }
+  ],
+  "categories": [
+    {
+      "slug": "acidification",
+      "name": "Acidification",
+      "description": "Acidifying emissions, counted as the area of ecosystem left above its critical load and so unprotected.",
+      "indicator": {
+        "words": "Area of unprotected ecosystem (UES)",
+        "source": "EDIP 2003, which Stepwise 2006 takes this category from: 'area of unprotected ecosystem = m2 UES'. Hauschild & Potting (2005), Spatial differentiation in life cycle impact assessment -- the EDIP2003 methodology, Danish EPA Environmental News 80."
+      },
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Endpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/M2-UES",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Acidification",
+          "unit": "m2 UES"
+        }
+      }
+    },
+    {
+      "slug": "economic-costs",
+      "name": "Economic costs",
+      "description": "Costs the method prices directly, in 2003 euros. The one category whose indicator is money rather than an environmental quantity.",
+      "indicator": {
+        "words": "Life cycle costs in 2003 euros",
+        "source": "Stepwise 2006 itself, in the method comment of its v1.09 SimaPro export: it 'uses exclusively EURO2003 for economic costs assessment (life cycle costing)'."
+      },
+      "area_of_protection": "Resources and ecosystem services",
+      "midpoint_endpoint": "Endpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/EUR",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Economic costs",
+          "unit": "EUR2003"
+        }
+      }
+    },
+    {
+      "slug": "ecotoxicity-aquatic",
+      "name": "Ecotoxicity, aquatic",
+      "description": "Substances released that poison life in fresh water, as the kilograms of triethylene glycol into water that would do the same harm.",
+      "indicator": {
+        "words": "Triethylene glycol-into-water equivalents",
+        "source": "IMPACT 2002+ v2.1, which Stepwise 2006 takes this category from, whose reference substance is 'kg Triethylene glycol into water-eq'. Jolliet et al. (2003), Int J LCA 8(6):324-330; Humbert et al. (2005), IMPACT 2002+ User Guide."
+      },
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-TEGeq-Water",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Ecotoxicity, aquatic",
+          "unit": "kg TEG-eq w"
+        }
+      }
+    },
+    {
+      "slug": "ecotoxicity-terrestrial",
+      "name": "Ecotoxicity, terrestrial",
+      "description": "Substances released that poison life in soil, as the kilograms of triethylene glycol into soil that would do the same harm.",
+      "indicator": {
+        "words": "Triethylene glycol-into-soil equivalents",
+        "source": "IMPACT 2002+ v2.1, which Stepwise 2006 takes this category from, whose reference substance is 'kg Triethylene glycol into soil-eq'. Jolliet et al. (2003), Int J LCA 8(6):324-330; Humbert et al. (2005), IMPACT 2002+ User Guide."
+      },
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-TEGeq-Soil",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Ecotoxicity, terrestrial",
+          "unit": "kg TEG-eq s"
+        }
+      }
+    },
+    {
+      "slug": "eutrophication-aquatic",
+      "name": "Eutrophication, aquatic",
+      "description": "Nutrients reaching water and feeding the growth that strips it of oxygen, as the kilograms of nitrate with the same effect.",
+      "indicator": {
+        "words": "Nitrate-equivalent eutrophication potential (NO3- potential)",
+        "source": "EDIP 2003, which Stepwise 2006 takes this category from: nitrogen and phosphorus aggregated 'into an NO3- potential reflecting the amount of NO3- that would lead to the same potential eutrophication in aquatic systems'. Hauschild & Potting (2005), Spatial differentiation in life cycle impact assessment -- the EDIP2003 methodology, Danish EPA Environmental News 80."
+      },
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-NO3eq",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Eutrophication, aquatic",
+          "unit": "kg NO3-eq"
+        }
+      }
+    },
+    {
+      "slug": "eutrophication-terrestrial",
+      "name": "Eutrophication, terrestrial",
+      "description": "Nutrients reaching soil, counted on the same unprotected-ecosystem area scale as acidification.",
+      "indicator": {
+        "words": "Area of unprotected ecosystem (UES)",
+        "source": "EDIP 2003, which Stepwise 2006 takes this category from: 'area of unprotected ecosystem = m2 UES'. Hauschild & Potting (2005), Spatial differentiation in life cycle impact assessment -- the EDIP2003 methodology, Danish EPA Environmental News 80."
+      },
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Endpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/M2-UES",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Eutrophication, terrestrial",
+          "unit": "m2 UES"
+        }
+      }
+    },
+    {
+      "slug": "global-warming-fossil",
+      "name": "Global warming, fossil",
+      "description": "Warming from carbon that was locked underground, as the kilograms of carbon dioxide with the same effect.",
+      "indicator": {
+        "words": "Global Warming Potential (GWP100)",
+        "source": "Stepwise 2006 itself, in the method comment of its v1.09 SimaPro export: 'uses IPCC 2021 (IPCC's Sixth Assessment Report) GWP100 factors'. The words are the ones the JRC and the ecoinvent Centre use for the same quantity under EF 3.1."
+      },
+      "area_of_protection": "Climate Change",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-CO2eq",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Global warming, fossil",
+          "unit": "kg CO2-eq"
+        }
+      }
+    },
+    {
+      "slug": "global-warming-non-fossil",
+      "name": "Global warming, non-fossil",
+      "description": "Warming from carbon that was in circulation already -- burnt wood, peat, waste -- kept apart from the fossil kind because the two are reported separately.",
+      "indicator": {
+        "words": "Global Warming Potential (GWP100)",
+        "source": "Stepwise 2006 itself, in the method comment of its v1.09 SimaPro export: 'uses IPCC 2021 (IPCC's Sixth Assessment Report) GWP100 factors'. The words are the ones the JRC and the ecoinvent Centre use for the same quantity under EF 3.1."
+      },
+      "area_of_protection": "Climate Change",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-CO2eq",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Global warming, non-fossil",
+          "unit": "kg CO2-eq"
+        }
+      }
+    },
+    {
+      "slug": "human-toxicity-carcinogens",
+      "name": "Human toxicity, carcinogens",
+      "description": "Substances released that cause cancer in people, as the kilograms of vinyl chloride that would do the same harm.",
+      "indicator": {
+        "words": "Chloroethylene-into-air equivalents",
+        "source": "IMPACT 2002+ v2.1, which Stepwise 2006 takes this category from, whose reference substance is 'kg Chloroethylene into air-eq'. Jolliet et al. (2003), Int J LCA 8(6):324-330; Humbert et al. (2005), IMPACT 2002+ User Guide."
+      },
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-C2H3CLeq",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Human toxicity, carcinogens",
+          "unit": "kg C2H3Cl-eq"
+        }
+      }
+    },
+    {
+      "slug": "human-toxicity-non-carcinogens",
+      "name": "Human toxicity, non-carc.",
+      "description": "Substances released that harm people without causing cancer, on the same vinyl chloride scale as the carcinogens.",
+      "indicator": {
+        "words": "Chloroethylene-into-air equivalents",
+        "source": "IMPACT 2002+ v2.1, which Stepwise 2006 takes this category from, whose reference substance is 'kg Chloroethylene into air-eq'. Jolliet et al. (2003), Int J LCA 8(6):324-330; Humbert et al. (2005), IMPACT 2002+ User Guide."
+      },
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-C2H3CLeq",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Human toxicity, non-carc.",
+          "unit": "kg C2H3Cl-eq"
+        }
+      }
+    },
+    {
+      "slug": "injuries-road-or-work",
+      "name": "Injuries, road or work",
+      "description": "Injuries on the road and at work, weighted to the equivalent number of fatal ones. Counted from the activity itself rather than from anything released.",
+      "indicator": {
+        "words": "Fatal-injury-equivalents",
+        "source": "Stepwise 2006 itself: 'The category indicator is ‘fatal-injury-equivalents’'. Weidema et al. (2008), Environmental improvement potentials of meat and dairy products, EUR 23491 EN, Annex II, section 13.3.1."
+      },
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Endpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/FatalInjuryEq",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Injuries, road or work",
+          "unit": "fatal inj-eq"
+        }
+      }
+    },
+    {
+      "slug": "ionizing-radiation",
+      "name": "Ionizing radiation",
+      "description": "Radioactivity released, as the becquerels of carbon-14 that would expose people to the same dose.",
+      "indicator": {
+        "words": "Carbon-14-into-air equivalents",
+        "source": "IMPACT 2002+ v2.1, which Stepwise 2006 takes this category from, whose reference substance is 'Bq Carbon-14 into air-eq'. Jolliet et al. (2003), Int J LCA 8(6):324-330; Humbert et al. (2005), IMPACT 2002+ User Guide."
+      },
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/BQ-C14eq",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Ionizing radiation",
+          "unit": "Bq C-14-eq"
+        }
+      }
+    },
+    {
+      "slug": "mineral-extraction",
+      "name": "Mineral extraction",
+      "description": "Minerals taken from the ground, counted as the extra energy a later extraction will need because this one lowered the ore grade.",
+      "indicator": {
+        "words": "Surplus energy of future extraction",
+        "source": "IMPACT 2002+ v2.1, which Stepwise 2006 takes this category from, which counts it in 'MJ surplus energy', the expected increase of the energy needed to extract lower-grade ores. Jolliet et al. (2003), Int J LCA 8(6):324-330; Humbert et al. (2005), IMPACT 2002+ User Guide."
+      },
+      "area_of_protection": "Resources and ecosystem services",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/MegaJ-Extra",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Mineral extraction",
+          "unit": "MJ extra"
+        }
+      }
+    },
+    {
+      "slug": "nature-occupation",
+      "name": "Nature occupation",
+      "description": "Land held out of nature, counted as the fraction of species that potentially disappear from a square metre for a year.",
+      "indicator": {
+        "words": "Potentially disappeared fraction of endemic species (PDF) over area and time",
+        "source": "Stepwise 2006 itself, in the method comment of its v1.09 SimaPro export: 'the duration of area occupied (m2*years) multiplied with a severity score, representing the proportion of endemic species disappeared from that area'. The 'm2-equivalents arable land' of the 2008 documentation is the unit version 1.6 replaced."
+      },
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Endpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/PDF-M2-YR",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Nature occupation",
+          "unit": "PDF*m2a"
+        }
+      }
+    },
+    {
+      "slug": "non-renewable-energy",
+      "name": "Non-renewable energy",
+      "description": "Energy taken from stocks that do not refill -- fossil carriers and uranium -- counted at the primary carrier.",
+      "indicator": {
+        "words": "Total primary non-renewable energy",
+        "source": "IMPACT 2002+ v2.1, which Stepwise 2006 takes this category from, which counts it in 'MJ total primary non-renewable energy'. Jolliet et al. (2003), Int J LCA 8(6):324-330; Humbert et al. (2005), IMPACT 2002+ User Guide."
+      },
+      "area_of_protection": "Resources and ecosystem services",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/MegaJ-Primary",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Non-renewable energy",
+          "unit": "MJ primary"
+        }
+      }
+    },
+    {
+      "slug": "ozone-layer-depletion",
+      "name": "Ozone layer depletion",
+      "description": "Thinning of the stratospheric ozone layer, as the kilograms of trichlorofluoromethane with the same effect.",
+      "indicator": {
+        "words": "Ozone Depletion Potential (ODP)",
+        "source": "IMPACT 2002+ v2.1, which Stepwise 2006 takes this category from, whose reference substance is 'kg CFC-11 into air-eq', the substance an ozone depletion potential is relative to. The words are the ones the JRC uses for the same quantity under EF 3.1. Jolliet et al. (2003), Int J LCA 8(6):324-330; Humbert et al. (2005), IMPACT 2002+ User Guide."
+      },
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-CFC11eq",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Ozone layer depletion",
+          "unit": "kg CFC-11-eq"
+        }
+      }
+    },
+    {
+      "slug": "photochemical-ozone-vegetation",
+      "name": "Photochemical ozone, vegetat.",
+      "description": "Ground-level ozone formed from emitted organics, counted as the vegetation exposed to it: square metres times parts per million times hours.",
+      "indicator": {
+        "words": "Accumulated ozone exposure of vegetation above 40 ppb (AOT40)",
+        "source": "EDIP 2003, which Stepwise 2006 takes this category from: 'the AOT40, the accumulated exposure (duration times exceedance of threshold) above the threshold of 40 ppb times the area that is exposed'. Hauschild & Potting (2005), Spatial differentiation in life cycle impact assessment -- the EDIP2003 methodology, Danish EPA Environmental News 80."
+      },
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/M2-PPM-HR",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Photochemical ozone, vegetat.",
+          "unit": "m2*ppm*hours"
+        }
+      }
+    },
+    {
+      "slug": "respiratory-inorganics",
+      "name": "Respiratory inorganics",
+      "description": "Fine particles, and the gases that turn into them in the air, as the kilograms of PM2.5 people would breathe for the same harm.",
+      "indicator": {
+        "words": "PM2.5-into-air equivalents",
+        "source": "IMPACT 2002+ v2.1, which Stepwise 2006 takes this category from, whose reference substance is 'kg PM2.5 into air-eq'. Jolliet et al. (2003), Int J LCA 8(6):324-330; Humbert et al. (2005), IMPACT 2002+ User Guide."
+      },
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-PM25eq",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Respiratory inorganics",
+          "unit": "kg PM2.5-eq"
+        }
+      }
+    },
+    {
+      "slug": "respiratory-organics",
+      "name": "Respiratory organics",
+      "description": "Ground-level ozone formed from emitted organics, counted as the people exposed to it: persons times parts per million times hours.",
+      "indicator": {
+        "words": "Accumulated ozone exposure of people above 60 ppb (AOT60)",
+        "source": "EDIP 2003, which Stepwise 2006 takes this category from: 'the AOT60, the accumulated exposure above the threshold of 60 ppb times the number of persons which are exposed'. Hauschild & Potting (2005), Spatial differentiation in life cycle impact assessment -- the EDIP2003 methodology, Danish EPA Environmental News 80."
+      },
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/PERSON-PPM-HR",
+      "parts": [],
+      "stated": {
+        "twenty-zero-lca": {
+          "name": "Respiratory organics",
+          "unit": "pers*ppm*h"
+        }
+      }
+    }
+  ]
+}

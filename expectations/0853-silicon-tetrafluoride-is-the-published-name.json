@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 is the only list here that calls SiF4 `silicium tetrafluoride`, and the published label followed it: `bootstrap_labels` writes EF's own name field, and the rename rule never reaches this substance because `cc_chebi_agreement` needs Common Chemistry and ChEBI to agree and ChEBI has no record of the compound. CAS publishes 7783-61-1 as `Silicon tetrafluoride`, and ecoinvent, BAFU and AGRIBALYSE 3.2 all write it that way, so a fix in `ef-3.1-manual-fixes.json` renames the row and keeps EF's spelling as a synonym (#187).",
+  "expectations": [
+    {
+      "id": "0853-the-published-name-is-the-one-three-lists-use",
+      "issue": 853,
+      "title": "SiF4 is published as Silicon Tetrafluoride",
+      "pending": true,
+      "subject": {
+        "kind": "substance",
+        "cas": "7783-61-1"
+      },
+      "expect": {
+        "exists": true,
+        "label": "Silicon Tetrafluoride",
+        "count": 1
+      },
+      "comment": "Title-cased by `normalize_name_case` from the fix's `silicon tetrafluoride`, the way every other lowercase EF name is. `count: 1` is the other half of the claim: the rename must move the substance rather than split it, and a second flow object carrying 7783-61-1 would mean the fix had created one. EF's own spelling is kept as a synonym by `retain_original_as_synonym`, so an inventory keyed on `Silicium Tetrafluoride` still finds it -- there is no claim in this vocabulary for an alternative label, so that half rests on the fix file and on `tests/test_manual_fixes.py`. Pending until the next full build applies the fix; the shared build of 1 September 2026 still publishes `Silicium Tetrafluoride`."
+    }
+  ]
+}

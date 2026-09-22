@@ -1,0 +1,132 @@
+{#
+  The difference report, browsable and sorted by ratio.
+
+  One row per triple *both* published implementations state. Where only one
+  speaks there is no comparison to record -- those are counted on the index and
+  deliberately not listed, because 297,468 rows of "nobody disagreed, because
+  nobody else spoke" is a fact about two differently sized flow lists rather
+  than a difference between two readings.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Differences" %}
+{% set active_section = "factors" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Where the implementations differ</h1>
+  <p class="page__lede">
+    Every row more than one implementation states, sorted by ratio, widest first.
+    <strong>A difference is not an error.</strong> Competent teams rendering one
+    method against different flow lists will differ, and most of these are
+    modelling choices; the widest are worth a conversation, not a correction.
+  </p>
+  <p class="page__lede">
+    <em>Published</em> says what this list did about the row: `agreed` where they
+    stated one number, `sole` where only one did, and nothing at all where the
+    disagreement went to a
+    <a href="{{ url_for('queue.index') }}">queue</a> instead.
+  </p>
+</header>
+
+<div class="chips">
+  <span class="muted">Band</span>
+  <a class="chip {% if not band %}chip--active{% endif %}"
+     href="{{ url_for('factors.differences', q=query, sort=sort) }}">
+    <span class="chip__label">All</span>
+  </a>
+  {#
+    The four groups, not the seven bands: which side of the 2% line a row falls
+    on is the question a filter is asked, and `10x` against `100x` is a
+    difference of degree the ratio column already states exactly. An exact band
+    is still a filter — `?band=10x` works — it is just not a chip.
+  #}
+  {% for slug, label, count in bands %}
+  <a class="chip {% if band == slug %}chip--active{% endif %}"
+     href="{{ url_for('factors.differences', band=slug, q=query, sort=sort) }}">
+    <span class="chip__label">{{ label }}</span>
+    <span class="chip__value">{{ count | thousands }}</span>
+  </a>
+  {% endfor %}
+</div>
+
+<form class="filters" method="get" action="{{ url_for('factors.differences') }}">
+  <input type="hidden" name="band" value="{{ band }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Flow, category or identifier…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('factors.differences') }}
+  </div>
+</form>
+
+{% if page.rows %}
+{{ t.pager(page, 'factors.differences', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">{{ t.sort_header('Flow', 'flow', sort, 'factors.differences', args) }}</th>
+        <th scope="col">{{ t.sort_header('Category', 'category', sort, 'factors.differences', args) }}</th>
+        <th scope="col">Place</th>
+        {#
+          A column per implementation the report compares, taken from the data
+          rather than written here: the two this list has today are not the two it
+          will have, and a template naming them is a template that quietly drops
+          the third.
+        #}
+        {% for implementation in implementations %}
+        <th scope="col" class="num">{{ implementation }}</th>
+        {% endfor %}
+        <th scope="col" class="num">{{ t.sort_header('Apart', 'ratio', sort, 'factors.differences', args) }}</th>
+        <th scope="col">Published</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          {{ t.flow_link(row.elementary_flow_uuid, row.flow_name or row.elementary_flow_uuid) }}
+          {% if row.context_display %}
+          <div class="muted">{{ row.context_display }}</div>
+          {% endif %}
+        </td>
+        <td>
+          {{ row.category }}
+          {#
+            The method under the category, not a column of its own: a category
+            name is only a name inside a method, and two methods can both have an
+            `Acidification`. A column would be one repeated value while only one
+            method is characterised, and this reads the same at one and at five.
+          #}
+          {% if row.method_label %}
+          <div class="muted">{{ row.method_label }}</div>
+          {% endif %}
+        </td>
+        <td class="mono">{{ row.geography or "—" }}</td>
+        {% for implementation in implementations %}
+        <td class="num mono">
+          {%- if implementation in row.amounts %}{{ row.amounts[implementation] | amount }}
+          {%- else %}<span class="muted">—</span>{% endif %}
+        </td>
+        {% endfor %}
+        <td class="num">
+          {{ row.ratio | ratio }}
+          <div class="muted">{{ row.band | replace('-', ' ') }}</div>
+          {% if row.widest %}<div class="muted">{{ row.widest }} higher</div>{% endif %}
+        </td>
+        <td>
+          {% if row.derivation %}{{ row.derivation }}
+          {% else %}<span class="tag tag--blocking">queued</span>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'factors.differences', args) }}
+{% else %}
+{{ t.nothing_matches("No compared triple matches this filter.") }}
+{% endif %}
+{% endblock %}

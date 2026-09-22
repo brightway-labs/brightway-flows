@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "BAFU ships water under a dozen names, and the consensus list holds a dozen water substances that all carry CAS 7732-18-5 and all carry `water` among their alternative labels. A BAFU row named simply `Water` therefore tied every one of them, and the merge refuses a tie -- 169 rows on a build of main, more than half of everything BAFU failed to place. What settles it is not a ranking of names but the material: which of the seventeen kinds of water the row is, looked up per source flow in `water-flow-materials.json`, the way EF 3.1 and every ecoinvent release already were. What was wrong with the first version of this file is recorded on the claims below, and is worth knowing: it asked that every one of those rows reach one substance called `Water`, and that is not what they are -- 55 of them are in an air compartment and are vapour. See #65, #83 and #86.",
+  "expectations": [
+    {
+      "id": "0381-bafu-water-lands-somewhere",
+      "issue": 381,
+      "title": "The BAFU rows named `Water` land on a consensus flow that already exists",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water"},
+      "expect": {"outcome": "matched"},
+      "comment": "169 rows, all of them unmatched on `multiple-flow-object-candidates` on a build of main. `matched` rather than `placed` on purpose: creating a thirteenth water substance would be a worse answer than refusing, not a better one. This claim named the target as well -- `target_name: Water` -- until a build showed the target is not one flow: the rows in a water compartment reach `Water` and the rows in an air compartment reach `Water vapour`, which is correct and which #86's file states row by row. That half is dropped; what survives is the part #65 is actually about, which is that a row whose name lost its geography has somewhere to land."
+    },
+    {
+      "id": "0381-bafu-water-no-new-substance",
+      "issue": 381,
+      "title": "No BAFU row named `Water` mints a substance of its own",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water"},
+      "expect": {"not_outcome": "created"},
+      "comment": "Stated separately from the expectation above because the two fail differently and the fix for one is not the fix for the other. A change that makes the tie resolve by minting a new flow object would satisfy `placed` and be a regression: it would add a thirteenth spelling of water to the list the tie is already caused by."
+    },
+    {
+      "id": "0381-bafu-water-one-substance",
+      "issue": 381,
+      "title": "The BAFU rows named `Water` are water and water vapour, and nothing else",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water"},
+      "expect": {"substance_count": 2},
+      "comment": "This asked `same_substance: true` until the material was assigned, and one substance was the wrong answer rather than an unmet one. Asking for one was the right shape of guard -- one vendor name read two ways is the defect #26 records for Silver-110 -- but water is the case where one name genuinely covers two substances: BAFU writes `Water` for a discharge to a river and for vapour to the air, 114 rows and 55, and only the compartment says which. Two is therefore the number to hold. Exactly two rather than at most two, because the bound has to catch a fall as well as a rise: three or more is the tie this issue is about, and one is water vapour collapsing back into water, which is #31. The id is kept through the rewrite, so the baseline keeps its history for this question rather than starting again under a new name."
+    }
+  ]
+}

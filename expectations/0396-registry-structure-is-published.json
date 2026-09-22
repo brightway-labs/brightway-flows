@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "description": "A substance whose registry number CAS holds a structure for is published with no structure at all.\n\n#635 gave the pipeline a rule for the *composition* CAS registers, and `supply_registered_composition` publishes it where the substance's own name corroborates the count. The structure was left alone on a stated premise: that these numbers are the ambiguous third state, `a formula on file and no structure`, and that CAS `does not publish a connection table` for them. For a formula-only number that is exactly right. For a number CAS holds a full InChI for it is not, and nothing asked.\n\nMeasured on the build of b03c940 (ecoinvent-3.12, ecoinvent-3.8, bafu-2026-v1): 8,030 published substances, of which 613 carry a registry number and publish no structure, and 35 of those carry a number CAS registers a definite structure for. `Disodium Phosphonate` is the shape of it -- CAS 13708-85-5, registered as `Disodium hydrogen phosphite` with the synonym `Disodium phosphonate`, `InChI=1S/2Na.H3O3P/c;;1-4(2)3/h;;4H,(H2,1,2,3)` and `InChIKey=NOMFAOXRBCOULH-UHFFFAOYSA-N` on file throughout -- published as a label, a number and nothing else. It reaches this state through `registered_formula_for`, which refuses a multi-component formula because `C15H24O6.C4H11N` is CAS stating two substances in one string. That refusal is right for a UVCB and wrong for a salt, and a full InChI on file is CAS's own statement of which one this is.\n\nThe corroboration is the load-bearing part, and it is not the one #129 uses. `corroborates_name` asks the substance's name to state a count, and none of these 35 names do -- it accepts none of them. What is available instead is that CAS registers the substance under the name this list publishes it under: two sources naming one substance. That gate refuses every case #129 warned about, measured on the same build -- the six `Correction Flow For Delayed Emission Of ...` rows that would take CO2, CH4, N2O and SF6, `Uranium Alpha` and `Curium Alpha` and `Plutonium-alpha`, and `Rhenium(2+)`, which would take the neutral element's structure from the element's number.\n\nIt is not sufficient on its own, and three groups it accepts must still be refused. A **nuclide**, because CAS registers 24678-82-8 as `Uranium` with `InChI=1S/U` -- the elemental key -- so publishing it would collide `Uranium-238` with uranium metal under InChIKey, which is #35. A **UVCB**, which CAS names in its own terms: 101357-15-7 is `Benzenamine, reaction products with aniline hydrochloride and nitrobenzene` and its InChI is a recipe, aniline twice with nitrobenzene and HCl, not a substance anybody can be shown. And an **indefinite stoichiometry**, where the registered formula states a fraction or an unknown multiplier -- `Talc` at `H2O3Si.3/4Mg` against an InChI holding one magnesium, `Ulexite`, `Asbestos (white)`, and the octasodium dye at `.xNa`.\n\nWhere the substance already publishes a formula, it has to agree: `Hematite` publishes `Fe2O3` and CAS registers `Fe.O`, and the registry's answer is the vaguer of the two. This step fills a hole and never adjudicates -- that is `withhold_contradicted_composition`'s job, and it runs next.\n\nSee #71, which is where these substances were counted, and #129, whose rule this is the structural half of.",
+  "expectations": [
+    {
+      "id": "0396-disodium-phosphonate-has-a-structure",
+      "issue": 396,
+      "title": "`Disodium Phosphonate` publishes the structure CAS registers for its number",
+      "subject": {
+        "kind": "substance",
+        "label": "Disodium Phosphonate"
+      },
+      "expect": {
+        "inchikey_count": 1
+      },
+      "comment": "No structure, no formula and no properties at all on the build of b03c940, while CAS has held `InChIKey=NOMFAOXRBCOULH-UHFFFAOYSA-N` for 13708-85-5 throughout. A salt of two sodiums and one phosphonate is a definite substance and its InChI says so; the multi-component formula that made `registered_formula_for` refuse it is what a salt looks like, not evidence of a mixture.\n\n`inchikey_count` rather than `formula_count`, for the reason #129 gives: the key is the field a consumer joins on, and one rather than `at_least: 1` because two would mean the record answers the identity question twice (#310)."
+    },
+    {
+      "id": "0396-monopotassium-phosphite-has-a-structure",
+      "issue": 396,
+      "title": "`Monopotassium Phosphite` publishes the structure CAS registers for its number",
+      "subject": {
+        "kind": "substance",
+        "label": "Monopotassium Phosphite"
+      },
+      "expect": {
+        "inchikey_count": 1
+      },
+      "comment": "The sibling of the row above and stated separately, because a rule that reached one salt and not another would satisfy a single claim and leave the defect. CAS 13977-65-6, registered as `Potassium dihydrogen phosphite` with the synonym `Monopotassium phosphite`, `InChI=1S/K.H3O3P/c;1-4(2)3/h;4H,(H2,1,2,3)`. Empty on the build of b03c940."
+    },
+    {
+      "id": "0396-sulfoxaflor-has-a-structure",
+      "issue": 396,
+      "title": "`Sulfoxaflor` publishes a structure, having published only its formula",
+      "subject": {
+        "kind": "substance",
+        "label": "Sulfoxaflor"
+      },
+      "expect": {
+        "inchikey_count": 1
+      },
+      "comment": "The other half of the population, and a different starting point: this substance already publishes `C10H10F3N3OS`, derived by the pipeline, and CAS registers the same composition for 946578-00-3 with a structure attached. Two sources agreeing on the composition is what makes the structure safe to take.\n\nWorth claiming separately from the salts because the corroboration reaching it is the composition rather than only the name, so a rule that lost one of the two gates would still satisfy the other claims.\n\nIt does **not** move `flow_type`, and that was measured rather than assumed: the substance is still published `ImpreciseChemicalMixture` on the build this claim was graded against. Rule 6 of the typing pass -- the one that reaches `NeutralMolecule` -- reads the SMILES, and this step writes an InChI and no SMILES, because a SMILES would have to be computed and every step that computes one has already run. So an insecticide that is plainly a single molecule now has an identity and still has the wrong class. Fixing that is a separate question from this one, and it belongs to whichever change decides where a derivation may run after a registry value is supplied."
+    },
+    {
+      "id": "0396-a-delayed-emission-correction-takes-no-structure",
+      "issue": 396,
+      "title": "The delayed-emission correction flow does not take carbon dioxide's structure",
+      "subject": {
+        "kind": "substance",
+        "label": "Correction Flow For Delayed Emission Of Fossil Carbon Dioxide (within First 100 Years)"
+      },
+      "expect": {
+        "inchikey_count": 0
+      },
+      "comment": "The refusal, claimed so that the rule cannot be widened without the report saying so. This flow carries 124-38-9 and is not carbon dioxide: it is an accounting construct for emissions deferred past a time horizon, and #129 names it among the six that would wrongly take CO2, CH4 and N2O from a rule with no corroboration.\n\nIt is refused here because CAS does not register anything under this name -- the same gate that lets `Disodium Phosphonate` through. Stated as `0` rather than left unsaid because a claim nobody wrote is indistinguishable from a claim that passed."
+    }
+  ]
+}

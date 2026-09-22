@@ -1,0 +1,132 @@
+{#
+  Why the list exists, who builds it, and how to reach them.
+  `plans/public-site.md` §3.
+
+  "Why we built it" is the reason for the list; "Who builds it" names the
+  company, then the maintainers under it.  The company card's co-founder line
+  is fixed company history, not a list maintainer, so it is written here
+  rather than read from `publication`.
+
+  There is no funding line: how the work is funded is not a fact this page
+  states, and the field went with it (#200).
+
+  Copy exactly as on the About board; every amber chip there is a
+  `placeholder` here, read from `publication.py` (§0's first rule).  While no
+  maintainer is set, the two placeholder cards the board draws stand in for
+  the list.
+
+  The report buttons open GitHub issue templates that do not exist yet, in a
+  repository that is still private (§7, §8): the links are built as designed
+  and work once both are there.
+
+  The "On this page" column does not track scrolling -- the plan leaves that
+  out for the docs contents too -- so no entry is marked current.
+#}
+{% extends "layout.html" %}
+{% from "partials/placeholder.html" import placeholder %}
+{% set page_title = "About" %}
+{% set active_section = "about" %}
+
+{% macro themed_logo() -%}
+<img class="about-org__img about-org__img--light" src="{{ url_for('static', filename='brand/brightway-labs.svg') }}" width="135" height="28" alt="Brightway Labs">
+<img class="about-org__img about-org__img--dark" src="{{ url_for('static', filename='brand/brightway-labs-inverted.svg') }}" width="135" height="28" alt="Brightway Labs">
+{%- endmacro %}
+
+{% block content %}
+<div class="about">
+  <nav class="about__toc" aria-labelledby="about-toc-heading">
+    <h2 class="about__toc-heading" id="about-toc-heading">On this page</h2>
+    <ul>
+      <li><a href="#why">Why we built it</a></li>
+      <li><a href="#who">Who builds it</a></li>
+      <li><a href="#decisions">How decisions are made</a></li>
+      <li><a href="#contribute">Contribute or report a problem</a></li>
+      <li><a href="#licence">Licence and reuse</a></li>
+      <li><a href="#contact">Contact and legal notice</a></li>
+      <li><a href="#privacy">Privacy</a></li>
+    </ul>
+  </nav>
+
+  <article class="about__article">
+    <header class="about__header">
+      <h1 class="about__title">About</h1>
+      <p class="about__lede">The Brightway Flows is built and maintained by Brightway Labs, and published openly for the Brightway community and for anyone else who works with life cycle inventory data.</p>
+    </header>
+
+    <section class="about__section" id="why" aria-labelledby="why-heading">
+      <h2 id="why-heading">Why we built it</h2>
+      <p>Every inventory database names its substances differently, and nothing in those names says whether two entries mean the same thing. We built this list so that a flow in one database can be translated to its counterpart in another, with every step of the translation open to inspection. <a href="/docs/concepts/why">Why this exists</a></p>
+    </section>
+
+    <section class="about__section" id="who" aria-labelledby="who-heading">
+      <h2 id="who-heading">Who builds it</h2>
+      <div class="about-card about-org">
+        <div class="about-org__logo">{{ themed_logo() }}</div>
+        <div class="about-org__body">
+          <p>Brightway Labs builds and maintains this list and publishes it openly. The company was co-founded by Chris Mutel, who created and maintains Brightway, the open-source LCA framework.</p>
+          <p>We are also the team behind Brightway Cloud, a collaborative tool for LCA that uses this list.</p>
+          <a class="about-org__link" href="https://brightway-lca.com">brightway-lca.com ↗</a>
+        </div>
+      </div>
+      <h3 class="about__subheading">Maintainer{{ "" if publication.maintainers|length == 1 else "s" }}</h3>
+      <ul class="about-people">
+        {% for maintainer in publication.maintainers %}
+        <li class="about-card">
+          <span class="about-people__name">{{ maintainer.name }}</span>
+          <span class="about-people__role">{{ maintainer.role }} · Brightway Labs</span>
+        </li>
+        {% else %}
+        {% for _ in range(2) %}
+        <li class="about-card">
+          <span class="about-people__name">{{ placeholder(none, "Maintainer name") }}</span>
+          <span class="about-people__role">{{ placeholder(none, "Role") }} · Brightway Labs</span>
+        </li>
+        {% endfor %}
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="about__section" id="decisions" aria-labelledby="decisions-heading">
+      <h2 id="decisions-heading">How decisions are made</h2>
+      <p>Every flow and every factor records which source asserted it and which step decided it, so any decision can be checked against its evidence. <a href="/docs/deciding/">How a flow is decided</a></p>
+      <p>{{ placeholder(publication.governance, "Governance: who reviews disputed decisions, how a proposal is accepted, and whether the list is meant to move to community governance") }}</p>
+    </section>
+
+    <section class="about__section" id="contribute" aria-labelledby="contribute-heading">
+      <h2 id="contribute-heading">Contribute or report a problem</h2>
+      <p>If a flow is matched to the wrong substance, published under the wrong name, filed in the wrong compartment or given a factor that cannot be its own, tell us. Every flow and substance page has links that open a pre-filled issue, and you do not need to run a build or clone anything: name the row and say what your evidence is, and the measurement is done for you.</p>
+      <p>The list also has questions of its own waiting on a person — one registry number claimed by two names, a rename awaiting a ruling. Those are at <a href="/queue/">the queues</a>, and answering one takes a verdict and a paragraph saying why.</p>
+      <div class="about__actions">
+        <a class="about__action" href="{{ repository_url }}/issues/new/choose">Report a problem</a>
+        <a class="about__action" href="{{ repository_url }}/issues/new?template=answer-an-open-question.yml">Answer an open question</a>
+        <a class="about__action about__action--plain" href="{{ repository_url }}/blob/main/CONTRIBUTING.md">Contributing guide</a>
+      </div>
+    </section>
+
+    <section class="about__section" id="licence" aria-labelledby="licence-heading">
+      <h2 id="licence-heading">Licence and reuse</h2>
+      <dl class="about__licences">
+        <dt>Data</dt><dd>{{ placeholder(publication.data_licence, "DATA LICENCE") }}</dd>
+        <dt>Code</dt><dd>{{ placeholder(publication.code_licence, "CODE LICENCE") }}</dd>
+        <dt>Source-list content</dt><dd>{{ placeholder(publication.source_list_terms, "Terms for fields derived from licensed source lists, such as ecoinvent: pending legal review") }}</dd>
+      </dl>
+    </section>
+
+    <section class="about__section" id="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Contact and legal notice</h2>
+      <address class="about__address">
+        {# The country is part of `postal_address` rather than a line of its
+           own: one fact, in one place, the way §0's first rule wants it. #}
+        Brightway Labs GmbH<br>
+        {{ placeholder(publication.postal_address, "Postal address") }}<br>
+        {% if publication.contact_email %}<a href="mailto:{{ publication.contact_email }}">{{ publication.contact_email }}</a>{% else %}{{ placeholder(none, "Contact email") }}{% endif %}
+      </address>
+    </section>
+
+    <section class="about__section" id="privacy" aria-labelledby="privacy-heading">
+      <h2 id="privacy-heading">Privacy</h2>
+      <p>This site sets no cookies and does no tracking. Your browser stores your light or dark theme choice, and nothing else. The server keeps standard access logs for {{ placeholder(publication.log_retention_period, "retention period") }}.</p>
+    </section>
+  </article>
+</div>
+{% endblock %}

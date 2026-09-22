@@ -1,0 +1,1074 @@
+{
+  "method": {
+    "slug": "ef",
+    "name": "EF",
+    "version": "3.1",
+    "label": "Environmental Footprint",
+    "description": "The European Commission's Environmental Footprint method, version 3.1: 25 midpoint categories, published as 25 ILCD method files."
+  },
+  "implementations": [
+    {
+      "slug": "jrc",
+      "name": "European Commission — JRC",
+      "role": "reference",
+      "decides": true,
+      "source": "the 25 ILCD method files in EF-v3.1.zip",
+      "factors": {
+        "from": "published-flows",
+        "list": "EF-3.1"
+      }
+    },
+    {
+      "slug": "ecoinvent-centre",
+      "name": "ecoinvent Centre",
+      "role": "transcription",
+      "decides": true,
+      "release": "3.12",
+      "source": "LCIA Implementation 3.12.xlsx, method EF v3.1",
+      "factors": {
+        "from": "source-list",
+        "list": "ecoinvent-3.12",
+        "method": "EF v3.1"
+      }
+    },
+    {
+      "slug": "greendelta",
+      "name": "GreenDelta",
+      "role": "transcription",
+      "decides": false,
+      "release": "openLCA LCIA methods 2.8.0 adapted",
+      "identifiers_from": "jrc",
+      "source": "the openLCA JSON-LD package shipped inside BAFU's 2026 v1 distribution",
+      "factors": {
+        "from": "source-list",
+        "list": "bafu-2026-v1",
+        "method": "EF 3.1 Method (adapted)"
+      }
+    },
+    {
+      "slug": "brightway-flows",
+      "name": "brightway-flows",
+      "role": "consensus",
+      "decides": false,
+      "source": "ours, derived from the deciding implementations, each factor saying how",
+      "factors": {
+        "from": "derived"
+      }
+    }
+  ],
+  "categories": [
+    {
+      "slug": "acidification",
+      "name": "Acidification",
+      "description": "Acidifying emissions to air, weighted by how much of what is deposited falls where the receiving soil or fresh water has no buffering capacity left.",
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/MOL-H+eq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b5c611c6-def3-11e6-bf01-fe55135034f3",
+          "name": "Acidification",
+          "indicator": "Accumulated Exceedance (AE)",
+          "unit": "mol H+ equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "acidification",
+          "indicator": "accumulated exceedance (AE)",
+          "unit": "mol H+-Eq"
+        },
+        "greendelta": {
+          "identifier": "b5c611c6-def3-11e6-bf01-fe55135034f3",
+          "name": "Acidification",
+          "unit": "mol H+ eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "acidification",
+            "indicator": "accumulated exceedance (ae)",
+            "unit": "mol H+-Eq"
+          }
+        ]
+      },
+      "comment": "Acidification damages ecosystems through the soil and the water they stand in; the human-health effects of the same emissions are counted under particulate matter."
+    },
+    {
+      "slug": "climate-change",
+      "name": "Climate change",
+      "description": "Radiative forcing over a hundred years, as the kilograms of carbon dioxide that would have the same effect.",
+      "area_of_protection": "Climate Change",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Climate change",
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-CO2eq",
+      "parts": [
+        "Climate change-Fossil",
+        "Climate change-Biogenic",
+        "Climate change-Land use and land use change"
+      ],
+      "stated": {
+        "jrc": {
+          "identifier": "6209b35f-9447-40b5-b68c-a1099e3674a0",
+          "name": "Climate change",
+          "indicator": "Radiative forcing as Global Warming Potential (GWP100)",
+          "unit": "kg CO2 Equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "climate change",
+          "indicator": "global warming potential (GWP100)",
+          "unit": "kg CO2-Eq"
+        },
+        "greendelta": {
+          "identifier": "6209b35f-9447-40b5-b68c-a1099e3674a0",
+          "name": "Climate change",
+          "unit": "kg CO2 eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "climate change",
+            "indicator": "global warming potential (GWP100)",
+            "unit": "kg CO2-Eq"
+          }
+        ]
+      },
+      "comment": "Climate change is its own area of protection upstream, rather than being split across the three it acts on."
+    },
+    {
+      "slug": "climate-change-biogenic",
+      "name": "Climate change-Biogenic",
+      "description": "The part of climate change from carbon that was in living matter, and from the methane and nitrous oxide that biological processes release.",
+      "area_of_protection": "Climate Change",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Climate change",
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-CO2eq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "706261af-a357-4cc0-a50a-f3033fcbd556",
+          "name": "Climate change-Biogenic",
+          "indicator": "Radiative forcing as Global Warming Potential (GWP100)",
+          "unit": "kg CO2-Equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "climate change: biogenic",
+          "indicator": "global warming potential (GWP100)",
+          "unit": "kg CO2-Eq"
+        },
+        "greendelta": {
+          "identifier": "706261af-a357-4cc0-a50a-f3033fcbd556",
+          "name": "Climate change (biogenic)",
+          "unit": "kg CO2 eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "climate change: biogenic",
+            "indicator": "global warming potential (GWP100)",
+            "unit": "kg CO2-Eq"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "climate-change-fossil",
+      "name": "Climate change-Fossil",
+      "description": "The part of climate change from carbon that was out of circulation until it was extracted and burnt.",
+      "area_of_protection": "Climate Change",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Climate change",
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-CO2eq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "7fce5b3a-66b8-4ce1-91e8-a925aee1f186",
+          "name": "Climate change-Fossil",
+          "indicator": "Radiative forcing as Global Warming Potential (GWP100)",
+          "unit": "kg CO2 Equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "climate change: fossil",
+          "indicator": "global warming potential (GWP100)",
+          "unit": "kg CO2-Eq"
+        },
+        "greendelta": {
+          "identifier": "7fce5b3a-66b8-4ce1-91e8-a925aee1f186",
+          "name": "Climate change (fossil)",
+          "unit": "kg CO2 eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "climate change: fossil",
+            "indicator": "global warming potential (GWP100)",
+            "unit": "kg CO2-Eq"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "climate-change-land-use",
+      "name": "Climate change-Land use and land use change",
+      "description": "The part of climate change from carbon released when land is cleared or converted, and from the carbon that land no longer holds.",
+      "area_of_protection": "Climate Change",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Climate change",
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-CO2eq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "14af9ca7-aa1d-4832-b1d9-ab05a06dcb12",
+          "name": "Climate change-Land use and land use change",
+          "indicator": "Radiative forcing as Global Warming Potential (GWP100)",
+          "unit": "kg CO2-Equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "climate change: land use and land use change",
+          "indicator": "global warming potential (GWP100)",
+          "unit": "kg CO2-Eq"
+        },
+        "greendelta": {
+          "identifier": "14af9ca7-aa1d-4832-b1d9-ab05a06dcb12",
+          "name": "Climate change (land use)",
+          "unit": "kg CO2 eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "climate change: land use and land use change",
+            "indicator": "global warming potential (GWP100)",
+            "unit": "kg CO2-Eq"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "particulate-matter",
+      "name": "EF-particulate Matter",
+      "description": "Cases of respiratory disease expected from fine particles and from the gases that form them in the air.",
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/DiseaseIncidence",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b5c602c6-def3-11e6-bf01-fe55135034f3",
+          "name": "EF-particulate Matter",
+          "indicator": "Impact on human health",
+          "unit": "disease incidence"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "particulate matter formation",
+          "indicator": "impact on human health",
+          "unit": "disease incidence"
+        },
+        "greendelta": {
+          "identifier": "b5c602c6-def3-11e6-bf01-fe55135034f3",
+          "name": "Particulate matter",
+          "unit": "disease incidence"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "particulate matter formation",
+            "indicator": "impact on human health",
+            "unit": "disease incidence"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "ecotoxicity-freshwater",
+      "name": "Ecotoxicity, freshwater",
+      "description": "The fraction of freshwater species affected, over a volume of water and a length of time, by a substance that reaches fresh water.",
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Ecotoxicity, freshwater",
+      "unit_iri": "https://vocab.brightway.one/units/unit/CTUE",
+      "parts": [
+        "Ecotoxicity, freshwater_organics",
+        "Ecotoxicity, freshwater_inorganics"
+      ],
+      "stated": {
+        "jrc": {
+          "identifier": "05316e7a-b254-4bea-9cf0-6bf33eb5c630",
+          "name": "Ecotoxicity, freshwater",
+          "indicator": "Comparative Toxic Unit for ecosystems (CTUe) ",
+          "unit": "CTUe"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "ecotoxicity: freshwater",
+          "indicator": "comparative toxic unit for ecosystems (CTUe)",
+          "unit": "CTUe"
+        },
+        "greendelta": {
+          "identifier": "05316e7a-b254-4bea-9cf0-6bf33eb5c630",
+          "name": "Ecotoxicity freshwater",
+          "unit": "CTUe"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "ecotoxicity: freshwater",
+            "indicator": "comparative toxic unit for ecosystems (CTUe)",
+            "unit": "CTUe"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "ecotoxicity-freshwater-inorganics",
+      "name": "Ecotoxicity, freshwater_inorganics",
+      "description": "Freshwater ecotoxicity from the metals and other inorganic substances alone.",
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Ecotoxicity, freshwater",
+      "unit_iri": "https://vocab.brightway.one/units/unit/CTUE",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "dacd48b5-4da5-49aa-aff4-cd5f5495c037",
+          "name": "Ecotoxicity, freshwater_inorganics",
+          "indicator": "Comparative Toxic Unit for ecosystems (CTUe) ",
+          "unit": "CTUe"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "ecotoxicity: freshwater, inorganics",
+          "indicator": "comparative toxic unit for ecosystems (CTUe)",
+          "unit": "CTUe"
+        },
+        "greendelta": {
+          "identifier": "dacd48b5-4da5-49aa-aff4-cd5f5495c037",
+          "name": "Ecotoxicity freshwater (inorganics)",
+          "unit": "CTUe"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "ecotoxicity: freshwater, inorganics",
+            "indicator": "comparative toxic unit for ecosystems (CTUe)",
+            "unit": "CTUe"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "ecotoxicity-freshwater-organics",
+      "name": "Ecotoxicity, freshwater_organics",
+      "description": "Freshwater ecotoxicity from the organic substances alone.",
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Ecotoxicity, freshwater",
+      "unit_iri": "https://vocab.brightway.one/units/unit/CTUE",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "fd530f00-9325-424a-92ef-aaac67922fd9",
+          "name": "Ecotoxicity, freshwater_organics",
+          "indicator": "Comparative Toxic Unit for ecosystems (CTUe) ",
+          "unit": "CTUe"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "ecotoxicity: freshwater, organics",
+          "indicator": "comparative toxic unit for ecosystems (CTUe)",
+          "unit": "CTUe"
+        },
+        "greendelta": {
+          "identifier": "fd530f00-9325-424a-92ef-aaac67922fd9",
+          "name": "Ecotoxicity freshwater (organics)",
+          "unit": "CTUe"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "ecotoxicity: freshwater, organics",
+            "indicator": "comparative toxic unit for ecosystems (CTUe)",
+            "unit": "CTUe"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "eutrophication-marine",
+      "name": "Eutrophication marine",
+      "description": "The nitrogen that reaches the sea, where it is the nutrient that limits how much can grow.",
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-Neq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b5c619fa-def3-11e6-bf01-fe55135034f3",
+          "name": "Eutrophication marine",
+          "indicator": "Fraction of nutrients reaching marine end compartment (N)",
+          "unit": "kg N equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "eutrophication: marine",
+          "indicator": "fraction of nutrients reaching marine end compartment (N)",
+          "unit": "kg N-Eq"
+        },
+        "greendelta": {
+          "identifier": "b5c619fa-def3-11e6-bf01-fe55135034f3",
+          "name": "Eutrophication marine",
+          "unit": "kg N eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "eutrophication: marine",
+            "indicator": "fraction of nutrients reaching marine end compartment (N)",
+            "unit": "kg N-Eq"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "eutrophication-freshwater",
+      "name": "Eutrophication, freshwater",
+      "description": "The phosphorus that reaches fresh water, where it is the nutrient that limits how much can grow.",
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-Peq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b53ec18f-7377-4ad3-86eb-cc3f4f276b2b",
+          "name": "Eutrophication, freshwater",
+          "indicator": "Fraction of nutrients reaching freshwater end compartment (P)",
+          "unit": "kg P equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "eutrophication: freshwater",
+          "indicator": "fraction of nutrients reaching freshwater end compartment (P)",
+          "unit": "kg P-Eq"
+        },
+        "greendelta": {
+          "identifier": "b53ec18f-7377-4ad3-86eb-cc3f4f276b2b",
+          "name": "Eutrophication freshwater",
+          "unit": "kg P eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "eutrophication: freshwater",
+            "indicator": "fraction of nutrients reaching freshwater end compartment (P)",
+            "unit": "kg PO4-Eq"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "eutrophication-terrestrial",
+      "name": "Eutrophication, terrestrial",
+      "description": "Nitrogen deposited on land, weighted by how much of it falls where the receiving ecosystem is already saturated.",
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/MOL-Neq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b5c614d2-def3-11e6-bf01-fe55135034f3",
+          "name": "Eutrophication, terrestrial",
+          "indicator": "Accumulated Exceedance (AE) ",
+          "unit": "mol N equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "eutrophication: terrestrial",
+          "indicator": "accumulated exceedance (AE)",
+          "unit": "mol N-Eq"
+        },
+        "greendelta": {
+          "identifier": "b5c614d2-def3-11e6-bf01-fe55135034f3",
+          "name": "Eutrophication terrestrial",
+          "unit": "mol N eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "eutrophication: terrestrial",
+            "indicator": "accumulated exceedance (AE)",
+            "unit": "mol N-Eq"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "human-toxicity-cancer",
+      "name": "Human toxicity, cancer",
+      "description": "Cases of cancer expected in the exposed population, per unit emitted.",
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Human toxicity, cancer",
+      "unit_iri": "https://vocab.brightway.one/units/unit/CTUH",
+      "parts": [
+        "Human toxicity, cancer_organics",
+        "Human toxicity, cancer_inorganics"
+      ],
+      "stated": {
+        "jrc": {
+          "identifier": "2299222a-bbd8-474f-9d4f-4dd1f18aea7c",
+          "name": "Human toxicity, cancer",
+          "indicator": "Comparative Toxic Unit for human (CTUh) ",
+          "unit": " CTUh "
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "human toxicity: carcinogenic",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "greendelta": {
+          "identifier": "2299222a-bbd8-474f-9d4f-4dd1f18aea7c",
+          "name": "Human toxicity cancer",
+          "unit": " CTUh "
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "human toxicity: carcinogenic",
+            "indicator": "comparative toxic unit for human (CTUh)",
+            "unit": "CTUh"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "human-toxicity-cancer-inorganics",
+      "name": "Human toxicity, cancer_inorganics",
+      "description": "Carcinogenic human toxicity from the metals and other inorganic substances alone.",
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Human toxicity, cancer",
+      "unit_iri": "https://vocab.brightway.one/units/unit/CTUH",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "01500b74-7ffb-463e-9bd4-72f17c2263ff",
+          "name": "Human toxicity, cancer_inorganics",
+          "indicator": "Comparative Toxic Unit for human (CTUh) ",
+          "unit": " CTUh "
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "human toxicity: carcinogenic, inorganics",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "greendelta": {
+          "identifier": "01500b74-7ffb-463e-9bd4-72f17c2263ff",
+          "name": "Human toxicity cancer (inorganics)",
+          "unit": " CTUh "
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "human toxicity: carcinogenic, inorganics",
+            "indicator": "comparative toxic unit for human (CTUh)",
+            "unit": "CTUh"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "human-toxicity-cancer-organics",
+      "name": "Human toxicity, cancer_organics",
+      "description": "Carcinogenic human toxicity from the organic substances alone.",
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Human toxicity, cancer",
+      "unit_iri": "https://vocab.brightway.one/units/unit/CTUH",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "503699e0-eca9-4089-8bf8-e0f49c93e578",
+          "name": "Human toxicity, cancer_organics",
+          "indicator": "Comparative Toxic Unit for human (CTUh) ",
+          "unit": " CTUh "
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "human toxicity: carcinogenic, organics",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "greendelta": {
+          "identifier": "503699e0-eca9-4089-8bf8-e0f49c93e578",
+          "name": "Human toxicity cancer (organics)",
+          "unit": " CTUh "
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "human toxicity: carcinogenic, organics",
+            "indicator": "comparative toxic unit for human (CTUh)",
+            "unit": "CTUh"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "human-toxicity-non-cancer",
+      "name": "Human toxicity, non-cancer",
+      "description": "Cases of disease other than cancer expected in the exposed population, per unit emitted.",
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Human toxicity, non-cancer",
+      "unit_iri": "https://vocab.brightway.one/units/unit/CTUH",
+      "parts": [
+        "Human toxicity, non-cancer_organics",
+        "Human toxicity, non-cancer_inorganics"
+      ],
+      "stated": {
+        "jrc": {
+          "identifier": "7cfdcfcf-b222-4b26-888a-a55f9fbf7ac8",
+          "name": "Human toxicity, non-cancer",
+          "indicator": "Comparative Toxic Unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "human toxicity: non-carcinogenic",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "greendelta": {
+          "identifier": "7cfdcfcf-b222-4b26-888a-a55f9fbf7ac8",
+          "name": "Human toxicity non-cancer",
+          "unit": "CTUh"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "human toxicity: non-carcinogenic",
+            "indicator": "comparative toxic unit for human (CTUh)",
+            "unit": "CTUh"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "human-toxicity-non-cancer-inorganics",
+      "name": "Human toxicity, non-cancer_inorganics",
+      "description": "Non-carcinogenic human toxicity from the metals and other inorganic substances alone.",
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Human toxicity, non-cancer",
+      "unit_iri": "https://vocab.brightway.one/units/unit/CTUH",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "9d1d43a2-e1aa-4c16-acd4-3dd8a6a2fb85",
+          "name": "Human toxicity, non-cancer_inorganics",
+          "indicator": "Comparative Toxic Unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "human toxicity: non-carcinogenic, inorganics",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "greendelta": {
+          "identifier": "9d1d43a2-e1aa-4c16-acd4-3dd8a6a2fb85",
+          "name": "Human toxicity non-cancer (inorganics)",
+          "unit": "CTUh"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "human toxicity: non-carcinogenic, inorganics",
+            "indicator": "comparative toxic unit for human (CTUh)",
+            "unit": "CTUh"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "human-toxicity-non-cancer-organics",
+      "name": "Human toxicity, non-cancer_organics",
+      "description": "Non-carcinogenic human toxicity from the organic substances alone.",
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": "Human toxicity, non-cancer",
+      "unit_iri": "https://vocab.brightway.one/units/unit/CTUH",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "8c3141e9-1f15-43b5-bff2-182e49893a46",
+          "name": "Human toxicity, non-cancer_organics",
+          "indicator": "Comparative Toxic Unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "human toxicity: non-carcinogenic, organics",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "greendelta": {
+          "identifier": "8c3141e9-1f15-43b5-bff2-182e49893a46",
+          "name": "Human toxicity non-cancer (organics)",
+          "unit": "CTUh"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "human toxicity: non-carcinogenic, organics",
+            "indicator": "comparative toxic unit for human (CTUh)",
+            "unit": "CTUh"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "ionising-radiation-human-health",
+      "name": "Ionising radiation, human health",
+      "description": "Radioactivity released, weighted by how much of a dose people end up receiving from it, relative to uranium-235 to air.",
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloBQ-U235eq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b5c632be-def3-11e6-bf01-fe55135034f3",
+          "name": "Ionising radiation, human health",
+          "indicator": "Human exposure efficiency relative to U235",
+          "unit": "kBq U235 equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "ionising radiation: human health",
+          "indicator": "human exposure efficiency relative to u235",
+          "unit": "kBq U235-Eq"
+        },
+        "greendelta": {
+          "identifier": "b5c632be-def3-11e6-bf01-fe55135034f3",
+          "name": "Ionising radiation (human health)",
+          "unit": "kBq U235 eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "ionising radiation: human health",
+            "indicator": "human exposure efficiency relative to u235",
+            "unit": "kBq U235-Eq"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "land-use",
+      "name": "Land use",
+      "description": "Land occupied or transformed, weighted by what that does to the soil's capacity to support life.",
+      "area_of_protection": "Ecosystem Quality",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/SQI",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b2ad6890-c78d-11e6-9d9d-cec0c932ce01",
+          "name": "Land use",
+          "indicator": "Soil quality index",
+          "unit": "dimensionless (pt)"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "land use",
+          "indicator": "soil quality index",
+          "unit": "dimensionless"
+        },
+        "greendelta": {
+          "identifier": "b2ad6890-c78d-11e6-9d9d-cec0c932ce01",
+          "name": "Land use",
+          "unit": "dimensionless (pt)"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "land use",
+            "indicator": "soil quality index",
+            "unit": "dimensionless"
+          }
+        ]
+      },
+      "comment": "The indicator is a soil quality index, so the area of protection is the ecosystem rather than the land as a stock somebody owns."
+    },
+    {
+      "slug": "ozone-depletion",
+      "name": "Ozone depletion",
+      "description": "Destruction of stratospheric ozone, as the kilograms of CFC-11 that would do the same.",
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-CFC11eq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b5c629d6-def3-11e6-bf01-fe55135034f3",
+          "name": "Ozone depletion",
+          "indicator": "Ozone Depletion Potential (ODP) ",
+          "unit": "kg CFC11 equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "ozone depletion",
+          "indicator": "ozone depletion potential (ODP)",
+          "unit": "kg CFC-11-Eq"
+        },
+        "greendelta": {
+          "identifier": "b5c629d6-def3-11e6-bf01-fe55135034f3",
+          "name": "Ozone depletion",
+          "unit": "kg CFC11 eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "ozone depletion",
+            "indicator": "ozone depletion potential (ODP)",
+            "unit": "kg CFC-11-Eq"
+          }
+        ]
+      },
+      "comment": "The damage the indicator stands for is the ultraviolet light that reaches people, so this is human health rather than a fourth area of protection of its own."
+    },
+    {
+      "slug": "photochemical-ozone-formation-human-health",
+      "name": "Photochemical ozone formation - human health",
+      "description": "Ground-level ozone formed from emissions in sunlight, as the kilograms of non-methane volatile organic compounds that would form the same.",
+      "area_of_protection": "Human Health",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-NMVOCeq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b5c610fe-def3-11e6-bf01-fe55135034f3",
+          "name": "Photochemical ozone formation - human health",
+          "indicator": "Tropospheric ozone concentration increase",
+          "unit": "kg NMVOC equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "photochemical oxidant formation: human health",
+          "indicator": "tropospheric ozone concentration increase",
+          "unit": "kg NMVOC-Eq"
+        },
+        "greendelta": {
+          "identifier": "b5c610fe-def3-11e6-bf01-fe55135034f3",
+          "name": "Photochemical ozone formation (human health)",
+          "unit": "kg NMVOC eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "photochemical ozone formation: human health",
+            "indicator": "tropospheric ozone concentration increase",
+            "unit": "kg NMVOC-Eq"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "resource-use-fossils",
+      "name": "Resource use, fossils",
+      "description": "Energy taken from fossil and nuclear stocks, as the net calorific value of what was extracted.",
+      "area_of_protection": "Resources and ecosystem services",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/MegaJ",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b2ad6110-c78d-11e6-9d9d-cec0c932ce01",
+          "name": "Resource use, fossils",
+          "indicator": "Abiotic resource depletion fossil fuels (ADP-fossil)",
+          "unit": "MJ"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "energy resources: non-renewable",
+          "indicator": "abiotic depletion potential (ADP): fossil fuels",
+          "unit": "MJ, net calorific value"
+        },
+        "greendelta": {
+          "identifier": "b2ad6110-c78d-11e6-9d9d-cec0c932ce01",
+          "name": "Resource use fossils",
+          "unit": "MJ (net calorific)"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "energy resources: non-renewable",
+            "indicator": "abiotic depletion potential (ADP): fossil fuels",
+            "unit": "MJ, net calorific value"
+          }
+        ]
+      },
+      "comment": "The reference unit is energy rather than an antimony equivalent, which is why this category and `Resource use, minerals and metals` cannot share one."
+    },
+    {
+      "slug": "resource-use-minerals-and-metals",
+      "name": "Resource use, minerals and metals",
+      "description": "Minerals and metals extracted, weighted against how much of each is left in the ground, as kilograms of antimony.",
+      "area_of_protection": "Resources and ecosystem services",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/KiloGM-SBeq",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b2ad6494-c78d-11e6-9d9d-cec0c932ce01",
+          "name": "Resource use, minerals and metals",
+          "indicator": "Abiotic resource depletion (ADP ultimate reserve)",
+          "unit": "kg Sb equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "material resources: metals/minerals",
+          "indicator": "abiotic depletion potential (ADP): elements (ultimate reserves)",
+          "unit": "kg Sb-Eq"
+        },
+        "greendelta": {
+          "identifier": "b2ad6494-c78d-11e6-9d9d-cec0c932ce01",
+          "name": "Resource use minerals and metals",
+          "unit": "kg Sb eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "material resources: metals/minerals",
+            "indicator": "abiotic depletion potential (ADP): elements (ultimate reserves)",
+            "unit": "kg Sb-Eq"
+          }
+        ]
+      },
+      "comment": ""
+    },
+    {
+      "slug": "water-use",
+      "name": "Water use",
+      "description": "Water consumed, weighted by how scarce it is where it was taken from -- a cubic metre in a dry catchment counts for more than one in a wet one.",
+      "area_of_protection": "Resources and ecosystem services",
+      "midpoint_endpoint": "Midpoint",
+      "category_group": null,
+      "unit_iri": "https://vocab.brightway.one/units/unit/M3-H2Oeq-Deprived",
+      "parts": [],
+      "stated": {
+        "jrc": {
+          "identifier": "b2ad66ce-c78d-11e6-9d9d-cec0c932ce01",
+          "name": "Water use",
+          "indicator": "User deprivation potential (deprivation-weighted water consumption)",
+          "unit": "m3-world equivalents"
+        },
+        "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "water use",
+          "indicator": "user deprivation potential (deprivation-weighted water consumption)",
+          "unit": "m3 world Eq deprived"
+        },
+        "greendelta": {
+          "identifier": "b2ad66ce-c78d-11e6-9d9d-cec0c932ce01",
+          "name": "Water use",
+          "unit": "m3 world eq"
+        }
+      },
+      "earlier": {
+        "ecoinvent-centre": [
+          {
+            "method": "EF v3.0",
+            "name": "water use",
+            "indicator": "user deprivation potential (deprivation-weighted water consumption)",
+            "unit": "m3 world eq. deprived"
+          }
+        ]
+      },
+      "comment": "EF files this category as `other` and states no area of protection, so this is a judgement rather than a lookup.  The indicator is the AWARE deprivation potential: what it measures is a user somewhere else not getting the water, which is a statement about availability rather than about a damaged ecosystem or a sick person.  `Resources and ecosystem services` is the upstream value that says availability; the endpoint damage does reach human health and ecosystem quality both, and that is a reason not to pick either of them here."
+    }
+  ]
+}

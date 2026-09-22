@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "description": "Where a flow of this list has no characterisation factor and the same substance is characterised in a neighbouring context of the same class, this is the one convention that says which neighbour's number it takes, if any. Ours: not EF's, not ecoinvent's, not SimaPro's, and the same for every LCIA method this list publishes. Read by `brightway_flows.lcia.context_carry`; a factor it publishes carries `derivation: carried`, the rule that named the pair and the flow it was carried from. Written 2026-09-01 from the census in `tools/count_context_blanks.py` on the 2026-09-01 build (`20260901T0451332605450000`), class by class, and recorded as decisions in `plans/lcia-consensus-decisions.md` §5.\n\nHow it is applied. A blank is a (flow, category, place) that no deciding implementation states anything for -- a compartment somebody spoke about is a queue's business, never this file's. The `downward` rules run first: each names a recipient context and an ordered list of donor contexts, and the first donor the substance is published in gives its number; where none is, the blank stays blank and is counted. The `upward` rules run after, and only from numbers an implementation stated rather than ones the first pass carried: a parent -- each class root, and surface water, the one parent below a root -- takes its children's number only where exactly one child is published, or every published child states the same number to numerical precision, the most precise printing kept. Nothing is ever carried from a carried factor, onto a withdrawn flow, or into or out of a wall. A stated zero carries like any other number: it is a statement.\n\nWhat is deliberately absent, each a decision rather than an omission: agricultural soil (the compartment the fate models treat specially -- 450 Stepwise blanks stay blank); the unconfined aquifer (3,093 EF blanks stay blank, beside 948 aquifer rows ecoinvent stated with the surface-water number, which stand because they are statements); the confined fossil aquifer (210 `Water` returns under Water use); aircraft cruise height (43 EF and 2,126 Stepwise blanks, though EF's own cruise-height numbers are its rural numbers in 99 % of 22,269 pairs). Any of them is one added row.",
+  "walls": [
+    {
+      "context": "Environmental → Air → Long-term",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "comment": "EF 3.1 states literal zero here for every toxicity category, 21,172 of its 22,543 long-term air factors (#158). Whether that is a statement or a blanket is that issue's question; until it is answered nothing is carried into or out of long-term."
+    },
+    {
+      "context": "Environmental → Water → Long-term",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lote",
+      "comment": "As for long-term air: 20,956 of 20,986 EF factors are zero (#158)."
+    },
+    {
+      "context": "Environmental → Air → Indoor",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-indr-unkn",
+      "comment": "A different fate and exposure model from outdoor air. The three well-mixed categories that used to carry a number in here (15 factors for HFCs and halons on the 2026-09-01 build) are withdrawn with this file: one convention, no per-category holes in a wall."
+    },
+    {
+      "context": "Environmental → Water → Ocean",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+      "comment": "Fresh and marine never cross. EF characterises sea water separately and the numbers differ by orders of magnitude (chlorobenzene: 1,787.5 CTUe/kg fresh, 1.532 marine)."
+    },
+    {
+      "context": "Resource → Water → Ocean",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-ocea",
+      "comment": "Sea water taken from the ocean is not a fresh-water withdrawal; no water-use deprivation factor is carried onto it."
+    }
+  ],
+  "downward": [
+    {
+      "recipient": "Environmental → Ground → Silvicultural",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-silv",
+      "donors": [
+        "Environmental → Ground → Non-agricultural",
+        "Environmental → Ground → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+        "https://vocab.brightway.one/flow-contexts/envi-grou-unkn"
+      ],
+      "comment": "EF's non-agricultural soil is its complement of agricultural soil -- forest and built land are in it -- and its publisher's number there is the one ecoinvent gave forestry soil: of ecoinvent's 2,765 silvicultural rows this list publishes as `restated`, 2,747 match non-agricultural, against 1,511 agricultural and 1,549 unspecified. Where EF publishes both, non-agricultural and silvicultural agree 99 % of the time; agricultural 54 %. Unknown is the fallback for a method with no non-agricultural row (Stepwise: 499 blanks). EF 3.1: 170 blanks."
+    },
+    {
+      "recipient": "Environmental → Ground → Industrial",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-indu",
+      "donors": [
+        "Environmental → Ground → Non-agricultural",
+        "Environmental → Ground → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+        "https://vocab.brightway.one/flow-contexts/envi-grou-unkn"
+      ],
+      "comment": "The same reasoning as silvicultural soil, with the same evidence: ecoinvent's 123 restated industrial rows match non-agricultural in 123 of 123, and where EF publishes both they agree 100 % of the time. EF 3.1: 125 blanks; Stepwise: 39."
+    },
+    {
+      "recipient": "Environmental → Ground → Non-agricultural",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+      "donors": [
+        "Environmental → Ground → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-grou-unkn"
+      ],
+      "comment": "Parent to child. Where EF publishes both they agree 59 % of the time; for a SimaPro-shaped method the unspecified number is what the software applies to every sub-compartment it has no row for. EF 3.1: 30 blanks; Stepwise: 1,273. Agricultural soil is not a donor and has no rule of its own."
+    },
+    {
+      "recipient": "Environmental → Water → River",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-rive",
+      "donors": [
+        "Environmental → Water → Surface water",
+        "Environmental → Water → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+        "https://vocab.brightway.one/flow-contexts/envi-wate-unkn"
+      ],
+      "comment": "A river is surface water: our water vocabulary files it there (asserted by this project, because ENVO does not). BAFU brought 279 river flows with no factor in any category (#159); EF 3.1: 1,029 blanks, Stepwise: 285. Unknown is the fallback for a method that states no surface-water row; Stepwise's 14 river rows agree with its unspecified water 93 % of the time. The aquifer is a sibling and is not a donor."
+    },
+    {
+      "recipient": "Environmental → Water → Lake",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "donors": [
+        "Environmental → Water → Surface water",
+        "Environmental → Water → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+        "https://vocab.brightway.one/flow-contexts/envi-wate-unkn"
+      ],
+      "comment": "As for rivers: a lake is surface water in our vocabulary. EF 3.1: 121 blanks; Stepwise: 48."
+    },
+    {
+      "recipient": "Environmental → Water → Surface water",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+      "donors": [
+        "Environmental → Water → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-wate-unkn"
+      ],
+      "comment": "Parent to child. Stepwise states unspecified water and the unconfined aquifer and no surface water, so 1,729 of its flows are blank here; the aquifer is not a donor -- its numbers differ from unspecified water 99 % of the time. EF 3.1 states surface water itself and has no blanks."
+    },
+    {
+      "recipient": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "donors": [
+        "Environmental → Air → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-air-unkn"
+      ],
+      "comment": "Parent to child, and never from the urban compartment: rural and urban are the two exposure settings the fate model distinguishes, and unspecified air is the number a method states when it does not know which. Stepwise states unspecified air only: 2,150 blanks. EF 3.1 states this compartment itself."
+    },
+    {
+      "recipient": "Environmental → Air → Ground level → Urban (>1000 people/square mile)",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "donors": [
+        "Environmental → Air → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-air-unkn"
+      ],
+      "comment": "As for the rural compartment. EF 3.1: 20 blanks; Stepwise: 2,146."
+    },
+    {
+      "recipient": "Environmental → Air → Ground level → Rural (<1000 people/square mile)",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ru10pesq",
+      "donors": [
+        "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+        "Environmental → Air → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-unkn"
+      ],
+      "comment": "The six strata-by-density compartments follow the fate model's own split: a low release follows its population density, a high or medium stack behaves as rural whatever the density. Over the 40 EF pairs where both are published, ground-level rural agrees with rural medium stack 90 % of the time. Seventeen flows in the whole list; EF 3.1: 3 blanks, Stepwise: 15."
+    },
+    {
+      "recipient": "Environmental → Air → Low stack, <25 meters → Rural (<1000 people/square mile)",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lost25me-ru10pesq",
+      "donors": [
+        "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+        "Environmental → Air → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-unkn"
+      ],
+      "comment": "A low rural release: rural medium stack agrees 90 % of the time over the 40 EF pairs. EF 3.1: 3 blanks, Stepwise: 15."
+    },
+    {
+      "recipient": "Environmental → Air → Low stack, <25 meters → Urban (>1000 people/square mile)",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lost25me-ur10pesq",
+      "donors": [
+        "Environmental → Air → Ground level → Urban (>1000 people/square mile)",
+        "Environmental → Air → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-unkn"
+      ],
+      "comment": "A low urban release follows its density: urban ground level agrees 90 % of the time over the 40 EF pairs, rural medium stack 50 %. EF 3.1: 3 blanks, Stepwise: 15."
+    },
+    {
+      "recipient": "Environmental → Air → High stack, >150 meters → Rural (<1000 people/square mile)",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-air-hist15me-ru10pesq",
+      "donors": [
+        "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+        "Environmental → Air → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-unkn"
+      ],
+      "comment": "A high rural stack: rural medium stack agrees 90 % of the time over the 40 EF pairs. EF 3.1: 3 blanks, Stepwise: 15."
+    },
+    {
+      "recipient": "Environmental → Air → High stack, >150 meters → Urban (>1000 people/square mile)",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-air-hist15me-ur10pesq",
+      "donors": [
+        "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+        "Environmental → Air → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-unkn"
+      ],
+      "comment": "A high stack behaves as rural whatever the density: rural medium stack agrees 90 % of the time over the 40 EF pairs, urban ground level 50 %. EF 3.1: 3 blanks, Stepwise: 15."
+    },
+    {
+      "recipient": "Environmental → Air → Medium stack, <150 meters → Urban (>1000 people/square mile)",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ur10pesq",
+      "donors": [
+        "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+        "Environmental → Air → Unknown"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-unkn"
+      ],
+      "comment": "A medium stack behaves as rural whatever the density: rural medium stack agrees 90 % of the time over the 40 EF pairs, urban ground level 50 %. EF 3.1: 3 blanks, Stepwise: 15."
+    }
+  ],
+  "upward": [
+    {
+      "recipient": "Environmental → Ground → Unknown",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-unkn",
+      "donors": [
+        "Environmental → Ground → Agricultural",
+        "Environmental → Ground → Non-agricultural",
+        "Environmental → Ground → Silvicultural",
+        "Environmental → Ground → Industrial"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+        "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+        "https://vocab.brightway.one/flow-contexts/envi-grou-silv",
+        "https://vocab.brightway.one/flow-contexts/envi-grou-indu"
+      ],
+      "comment": "The class root takes its children's number only where one child is published, or every published child states the same number. Stepwise: 1 blank on the 2026-09-01 build."
+    },
+    {
+      "recipient": "Environmental → Water → Unknown",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unkn",
+      "donors": [
+        "Environmental → Water → Surface water",
+        "Environmental → Water → Unconfined aquifer",
+        "Environmental → Water → Confined aquifer with fossil groundwater"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+        "https://vocab.brightway.one/flow-contexts/envi-wate-unaq",
+        "https://vocab.brightway.one/flow-contexts/envi-wate-coaqwifo"
+      ],
+      "comment": "The class root, from its direct children. River and lake are children of surface water and reach unspecified water through it, by the rule below. No blanks on the 2026-09-01 build."
+    },
+    {
+      "recipient": "Environmental → Water → Surface water",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+      "donors": [
+        "Environmental → Water → River",
+        "Environmental → Water → Lake"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-wate-rive",
+        "https://vocab.brightway.one/flow-contexts/envi-wate-lake"
+      ],
+      "comment": "The one parent in the taxonomy that is not a class root: our water vocabulary files river and lake under surface water. Where a method states a river or lake number and no surface-water one -- Stepwise 2006's fourteen river rows are the only case on the 2026-09-01 build -- surface water takes it, under the same condition as the roots: one child published, or all published children agreeing. Added 2026-09-01 after the roots, so that a river-only number can climb at all; without it, unspecified water reads only its direct children and a river-only substance reaches nothing upward."
+    },
+    {
+      "recipient": "Environmental → Air → Unknown",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "donors": [
+        "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+        "Environmental → Air → Ground level → Urban (>1000 people/square mile)",
+        "Environmental → Air → Aircraft cruise height",
+        "Environmental → Air → Ground level → Rural (<1000 people/square mile)",
+        "Environmental → Air → Low stack, <25 meters → Rural (<1000 people/square mile)",
+        "Environmental → Air → Low stack, <25 meters → Urban (>1000 people/square mile)",
+        "Environmental → Air → High stack, >150 meters → Rural (<1000 people/square mile)",
+        "Environmental → Air → High stack, >150 meters → Urban (>1000 people/square mile)",
+        "Environmental → Air → Medium stack, <150 meters → Urban (>1000 people/square mile)"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-aicrhe",
+        "https://vocab.brightway.one/flow-contexts/envi-air-grle-ru10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-lost25me-ru10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-lost25me-ur10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-hist15me-ru10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-hist15me-ur10pesq",
+        "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ur10pesq"
+      ],
+      "comment": "The class root, from the nine outdoor strata. Indoor and long-term are walls and are not children here. The well-mixed pass filled 2 such rows on the 2026-09-01 build; this rule fills them where the strata agree."
+    },
+    {
+      "recipient": "Resource → Water → Unknown",
+      "recipient_iri": "https://vocab.brightway.one/flow-contexts/reso-wate",
+      "donors": [
+        "Resource → Water → Surface water",
+        "Resource → Water → River",
+        "Resource → Water → Lake",
+        "Resource → Water → Unconfined aquifer",
+        "Resource → Water → Confined aquifer with fossil groundwater"
+      ],
+      "donor_iris": [
+        "https://vocab.brightway.one/flow-contexts/reso-wate-suwa",
+        "https://vocab.brightway.one/flow-contexts/reso-wate-rive",
+        "https://vocab.brightway.one/flow-contexts/reso-wate-lake",
+        "https://vocab.brightway.one/flow-contexts/reso-wate-unaq",
+        "https://vocab.brightway.one/flow-contexts/reso-wate-coaqwifo"
+      ],
+      "comment": "The class root for withdrawals. Written for completeness: a withdrawal's water body is usually its own substance (lake water, river water) rather than a context of one, so this fires rarely. No blanks on the 2026-09-01 build."
+    }
+  ]
+}

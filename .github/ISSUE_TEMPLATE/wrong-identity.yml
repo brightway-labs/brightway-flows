@@ -1,0 +1,175 @@
+name: A flow is not that chemical
+description: The name and the registry number name two different chemicals, or the number belongs to something else, or the row is not a substance at all.
+labels: ["chemistry"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when a flow's **own identity** is wrong: the name says one chemical
+        and the number says another, the number belongs to a neighbouring substance or to a
+        superseded entry, a nuclide carries its element's number, or the row is a
+        laboratory measurement rather than a substance.
+
+        Two pages are worth a look first, because both answers are sometimes right: [A
+        flow's name and its registry number name different
+        chemicals](https://github.com/brightway-labs/brightway-flows/blob/main/docs/findings/names-and-numbers.md)
+        and [A name is not an
+        identifier](https://github.com/brightway-labs/brightway-flows/blob/main/docs/deciding/identity.md).
+        The rule here is that a registry number outranks a name — but it decides only what
+        happens when there is nothing else to go on, and it has been outweighed.
+
+        **Write the title so it means something to somebody who has not read the issue.**
+        Name the substance and the count: `Five EF 3.1 flows named 1,1,1-trichloroethane
+        carry the 1,1,2 isomer's registry number`.
+
+  - type: input
+    id: published-flow
+    attributes:
+      label: The flow on the website
+      description: Its UUID, or the address of its page.
+      placeholder: 0a1b2c3d-… · 1,1,1-Trichloroethane
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source-list
+    attributes:
+      label: Which source list the flow comes from
+      options:
+        - EF 3.1
+        - ecoinvent
+        - BAFU 2026 v1
+        - Stepwise 2006
+        - AGRIBALYSE 3.2
+        - GreenDelta's EF 3.1 implementation
+        - EXIOBASE
+        - It is this project's own, not a source list's
+    validations:
+      required: true
+
+  - type: input
+    id: source-release
+    attributes:
+      label: Which release
+      description: >-
+        Required. The same identifier can carry a different registry number in two releases
+        of one list — that is how several of these were found.
+      placeholder: "3.1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: source-row
+    attributes:
+      label: The row as the list ships it
+      description: Copy it rather than describing it. A blank field is evidence too.
+      value: |
+        uuid:
+        name:
+        CAS:
+        EC:
+        compartment:
+        unit:
+    validations:
+      required: true
+
+  - type: dropdown
+    id: wrong-half
+    attributes:
+      label: Which half is wrong?
+      description: >-
+        The single most important field on this form. Both answers are right somewhere:
+        EF's trichloroethane flows are corrected by trusting the number, and its `vanadium
+        (v)` flows and BAFU's `Cadmium II` rows are corrected by trusting the name.
+      options:
+        - The name — the registry number is right
+        - The registry number — the name is right
+        - Both, and I can say what the substance actually is
+        - Neither — this row is not a substance at all
+    validations:
+      required: true
+
+  - type: input
+    id: expected-value
+    attributes:
+      label: What it should say instead
+      description: >-
+        The corrected name, or the corrected registry number, or both. If you ticked *not a
+        substance*, say what it is — a laboratory measurement, a burden that is not matter,
+        a place in a state — and leave any number off.
+      placeholder: "79-00-5 is right; the name should be 1,1,2-trichloroethane"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: witnesses
+    attributes:
+      label: What says so
+      options:
+        - label: The registry number on the row
+        - label: The synonyms the source list ships with the flow
+        - label: The characterisation factors on the flow
+        - label: A registry's structure or formula — Common Chemistry, ChEBI, PubChem
+        - label: Another source list's row for the same substance
+        - label: A later release of this same list, which changed or withdrew the field
+        - label: The vendor's own comment on the row
+        - label: The underlying model the method says it implements
+
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: What each witness says
+      description: >-
+        The part no machine can supply. Where a name and a number disagree there is no way
+        to tell from the flow alone which half is wrong, so the evidence is the whole of
+        the argument.
+      placeholder: >-
+        Every one of the fifty-odd synonyms EF ships with these five flows names the other
+        isomer, and the toxicity factors on them match what USEtox publishes for the
+        chemical the *number* names, to three figures.
+    validations:
+      required: true
+
+  - type: input
+    id: claim
+    attributes:
+      label: One sentence that should be true of the output
+      placeholder: EF 3.1's five misnamed air flows are published as 1,1,2-trichloroethane
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: A proposed fix, if you have one
+      description: >-
+        **Optional.** A correction to what a source list states is a row in
+        `src/brightway_flows/data/<list>-manual-fixes.json`, which records what the
+        vendor wrote beside what it should have written. Filling this in is what lets a
+        maintainer have CI build the list with it applied.
+      render: json
+      placeholder: |
+        {
+          "uuid": "…",
+          "field": "cas_numbers",
+          "original_value": "7440-43-9",
+          "value": "22537-48-0",
+          "comment": "…"
+        }
+
+  - type: input
+    id: build
+    attributes:
+      label: Which build you were looking at
+      description: The version or revision at the foot of the page. Leave it blank if you are unsure.
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **What happens next.** A maintainer approves a CI run — runs are not automatic, so
+        there may be a wait. It measures this claim against the reference build and, if you
+        proposed a fix, builds the list with it applied and diffs it against that
+        reference. The result is a workflow run with an artifact attached. Nothing is
+        written to the repository until a pull request is merged.

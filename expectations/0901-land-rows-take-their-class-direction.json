@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "description": "A row whose curated land class states a direction is published in that direction's context, whatever compartment the vendor filed it under (#193, agribalyse-land-and-sulfur-contexts.md §1). AGRIBALYSE files seven land rows under `Resources / in ground` and `Resources / in water`, and on the build of 1 September 2026 (run c5445e95) the compartment decided: seven rows placed by `basis=land_class` -- the class was consulted for the substance and ignored for the context -- were published as ground and water resources, six of them a second flow for a substance whose Land Use flow carries 213 factors, and `Occupation, sea and ocean` minted `Sea` twice, once per compartment. The rule makes the land class the most specific context rule in `ContextExpectations.resolve`, with the disagreement logged, and a `land-class-out-of-place` queue reports any land substance published outside Land Use so the next list's version of this is a build finding rather than an archaeology.",
+  "expectations": [
+    {
+      "id": "0901-a-transformation-filed-in-the-ground-is-a-transformation",
+      "issue": 901,
+      "title": "AGRIBALYSE's Transformation, to annual crop filed under in-ground reaches the Land Use flow its land-compartment twin uses",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Transformation, To Annual Crop"
+      },
+      "expect": {
+        "row_count": 4,
+        "outcome": "algorithm",
+        "basis": "land_class",
+        "same_target": true,
+        "target_name": "To cropland",
+        "target_context_display": "Land Use → Transformation",
+        "target_characterised": true
+      },
+      "pending": true,
+      "comment": "Four rows, not the two the first draft claimed: `Resources / land` and `Resources / in ground` as shipped, plus the `, CN` and `, TH` copies that #192's geography split now records under the base name -- the selector finds them all, and all four belong on one flow. On the build of 1 September 2026 the land copies reached Land Use → Transformation with 213 factors while the in-ground copy sat on a minted factor-less `To cropland` in Resource → Ground. `same_target` is the claim the rule exists for."
+    },
+    {
+      "id": "0901-an-occupation-filed-in-water-is-an-occupation",
+      "issue": 901,
+      "title": "AGRIBALYSE's Occupation, mineral extraction site filed under in-water reaches Land Use → Occupation",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Occupation, Mineral Extraction Site"
+      },
+      "expect": {
+        "row_count": 2,
+        "outcome": "algorithm",
+        "basis": "land_class",
+        "same_target": true,
+        "target_context_display": "Land Use → Occupation"
+      },
+      "pending": true,
+      "comment": "The water-compartment sibling of the claim above, and the same shape: the class says occupation, the compartment said water resource, and the class now wins."
+    },
+    {
+      "id": "0901-sea-is-one-substance-in-one-place",
+      "issue": 901,
+      "title": "Occupation, sea and ocean is one flow in Land Use → Occupation, not two flows in two dimensions",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Occupation, Sea And Ocean"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_target": true,
+        "target_context_display": "Land Use → Occupation"
+      },
+      "pending": true,
+      "comment": "The seventh substance and the one minted twice on the build of 1 September 2026 -- `Sea` in Land Use → Occupation and again in Resource → Water → Unknown, because AGRIBALYSE files the row under both `Resources / land` and `Resources / in water`. One class, one direction, one flow."
+    },
+    {
+      "id": "0901-no-land-substance-is-a-ground-resource",
+      "issue": 901,
+      "title": "No flow of the To cropland substance exists outside Land Use",
+      "subject": {
+        "kind": "flow",
+        "name": "To cropland",
+        "context_display": "Resource → Ground"
+      },
+      "expect": {
+        "exists": false
+      },
+      "pending": true,
+      "comment": "The minted wrong-dimension flow of the build of 1 September 2026, standing for the six of its kind: `From agriculture`, `To cropland` and `To permanent cropland` in Resource → Ground, `Mineral extraction site`, `From forest` and `To mineral extraction site` in Resource → Water → Unknown. All six retire when their rows join the Land Use flows EF already characterises."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "BAFU 2026 v1 ships `Carbon monoxide, biogenic` three times, once per air subcompartment, and only two of the three carry carbon monoxide's registry number, 630-08-0. Those two land on `Carbon Monoxide (biogenic)`, the substance EF 3.1 characterises, on `cas+qualifier`. The third -- `emissions to air / low. pop.` -- carries no number, its qualified name reaches nothing, and it minted a second substance, `Carbon Monoxide, Biogenic`, with one flow and no factor. Carbon monoxide from burning biomass is one substance whichever stack it leaves; an inventory reporting it to low-population air scored zero for it where the same emission to unspecified air scored.\n\nThe correction is the one #134 made for `Carbon dioxide, biogenic` in the same subcompartment: the number is written on the name in `bafu-2026-v1-manual-fixes.json`. BAFU's own archive says the number is theirs -- 15 of the 398 `high. pop.` exchanges and 5 of the 17 `unspecified` exchanges write 630-08-0, and none of the 117 `low. pop.` exchanges does.\n\nMeasured on the build of 2026-08-29 at `54b0f9d`, the branch point: the `low. pop.` row is `created` on `flow_object_creation`, and the minted substance exists. See #177.",
+  "expectations": [
+    {
+      "id": "0824-bafu-biogenic-carbon-monoxide-is-one-substance",
+      "issue": 824,
+      "title": "BAFU's three biogenic carbon monoxide rows reach the substance EF characterises",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Carbon monoxide, biogenic"},
+      "expect": {"row_count": 3, "same_substance": true, "target_substance_id": "fo-ce9e4bacf707af37"},
+      "comment": "Three rows, one per subcompartment. Two reached `Carbon Monoxide (biogenic)` already; the `low. pop.` row minted its own. `same_substance` is the claim that matters -- three rows of one substance reaching one substance -- and the substance id pins it to EF's rather than to whichever one the three happen to agree on."
+    },
+    {
+      "id": "0824-the-low-pop-row-reaches-it-by-its-number",
+      "issue": 824,
+      "title": "The low-population row lands by the number the fix supplies, with its qualifier read",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "4469c7c9-c330-575e-94f4-ce731c9fa524"},
+      "expect": {"outcome": "algorithm", "basis": "cas+qualifier", "target_substance_id": "fo-ce9e4bacf707af37"},
+      "comment": "The row the issue names, on its own so that the count above cannot pass while this one row regresses. `basis: cas+qualifier` is claimed because that is how its two siblings land: the number finds carbon monoxide, and `biogenic` narrows it to the biogenic substance. A later change reaching the same substance by reading the name alone would fail here, which is the point."
+    },
+    {
+      "id": "0824-the-minted-duplicate-is-gone",
+      "issue": 824,
+      "title": "There is no second biogenic carbon monoxide",
+      "subject": {"kind": "substance", "label": "Carbon Monoxide, Biogenic"},
+      "expect": {"count": 0},
+      "comment": "The negative half, stated as an absence because that is what the fix produces: nothing renames the duplicate, it stops being created."
+    }
+  ]
+}

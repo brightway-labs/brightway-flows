@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "description": "Twenty-five of ecoinvent's land flows were published as eight consensus flows, and nothing in the list said so. The folds came from the correspondence tables ecoinvent composes for EF 3.1, which map one flow at a time and so can never state that several classes have become one. Three of them are corrected here. The seabed one was a slip in the vendor's own table: the same class is mapped correctly as an occupation and as a transformation *to*, and wrongly as a transformation *from*, so the flow it should have reached had no source flow at all. The three tillage regimes and the eight landfill classes are real distinctions EF 3.1 has no room for, so their rows are declined and each is published under its own name. The folds that remain -- ecoinvent's two spellings of unqualified arable land, and its two spellings of unknown -- are written down in `land-flow-groupings.json` with the reason, and the merge now refuses a fold that is written down nowhere. Measured against the build of 18 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 merged, commit fffe12a).",
+  "expectations": [
+    {
+      "id": "0565-from-seabed-natural",
+      "issue": 565,
+      "title": "ecoinvent's `Transformation, from seabed, natural (non-use)` reaches the consensus flow for natural seabed, not the unqualified one",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "da92cf98-87cb-437e-ab2c-205ba0639006"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "491e0ed1-0f9a-4073-a325-d8f9e529fc94",
+        "target_name": "From seabed, natural"
+      },
+      "comment": "Before this change it reached `From Seabed` 1f31ed21, the flow its unqualified sibling reaches, in both 3.12 and 3.8; `From Seabed, Natural` was the only one of the three natural-seabed flows with no source flow attached. Every published table makes the same mistake -- 3.9.1, 3.10.1, 3.11 and the composed 3.8 one -- so one curated target in `ecoinvent-match-overrides.json` corrects all of them. The flow is named `From seabed, natural` rather than `From Seabed, Natural` as of #66: a land flow object is now named by its land class, built from the class's own fields, so that EF 3.1's spelling, ecoinvent's and BAFU's all read as one class instead of as whichever of them reached the object first. The label states what the context does not -- the cover, the qualifiers, and for a transformation the direction -- so it says `From` and not `Transformation, from`, which the context already carries. The uuid is unchanged and it is the uuid this check turns on; the name is updated here because an expectation that names a subject in words has to name it in the words the list uses (#319). The previous name is kept on the object as an alternative label."
+    },
+    {
+      "id": "0565-from-seabed-unqualified-stays",
+      "issue": 565,
+      "title": "ecoinvent's `Transformation, from seabed, unspecified` still reaches the unqualified seabed flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "928ba839-d6e5-4d1e-b5fd-122998a9bbe2"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "1f31ed21-37a6-42cc-be50-2418b983a8db",
+        "target_name": "From seabed"
+      },
+      "comment": "The other half of the pair, and the reason the correction is a rewrite of one row rather than a rule about seabeds: this row is where it belongs, and moving the natural one off it must not take it along. True before the change as well as after -- it is here as the control. The flow is named `From seabed` rather than `From Seabed` as of #66: a land flow object is now named by its land class, built from the class's own fields, so that EF 3.1's spelling, ecoinvent's and BAFU's all read as one class instead of as whichever of them reached the object first. The label states what the context does not -- the cover, the qualifiers, and for a transformation the direction -- so it says `From` and not `Transformation, from`, which the context already carries. The uuid is unchanged and it is the uuid this check turns on; the name is updated here because an expectation that names a subject in words has to name it in the words the list uses (#319). The previous name is kept on the object as an alternative label."
+    },
+    {
+      "id": "0565-tillage-regimes-are-three-flows",
+      "issue": 565,
+      "title": "ecoinvent's three tillage regimes for arable land are published as three flows, not one",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "name_contains": "tillage"
+      },
+      "expect": {
+        "row_count": 3,
+        "distinct_targets": true,
+        "not_outcome": "prepared"
+      },
+      "comment": "Conservation, conventional and reduced tillage all reached EF 3.1's unqualified `Arable` b88d3b6d, so a reader could not tell from the list how a hectare-year had been ploughed. Tillage is how the soil is worked, which is what a soil-quality indicator is meant to be sensitive to, and EF 3.1 qualifies arable land by irrigation, intensity, greenhouse and flooding and by nothing about tillage. The rows are declined, so the addition path publishes each under its own name -- in m2*a, because a manual fix now rebases the unit ecoinvent ships them in. Of the sixty flows ecoinvent files as land occupations, fifty-seven are in m2*a and these three are in m2, in every release from 3.8 to 3.12, and an occupation is an area held for a time."
+    },
+    {
+      "id": "0565-landfill-classes-are-their-own-flows",
+      "issue": 565,
+      "title": "ecoinvent's landfill classes are published as themselves rather than as one dump site",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "name_contains": "dump site"
+      },
+      "expect": {
+        "row_count": 11,
+        "distinct_targets": true
+      },
+      "comment": "Eleven rows: one occupation, and five transformations in each direction -- the unqualified dump site plus inert material landfill, residual material landfill, sanitary landfill and slag compartment. The ten transformation rows reached two flows between them, `From Dump Site` and `To Dump Site`. An inert-material landfill and a sanitary landfill are not the same ground, and EF 3.1 has one dump site and nothing finer, so the eight sub-class rows are declined -- both directions together, because moving one and not the other is how a balanced transformation pair becomes a one-sided one."
+    },
+    {
+      "id": "0565-arable-fold-is-still-made",
+      "issue": 565,
+      "title": "ecoinvent's two names for unqualified arable land still reach one consensus flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "name_contains": "arable land, unspecified use"
+      },
+      "expect": {
+        "row_count": 3,
+        "outcome": "matched",
+        "not_outcome": "unmatched"
+      },
+      "comment": "The fold this change does *not* undo, and the reason it is recorded in `land-flow-groupings.json` rather than declined. `Occupation, annual crop` and `Occupation, arable land, unspecified use` are two ecoinvent spellings of the same class: ecoinvent's nine annual-crop classes map one to one onto EF 3.1's nine arable ones, greenhouse onto greenhouse and irrigated-intensive onto irrigated-intensive, so annual cropping is what EF means by arable. Three rows here -- the occupation and both transformation directions -- and each keeps the curator's target."
+    }
+  ]
+}

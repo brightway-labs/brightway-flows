@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% set page_title = "Checks" %}
+{% set active_section = "checks" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Checks</h1>
+  <p class="page__lede">
+    Five questions asked of the finished list. Two of them — shared labels and
+    formula mismatches — detect a false merge, so anything they find is a real
+    error rather than a stylistic one. The other three test invariants.
+  </p>
+</header>
+
+<div class="cards">
+  {% for check in checks %}
+  <a class="card card--link" href="{{ url_for('checks.' ~ check.key | replace('-', '_')) }}">
+    <span class="card__label">{{ check.title }}</span>
+    <span class="card__value">
+      {% if not check.available %}<span class="muted">n/a</span>
+      {% elif check.count is none %}<span class="muted">—</span>
+      {% else %}{{ check.count | thousands }}{% endif %}
+    </span>
+    <span class="card__note">{{ check.finds }}</span>
+    {% if not check.available %}
+    <span class="card__note muted">Not in this database; rebuild to compute it.</span>
+    {% endif %}
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

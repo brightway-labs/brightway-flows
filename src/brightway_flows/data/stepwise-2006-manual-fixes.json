@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "description": "Corrections to what the Stepwise 2006 method export says about its own flows, applied before anything reads a row. One file for the list, as every other list has: the lineage's own habits are corrected once for every SimaPro-shaped list in `simapro-lineage-manual-fixes.json`, and what is left here is what this export got wrong on its own account.",
+  "fixes": [
+    {
+      "match": {
+        "name": "Nitrogen, organic bound"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7727-37-9",
+      "comment": "7727-37-9 is dinitrogen -- N2, the inert gas that is most of the air. `Nitrogen, organic bound` is not a compound: it is the nitrogen locked inside the organic matter of a discharge, reported as a mass of nitrogen, and no registry number can name it, because a number names one compound and this is a measurement over many. Stepwise writes the gas's number on all five of its organic-bound rows -- water unspecified, groundwater, groundwater long-term, ocean and river -- exactly as EF 3.1 and all five ecoinvent versions do on their five and BAFU on its four. A shared registry number is how this project decides two things are one substance, so left alone these rows fuse with the gas and are published as `Dinitrogen`, with the gas's structure and synonyms (#57). Removed rather than corrected, because there is nothing to correct it to; with it gone the rows group by name onto the flow object the other lists' organic-bound rows reach. Stepwise's own six `Nitrogen` rows keep the number, which is theirs. The method itself says the two are not one row: it characterises both for aquatic eutrophication and gives them different numbers where it has reason to -- 2.6 for organic-bound nitrogen to the ocean against 3.1 for nitrogen -- so a fusion that made them one flow would have to discard one of those. The reasoning and the evidence are in `ef-3.1-manual-fixes.json`."
+    }
+  ]
+}

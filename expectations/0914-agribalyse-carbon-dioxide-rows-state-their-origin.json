@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "description": "AGRIBALYSE ships two carbon dioxide rows that name no origin and one that names an origin nothing here reads. All three reached carbon dioxide of unstated origin, which no method characterises, so the datasets using them scored nothing for climate change.\n\nThe two plain rows are decided by what their datasets do, and they do different things. The one in unspecified air is 56 datasets, 46 non-zero, and the largest are industrial carbon dioxide: 1.9175 ton in `Glutamate {CN} U`, the whole carbon dioxide of a Chinese monosodium glutamate plant, then 1,610 kg vented as a cooling agent by `Atlantic Herring, NEA, Pelagic Trawl, average, at landing {NL}` against a purchased 1,610 kg of `Carbon dioxide, liquid {RER}`, then fire-extinguisher charges. It goes to fossil, where BAFU's two plain rows (#139) and Stepwise's (#175) already are. The one in non-urban air is 28 datasets, 18 non-zero, and every one is biological decay -- seven composts and three straw-retting datasets. It goes to biogenic.\n\n`Carbon dioxide, peat oxidation` is not a third plain row: it states an origin, and this vocabulary did not read it. Draining a peatland and letting the peat oxidise is a change of land use, and AGRIBALYSE books it as one -- its `Peat degradation emissions on grassland, per kg CO2 {GLO}` ships the release as `Carbon dioxide, land transformation`, and its soil carbon datasets say their land-transformation row is \"excluding peat degradation\". So `peat oxidation` is added to the `land_use_change` qualifier, which answers `Methane, peat oxidation` in the same line -- a row with the same defect that #194 does not mention -- and which the third row, `Dinitrogen monoxide, peat oxidation`, needs a curated target for: the reading is right about it too, but EF ships no nitrous oxide of land-use-change origin to move it to, and a full build showed that qualifying the name is enough to take the row off the flow it was already on (#194).",
+  "expectations": [
+    {
+      "id": "0914-the-plain-row-in-unspecified-air-is-fossil",
+      "issue": 914,
+      "title": "AGRIBALYSE's plain `Carbon dioxide` row in unspecified air is published as fossil carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "9f281494-cb58-5f23-a894-ba8b7839e534"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_substance_id": "fo-130030e87e592b4c",
+        "target_context_display": "Environmental → Air → Unknown",
+        "target_characterised": true
+      },
+      "comment": "On the shared build of 3 September 2026 (d1df4ed) this row was `algorithm`, basis `cas+label`, on `fo-82a29244dccbaefc` -- carbon dioxide of unstated origin -- in the same context, on the minted flow `033b961d…` that #175 retired. The outcome is claimed as well as the substance, for #175's reason: reaching fossil carbon dioxide by a name the matching happened to read would be the right answer arrived at by luck, and this is a decision. `target_characterised` is the point of the issue -- 46 non-zero datasets scored nothing for climate change -- and it is the claim that would still fail if the row reached some other uncharacterised carbon dioxide."
+    },
+    {
+      "id": "0914-the-plain-row-in-non-urban-air-is-biogenic",
+      "issue": 914,
+      "title": "AGRIBALYSE's plain `Carbon dioxide` row in non-urban air is published as biogenic carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "5dab3ab7-6821-58ec-b4dd-f1e0366ff916"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_substance_id": "fo-c830feb8dfc643a1",
+        "target_context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)"
+      },
+      "comment": "The same name as the row above and a different answer, which is the whole of this claim: the two are separated by the compartment the vendor wrote, and the datasets behind them share nothing. Composting and straw retting are the fast carbon cycle. No `target_characterised` claim, deliberately: EF 3.1 states 0.0 for `Carbon Dioxide (biogenic)` under both Climate change and Climate change-Biogenic, which the build counts as no factor, so the claim would read false while saying nothing about whether the row is right. What changes for a reader is that the zero is now stated rather than absent -- and under Stepwise 2006, which scores this flow 1.0 as `Global warming, non-fossil`, the 18 non-zero datasets do move."
+    },
+    {
+      "id": "0914-peat-oxidation-carbon-dioxide-is-land-use-change",
+      "issue": 914,
+      "title": "`Carbon dioxide, peat oxidation` is published as carbon dioxide of land use change",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "d724a400-85de-5a17-bd00-fa94561fdf50"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "cas+qualifier",
+        "target_substance_id": "fo-c39139738b531191",
+        "target_context_display": "Environmental → Air → Unknown",
+        "target_characterised": true
+      },
+      "comment": "On the shared build of 3 September 2026 (d1df4ed) this row was `cas+label` on the minted `Carbon Dioxide` in unspecified air, with the recorded name `Carbon dioxide`: nothing stripped the qualifier, the vocabulary simply did not read `peat oxidation`, so 124-38-9 found several carbon dioxides, none of them was narrowed by an origin, and the label branch matched the substance whose label is the row's name minus its modifier. 13 datasets, all under a tenth of a kilogram.\n\nThe basis is claimed, and it is the claim that says the fix is the rule and not a curated row: `cas+qualifier` is reached only when the row's own name carries an origin some candidate carries too. A curated target would satisfy every other claim here and say nothing about the methane row."
+    },
+    {
+      "id": "0914-peat-oxidation-methane-is-land-use-change",
+      "issue": 914,
+      "title": "`Methane, peat oxidation` is published as methane of land use change",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "521c9837-a35c-52a8-9abc-12639122439b"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "cas+qualifier",
+        "target_substance_id": "fo-1e952192d5643f1b",
+        "target_context_display": "Environmental → Air → Unknown",
+        "target_characterised": true
+      },
+      "comment": "The row #194 does not mention, and it has the issue's defect exactly: on the shared build of 3 September 2026 (d1df4ed) it was `cas+label` on `Methane` in unspecified air (`e49b6f4e…`, no factors), six datasets scoring nothing. It is here rather than on an issue of its own because one line of `qualifiers.py` answers it and the carbon dioxide row together, and splitting them would leave a rule fixing one of the two names it matches.\n\nThe flow it leaves does not disappear with it. `e49b6f4e…` is also where AGRIBALYSE's plain `Methane` row and Stepwise 2006's plain `Methane` row land, and both still score nothing -- the same shape as #175 and #194 for carbon dioxide, on a substance no issue covers yet."
+    },
+    {
+      "id": "0914-the-peat-nitrous-oxide-row-is-not-taken-with-it",
+      "issue": 914,
+      "title": "`Dinitrogen monoxide, peat oxidation` still reaches EF 3.1's nitrous oxide, now by a curated target",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "a4eeb06b-881f-53f1-a323-08ec0666d225"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_substance_id": "fo-8c6906c0ddba5602",
+        "target_context_display": "Environmental → Air → Unknown",
+        "target_characterised": true
+      },
+      "comment": "The row the rule cannot finish, and the claim that changed when the build was run. `peat oxidation` is added to the vocabulary as a rule, so it is read on every name that carries it, and this is the third. The row was already right -- EF 3.1's `Nitrous Oxide` in unspecified air, four factors -- and the expectation first written here said it would stay right by itself, on the reasoning that EF ships no nitrous oxide of land-use-change origin, so nothing carries the qualifier and nothing narrows.\n\nA full build of the branch (aebee6c) against the shared build of 3 September 2026 (d1df4ed) said otherwise: the row went from `algorithm`, basis `cas+label`, to `unmatched`, reason `multiple-flow-object-candidates`. 10024-97-2 reaches two flow objects -- the substance and `Correction Flow For Delayed Emission Of Nitrous Oxide (within First 100 Years)` -- and what separated them was the row's own shipped name sitting on `Nitrous Oxide` as an altLabel, put there by `carry_member_names` from this row. A name that carries a qualifier layers elsewhere, so the altLabel is not carried, no label separates the two objects, and a row that was correctly placed is published nowhere.\n\nSo the row is sent by curated target instead, and the claim is written as `prepared` rather than as an unchanged `algorithm`: what has to be true is that the row reaches nitrous oxide, and after this change it does so because somebody said so. If EF ever ships a nitrous oxide of land-use-change origin, the override is what to revisit."
+    },
+    {
+      "id": "0914-no-carbon-dioxide-flow-is-minted-in-non-urban-air",
+      "issue": 914,
+      "title": "The carbon dioxide flow minted in non-urban air is gone",
+      "subject": {
+        "kind": "flow",
+        "uuid": "4cfc59229bd6474feed4931aa077d5fa0f08c418"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Published on the shared build of 3 September 2026 (d1df4ed) as `Carbon Dioxide` in `Environmental → Air → Medium stack, <150 meters → Rural`, source `agribalyse algorithm addition`, with no factors. AGRIBALYSE's low-population plain row is the only row that reaches it, so it goes when that row has a target. Its sibling in unspecified air, `033b961d…`, is #175's claim rather than one of these: AGRIBALYSE's two rows reaching it -- the plain one and the peat one -- are both answered here, which is what lets `0811-the-eighth-flow-is-gone` hold on a five-list build again."
+    }
+  ]
+}

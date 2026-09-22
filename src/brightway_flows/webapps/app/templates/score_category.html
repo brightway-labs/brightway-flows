@@ -1,0 +1,103 @@
+{#
+  One vendor category opened: the vendor's flows ranked by how much of the
+  category's total score, over every dataset in the sample, each one moves.
+  The order to fix things in.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = detail.category.name %}
+{% set active_section = "scores" %}
+
+{% block content %}
+<header class="page__header">
+  <p class="muted">
+    <a href="{{ url_for('scores.index') }}">Scores</a> ›
+    {{ detail.release.list_name }} {{ detail.release.list_version }} {{ detail.release.system_model }}
+  </p>
+  <h1>{{ detail.category.name }} <span class="tag">{{ detail.release.method_family }}</span></h1>
+  <p class="page__lede">
+    The vendor's flows, ranked by how much of this category's total across
+    {{ detail.category.datasets | thousands }} datasets each one moves.
+    <em>Share</em> is the sum of the flow's gaps over the sum of the vendor's
+    scores; <em>worst</em> is the largest gap in any one dataset, as a share of
+    that dataset's score. A share above 1 means the flow moves more than the
+    vendor scored in total.
+  </p>
+</header>
+
+<div class="cards">
+  <div class="card">
+    <span class="card__label">median ours ÷ theirs</span>
+    <span class="card__value">{% if detail.category.median_ratio is not none %}{{ '%.3f' | format(detail.category.median_ratio) }}{% else %}—{% endif %}</span>
+    <span class="card__note">{{ detail.unit }}</span>
+  </div>
+  <div class="card">
+    <span class="card__label">within 2%</span>
+    <span class="card__value">{{ detail.category.agree | thousands }}</span>
+    <span class="card__note">of {{ detail.category.datasets | thousands }} datasets</span>
+  </div>
+  <div class="card">
+    <span class="card__label">worse than 10×</span>
+    <span class="card__value">{{ detail.category.worse | thousands }}</span>
+    <span class="card__note">datasets</span>
+  </div>
+</div>
+
+<div class="chips">
+  <span class="muted">Reason</span>
+  <a class="chip {% if not reason %}chip--active{% endif %}"
+     href="{{ url_for('scores.category', release=detail.release.key, category_key=detail.category.key) }}">
+    <span class="chip__label">All</span>
+  </a>
+  {% for value, count in detail.reasons %}
+  <a class="chip {% if reason == value %}chip--active{% endif %}"
+     href="{{ url_for('scores.category', release=detail.release.key, category_key=detail.category.key, reason=value) }}">
+    <span class="chip__label">{{ value | replace('-', ' ') }}</span>
+    <span class="chip__value">{{ count | thousands }}</span>
+  </a>
+  {% endfor %}
+</div>
+
+{% if page.rows %}
+{{ t.pager(page, 'scores.category', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Vendor flow</th>
+        <th scope="col">Consensus flow</th>
+        <th scope="col">Reason</th>
+        <th scope="col" class="num">Datasets</th>
+        <th scope="col" class="num">Share</th>
+        <th scope="col" class="num">Worst</th>
+        <th scope="col" class="num">Σ |gap|</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          {{ row.source_flow_name or row.source_flow_uuid }}
+          <div class="muted mono">{{ row.source_flow_uuid }}</div>
+        </td>
+        <td>
+          {% if row.elementary_flow_uuid %}
+          {{ t.flow_link(row.elementary_flow_uuid, row.flow_name or row.elementary_flow_uuid) }}
+          {% if row.context_display %}<div class="muted">{{ row.context_display }}</div>{% endif %}
+          {% else %}<span class="muted">none</span>{% endif %}
+        </td>
+        <td>{{ row.reason | replace('-', ' ') }}</td>
+        <td class="num">{{ row.datasets_affected | thousands }}</td>
+        <td class="num mono">{{ '%.3f' | format(row.share_of_category) }}</td>
+        <td class="num mono">{{ '%.2f' | format(row.max_share) }}</td>
+        <td class="num mono">{{ row.abs_delta_sum | amount }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'scores.category', args) }}
+{% else %}
+{{ t.nothing_matches("No flow moved this category under that reason.") }}
+{% endif %}
+{% endblock %}

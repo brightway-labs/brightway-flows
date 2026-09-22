@@ -1,0 +1,63 @@
+{#
+  The frame every page sits in.
+
+  One layout, not four: the applications this replaces each carry their own
+  navigation, their own <style> block and their own idea of what an empty
+  database looks like, and none of them link to each other.
+
+  Two things are deliberate here:
+
+  * Every asset is served from this package, not from jsdelivr.  The old
+    base template fetches Pico from a CDN, so the apps do not render offline.
+    That is why `mermaid.min.js` is checked in rather than linked: the same
+    rule, applied to the one page that needs a second script.
+  * The theme is set before the stylesheet paints, by the inline script below,
+    so a reader who chose dark does not get a white flash on every navigation.
+    It is the only inline script, and it is three lines.
+#}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ page_title | default("Brightway Flows") }}{% endblock %}</title>
+{# The section's blurb, or the site's pitch for a page in no section.  A page
+   with something more specific to say overrides the block. #}
+<meta name="description" content="{% block description %}{{ describe_section(active_section) }}{% endblock %}">
+<script>
+  /* Before first paint: a stored choice wins over the OS setting. */
+  try {
+    var t = window.localStorage.getItem("bwf-theme");
+    if (t) { document.documentElement.setAttribute("data-theme", t); }
+  } catch (e) {}
+</script>
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+{% block head %}{% endblock %}
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+{% include "partials/masthead.html" %}
+
+<main class="page" id="main">
+{% block content %}{% endblock %}
+</main>
+
+{% include "partials/footer.html" %}
+
+<dialog class="shortcuts" id="shortcuts">
+  <h2>Keyboard</h2>
+  <dl class="facts">
+    <dt><kbd>?</kbd></dt><dd>Show or hide this map</dd>
+    <dt><kbd>/</kbd></dt><dd>Focus search</dd>
+    <dt><kbd>Esc</kbd></dt><dd>Close</dd>
+  </dl>
+  <button class="button" type="button" data-close>Close</button>
+</dialog>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{# A page that needs more than `app.js` adds it here, after it: the theme is
+   applied by then, and a script that is three and a half megabytes has no
+   business on a page with no diagram on it. #}
+{% block scripts %}{% endblock %}
+</body>
+</html>

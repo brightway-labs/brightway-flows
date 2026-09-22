@@ -1,0 +1,1846 @@
+{
+  "schema_version": 1,
+  "description": "Every name ecoinvent retired between 2.2 and 3.12 that a name alias can honestly decide, with the newest release's name for the same flow. Derived by tools/derive_ecoinvent_historical_names.py from randonneur_data's ecoinvent-2.2-biosphere-ecoinvent-3.12-biosphere-transitive v1.0; do not edit by hand -- regenerate. merge/historical_names.py loads it and says where it is consulted and what is deliberately absent.",
+  "derived_from": {
+    "table": "ecoinvent-2.2-biosphere-ecoinvent-3.12-biosphere-transitive",
+    "version": "1.0",
+    "created": "2025-11-15T13:45:42.477375+00:00"
+  },
+  "names": [
+    {
+      "historical_name": "1,3-Dioxolan-2-one",
+      "canonical_name": "Ethylene carbonate",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "2,2,4-Trimethyl pentane",
+      "canonical_name": "2,2,4-Trimethylpentane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "2,4-D amines",
+      "canonical_name": "2,4-D dimethylamine salt",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "2-Amino-3-chloro-1,4-naphthoquinone",
+      "canonical_name": "Quinoclamine",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "2-chlorobenzaldehyde",
+      "canonical_name": "o-Chlorobenzaldehyde",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "2-Methyl pentane",
+      "canonical_name": "Isohexane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "2-Methyl-1-propanol",
+      "canonical_name": "Isobutanol",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "2-Propanol",
+      "canonical_name": "Isopropanol",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Acetic acid, trifluoro-",
+      "canonical_name": "Trifluoroacetic acid",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Acrylate, ion",
+      "canonical_name": "Acrylate",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Actinium, in ground",
+      "canonical_name": "Actinium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Aluminium, 24% in bauxite, 11% in crude ore, in ground",
+      "canonical_name": "Aluminium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Aluminium, in ground",
+      "canonical_name": "Aluminium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Amine oxide",
+      "canonical_name": "Amine oxides",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Ammonium, ion",
+      "canonical_name": "Ammonium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Anhydrite, in ground",
+      "canonical_name": "Anhydrite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Antimony, in ground",
+      "canonical_name": "Antimony",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "AOX, Adsorbable Organic Halogen as Cl",
+      "canonical_name": "AOX, Adsorbable Organic Halides",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Argon-40",
+      "canonical_name": "Argon",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Arsenic, in ground",
+      "canonical_name": "Arsenic",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Arsenic, ion",
+      "canonical_name": "Arsenic ion",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Astatine, in ground",
+      "canonical_name": "Astatine",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Barite, 15% in crude ore, in ground",
+      "canonical_name": "Barium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Barium, in ground",
+      "canonical_name": "Barium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Basalt, in ground",
+      "canonical_name": "Basalt",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Benzene, chloro-",
+      "canonical_name": "Monochlorobenzene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Benzene, dichloro",
+      "canonical_name": "o-Dichlorobenzene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Benzene, ethyl-",
+      "canonical_name": "Ethyl benzene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Benzene, hexachloro-",
+      "canonical_name": "Hexachlorobenzene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Benzene, pentachloro-",
+      "canonical_name": "Pentachlorobenzene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Beryllium, in ground",
+      "canonical_name": "Beryllium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Bicarbonate, ion",
+      "canonical_name": "Bicarbonate",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Bicyclorpyrone",
+      "canonical_name": "Bicyclopyrone",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Bismuth, in ground",
+      "canonical_name": "Bismuth",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Borax, in ground",
+      "canonical_name": "Borax",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Boron, in ground",
+      "canonical_name": "Boron",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Bromine, 0.0023% in water",
+      "canonical_name": "Bromine",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Bromine, 0.23% in water",
+      "canonical_name": "Bromine",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Bromine, in water",
+      "canonical_name": "Bromine",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Butylcarbamate, iodopropynyl",
+      "canonical_name": "Iodopropynyl butylcarbamate",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Cadmium, 0.30% in sulfide, Cd 0.18%, Pb, Zn, Ag, In, in ground",
+      "canonical_name": "Cadmium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Cadmium, in ground",
+      "canonical_name": "Cadmium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Caesium, in ground",
+      "canonical_name": "Caesium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Calcite, in ground",
+      "canonical_name": "Calcite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Calcium, in ground",
+      "canonical_name": "Calcium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Carbon dioxide, biogenic",
+      "canonical_name": "Carbon dioxide, non-fossil",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Carbon dioxide, land transformation",
+      "canonical_name": "Carbon dioxide, from soil or biomass stock",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Carbon monoxide, biogenic",
+      "canonical_name": "Carbon monoxide, non-fossil",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Carbon, in organic matter, in soil",
+      "canonical_name": "Carbon, organic, decrease in soil or biomass stock",
+      "decided_by": "ecoinvent-3.11-biosphere"
+    },
+    {
+      "historical_name": "Carbon, organic, in soil or biomass stock",
+      "canonical_name": "Carbon, organic, decrease in soil or biomass stock",
+      "decided_by": "ecoinvent-3.11-biosphere"
+    },
+    {
+      "historical_name": "Carfentrazone ethyl ester",
+      "canonical_name": "Carfentrazone-ethyl",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Cerium, 24% in bastnasite, 2.4% in crude ore, in ground",
+      "canonical_name": "Cerium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Cerium, in ground",
+      "canonical_name": "Cerium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Cesium-134",
+      "canonical_name": "Caesium-134",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Cesium-136",
+      "canonical_name": "Caesium-136",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Cesium-137",
+      "canonical_name": "Caesium-137",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Chloride, ion",
+      "canonical_name": "Chloride",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Chloromethane",
+      "canonical_name": "Methylchloride",
+      "decided_by": "ecoinvent-3.11-biosphere"
+    },
+    {
+      "historical_name": "Chlorosilane, trimethyl-",
+      "canonical_name": "Trimethylchlorosilane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Chromium IV",
+      "canonical_name": "Chromium VI",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Chromium, 25.5% in chromite, 11.6% in crude ore, in ground",
+      "canonical_name": "Chromium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Chromium, in ground",
+      "canonical_name": "Chromium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Chrysotile, in ground",
+      "canonical_name": "Chrysotile",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Cinnabar, in ground",
+      "canonical_name": "Cinnabar",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Clay, bentonite, in ground",
+      "canonical_name": "Clay, bentonite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Clay, unspecified, in ground",
+      "canonical_name": "Clay, unspecified",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Coal, brown, in ground",
+      "canonical_name": "Coal, brown",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Coal, hard, unspecified, in ground",
+      "canonical_name": "Coal, hard",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Cobalt, Co 5.0E-2%, in mixed ore, in ground",
+      "canonical_name": "Cobalt",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Cobalt, in ground",
+      "canonical_name": "Cobalt",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Colemanite, in ground",
+      "canonical_name": "Colemanite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, 0.52% in sulfide, Cu 0.27% and Mo 8.2E-3% in crude ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, 0.59% in sulfide, Cu 0.22% and Mo 8.2E-3% in crude ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, 0.97% in sulfide, Cu 0.36% and Mo 4.1E-2% in crude ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, 0.99% in sulfide, Cu 0.36% and Mo 8.2E-3% in crude ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, 1.13% in sulfide, Cu 0.76% and Ni 0.76% in crude ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, 1.18% in sulfide, Cu 0.39% and Mo 8.2E-3% in crude ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, 1.25% in sulfide, Cu 0.24% and Zn 0,1% in crude ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, 1.42% in sulfide, Cu 0.81% and Mo 8.2E-3% in crude ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, 2.19% in sulfide, Cu 1.83% and Mo 8.2E-3% in crude ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, Cu 0.2%, in mixed ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, Cu 0.38%, Au 9.7E-4%, Ag 9.7E-4%, Zn 0.63%, Pb 0.014%, in ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, Cu 6.8E-1%, in mixed ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Copper, ion",
+      "canonical_name": "Copper ion",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Cu, Cu 3.2E+0%, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Ni 2.3E+0% in ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Cu, Cu 5.2E-2%, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Ni 3.7E-2% in ore, in ground",
+      "canonical_name": "Copper",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Cyclohexane (for all cycloalkanes)",
+      "canonical_name": "Hydrocarbons, aliphatic, alkanes, cyclic",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Cyfluthrin",
+      "canonical_name": "Beta-cyfluthrin",
+      "decided_by": "ecoinvent-3.8-biosphere"
+    },
+    {
+      "historical_name": "Cyhalothrin, gamma-",
+      "canonical_name": "Gamma-cyhalothrin",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Diatomite, in ground",
+      "canonical_name": "Diatomite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Dichlorodimethylsilane",
+      "canonical_name": "Dimethyldichlorosilane",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Dimethenamid",
+      "canonical_name": "Dimethenamide",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Diphenylether-compound",
+      "canonical_name": "Diphenylether compounds",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Dipropylamine",
+      "canonical_name": "Dipropyl amine",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Dolomite, in ground",
+      "canonical_name": "Dolomite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Dysprosium, in ground",
+      "canonical_name": "Dysprosium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Elemental carbon",
+      "canonical_name": "Carbon",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Erbium, in ground",
+      "canonical_name": "Erbium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 1,1,1,2-tetrafluoro-, HFC-134a",
+      "canonical_name": "1,1,1,2-Tetrafluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 1,1,1-trichloro-, HCFC-140",
+      "canonical_name": "1,1,1-Trichloroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 1,1,1-trifluoro-, HFC-143a",
+      "canonical_name": "1,1,1-Trifluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 1,1,2-trichloro-",
+      "canonical_name": "1,1,2-Trichloroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 1,1,2-trichloro-1,2,2-trifluoro-, CFC-113",
+      "canonical_name": "1,1,2-Trichloro-1,2,2-trifluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 1,1-dichloro-1-fluoro-, HCFC-141b",
+      "canonical_name": "1,1-Dichloro-1-fluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 1,1-difluoro-, HFC-152a",
+      "canonical_name": "1,1-Difluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 1,2-dichloro-",
+      "canonical_name": "Ethylene dichloride",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 1,2-dichloro-1,1,2,2-tetrafluoro-, CFC-114",
+      "canonical_name": "1,2-Dichloro-1,1,2,2-tetrafluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 1-chloro-1,1-difluoro-, HCFC-142b",
+      "canonical_name": "1-Chloro-1,1-difluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 2,2-dichloro-1,1,1-trifluoro-, HCFC-123",
+      "canonical_name": "2,2-Dichloro-1,1,1-trifluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, 2-chloro-1,1,1,2-tetrafluoro-, HCFC-124",
+      "canonical_name": "2-Chloro-1,1,1,2-tetrafluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, chloropentafluoro-, CFC-115",
+      "canonical_name": "Monochloropentafluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, hexachloro-",
+      "canonical_name": "Hexachloroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, hexafluoro-, HFC-116",
+      "canonical_name": "Hexafluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethane, pentafluoro-, HFC-125",
+      "canonical_name": "Pentafluoroethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethene",
+      "canonical_name": "Ethylene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethene, chloro-",
+      "canonical_name": "Vinyl chloride",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethene, tetrachloro-",
+      "canonical_name": "Tetrachloroethylene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethene, trichloro-",
+      "canonical_name": "Trichloroethylene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ethyne",
+      "canonical_name": "Acetylene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Europium, 0.06% in bastnasite, 0.006% in crude ore, in ground",
+      "canonical_name": "Europium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Europium, in ground",
+      "canonical_name": "Europium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Feldspar, in ground",
+      "canonical_name": "Feldspar",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Fluorine, 4.5% in apatite, 1% in crude ore, in ground",
+      "canonical_name": "Fluorine",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Fluorine, 4.5% in apatite, 3% in crude ore, in ground",
+      "canonical_name": "Fluorine",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Fluorine, in ground",
+      "canonical_name": "Fluorine",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Fluorspar, 92%, in ground",
+      "canonical_name": "Fluorspar",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Fluorspar, in ground",
+      "canonical_name": "Fluorspar",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Fosetyl-aluminium",
+      "canonical_name": "Fosetyl-Al",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Fresh water (obsolete)",
+      "canonical_name": "Water",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gadolinium, 0.15% in bastnasite, 0.015% in crude ore, in ground",
+      "canonical_name": "Gadolinium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gadolinium, in ground",
+      "canonical_name": "Gadolinium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Gallium, 0.014% in bauxite, in ground",
+      "canonical_name": "Gallium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gallium, in ground",
+      "canonical_name": "Gallium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Gangue, bauxite, in ground",
+      "canonical_name": "Gangue",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Gangue, in ground",
+      "canonical_name": "Gangue",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Gas, natural, in ground",
+      "canonical_name": "Gas, natural",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Germanium, in ground",
+      "canonical_name": "Germanium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 1.0E-7%, in mixed ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 1.1E-4%, Ag 4.2E-3%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 1.3E-4%, Ag 4.6E-5%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 1.4E-4%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 1.8E-4%, in mixed ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 2.1E-4%, Ag 2.1E-4%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 4.3E-4%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 4.9E-5%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 5.4E-4%, Ag 1.5E-5%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 6.7E-4%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 6.8E-4%, Ag 1.5E-4%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 7.1E-4%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 9.7E-4%, Ag 9.7E-4%, Zn 0.63%, Cu 0.38%, Pb 0.014%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, Au 9.7E-5%, Ag 7.6E-5%, in ore, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Gold, in ground",
+      "canonical_name": "Gold",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Granite, in ground",
+      "canonical_name": "Granite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Gravel, in ground",
+      "canonical_name": "Gravel",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Gypsum, in ground",
+      "canonical_name": "Gypsum",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Hafnium, in ground",
+      "canonical_name": "Hafnium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Haloxyfop- (R) Methylester",
+      "canonical_name": "Haloxyfop-P-methyl",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Helium, 0.08% in natural gas, in ground",
+      "canonical_name": "Helium, in natural gas",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Helium, in natural gas, in ground",
+      "canonical_name": "Helium, in natural gas",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Hexamethyldisilizane",
+      "canonical_name": "Hexamethyldisilazane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Holmium, in ground",
+      "canonical_name": "Holmium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Hydrogen carbonate",
+      "canonical_name": "Bicarbonate",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Hydrogen chloride",
+      "canonical_name": "Hydrochloric acid",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Hydrogen-3, Tritium",
+      "canonical_name": "Tritium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Indium, 0.005% in sulfide, In 0.003%, Pb, Zn, Ag, Cd, in ground",
+      "canonical_name": "Indium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Indium, in ground",
+      "canonical_name": "Indium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Iodine, 0.03% in water",
+      "canonical_name": "Iodine",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Iodine, in water",
+      "canonical_name": "Iodine",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Iprodion",
+      "canonical_name": "Iprodione",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Iridium, in ground",
+      "canonical_name": "Iridium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Iron, 46% in ore, 25% in crude ore, in ground",
+      "canonical_name": "Iron",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Iron, 72% in magnetite, 14% in crude ore, in ground",
+      "canonical_name": "Iron",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Iron, in ground",
+      "canonical_name": "Iron",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Iron, ion",
+      "canonical_name": "Iron ion",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Kaolinite, 24% in crude ore, in ground",
+      "canonical_name": "Kaolinite",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Kaolinite, in ground",
+      "canonical_name": "Kaolinite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Kieserite, 25% in crude ore, in ground",
+      "canonical_name": "Kieserite",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Kieserite, in ground",
+      "canonical_name": "Kieserite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Krypton, in air",
+      "canonical_name": "Krypton",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Lanthanum, 7.2% in bastnasite, 0.72% in crude ore, in ground",
+      "canonical_name": "Lanthanum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Lanthanum, in ground",
+      "canonical_name": "Lanthanum",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Laterite, in ground",
+      "canonical_name": "Laterite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Lead, 5.0% in sulfide, Pb 3.0%, Zn, Ag, Cd, In, in ground",
+      "canonical_name": "Lead",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Lead, in ground",
+      "canonical_name": "Lead",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Lead, Pb 0.014%, Au 9.7E-4%, Ag 9.7E-4%, Zn 0.63%, Cu 0.38%, in ore, in ground",
+      "canonical_name": "Lead",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Lead, Pb 3.6E-1%, in mixed ore, in ground",
+      "canonical_name": "Lead",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Lithium, 0.15% in brine, in ground",
+      "canonical_name": "Lithium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Lithium, in ground",
+      "canonical_name": "Lithium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Lutetium, in ground",
+      "canonical_name": "Lutetium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Magnesite, 60% in crude ore, in ground",
+      "canonical_name": "Magnesite",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Magnesite, in ground",
+      "canonical_name": "Magnesite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Magnesium, 0.13% in water",
+      "canonical_name": "Magnesium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Magnesium, in ground",
+      "canonical_name": "Magnesium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Magnesium, in water",
+      "canonical_name": "Magnesium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Manganese, 35.7% in sedimentary deposit, 14.2% in crude ore, in ground",
+      "canonical_name": "Manganese",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Manganese, in ground",
+      "canonical_name": "Manganese",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Mercury, in ground",
+      "canonical_name": "Mercury",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Metamorphous rock, graphite containing, in ground",
+      "canonical_name": "Graphite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Methane",
+      "canonical_name": "Methane, fossil",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, biogenic",
+      "canonical_name": "Methane, non-fossil",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, bromo-, Halon 1001",
+      "canonical_name": "Bromomethane",
+      "decided_by": "ecoinvent-3.11-biosphere"
+    },
+    {
+      "historical_name": "Methane, bromochlorodifluoro-, Halon 1211",
+      "canonical_name": "Bromochlorodifluoromethane",
+      "decided_by": "ecoinvent-3.11-biosphere"
+    },
+    {
+      "historical_name": "Methane, bromotrifluoro-, Halon 1301",
+      "canonical_name": "Bromotrifluoromethane",
+      "decided_by": "ecoinvent-3.11-biosphere"
+    },
+    {
+      "historical_name": "Methane, chloro-fluoro-, HCFC-31",
+      "canonical_name": "Chloro-fluoromethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, chlorodifluoro-, HCFC-22",
+      "canonical_name": "Chlorodifluoromethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, chlorotrifluoro-, CFC-13",
+      "canonical_name": "Chlorotrifluoromethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, dichloro-, HCC-30",
+      "canonical_name": "Dichloromethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, dichlorodifluoro-, CFC-12",
+      "canonical_name": "Dichlorodifluoromethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, dichlorofluoro-, HCFC-21",
+      "canonical_name": "Dichlorofluoromethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, difluoro-, HFC-32",
+      "canonical_name": "Difluoromethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, monochloro-, R-40",
+      "canonical_name": "Methylchloride",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, tetrachloro-, R-10",
+      "canonical_name": "Carbon tetrachloride",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, tetrafluoro-, R-14",
+      "canonical_name": "Tetrafluoromethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, trichlorofluoro-, CFC-11",
+      "canonical_name": "Trichlorofluoromethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methane, trifluoro-, HFC-23",
+      "canonical_name": "Trifluoromethane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methyl amine",
+      "canonical_name": "Methylamine",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methyl borate",
+      "canonical_name": "Trimethyl borate",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Methyl pentane",
+      "canonical_name": "Isohexane",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Metiram",
+      "canonical_name": "Zineb",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Molybdenum, 0.010% in sulfide, Mo 8.2E-3% and Cu 1.83% in crude ore, in ground",
+      "canonical_name": "Molybdenum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Molybdenum, 0.014% in sulfide, Mo 8.2E-3% and Cu 0.81% in crude ore, in ground",
+      "canonical_name": "Molybdenum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Molybdenum, 0.016% in sulfide, Mo 8.2E-3% and Cu 0.27% in crude ore, in ground",
+      "canonical_name": "Molybdenum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Molybdenum, 0.022% in sulfide, Mo 8.2E-3% and Cu 0.22% in crude ore, in ground",
+      "canonical_name": "Molybdenum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Molybdenum, 0.022% in sulfide, Mo 8.2E-3% and Cu 0.36% in crude ore, in ground",
+      "canonical_name": "Molybdenum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Molybdenum, 0.025% in sulfide, Mo 8.2E-3% and Cu 0.39% in crude ore, in ground",
+      "canonical_name": "Molybdenum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Molybdenum, 0.11% in sulfide, Mo 4.1E-2% and Cu 0.36% in crude ore, in ground",
+      "canonical_name": "Molybdenum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Molybdenum, in ground",
+      "canonical_name": "Molybdenum",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Monobutyltin",
+      "canonical_name": "Monobutyltin (III)",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Monophenyltin",
+      "canonical_name": "Phenyltin",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Naphtalene",
+      "canonical_name": "Naphthalene",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Neodymium, 4% in bastnasite, 0.4% in crude ore, in ground",
+      "canonical_name": "Neodymium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Neodymium, in ground",
+      "canonical_name": "Neodymium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Ni, Ni 2.3E+0%, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Cu 3.2E+0% in ore, in ground",
+      "canonical_name": "Nickel",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ni, Ni 3.7E-2%, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Cu 5.2E-2% in ore, in ground",
+      "canonical_name": "Nickel",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Nickel, 1.13% in sulfide, Ni 0.76% and Cu 0.76% in crude ore, in ground",
+      "canonical_name": "Nickel",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Nickel, 1.98% in silicates, 1.04% in crude ore, in ground",
+      "canonical_name": "Nickel",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Nickel, in ground",
+      "canonical_name": "Nickel",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Nickel, Ni 2.5E+0%, in mixed ore, in ground",
+      "canonical_name": "Nickel",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Niobium, in ground",
+      "canonical_name": "Niobium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "NMVOC, non-methane volatile organic compounds, unspecified origin",
+      "canonical_name": "NMVOC, non-methane volatile organic compounds",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Oil, crude, in ground",
+      "canonical_name": "Oil, crude",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Oils, biogenic",
+      "canonical_name": "Oils, non-fossil",
+      "decided_by": "ecoinvent-3.01-biosphere"
+    },
+    {
+      "historical_name": "Olivine, in ground",
+      "canonical_name": "Olivine",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Osmium, in ground",
+      "canonical_name": "Osmium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Palladium, in ground",
+      "canonical_name": "Palladium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Palladium, Pd 1.6E-6%, in mixed ore, in ground",
+      "canonical_name": "Palladium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Particulates, < 2.5 um",
+      "canonical_name": "Particulate Matter, < 2.5 um",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Particulates, > 10 um",
+      "canonical_name": "Particulate Matter, > 10 um",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Particulates, > 2.5 um, and < 10um",
+      "canonical_name": "Particulate Matter, > 2.5 um and < 10um",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Pd, Pd 2.0E-4%, Pt 4.8E-4%, Rh 2.4E-5%, Ni 3.7E-2%, Cu 5.2E-2% in ore, in ground",
+      "canonical_name": "Palladium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Pd, Pd 7.3E-4%, Pt 2.5E-4%, Rh 2.0E-5%, Ni 2.3E+0%, Cu 3.2E+0% in ore, in ground",
+      "canonical_name": "Palladium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Peat, in ground",
+      "canonical_name": "Peat",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Perchlorate, ion",
+      "canonical_name": "Perchlorate",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Perlite, in ground",
+      "canonical_name": "Perlite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Phenol, 2,4-dichloro",
+      "canonical_name": "2,4-Dichlorophenol",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Phenol, pentachloro-",
+      "canonical_name": "Pentachlorophenol",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Phosphorus, 18% in apatite, 12% in crude ore, in ground",
+      "canonical_name": "Phosphorus",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Phosphorus, 18% in apatite, 4% in crude ore, in ground",
+      "canonical_name": "Phosphorus",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Phosphorus, in ground",
+      "canonical_name": "Phosphorus",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Phthalate, butyl-benzyl-",
+      "canonical_name": "Butyl benzyl phthalate",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Phthalate, dibutyl-",
+      "canonical_name": "Dibutyl phthalate",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Phthalate, dimethyl-",
+      "canonical_name": "Dimethyl phthalate",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Phthalate, dioctyl-",
+      "canonical_name": "Dioctyl phthalate",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Platinum, in ground",
+      "canonical_name": "Platinum",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Platinum, Pt 4.7E-7%, in mixed ore, in ground",
+      "canonical_name": "Platinum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Polonium, in ground",
+      "canonical_name": "Polonium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Potassium, in ground",
+      "canonical_name": "Potassium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Praseodymium, 0.42% in bastnasite, 0.042% in crude ore, in ground",
+      "canonical_name": "Praseodymium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Praseodymium, in ground",
+      "canonical_name": "Praseodymium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Prohexadione-calcium",
+      "canonical_name": "Prohexadione calcium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Propene",
+      "canonical_name": "Propylene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Propylamine",
+      "canonical_name": "Propyl amine",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Protactinium, in ground",
+      "canonical_name": "Protactinium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Prothioconazol",
+      "canonical_name": "Prothioconazole",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Pt, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Ni 2.3E+0%, Cu 3.2E+0% in ore, in ground",
+      "canonical_name": "Platinum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Pt, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Ni 3.7E-2%, Cu 5.2E-2% in ore, in ground",
+      "canonical_name": "Platinum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Pumice, in ground",
+      "canonical_name": "Pumice",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Pyraclostrobin (prop)",
+      "canonical_name": "Pyraclostrobin",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Pyrethrin",
+      "canonical_name": "Pyrethrin II",
+      "decided_by": "ecoinvent-3.11-biosphere"
+    },
+    {
+      "historical_name": "Pyrethrine",
+      "canonical_name": "Pyrethrins",
+      "decided_by": "ecoinvent-3.11-biosphere"
+    },
+    {
+      "historical_name": "Pyrethrum",
+      "canonical_name": "Pyrethrins",
+      "decided_by": "ecoinvent-3.11-biosphere"
+    },
+    {
+      "historical_name": "Pyrite, in ground",
+      "canonical_name": "Pyrite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Pyrolusite, in ground",
+      "canonical_name": "Pyrolusite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Quizalofop ethyl ester",
+      "canonical_name": "Quizalofop-ethyl",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Radium, in ground",
+      "canonical_name": "Radium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Rh, Rh 2.0E-5%, Pt 2.5E-4%, Pd 7.3E-4%, Ni 2.3E+0%, Cu 3.2E+0% in ore, in ground",
+      "canonical_name": "Rhodium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Rh, Rh 2.4E-5%, Pt 4.8E-4%, Pd 2.0E-4%, Ni 3.7E-2%, Cu 5.2E-2% in ore, in ground",
+      "canonical_name": "Rhodium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Rhenium, in crude ore, in ground",
+      "canonical_name": "Rhenium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Rhenium, in ground",
+      "canonical_name": "Rhenium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Rhodium, in ground",
+      "canonical_name": "Rhodium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Rhodium, Rh 1.6E-7%, in mixed ore, in ground",
+      "canonical_name": "Rhodium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Rubidium, in ground",
+      "canonical_name": "Rubidium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Ruthenium, in ground",
+      "canonical_name": "Ruthenium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Samarium, 0.3% in bastnasite, 0.03% in crude ore, in ground",
+      "canonical_name": "Samarium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Samarium, in ground",
+      "canonical_name": "Samarium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Sand, unspecified, in ground",
+      "canonical_name": "Sand, unspecified",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Scandium, in ground",
+      "canonical_name": "Scandium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Selenium, in ground",
+      "canonical_name": "Selenium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Shale, in ground",
+      "canonical_name": "Shale",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Silicon, in ground",
+      "canonical_name": "Silicon",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, 0.007% in sulfide, Ag 0.004%, Pb, Zn, Cd, In, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, 0.01% in crude ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, 3.2ppm in sulfide, Ag 1.2ppm, Cu and Te, in crude ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, Ag 1.5E-4%, Au 6.8E-4%, in ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, Ag 1.5E-5%, Au 5.4E-4%, in ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, Ag 1.8E-6%, in mixed ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, Ag 2.1E-4%, Au 2.1E-4%, in ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, Ag 4.2E-3%, Au 1.1E-4%, in ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, Ag 4.6E-5%, Au 1.3E-4%, in ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, Ag 5.4E-3%, in mixed ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, Ag 7.6E-5%, Au 9.7E-5%, in ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, Ag 9.7E-4%, Au 9.7E-4%, Zn 0.63%, Cu 0.38%, Pb 0.014%, in ore, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Silver, in ground",
+      "canonical_name": "Silver",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Sodium chloride, in ground",
+      "canonical_name": "Sodium chloride",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Sodium nitrate, in ground",
+      "canonical_name": "Sodium nitrate",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Sodium sulphate, various forms, in ground",
+      "canonical_name": "Sodium sulfate",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Sodium tetrahydroborate",
+      "canonical_name": "Sodium tetrahydridoborate",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Sodium, in ground",
+      "canonical_name": "Sodium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Spodumene, in ground",
+      "canonical_name": "Spodumene",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Steatite, in ground",
+      "canonical_name": "Steatite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Stibnite, in ground",
+      "canonical_name": "Stibnite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "strontium, in ground",
+      "canonical_name": "Strontium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Sulfate, ion",
+      "canonical_name": "Sulfate",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Sulfur, in ground",
+      "canonical_name": "Sulfur",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Sulphur trioxide",
+      "canonical_name": "Sulfur trioxide",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Sylvite, 25 % in sylvinite, in ground",
+      "canonical_name": "Sylvite",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Sylvite, in ground",
+      "canonical_name": "Sylvite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "t-Butylamine",
+      "canonical_name": "t-Butyl amine",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Talc, in ground",
+      "canonical_name": "Talc",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Tantalum, 81.9% in tantalite, 1.6E-4% in crude ore, in ground",
+      "canonical_name": "Tantalum",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Tantalum, in ground",
+      "canonical_name": "Tantalum",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Tebupirimphos",
+      "canonical_name": "Tebupirimfos",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Tellurium, 0.5ppm in sulfide, Te 0.2ppm, Cu and Ag, in crude ore, in ground",
+      "canonical_name": "Tellurium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Tellurium, in ground",
+      "canonical_name": "Tellurium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Terbium, in ground",
+      "canonical_name": "Terbium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Thallium, in ground",
+      "canonical_name": "Thallium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Thiocyanate, ion",
+      "canonical_name": "Thiocyanate",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Thiophanat-methyl",
+      "canonical_name": "Thiophanate-methyl",
+      "decided_by": "ecoinvent-3.8-biosphere"
+    },
+    {
+      "historical_name": "Thorium, in ground",
+      "canonical_name": "Thorium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Thulium, in ground",
+      "canonical_name": "Thulium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Tin, 79% in cassiterite, 0.1% in crude ore, in ground",
+      "canonical_name": "Tin",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Tin, in ground",
+      "canonical_name": "Tin",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Tin, ion",
+      "canonical_name": "Tin ion",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "TiO2, 54% in ilmenite, 18% in crude ore, in ground",
+      "canonical_name": "Titanium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "TiO2, 54% in ilmenite, 2.6% in crude ore, in ground",
+      "canonical_name": "Titanium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "TiO2, 95% in rutile, 0.40% in crude ore, in ground",
+      "canonical_name": "Titanium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Titanium, in ground",
+      "canonical_name": "Titanium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Titanium, ion",
+      "canonical_name": "Titanium ion",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Toluene, 2-chloro",
+      "canonical_name": "o-Chlorotoluene",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Tungsten, in ground",
+      "canonical_name": "Tungsten",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Ulexite, in ground",
+      "canonical_name": "Ulexite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Uranium, in ground",
+      "canonical_name": "Uranium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Vanadium, in ground",
+      "canonical_name": "Vanadium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Vermiculite, in ground",
+      "canonical_name": "Vermiculite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "VOC, volatile organic compounds, unspecified origin",
+      "canonical_name": "VOC, volatile organic compounds",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Xenon, in air",
+      "canonical_name": "Xenon",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Xylene",
+      "canonical_name": "Xylenes, unspecified",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Ytterbium, in ground",
+      "canonical_name": "Ytterbium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Yttrium, in ground",
+      "canonical_name": "Yttrium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Zinc, 9.0% in sulfide, Zn 5.3%, Pb, Ag, Cd, In, in ground",
+      "canonical_name": "Zinc",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Zinc, in ground",
+      "canonical_name": "Zinc",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Zinc, Zn 0.63%, Au 9.7E-4%, Ag 9.7E-4%, Cu 0.38%, Pb 0.014%, in ore, in ground",
+      "canonical_name": "Zinc",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Zinc, Zn 3.1%, in mixed ore, in ground",
+      "canonical_name": "Zinc",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Zirconia, as baddeleyite, in ground",
+      "canonical_name": "Zirconia, as baddeleyite",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    },
+    {
+      "historical_name": "Zirconium, 50% in zircon, 0.39% in crude ore, in ground",
+      "canonical_name": "Zirconium",
+      "decided_by": "ecoinvent-3.10.1-biosphere"
+    },
+    {
+      "historical_name": "Zirconium, in ground",
+      "canonical_name": "Zirconium",
+      "decided_by": "ecoinvent-3.9.1-biosphere"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "description": "BAFU ships eight rows named `Water, cooling, unspecified natural origin`, all in cubic metres and all the same material. Seven are filed in `resources / in water` and land on EF 3.1's `Water to Cooling` -- published as `Cooling water` in `Resource / Water`, carrying 209 characterisation factors. The eighth, the RER row `34e59a1d-44e0`, is filed in `resources / in ground`, where the list has no cooling-water flow, so the merge minted one: `Cooling water` taken from the ground, carrying no factor under any method. The same water, drawn for the same purpose, scored nothing because of which compartment one row was filed under.\n\n`Unspecified natural origin` is BAFU saying it does not record where the water came from, which is the opposite of saying it came out of the ground; BAFU ships a second RER row under this name in `resources / in water`; and that row and the six others all carry water's registry number 7732-18-5 while the ground row carries none. Read as a filing slip and sent to `Resource / Water` in `context-manual-mapping.json`, the way #114 moved helium when EF's own compartment contradicted the substance. See #117, and #87 for the substance-in-two-places reading it surfaced under.",
+  "expectations": [
+    {
+      "id": "0592-all-eight-cooling-water-rows-reach-one-flow",
+      "issue": 592,
+      "title": "All eight BAFU rows of cooling water of unstated origin reach the one flow that carries the factors",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water, cooling, unspecified natural origin"},
+      "expect": {
+        "outcome": "matched",
+        "basis": "material",
+        "target_uuid": "21868f36-62ab-4e8e-98ed-7106228c17be",
+        "target_name": "Cooling water",
+        "target_context_display": "Resource → Water → Unknown",
+        "target_unit": "m3",
+        "target_characterised": true,
+        "row_count": 8,
+        "same_target": true
+      },
+      "comment": "Measured on the build of 21 August 2026 at commit 6727d35: seven of the eight reach `21868f36-62ab-4e8e-98ed-7106228c17be` on `basis: material`, and the RER row filed in `resources / in ground` reaches `ca8853ab9903dc7ccd613e71e311f97e302d689a` instead -- a flow the merge minted for it, with `lcia_factor_count` 0 against the other's 209. Stated as `same_target` and `row_count` as well as by uuid because the defect is seven rows agreeing and one not: a check naming only the flow would be met by seven rows landing correctly while the eighth went on scoring nothing. `basis: material` is claimed as well, because these rows are matched on the curated material -- cooling water -- and not on how BAFU spells the name; a later change that reached the same flow by guessing at a name would pass a target-only claim and should not pass this one."
+    },
+    {
+      "id": "0592-no-cooling-water-is-drawn-from-the-ground",
+      "issue": 592,
+      "title": "No cooling water is published as a resource taken from the ground",
+      "subject": {"kind": "flow", "name": "Cooling water", "context_display": "Resource → Ground"},
+      "expect": {"count": 0},
+      "comment": "The other half: that the flow is not reached rather than that a field was edited. One flow on the build of 21 August 2026 at commit 6727d35, minted by the single BAFU row and reached by nothing else, so with that row landing beside its siblings there is nothing left to create it. Named by name and compartment rather than by the minted uuid, which is a content hash and not something anybody could look up if it changed."
+    }
+  ]
+}

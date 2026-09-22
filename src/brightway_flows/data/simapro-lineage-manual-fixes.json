@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "description": "Corrections for the habits of a naming lineage rather than of one list. Applied to every list whose `simapro_origin` is true -- after that list's own manual fixes, which speak about the vendor's file as shipped, and before the unit split, which reads the names these leave -- and to a lookup query sent with the same flag, so that a row asked about answers the way a row merged would. Same shape as every *-manual-fixes.json and applied by the same code (`SIMAPRO_LINEAGE_FIXES_FILEPATH`).\n\nWhat earns a row a place here is recurrence. SimaPro-shaped lists inherit ecoinvent 2's spellings and ecoinvent 2's data habits, and the same three showed up in BAFU 2026 v1 and in Stepwise 2006 before either was looked at for them: the element's registry number written on an isotope's activity rows; a resource's energy content written into its name with the row still in kilograms; carbon dioxide taken from the air, unqualified. Each had been corrected list by list -- BAFU's fourteen `Uranium-238` rows were meanwhile published as uranium the element (#147) -- and a fix keyed on the lineage corrects the next list before anyone reads it.\n\nEvery entry matches by name, because a lineage has no uuids, and pins whatever else makes the match safe: the element's number on the isotope rows, the registry number on the carbon dioxide row. Registry numbers are spelled `cas_numbers`, the list form every adapter this project writes emits; a list whose adapter emits the singular scalar is a list whose adapter should be changed. A rename keeps the vendor's spelling as a synonym, so the name a row was shipped under is still one it answers to.",
+  "fixes": [
+    {
+      "match": {
+        "name": "Uranium-238",
+        "cas_numbers": "7440-61-1"
+      },
+      "field": "cas_numbers",
+      "original_value": ["7440-61-1"],
+      "new_value": ["24678-82-8"],
+      "comment": "7440-61-1 is uranium the element, in kilograms; the row is uranium-238's activity, in becquerels. The isotope's own number is 24678-82-8, which ecoinvent ships on every `Uranium-238` row it publishes and the consensus substance carries. With the element's number a stated registry number outranks the name it disagrees with -- deliberately, a name being the weakest evidence there is -- so BAFU's fourteen numbered rows reached `Uranium` and Stepwise's two reached `Uranium` and `Uranium Alpha` and matched neither (#147). `registry_number_from_name` refuses to repair this from the list's own rows because BAFU gives 7440-61-1 to its `Uranium` rows too, so it is corrected here instead. Pinned to rows carrying the element's number: BAFU's fifteenth row ships none and already reaches the isotope on its name."
+    },
+    {
+      "match": {
+        "name": "Uranium, 451 GJ per kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "MJ",
+      "conversion_factor": 451000,
+      "comment": "An ecoinvent 2 resource flow whose name states how much fission energy a kilogram stands for -- 451 GJ, the net once-through figure of the ETH-era data -- and which every list in this lineage still ships in kilograms. The list publishes uranium as a resource in MJ (Resource -> Ground, EF 3.1's basis), so the row is rebased onto that unit with the factor its own name states: 451,000 MJ per kg. Stepwise 2006's `Non-renewable energy` factor for this row is exactly that number. Per row and not the project's 560,000 MJ/kg default, because the name is the vendor's own assertion of the quantity and rebasing it at the default would restate it by 24%. Fission energy content, never a heating value (`unit-change-allowlist.json`). The rename that follows is what lets the rebased row reach the substance."
+    },
+    {
+      "match": {
+        "name": "Uranium, 451 GJ per kg"
+      },
+      "field": "name",
+      "original_value": "Uranium, 451 GJ per kg",
+      "new_value": "Uranium",
+      "retain_original_as_synonym": true,
+      "comment": "The other half of the entry above. `Uranium, 451 GJ per kg` is nobody's label, so the row's registry number reaches `Uranium` and `Uranium Alpha` and narrows to none; `Uranium` is the substance's own name and settles it. The energy content the name carried is not lost -- it is the conversion factor the unit fix declared -- and the spelling stays as a synonym."
+    },
+    {
+      "match": {
+        "name": "Uranium, 560 GJ per kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "MJ",
+      "conversion_factor": 560000,
+      "comment": "As for the 451 row. 560 GJ/kg is the gross (HHV) fission energy content this project already carries for uranium mass rows -- 560,000 MJ/kg in `unit-change-allowlist.json`, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre -- so for this row the vendor's assertion and the project default are one number."
+    },
+    {
+      "match": {
+        "name": "Uranium, 560 GJ per kg"
+      },
+      "field": "name",
+      "original_value": "Uranium, 560 GJ per kg",
+      "new_value": "Uranium",
+      "retain_original_as_synonym": true,
+      "comment": "As for the 451 row: the name that reaches the substance, with the vendor's spelling kept as a synonym."
+    },
+    {
+      "match": {
+        "name": "Uranium, 2291 GJ per kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "MJ",
+      "conversion_factor": 2291000,
+      "comment": "As for the 451 row. 2291 GJ/kg is the high-utilisation assumption of the ETH-era data -- a fuel cycle with reprocessing extracts about four times what a once-through cycle does, still under 3% of complete fission -- and the name is the flow's identity, so the name's value is stated: 2,291,000 MJ/kg. Stepwise 2006's own factor prints 2.29e6, the same quantity rounded to three figures."
+    },
+    {
+      "match": {
+        "name": "Uranium, 2291 GJ per kg"
+      },
+      "field": "name",
+      "original_value": "Uranium, 2291 GJ per kg",
+      "new_value": "Uranium",
+      "retain_original_as_synonym": true,
+      "comment": "As for the 451 row: the name that reaches the substance, with the vendor's spelling kept as a synonym."
+    },
+    {
+      "match": {
+        "name": "Carbon dioxide, in air",
+        "cas_numbers": "124-38-9"
+      },
+      "field": "name",
+      "original_value": "Carbon dioxide, in air",
+      "new_value": "Carbon dioxide, biogenic, in air",
+      "retain_original_as_synonym": true,
+      "comment": "Atmospheric carbon dioxide taken up by growing biomass: EF's biogenic uptake from air, characterised 0, which is where ecoinvent's flow of this exact name goes through its own correspondence table (#257) and where `bafu-2026-v1-match-overrides.json` sends BAFU's three rows (#135). Those decisions are keyed on uuids a lineage does not have; this one is keyed on the vendor's exact string, and states the origin the string means in the one place the matching reads an origin -- the name, where `detect_origin_qualifier` finds `biogenic` and the registry number then narrows to the biogenic substance instead of reaching all nine carbon dioxides at once. Not a rule reading `in air`, which no rule may: a dictionary entry for one spelling. Pinned to rows carrying 124-38-9 because the qualifier is only read beside a registry number; BAFU's rows carry none and are placed by their override, untouched here."
+    },
+    {
+      "match": {
+        "name": "Tetramethyl ammonium hydroxide"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "75-59-2"
+      ],
+      "comment": "TMAH, the developer used in chip fabrication, spelled with a space where the published `Tetramethylammonium hydroxide` writes the cation as one word, and shipped with no registry number. Written for BAFU first (#103), in BAFU's own file: the row had minted a second, factor-less substance beside the one the list publishes under 75-59-2. AGRIBALYSE then shipped the same spelling, bare of the number, in urban air, and the first five-list build (1 September 2026, b0b8d76) minted the same duplicate again (#190). Two lists with one habit is what earns a fix a place here rather than in each list's file, so BAFU's entry moved to this one and applies to both -- and to the next SimaPro-shaped list before anyone reads it. With the number written the row matches on `basis=cas`."
+    }
+  ]
+}

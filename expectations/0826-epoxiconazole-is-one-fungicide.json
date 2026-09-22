@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "description": "Epoxiconazole is a triazole fungicide. ecoinvent 3.12 ships it on eight rows registered 135319-73-2, the stereochemistry-unspecified number; EF 3.1 carries it under BASF's development code `Bas 480f`, registered 106325-08-0, a number CAS has since replaced by 133855-98-8. Neither number appears on the other list, so the only bridge is the name: six of ecoinvent's eight rows carry the synonym `BAS 480F` and reach EF's substance on it, and the two that ship without the synonym -- soil, unspecified and surface water -- reached nothing. On the 2026-08-29 build of `54b0f9d` they minted a second `Epoxiconazole`, with no factor, so one fungicide was two published substances and which one an ecoinvent row reached depended on whether ecoinvent had written the synonym on it.\n\nThe fix restores the synonym on the two rows in `ecoinvent-3.11-manual-fixes.json` and `ecoinvent-3.12-manual-fixes.json`, the releases that ship them, so all eight take the path the six already take. The published label -- a development code rather than the name every inventory uses -- is a separate question the issue also raises, and is not decided here. See #179.",
+  "expectations": [
+    {
+      "id": "0826-the-soil-row-reaches-efs-substance",
+      "issue": 826,
+      "title": "ecoinvent's Epoxiconazole in unspecified soil reaches EF's Bas 480f there",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.12", "uuid": "3bd32b7c-53b2-5302-a82a-61206e93c1de"},
+      "expect": {"outcome": "algorithm", "basis": "label", "target_uuid": "1d627800-1ec1-4851-97ac-92edc882d760", "target_substance_id": "fo-e8623aa1bc413934"},
+      "comment": "The first of the two rows the issue names. EF ships the fungicide in `Emissions to soil, unspecified` -- `1d627800` -- so this is an exact-context landing on a flow that exists. `basis: label` because that is how its six siblings land and the restored synonym is the whole of the fix."
+    },
+    {
+      "id": "0826-the-surface-water-row-reaches-efs-substance",
+      "issue": 826,
+      "title": "ecoinvent's Epoxiconazole in surface water reaches EF's Bas 480f there",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.12", "uuid": "a9870af8-ee86-51a8-8068-9d2250dea9cf"},
+      "expect": {"outcome": "algorithm", "basis": "label", "target_uuid": "7af2cc59-4401-4913-85a6-bf8e0a7e2787", "target_substance_id": "fo-e8623aa1bc413934"},
+      "comment": "The second. EF's `7af2cc59` is the fungicide in `Emissions to fresh water`."
+    },
+    {
+      "id": "0826-all-eight-rows-reach-one-substance",
+      "issue": 826,
+      "title": "All eight of ecoinvent 3.12's Epoxiconazole rows reach one substance",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.12", "name": "Epoxiconazole"},
+      "expect": {"row_count": 8, "same_substance": true, "target_substance_id": "fo-e8623aa1bc413934"},
+      "comment": "One fungicide, eight contexts, one substance. Six held before; the two above are what this file is about."
+    },
+    {
+      "id": "0826-no-substance-carries-the-stereo-unspecified-number",
+      "issue": 826,
+      "title": "No published substance is registered under ecoinvent's 135319-73-2 alone",
+      "subject": {"kind": "substance", "cas": "135319-73-2"},
+      "expect": {"count": 0},
+      "comment": "The negative half, stated on the number rather than the name because the name is what a later decision about EF's label would move: the minted duplicate carried ecoinvent's stereo-unspecified number and nothing else, and it stops being created."
+    }
+  ]
+}

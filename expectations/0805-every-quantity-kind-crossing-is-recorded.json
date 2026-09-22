@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "description": "BAFU ships a flow called `Water, process, unspecified natural origin`, measured in kilograms. The merge puts it on this list's `Water`, measured in cubic metres. A mass on a volume. That particular pair is fine -- water has a density, the merge records 0.001 m³ per kg, and #78 decided this list publishes water by volume -- but nothing in the build had to say so, and a mapping that is simply wrong is published in the same shape as one that is right.\n\n`unit-change-allowlist.json` is the file that tells them apart: one entry per pair, with a mandatory comment, asserting that a dimensionally impossible mapping is nonetheless correct. What it never had was a way of knowing what it had missed. `has_unit_mismatch` counts every unit disagreement, and most of those are harmless -- 159 of the 177 on the four-list build of 2026-08-29 (`20260829T1158418340740000`) are becquerels against kilobecquerels, one quantity at two scales, which `units.json` converts by itself.\n\nSo the population is narrowed to the one that needs a curator: a mapping whose two units have different `quantity_kind_iri` -- a mass onto an energy, a volume onto a standard volume, an activity onto a mass. There were 40 of those, and 15 had no entry.\n\n#805 asked whether such a crossing should stop the merge, require an entry, or go on being annotated. The answer is the middle one, warning rather than raising: refusing the merge would make a new source list unmergeable until every crossing it happens to produce had been argued, and a crossing is usually the vendor's accounting convention rather than a defect. What stops one being forgotten is the measure below, and a `unit_crossing_without_a_ruling` warning per pair while the build runs.\n\nThe measure is computed from the stored build against the ruling files as they stand, so a curator who writes an entry can watch the number fall without rebuilding.",
+  "expectations": [
+    {
+      "id": "0805-no-quantity-kind-crossing-is-unrecorded",
+      "issue": 805,
+      "title": "Every mapping that crosses from one kind of quantity to another has a written reason",
+      "subject": {
+        "kind": "measure",
+        "key": "merge.unit_crossings_unrecorded",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "15 on the four-list build of 2026-08-29, all answered here. Twelve are Stepwise 2006's energy carriers -- hard and brown coal, crude oil, peat, uranium and six spellings of natural gas, each mapped from a mass or a volume onto EF 3.1's flow in megajoules, which is the assertion already accepted for ecoinvent and BAFU. Each of the twelve also gains the conversion the method states for it, read off Stepwise's own `Non-renewable energy` factor: 19.1 MJ per kilogram of hard coal, 560,000 per kilogram of uranium, and so on. Two are ecoinvent's `Manganese-55` activity rows, whose entries named a target the water-context work moved them off. One is BAFU's `Gas, mine, off-gas, process, coal mining` in cubic metres against the same flow in standard cubic metres, which the allowlist's own description had named as a separate assertion needing its own answer.\n\nA bound of zero rather than a rate, because this is not a coverage number that may drift: one pair here is one dimensionally impossible mapping published with nobody's name on it.\n\n26 on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), every one an AGRIBALYSE row: seventeen energy carriers in kilograms or cubic metres onto megajoule flows, five radionuclides shipped as `/kg` twins onto kilobecquerel flows, one manganese-55 in kilobecquerels onto the element, three water releases in kilograms onto cubic-metre flows. That is #370; pending until each pair is either given its number or accepted on the record.",
+      "pending": true
+    },
+    {
+      "id": "0805-the-crossings-themselves-are-counted",
+      "issue": 805,
+      "title": "The build says how many of its mappings cross from one kind of quantity to another",
+      "subject": {
+        "kind": "measure",
+        "key": "merge.unit_crossings",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 1
+      },
+      "comment": "40 on the four-list build of 2026-08-29. Claimed as a floor rather than pinned, because the number is a fact about the source lists rather than about this repository -- a release that stops accounting coal by energy content would lower it honestly -- and the number that must not move is the one above. The floor is here so that the measure vanishing, or the population collapsing because the quantity-kind test stopped working, reads as a failure rather than as a build with nothing left to rule on. `baseline.json` is where the exact figure belongs."
+    }
+  ]
+}

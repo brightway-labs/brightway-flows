@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "description": "Antimony trisulfide is Sb2S3, and this list published it as a compound with one antimony and one sulfur.\n\nNo source list ships a structure, so this project derives them, and for this substance every route is blocked or lies. The name reader cannot read `antimony trisulfide` at all; the one name of the substance it *can* read is `antimonous sulfide`, which does not say how many sulfur atoms there are, so it assumes one and returns the same structure it returns for `antimony monosulfide`. Nothing downstream could catch that: the formula `SSb+` and the SMILES `[S]=[Sb+]` agree with each other perfectly and are both about a different compound.\n\nThree commits settle it, and the claims below are what each leaves true.\n\n**A structure that miscounts its substance's own name is not published.** The name states the atom count and the parser's answer contradicted it. Two other substances were reached the same way -- `Dibismuth Trisulphide` through `bismuth sulfide`, `Bismuth Trioxide` through `bismuth(III) oxide` -- and their monosulfide readings go too.\n\n**The composition comes from the registry.** Withdrawing left the substance with no formula at all, which this project's own rule calls worse than a disputed one. Common Chemistry has registered 1345-04-6 as `S3Sb2` throughout and was never asked.\n\n**The structure is stated by a curator**, because no route in the pipeline reaches it and the composition alone is not enough: with a formula and no SMILES the typing rules read `registered, no structure on file` as a UVCB, and Sb2S3 is a definite compound rather than a substance of variable composition.\n\nMeasured on the unbounded build of 21 August 2026, against the build of the commit each claim's step sits on.",
+  "expectations": [
+    {
+      "id": "0635-the-trisulfide-has-the-trisulfide-s-structure",
+      "issue": 635,
+      "title": "Antimony trisulfide publishes one structure, and it is Sb2S3's",
+      "subject": {
+        "kind": "substance",
+        "label": "Antimony Trisulfide"
+      },
+      "expect": {
+        "exists": true,
+        "flow_count": 13,
+        "formula_count": 1,
+        "inchikey_count": 1
+      },
+      "comment": "The defect and its repair in one claim. Before the stack this substance published `SSb+` and `[S]=[Sb+]`, a one-antimony cation derived by misreading a synonym; between the withdrawal and the correction it published no structure at all.\n\n`inchikey_count` is the discriminating half. A formula count of one was true throughout -- the wrong formula was also a single value -- but the substance had no InChIKey until a structure was stated for it, and an InChIKey is the field a consumer joins on. One rather than `at_least: 1`, because two would mean the record answers the identity question twice, which is what #310 is about.\n\n`flow_count` is claimed alongside so that this is the same thirteen flows being corrected rather than a different object that happens to be named this."
+    },
+    {
+      "id": "0635-the-trisulfide-is-not-a-mixture",
+      "issue": 635,
+      "title": "Antimony trisulfide is published as a definite compound",
+      "subject": {
+        "kind": "substance",
+        "label": "Antimony Trisulfide"
+      },
+      "expect": {
+        "flow_type": "NeutralMolecule"
+      },
+      "comment": "**The claim only the curated correction can satisfy, and the reason the composition alone was not enough.**\n\nWithdrawing the wrong structure left the substance with a registry number and nothing else, and typing rule 10 reads that as a UVCB -- `ImpreciseChemicalMixture`, a substance of variable composition and unknown stoichiometry. Sb2S3 is neither. So the withdrawal traded one wrong published statement for another, and this claim is what says the trade was finished rather than made.\n\nStated as an expectation rather than left to the unit tests because the class is *published*, and because it is decided by a curated file: an entry that stopped reaching this substance -- a renumbering, a corrected registry number -- would silently return it to being a mixture, and nothing else in the repository would notice."
+    },
+    {
+      "id": "0635-no-published-structure-miscounts-its-name",
+      "issue": 635,
+      "title": "Few substances state a formula their own name contradicts",
+      "subject": {
+        "kind": "measure",
+        "key": "substances.structure_miscounts_the_name"
+      },
+      "expect": {
+        "at_most": 3
+      },
+      "comment": "The bound on the whole mechanism. Five substances stated a formula their own name counts differently; three of those came from the name reader and are fixed here.\n\nThe three that remain are known and are a different defect: `Molybdenum Disulfide` states `MoS` and `Divanadium Trioxide` states `O3V`, both from a PubChem record reached through a **registry number** rather than from a name, and `Dibismuth Trisulphide` keeps a `BiS+` that PubChem supplied independently of the misreading. Molybdenum's is the sharpest -- EF gives it 12612-50-9, which Common Chemistry registers as `Mo.S`, while molybdenum disulfide is 1317-33-5 -- so it is a question about which of EF's name and EF's number to trust, which is #121's shape.\n\n`at_most` rather than `equals` because the three are not the claim; the claim is that a fourth appearing is a new defect rather than a known one."
+    },
+    {
+      "id": "0635-the-trioxide-loses-its-monoxide",
+      "issue": 635,
+      "title": "Bismuth trioxide no longer states a one-bismuth formula",
+      "subject": {
+        "kind": "substance",
+        "label": "Bismuth Trioxide"
+      },
+      "expect": {
+        "formula_count": 5
+      },
+      "comment": "The second substance the name reader miscounted, and the one that shows the rule is about the reading rather than about antimony. `Bismuth(III) oxide` was read as `BiO+` -- one bismuth, one oxygen -- and that value replaced the correct structures the registry lookups had already supplied, so the published SMILES became the monoxide alone.\n\nSix formulas before and five after: the withdrawal removes `BiO+` and leaves `Bi2O3`, `Bi4O6` and the hydrated readings, every one of which keeps the 2:3 ratio the name states. A count rather than the value, because what matters is that exactly one value went and the correct ones stayed."
+    },
+    {
+      "id": "0635-a-correct-formula-is-not-withdrawn",
+      "issue": 635,
+      "title": "Hydrogen sulfide keeps the formula it has always had",
+      "subject": {
+        "kind": "substance",
+        "label": "Hydrogen Sulfide"
+      },
+      "expect": {
+        "formula_count": {
+          "at_least": 1
+        }
+      },
+      "comment": "**The guard on the half that nearly went wrong.** The first draft of the rule read a missing multiplicative prefix as \"one\", and on the build that condemned eleven correct formulas: `hydrogen sulfide` is H2S, `lanthanum oxide` is La2O3, `arsenic trioxide` is As2O3 -- traditional names, every one correct, and not one of them counts its first element.\n\nHydrogen sulfide stands for all of them here because it is the plainest: two hydrogens against a name that mentions hydrogen without counting it. A rule that starts reading absent prefixes as counts again would empty this property, and the substances it would empty are ones nobody is watching."
+    }
+  ]
+}

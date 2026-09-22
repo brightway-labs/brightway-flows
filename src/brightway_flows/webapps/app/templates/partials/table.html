@@ -1,0 +1,185 @@
+{#
+  The pieces every list page needs, defined once.
+
+  The applications this replaces each carried their own pager markup and their
+  own sort-link helper, so the same control behaved differently on different
+  pages and only some of them announced the sort to a screen reader.
+#}
+
+{#
+  States the range and the total -- "51–100 of 1,204" -- because a page number
+  alone does not tell a reader whether the filter they just applied did
+  anything. Query parameters other than `page` are carried through, so paging
+  never silently drops a filter.
+#}
+{% macro pager(page, endpoint, args, keep={}) %}
+{% if page.total %}
+{% set jump = 5 %}
+<nav class="pager" aria-label="Pagination">
+  <span class="muted">
+    {{ page.first_row | thousands }}–{{ page.last_row | thousands }}
+    of {{ page.total | thousands }}
+  </span>
+  <span class="pager__links">
+    {{ _step(page, endpoint, args, 1, "« First", "First page", rel="") }}
+    {{ _step(page, endpoint, args, page.number - jump, "−" ~ jump, "Back " ~ jump ~ " pages", rel="") }}
+    {{ _step(page, endpoint, args, page.number - 1, "Previous", "Previous page", rel="prev") }}
+    <span class="muted">Page {{ page.number }} of {{ page.pages }}</span>
+    {{ _step(page, endpoint, args, page.number + 1, "Next", "Next page", rel="next") }}
+    {{ _step(page, endpoint, args, page.number + jump, "+" ~ jump, "Forward " ~ jump ~ " pages", rel="") }}
+    {{ _step(page, endpoint, args, page.pages, "Last »", "Last page", rel="") }}
+  </span>
+</nav>
+{% endif %}
+{% endmacro %}
+
+{#
+  One button of the pager.
+
+  A step that would leave the list is rendered disabled rather than dropped, so
+  the row of controls keeps its shape from the first page to the last -- a pager
+  whose buttons move as you page through it is a pager you have to re-read every
+  time. `-5` on page 3 is page 1 rather than nothing: the reader asked to go
+  back, and going back as far as there is to go is the answer.
+#}
+{% macro _step(page, endpoint, args, target, label, description, rel="") %}
+{% set clamped = [[target, 1] | max, page.pages] | min %}
+{% if clamped != page.number %}
+<a class="button" {% if rel %}rel="{{ rel }}"{% endif %}
+   aria-label="{{ description }}"
+   href="{{ url_for(endpoint, **dict(args, page=clamped)) }}">{{ label }}</a>
+{% else %}
+<span class="button" aria-disabled="true">{{ label }}</span>
+{% endif %}
+{% endmacro %}
+
+{#
+  Back to the unfiltered table.
+
+  *keep* is whatever the route needs to exist at all -- the queue's name, the
+  category's method and slug -- and nothing else, so this clears every filter,
+  every sort and the page number in one link. Rendered next to the filters
+  rather than in the pager because the pager is not drawn when a filter selects
+  nothing, which is exactly when a reader wants this.
+#}
+{% macro reset(endpoint, keep={}, label="Reset") %}
+<a class="button" href="{{ url_for(endpoint, **keep) }}">{{ label }}</a>
+{% endmacro %}
+
+{#
+  The badges in a column, as one-click filters above the table.
+
+  A table whose rows are marked "needs a decision" is a work list with the work
+  mixed into it, and the only way to see just the work was to read every row.
+  *options* is `(value, label, count)`; the first chip clears the filter, and
+  the selected one is marked so the reader can see what they are looking at.
+#}
+{% macro badge_filter(label, param, selected, options, endpoint, args, all_label="All", all_count=None) %}
+{% if options %}
+<div class="chips">
+  <span class="muted">{{ label }}</span>
+  <a class="chip {% if not selected %}chip--active{% endif %}"
+     href="{{ url_for(endpoint, **dict(args, page=1, **{param: ''})) }}">
+    <span class="chip__label">{{ all_label }}</span>
+    {% if all_count is not none %}<span class="chip__value">{{ all_count | thousands }}</span>{% endif %}
+  </a>
+  {% for value, text, count in options %}
+  <a class="chip {% if selected == value %}chip--active{% endif %}"
+     href="{{ url_for(endpoint, **dict(args, page=1, **{param: value})) }}">
+    <span class="chip__label">{{ text }}</span>
+    <span class="chip__value">{{ count | thousands }}</span>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+{% endmacro %}
+
+{#
+  A sortable column header. Clicking the current column reverses it, and the
+  direction is announced rather than carried by the arrow alone.
+#}
+{% macro sort_header(label, key, sort, endpoint, args) %}
+{% set next_sort = ('-' + key) if sort == key else key %}
+<a class="sortable" href="{{ url_for(endpoint, **dict(args, sort=next_sort, page=1)) }}">{{ label }}{%
+  if sort == key %}<span aria-hidden="true"> ↑</span><span class="visually-hidden">, sorted ascending</span>{%
+  elif sort == '-' + key %}<span aria-hidden="true"> ↓</span><span class="visually-hidden">, sorted descending</span>{%
+  endif %}</a>
+{% endmacro %}
+
+{#
+  "Nothing matches", said once. Every list page needs it, and the reason is
+  always the same: the filters are narrower than the data.
+#}
+{% macro nothing_matches(message="Nothing matches these filters.") %}
+<div class="notice"><p>{{ message }}</p></div>
+{% endmacro %}
+
+{#
+  Applied filters as removable chips, above the table.
+
+  This replaces a row of eleven unlabelled selects on the old flows page, where
+  the only way to see what was filtered was to read every dropdown.
+#}
+{% macro filter_chips(chips, endpoint, args, keep={}) %}
+{% if chips %}
+<div class="chips">
+  <span class="muted">Filtered by</span>
+  {% for param, label, value in chips %}
+  <a class="chip" href="{{ url_for(endpoint, **dict(args, page=1, **{param: ''})) }}">
+    <span class="chip__label">{{ label }}</span>
+    <span class="chip__value">{{ value }}</span>
+    <span aria-hidden="true">×</span>
+    <span class="visually-hidden">Remove this filter</span>
+  </a>
+  {% endfor %}
+  <a class="button" href="{{ url_for(endpoint, **keep) }}">Clear all</a>
+</div>
+{% endif %}
+{% endmacro %}
+
+{#
+  A labelled filter select that submits on change.
+
+  Labelled, unlike the eleven bare selects it replaces: without a label the
+  only way to know what a dropdown filters is to change it and see what moves.
+#}
+{% macro select(name, label, selected, options, blank="Any") %}
+<div class="filters__field">
+  <label for="filter-{{ name }}">{{ label }}</label>
+  <select id="filter-{{ name }}" name="{{ name }}" data-autosubmit>
+    <option value="">{{ blank }}</option>
+    {% for value, text in options %}
+    <option value="{{ value }}" {% if value == selected %}selected{% endif %}>{{ text }}</option>
+    {% endfor %}
+  </select>
+</div>
+{% endmacro %}
+
+{#
+  A single search box, for the pages whose only filter is a search.
+
+  The reset is always drawn, not only once something is typed: it also clears
+  the sort and the page, and a control that appears and disappears is one a
+  reader has to look for.
+#}
+{% macro search_form(endpoint, query, placeholder="Search…", keep={}) %}
+{# *keep* is in the action's path, so the form needs no hidden field for it. #}
+<form class="filters" method="get" action="{{ url_for(endpoint, **keep) }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="{{ placeholder }}" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ reset(endpoint, keep) }}
+  </div>
+</form>
+{% endmacro %}
+
+{# A uuid or identifier: monospace, and the whole cell links. #}
+{% macro flow_link(uuid, label=None) %}
+<a class="mono" href="{{ url_for('flows.detail', uuid=uuid) }}">{{ label or uuid }}</a>
+{% endmacro %}
+
+{% macro substance_link(flow_object_id, label=None) %}
+<a class="mono" href="{{ url_for('substances.detail', flow_object_id=flow_object_id) }}">{{ label or flow_object_id }}</a>
+{% endmacro %}

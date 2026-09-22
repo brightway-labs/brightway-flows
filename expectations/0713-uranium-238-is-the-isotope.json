@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "description": "BAFU 2026 v1 reports uranium-238 as radioactivity -- fifteen rows named `Uranium-238`, in Bq and kBq -- and writes the element's registry number, 7440-61-1, on fourteen of them. The build trusts a number over a name, so those fourteen were published as `Uranium`, the element, in kilograms; only the fifteenth, shipped with no number, reached the isotope on its name. The number is a SimaPro-era habit and not BAFU's slip -- Stepwise 2006 does the same -- so the correction is written once for the lineage, in `simapro-lineage-manual-fixes.json`, and applied to every list whose `simapro_origin` is true. See #147.",
+  "expectations": [
+    {
+      "id": "0713-bafu-uranium-238-reaches-the-isotope",
+      "issue": 713,
+      "title": "Every BAFU row named `Uranium-238` lands on the substance `Uranium-238`",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Uranium-238"},
+      "expect": {"target_name": "Uranium-238", "same_substance": true},
+      "comment": "Measured on the 2026-08-24 build of cf9b7ae9: fourteen of the fifteen rows matched `cas+label` to `Uranium` (fo-93d10c394b58394e), the element, and one matched `label` to `Uranium-238` (fo-bbc90a2dbdb048ca). Made true by the lineage fix that rewrites 7440-61-1 to 24678-82-8 on rows named `Uranium-238` that carry the element's number -- which is the number ecoinvent ships for the isotope and the one the consensus substance holds -- so all fifteen reach the isotope on the same evidence ecoinvent's rows do."
+    },
+    {
+      "id": "0713-no-bafu-uranium-238-is-the-element",
+      "issue": 713,
+      "title": "No BAFU row named `Uranium-238` is published as uranium the element",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Uranium-238"},
+      "expect": {"not_outcome": "created", "target_cas": "24678-82-8"},
+      "comment": "The half a reader can check in the published output: a becquerel of uranium-238 activity should never appear under a flow whose substance carries 7440-61-1 and is measured in kilograms. Stated on the target's registry number rather than its name so that a rename of the isotope's substance does not silently satisfy it."
+    }
+  ]
+}

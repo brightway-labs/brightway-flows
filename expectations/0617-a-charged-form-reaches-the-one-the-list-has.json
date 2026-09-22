@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "description": "Arsenic dissolved in water is not just arsenic. It occurs as arsenic III, which is arsenite, and arsenic V, which is arsenate, and the Roman numeral -- how many electrons the atom has given up -- decides how mobile the arsenic is and how poisonous. Arsenic V is a real substance and this list already publishes it, in fourteen compartments, as `Arsenic(5+)`. It also publishes it a second time, as `Arsenic V`, and both appear on `/flow-objects/elements/As` as two substances. See #127.\n\nSeven charged forms are doubled this way, all of them from BAFU, all minted rather than matched, and every one carrying no characterisation factor while the substance beside it carries six, four or two.\n\n**The reason is the same for all seven, and one BAFU row proves it.** `Chromium III` is spelled exactly the way `Arsenic V` is and reaches `Chromium(3+)` correctly -- because it carries a registry number. Every BAFU row that reaches the right charged substance does so on its number: cadmium, chromium, lead, manganese, mercury, nickel, zinc and eleven anions besides. Not one reaches it on the name. So this is not a rule that needs loosening; it is a reading that is never attempted, and the fix is to give the rows the numbers the others already have.\n\n#388 named six of these seven and was closed as completed on 13 August 2026 without the substances being joined up. Measured on the unbounded build of 20 August 2026 at `849ae6b`.",
+  "expectations": [
+    {
+      "id": "0617-arsenate-is-published-once",
+      "issue": 617,
+      "title": "BAFU's `Arsenic V` is published as the arsenate the list already holds",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Arsenic V"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Arsenic(5+)"
+      },
+      "comment": "The worked example of #127. BAFU ships `Arsenic V` in `emissions to soil / industrial`, kg, with no registry number, and it is published as a substance of its own with one flow, no characterisation factor, and typed `ImpreciseChemicalMixture` -- which is what this list calls something whose composition is not pinned down. A single arsenate ion is not a mixture of anything.\n\n`Arsenic(5+)` carries 17428-41-0 and six factors in ten of its fourteen compartments, so the same kilogram of arsenate scores six impact categories or nothing at all depending on which name the source list happened to use.\n\n**`basis` is claimed as well as the target**, and that is the substance of the fix rather than a detail: the row reaches the right substance *because the correction gives it the registry number every other BAFU ion row already has*. A later change that reached `Arsenic(5+)` by guessing at the name would satisfy `target_name` and would be the thing #127 says is not happening and should not start happening by accident."
+    },
+    {
+      "id": "0617-no-charged-form-is-published-twice",
+      "issue": 617,
+      "title": "Each of the five charged forms is one substance, not two",
+      "subject": {
+        "kind": "substance",
+        "label": "Arsenic V"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "The other half, and it fails differently: a change that pointed BAFU's row at `Arsenic(5+)` while leaving the minted substance standing would satisfy the claim above and still publish arsenate twice. Nothing should be published under this name once the row reaches the substance the list already holds -- the flow object exists only because that row minted it.\n\nStated on `Arsenic V` because it is the clearest of the five and the one the issue is named for. The other four -- `Vanadium V`, `Tin (II)`, `Calcium II` and `Perchlorate, Ion` -- go the same way and by the same correction; `tests/` is where all five are checked rather than repeating this entry five times."
+    },
+    {
+      "id": "0617-an-unstated-charge-is-not-guessed",
+      "issue": 617,
+      "title": "BAFU's `Iron, ion` is not published as iron(2+) on the strength of it being the commoner one",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Iron, ion"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Iron, Ion"
+      },
+      "comment": "Rewritten with #141. The claim was `not matched`: only iron(2+) existed, so any match would have guessed a charge, and the row had to mint. The retirement build mints a genuine generic iron-ion substance from ecoinvent's own `Iron ion` rows, and BAFU's row joining it guesses nothing -- the two lists' charge-unstated iron is now one substance, which is better than each minting its own. The spelling (`Iron Ion`) is the minted label; harmonising it with the EF-shipped `Titanium, ion` pattern is the label follow-up on #141."
+    }
+  ]
+}

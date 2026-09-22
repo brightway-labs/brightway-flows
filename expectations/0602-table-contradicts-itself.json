@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "description": "The ecoinvent -> EF 3.1 correspondence table is not an ecoinvent product and carries no authority: it is GLAD mappings plus, in its own words, extra manual and algorithmic matches, and it is incomplete. Nothing has ever required it to give the same answer twice about one substance. Reading the shipped 3.11/3.12 table (9,238 rows), 26 ecoinvent substances reach more than one EF 3.1 substance while the table itself holds the evidence telling them apart -- either its two targets carry different registry numbers, or the source flow's own number matches one of them and not the others. Eight are already corrected by curated overrides: #45, #276, #49, #76, MCPA, mecoprop-P and paraquat via #119, and 1,1,1-trichloroethane via #121. Eighteen are live. See #122.\n\nThis file records live ones as claims. The detector that stops a *new* one appearing is `tests/test_correspondence_self_contradiction.py`, which is a test rather than an expectation because it is a claim about the shipped tables and the curated overrides, not about a build. The first two entries were `pending` when #122 landed, because that change adds the detector and moves no rows; #124/#611 settles both substances and drops the flag. Measured on the 2026-08-19 build of `12c5b21`, and again on the build of 20 August 2026 at `4a60213`, where both are met.\n\nEighteen were live when this file was written and thirteen are now: #125 settled nitrogen, rabon, glufosinate, quizalofop-P and 1,1,2-trichloroethane, leaving #322's twelve metals -- which need a rule decided before any row can be written -- and `Carbon`, which needs a chemist rather than a lookup.",
+  "expectations": [
+    {
+      "id": "0602-trichloroethane-reaches-itself",
+      "issue": 602,
+      "title": "Every ecoinvent 1,1,2-trichloroethane release is published as 1,1,2-trichloroethane",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "1,1,2-Trichloroethane"
+      },
+      "expect": {
+        "target_name": "1,1,2-trichloroethane"
+      },
+      "comment": "1,1,2-trichloroethane is a chlorinated solvent, registry number 79-00-5, and EF 3.1 ships a flow for it under its own name. In the 2026-08-19 build of `12c5b21` seven of this flow's ten rows land instead on `Hydrocarbons, Chlorinated`, which is not a substance but a bucket for chlorinated solvents nobody named individually. Three land correctly -- `air / unspecified` and `soil / agricultural` through the prepared table, and `water / unspecified` by registry number through the algorithm -- which is what makes this checkable without any chemistry: the table already names the right target and then does not use it in the other seven contexts. Named here because it is the clearest of the eighteen; the same shape held for MCPA and paraquat until #324 settled them, and for 1,1,1-trichloroethane until #323 did.\n\n**#323 also removed the reason this one could not be fixed.** While EF's five air flows carrying 79-00-5 were named after the other isomer, repointing these rows would have published the right substance under the wrong name, and declining would have thrown away correct factors. #323 renames those five to `1,1,2-trichloroethane`, so all thirteen are now correctly named and #125 carries this as an ordinary rewrite."
+    },
+    {
+      "id": "0602-tetrachlorvinphos-is-one-substance",
+      "issue": 602,
+      "title": "Tetrachlorvinphos and Rabon are one insecticide, and this list publishes one substance for it",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Tetrachlorvinphos"
+      },
+      "expect": {
+        "same_substance": true
+      },
+      "comment": "Rabon is a trade name for tetrachlorvinphos; they are the same chemical, registry number 22248-79-9. ecoinvent ships one flow and the table sends it to two different EF 3.1 flows, so in the 2026-08-19 build of `12c5b21` this list publishes six rows as `Rabon` and two as `Tetrachlorvinphos` -- two substances, one chemical, and a consumer summing either gets part of the total. This entry claims only that the rows agree, not which name wins, because the naming question is #7's and is decided separately from where a row lands."
+    },
+    {
+      "id": "0602-chromium-iii-stays-settled",
+      "issue": 602,
+      "title": "ecoinvent's trivalent chromium releases all reach one substance, and go on doing so",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Chromium III"
+      },
+      "expect": {
+        "same_substance": true
+      },
+      "comment": "The control, and it is deliberately one of the substances the table contradicts itself about that has *already* been settled -- by the curated overrides written for #45, which send every trivalent chromium release to EF 3.1's `chromium (iii)` rather than letting some of them reach elemental chromium and be scored with hexavalent chromium's factors. It is true in the 2026-08-19 build of `12c5b21` and is not pending.\n\nIt is here because a detector for this defect is only worth having if it also holds the fixed cases fixed. #45 was found by a person noticing a wrong number; the detector in `tests/test_correspondence_self_contradiction.py` rediscovers it, along with #276, #49 and #76, from the shipped table alone. This expectation is what fails if a later change quietly lets the table's own answer win again."
+    }
+  ]
+}

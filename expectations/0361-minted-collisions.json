@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "description": "The merge mints a flow for a source row it cannot place on an existing one. Where several rows mean the same catch-all substance, each mints a private copy, and the published list ends up holding twenty flows with one name in one context -- one carrying the characterisation factors and nineteen empty. A consumer picking any of the nineteen scores the emission as zero. See #60.",
+  "expectations": [
+    {
+      "id": "0361-one-herbicides-flow-per-context",
+      "issue": 361,
+      "title": "`Herbicides, Unspecified` is published once per context, not twenty times",
+      "subject": {
+        "kind": "flow",
+        "name": "Herbicides, Unspecified",
+        "context_display": "Environmental → Ground → Agricultural"
+      },
+      "expect": {
+        "count": 1,
+        "characterised": true
+      },
+      "comment": "20 active flows in this context in the 2026-08-14 build, of which one carries a factor and nineteen carry none. Six other contexts hold the same twenty. The copies come from ecoinvent 3.12's manual-addition rows: Beflubutamid, Bicyclopyrone, Cafenstrole, Chlorimuron and 31 more each mint their own rather than joining the flow that is already there. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    },
+    {
+      "id": "0361-no-uncharacterised-twin",
+      "issue": 361,
+      "title": "The merge mints no flow that collides with one already in the list",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.merge_elementary_flow_collisions.collision_flows_minted_by_merge"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "193 in the 2026-08-14 build, across 29 collision groups, and every one of the 193 carries no characterisation factor. The check that counts them runs after the merge, which is what #60 asked for and got; what it reports is that the duplication was never stopped. Held as a measure rather than as a claim about one flow because the population is what has to reach zero. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "description": "AGRIBALYSE 3.2 ships 201 land occupation and transformation rows, written in ecoinvent 3's land vocabulary because the underlying inventories are ecoinvent's -- 178 under `Resources / land`, 15 under the bare `Resources` heading, and 8 misfiled among the ground, water and biotic resources. A land row carries no registry number, so the merge looks its class up in `land-flow-classes.json` by the row's own identifier, and no AGRIBALYSE identifier was in that file: on the first build to merge the list (1 September 2026, `b0b8d76`), 69 rows reached an existing class flow by label matching and the other 132 minted 120 new published flows -- title-cased copies of classes the list already publishes, one of them a `Transformation, To Annual Crop` filed as a ground resource.\n\n#849 adds the 201 rows to the curated table. 199 decompose onto the existing axes; the two vineyard rows state a crop the axes had no word for, so `crop_type` gains `vine` beside `fruit` rather than coarsening what the vendor said. Four names carry a country the way BAFU's rail rows do (`Occupation, annual crop, CN`), and the geography splitter's whitelist gains those four base labels so the place comes off the name (#65) and the class is the sibling's. The folds this produces -- the bare-heading duplicates, the country spellings, the misfiled compartment copies, all landing on one class flow -- are recorded in `land-flow-groupings.json`, seventeen new groupings beside the two the registration already carried.\n\nMarked pending until a shared build merges agribalyse-3.2: these claims are about that list's rows, and a build that has not merged the list cannot grade them. Drop the flag in the change that records the first shared build made from a commit containing both #355 and this fix.",
+  "expectations": [
+    {
+      "id": "0849-the-busiest-unmatched-row-reaches-from-cropland",
+      "issue": 849,
+      "title": "AGRIBALYSE's `Transformation, from annual crop` reaches the published From cropland flow by its curated class",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "f09dd74c-3f3a-5692-9435-cf1d9509bf24"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "land_class",
+        "target_name": "From cropland",
+        "target_uuid": "9699a63f-c966-43a4-816c-b1fbbf0a3e88"
+      },
+      "pending": true,
+      "comment": "The busiest unmatched row in the whole list: 4,390 of AGRIBALYSE's 20,440 processes exchange it. On the build of 1 September 2026 it minted `Transformation, From Annual Crop` (a title-cased duplicate of this flow) instead of matching; the class table now says what it is and the merge reads the table before it reads names."
+    },
+    {
+      "id": "0849-its-twin-reaches-to-cropland",
+      "issue": 849,
+      "title": "AGRIBALYSE's `Transformation, to annual crop` reaches the published To cropland flow by its curated class",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "88c21e91-d4b4-5fe7-93ea-ce40489021ca"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "land_class",
+        "target_name": "To cropland",
+        "target_uuid": "933debfd-2aa5-4a35-b07b-2732350ea29c"
+      },
+      "pending": true,
+      "comment": "The second-busiest row, 4,365 processes. Same shape as its `from` twin above."
+    },
+    {
+      "id": "0849-no-flow-under-the-vendors-spelling",
+      "issue": 849,
+      "title": "No published flow carries AGRIBALYSE's title-cased spelling of the annual-crop transformation",
+      "subject": {
+        "kind": "flow",
+        "name": "Transformation, From Annual Crop"
+      },
+      "expect": {
+        "count": 0
+      },
+      "pending": true,
+      "comment": "The duplicate itself, named the way the build of 1 September 2026 published it. What has to stop is a vendor's spelling standing as a published flow name beside the class flow the list already had -- the same claim 0810 makes for Stepwise's spellings."
+    },
+    {
+      "id": "0849-a-country-spelling-shares-its-siblings-class",
+      "issue": 849,
+      "title": "`Occupation, annual crop, CN` sheds its country and reaches the Cropland flow its sibling reaches",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "7eae2373-1d74-547e-845b-e0c2a8a3ac0d"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "land_class",
+        "target_uuid": "b88d3b6d-229e-477e-bce1-e16376f75c7b"
+      },
+      "pending": true,
+      "comment": "The place is split off the name (#65) and recorded as the row's location; where the crop grew is not a land class. The fold onto the sibling's flow is recorded in land-flow-groupings.json."
+    },
+    {
+      "id": "0849-a-misfiled-row-is-still-its-class",
+      "issue": 849,
+      "title": "The `Occupation, annual crop` filed under biotic resources reaches Cropland like its land-compartment siblings",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "b8a66e15-d200-5ed4-a07a-593f42cf25a1"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "land_class",
+        "target_uuid": "b88d3b6d-229e-477e-bce1-e16376f75c7b"
+      },
+      "pending": true,
+      "comment": "The class is keyed to the row's identifier, not its compartment, which is how BAFU's 29 land rows outside `resources / land` already reach their classes. On the build of 1 September 2026 this row minted a Cropland copy in the biotic resource context."
+    },
+    {
+      "id": "0849-the-vineyard-states-its-crop",
+      "issue": 849,
+      "title": "The vineyard occupation is published as its own class rather than coarsened to bare permanent cropland",
+      "subject": {
+        "kind": "flow",
+        "name": "Permanent cropland, vine"
+      },
+      "expect": {
+        "exists": true,
+        "context_display": "Land Use → Occupation"
+      },
+      "pending": true,
+      "comment": "`Occupation, permanent crop, vine` states a crop type the axes had no word for; `crop_type` gains `vine` beside `fruit` so the vendor's statement is kept rather than dropped. A new class is the right mint -- what #351 retires is duplicates of classes the list already had."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent's 1,4-Butanediol rows state CAS 110-63-4 in every release, and EF 3.1 carries that substance itself, as `butylene glycol`, characterised by the JRC. ecoinvent's correspondence table routes the rows instead onto `1,4-butanediol, reaction product with 1-chloro-2,3-epoxypropane` (CAS 2425-79-8) — a chlorinated epoxy adduct, a different substance — so plain butanediol emissions carried the adduct's characterisation. Measured on the 2026-08-22 build: 19 prepared rows over 10 source uuids, every one landing on the adduct's flow object fo-7ccb3fbde026512c. #140 is the issue; the fix is ten match overrides pointing each row at the butylene glycol flow of its own compartment.",
+  "expectations": [
+    {
+      "id": "0670-butanediol-lands-on-butylene-glycol",
+      "issue": 670,
+      "title": "ecoinvent's 1,4-Butanediol rows land on Butylene Glycol, the substance their own registry number names",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "1,4-Butanediol"},
+      "expect": {"outcome": "matched", "same_substance": true, "target_name": "Butylene Glycol"},
+      "comment": "Before the fix every row lands on the epoxy adduct: 19 rows, all on fo-7ccb3fbde026512c. After it they land together on the butylene glycol object, still via the prepared path — the override rewrites the table row rather than bypassing it."
+    },
+    {
+      "id": "0670-butanediol-air-row-is-characterised",
+      "issue": 670,
+      "title": "The air-unspecified butanediol row reaches a flow the JRC characterises",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "09db39be-d9a6-4fc3-8d25-1f80b23e9131"
+      },
+      "expect": {
+        "outcome": "prepared",
+        "target_name": "Butylene Glycol",
+        "target_cas": "110-63-4",
+        "target_characterised": true
+      },
+      "comment": "One row pinned by uuid so the claim survives a rename: air / unspecified, present in 3.8 and 3.12 under the same uuid and CAS. The adduct's flows are also characterised, so target_characterised alone would pass for the wrong reason — target_cas is the discriminating claim."
+    }
+  ]
+}

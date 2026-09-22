@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "description": "Four things a process can take that are not a substance and not a piece of land: the volume of a cavern hollowed out to hold radioactive waste, the same for low-active waste, the volume of an underground deposit, and the volume of water a reservoir holds behind a dam. Three are measured in cubic metres and the fourth in cubic-metre-years.\n\nThey were published **eight** times, not four. EF 3.1 files all four as a land occupation; ecoinvent 3.8, ecoinvent 3.12 and BAFU file the same four as resources -- three taken from the ground, the reservoir taken from water. Each pair already agreed about what the thing *is*: `Volume Occupied, Underground Deposit` is the same substance object, `fo-4a7c081700d58700`, on both sides. Only the compartment disagreed, and a flow's identity is its substance and its compartment together, so the two halves were separate flows that could never meet. An inventory using ecoinvent's row and a method characterising EF's row would not connect. Nothing has gone visibly wrong yet only because none of the eight carries a characterisation factor.\n\n**Why the resource filing is the right one, measured rather than argued.** Two facts settle it. First, EF 3.1's four flows carry ecoinvent's own German note, `nicht für Gesamtvolumen des Stollens` -- \"not for the total volume of the gallery\" -- character for character. EF did not classify these things itself; it took ecoinvent's flows and re-filed the compartment, so ecoinvent's filing is the author's and EF's is the copy's. Second, every other flow in the land-use dimension is an area. `Land Use → Occupation` holds 123 flows and 119 of them are in square-metre-years; `Land Use → Transformation` holds 240 and every one is in square metres. The only four exceptions in the whole dimension are these four. A land occupation is a surface held for a time, and none of these is a surface -- nothing about the inside of a mountain is, and three of the four have no time in the unit at all.\n\n**What changes, and what does not.** EF's four flows keep their own identifiers and move to the compartment the other three lists already use. The nine vendor rows that reach them -- three lists times three of the substances, plus the reservoir -- then land on EF's flow instead of minting a second one beside it, so the four duplicates simply never come into existence. Nothing is deprecated and nothing needs a redirect, because the flows that go away are ones the split invented; no source list ever shipped them. See #72, and `plans/land-class-taxonomy.md` §6.3 for why the land taxonomy excludes these four rather than trying to name them.",
+  "expectations": [
+    {
+      "id": "0399-underground-deposit-is-one-flow",
+      "issue": 399,
+      "title": "The volume of an underground deposit is one flow, and it is a resource taken from the ground",
+      "subject": {"kind": "flow", "name": "Volume Occupied, Underground Deposit"},
+      "expect": {
+        "count": 1,
+        "context_display": "Resource → Ground",
+        "unit": "m3",
+        "characterised": false
+      },
+      "comment": "Two flows on the build of 15 August 2026: EF 3.1's `da841aa2` in `Land Use → Occupation` and `1ca69050`, which the merge minted in `Resource → Ground` because ecoinvent's and BAFU's rows matched the substance but found no flow of it in their own compartment. `characterised` is claimed false deliberately. Neither half carried a factor before and the survivor must not acquire one here: this change moves a flow between compartments and does not reconstruct a number any method publishes."
+    },
+    {
+      "id": "0399-final-repository-for-radioactive-waste-is-one-flow",
+      "issue": 399,
+      "title": "The volume of a final repository for radioactive waste is one flow, and it is a resource taken from the ground",
+      "subject": {"kind": "flow", "name": "Volume Occupied, Final Repository For Radioactive Waste"},
+      "expect": {
+        "count": 1,
+        "context_display": "Resource → Ground",
+        "unit": "m3",
+        "characterised": false
+      },
+      "comment": "The cavern cut into rock to hold spent fuel. Same split as the deposit above -- EF's `0fdfa11c` against the minted `51b995df` -- and the same reading: what is consumed is the underground void, which is a thing taken from the ground, not a surface held for a time."
+    },
+    {
+      "id": "0399-low-active-final-repository-is-one-flow",
+      "issue": 399,
+      "title": "The volume of a final repository for low-active waste is one flow, and it is a resource taken from the ground",
+      "subject": {"kind": "flow", "name": "Volume Occupied, Final Repository For Low-active Radioactive Waste"},
+      "expect": {
+        "count": 1,
+        "context_display": "Resource → Ground",
+        "unit": "m3",
+        "characterised": false
+      },
+      "comment": "The third of the three underground volumes, and the third identical split: EF's `1fc2328b` against the minted `5d92e8e5`. Claimed one at a time rather than as a group so that a fix which reached three of the four would be reported as reaching three of the four."
+    },
+    {
+      "id": "0399-reservoir-is-one-flow",
+      "issue": 399,
+      "title": "The volume a reservoir holds is one flow, and it is a resource taken from water",
+      "subject": {"kind": "flow", "name": "Volume Occupied, Reservoir"},
+      "expect": {
+        "count": 1,
+        "context_display": "Resource → Water → Unknown",
+        "unit": "m3.a",
+        "characterised": false
+      },
+      "comment": "The fourth, and the one that goes somewhere else. Water impounded behind a dam is water, so ecoinvent and BAFU both file it in water rather than in ground, and this claim follows them. The body is left unstated because they left it unstated: a reservoir is an artificial lake and calling it `Lake` would be this list inventing a fact neither vendor wrote down. It is also the only flow in the whole land-use dimension measured in cubic-metre-years, which is a stored volume held for a time and not a surface held for a time."
+    },
+    {
+      "id": "0399-ef-keeps-its-identifier-for-the-underground-deposit",
+      "issue": 399,
+      "title": "The surviving flow is the one EF 3.1 already published, under the identifier consumers hold",
+      "subject": {"kind": "flow", "uuid": "da841aa2-7d85-4a6f-929c-7db64b4c4e59"},
+      "expect": {
+        "exists": true,
+        "context_display": "Resource → Ground",
+        "unit": "m3",
+        "deprecated": false
+      },
+      "comment": "Which of the two halves survives is a separate question from how many there are, and it has a right answer: the half a source list actually ships. `da841aa2` is EF 3.1's own identifier for the underground deposit; the flow it was fused with existed only because the merge had nowhere to put ecoinvent's row. Claimed on this one of the four because the issue names it as the pair whose shared substance object proves the identity was never in dispute."
+    },
+    {
+      "id": "0399-ecoinvent-underground-deposit-reaches-efs-flow",
+      "issue": 399,
+      "title": "ecoinvent's underground deposit reaches the flow EF publishes, instead of a second one beside it",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Volume Occupied, Underground Deposit"},
+      "expect": {
+        "outcome": "matched",
+        "same_target": true,
+        "target_uuid": "da841aa2-7d85-4a6f-929c-7db64b4c4e59",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "Both ecoinvent releases in this build, 3.8 and 3.12, ship this row and both are claimed. `same_target` is what says the two releases did not drift apart, and `target_uuid` is what says where they went -- onto EF's flow, which is the whole point of the change. Before it they matched the same substance and landed on the minted `1ca69050` instead, because the compartment they were filed in held no flow of that substance."
+    },
+    {
+      "id": "0399-bafus-reservoir-reaches-efs-flow",
+      "issue": 399,
+      "title": "BAFU's reservoir reaches the flow EF publishes, in the compartment BAFU filed it in",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Volume Occupied, Reservoir"},
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "1bd103da-4de0-4913-a45e-4dfaf79af96a",
+        "target_context_display": "Resource → Water → Unknown",
+        "target_unit": "m3.a"
+      },
+      "comment": "The other side of the same statement, on the flow that moves to water rather than to ground, and from the third list. BAFU files it under `resources / in water`, EF filed it under land occupation, and after this change they are the same flow. `target_unit` is claimed because the two lists already agreed on cubic-metre-years and a fix that quietly converted the survivor to something else would be a different change from this one."
+    },
+    {
+      "id": "0399-ordinary-land-occupation-is-untouched",
+      "issue": 399,
+      "title": "An ordinary occupation of land is still an occupation of land",
+      "subject": {"kind": "flow", "uuid": "b88d3b6d-229e-477e-bce1-e16376f75c7b"},
+      "expect": {
+        "context_display": "Land Use → Occupation",
+        "unit": "m2.a",
+        "characterised": true
+      },
+      "comment": "The control, and the reason the four are named one at a time rather than caught by a rule about the word `volume` or about the land-use compartment. EF 3.1's `Arable` is a real occupation of land: a surface, held for a time, measured in square-metre-years, and carrying 213 characterisation factors. A rule that emptied the land-use dimension, or that moved anything but the four volumes out of it, would be caught here -- and the 213 factors are what says nothing was silently dropped on the way."
+    }
+  ]
+}

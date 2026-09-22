@@ -1,0 +1,28 @@
+{#
+  The ways into the flow objects, as a strip under the heading.
+
+  Not masthead entries.  An element, an agricultural chemical, a land class and
+  a kind of water are all flow objects, and promoting each way of looking at
+  them to a section would put five spellings of one noun in the top navigation.
+  What differs is the question being asked, which is what this strip names.
+
+  `url_for` rather than literal hrefs, so a renamed route breaks the build
+  rather than the page -- `tests/test_webapp_shell.py` resolves every literal
+  href a template emits, and cannot resolve one that was never written down.
+#}
+{% macro views(active) %}
+<nav class="subnav" aria-label="Flow object views">
+  <a class="subnav__link" href="{{ url_for('substances.index') }}"
+     {% if active == 'all' %}aria-current="page"{% endif %}>All</a>
+  <a class="subnav__link" href="{{ url_for('agrochemicals.index') }}"
+     {% if active == 'agrochemicals' %}aria-current="page"{% endif %}>Agricultural chemicals</a>
+  <a class="subnav__link" href="{{ url_for('land.index') }}"
+     {% if active == 'land' %}aria-current="page"{% endif %}>Land</a>
+  <a class="subnav__link" href="{{ url_for('water.index') }}"
+     {% if active == 'water' %}aria-current="page"{% endif %}>Water</a>
+  <a class="subnav__link" href="{{ url_for('particles.index') }}"
+     {% if active == 'particles' %}aria-current="page"{% endif %}>Particles</a>
+  <a class="subnav__link" href="{{ url_for('elements.index') }}"
+     {% if active == 'elements' %}aria-current="page"{% endif %}>Elements</a>
+</nav>
+{% endmacro %}

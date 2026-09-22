@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "description": "Silver-110 and Silver-110m are different nuclides: the `m` is a metastable state with a 250-day half-life, against 24 seconds for the ground state, and only the metastable one is characterised. Several vendor lists ship the bare name `Silver-110` for what is measured as Silver-110m. Correcting that is right; reading the same corrected name two ways within one build is not. See #26.",
+  "expectations": [
+    {
+      "id": "0241-silver-110-one-substance",
+      "issue": 241,
+      "title": "Every row named `Silver-110` in one build resolves to one substance",
+      "subject": {"kind": "source_row", "name": "Silver-110"},
+      "expect": {"same_substance": true},
+      "comment": "BAFU ships four such rows. In the 2026-08-14 build two of them land on the existing Silver-110m substance and two mint a new one called `Silver-110` in air. One source name, one build, two substances -- and only one of the two carries any characterisation. The rows sit in different contexts, so reaching different flows is correct; reaching different substances is the defect. Made true by the `registry_number_from_name` step: the two rows that carry no number take 14391-76-5 from the two that do, so all four reach one substance. Whether that substance is the right one is the other half of #26 and is not settled here -- 14391-76-5 is the number the consensus list holds under `Silver-110m`, and BAFU's own rows are what says the bare name means it."
+    },
+    {
+      "id": "0241-silver-110-not-minted",
+      "issue": 241,
+      "title": "No row named `Silver-110` mints a substance of its own",
+      "subject": {"kind": "source_row", "name": "Silver-110"},
+      "expect": {"not_outcome": "created"},
+      "comment": "The narrower half of the expectation above, stated separately because it is the half a reader can check in the published output: search it for `Silver-110` and there should be one entry, not two. Made true by the same step and the same evidence: a row that has a registry number is matched on it, and this one now has BAFU's."
+    }
+  ]
+}

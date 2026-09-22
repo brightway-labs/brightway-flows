@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "description": "Two published substances were both called `1-pentene`, and the name is EF 3.1's own: the ILCD flow datasets for CAS 109-67-1 and for CAS 25377-72-4 both carry `<baseName xml:lang=\"en\">1-pentene</baseName>`, differing only in the registry number, the EC number and the first two synonyms. 109-67-1 is pent-1-ene, the single molecule, with InChIKey YWAKXRMUMFPDSH-UHFFFAOYSA-N. 25377-72-4 is pentene as a mixture of isomers: Common Chemistry's record for it is `Pentene`, it holds no InChIKey, and EF's own freshwater ecotoxicity factors for it -- 0.00066397 CTUe/kg to urban air, 0.00053053 to unspecified air, 2.9221 to unspecified soil, 475.74 to unspecified water -- are the numbers `cis-2-pentene` and `trans-2-pentene` carry, not the molecule's 0.00031356, 0.00025056, 1.38 and 224.58.\n\nSomebody searching the published list for `1-pentene` got two substances whose numbers differ by a factor of 2.1, with nothing on the page saying which was which. The wrong field is the source's name, so it is corrected there rather than by ruling on a label: `ef-3.1-manual-fixes.json` renames all thirteen rows carrying 25377-72-4 to `Pentylene`, which is Common Chemistry's synonym for that number and no other substance's published name. `Pentene`, its other synonym, is refused as a preferred label in `preferred-label-decisions.json`, because it cannot be told apart from the four other pentenes this list publishes; it stays reachable as an alternative label. The replaced name is deliberately not retained, since `1-pentene` is 109-67-1's name and this list publishes that substance under it. See #157.",
+  "expectations": [
+    {
+      "id": "0766-the-pentene-mixture-is-published-as-pentylene",
+      "issue": 766,
+      "title": "The substance carrying the pentene mixture's registry number is published under a name that is not 1-pentene's",
+      "subject": {
+        "kind": "substance",
+        "cas": "25377-72-4"
+      },
+      "expect": {
+        "label": "Pentylene",
+        "flow_count": 13
+      },
+      "comment": "Published as `1-pentene` on the 2026-08-25 build, in all thirteen compartments, which is the name EF 3.1 also gives 109-67-1. Thirteen flows because no list other than EF 3.1 reaches this substance: ecoinvent 3.8, ecoinvent 3.12 and BAFU 2026-v1 all send their `1-Pentene` rows to 109-67-1. Written as a claim about the substance rather than about a flow because the correction is one statement about one registry number, applied to all thirteen contexts at once."
+    },
+    {
+      "id": "0766-the-mixture-is-still-findable-as-pentene",
+      "issue": 766,
+      "title": "The pentene mixture is still findable under the name Common Chemistry gives it",
+      "subject": {
+        "kind": "substance",
+        "cas": "25377-72-4"
+      },
+      "expect": {
+        "alt_label": "Pentene"
+      },
+      "comment": "`Pentene` is Common Chemistry's own name for 25377-72-4 and is refused as the preferred label only because it reads as a broader term beside `1-pentene`, `2-pentene`, `Cis-2-pentene` and `Trans-2-pentene`. Refusing it as a label is not refusing it as a name, and the half of the rename that keeps a name searchable cannot be claimed by reading `label` alone. The synonym pass adds it from the CAS record independently of the rename."
+    },
+    {
+      "id": "0766-the-mixture-is-still-findable-as-n-pentene",
+      "issue": 766,
+      "title": "The pentene mixture is still findable as n-pentene",
+      "subject": {
+        "kind": "substance",
+        "cas": "25377-72-4"
+      },
+      "expect": {
+        "alt_label": "n-Pentene"
+      },
+      "comment": "The second of the three names Common Chemistry holds for 25377-72-4 that the 2026-08-25 build already published as alternative labels -- `n-Pentene`, `Pentene` and `Pentylene`. Stated so that the rename is measured as moving one name to the front rather than as replacing the set."
+    },
+    {
+      "id": "0766-one-pentene-keeps-the-name-that-is-its-own",
+      "issue": 766,
+      "title": "The single molecule keeps the name 1-pentene",
+      "subject": {
+        "kind": "substance",
+        "cas": "109-67-1"
+      },
+      "expect": {
+        "label": "1-pentene"
+      },
+      "comment": "The half that says the fix is about a registry number and not about a word. A correction keyed on the name would have renamed both substances and left the list with no `1-pentene` at all, which is worse than the defect: ecoinvent 3.8, ecoinvent 3.12 and BAFU 2026-v1 all reach this substance under that name."
+    },
+    {
+      "id": "0766-only-one-substance-is-called-1-pentene",
+      "issue": 766,
+      "title": "One substance is published under the name 1-pentene",
+      "subject": {
+        "kind": "substance",
+        "label": "1-pentene"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "The whole of the defect, counted off the published substances: two on the 2026-08-25 build, one after the rename. This is the claim a reader of the issue would check, and it is the one that fails again if either half of the change is undone -- the source rename, or the ruling that stops the label rule proposing `Pentene` for the substance the rename just named."
+    }
+  ]
+}

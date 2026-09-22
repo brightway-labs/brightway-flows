@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "description": "Forty-three recorded name-and-place keys hold two flows on the build of 30 August 2026, and they are genuine disagreements between merged lists: `Carbon dioxide` in unspecified air is fossil carbon to BAFU and Stepwise and land-use-change carbon to ecoinvent, because ecoinvent spells fossil out as `Carbon dioxide, fossil` and distinguishes this variant by identifier alone. No rule derives an answer, so the recorded-by-name tier declines them.\n\n#864: a caller whose source_label names a merged list has supplied the missing fact -- whose vocabulary the row speaks -- so the named list's own recorded ruling answers its ties, reported with the competing flows beside it. This file claims the premise as data: most of the disagreements are settleable that way, because at least one list is unanimous at almost every conflicted key. The behavioural half -- Stepwise's label turning unqualified carbon dioxide fossil -- is held by tests/test_lookup_recorded.py against the real build.",
+  "expectations": [
+    {
+      "id": "0864-most-disagreements-are-settleable-by-lineage",
+      "issue": 864,
+      "title": "A caller naming their lineage could settle most of the recorded disagreements",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.recorded_name.arbitrable_context_keys",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 30
+      },
+      "comment": "34 of the 43 conflicted keys on the 30 August 2026 build have at least one merged list that is internally unanimous, which is what source_label arbitration requires. The other nine are lists disagreeing with themselves, which no lineage settles and nothing should."
+    }
+  ]
+}

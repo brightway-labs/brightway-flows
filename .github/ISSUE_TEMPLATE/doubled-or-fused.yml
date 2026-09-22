@@ -1,0 +1,130 @@
+name: Two records are one substance, or one record is two
+description: The list publishes one substance twice, or it has fused two different chemicals into a single record.
+labels: ["chemistry"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        These are opposite problems with one shape, and they need opposite treatment, so
+        this form asks which one it is first.
+
+        From the outside a doubled substance and a fused one look identical: one name, one
+        compartment, two rows — or one record that several registry numbers reach. Merging
+        the first is right and merging the second destroys a distinction. EF 3.1 alone has
+        171 such pairs, and they split almost evenly. See [Two rows, one name, one
+        compartment](https://github.com/brightway-labs/brightway-flows/blob/main/docs/findings/duplicate-rows.md).
+
+        Before you write: the pairs that are genuinely two substances are usually a
+        chemical and a **close relative** of it — the fumarate and the maleate, CaHPO₄ and
+        Ca(H₂PO₄)₂, L-lactide and the racemate, the free acid and its sodium salt. Nothing
+        in the shared name distinguishes any of them.
+
+        **Write the title so it means something to somebody who has not read the issue.**
+        Name both substances and the count.
+
+  - type: dropdown
+    id: direction
+    attributes:
+      label: Which is it?
+      options:
+        - One substance is published twice, and the two records should be one
+        - One record holds two different substances, and they should be separate
+    validations:
+      required: true
+
+  - type: input
+    id: published-flow
+    attributes:
+      label: The record you are looking at
+      description: Its UUID, or the address of its page.
+    validations:
+      required: true
+
+  - type: textarea
+    id: the-other-record
+    attributes:
+      label: The other record
+      description: >-
+        Its UUID and name, and the registry number it carries. If these are two published
+        flows rather than two substances, say which compartment each is in — the question
+        is only a collision when they share one.
+      value: |
+        uuid:
+        name:
+        CAS:
+        compartment:
+    validations:
+      required: true
+
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: What says they are one substance, or two
+      description: >-
+        The registry numbers are the first thing to state: agreeing numbers are strong
+        evidence of one substance, and differing numbers are strong evidence of two. Where
+        they cannot settle it — two names under one number, with no factor computed for
+        both in the same method and context — say what does. A structural difference, a
+        different mass of the element per kilogram, or a different dose per hectare are all
+        arguments; a resemblance of names is not.
+      placeholder: >-
+        Both rows carry 56-23-5 and hold the same characterisation under the same nine
+        method identifiers, agreeing exactly in six of them and to three figures in the
+        rest. One of them is bare — no registry number, no synonyms, no comment.
+    validations:
+      required: true
+
+  - type: input
+    id: expected-survivor
+    attributes:
+      label: If they should be merged, which record should survive?
+      description: >-
+        Not a detail. Where a correspondence table already points at one of the two, keeping
+        the other strands every mapping that reaches it. Leave blank if you are asking for
+        a separation.
+      placeholder: The `CFC-10` record — it carries the registry number, and ecoinvent's mapping lands on it
+
+  - type: input
+    id: claim
+    attributes:
+      label: One sentence that should be true of the output
+      placeholder: Carbon tetrachloride is published once per air compartment, on the record carrying 56-23-5
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: A proposed ruling, if you have one
+      description: >-
+        **Optional.** Two names under one registry number are ruled in
+        `src/brightway_flows/data/contested-cas-decisions.json`, where `decision` is
+        exactly `merge` or `separate` and a comment is required rather than optional. Two
+        live flows sharing a substance, a context and a unit are ruled in
+        `elementary-flow-collision-decisions.json`.
+      render: json
+      placeholder: |
+        {
+          "cas": "7553-56-2",
+          "names": ["iodine", "iodine, 0.03% in water"],
+          "decision": "separate",
+          "comment": "…"
+        }
+
+  - type: input
+    id: build
+    attributes:
+      label: Which build you were looking at
+      description: The version or revision at the foot of the page. Leave it blank if you are unsure.
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **What happens next.** A maintainer approves a CI run — runs are not automatic, so
+        there may be a wait. If you proposed a ruling, CI builds the list with it applied
+        and diffs it against the reference build, which is the only way to see what a merge
+        or a separation does to the flows and factors either side of it. The result is a
+        workflow run with an artifact attached. Nothing is written to the repository until
+        a pull request is merged.

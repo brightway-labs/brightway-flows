@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 ships `cerium(3+)` on thirteen emission rows and writes 7440-45-1 on every one -- the registry number of cerium the element, which EF also publishes, under the same number, as its `cerium` resource row. A stated number outranks a name, so on the 2026-08-29 build of `54b0f9d` the thirteen rows joined the resource row on one substance published as `Cerium`, and the charge EF wrote on purpose was dropped. EF's other dissolved metals -- `iron (iii)`, `chromium (vi)`, `vanadium (v)` -- keep their charge; cerium was the one whose number contradicted its name.\n\nThe decision the issue asked for: the name is believed, as it was for `vanadium (v)` (#49) and for BAFU's five `X II` rows (#146). `ef-3.1-manual-fixes.json` writes the ion's own number, 18923-26-7 (PubChem CID 114853; ChEBI:48782), on the thirteen rows. The element keeps its resource row and BAFU's `Cerium` in river water, which BAFU registers as the element.\n\nMeasured on the build of 2026-08-29 at `54b0f9d`: one substance carries 7440-45-1 with fifteen flows, and no substance carries 18923-26-7. See #184.",
+  "expectations": [
+    {
+      "id": "0831-cerium-3-is-its-own-substance",
+      "issue": 831,
+      "title": "A substance registered as cerium(3+) exists and holds EF's thirteen emission flows",
+      "subject": {"kind": "substance", "cas": "18923-26-7"},
+      "expect": {"exists": true, "flow_count": 13},
+      "comment": "The positive half. Thirteen flows, one per EF emission context, and no more: nothing on any merged list carries the ion's number or the ion's name, so no source row joins them."
+    },
+    {
+      "id": "0831-the-urban-air-flow-carries-the-ions-number",
+      "issue": 831,
+      "title": "EF's cerium(3+) in urban air is published under the ion's number",
+      "subject": {"kind": "flow", "uuid": "ef6d6805-f188-4e31-8d34-a7ddc69aac48"},
+      "expect": {"exists": true, "substance_cas": "18923-26-7", "characterised": true},
+      "comment": "One of the thirteen the issue names, on its own so the count above cannot hold while a flow slips back to the element. `characterised` because these are the rows that carry EF's toxicity factors for the ion, and the point of separating them is that those numbers stop being published as the element's."
+    },
+    {
+      "id": "0831-the-element-keeps-its-own-flows",
+      "issue": 831,
+      "title": "Cerium the element keeps its resource row and BAFU's river row, and nothing else",
+      "subject": {"kind": "substance", "cas": "7440-45-1"},
+      "expect": {"exists": true, "label": "Cerium", "flow_count": 2},
+      "comment": "The leave-alone half. Before: fifteen flows, thirteen of them the ion's. After: EF's `cerium` resource row and BAFU's `Cerium` to river water, which BAFU registers 7440-45-1 and which stays where its number puts it."
+    }
+  ]
+}

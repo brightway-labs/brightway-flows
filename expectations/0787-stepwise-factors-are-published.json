@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "description": "Stepwise 2006 says that a kilogram of methane released to air is worth 29.8 kg CO2-eq of global warming. #164 published the method's 6,064 flows and none of the 9,698 characterisation factors that name them, so the list held most of a method with the numbers taken out. This publishes them.\n\n**It is a second method, not a second rendering of the first.** Where a category name coincides with one of EF 3.1's the number does not: Stepwise's `Acidification` is counted in `m2 UES` from the EDIP model and EF's in mol H+-eq from Accumulated Exceedance. The change before this one made a method a file rather than a set of constants, so this is a second file -- `stepwise-2006-impact-categories.json`, 19 categories -- and no module learns a method's name.\n\n**The factor's unit is not always the flow's, and 307 rows turn on it.** A factor row states the unit the factor is per; the substance blocks state the unit the flow is inventoried in. 263 rows are stated per gram against a flow in kilograms, 36 per becquerel against a flow in kilobecquerels, 6 per kilogram against a flow in tonnes and 2 per square metre-year against a flow in hectare-years. Each is rescaled through `units.json` and keeps the publisher's own unit in `characterization_factor_flow_unit`. Unconverted, every one is a factor of a thousand or ten thousand out, and invisibly so: a published factor carries no unit of its own.\n\n**Nothing is dropped.** The 69 factors the method states as exactly zero are published, because \"this method looked at this substance and says it does not contribute\" is a statement and a table that dropped it reads like one that never assessed the substance (#47). So are the three `as CO2e (GWP aggr timing)` rows, which are the method's own numbers about the flows #164 files under `Impact Assessment Score`.\n\nMeasured on the fetch of 2026-08-29 against `Stepwise2006_v1.09.csv`: 19 categories, 9,698 factors, 6,064 flows, 307 rescaled, 69 stated zero.\n\n**Every claim here is `pending` until a base build merges Stepwise.** The list is registered but the stored build merges three lists, so `assess` grades a build in which none of these rows exists and every claim below is unresolved rather than wrong. The flags come off in the first refresh that merges four lists; they are not a queue of work, they are a queue of one build.",
+  "expectations": [
+    {
+      "id": "0787-a-second-method-is-published",
+      "issue": 787,
+      "title": "Two methods are published, not one",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.methods"
+      },
+      "expect": {
+        "at_least": 2
+      },
+      "comment": "EF 3.1 and Stepwise 2006. The counter is the run's own rather than one method's, which is why it carries no method prefix. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    },
+    {
+      "id": "0787-nineteen-more-categories-under-two-implementations",
+      "issue": 787,
+      "title": "Stepwise 2006 publishes 19 categories under each of its two implementations",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.impact_categories"
+      },
+      "expect": {
+        "at_least": 138
+      },
+      "comment": "100 before: EF 3.1's 25 categories under four implementations. Stepwise adds 19 under two -- the publisher's and ours -- which is 38 more. `at_least`, because a third implementation of either method should not fail this.\n\nTwo rather than four is the whole difference between the methods: EF 3.1 is rendered by three publishers and Stepwise by one, so there is nothing to cross-check and every consensus factor of it is `sole`. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    },
+    {
+      "id": "0787-every-factor-the-export-states-is-read",
+      "issue": 787,
+      "title": "All 9,698 factors the export states are read, including the 69 zeros",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.stepwise-2006_twenty_zero_lca_factors_stated"
+      },
+      "expect": {
+        "at_least": 9698,
+        "at_most": 9698
+      },
+      "comment": "An equality, because this is the count of a file rather than of a matching. The export states 9,698 rows over 19 categories; a number below means a category was silently skipped and a number above means rows were duplicated, and neither would show anywhere else.\n\nIt is also where the ruling on the zeros is checked. 9,629 is the count with them dropped -- the number the #207-era artifact carried -- so this equality is what keeps \"assessed, and the factor is zero\" apart from \"never assessed\" (#47, #48). 36 of the 69 are in terrestrial ecotoxicity, where the method's documentation says soil emissions are left uncharacterised deliberately to avoid double-counting with Nature occupation. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    },
+    {
+      "id": "0787-methane-carries-the-number-the-issue-quotes",
+      "issue": 787,
+      "title": "A kilogram of methane to air is worth 29.8 kg CO2-eq",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Methane",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Global warming, fossil",
+        "implemented_by": "2.-0 LCA consultants"
+      },
+      "expect": {
+        "amount": "29.8"
+      },
+      "comment": "#346's own worked example, and the row that needs no rescaling: the factor is stated per kilogram and the flow is inventoried in kilograms, so 29.8 is what the file says and what is published. Held beside the two rescaled claims below, which are the same reading applied where the units differ. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    },
+    {
+      "id": "0787-a-factor-stated-per-gram-is-published-per-kilogram",
+      "issue": 787,
+      "title": "Methane's respiratory organics factor is published per the kilogram the flow is measured in",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Methane",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Respiratory organics",
+        "implemented_by": "2.-0 LCA consultants"
+      },
+      "expect": {
+        "amount": "0.038"
+      },
+      "comment": "The export states `3.8e-05`, per gram; the flow is inventoried in kilograms, so the published number is a thousand times that. #346's text quotes `3.8e-05` as the value for a kilogram, which is the row read without its unit -- this is the corrected reading, and it is an expectation rather than a comment because it is the claim a careless change would silently invert.\n\nAll 121 of `Respiratory organics`' rows are stated per gram, so this is not one odd row: it is what the category does. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    },
+    {
+      "id": "0787-the-reference-nuclide-proves-the-conversion",
+      "issue": 787,
+      "title": "Carbon-14 to air carries 1,000 Bq C-14-eq, being one per becquerel and measured per kilobecquerel",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Carbon-14",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Ionizing radiation",
+        "implemented_by": "2.-0 LCA consultants"
+      },
+      "expect": {
+        "amount": "1000"
+      },
+      "comment": "The one row in the method that checks the rescaling against something other than itself. `Ionizing radiation` is counted in becquerels of carbon-14 equivalent, so carbon-14 is the category's reference nuclide and its factor is exactly 1 in its own unit -- which is what the export states, per becquerel. Stepwise inventories every radionuclide in kilobecquerels, so published against the flow it must be 1,000, and a build that published 1 would be saying a kilobecquerel of the reference substance is one becquerel of it.\n\nAll 36 of this category's rows are rescaled, which is #164's finding read from the other end: it takes a flow's unit from the substance blocks precisely because the factor rows are stated per becquerel. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    },
+    {
+      "id": "0787-the-second-method-decides-nothing-of-the-first",
+      "issue": 787,
+      "title": "Adding a second method changes no factor EF 3.1 publishes",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_factors_published"
+      },
+      "expect": {
+        "at_most": 327064
+      },
+      "comment": "A category slug is unique inside a method and not across methods, and this is that stated as a number. Stepwise has an `acidification` and EF 3.1 has an `acidification`, counted in different units from different models; a build that let one reach the other's consensus would move this count.\n\n323,890 is what the base build of `9718911` publishes. It is not the 324,694 that #157, #165 and #347 pinned: those three were measured before #163's retired-identifier fix landed, which stopped 801 factors being published against identifiers the same build retires. #349 restated them to this number and made each an upper bound rather than an equality on both sides, which is what this one now states too: a rise is a second method reaching the first's consensus, which is the failure this file names, while a fall is one of the two deciding implementations correcting its own numbers and belongs in `expectations/baseline.json`. The `pending` flag went with the equality -- the claim holds on the build this was measured against. Moved to 323,898 with the AGRIBALYSE stack (#188): giving Beta-cyfluthrin the product's own registry number took ecoinvent's rows off the consensus `Cyfluthrin` flows, and the ecoinvent Centre's factors followed its flows -- 64 arrive on the Beta-cyfluthrin substance, 40 leave with the vacated ecoinvent-compartment Cyfluthrin copies, pair-identical amounts, measured on the stack build of d98a075 (1 September 2026). That is +24 against the 323,874 the #178/#826 retirements left, none of it a comparison implementation reaching the consensus -- the movement is one deciding implementation's numbers following its own renamed substance, which is the accounting this guard exists to force. (This file's 323,890 had also gone quietly stale: an upper bound tolerates a fall, so the #178/#826 retirements that made the count 323,874 never forced an edit here.) Moved again on 2026-09-01 when the context convention in `data/context-carry-rules.json` began carrying 1,482 more factors into the contexts nobody characterised -- a river taking surface water's number, silvicultural soil taking non-agricultural soil's -- on top of the 323,898 the cyfluthrin split left: 325,380, the two movements measured on different builds and added, until the next full build records the count. A carried number is this list's own convention applied to a number it already published, not a third publisher's number becoming ours, which is still what this bound is about.\n\nRecorded at 327,064 on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), which is the full build the previous sentence was waiting for. The convention's carry came to 1,866 factors over the four-list baseline's 1,491 (3,357 `carried`), not the 1,482 measured on a branch, because AGRIBALYSE's merge added flows in contexts the convention carries into; `sole` moved by 24 the other way. `adopted` stayed at 1,334, which is the number this bound is really watching: nothing a third publisher stated became ours."
+    }
+  ]
+}

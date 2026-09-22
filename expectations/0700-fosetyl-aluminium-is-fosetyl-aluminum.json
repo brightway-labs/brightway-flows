@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent 3.8 ships one fosetyl-aluminium row -- uuid 4c44e04f, soil / agricultural, no registry number -- under the spelling every later release retired. With no CAS, only its name can place it, and both name paths fail by design: the shipped spelling is an altLabel of EF's `Fosetyl-aluminum`, and an altLabel hit on a CAS-bearing object is rejected (the rule that stops `Granite` reaching penoxsulam); the historical-names crosswalk then rewrites it to the vendor's newest spelling, `Fosetyl-Al`, which is no object's label at all, and hits funnel through the same narrowing anyway. So the row minted a payload-less duplicate substance and an uncharacterised flow beside EF's characterised one in the very same compartment, and every 3.8 inventory's emission of this fungicide scored zero while 3.12's and BAFU's identical rows -- which carry 39148-24-8 -- score. Measured on the 2026-08-24 build (merge run f9b0eea0). #144 is the issue; the fix is one match override guarded by the retired spelling, so the release that states its own registry number keeps matching on it.",
+  "expectations": [
+    {
+      "id": "0700-the-old-spelling-lands-on-fosetyl-aluminum",
+      "issue": 700,
+      "title": "ecoinvent's CAS-less `Fosetyl-aluminium` row lands on the Fosetyl-aluminum the JRC characterises",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Fosetyl-aluminium"
+      },
+      "expect": {
+        "outcome": "prepared",
+        "target_name": "Fosetyl-aluminum",
+        "target_cas": "39148-24-8",
+        "target_characterised": true
+      },
+      "comment": "Before the fix the row is `created`: a duplicate substance with no registry number, no composition and no payload, one spelling away from a fully characterised one. After it, the curated row answers -- `prepared`, because a CAS-less name in a retired spelling is a decision somebody wrote down, not evidence the matcher may weigh. `target_cas` is the discriminating claim: it is the number the row itself never stated and the substance is pinned by."
+    },
+    {
+      "id": "0700-the-new-spelling-keeps-its-cas-match",
+      "issue": 700,
+      "title": "ecoinvent 3.12's `Fosetyl-Al` rows keep matching on the registry number they state",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Fosetyl-Al"
+      },
+      "expect": {
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_name": "Fosetyl-aluminum",
+        "same_substance": true
+      },
+      "comment": "The leave-alone half. The override is guarded with `only_when_named` on the retired spelling, so 3.12's seven rows -- the same uuid family, registered 39148-24-8 -- never see it and keep landing on their own evidence. This claim held before the fix and must go on holding after it; a fix that turned these rows `prepared` would have replaced evidence with curation where the evidence is complete."
+    }
+  ]
+}

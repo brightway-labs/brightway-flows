@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 publishes a herbicide under the abbreviation `DMPA`, over 13 flows carrying CAS 299-85-4. The abbreviation is not a name: this list holds three substances with equal claim to it, and there are more outside.\n\n| substance | registry number | flows |\n|---|---|---|\n| Zytron, the herbicide | 299-85-4 | 13 |\n| dimethylolpropionic acid | 4767-03-7 | 13 |\n| 2,2-dimethoxy-2-phenylacetophenone | 24650-42-8 | 13 |\n\nOnly the herbicide is published *as* `DMPA`; the other two carry it as an alternative name. Outside the list the abbreviation also reaches 3,4-dimethoxy-L-phenylalanine and medroxyprogesterone acetate, which is Depo-Provera.\n\nThe registry number the list carries is already right. The name is what was doing the damage, and it was doing it to the pipeline as well as to a reader: `commonchem_cas_review` raises a blocking `cas-ambiguous` item when a flow's name matches several ChEBI records and none carries the flow's own number. `dmpa` matches two, neither of them this herbicide, so the pass could not tell whether the list had the wrong number and asked a curator. `zytron` matches no ChEBI record, so once the flow is named for the substance the question does not arise.\n\n`retain_original_as_synonym` is deliberately not set. Publishing `DMPA` as a synonym for the herbicide would assert exactly what the rename denies, and #113's rule -- a synonym that names two substances is published for neither -- withdraws it in any case. Nothing is lost from the mapping: every flow records EF's own spelling as `elementary_flow_sources.source_flow_name`, so an inventory that maps by uuid still resolves.\n\nThere is no expectation here about the queue being empty. A queue with no rows produces no measure, so an expectation naming one would report `unresolved` rather than met.",
+  "expectations": [
+    {
+      "id": "0577-the-herbicide-is-published-as-zytron",
+      "issue": 577,
+      "title": "The herbicide EF 3.1 calls `DMPA` is published as Zytron",
+      "subject": {
+        "kind": "substance",
+        "cas": "299-85-4"
+      },
+      "expect": {
+        "label": "Zytron"
+      },
+      "comment": "Measured on the build of 18 August 2026 at commit ad6b20e: published as `Dmpa` over 13 flows. `Zytron` is Common Chemistry's own name for 299-85-4, which is the authority this project follows for a name (#104), and EF 3.1 ships `Zytron` and `Zytron Herbicide` among the synonyms on these very flows -- so the source already knows what it published."
+    },
+    {
+      "id": "0577-the-abbreviation-names-one-substance",
+      "issue": 577,
+      "title": "The rename leaves the herbicide one substance over its thirteen flows",
+      "subject": {
+        "kind": "substance",
+        "cas": "299-85-4"
+      },
+      "expect": {
+        "count": 1,
+        "flow_count": 13
+      },
+      "comment": "A guard rather than a claim about the fix: 299-85-4 named one substance over 13 flows before the rename and must go on doing so. A rename that split the substance, or that pulled in one of the other substances the abbreviation reaches, would show here."
+    },
+    {
+      "id": "0577-the-other-dmpa-keeps-its-own-name",
+      "issue": 577,
+      "title": "Dimethylolpropionic acid keeps its own name and its own registry number",
+      "subject": {
+        "kind": "substance",
+        "cas": "4767-03-7"
+      },
+      "expect": {
+        "count": 1,
+        "flow_count": 13
+      },
+      "comment": "The second of the three substances in this list that answer to `DMPA`, and the reason the abbreviation is not retained as a synonym for the first. It is published as `3-hydroxy-2-(hydroxymethyl)-2-methylpropanoic Acid` and carries `DMPA` as an alternative name; renaming the herbicide must not disturb it, and nothing may merge the two on the strength of a shared abbreviation."
+    },
+    {
+      "id": "0577-the-third-dmpa-keeps-its-own-name",
+      "issue": 577,
+      "title": "The photoinitiator keeps its own name and its own registry number",
+      "subject": {
+        "kind": "substance",
+        "cas": "24650-42-8"
+      },
+      "expect": {
+        "count": 1,
+        "flow_count": 13
+      },
+      "comment": "The third, published as `2,2-dimethoxy-1,2-diphenylethan-1-one` and also carrying `DMPA`. Three substances, thirteen flows each, one abbreviation between them: that is the whole of why the herbicide is renamed and why the abbreviation is published as a name for none of them."
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "description": "AGRIBALYSE ships seven substances twice: once under a qualified compartment that lands correctly, and once under a bare or wrong one whose copy landed in the wrong dimension on the build of 1 September 2026 (run c5445e95) -- biogenic carbon dioxide, air and oxygen published as ground resources (the bare `Carbon dioxide, in air` row carries 235,299 kg of crop uptake in one Mexican agave dataset alone), standing wood as a ground resource, and the two fisheries as water rather than living resources. Seven items on the substance-in-two-places queue. Each wrong copy is re-filed in `agribalyse-3.2-manual-fixes.json` to the compartment its own qualified twin uses -- the treatment `Peat` and `Energy, from wood` already got -- and the fish are ruled biotic (project owner, 2026-09-01): a fishery is a living resource, and the vendor's own biotic copy already lands beside ecoinvent's. See #369 and agribalyse-land-and-sulfur-contexts.md §3.",
+  "expectations": [
+    {
+      "id": "0907-bare-biogenic-carbon-uptake-is-a-resource-from-air",
+      "issue": 907,
+      "title": "AGRIBALYSE's bare biogenic carbon dioxide row reaches the Resource → Air flow its qualified twin uses",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "c5af798d-f5b6-53b5-a551-545bb4c36a95"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "target_name": "Carbon Dioxide (biogenic)",
+        "target_context_display": "Resource → Air"
+      },
+      "pending": true,
+      "comment": "The row that changes results: 23 uses, every one non-zero, crop carbon uptake published as a mineral resource on the build of 1 September 2026. The qualified `Resources / in air` twin already lands here."
+    },
+    {
+      "id": "0907-bare-air-and-oxygen-are-resources-from-air",
+      "issue": 907,
+      "title": "The bare Air and Oxygen rows reach Resource → Air",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "bac7fc5d-dd32-5837-b62b-a4dcb72a14c1"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "target_context_display": "Resource → Air"
+      },
+      "pending": true,
+      "comment": "The Air row; Oxygen's (39b6549b-bf36-5ccf-84fe-b96ca3a96dce) follows identically and the one-place claims below cover both."
+    },
+    {
+      "id": "0907-standing-wood-is-a-biotic-resource",
+      "issue": 907,
+      "title": "Both misfiled standing-wood rows reach Resource → Biotic",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "bee24501-d997-503a-9eb2-28e5d84ddedb"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "target_name": "Wood, Soft, Standing",
+        "target_context_display": "Resource → Biotic"
+      },
+      "pending": true,
+      "comment": "The `Resources / in ground` copy of soft standing wood; the bare-heading copy of unspecified standing wood (c8e821e3-5907-5ca0-96d1-d6a4670233eb) is re-filed the same way."
+    },
+    {
+      "id": "0907-a-fishery-is-a-living-resource",
+      "issue": 907,
+      "title": "The two misfiled fishery rows reach Resource → Biotic, where the vendor's own biotic copies already are",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "98acbe41-6e69-5cb0-8f60-559aad3fb946"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "target_name": "Fish, Demersal, In Ocean",
+        "target_context_display": "Resource → Biotic"
+      },
+      "pending": true,
+      "comment": "Ruled by the project owner on 2026-09-01: a fishery is a living resource, and this is a vendor filing one row in two places, not a disagreement between vendors -- AGRIBALYSE's own `Resources / biotic` copy lands beside ecoinvent's. The pelagic row (77d55a91-e42c-50f1-8cac-3e2d9ad20c7d) follows identically. Trace amounts (1e-29 and 1e-19 kg), so this is tidiness where the carbon row is substance."
+    },
+    {
+      "id": "0907-no-substance-of-the-seven-is-published-in-two-dimensions",
+      "issue": 907,
+      "title": "Biogenic carbon dioxide as a resource is published from air only",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon Dioxide (biogenic)",
+        "context_display": "Resource → Ground"
+      },
+      "expect": {
+        "exists": false
+      },
+      "pending": true,
+      "comment": "One claim stands for the family: the seven wrong-dimension flows -- CO2 (biogenic), Air and Oxygen in Resource → Ground, both standing woods in Resource → Ground, both fisheries in Resource → Water → Unknown -- all trace to the same filing habit and vanish with the same eight re-files."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "list_name": "stepwise",
+  "list_version": "2006-1.09",
+  "role": "source",
+  "merge_priority": 300,
+  "simapro_origin": true,
+  "adapter": "brightway_flows.integrations.stepwise:fetch",
+  "flow_iri_prefix": "https://vocab.brightway.one/stepwise/2006-1.09/flow/",
+  "prepared_match_table": null,
+  "concept_associations": null,
+  "lcia": {
+    "adapter": "brightway_flows.integrations.stepwise_lcia:fetch",
+    "factors": "stepwise-2006-lcia-factors.json",
+    "implemented_by": "2.-0 LCA consultants",
+    "methods": [
+      {
+        "name": "Stepwise_2006_IPCC2021_CorrectedNatureOccupation"
+      }
+    ]
+  },
+  "inputs": {
+    "flows": "stepwise-2006-1.09.json",
+    "manual_fixes": "stepwise-2006-manual-fixes.json",
+    "manual_additions": null,
+    "additional_flows": "stepwise-2006-additional-flows.json",
+    "match_overrides": "stepwise-2006-match-overrides.json"
+  }
+}

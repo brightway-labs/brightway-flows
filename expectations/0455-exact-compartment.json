@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "description": "A row that names its compartment exactly should land in it, rather than tie with the compartments either side. BAFU reports water vapour to the air, compartment unspecified, and the list holds water vapour in exactly that compartment, in kilograms -- alongside water vapour at aircraft cruise height and water vapour long-term, also in kilograms. All three used to score 3, so the merge reported a tie and placed the row nowhere. See #90.",
+  "expectations": [
+    {
+      "id": "0455-bafu-water-vapour-to-unspecified-air",
+      "issue": 455,
+      "title": "BAFU's water vapour to unspecified air lands on the water vapour flow in unspecified air",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water", "context": ["emissions to air", "unspecified"]},
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Water vapour",
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+        "target_unit": "kg"
+      },
+      "comment": "50 rows, all measured in kilograms. This needed two fixes and had them one at a time. The scoring change here made the kilogram flow in unspecified air score 4 against its neighbours' 3, and moved nothing, because the rows were still stopping one stage earlier at `multiple-flow-object-candidates`: twelve substances answer to water's CAS number and nothing said which of them a row of water vapour was. Giving BAFU's water rows a material (#86) says it, and all 50 then land here. Met on the 2026-08-15 build of that change, where BAFU's unmatched total falls from 267 to 14."
+    },
+    {
+      "id": "0455-bafu-water-vapour-to-unspecified-air-one-flow",
+      "issue": 455,
+      "title": "All fifty of them reach the same flow",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water", "context": ["emissions to air", "unspecified"]},
+      "expect": {"row_count": 50, "same_target": true},
+      "comment": "The rows are identical in name, compartment and unit, so a build that sent them to more than one flow would be answering one question two ways. Stated separately from the claim above because it fails for a different reason: `same_target` is about the fifty agreeing with each other, not about where they land."
+    }
+  ]
+}

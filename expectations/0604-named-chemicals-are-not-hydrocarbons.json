@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "description": "A hydrocarbon is a molecule made only of carbon and hydrogen. Glucose is a sugar -- C6H12O6 -- and six of its atoms are oxygen. It is not a hydrocarbon of any kind. This list publishes ecoinvent's glucose releases as `Hydrocarbons, Aliphatic, Unsaturated`, which is not a substance but a bucket for unsaturated hydrocarbons a source list did not name individually. See #123.\n\nThis is the residue of #76. That issue found twenty-one insecticides published as one catch-all, and the fix declined 307 correspondence rows whose target was one of EF 3.1's five *pesticide* buckets. The hydrocarbon buckets were not part of #76 and were never covered, so named chemicals still reach them. Three do: glucose, a non-ionic surfactant and a diol, each carrying a registry number and each containing oxygen.\n\nMeasured on the unbounded build of 20 August 2026 at `4a60213`, merging ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026 v1.",
+  "expectations": [
+    {
+      "id": "0604-glucose-is-not-an-unsaturated-hydrocarbon",
+      "issue": 604,
+      "title": "ecoinvent's glucose releases are published as glucose",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Glucose"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_name": "Glucose"
+      },
+      "comment": "The worked example. ecoinvent's `Glucose` flow, 50-99-7, is sent by the correspondence table to `hydrocarbons, aliphatic, unsaturated` in both compartments it appears in, and the bucket then picks up `Glucose` as an alternative label -- so the published list says, in effect, that one of the names for \"unsaturated aliphatic hydrocarbons\" is glucose. Checked on the build of 4a60213: the alt label is there, with provenance `carry_member_names` from `source_flow_name`.\n\nEF 3.1 ships no flow for 50-99-7, so there is nothing to repoint at and the row is declined; the substance is then minted as itself. `same_substance` as well as `target_name`, because a fix that declined one compartment and not the other would publish glucose twice and satisfy neither.\n\nThis costs nothing measurable. The bucket carries no characterisation factor in the compartment the row lands in, and any number it did carry would be the bucket's own rather than glucose's -- which is the harm rather than the loss: a consumer summing glucose releases finds none, and a consumer reading the bucket gets a number that silently includes a sugar."
+    },
+    {
+      "id": "0604-each-of-the-three-is-published-as-itself",
+      "issue": 604,
+      "title": "Glucose is published as a molecule, not as a class of hydrocarbons",
+      "subject": {
+        "kind": "substance",
+        "label": "Glucose"
+      },
+      "expect": {
+        "exists": true,
+        "flow_count": 1,
+        "flow_type": "NeutralMolecule"
+      },
+      "comment": "The other half of the same fact, and it fails differently: a change that took ecoinvent's row off the bucket without the substance arriving would satisfy the claim above and leave the sugar unpublished.\n\n`flow_type` is the claim that says what went wrong in the first place. The bucket is typed `MoleculeGroupingClass` -- a class of molecules rather than one molecule -- and glucose is a single compound with a formula and a registry number, which is `NeutralMolecule`. A substance that arrived typed `unclassified` would mean the addition path had minted something it could not identify, which is #71's defect and not a fix for this one.\n\nMeasured after the change on the build of 20 August 2026 at 849ae6b: `Glucose` exists as its own substance with one flow, typed `NeutralMolecule`, and enrichment has found it fifteen alternative names -- `Dextrose`, `D-glucose`, `grape sugar` -- which is what a substance the list can actually identify looks like.\n\n**What the buckets lose is a name, not a flow.** `Hydrocarbons, Aliphatic, Unsaturated` keeps all twelve of its own flows before and after; what goes is `Glucose` from its alternative labels. That is worth stating because it was the first thing this expectation got wrong: the class was never given an extra flow, it was given an extra *name*, and a claim written on the flow count would have passed while the sugar's name was still on the class."
+    },
+    {
+      "id": "0604-the-aggregate-measures-still-reach-their-class",
+      "issue": 604,
+      "title": "AOX, NMVOC and VOC are still published as the classes they measure",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name_contains": "NMVOC"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_name": "Non-methane Volatile Organic Compounds"
+      },
+      "comment": "**The control, and the one that bounds the widening.** `AOX`, `NMVOC` and `VOC` are genuine class-level quantities in ecoinvent too -- the source flow *is* the class -- so mapping them onto a class is right and must keep working. It is true before this change and is not pending.\n\nIt is here because #123 proposed keying the rule on whether the source carries a registry number, and the shipped tables refute that both ways. `Pydiflumetofen` is a named fungicide carrying no registry number at all, and #76 correctly declines it. `Curium Alpha`, `Plutonium-alpha`, `Uranium Alpha` and `Tributyltin Compounds` each carry one and must be left alone, because each is a class mapped onto itself. So the discriminator is what the source *is*, read from its name, and `tests/test_pesticide_catch_alls.py` holds the four classes ecoinvent and EF spell differently.\n\nNMVOC is the one claimed here because it is the case where the two spellings differ most -- ecoinvent writes the initialism and its expansion, EF writes the expansion alone -- so a rule that compared names carelessly would decline it first."
+    }
+  ]
+}

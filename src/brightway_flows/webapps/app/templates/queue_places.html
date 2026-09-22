@@ -1,0 +1,149 @@
+{#
+  The substance-in-two-places queue: one section per substance, one row per
+  place.
+
+  The counterpart of `queue_collisions.html` -- that page asks whether one place
+  holds two flows, this one whether one substance holds two places -- and it
+  stopped fitting the shared `queue.html` for the same reason: what a curator
+  rules on is what sits in each place, and three columns of deduplicated lists
+  cannot say which unit and which source list belong to which context. `Peat` is
+  the case: `MJ, kg` beside `EF 3.1, ecoinvent algorithm addition` beside two
+  contexts is three pairings a reader has to guess, and the guess decides which
+  side they think holds the characterisation.
+
+  The place marked "belongs nowhere else" is the one the ruling is about: the
+  merge wrote a flow there and no other place of the substance is a vaguer
+  description of it. Every other place is shown because a place is only stranded
+  relative to the others.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = definition.title %}
+{% set active_section = "queue" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ definition.title }}</h1>
+  <p class="page__lede">{{ definition.question }}</p>
+  <p class="muted mono">{{ definition.name }}</p>
+</header>
+
+{#
+  Not `search_form`: that macro builds its action with `url_for(endpoint)`, and
+  this page's endpoint takes the queue name.
+#}
+<form class="filters" method="get"
+      action="{{ url_for('queue.detail', name=definition.name) }}">
+  {# The severity is held by the chips below; searching must not drop it. #}
+  <input type="hidden" name="severity" value="{{ severity }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Substance, place, unit or source list…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('queue.detail', {'name': definition.name}) }}
+  </div>
+</form>
+
+{#
+  The severity badge as a one-click filter.
+
+  The dropdown could already do this and nobody used it: a curator opens a queue
+  to find the blocking rows, and "blocking" is a word on the rows rather than a
+  word in a menu. The counts are of this queue under this search.
+#}
+{{ t.badge_filter("Severity", "severity", severity, badges,
+                  'queue.detail', dict(args, name=definition.name),
+                  all_count=badge_total) }}
+
+{% if page.rows %}
+{{ t.pager(page, 'queue.detail', dict(args, name=definition.name)) }}
+
+{% for split in page.rows %}
+{% set item = split.item %}
+<section class="section">
+  <div class="section__header">
+    <h2>{{ split.substance }}</h2>
+    <span class="tag tag--{{ item.severity }}">{{ item.severity }}</span>
+  </div>
+  <dl class="facts">
+    <dt>Substance</dt>
+    {#
+      Labelled with the name, with the identifier beside it small: the name is
+      what says whether two places are a contradiction -- peat comes out of the
+      ground and nothing chooses -- and the identifier is what a rule in
+      `context-manual-mapping.json` is written against.
+    #}
+    <dd>
+      {{ t.substance_link(item.flow_object_id, split.substance) }}
+      <span class="muted mono">{{ item.flow_object_id }}</span>
+    </dd>
+    <dt>Places</dt>
+    <dd>
+      {{ split.places | length }}, of which {{ split.stranded | length }}
+      belong{{ "s" if split.stranded | length == 1 else "" }} nowhere else
+    </dd>
+  </dl>
+
+  {% if split.places %}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Place</th>
+          <th scope="col">Unit</th>
+          <th scope="col">Published by</th>
+          <th scope="col" class="num">Factors</th>
+          <th scope="col">Flows</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for place in split.places %}
+        <tr>
+          <td>
+            {{ place.context }}
+            {% if place.belongs_nowhere_else %}
+            <span class="tag tag--review">belongs nowhere else</span>
+            {% elif place.was_minted %}
+            <span class="tag tag--info">written by the merge</span>
+            {% endif %}
+          </td>
+          <td class="mono">{{ place.units | join(", ") or "—" }}</td>
+          <td>{{ place.sources | join(", ") or "—" }}</td>
+          {#
+            Which side of the split holds the characterisation. The two halves
+            are identifiers that can never meet, so a place with the numbers
+            beside one with none is the whole consequence: an inventory that
+            used the other flow scores zero and nothing says why.
+          #}
+          <td class="num">{{ place.factor_count | thousands }}</td>
+          <td>
+            {% for flow_id in place.flow_ids %}
+            <div>{{ t.flow_link(flow_id) }}</div>
+            {% else %}
+            <span class="muted">—</span>
+            {% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="notice notice--warn">
+    <p>
+      This item lists no places. It was written by a run older than this page,
+      which reads them per place; the title above is what that run recorded.
+    </p>
+  </div>
+  {% endif %}
+</section>
+{% endfor %}
+
+{{ t.pager(page, 'queue.detail', dict(args, name=definition.name)) }}
+{% else %}
+{{ t.nothing_matches("Nothing in this queue: no substance is taken from two places the merge wrote into."
+                     if not query and not severity
+                     else "Nothing matches these filters.") }}
+{% endif %}
+{% endblock %}

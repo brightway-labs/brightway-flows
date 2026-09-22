@@ -1,0 +1,5812 @@
+{
+  "schema_version": 1,
+  "description": "The newest release's identity for every ecoinvent element/ion flow that an earlier release on disk states differently. Derived by tools/derive_ecoinvent_canonical_identities.py from the release extractions (3.8, 3.9.1, 3.10.1, 3.11, 3.12); do not edit by hand -- regenerate. plans/retire-prepared-correspondence.md §3a is the rule this implements: the newest name is the vendor's current opinion, the earlier ones are treated as mistaken, and one uuid is one substance in every release. merge/species.py loads it, and only for a source list with no prepared correspondence table.",
+  "derived_from": [
+    "3.8",
+    "3.9.1",
+    "3.10.1",
+    "3.11",
+    "3.12"
+  ],
+  "identities": [
+    {
+      "uuid": "a45cd247-3532-4e27-bddc-b519fdb5e08f",
+      "name": "Aluminium",
+      "cas_number": "7429-90-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium, in ground",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "01056d4b-f9b0-4dfc-b8d9-8407c8376efb",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "0ace7678-a181-48e8-8728-d912a8b56c57",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "2baa4381-b781-4f5e-90de-508b0fa3fd1f",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "2e0c9efa-d55c-49db-8be3-0376d5921ff4",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "39555a26-d28b-425f-993f-e8770ab7d9cf",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "46e63323-cffd-4c46-829b-5f006b50fa9b",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "6f0b8b7c-3888-4174-b7e3-916d42d678ee",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "765546a9-b056-4d27-ad14-2f016511bdcb",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "7880e65c-0321-4295-ba55-3186ad36e489",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "97e498ec-f323-4ec6-bcc0-d8a4c853bae3",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "9c3bd678-1b2f-4b95-a245-d5c8a3fe326b",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "d96403bf-902e-4b7a-8ffd-32fe09e4017f",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "e0401210-0377-4670-84af-12247ca20bed",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "ff65658c-2d39-44a2-b23e-7ec3c644f064",
+      "name": "Aluminium III",
+      "cas_number": "22537-23-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Aluminium",
+          "cas_number": "7429-90-5"
+        }
+      ]
+    },
+    {
+      "uuid": "47262180-8308-5d4c-9332-c77617e032ef",
+      "name": "Antimony",
+      "cas_number": "7440-36-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony, in ground",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "183f9856-03ab-464d-9366-8ef62077b510",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "2b2369a4-26bb-4b18-8479-752fdf7a5e7f",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "34b96163-a3df-4bc1-8224-e2a9fe01b23f",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "3ea5684a-6d64-4f96-8c09-1d90f997c9d4",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "43b29ad9-26dd-4838-b931-6216e55a0120",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "49803ad0-9ca2-4507-a5ea-f152d16c929d",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "5df5cb9f-812c-4ce8-ab1c-df6ab4d31900",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "77927dac-dea3-429d-a434-d5a71d92c4f7",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "7805afa2-d93b-40bb-b841-325b98aec824",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "83cf77ca-867b-4eef-b0f0-78d71b3d91d5",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "b2dc8668-86de-4207-b20e-dc81dea63c98",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "c49fb4cd-eed0-4438-9052-9612473cdbae",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "f4cf8d5c-f030-4b55-a3af-e3c20b855ee8",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "fa39136e-1ef6-43c1-af68-104da104568d",
+      "name": "Antimony ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Antimony",
+          "cas_number": "7440-36-0"
+        }
+      ]
+    },
+    {
+      "uuid": "e16fd15c-0ebc-55ba-8d3b-9704f13663cb",
+      "name": "Arsenic",
+      "cas_number": "7440-38-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic, in ground",
+          "cas_number": "7440-38-2"
+        }
+      ]
+    },
+    {
+      "uuid": "1e19d86e-968d-4428-984f-70bfd843a8f4",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic",
+          "cas_number": "7440-38-2"
+        }
+      ]
+    },
+    {
+      "uuid": "1f607ae2-b42d-4411-90b8-e9bbac66a554",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic, ion",
+          "cas_number": "17428-41-0"
+        }
+      ]
+    },
+    {
+      "uuid": "4673a799-36a5-4359-ac6a-fa933281bc93",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic",
+          "cas_number": "7440-38-2"
+        }
+      ]
+    },
+    {
+      "uuid": "7348af7c-e102-4a03-a0df-efce16469eed",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic",
+          "cas_number": "7440-38-2"
+        }
+      ]
+    },
+    {
+      "uuid": "8c8ffaa5-84ed-4668-ba7d-80fd0f47013f",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic, ion",
+          "cas_number": "17428-41-0"
+        }
+      ]
+    },
+    {
+      "uuid": "cfce0b1a-2873-46fa-8e12-afb5a4213886",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic",
+          "cas_number": "7440-38-2"
+        }
+      ]
+    },
+    {
+      "uuid": "d70b4182-d633-4178-84c0-8854f5f6594b",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic, ion",
+          "cas_number": "17428-41-0"
+        }
+      ]
+    },
+    {
+      "uuid": "dc6dbdaa-9f13-43a8-8af5-6603688c6ad0",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic",
+          "cas_number": "7440-38-2"
+        }
+      ]
+    },
+    {
+      "uuid": "e1bd008f-c3c2-47f1-ab60-35e1a842acc0",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic, ion",
+          "cas_number": "17428-41-0"
+        }
+      ]
+    },
+    {
+      "uuid": "e60edb16-3c74-415b-9aff-a22a6f49fecb",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic, ion",
+          "cas_number": "17428-41-0"
+        }
+      ]
+    },
+    {
+      "uuid": "ebc4c2a3-c004-4053-8048-f41fdd9324c8",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic",
+          "cas_number": "7440-38-2"
+        }
+      ]
+    },
+    {
+      "uuid": "ed751c30-a896-44f3-9a83-2a5328dde94d",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic",
+          "cas_number": "7440-38-2"
+        }
+      ]
+    },
+    {
+      "uuid": "f4d0a2c8-efef-4188-85da-5801097389a2",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic",
+          "cas_number": "7440-38-2"
+        }
+      ]
+    },
+    {
+      "uuid": "fc84887d-158e-4067-80dc-9743165bd70d",
+      "name": "Arsenic ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Arsenic",
+          "cas_number": "7440-38-2"
+        }
+      ]
+    },
+    {
+      "uuid": "240177d8-6f3b-43f5-8d1e-0c18114dfa02",
+      "name": "Barium",
+      "cas_number": "7440-39-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium, in ground",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "0e1c17ae-8144-4714-a7cd-786a5480f423",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "24cf82f8-c517-4fef-8f93-17519adb855e",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "2c872773-0a29-4831-93b9-d49b116fa7d5",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "3184c902-c587-4fd7-bd89-769d3cf30072",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "5719929a-8c5b-48cc-a039-b11a9f380467",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "5ffb3576-740f-41ba-814f-8538d83a4b3b",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "7e246e3a-5cff-43fc-a8e6-02d191424559",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "95ad40ec-c34b-49fc-a7dc-0e13172ac105",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "98267bbc-0591-4eb8-8581-2231208c548d",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "99cd88f6-16b7-4b28-895c-2f42101f634b",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "c792edbf-a11f-459d-9d92-15ad0c2f0c3c",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "cd5898ca-96ad-4038-b7ac-edf544d2800a",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "d68f41b3-6887-49a8-8efa-96812f8ec9f6",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "f8199e39-7354-44ad-92d8-6a2cc3bac24e",
+      "name": "Barium II",
+      "cas_number": "22541-12-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Barium",
+          "cas_number": "7440-39-3"
+        }
+      ]
+    },
+    {
+      "uuid": "68f7bc03-0665-55a1-bd99-96530eab30e2",
+      "name": "Beryllium",
+      "cas_number": "7440-41-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium, in ground",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "162b7095-c497-4b3c-a290-01ebe4bc9a08",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "19e97bd6-d0ae-4208-bd77-d58e5d46d827",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "20557d93-2b1c-49b5-b6c0-3528a8bbc307",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "24e0a9cb-a789-46e2-a25c-0278a90d67e5",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "276e755c-ed57-466a-b555-4658c791f385",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "5457df7d-0461-407c-9f09-0338dbff77ef",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "5d4b497b-d265-42d1-a41a-113785a6d694",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "7672267f-4541-4c9a-9ca0-ec2f41b95cbc",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "85c40d9a-cbf0-44f0-a9a2-5b1edee4055a",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "8d0ca1a5-6a40-4eda-861a-a0fccdc81b19",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "a2b3bbb7-53ec-44e5-a184-9689f356235b",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "b0758e8e-691c-4c96-8a90-4784c47cd962",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "dbf49708-ee0c-44f2-8662-5edd89ad472b",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "fa89c354-2263-4ed2-ac56-99946be5c665",
+      "name": "Beryllium II",
+      "cas_number": "22537-20-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Beryllium",
+          "cas_number": "7440-41-7"
+        }
+      ]
+    },
+    {
+      "uuid": "b053aa52-bfac-5435-a0b1-4ca374b0e991",
+      "name": "Boron",
+      "cas_number": "7440-42-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Boron, in ground",
+          "cas_number": "7440-42-8"
+        }
+      ]
+    },
+    {
+      "uuid": "45d6f26b-596b-5182-8c08-d6d975ff4efe",
+      "name": "Bromine",
+      "cas_number": "7726-95-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Bromine, in water",
+          "cas_number": "7726-95-6"
+        }
+      ]
+    },
+    {
+      "uuid": "bf377e4f-3a95-4ce2-a9ba-66ee31f00f60",
+      "name": "Cadmium",
+      "cas_number": "7440-43-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium, in ground",
+          "cas_number": "7440-43-9"
+        }
+      ]
+    },
+    {
+      "uuid": "12d6029e-3801-42ee-a1bc-1ebf936884fc",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium",
+          "cas_number": "7440-43-9"
+        }
+      ]
+    },
+    {
+      "uuid": "1c5a7322-9261-4d59-a692-adde6c12de92",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium",
+          "cas_number": "7440-43-9"
+        }
+      ]
+    },
+    {
+      "uuid": "23eaa36d-add4-4219-961e-ca7104dc0de9",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium",
+          "cas_number": "7440-43-9"
+        }
+      ]
+    },
+    {
+      "uuid": "2712fe5f-0d3c-4c8e-8bc4-26c604413849",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium, ion",
+          "cas_number": "22537-48-0"
+        }
+      ]
+    },
+    {
+      "uuid": "36e53653-1338-42c7-816c-f6667809e0b1",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium",
+          "cas_number": "7440-43-9"
+        }
+      ]
+    },
+    {
+      "uuid": "3937f5a5-b4a4-434d-9fc3-1d29064fc3f8",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium, ion",
+          "cas_number": "22537-48-0"
+        }
+      ]
+    },
+    {
+      "uuid": "4ce23896-a82f-49f1-a8e3-8848734805a3",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium, ion",
+          "cas_number": "22537-48-0"
+        }
+      ]
+    },
+    {
+      "uuid": "62fcd384-906d-474f-a84b-9f944b78f804",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium, ion",
+          "cas_number": "22537-48-0"
+        }
+      ]
+    },
+    {
+      "uuid": "89721e33-60fa-4447-bfc6-2f27d44a7893",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium",
+          "cas_number": "7440-43-9"
+        }
+      ]
+    },
+    {
+      "uuid": "af83b42f-a4e6-4457-be74-46a87798f82a",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium, ion",
+          "cas_number": "22537-48-0"
+        }
+      ]
+    },
+    {
+      "uuid": "b03642f4-8fa3-44df-ba91-7bcf5677d9a7",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium",
+          "cas_number": "7440-43-9"
+        }
+      ]
+    },
+    {
+      "uuid": "dd1bbaa1-d1f1-4584-aeb2-6f02bfb04e87",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium",
+          "cas_number": "7440-43-9"
+        }
+      ]
+    },
+    {
+      "uuid": "e2d58f90-9aac-4ac4-87f7-bbd6cfc358e3",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium",
+          "cas_number": "7440-43-9"
+        }
+      ]
+    },
+    {
+      "uuid": "e429b852-e421-4fcb-8a9b-b0241863bfb2",
+      "name": "Cadmium II",
+      "cas_number": "22537-48-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cadmium",
+          "cas_number": "7440-43-9"
+        }
+      ]
+    },
+    {
+      "uuid": "0e2f5e72-a754-5a14-bce5-6f8d66276d82",
+      "name": "Caesium",
+      "cas_number": "7440-46-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Caesium, in ground",
+          "cas_number": "7440-46-2"
+        }
+      ]
+    },
+    {
+      "uuid": "2267ffd7-fe74-441e-873b-dd66c26a5e9f",
+      "name": "Caesium I",
+      "cas_number": "18459-37-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cesium",
+          "cas_number": "7440-46-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Caesium",
+          "cas_number": "7440-46-2"
+        }
+      ]
+    },
+    {
+      "uuid": "59570d74-fac9-446d-88a7-5c5b0a6139a7",
+      "name": "Caesium I",
+      "cas_number": "18459-37-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cesium",
+          "cas_number": "7440-46-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Caesium",
+          "cas_number": "7440-46-2"
+        }
+      ]
+    },
+    {
+      "uuid": "96f0a692-ddb9-4a4c-8236-7c943929653d",
+      "name": "Caesium I",
+      "cas_number": "18459-37-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cesium",
+          "cas_number": "7440-46-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Caesium",
+          "cas_number": "7440-46-2"
+        }
+      ]
+    },
+    {
+      "uuid": "a5e13836-93f3-4a63-8e5e-944ac627bced",
+      "name": "Caesium I",
+      "cas_number": "18459-37-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cesium",
+          "cas_number": "7440-46-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Caesium",
+          "cas_number": "7440-46-2"
+        }
+      ]
+    },
+    {
+      "uuid": "e189eb4e-0f6a-4054-aaf8-47df28c87ec4",
+      "name": "Caesium I",
+      "cas_number": "18459-37-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cesium",
+          "cas_number": "7440-46-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Caesium",
+          "cas_number": "7440-46-2"
+        }
+      ]
+    },
+    {
+      "uuid": "c8fc4197-7410-42f2-aeb4-c08c6a693992",
+      "name": "Calcium",
+      "cas_number": "7440-70-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium, in ground",
+          "cas_number": "7440-70-2"
+        }
+      ]
+    },
+    {
+      "uuid": "08151735-9d1b-4b1c-a8b1-f341ade54f2f",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium, ion",
+          "cas_number": "14127-61-8"
+        }
+      ]
+    },
+    {
+      "uuid": "15fd8f0f-c3c2-4f63-b8d0-86793a22aacd",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.10.1",
+          "name": "Calcium II",
+          "cas_number": "7440-70-2"
+        }
+      ]
+    },
+    {
+      "uuid": "1d0f4392-8c91-4d01-8a5d-f8fe1f5b05c9",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium, ion",
+          "cas_number": "14127-61-8"
+        }
+      ]
+    },
+    {
+      "uuid": "2cc93e0a-c655-4628-bea6-243d8240b5a4",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.10.1",
+          "name": "Calcium II",
+          "cas_number": "7440-70-2"
+        }
+      ]
+    },
+    {
+      "uuid": "55bf893f-0d89-429c-be59-2f99b33ddb11",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium, ion",
+          "cas_number": "14127-61-8"
+        }
+      ]
+    },
+    {
+      "uuid": "57117e3c-15aa-4b4d-b953-6d33986aa5aa",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.10.1",
+          "name": "Calcium II",
+          "cas_number": "7440-70-2"
+        }
+      ]
+    },
+    {
+      "uuid": "a912f450-5233-489b-a2e9-8c029fab480f",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.10.1",
+          "name": "Calcium II",
+          "cas_number": "7440-70-2"
+        }
+      ]
+    },
+    {
+      "uuid": "ac066c02-b403-407b-a1f0-b29ad0f8188f",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium, ion",
+          "cas_number": "14127-61-8"
+        }
+      ]
+    },
+    {
+      "uuid": "ae28c923-a4a3-4f00-b862-1ae6e748efb9",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium, ion",
+          "cas_number": "14127-61-8"
+        }
+      ]
+    },
+    {
+      "uuid": "b87016c6-ac91-4414-98ce-fb665e0a6d2e",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.10.1",
+          "name": "Calcium II",
+          "cas_number": "7440-70-2"
+        }
+      ]
+    },
+    {
+      "uuid": "cac53ea3-b11c-47a6-adfd-678672a088e6",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.10.1",
+          "name": "Calcium II",
+          "cas_number": "7440-70-2"
+        }
+      ]
+    },
+    {
+      "uuid": "e681e6ba-2d66-4f17-8812-e8c74bdcf7e8",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.10.1",
+          "name": "Calcium II",
+          "cas_number": "7440-70-2"
+        }
+      ]
+    },
+    {
+      "uuid": "f16fa1da-e426-4820-bf9d-71595c22283b",
+      "name": "Calcium II",
+      "cas_number": "14127-61-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Calcium",
+          "cas_number": "7440-70-2"
+        },
+        {
+          "version": "3.10.1",
+          "name": "Calcium II",
+          "cas_number": "7440-70-2"
+        }
+      ]
+    },
+    {
+      "uuid": "e189e2d4-3d3f-4ada-b302-91611784311f",
+      "name": "Chromium",
+      "cas_number": "7440-47-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium, in ground",
+          "cas_number": "7440-47-3"
+        }
+      ]
+    },
+    {
+      "uuid": "1c87de06-e58f-4684-a54c-d29f1a251a87",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium, ion",
+          "cas_number": "16065-83-1"
+        }
+      ]
+    },
+    {
+      "uuid": "2a5ed451-12a2-47db-b4dc-fa0bfbc01d79",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium",
+          "cas_number": "7440-47-3"
+        }
+      ]
+    },
+    {
+      "uuid": "30f484ee-dec4-47ae-8e92-d00d4b93fe05",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium, ion",
+          "cas_number": "16065-83-1"
+        }
+      ]
+    },
+    {
+      "uuid": "4d40d8e3-9bc7-4ab1-ac5c-4f4a76fda8e5",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium",
+          "cas_number": "7440-47-3"
+        }
+      ]
+    },
+    {
+      "uuid": "591de726-f2c7-43ba-8e22-15fd08acc8dc",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium",
+          "cas_number": "7440-47-3"
+        }
+      ]
+    },
+    {
+      "uuid": "6b29d83a-c43c-484c-8e73-474a8a22d71e",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium",
+          "cas_number": "7440-47-3"
+        }
+      ]
+    },
+    {
+      "uuid": "7705f0e1-5b14-44f4-b330-1245b5c7fc08",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium",
+          "cas_number": "7440-47-3"
+        }
+      ]
+    },
+    {
+      "uuid": "d98f0ec0-bf19-4c90-a457-a8593dec497f",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium, ion",
+          "cas_number": "16065-83-1"
+        }
+      ]
+    },
+    {
+      "uuid": "d9c23a8d-e7bf-4f70-8d22-b9ad8a653204",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium, ion",
+          "cas_number": "16065-83-1"
+        }
+      ]
+    },
+    {
+      "uuid": "e0336c9b-a0ff-4ae3-b8bb-ca1e46bbbc11",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium",
+          "cas_number": "7440-47-3"
+        }
+      ]
+    },
+    {
+      "uuid": "e142b577-e934-4085-9a07-3983d4d92afb",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium",
+          "cas_number": "7440-47-3"
+        }
+      ]
+    },
+    {
+      "uuid": "e34d3da4-a3d5-41be-84b5-458afe32c990",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium, ion",
+          "cas_number": "16065-83-1"
+        }
+      ]
+    },
+    {
+      "uuid": "e65a9c58-21f1-48b6-b738-d05a8f10e5f3",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium",
+          "cas_number": "7440-47-3"
+        }
+      ]
+    },
+    {
+      "uuid": "e7881581-21b3-4f5c-bd63-6b0684b5e712",
+      "name": "Chromium III",
+      "cas_number": "16065-83-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Chromium",
+          "cas_number": "7440-47-3"
+        }
+      ]
+    },
+    {
+      "uuid": "d0779a5e-6969-4144-954e-ceb81fb83f15",
+      "name": "Cobalt",
+      "cas_number": "7440-48-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt, in ground",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "12051b95-831a-49c0-9a70-fbc0e8fb9af9",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "1e904267-caa3-40e6-a3a0-fc104489770b",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "33627701-feca-434d-a192-674a450eaaf7",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "381a22c9-3722-4378-810d-86958f7b6d32",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "74eb3f02-09ec-46ce-8ee8-d67d0900136b",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "9542444c-7c7a-48e2-bc9c-9c7c34fb7b3e",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "9ce88274-57b6-42ed-a78b-4abef2301865",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "b10faa87-2c1d-4f6e-aa65-9f80b376939a",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "c58d25ad-30d2-4fac-a857-1fa6f67afe8a",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "ca04300a-8338-4601-ba7c-66c10a4f6322",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "caf066cf-40ce-47a8-ba4c-969fcd6019c7",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "d4291dd5-dae8-47fa-bf06-466fcecbc210",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "f0d1c319-249f-4a89-b0e7-3a5a90a54036",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "f0e28a62-ddf9-4c93-af81-676a58c3f2d4",
+      "name": "Cobalt II",
+      "cas_number": "22541-53-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Cobalt",
+          "cas_number": "7440-48-4"
+        }
+      ]
+    },
+    {
+      "uuid": "a9ac40a0-9bea-4c48-afa7-66aa6eb90624",
+      "name": "Copper",
+      "cas_number": "7440-50-8",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper, in ground",
+          "cas_number": "7440-50-8"
+        }
+      ]
+    },
+    {
+      "uuid": "0a5e8a67-f9ae-48b3-bfa7-e9d37c30a191",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper",
+          "cas_number": "7440-50-8"
+        }
+      ]
+    },
+    {
+      "uuid": "237ca6bc-2f0a-4416-a0e3-bd512f038f2e",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper",
+          "cas_number": "7440-50-8"
+        }
+      ]
+    },
+    {
+      "uuid": "3573a5af-88f8-4f74-ade7-cd269cbc4e66",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper",
+          "cas_number": "7440-50-8"
+        }
+      ]
+    },
+    {
+      "uuid": "40229ebf-9346-4f20-910a-f8ea3bd88d44",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper, ion",
+          "cas_number": "17493-86-6"
+        }
+      ]
+    },
+    {
+      "uuid": "44d3e792-7c9e-48ab-9de9-acfa2e097f26",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper",
+          "cas_number": "7440-50-8"
+        }
+      ]
+    },
+    {
+      "uuid": "615b1460-6860-4cf6-8678-ad92c03c5e8b",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper, ion",
+          "cas_number": "17493-86-6"
+        }
+      ]
+    },
+    {
+      "uuid": "6d9550e2-e670-44c1-bad8-c0c4975ffca7",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper, ion",
+          "cas_number": "17493-86-6"
+        }
+      ]
+    },
+    {
+      "uuid": "7e66a41c-d311-4949-bdd8-eef09cdcfa47",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper",
+          "cas_number": "7440-50-8"
+        }
+      ]
+    },
+    {
+      "uuid": "88cde01c-df69-40bb-9b14-6eac71bea5b8",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper",
+          "cas_number": "7440-50-8"
+        }
+      ]
+    },
+    {
+      "uuid": "c3b659e5-35f1-408c-8cb5-b5f9b295c76e",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper, ion",
+          "cas_number": "17493-86-6"
+        }
+      ]
+    },
+    {
+      "uuid": "d8f9ccf6-fd32-4348-83c0-1cee724af9ae",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper, ion",
+          "cas_number": "17493-86-6"
+        }
+      ]
+    },
+    {
+      "uuid": "e336eee7-148a-4d1c-8027-780cbfafa12b",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper",
+          "cas_number": "7440-50-8"
+        }
+      ]
+    },
+    {
+      "uuid": "ec8144d6-d123-43b1-9c17-a295422a0498",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper",
+          "cas_number": "7440-50-8"
+        }
+      ]
+    },
+    {
+      "uuid": "fd153f15-1d16-410a-91fa-04d205e36c43",
+      "name": "Copper ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Copper",
+          "cas_number": "7440-50-8"
+        }
+      ]
+    },
+    {
+      "uuid": "3048af84-1d72-5e3f-a739-b2d7fa7d4773",
+      "name": "Fluorine",
+      "cas_number": "7782-41-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Fluorine, in ground",
+          "cas_number": "7782-41-4"
+        }
+      ]
+    },
+    {
+      "uuid": "d080e6a4-42c6-484e-b5d7-d74693aec7d9",
+      "name": "Gold",
+      "cas_number": "7440-57-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Gold, in ground",
+          "cas_number": "7440-57-5"
+        }
+      ]
+    },
+    {
+      "uuid": "36a3d172-7373-507f-85bd-12b8ba31a6d4",
+      "name": "Iodine",
+      "cas_number": "7553-56-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iodine, in water",
+          "cas_number": "7553-56-2"
+        }
+      ]
+    },
+    {
+      "uuid": "ed9d969e-f77b-5f66-aa23-1b43ec0e9fa1",
+      "name": "Iodine",
+      "cas_number": "7553-56-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.10.1",
+          "name": "Iodine",
+          "cas_number": ""
+        }
+      ]
+    },
+    {
+      "uuid": "8ce3ff02-7a1e-48e3-881e-3248b944f28a",
+      "name": "Iron",
+      "cas_number": "7439-89-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron, in ground",
+          "cas_number": "7439-89-6"
+        }
+      ]
+    },
+    {
+      "uuid": "0dc0bbb0-1141-4dff-b6a2-8bd5368e14af",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron",
+          "cas_number": "7439-89-6"
+        }
+      ]
+    },
+    {
+      "uuid": "2c9a7182-37c8-4777-a37a-9a007c3edb2f",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron, ion",
+          "cas_number": "15438-31-0"
+        }
+      ]
+    },
+    {
+      "uuid": "32cd0492-c0cb-4898-a2b1-675eedc5b688",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron",
+          "cas_number": "7439-89-6"
+        }
+      ]
+    },
+    {
+      "uuid": "33fd8342-58e7-45c9-ad92-0951c002c403",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron, ion",
+          "cas_number": "15438-31-0"
+        }
+      ]
+    },
+    {
+      "uuid": "76152de4-9499-48f7-af98-a5d41842484a",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron",
+          "cas_number": "7439-89-6"
+        }
+      ]
+    },
+    {
+      "uuid": "7c335b9c-a403-47a8-bb6d-2e7d3c3a230e",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron, ion",
+          "cas_number": "15438-31-0"
+        }
+      ]
+    },
+    {
+      "uuid": "8dba66e2-0f2e-4038-84ef-1e40b4f573a6",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron",
+          "cas_number": "7439-89-6"
+        }
+      ]
+    },
+    {
+      "uuid": "98693cdf-d9fc-43ed-bfe6-78dfe5742d33",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron",
+          "cas_number": "7439-89-6"
+        }
+      ]
+    },
+    {
+      "uuid": "9b6d6f07-ebc6-447d-a3c0-f2017d77d852",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron, ion",
+          "cas_number": "15438-31-0"
+        }
+      ]
+    },
+    {
+      "uuid": "c983ad54-12e9-47a5-b747-5e5c448e58e2",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron",
+          "cas_number": "7439-89-6"
+        }
+      ]
+    },
+    {
+      "uuid": "ce567bdc-76ec-4ca0-be79-8bb796e448b3",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron",
+          "cas_number": "7439-89-6"
+        }
+      ]
+    },
+    {
+      "uuid": "db364689-e1a3-4629-8835-e6c59d6daf09",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron",
+          "cas_number": "7439-89-6"
+        }
+      ]
+    },
+    {
+      "uuid": "de444dc0-5964-4501-8367-50ba53bfc6b9",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron, ion",
+          "cas_number": "15438-31-0"
+        }
+      ]
+    },
+    {
+      "uuid": "e8bd2edd-f937-49f6-9e8b-9f445278775e",
+      "name": "Iron ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Iron",
+          "cas_number": "7439-89-6"
+        }
+      ]
+    },
+    {
+      "uuid": "fbcb9c7a-eea7-4694-ba6c-568e01d28883",
+      "name": "Lead",
+      "cas_number": "7439-92-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead, in ground",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "0ff15165-d761-48c9-9814-2d1dcdd56857",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "2718482b-8399-442e-b89a-52fbcc22d2e6",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "31c4d160-b21e-41b3-b9c1-3d7a72377653",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "4010918f-7fd0-4925-8fbb-8fd7a44a806c",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "67652827-017f-4856-8d0a-c97bac4c6562",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "6a903634-c97f-4c49-a7c0-88f0e6ac7a23",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "739234c8-5359-48b4-983f-9cb170d68c8d",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "837083ce-41cd-49f3-a849-d79564dac238",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "8e123669-94d3-41d8-9480-a79211fe7c43",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "9ee7f4ab-b826-47ae-8623-e138f944b42e",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "b3ebdcc3-c588-4997-95d2-9785b26b34e1",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "c864aa15-0abc-41ad-9889-348106e485d8",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "e9e856c2-868e-435e-8425-8df1c9297cfc",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "fe4613d7-1ed8-427d-9b06-c8e8f4f5e1b1",
+      "name": "Lead II",
+      "cas_number": "14280-50-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lead",
+          "cas_number": "7439-92-1"
+        }
+      ]
+    },
+    {
+      "uuid": "7d2c1cdd-a64a-5936-a577-5b82db0c0d1b",
+      "name": "Lithium",
+      "cas_number": "7439-93-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lithium, in ground",
+          "cas_number": "7439-93-2"
+        }
+      ]
+    },
+    {
+      "uuid": "4569494e-085e-413a-8fef-63a3c419e0cf",
+      "name": "Lithium I",
+      "cas_number": "17341-24-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lithium",
+          "cas_number": "7439-93-2"
+        }
+      ]
+    },
+    {
+      "uuid": "6230c099-a983-4d9d-98a8-a0697962bec3",
+      "name": "Lithium I",
+      "cas_number": "17341-24-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lithium",
+          "cas_number": "7439-93-2"
+        }
+      ]
+    },
+    {
+      "uuid": "85466e0f-e5b5-4084-9338-59e317f7cb09",
+      "name": "Lithium I",
+      "cas_number": "17341-24-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lithium",
+          "cas_number": "7439-93-2"
+        }
+      ]
+    },
+    {
+      "uuid": "c44b0e3b-e65e-4276-aa1f-3db768757b66",
+      "name": "Lithium I",
+      "cas_number": "17341-24-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lithium, ion",
+          "cas_number": "17341-24-1"
+        }
+      ]
+    },
+    {
+      "uuid": "cf88e72e-13bc-416c-ac41-7d4b24bda86a",
+      "name": "Lithium I",
+      "cas_number": "17341-24-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lithium, ion",
+          "cas_number": "17341-24-1"
+        }
+      ]
+    },
+    {
+      "uuid": "e98084d6-88a2-48cf-9ad5-6462fe9cf857",
+      "name": "Lithium I",
+      "cas_number": "17341-24-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lithium, ion",
+          "cas_number": "17341-24-1"
+        }
+      ]
+    },
+    {
+      "uuid": "eb2bfdf1-1881-40e8-bebb-d674b2a79149",
+      "name": "Lithium I",
+      "cas_number": "17341-24-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Lithium, ion",
+          "cas_number": "17341-24-1"
+        }
+      ]
+    },
+    {
+      "uuid": "247f3d96-7da2-5adf-a399-65745bc042fb",
+      "name": "Magnesium",
+      "cas_number": "7439-95-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Magnesium, in water",
+          "cas_number": "7439-95-4"
+        }
+      ]
+    },
+    {
+      "uuid": "9e5823ad-9d9b-4b98-b627-e39611b6a8bd",
+      "name": "Magnesium",
+      "cas_number": "7439-95-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Magnesium, in ground",
+          "cas_number": "7439-95-4"
+        }
+      ]
+    },
+    {
+      "uuid": "06ee87f5-4946-4ecd-9615-b4723595fbaf",
+      "name": "Manganese",
+      "cas_number": "7439-96-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese-55",
+          "cas_number": "7439-96-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Manganese-55",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "32299af9-3432-470b-8f90-5d06df12b062",
+      "name": "Manganese",
+      "cas_number": "7439-96-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese-55",
+          "cas_number": "7439-96-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Manganese-55",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "583eec00-1480-4cd7-8670-31eaf94053ad",
+      "name": "Manganese",
+      "cas_number": "7439-96-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese-55",
+          "cas_number": "7439-96-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Manganese-55",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "6ed06a59-4fd1-422e-a397-4c3274596701",
+      "name": "Manganese",
+      "cas_number": "7439-96-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese-55",
+          "cas_number": "7439-96-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Manganese-55",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "957d4d94-9f88-4f40-9755-cfc3918882bb",
+      "name": "Manganese",
+      "cas_number": "7439-96-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese-55",
+          "cas_number": "7439-96-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Manganese-55",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "c2586875-bb56-4b1e-84c5-5ff255a1108b",
+      "name": "Manganese",
+      "cas_number": "7439-96-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese, in ground",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "009a49e8-09a7-4432-9cb9-f2dd18e8f922",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "0af26a55-d357-469f-abad-8ced785cb4fb",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "10cbd2f7-c41b-4bb4-b636-d8fc15cf0282",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "2460f868-54a9-404c-bec8-c809a44ae72c",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "295060ba-3c3d-45e4-99ca-e17b1204b553",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "42053ffb-9284-49cb-88f9-33ac5c77be4a",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "44f28e11-061d-44fd-8f25-dc62a9f1fa57",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "6b7fbea6-4a86-40f9-954d-3c9b3611abfd",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "835d0907-a668-4d92-b6b6-7b56fa343713",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "9ba8c05d-1593-45a5-8d3b-5c4f3e9fef32",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "9c706cff-cb82-4207-a589-95896e04dc08",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "b0546417-3064-4878-bd6f-2da75cefdf63",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "c91fd4bf-ed70-4e2f-a34f-159773f981b6",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "f532985c-90b7-46fc-aac9-b039b40e22f1",
+      "name": "Manganese II",
+      "cas_number": "16397-91-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Manganese",
+          "cas_number": "7439-96-5"
+        }
+      ]
+    },
+    {
+      "uuid": "54b9cbd0-65df-4fd3-8a19-dd3b8eccc619",
+      "name": "Mercury",
+      "cas_number": "7439-97-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury, in ground",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "40f89b03-64f8-466d-9480-bca47d8a435c",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "48aa661d-be05-4c24-94fe-8d6feb3dcb31",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "5ec9c16a-959d-44cd-be7d-a935727d2151",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "66bfb434-78ab-4183-b1a7-7f87d08974fa",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "71234253-b3a7-4dfe-b166-a484ad15bee7",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "9325957a-bee5-4f2d-8bd1-458729c5e49e",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "a850e6de-a007-432f-be7f-ce6e2cf1f2ae",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "c486d0f8-f2be-4c5e-b594-9fa5d6942f9e",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "dc90db73-6f27-403d-baf1-cb7e0b6cae31",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "e1aa92d7-9297-452e-ade0-e5e2acc52ad7",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "e2128dc4-e065-4030-81b3-c978d7bc48ec",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "ed2d49f8-110d-4db4-9488-f61c349e6117",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "f7eca11f-546f-4712-ad80-724254685596",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "fd61d155-3b34-46d5-8769-efb3e806f545",
+      "name": "Mercury II",
+      "cas_number": "14302-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Mercury",
+          "cas_number": "7439-97-6"
+        }
+      ]
+    },
+    {
+      "uuid": "e5a3dff5-72dc-5287-893c-597dd4a19566",
+      "name": "Molybdenum",
+      "cas_number": "7439-98-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum, in ground",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "163926e2-b4cc-42bb-ba7d-401028140985",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "1f3c2297-d652-468d-82e8-4fd59bf5b5b8",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "35b4d818-1019-413b-b99d-d351d8a67ac4",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "3822809c-cc03-469d-ac2a-9f85842f8440",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "442511cc-a98b-4242-9229-5736cb9a9399",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "5fa36ce3-aed0-443b-a09d-4cdf25b41995",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "640e30d2-3158-4a1a-82ef-fd0c72922c9a",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "697e8ecf-bdbe-4857-92c9-e01960c91db7",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "7d3f7498-3596-478a-9fa1-72201ef94082",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "8b531ec0-ca7a-49cd-bef0-56f110112f34",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "9cf3a683-ed3d-40e9-b039-7653e4fc9e20",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "c126f8a0-6bc4-42e6-9220-d6ccfef3f2ed",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "c26d4716-ce1e-43da-a662-cd9498b1e8bc",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "fdaaef05-0d10-4032-b2e7-85cae3c7bd5c",
+      "name": "Molybdenum VI",
+      "cas_number": "16065-87-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Molybdenum",
+          "cas_number": "7439-98-7"
+        }
+      ]
+    },
+    {
+      "uuid": "974213ef-1ba0-40e5-bc7b-52ef099e9e09",
+      "name": "Nickel",
+      "cas_number": "7440-02-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel, in ground",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "0545c382-2312-43b6-9ec3-63dbb1438565",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "23cb10a4-6228-4ce4-9fb5-7043bc31faec",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel, ion",
+          "cas_number": "14701-22-5"
+        }
+      ]
+    },
+    {
+      "uuid": "2bcad3b3-5305-481c-a166-ad5e6eac2675",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "56815b4f-6138-4e0b-9fac-c94fd6b102b3",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "5de1943f-b011-45a0-97d4-ed15eea6a382",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "6ec6cdaa-5a01-46d4-b716-1905e56690ea",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel, ion",
+          "cas_number": "14701-22-5"
+        }
+      ]
+    },
+    {
+      "uuid": "9798359e-a3ee-4362-a038-23a188582c6e",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel, ion",
+          "cas_number": "14701-22-5"
+        }
+      ]
+    },
+    {
+      "uuid": "9f69cb8e-51fe-447b-a1ac-4da74de8ebe4",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel, ion",
+          "cas_number": "14701-22-5"
+        }
+      ]
+    },
+    {
+      "uuid": "a5506f4b-113f-4713-95c3-c819dde6e48b",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "a72a45ee-395a-4d25-b893-9d183e43e76e",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "b4580545-243d-48d2-a3a0-2633a4f46fb1",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "c89873de-cd23-4323-a948-f5cfeebd2fc9",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "e43a270f-4f88-4789-a0b8-7aba56677743",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "e8fc62ba-678e-4706-97d2-b79d83e227d5",
+      "name": "Nickel II",
+      "cas_number": "14701-22-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Nickel",
+          "cas_number": "7440-02-0"
+        }
+      ]
+    },
+    {
+      "uuid": "edc69c63-a776-4dbf-acbf-e0368914980a",
+      "name": "Palladium",
+      "cas_number": "7440-05-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Palladium, in ground",
+          "cas_number": "7440-05-3"
+        }
+      ]
+    },
+    {
+      "uuid": "51377cff-3c04-5717-8961-6819901a3e90",
+      "name": "Palladium II",
+      "cas_number": "16065-88-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Palladium",
+          "cas_number": "7440-05-3"
+        }
+      ]
+    },
+    {
+      "uuid": "55640730-a22e-4972-8709-f05c560b2d8b",
+      "name": "Palladium II",
+      "cas_number": "16065-88-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Palladium",
+          "cas_number": "7440-05-3"
+        }
+      ]
+    },
+    {
+      "uuid": "7d28533b-a7ad-4acc-914a-f534829b2e78",
+      "name": "Palladium II",
+      "cas_number": "16065-88-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Palladium",
+          "cas_number": "7440-05-3"
+        }
+      ]
+    },
+    {
+      "uuid": "ef90b8a8-d053-4927-9efe-841d9e1f3a5e",
+      "name": "Palladium II",
+      "cas_number": "16065-88-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Palladium",
+          "cas_number": "7440-05-3"
+        }
+      ]
+    },
+    {
+      "uuid": "f8f45bf4-3126-41ac-918f-944a028c2ac8",
+      "name": "Palladium II",
+      "cas_number": "16065-88-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Palladium",
+          "cas_number": "7440-05-3"
+        }
+      ]
+    },
+    {
+      "uuid": "ff888538-eda9-4bf7-8612-a75acf1e85ac",
+      "name": "Palladium II",
+      "cas_number": "16065-88-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Palladium",
+          "cas_number": "7440-05-3"
+        }
+      ]
+    },
+    {
+      "uuid": "483ae3c5-4eb0-46e4-b811-a72ad391716b",
+      "name": "Phosphorus",
+      "cas_number": "7723-14-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Phosphorus, in ground",
+          "cas_number": "7723-14-0"
+        }
+      ]
+    },
+    {
+      "uuid": "e373f7b4-42e9-4cc7-a73c-f87bec88008b",
+      "name": "Potassium",
+      "cas_number": "7440-09-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium, in ground",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "0e7f417f-b5ec-4771-a47a-60cc451a8403",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "130bbacf-e7c7-4ffd-b109-4d576f1d02c1",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium, ion",
+          "cas_number": "24203-36-9"
+        }
+      ]
+    },
+    {
+      "uuid": "1653bf60-f682-4088-b02d-6dc44eae2786",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium, ion",
+          "cas_number": "24203-36-9"
+        }
+      ]
+    },
+    {
+      "uuid": "297cc04f-e215-433c-ae3b-d1e34464c785",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium, ion",
+          "cas_number": "24203-36-9"
+        }
+      ]
+    },
+    {
+      "uuid": "6910bf7d-d956-41bf-bb93-db5d565f0ef0",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "73b26c10-3c57-4732-8a36-6d1d98d6c925",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "756b1234-887b-406e-88ed-b50ba4694f09",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "926fdcf3-6c44-44e2-acb6-159060ac65cf",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "9597c1a2-ecda-4a89-97c5-efcdc679058d",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "aac39edf-68c5-4f38-9aa9-17e3ca265109",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "b717518e-b8b6-44fa-a8e1-f9fde2436caf",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "b93fc4df-91b2-4ac4-a315-89147515ddfb",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium, ion",
+          "cas_number": "24203-36-9"
+        }
+      ]
+    },
+    {
+      "uuid": "bc269269-1874-4423-b5f0-eed0f5227684",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "c21a1397-82dc-427a-a6cb-c790ba2626f4",
+      "name": "Potassium I",
+      "cas_number": "24203-36-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Potassium",
+          "cas_number": "7440-09-7"
+        }
+      ]
+    },
+    {
+      "uuid": "4803f22f-6950-489b-914d-fa953a8081f6",
+      "name": "Rhodium",
+      "cas_number": "7440-16-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Rhodium, in ground",
+          "cas_number": "7440-16-6"
+        }
+      ]
+    },
+    {
+      "uuid": "7c651713-83f5-56e1-a67f-37b828684f3d",
+      "name": "Rhodium III",
+      "cas_number": "16065-89-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Rhodium",
+          "cas_number": "7440-16-6"
+        }
+      ]
+    },
+    {
+      "uuid": "7f9f9b59-35a0-584d-ad5e-07da01dde768",
+      "name": "Scandium",
+      "cas_number": "7440-20-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Scandium, in ground",
+          "cas_number": "7440-20-2"
+        }
+      ]
+    },
+    {
+      "uuid": "5f47f918-1c32-5870-b992-db91f843ff34",
+      "name": "Selenium",
+      "cas_number": "7782-49-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium, in ground",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "1be475e0-ccef-4145-98e0-0d47c570a71b",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "454c61fd-c52b-4a04-9731-f141bb7b5264",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "45acd8c0-657f-46d3-8026-4b3c9fadaeb6",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "47d20967-a49a-4fb3-881d-51956520449e",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "4d54a415-82d7-49ac-88e1-712bd0009363",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "544dbea9-1d18-44ff-b92b-7866e3baa6dd",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "56a24912-2d66-4124-87d8-f760c2fe3973",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "6284e146-54b2-4067-a478-9b8ee24c6400",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "62cc5e18-da24-4fb7-9f7c-1601fedba341",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "93e71b71-05d4-4a44-a85a-592a6f21cf0c",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "a79be2ee-ac83-4328-a136-a34ba1f99089",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "c6ce1ad0-d8da-41d0-8db1-cabc3760b422",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "e6551223-73b6-4289-b841-c5cdeb25abd9",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "fbfabc26-84d9-46cd-9d1b-1a0060325b64",
+      "name": "Selenium IV",
+      "cas_number": "22541-55-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Selenium",
+          "cas_number": "7782-49-2"
+        }
+      ]
+    },
+    {
+      "uuid": "00143719-33a7-5738-aa1b-131f97b4fef3",
+      "name": "Silicon",
+      "cas_number": "7440-21-3",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silicon, in ground",
+          "cas_number": "7440-21-3"
+        }
+      ]
+    },
+    {
+      "uuid": "361a64cb-ab76-4a72-9ea1-c07d6a20c124",
+      "name": "Silver",
+      "cas_number": "7440-22-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver, in ground",
+          "cas_number": "7440-22-4"
+        }
+      ]
+    },
+    {
+      "uuid": "0ed1b1a1-e56d-4860-bac7-d76a39bde930",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver",
+          "cas_number": "7440-22-4"
+        }
+      ]
+    },
+    {
+      "uuid": "16316600-f12a-410b-8726-3faee64de60a",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver",
+          "cas_number": "7440-22-4"
+        }
+      ]
+    },
+    {
+      "uuid": "21c257b2-57ce-4a6e-b4bd-40f0f75f310f",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver, ion",
+          "cas_number": "14701-21-4"
+        }
+      ]
+    },
+    {
+      "uuid": "35df5fe0-c90d-43b4-a35a-3d97022114d2",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver",
+          "cas_number": "7440-22-4"
+        }
+      ]
+    },
+    {
+      "uuid": "48dbf4b1-0b2a-4bf5-a190-2d7fc465bda4",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver",
+          "cas_number": "7440-22-4"
+        }
+      ]
+    },
+    {
+      "uuid": "6aa8673f-f7e3-4270-93dc-e97b745fced7",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver, ion",
+          "cas_number": "14701-21-4"
+        }
+      ]
+    },
+    {
+      "uuid": "6e8a87bf-baea-4cd9-a967-932e750968d1",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver",
+          "cas_number": "7440-22-4"
+        }
+      ]
+    },
+    {
+      "uuid": "71cfe87c-ab80-421e-adba-afb7d5bd0861",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver, ion",
+          "cas_number": "14701-21-4"
+        }
+      ]
+    },
+    {
+      "uuid": "7da45a0b-0dcf-413c-8de0-44d8ebca9e6e",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver",
+          "cas_number": "7440-22-4"
+        }
+      ]
+    },
+    {
+      "uuid": "94426df9-63b1-4dc6-ad1b-3509e22f1154",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver, ion",
+          "cas_number": "14701-21-4"
+        }
+      ]
+    },
+    {
+      "uuid": "af9793ba-25a1-4928-a14a-4bcf7d5bd3f7",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver, ion",
+          "cas_number": "14701-21-4"
+        }
+      ]
+    },
+    {
+      "uuid": "c6462d84-caa9-425a-a923-45238690c6f3",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver",
+          "cas_number": "7440-22-4"
+        }
+      ]
+    },
+    {
+      "uuid": "ebb88ef4-50ab-4e3b-9251-c5fcdf6b4768",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver",
+          "cas_number": "7440-22-4"
+        }
+      ]
+    },
+    {
+      "uuid": "fce0b9ae-53c8-4ab0-9e7a-7f5c2ed2c856",
+      "name": "Silver I",
+      "cas_number": "14701-21-4",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Silver",
+          "cas_number": "7440-22-4"
+        }
+      ]
+    },
+    {
+      "uuid": "fab932d4-0a58-491c-9d7f-294d07a7953d",
+      "name": "Sodium",
+      "cas_number": "7440-23-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium, in ground",
+          "cas_number": "7440-23-5"
+        }
+      ]
+    },
+    {
+      "uuid": "01248058-8a0f-40f6-8555-13ec37c7931d",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        }
+      ]
+    },
+    {
+      "uuid": "1fc409bc-b8e7-48b2-92d5-2ced4aa7bae2",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium, ion",
+          "cas_number": "17341-25-2"
+        }
+      ]
+    },
+    {
+      "uuid": "235b2f02-ff98-4da9-82e2-e4246c7b7990",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        }
+      ]
+    },
+    {
+      "uuid": "3d719c07-ec27-4971-b7cc-4bcf17d77dd3",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        }
+      ]
+    },
+    {
+      "uuid": "4573f0c9-0fdd-413f-ae74-e27290f40743",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        }
+      ]
+    },
+    {
+      "uuid": "5ac961f0-8e53-42ff-b13f-1a7fb9133868",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium, ion",
+          "cas_number": "17341-25-2"
+        }
+      ]
+    },
+    {
+      "uuid": "896bfa32-a9a9-4e75-aed0-e178987ec038",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        }
+      ]
+    },
+    {
+      "uuid": "9310f497-3205-4717-aaa8-1a94c321f7d8",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium, ion",
+          "cas_number": "17341-25-2"
+        }
+      ]
+    },
+    {
+      "uuid": "98eb1d16-9d7a-4716-9be4-1449341a832f",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        }
+      ]
+    },
+    {
+      "uuid": "cc1c987a-2b6e-4cbc-969a-73f1c96de448",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        }
+      ]
+    },
+    {
+      "uuid": "e19658ac-3c4a-4cde-90ab-9dc6f569b02b",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Sodium",
+          "cas_number": "7440-23-5"
+        }
+      ]
+    },
+    {
+      "uuid": "ee9fdd7c-5e29-4bdb-852a-3258f06ec2ab",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium, ion",
+          "cas_number": "17341-25-2"
+        }
+      ]
+    },
+    {
+      "uuid": "fb83d61e-6fe3-4da7-8eb2-b0e2dc85a76d",
+      "name": "Sodium I",
+      "cas_number": "17341-25-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sodium, ion",
+          "cas_number": "17341-25-2"
+        }
+      ]
+    },
+    {
+      "uuid": "0f1b21d0-2780-4742-87f2-28fb21a44db5",
+      "name": "Strontium",
+      "cas_number": "7440-24-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium, in ground",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "070f9c6e-584d-40ed-8b07-6b1f7f75dd3f",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "0d9f52b2-f2d5-46a3-90a3-e22ef252cc37",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "4295ed5b-9824-4bbf-97a4-fc4cabd87f0d",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "4c0a6227-af22-45cb-b75b-b276ce0e4d47",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "7f0873fe-731e-4b99-a384-17f0ad36a318",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "836493d4-5c50-4713-b2a8-7979b830c1a5",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "890c2697-3463-4466-bebb-aecc1e1e730b",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "8f1b69d9-fc00-4b46-99f9-7a57fd71dad2",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "aa2d6624-ad64-4fff-9260-cb51500bba0d",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "abb7f444-e74a-46b5-a6a5-080a847cbbc5",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "ae2c3adf-7f7d-4973-a8e8-3fe1300f8183",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "b26b758d-85cc-41b8-872c-3683caa638d1",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "ee018b5e-c9c3-486b-aeb4-ef045a4e3ccd",
+      "name": "Strontium II",
+      "cas_number": "22537-39-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        },
+        {
+          "version": "3.9.1",
+          "name": "Strontium",
+          "cas_number": "7440-24-6"
+        }
+      ]
+    },
+    {
+      "uuid": "852281f6-db73-4250-84d3-86b569fce0c1",
+      "name": "Sulfur",
+      "cas_number": "7704-34-9",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Sulfur, in ground",
+          "cas_number": "7704-34-9"
+        }
+      ]
+    },
+    {
+      "uuid": "f0e37b5f-3f67-516a-afd5-442c83e094bc",
+      "name": "Thallium",
+      "cas_number": "7440-28-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium, in ground",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "18aa2daa-0188-4328-b24b-1ad1398ecf81",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "32fccda4-0d99-40ab-b65f-c7203080b62b",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "50deb561-3de9-4b25-9b61-1695ad2dd136",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "51814700-587c-4915-9ed2-c5a644f831d3",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "57a17022-7f17-4cdf-b0e8-184bc5c50d98",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "6fa8a7df-bd00-4b65-82bd-23b6a4cffe6a",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "7ae387da-8a0f-4931-97d4-49e93c0f5482",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "7da26881-518f-4b1b-87bf-7d1f633a7c1a",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "7e9baf19-8fa4-49c6-a3c2-2e875217e60b",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "9182d01f-27f3-4b65-a183-07508dfc5981",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "9540d6dc-b589-4fbb-8260-1b6a88b8bf11",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "bc3d3e8d-249a-4e6d-85e8-3a003ca32776",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "d9008a06-991c-4acc-a33e-5483ffd2491e",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "f2f1a5eb-de1e-42fe-ad80-60a255185ba9",
+      "name": "Thallium I",
+      "cas_number": "22537-56-0",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Thallium",
+          "cas_number": "7440-28-0"
+        }
+      ]
+    },
+    {
+      "uuid": "53d5ef26-66d8-4536-afa2-2f6b114189ba",
+      "name": "Tin",
+      "cas_number": "7440-31-5",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin, in ground",
+          "cas_number": "7440-31-5"
+        }
+      ]
+    },
+    {
+      "uuid": "168c970b-91c9-4427-a3a0-6686ad6cc2c4",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin",
+          "cas_number": "7440-31-5"
+        }
+      ]
+    },
+    {
+      "uuid": "19b6e569-85a4-4ea9-a590-d61a21e3c846",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin",
+          "cas_number": "7440-31-5"
+        }
+      ]
+    },
+    {
+      "uuid": "2a7b68ff-f12a-44c6-8b31-71ec91d29889",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin",
+          "cas_number": "7440-31-5"
+        }
+      ]
+    },
+    {
+      "uuid": "2a992e5e-9f16-47b8-8bcb-733d00bed658",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin, ion",
+          "cas_number": "22537-50-4"
+        }
+      ]
+    },
+    {
+      "uuid": "3ddb2e36-bc1b-43a5-8ef4-cbcdbeeeea70",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin, ion",
+          "cas_number": "22537-50-4"
+        }
+      ]
+    },
+    {
+      "uuid": "60a6702f-20ad-444f-a6df-f6374f1e3183",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin, ion",
+          "cas_number": "22537-50-4"
+        }
+      ]
+    },
+    {
+      "uuid": "6366d4ec-5ffc-4488-be51-0c239cdf535d",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin",
+          "cas_number": "7440-31-5"
+        }
+      ]
+    },
+    {
+      "uuid": "85a764f2-a810-4b20-bc86-a45604262fda",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin",
+          "cas_number": "7440-31-5"
+        }
+      ]
+    },
+    {
+      "uuid": "8a422b03-1055-4bc8-b439-27bf8d7eef57",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin",
+          "cas_number": "7440-31-5"
+        }
+      ]
+    },
+    {
+      "uuid": "c67e3ba8-ddce-4931-b4b0-f4f9a56ccf40",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin",
+          "cas_number": "7440-31-5"
+        }
+      ]
+    },
+    {
+      "uuid": "d5c40848-fc29-47fa-90a4-46db64a45a4e",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin, ion",
+          "cas_number": "22537-50-4"
+        }
+      ]
+    },
+    {
+      "uuid": "e070bd24-fd16-4963-8f4d-78bb4c402400",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin",
+          "cas_number": "7440-31-5"
+        }
+      ]
+    },
+    {
+      "uuid": "f563b90e-a300-4403-b278-d2fdcd73e5a7",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin",
+          "cas_number": "7440-31-5"
+        }
+      ]
+    },
+    {
+      "uuid": "f73177d8-5e57-4f0d-ba34-6889cfdfed40",
+      "name": "Tin ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tin, ion",
+          "cas_number": "22537-50-4"
+        }
+      ]
+    },
+    {
+      "uuid": "2f033407-6060-4e1e-868c-9f362d10fdb2",
+      "name": "Titanium",
+      "cas_number": "7440-32-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium, in ground",
+          "cas_number": "7440-32-6"
+        }
+      ]
+    },
+    {
+      "uuid": "2a46e7f4-c66c-43e5-8a8a-d119c4098aff",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium, ion",
+          "cas_number": "22541-75-9"
+        }
+      ]
+    },
+    {
+      "uuid": "2beb46d1-2d1d-48ca-bf95-f0668fed29bf",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium, ion",
+          "cas_number": "22541-75-9"
+        }
+      ]
+    },
+    {
+      "uuid": "334f3d29-ec7d-4ca4-9e65-524c64c6649c",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium",
+          "cas_number": "7440-32-6"
+        }
+      ]
+    },
+    {
+      "uuid": "41abb9cf-8e9a-40fe-895e-d491e32244b4",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium",
+          "cas_number": "7440-32-6"
+        }
+      ]
+    },
+    {
+      "uuid": "4a156a66-eb3e-4f87-90a2-ccd13bf942ff",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium",
+          "cas_number": "7440-32-6"
+        }
+      ]
+    },
+    {
+      "uuid": "6bc9e39e-bfc5-4929-88d9-863684901143",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium",
+          "cas_number": "7440-32-6"
+        }
+      ]
+    },
+    {
+      "uuid": "a4c31e2a-915e-4ab2-accd-d3ae93d2e01e",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium, ion",
+          "cas_number": "22541-75-9"
+        }
+      ]
+    },
+    {
+      "uuid": "a5b82cff-6334-45a8-aef7-1761f2b83722",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium",
+          "cas_number": "7440-32-6"
+        }
+      ]
+    },
+    {
+      "uuid": "b15d845f-810e-4614-8633-af8bab2014ee",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium",
+          "cas_number": "7440-32-6"
+        }
+      ]
+    },
+    {
+      "uuid": "b3701449-fe4b-4513-b4a4-065e62f03e5c",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium",
+          "cas_number": "7440-32-6"
+        }
+      ]
+    },
+    {
+      "uuid": "ba785aad-0ee5-4bba-b049-e32bc31670cb",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium",
+          "cas_number": "7440-32-6"
+        }
+      ]
+    },
+    {
+      "uuid": "e2380d91-f278-41ee-9926-15272a7d1443",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium, ion",
+          "cas_number": "22541-75-9"
+        }
+      ]
+    },
+    {
+      "uuid": "f8f772bc-7204-4fda-aa97-080fd0f1b34c",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium",
+          "cas_number": "7440-32-6"
+        }
+      ]
+    },
+    {
+      "uuid": "ff36578b-f403-4656-b934-81d8d4e02dc8",
+      "name": "Titanium ion",
+      "cas_number": "",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Titanium, ion",
+          "cas_number": "22541-75-9"
+        }
+      ]
+    },
+    {
+      "uuid": "ebcc1f0c-6b19-501d-86a4-629df2a457b5",
+      "name": "Tungsten",
+      "cas_number": "7440-33-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Tungsten, in ground",
+          "cas_number": "7440-33-7"
+        }
+      ]
+    },
+    {
+      "uuid": "c9c4b80a-73dd-415a-92fb-f877595651c1",
+      "name": "Vanadium",
+      "cas_number": "7440-62-2",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium, in ground",
+          "cas_number": "7440-62-2"
+        }
+      ]
+    },
+    {
+      "uuid": "1a5850a0-0069-4b73-bb91-7a61e8d45ae5",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium",
+          "cas_number": "7440-62-2"
+        }
+      ]
+    },
+    {
+      "uuid": "20839113-fbf2-4d2f-bab8-66861f86bc60",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium, ion",
+          "cas_number": "22541-77-1"
+        }
+      ]
+    },
+    {
+      "uuid": "2cba713d-ab0b-44cb-babb-f8cac262554f",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium",
+          "cas_number": "7440-62-2"
+        }
+      ]
+    },
+    {
+      "uuid": "4122276a-89a6-4e31-ad7d-19568cecf9ce",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium",
+          "cas_number": "7440-62-2"
+        }
+      ]
+    },
+    {
+      "uuid": "41dbbe1f-06e1-4a34-8497-5986be8f9e51",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium, ion",
+          "cas_number": "22541-77-1"
+        }
+      ]
+    },
+    {
+      "uuid": "481c0dd4-3ab2-47b5-94c4-b990e8a9dde5",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium",
+          "cas_number": "7440-62-2"
+        }
+      ]
+    },
+    {
+      "uuid": "591b0a62-8064-4697-86ed-47bfa1f8b5e6",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium",
+          "cas_number": "7440-62-2"
+        }
+      ]
+    },
+    {
+      "uuid": "689ffb9a-b596-4191-b458-2908dc2d075c",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium",
+          "cas_number": "7440-62-2"
+        }
+      ]
+    },
+    {
+      "uuid": "9841f5a4-027e-4dbf-87fe-f0bcf56b91ab",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.9.1",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium",
+          "cas_number": "7440-62-2"
+        }
+      ]
+    },
+    {
+      "uuid": "a46a250e-297d-43e9-b1c4-052cdcfb79c5",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium, ion",
+          "cas_number": "22541-77-1"
+        }
+      ]
+    },
+    {
+      "uuid": "adfb11ec-7a41-47da-abc2-c92c59810e50",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium",
+          "cas_number": "7440-62-2"
+        }
+      ]
+    },
+    {
+      "uuid": "b8de5961-4e83-4731-bac1-77a4d01234a4",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium",
+          "cas_number": "7440-62-2"
+        }
+      ]
+    },
+    {
+      "uuid": "dbdc3ea8-cc2b-4dbe-82b9-e954e333281d",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium, ion",
+          "cas_number": "22541-77-1"
+        }
+      ]
+    },
+    {
+      "uuid": "ed1fd27e-014a-41cf-842f-7b2022b0be79",
+      "name": "Vanadium V",
+      "cas_number": "22537-31-1",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Vanadium, ion",
+          "cas_number": "22541-77-1"
+        }
+      ]
+    },
+    {
+      "uuid": "be73218b-18af-492e-96e6-addd309d1e32",
+      "name": "Zinc",
+      "cas_number": "7440-66-6",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc, in ground",
+          "cas_number": "7440-66-6"
+        }
+      ]
+    },
+    {
+      "uuid": "2195d86f-e4c8-4e86-9f18-b5b065b1df7e",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc, ion",
+          "cas_number": "23713-49-7"
+        }
+      ]
+    },
+    {
+      "uuid": "2c7be02c-791f-4fef-b231-b90321bbeb30",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc, ion",
+          "cas_number": "23713-49-7"
+        }
+      ]
+    },
+    {
+      "uuid": "541b633c-17a3-4047-bce6-0c0e4fdb7c10",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc, ion",
+          "cas_number": "23713-49-7"
+        }
+      ]
+    },
+    {
+      "uuid": "5ce378a0-b48d-471c-977d-79681521efde",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc",
+          "cas_number": "7440-66-6"
+        }
+      ]
+    },
+    {
+      "uuid": "748f22a9-eba4-4726-bef5-92c7442ce189",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc",
+          "cas_number": "7440-66-6"
+        }
+      ]
+    },
+    {
+      "uuid": "77887584-ddca-4920-952c-3609730e0c13",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc",
+          "cas_number": "7440-66-6"
+        }
+      ]
+    },
+    {
+      "uuid": "7e769b3e-03fb-4b53-be15-85a910dcfea9",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc, ion",
+          "cas_number": "23713-49-7"
+        }
+      ]
+    },
+    {
+      "uuid": "84aa799e-9d98-4d34-85e0-516d28ab1be9",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc",
+          "cas_number": "7440-66-6"
+        }
+      ]
+    },
+    {
+      "uuid": "87a69874-34f9-4070-a525-aa301ab2634b",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc",
+          "cas_number": "7440-66-6"
+        }
+      ]
+    },
+    {
+      "uuid": "8d226423-1351-4366-b09f-d16c9e38683c",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc",
+          "cas_number": "7440-66-6"
+        }
+      ]
+    },
+    {
+      "uuid": "8f871bab-96dc-49d9-bf08-12cdd0715901",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc",
+          "cas_number": "7440-66-6"
+        }
+      ]
+    },
+    {
+      "uuid": "ada3ecfe-8244-4389-bcce-e83ca4f66e09",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc",
+          "cas_number": "7440-66-6"
+        }
+      ]
+    },
+    {
+      "uuid": "b88999ec-84fd-462d-9dec-7e20a4636a58",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc",
+          "cas_number": "7440-66-6"
+        }
+      ]
+    },
+    {
+      "uuid": "bdce3a7c-e008-4391-be26-285f71a02453",
+      "name": "Zinc II",
+      "cas_number": "23713-49-7",
+      "decided_by": "3.12",
+      "replaces": [
+        {
+          "version": "3.8",
+          "name": "Zinc, ion",
+          "cas_number": "23713-49-7"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{#
+  A flow-object view over a database that has no flow objects table.
+
+  What a data directory looks like after an upgrade and before a rebuild.  A
+  page rather than a 500, and distinct from "no substance matches these
+  filters": a database that cannot answer is not a database answering "none".
+#}
+{% extends "layout.html" %}
+{% import "partials/flow_object_views.html" as v %}
+{% set page_title = view %}
+{% set active_section = "substances" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ view }}</h1>
+</header>
+
+{{ v.views(active) }}
+
+<div class="notice">
+  <p>
+    This database has no <code>{{ table }}</code> table, so there is nothing to
+    show — which is not the same as there being no {{ view | lower }} in the
+    list.
+  </p>
+  <p>It is written by every build:</p>
+  <pre><code>uv run brightway-flows build</code></pre>
+</div>
+{% endblock %}

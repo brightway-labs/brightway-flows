@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Changes" %}
+{% set active_section = "flows" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Changes</h1>
+  <p class="page__lede">
+    Every field the pipeline wrote, from every transformer, with the reason the
+    step recorded. No step mutates a flow directly — each proposes changes that
+    the engine applies and logs, which is what makes this complete rather than
+    best-effort.
+  </p>
+</header>
+
+<form class="filters" method="get" action="{{ url_for('changes.index') }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Flow, uuid, value, comment…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('changes.index') }}
+  </div>
+  <div class="filters__selects">
+    {{ t.select("transformer", "Step", transformer, transformers) }}
+    {{ t.select("field", "Field", field_name, fields) }}
+  </div>
+</form>
+
+{% if page.rows %}
+{{ t.pager(page, 'changes.index', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col" class="num">{{ t.sort_header("#", "order", sort, 'changes.index', args) }}</th>
+        {# Not sortable: a row is one edit and can name several flows, so there
+           is no single flow name to sort on. #}
+        <th scope="col">Flows</th>
+        <th scope="col">{{ t.sort_header("Step", "transformer", sort, 'changes.index', args) }}</th>
+        <th scope="col">{{ t.sort_header("Field", "field", sort, 'changes.index', args) }}</th>
+        <th scope="col">From</th>
+        <th scope="col">To</th>
+        <th scope="col">Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for change in page.rows %}
+      <tr>
+        <td class="num muted">{{ change.change_index | thousands }}</td>
+        {# One edit can land on every flow that shares a substance -- stripping
+           the catalogue labels off Silicon Dioxide touched fourteen. The first
+           few are named and the rest counted. #}
+        <td>
+          {% for flow in change.flows %}
+          <div>{{ t.flow_link(flow.uuid, flow.name or flow.uuid) }}</div>
+          {% endfor %}
+          {% if change.flow_count > change.flows | length %}
+          <div class="muted">and {{ (change.flow_count - change.flows | length) | thousands }} more</div>
+          {% endif %}
+          {% if change.flow_object_id %}
+          <div class="muted">{{ t.substance_link(change.flow_object_id) }}</div>
+          {% endif %}
+        </td>
+        <td class="mono">{{ change.transformer }}</td>
+        <td class="mono">{{ change.field_name }}</td>
+        <td class="value-cell"><span class="value value--old">{{ change.old_value | short_value }}</span></td>
+        <td class="value-cell"><span class="value value--new">{{ change.new_value | short_value }}</span></td>
+        <td class="muted">{{ change.comment or "—" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'changes.index', args) }}
+{% else %}
+{{ t.nothing_matches() }}
+{% endif %}
+{% endblock %}

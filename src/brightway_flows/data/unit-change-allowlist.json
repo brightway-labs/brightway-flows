@@ -1,0 +1,501 @@
+{
+  "schema_version": 1,
+  "description": "Unit changes between a source flow and the elementary flow it resolves onto that have been reviewed and accepted. Keyed by (source_uuid, target_elementary_flow_id), because the same source flow can be accepted against one target and wrong against another. `comment` is mandatory: every entry asserts that a dimensionally impossible mapping is nonetheless correct, and that assertion needs its reasoning attached. An entry without one is ignored and its pair reported as if unlisted. Nothing here converts anything -- the guard reports and allows. See `brightway_flows.merge.unit_changes`. Every pair here crosses a quantity kind; `merge.unit_crossings_unrecorded` counts the ones that do and are not here, and `expectations/0805-every-quantity-kind-crossing-is-recorded.json` holds it at nothing.",
+  "accepted": [
+    {
+      "source_uuid": "024c9722-1e88-412b-8c4b-10c532be8dca",
+      "source_name": "Coal, brown",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
+      "target_name": "Brown Coal",
+      "target_unit": "MJ",
+      "comment": "EF 3.1 accounts fossil energy carriers by energy content rather than mass, deliberately: this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance identity is unchanged and only the quantity basis differs. Converting needs a lower heating value, which varies by deposit. The mapping now carries that factor as `qudt:conversionMultiplier`: 9.41 MJ/kg, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre. The pair stays listed here because the units still disagree and the guard should not report it again -- what changed is that a consumer no longer has to invent the number."
+    },
+    {
+      "source_uuid": "b6d0042d-0ef8-49ed-9162-a07ff1ccf750",
+      "source_name": "Coal, hard",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
+      "target_name": "Hard Coal",
+      "target_unit": "MJ",
+      "comment": "As for `Coal, brown`: EF 3.1 accounts hard coal by energy content under the fossil resource-use indicator. Mass to energy needs a heating value. The mapping now carries that factor as `qudt:conversionMultiplier`: 18.01 MJ/kg, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre. The pair stays listed here because the units still disagree and the guard should not report it again -- what changed is that a consumer no longer has to invent the number."
+    },
+    {
+      "source_uuid": "88d06db9-59a1-4719-9174-afeb1fa4026a",
+      "source_name": "Oil, crude",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
+      "target_name": "Crude Oil",
+      "target_unit": "MJ",
+      "comment": "As for the coals: EF 3.1 accounts crude oil by energy content under the fossil resource-use indicator. The mapping now carries that factor as `qudt:conversionMultiplier`: 43.4 MJ/kg, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre. The pair stays listed here because the units still disagree and the guard should not report it again -- what changed is that a consumer no longer has to invent the number."
+    },
+    {
+      "source_uuid": "7c337428-fb1b-45c7-bbb2-2ee4d29e17ba",
+      "source_name": "Gas, natural",
+      "source_unit": "sm3",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "Standard volume to energy content, on the same EF 3.1 fossil resource-use basis as the coals and crude oil. A conversion depends on gas composition, which the flow does not carry. The mapping now carries that factor as `qudt:conversionMultiplier`: 36.0 MJ per standard cubic metre, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre. The pair stays listed here because the units still disagree and the guard should not report it again -- what changed is that a consumer no longer has to invent the number. ecoinvent gives this flow in m3 at 3.8 and Sm3 from 3.9, and the two are not interchangeable at this factor."
+    },
+    {
+      "source_uuid": "2ba5e39b-adb6-4767-a51d-90c1cf32fe98",
+      "source_name": "Uranium",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium-238",
+      "target_unit": "MJ",
+      "comment": "EF 3.1 accounts uranium by the energy extractable from it, under the same 'Resource use, fossils' indicator as the fossil carriers, and the target carries that characterisation factor. Mass to energy depends on the reactor technology assumed, which is not a property of the flow. The mapping now carries that factor as `qudt:conversionMultiplier`: 560000 MJ/kg, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre. The pair stays listed here because the units still disagree and the guard should not report it again -- what changed is that a consumer no longer has to invent the number. That value is a gross (HHV) fission energy content, which is the one basis any of these factors states."
+    },
+    {
+      "source_uuid": "629ffbca-ca71-4e4b-a006-ca9bdd9cd1df",
+      "source_name": "Water, salt, ocean",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "172a3db9-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "sea water",
+      "target_unit": "kg",
+      "comment": "A density mapping: EF 3.1 accounts water resources by mass and ecoinvent by volume, and the target carries CAS 7732-18-5. The factor is a density, close to but not exactly 1000 kg/m3 for sea water, and neither list stated which value it assumes. The mapping now carries that factor as `qudt:conversionMultiplier`: 1025 kg/m3, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre. The pair stays listed here because the units still disagree and the guard should not report it again -- what changed is that a consumer no longer has to invent the number. That value is a rough average of the 1020-1029 kg/m3 range."
+    },
+    {
+      "source_uuid": "fdb1b2d0-f537-401e-b845-1d93da512174",
+      "source_name": "Occupation, arable, conservation tillage (obsolete)",
+      "source_unit": "m2",
+      "target_elementary_flow_id": "b88d3b6d-229e-477e-bce1-e16376f75c7b",
+      "target_name": "Arable",
+      "target_unit": "m2.a",
+      "comment": "An ecoinvent data error that EF 3.1 corrects: land occupation is an area-time quantity and the target's soil-quality characterisation factor is defined per m2*a, but these three obsolete tillage flows were published in m2. The mapping is right and the source unit is the wrong one; no factor can supply the missing duration. Since #111 the fold onto EF 3.1's unqualified `arable` is declined and the flow is published under its own name, so the 1.0 m2*a per m2 is stated on the manual fix that rebases the row's own unit in every ecoinvent-<version>-manual-fixes.json, rather than on a mapping or taken from the correspondence table. The merge refuses a time-crossing factor that arrives from a table, because a duration is a modelling choice and inheriting one silently would republish somebody else's assumption as a measurement. The pair stays listed here because the units still disagree."
+    },
+    {
+      "source_uuid": "e489cce4-a80f-417d-9ae6-9fc14cc7dd49",
+      "source_name": "Occupation, arable, conventional tillage (obsolete)",
+      "source_unit": "m2",
+      "target_elementary_flow_id": "b88d3b6d-229e-477e-bce1-e16376f75c7b",
+      "target_name": "Arable",
+      "target_unit": "m2.a",
+      "comment": "As for the conservation-tillage flow: an obsolete ecoinvent occupation flow published in m2 rather than m2*a. Since #111 the fold onto EF 3.1's unqualified `arable` is declined and the flow is published under its own name, so the 1.0 m2*a per m2 is stated on the manual fix that rebases the row's own unit in every ecoinvent-<version>-manual-fixes.json, rather than on a mapping or taken from the correspondence table. The merge refuses a time-crossing factor that arrives from a table, because a duration is a modelling choice and inheriting one silently would republish somebody else's assumption as a measurement. The pair stays listed here because the units still disagree."
+    },
+    {
+      "source_uuid": "81e07a67-28e0-4392-a553-d86e54a9b8a9",
+      "source_name": "Occupation, arable, reduced tillage (obsolete)",
+      "source_unit": "m2",
+      "target_elementary_flow_id": "b88d3b6d-229e-477e-bce1-e16376f75c7b",
+      "target_name": "Arable",
+      "target_unit": "m2.a",
+      "comment": "As for the conservation-tillage flow: an obsolete ecoinvent occupation flow published in m2 rather than m2*a. Since #111 the fold onto EF 3.1's unqualified `arable` is declined and the flow is published under its own name, so the 1.0 m2*a per m2 is stated on the manual fix that rebases the row's own unit in every ecoinvent-<version>-manual-fixes.json, rather than on a mapping or taken from the correspondence table. The merge refuses a time-crossing factor that arrives from a table, because a duration is a modelling choice and inheriting one silently would republish somebody else's assumption as a measurement. The pair stays listed here because the units still disagree."
+    },
+    {
+      "source_uuid": "583eec00-1480-4cd7-8670-31eaf94053ad",
+      "source_name": "Manganese-55",
+      "source_unit": "kBq",
+      "target_elementary_flow_id": "08a91e70-3ddc-11dd-9bcc-0050c2490048",
+      "target_name": "manganese",
+      "target_unit": "kg",
+      "comment": "Not a conversion, and not convertible. 55Mn is manganese's only stable isotope -- PubChem lists it under manganese's stable isotopes at abundance 1 and it appears nowhere in the decay table -- so it has no activity, and a kBq amount of it has no physical meaning. There is therefore no specific activity to convert kBq to kg by, and none is published here. ecoinvent 3.8's master data declares the flow anyway, in five water contexts, alongside the genuinely radioactive Manganese-54; the master data is where it stops. Zero of the 19,565 ecoinvent 3.8 cutoff datasets and zero apos datasets reference any of the five uuids, checked against the release, so nothing an inventory carries is mischaracterised by the mapping. It is listed rather than removed because the pairing onto elemental manganese is the right substance and the flow is inert: dropping it would put five flows in the unmatched report forever for something no dataset uses. ecoinvent replaced this flow with `Manganese` under an unchanged uuid at 3.10.1, changing the unit from kBq to kg in no correspondence table -- the defect this guard was written for."
+    },
+    {
+      "source_uuid": "957d4d94-9f88-4f40-9755-cfc3918882bb",
+      "source_name": "Manganese-55",
+      "source_unit": "kBq",
+      "target_elementary_flow_id": "08a91e70-3ddc-11dd-9bcc-0050c2490048",
+      "target_name": "manganese",
+      "target_unit": "kg",
+      "comment": "Not a conversion, and not convertible. 55Mn is manganese's only stable isotope -- PubChem lists it under manganese's stable isotopes at abundance 1 and it appears nowhere in the decay table -- so it has no activity, and a kBq amount of it has no physical meaning. There is therefore no specific activity to convert kBq to kg by, and none is published here. ecoinvent 3.8's master data declares the flow anyway, in five water contexts, alongside the genuinely radioactive Manganese-54; the master data is where it stops. Zero of the 19,565 ecoinvent 3.8 cutoff datasets and zero apos datasets reference any of the five uuids, checked against the release, so nothing an inventory carries is mischaracterised by the mapping. It is listed rather than removed because the pairing onto elemental manganese is the right substance and the flow is inert: dropping it would put five flows in the unmatched report forever for something no dataset uses. ecoinvent replaced this flow with `Manganese` under an unchanged uuid at 3.10.1, changing the unit from kBq to kg in no correspondence table -- the defect this guard was written for."
+    },
+    {
+      "source_uuid": "6ed06a59-4fd1-422e-a397-4c3274596701",
+      "source_name": "Manganese-55",
+      "source_unit": "kBq",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-af15-0050c2490048",
+      "target_name": "manganese",
+      "target_unit": "kg",
+      "comment": "Not a conversion, and not convertible. 55Mn is manganese's only stable isotope -- PubChem lists it under manganese's stable isotopes at abundance 1 and it appears nowhere in the decay table -- so it has no activity, and a kBq amount of it has no physical meaning. There is therefore no specific activity to convert kBq to kg by, and none is published here. ecoinvent 3.8's master data declares the flow anyway, in five water contexts, alongside the genuinely radioactive Manganese-54; the master data is where it stops. Zero of the 19,565 ecoinvent 3.8 cutoff datasets and zero apos datasets reference any of the five uuids, checked against the release, so nothing an inventory carries is mischaracterised by the mapping. It is listed rather than removed because the pairing onto elemental manganese is the right substance and the flow is inert: dropping it would put five flows in the unmatched report forever for something no dataset uses. ecoinvent replaced this flow with `Manganese` under an unchanged uuid at 3.10.1, changing the unit from kBq to kg in no correspondence table -- the defect this guard was written for."
+    },
+    {
+      "source_uuid": "32299af9-3432-470b-8f90-5d06df12b062",
+      "source_name": "Manganese-55",
+      "source_unit": "kBq",
+      "target_elementary_flow_id": "08a91e70-3ddc-11dd-9bca-0050c2490048",
+      "target_name": "manganese",
+      "target_unit": "kg",
+      "comment": "Not a conversion, and not convertible. 55Mn is manganese's only stable isotope -- PubChem lists it under manganese's stable isotopes at abundance 1 and it appears nowhere in the decay table -- so it has no activity, and a kBq amount of it has no physical meaning. There is therefore no specific activity to convert kBq to kg by, and none is published here. ecoinvent 3.8's master data declares the flow anyway, in five water contexts, alongside the genuinely radioactive Manganese-54; the master data is where it stops. Zero of the 19,565 ecoinvent 3.8 cutoff datasets and zero apos datasets reference any of the five uuids, checked against the release, so nothing an inventory carries is mischaracterised by the mapping. It is listed rather than removed because the pairing onto elemental manganese is the right substance and the flow is inert: dropping it would put five flows in the unmatched report forever for something no dataset uses. ecoinvent replaced this flow with `Manganese` under an unchanged uuid at 3.10.1, changing the unit from kBq to kg in no correspondence table -- the defect this guard was written for."
+    },
+    {
+      "source_uuid": "06ee87f5-4946-4ecd-9615-b4723595fbaf",
+      "source_name": "Manganese-55",
+      "source_unit": "kBq",
+      "target_elementary_flow_id": "08a91e70-3ddc-11dd-9bcc-0050c2490048",
+      "target_name": "manganese",
+      "target_unit": "kg",
+      "comment": "Not a conversion, and not convertible. 55Mn is manganese's only stable isotope -- PubChem lists it under manganese's stable isotopes at abundance 1 and it appears nowhere in the decay table -- so it has no activity, and a kBq amount of it has no physical meaning. There is therefore no specific activity to convert kBq to kg by, and none is published here. ecoinvent 3.8's master data declares the flow anyway, in five water contexts, alongside the genuinely radioactive Manganese-54; the master data is where it stops. Zero of the 19,565 ecoinvent 3.8 cutoff datasets and zero apos datasets reference any of the five uuids, checked against the release, so nothing an inventory carries is mischaracterised by the mapping. It is listed rather than removed because the pairing onto elemental manganese is the right substance and the flow is inert: dropping it would put five flows in the unmatched report forever for something no dataset uses. ecoinvent replaced this flow with `Manganese` under an unchanged uuid at 3.10.1, changing the unit from kBq to kg in no correspondence table -- the defect this guard was written for."
+    },
+    {
+      "source_uuid": "d144bede-fdfa-580c-ad08-4fbaf0b35291",
+      "source_name": "Coal, hard",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
+      "target_name": "Hard Coal",
+      "target_unit": "MJ",
+      "comment": "BAFU 2026 v1. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance identity is unchanged and only the quantity basis differs. The pair is listed here because the units still disagree and the guard should not report it again; the factor itself is stated in `bafu-2026-v1-match-overrides.json`, which is what the merge carries as `qudt:conversionMultiplier`. 18.01 MJ/kg, the same value already accepted here for ecoinvent's `Coal, hard` onto this target, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre. One target, one conversion, whichever list the kilogram came from. It is not the IPCC default, which is 25.8 MJ/kg for other bituminous coal."
+    },
+    {
+      "source_uuid": "80922cad-30bf-5248-ae0a-656cae92b95c",
+      "source_name": "Coal, brown",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
+      "target_name": "Brown Coal",
+      "target_unit": "MJ",
+      "comment": "BAFU 2026 v1. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance identity is unchanged and only the quantity basis differs. The pair is listed here because the units still disagree and the guard should not report it again; the factor itself is stated in `bafu-2026-v1-match-overrides.json`, which is what the merge carries as `qudt:conversionMultiplier`. 9.41 MJ/kg, the same value already accepted here for ecoinvent's `Coal, brown` onto this target. Not the IPCC default, which is 18.9 MJ/kg for sub-bituminous coal. This is the pair #3 opened on; BAFU's own `Energy, from coal, brown` reaches the same flow unconverted, and the two never occur in the same dataset, so sharing a flow counts nothing twice."
+    },
+    {
+      "source_uuid": "e48b3dc1-e9e7-54c1-aafb-3332dbd06a3e",
+      "source_name": "Oil, crude",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
+      "target_name": "Crude Oil",
+      "target_unit": "MJ",
+      "comment": "BAFU 2026 v1. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance identity is unchanged and only the quantity basis differs. The pair is listed here because the units still disagree and the guard should not report it again; the factor itself is stated in `bafu-2026-v1-match-overrides.json`, which is what the merge carries as `qudt:conversionMultiplier`. 43.1 MJ/kg, which is BAFU's own number: `Cement ZN, D, at plant [CH]` is the one dataset in the release that carries both this flow and `Energy, from oil` usably, and that is the ratio it implies. It sits between the IPCC default of 42.3 and the 43.4 of the EF 3.1 LCIA method as implemented by the ecoinvent Centre, all three within 2.5% of each other -- unlike the coals, where the two bases diverge widely. This row carried 43.4 until #162, on a rule that one target takes one conversion whichever list the kilogram came from; a conversion is a statement about a pair, so BAFU's pair now takes BAFU's own evidence, and ecoinvent's row is unchanged at 43.4."
+    },
+    {
+      "source_uuid": "25d290ab-0e08-5963-9141-cbcbb998c559",
+      "source_name": "Peat",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "Peat",
+      "target_unit": "MJ",
+      "comment": "BAFU 2026 v1. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance identity is unchanged and only the quantity basis differs. The pair is listed here because the units still disagree and the guard should not report it again; the factor itself is stated in `bafu-2026-v1-match-overrides.json`, which is what the merge carries as `qudt:conversionMultiplier`. 9.76 MJ/kg, the IPCC 2006 Guidelines Vol. 2 Table 1.2 default for peat, 95% confidence interval 7.80 to 12.5. No ecoinvent association for peat ever existed, so this is the one carrier here whose factor comes from IPCC rather than from the EF 3.1 LCIA implementation. This pair was already matching before it was accepted here -- algorithmic matching reached the right flow on a label match and the guard reported the unit disagreement, correctly, because nothing had reviewed it."
+    },
+    {
+      "source_uuid": "0417d728-9c64-5755-9685-e547485968d4",
+      "source_name": "Peat",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "Peat",
+      "target_unit": "MJ",
+      "comment": "BAFU 2026 v1, the `resources / biotic` peat row -- the list's main one, in 134 of the 11,947 datasets against 1 for the `in ground` row above, and the same substance as it. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ; BAFU records the same extraction as a mass. The substance identity is unchanged and only the quantity basis differs, which is the whole of why the crossing is accepted rather than refused. 9.76 MJ/kg, the IPCC 2006 Guidelines Vol. 2 Table 1.2 default for peat, stated in `bafu-2026-v1-match-overrides.json` and carried by the merge as `qudt:conversionMultiplier` -- the same number as the sibling row, because one target takes one conversion whichever compartment the kilogram came from.\n\nThat this row is the energy carrier at all is #89's finding. #87 sent it to EF's *material* peat, where the units already agreed and no crossing arose, on the reading that a mass of peat is the material and a megajoule of peat is the carrier. The archive says otherwise: the row is the extraction input to `Peat, at mine`, one kilogram per kilogram, and that dataset is filed under `fuels / peat` and feeds `Peat, burned in power plant` and `Electricity, peat, at power plant`. So the agreement of units was the wrong reason to leave it alone -- it agreed with the wrong substance. (#89, #87, #78)"
+    },
+    {
+      "source_uuid": "dbfc8434-b713-5719-94bf-3b6643530e07",
+      "source_name": "Uranium",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium",
+      "target_unit": "MJ",
+      "comment": "BAFU 2026 v1. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance identity is unchanged and only the quantity basis differs. The pair is listed here because the units still disagree and the guard should not report it again; the factor itself is stated in `bafu-2026-v1-match-overrides.json`, which is what the merge carries as `qudt:conversionMultiplier`. 560000 MJ/kg, fission energy content on a gross basis and not a calorific value: four orders of magnitude above any combustion figure because the quantities are related by fission rather than burning, and it must never be read as a heating value. IPCC Table 1.2 lists no uranium; it is a table of combustion fuels. Same number already accepted here for ecoinvent's `Uranium` onto this target. BAFU's `resources / in ground` compartment."
+    },
+    {
+      "source_uuid": "8daa605b-050a-50ea-800d-e491a93eb282",
+      "source_name": "Uranium",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium",
+      "target_unit": "MJ",
+      "comment": "BAFU 2026 v1. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance identity is unchanged and only the quantity basis differs. The pair is listed here because the units still disagree and the guard should not report it again; the factor itself is stated in `bafu-2026-v1-match-overrides.json`, which is what the merge carries as `qudt:conversionMultiplier`. 560000 MJ/kg fission energy content, as for the `in ground` row. BAFU's `resources / unspecified` compartment; a separate entry because this file is keyed by source flow and BAFU gives each compartment its own uuid."
+    },
+    {
+      "source_uuid": "108c7884-7e7d-5765-a951-3276d4e09499",
+      "source_name": "Uranium",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium",
+      "target_unit": "MJ",
+      "comment": "BAFU 2026 v1. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance identity is unchanged and only the quantity basis differs. The pair is listed here because the units still disagree and the guard should not report it again; the factor itself is stated in `bafu-2026-v1-match-overrides.json`, which is what the merge carries as `qudt:conversionMultiplier`. 560000 MJ/kg fission energy content, as for the other two. BAFU's `resources / land` compartment, which is an odd place for an extracted metal and may be a filing error on BAFU's part; accepting the unit crossing says nothing about the compartment, and in any case EF 3.1 declares exactly one uranium resource flow, in ground, so there is no other resource context to prefer."
+    },
+    {
+      "source_uuid": "528d5071-4006-5f56-adc9-b39f23d13a03",
+      "source_name": "Gas, natural/m3",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "BAFU 2026 v1. EF 3.1 accounts fossil energy carriers by energy content rather than volume, and this target carries the 'Resource use, fossils' characterisation factor, defined per MJ. The pair is listed here because the units still disagree and the guard should not report it again; the factor, 36.0 MJ per cubic metre, is stated in `bafu-2026-v1-match-overrides.json` and is what ecoinvent states for its own natural gas onto this same target. Not an IPCC value: Table 1.2 has no volumetric column. "
+    },
+    {
+      "source_uuid": "99bbee18-e1d0-5600-82df-d0bfa91394c7",
+      "source_name": "Gas, natural",
+      "source_unit": "sm3",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "BAFU 2026 v1. EF 3.1 accounts fossil energy carriers by energy content rather than volume, and this target carries the 'Resource use, fossils' characterisation factor, defined per MJ. The pair is listed here because the units still disagree -- an amount of substance against an energy -- and the guard should not report it again; the factor, 36.0 MJ per standard cubic metre, is stated in `bafu-2026-v1-match-overrides.json` and is what ecoinvent states for its own natural gas onto this same target. Not an IPCC value: Table 1.2 has no volumetric column. BAFU writes this row's unit `Nm3`, which normalises to `sm3` because for gas the two are one quantity (#292); the disagreement accepted here is volume-against-energy, not one spelling of a cubic metre against another."
+    },
+    {
+      "source_uuid": "44360b86-a3d8-5623-b211-44ec41853fcd",
+      "source_name": "Water, salt, ocean",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "172a3db9-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "sea water",
+      "target_unit": "kg",
+      "comment": "BAFU's `Water, salt, ocean`, which is ecoinvent's row of the same name against the same target, and is accepted here for the same reason and at the same factor: EF 3.1 accounts water resources by mass and both other lists by volume, and the target carries CAS 7732-18-5. This is the one water crossing that converting BAFU's rows cannot settle, because it runs the other way -- BAFU states the volume and EF states the mass -- and converting BAFU into kilograms would move it away from every other water withdrawal in the list rather than towards them. The factor rides with the mapping because `bafu-2026-v1-match-overrides.json` states it: 1025 kg/m3, the value ecoinvent's pair carries, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre and a rough average of the 1020-1029 kg/m3 range. BAFU declares no correspondence table, so an override is where a factor for one of its rows has to be written. Sea water rather than the 1000 kg/m3 the fresh-water rows are converted at, because it is salt. The pair stays listed here because the units still disagree and the guard should not report it again. Two lists shipping one vendor row should not be accepted from one and reported from the other. (#78)"
+    },
+    {
+      "source_uuid": "7d86a5b7-c5d1-549b-aad3-29286a5e5346",
+      "source_name": "Coal, hard",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
+      "target_name": "Hard Coal",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in kg reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 19.1 MJ per kg -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "cede79a3-3e82-562b-ac7c-8f0483604f8b",
+      "source_name": "Coal, brown",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
+      "target_name": "Brown Coal",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in kg reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 9.9 MJ per kg -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "146c61d4-321a-53ef-b58e-35d53bc57de6",
+      "source_name": "Oil, crude",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
+      "target_name": "Crude Oil",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in kg reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 45.8 MJ per kg -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "b28ffb76-dac7-5bdc-9aa9-f3a00f1ce266",
+      "source_name": "Peat",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "Peat",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in kg reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 9.9 MJ per kg -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "2a7ddb41-4644-5f68-a2ac-81cf18772938",
+      "source_name": "Uranium",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in kg reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 560,000 MJ per kg -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "177b2fed-48df-5222-b7a7-be3b71a0e73c",
+      "source_name": "Gas, natural/m3",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in m3 reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 40.3 MJ per m3 -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "bbc7d9ed-0d3a-541b-8ea4-9b80d7c93b66",
+      "source_name": "Gas, natural, 30.3 MJ per kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in kg reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 30.3 MJ per kg -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "1da85908-9de5-5f8c-ad12-c5c2031a675d",
+      "source_name": "Gas, natural, 46.8 MJ per kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in kg reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 46.8 MJ per kg -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "00e5682e-99d0-53ca-9142-8ddb8c14325a",
+      "source_name": "Gas, natural, feedstock, 46.8 MJ per kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in kg reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 46.8 MJ per kg -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "3e88af6a-0f31-5fb7-a035-7a4577e02c9b",
+      "source_name": "Gas, natural, 35 MJ per m3",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in m3 reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 35.0 MJ per m3 -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "01aa0043-f4ce-5461-9eab-6f7725cecbf2",
+      "source_name": "Gas, natural, feedstock, 35 MJ per m3",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in m3 reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 35.0 MJ per m3 -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "26eeeb1c-17c9-539c-a654-3a995495c235",
+      "source_name": "Gas, natural, 36.6 MJ per m3",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "Stepwise 2006. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass or volume, deliberately, so this target is declared in MJ and a row measured in m3 reaches it across a quantity kind. The mapping is the same one already accepted for ecoinvent's and BAFU's rows onto this flow; what is new is the list. The conversion is stated on this pair in `stepwise-2006-match-overrides.json` -- 36.6 MJ per m3 -- so the crossing is accepted here and the number is there, which is the division of labour BAFU's override file describes. See #171."
+    },
+    {
+      "source_uuid": "583eec00-1480-4cd7-8670-31eaf94053ad",
+      "source_name": "Manganese-55",
+      "source_unit": "kBq",
+      "target_elementary_flow_id": "ea7146aa577672dc6b0188577d80f23d04cbe722",
+      "target_name": "Manganese",
+      "target_unit": "kg",
+      "comment": "Not a conversion, and not convertible. 55Mn is manganese's only stable isotope, so ecoinvent 3.8's activity row in kBq and 3.12's mass row in kg under this one uuid are the same substance measured two ways, and no factor turns a becquerel into a kilogram without an activity per unit mass nobody states. The whole entry is that the pair is right and the units are irreconcilable, which is what the 3.8 row's flag says and what a reader has to be told.\n\nThis pair rather than the one already in this file: the same three entries were written when both of these rows landed on `carbon dioxide`'s neighbour, EF 3.1's manganese in `Environmental → Water → Unknown` (`08a91e70-3ddc-11dd-9bcc-0050c2490048`), and the water-context work has since moved them. ecoinvent's `water / ground-` row now reaches the manganese this list publishes in `Environmental → Water → Unconfined aquifer`, a flow the merge minted because EF 3.1 ships none for that compartment. The reasoning is unchanged; the pair it is keyed on is not. See #171."
+    },
+    {
+      "source_uuid": "957d4d94-9f88-4f40-9755-cfc3918882bb",
+      "source_name": "Manganese-55",
+      "source_unit": "kBq",
+      "target_elementary_flow_id": "08a91e70-3ddc-11dd-9bcb-0050c2490048",
+      "target_name": "Manganese",
+      "target_unit": "kg",
+      "comment": "Not a conversion, and not convertible. 55Mn is manganese's only stable isotope, so ecoinvent 3.8's activity row in kBq and 3.12's mass row in kg under this one uuid are the same substance measured two ways, and no factor turns a becquerel into a kilogram without an activity per unit mass nobody states. The whole entry is that the pair is right and the units are irreconcilable, which is what the 3.8 row's flag says and what a reader has to be told.\n\nThis pair rather than the one already in this file: the same three entries were written when both of these rows landed on `carbon dioxide`'s neighbour, EF 3.1's manganese in `Environmental → Water → Unknown` (`08a91e70-3ddc-11dd-9bcc-0050c2490048`), and the water-context work has since moved them. ecoinvent's `water / ground-, long-term` row now reaches EF 3.1's own manganese in `Environmental → Water → Long-term`. The reasoning is unchanged; the pair it is keyed on is not. See #171."
+    },
+    {
+      "source_uuid": "4ffc062b-520e-5bf6-bc4d-3c16db9c1113",
+      "source_name": "Gas, mine, off-gas, process, coal mining",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "00fdc4bc-724b-4993-ad43-c70df533b092",
+      "target_name": "Gas, Mine, Off-gas, Process, Coal Mining",
+      "target_unit": "sm3",
+      "comment": "The assertion this file's description named as needing its own answer, and here it is. BAFU ships this flow twice, once in standard cubic metres and once in cubic metres, and both rows reach the same flow -- ecoinvent's, declared in standard cubic metres. The sm3 row raises no question; this is the m3 one, and what it asserts is that BAFU's two spellings are one quantity rather than two.\n\nThat is a ruling this project has already made about this vendor and this kind of substance: `bafu-2026-v1-match-overrides.json` sends BAFU's `Nm3` and `m3` spellings of natural gas to one flow at one number, `for natural gas the two units are the same quantity`, and gas drawn off a coal seam is a gas measured the same way by the same export. It is a spelling of a volume rather than a restatement of one, so no conversion is stated: a factor here would claim a temperature and a pressure BAFU's export does not give.\n\nWhat this does not touch is #80's finding that gas drawn off a coal seam is a different substance from natural gas. Both of BAFU's rows reach coal-mine off-gas and neither reaches natural gas; the question here is only which of two unit spellings the one flow is published in. See #171."
+    },
+    {
+      "source_uuid": "876eb811-e758-5661-9ec5-bf921691f3e8",
+      "source_name": "Water, barrage",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "f21cd78e163bcc18b4aff7578fc28b39e5e7cd4f",
+      "target_name": "Surface water",
+      "target_unit": "m3",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): a kilogram barrage intake on the cubic-metre Surface water flow, at fresh water's 1000 kg/m3 (0.001 m3 per kg). Stated here and not as a mapping override: the prepared machinery refuses a target finer than the row's own compartment and would mint a second Surface water resource place, which #89 prohibits -- the algorithmic material match stands, and this entry records its crossing."
+    },
+    {
+      "source_uuid": "bbb5091d-e7a8-50da-bb55-ec6365216033",
+      "source_name": "Water, cooling, salt, ocean",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "21868f36-62ab-4e8e-98ed-7106228c17be",
+      "target_name": "Cooling water",
+      "target_unit": "m3",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): the material table places the row and the published flow keeps the other quantity basis. The factor is carried as `qudt:conversionMultiplier` on the mapping, stated in `agribalyse-3.2-match-overrides.json`: 0.000976 m3 per kg (sea water at 1025 kg/m3, the ecoinvent ocean-water pair's density). The pair stays listed here because the units still disagree and the guard should not report it again."
+    },
+    {
+      "source_uuid": "9aef3b90-11aa-53d6-b21d-a28d7ce798d2",
+      "source_name": "Water, cooling, salt, ocean",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "21868f36-62ab-4e8e-98ed-7106228c17be",
+      "target_name": "Cooling water",
+      "target_unit": "m3",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): the material table places the row and the published flow keeps the other quantity basis. The factor is carried as `qudt:conversionMultiplier` on the mapping, stated in `agribalyse-3.2-match-overrides.json`: 0.000976 m3 per kg (sea water at 1025 kg/m3, the ecoinvent ocean-water pair's density). The pair stays listed here because the units still disagree and the guard should not report it again."
+    },
+    {
+      "source_uuid": "b0354aab-3d37-5f18-97be-a7cb803a016e",
+      "source_name": "Water, cooling, unspecified natural origin/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "21868f36-62ab-4e8e-98ed-7106228c17be",
+      "target_name": "Cooling water",
+      "target_unit": "m3",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): the material table places the row and the published flow keeps the other quantity basis. The factor is carried as `qudt:conversionMultiplier` on the mapping, stated in `agribalyse-3.2-match-overrides.json`: 0.001 m3 per kg (fresh water at 1000 kg/m3). The pair stays listed here because the units still disagree and the guard should not report it again."
+    },
+    {
+      "source_uuid": "c88650ff-2109-5535-92e9-5b3ca92f4315",
+      "source_name": "Water, cooling, well",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "21868f36-62ab-4e8e-98ed-7106228c17be",
+      "target_name": "Cooling water",
+      "target_unit": "m3",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): the material table places the row and the published flow keeps the other quantity basis. The factor is carried as `qudt:conversionMultiplier` on the mapping, stated in `agribalyse-3.2-match-overrides.json`: 0.001 m3 per kg (fresh water at 1000 kg/m3). The pair stays listed here because the units still disagree and the guard should not report it again."
+    },
+    {
+      "source_uuid": "b547b1b1-d190-55e0-8fc7-f142d52c85d1",
+      "source_name": "Water, groundwater consumption",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "4f462198-40cd-4184-8733-86648a20dc3f",
+      "target_name": "Groundwater",
+      "target_unit": "m3",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): a kilogram groundwater intake on the cubic-metre Groundwater flow in the aquifer, at fresh water's 1000 kg/m3 (0.001 m3 per kg). Stated here and not as a mapping override: the prepared machinery refuses a target finer than the row's own compartment and would mint a second Groundwater resource place, breaking #89's groundwater-is-only-in-the-aquifer ruling -- the algorithmic material match stands, and this entry records its crossing."
+    },
+    {
+      "source_uuid": "d48aed46-a1e1-5e4f-ae88-bf7c16a0a11b",
+      "source_name": "Water, process, drinking",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "target_name": "Water",
+      "target_unit": "m3",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): the material table places the row and the published flow keeps the other quantity basis. The factor is carried as `qudt:conversionMultiplier` on the mapping, stated in `agribalyse-3.2-match-overrides.json`: 0.001 m3 per kg (fresh water at 1000 kg/m3). The pair stays listed here because the units still disagree and the guard should not report it again."
+    },
+    {
+      "source_uuid": "6a4e5330-9eec-5b5d-8168-8104a8ac6a47",
+      "source_name": "Water, rain",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "2a240c57-b782-4745-943b-0602d7a953c4",
+      "target_name": "Rainwater",
+      "target_unit": "kg",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): the material table places the row and the published flow keeps the other quantity basis. The factor is carried as `qudt:conversionMultiplier` on the mapping, stated in `agribalyse-3.2-match-overrides.json`: 1000.0 kg per m3 (fresh water at 1000 kg/m3). The pair stays listed here because the units still disagree and the guard should not report it again."
+    },
+    {
+      "source_uuid": "fbc974be-79c5-58f5-bbb3-ac8334bed8b9",
+      "source_name": "Water, rain",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "2a240c57-b782-4745-943b-0602d7a953c4",
+      "target_name": "Rainwater",
+      "target_unit": "kg",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): the material table places the row and the published flow keeps the other quantity basis. The factor is carried as `qudt:conversionMultiplier` on the mapping, stated in `agribalyse-3.2-match-overrides.json`: 1000.0 kg per m3 (fresh water at 1000 kg/m3). The pair stays listed here because the units still disagree and the guard should not report it again."
+    },
+    {
+      "source_uuid": "adb5276d-5e47-566a-8884-d74b8eb0034c",
+      "source_name": "Water, salt, ocean",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "172a3db9-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Sea water",
+      "target_unit": "kg",
+      "comment": "The exact pair ecoinvent's `Water, salt, ocean` rows cross, from AGRIBALYSE's side: cubic metres of ocean water on EF 3.1's kilogram `sea water` flow, at the same 1025 kg/m3 that pair's entry records -- one density for one ocean, whichever list ships the row. Stated here and not as a mapping override, so the row lands where ecoinvent's identical rows land (the characterised Ocean flow) rather than where the prepared machinery's unit preference would put it."
+    },
+    {
+      "source_uuid": "395406e5-adc4-5096-b159-e6aca93682af",
+      "source_name": "Water, salt, ocean",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "172a3db9-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Sea water",
+      "target_unit": "kg",
+      "comment": "The exact pair ecoinvent's `Water, salt, ocean` rows cross, from AGRIBALYSE's side: cubic metres of ocean water on EF 3.1's kilogram `sea water` flow, at the same 1025 kg/m3 that pair's entry records -- one density for one ocean, whichever list ships the row. Stated here and not as a mapping override, so the row lands where ecoinvent's identical rows land (the characterised Ocean flow) rather than where the prepared machinery's unit preference would put it."
+    },
+    {
+      "source_uuid": "100a6a8c-179e-5beb-a266-e35a0dc210b6",
+      "source_name": "Water, unspecified natural origin/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "target_name": "Water",
+      "target_unit": "m3",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): the material table places the row and the published flow keeps the other quantity basis. The factor is carried as `qudt:conversionMultiplier` on the mapping, stated in `agribalyse-3.2-match-overrides.json`: 0.001 m3 per kg (fresh water at 1000 kg/m3). The pair stays listed here because the units still disagree and the guard should not report it again."
+    },
+    {
+      "source_uuid": "cd0eb42b-f9bd-5b9f-b4d5-3d53be8fa9fb",
+      "source_name": "Water, unspecified natural origin/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "target_name": "Water",
+      "target_unit": "m3",
+      "comment": "A water density crossing from AGRIBALYSE 3.2's water curation (#352): the material table places the row and the published flow keeps the other quantity basis. The factor is carried as `qudt:conversionMultiplier` on the mapping, stated in `agribalyse-3.2-match-overrides.json`: 0.001 m3 per kg (fresh water at 1000 kg/m3). The pair stays listed here because the units still disagree and the guard should not report it again."
+    },
+    {
+      "source_uuid": "f65c0b45-7781-5ae0-aeb1-d329b21796dd",
+      "source_name": "Wood and wood waste, 9.5 MJ per kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "3e4d9eab-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Wood",
+      "target_unit": "MJ",
+      "comment": "The published list keeps wood energy in megajoules and AGRIBALYSE inventories this row in kilograms, with the conversion in the row's own name: 9.5 MJ per kilogram of wood and wood waste. The substance identity is unchanged and only the quantity basis differs; the number is the vendor's own assertion, carried as the conversion factor in `agribalyse-3.2-match-overrides.json` (#354)."
+    },
+    {
+      "source_uuid": "e6f6fcbd-c5ce-53c1-b5aa-d2fc52c10d98",
+      "source_name": "Uranium oxide, 332 GJ per kg, in ore",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium",
+      "target_unit": "MJ",
+      "comment": "The published list keeps uranium as a resource by fission energy content in megajoules, and AGRIBALYSE inventories a kilogram of ore-bound oxide whose name asserts the conversion: 332 GJ per kilogram. Fission energy content, never a heating value -- the same basis as the lineage file's `Uranium, 451 GJ per kg` and `560 GJ per kg` rows; the factor (332,000 MJ/kg) is carried in `agribalyse-3.2-match-overrides.json` (#354)."
+    }
+  ]
+}

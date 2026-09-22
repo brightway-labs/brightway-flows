@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "description": "The other half of #123. Where the first half was a named chemical folded into a class it is not -- glucose published as an unsaturated hydrocarbon -- this is the inverse: a class given the identity of one arbitrary member of it. `Amine oxides` published as specifically dodecyl(dimethyl)amine oxide, `Diphenylether compounds` as diphenyl ether, `Stibnite` as the dissolved antimonite ion.\n\nThe correspondence table decides all three, in every release that ships them, and EF 3.1 carries no flow for any of the three classes -- so each row is declined and the class is minted as itself.\n\nTwo of them need a paired manual fix as well, and the rule those are written under is worth stating because it may want revisiting: **where one flow uuid carries different fields in different releases, the latest release is canonical.** ecoinvent means one flow by one identifier, so a later release restating it is correcting what it said before. `b157329c` is `Amine oxide` with 1643-20-5 in 3.8 and `Amine oxides` with no number from 3.9.1; `1d8560a8` is `Diphenylether-compound` with 101-84-8 and then `Diphenylether compounds`. Even in 3.8 they meant the class. Neither half works alone: the decline takes the table's row away, and without the fixes the flow falls through to matching and 3.8's registry number sends it straight back to the member.\n\nMeasured on the unbounded build of 21 August 2026 at `a00386e`, against the build of `f27d89b`.",
+  "expectations": [
+    {
+      "id": "0604-a-family-is-not-one-of-its-members",
+      "issue": 604,
+      "title": "ecoinvent's amine oxides are published as the family, not as one amine oxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Amine Oxides"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_name": "Amine Oxides"
+      },
+      "comment": "An amine oxide is any amine with an oxygen on the nitrogen, and ecoinvent reports it as a family: `Amine oxides`, plural, with no registry number, which is what a source list writes when it is naming a class rather than a compound. The table sends it to EF 3.1's `dodecyl(dimethyl)amine oxide`, C14H31NO -- one arbitrary member -- so anything reported as \"amine oxides\" was published as specifically that compound.\n\n`same_substance` as well as `target_name`, because the two releases are where this goes wrong quietly: 3.8 still called the flow `Amine oxide` and gave it 1643-20-5, which is dodecyl(dimethyl)amine oxide's number, so declining the table row alone left 3.12 minting the class and 3.8 still reaching the member -- one flow identifier published as two substances. A build is what showed that, and `same_substance` is the claim that would have said so."
+    },
+    {
+      "id": "0604-stibnite-is-one-mineral",
+      "issue": 604,
+      "title": "Every list's stibnite is published as one mineral",
+      "subject": {
+        "kind": "source_row",
+        "name": "Stibnite"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_name": "Stibnite"
+      },
+      "comment": "Stibnite is antimony sulfide ore dug out of the ground, and the table sent it to EF 3.1's `antimonite` -- the dissolved oxyanion, which carries no registry number at all, so nothing about the identity was ever checked. A mineral in the ground and an ion in solution are not the same substance.\n\n**Named without a list, deliberately.** ecoinvent and BAFU both ship a stibnite row, and the claim is that they arrive at one substance -- which is what makes this the strongest of the three. It was also the case where the error was spreading: when ecoinvent's stibnite reached `Antimonite`, `carry_member_names` deposited `Stibnite` on that ion as an alternative label, and BAFU's own row then matched *that*, on `basis=label`. One bad mapping had become a match key for the next list.\n\nThe two lists also disagreed about the number. IARC vol. 47 separates them -- 1345-04-6 is the manufactured chemical, 1317-86-8 is its mineral form -- and every row in any list that says \"stibnite\" is a resource taken out of the ground, while every row for the compound is one of EF's thirteen emissions. BAFU already used the mineral's number; ecoinvent is corrected to it, so the two lists publish one mineral rather than two substances."
+    },
+    {
+      "id": "0604-the-compound-keeps-its-own-flows",
+      "issue": 604,
+      "title": "EF's antimony trisulfide is the compound it emits, and nothing is mined onto it",
+      "subject": {
+        "kind": "substance",
+        "label": "Antimony Trisulfide"
+      },
+      "expect": {
+        "exists": true,
+        "flow_count": 13
+      },
+      "comment": "The other side of the same separation, and the claim that says it is a separation rather than a move. EF 3.1 ships this substance in thirteen compartments and every one is an emission; no source row reaches it at all. Thirteen flows before and thirteen after: the mineral is not published onto it, and its own flows are not disturbed.\n\nEF names these thirteen `tricyclo[3.3.1.1~3,7~]tetrastibathiane`, which describes a four-antimony cage and is not Sb2S3, while giving them 1345-04-6 and the synonym `antimonysulphide`. So EF's own name and number disagree and the synonym sides with the number, which is #121's shape and is corrected the same way -- this project trusts the number. `Antimony trisulfide` rather than `Stibnite`, because stibnite is the mineral and these are emissions of the compound."
+    }
+  ]
+}

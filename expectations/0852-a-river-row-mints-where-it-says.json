@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "description": "A row released to a river is published in the river. AGRIBALYSE's dissolved metals and pesticides resolve their substances by registry number and find no flow of them in the river context; the merge's refusal-then-create path gives each one its substance's flow in the place the row named, the way BAFU's river metals were made. The alternative -- a scorer preference coarsening these rows onto Surface water -- was built, measured, and declined on #186: it re-decided 273 BAFU and Stepwise rows and retired their published river flows, for a question the vendor had already answered. These claims record that decision. The build of 1 September 2026 (b0b8d76) already satisfied every one of them, which is the point: like the compartment refusals of #356, they exist so that a later change reintroducing the coarsening fails loudly instead of quietly re-landing hundreds of rows. Factor recovery for sub-places a category does not distinguish is #138's work, and is deliberately no part of this decision.",
+  "expectations": [
+    {
+      "id": "0852-the-cadmium-river-row-is-published-in-the-river",
+      "issue": 852,
+      "title": "AGRIBALYSE's `Cadmium (II)` released to a river lands on its substance's flow in the river",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "341f8476-3203-5dc7-a644-ab37ed67d714"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "placed",
+        "target_substance_id": "fo-31ab226b5e0a22ac",
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-rive"
+      },
+      "pending": true,
+      "comment": "The issue's worked example: 2,997 processes exchange it. On the build of 1 September 2026 it reached a flow of the published Cadmium(2+) in the river context -- minted by the first river row of the substance, matched exactly by this one. The claim pins the place and the substance link together: a coarsening rule would move the row to Surface water or Long-term and fail the context half, and a mint that invented a new substance would fail the other. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    },
+    {
+      "id": "0852-a-row-that-says-long-term-stays-long-term",
+      "issue": 852,
+      "title": "The two rows that say `river, long-term` themselves land in the long-term place",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Chlorobenzene",
+        "context": ["Emissions to water", "river, long-term"]
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "placed",
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lote"
+      },
+      "pending": true,
+      "comment": "The stated place wins in both directions: a row that itself says long-term is published there, not promoted to a water body a preference thinks it meant. Chlorobenzene is one of the two such rows (Chloride is the other, claimed below); both landed at envi-wate-lote on the build of 1 September 2026. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    },
+    {
+      "id": "0852-the-chloride-long-term-row-stays-long-term",
+      "issue": 852,
+      "title": "The `Chloride` row that says `river, long-term` lands in the long-term place",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Chloride",
+        "context": ["Emissions to water", "river, long-term"]
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "placed",
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lote"
+      },
+      "pending": true,
+      "comment": "The second of the two rows whose own compartment says long-term; see the Chlorobenzene claim above. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    }
+  ]
+}

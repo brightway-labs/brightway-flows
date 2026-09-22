@@ -1,0 +1,846 @@
+{
+  "schema_version": 1,
+  "description": "Rulings that two live flows sharing a flow object, a context and a unit are one flow. Keyed on that triple -- the same key `pipeline/collisions.py` gives the `elementary-flow-collision` queue item -- so a decision survives the next build and does not have to be rewritten when the source list publishes the same duplication again.\n\nA ruling names its survivor. Deduplication would sort for one, by factor count and then by identifier, and the queue reports that same sort as `deduplication_would_keep`; a sort is not a decision, and where the two rows differ in what they carry -- one holds the characterisation, the other holds the identifier a source list maps onto -- the choice has to be made rather than fallen into.\n\nThirty-three of the rulings here are one substance EF 3.1 published twice in one context, once under a chemical name and once under an industry designation or a second spelling, and in eight of the nine it is this project's own identification (#19, #35) that put the two rows on one flow object: supplying the number one of the two rows was missing is what made the duplication visible. The factor sets are nested in every case, so no ruling here loses a factor -- but they are not all decided by the factors. In twenty-eight the survivor is simply the row that holds the characterisation, and the merge gives one to a row that had none. The five carbon tetrachloride rulings are the case the paragraph above describes and this file had not yet met (#105): the two sets are equal, so the sort falls through to the identifier and picks the row carrying no registry number, no EC number and no synonyms, which is also the row no other list maps onto. What decides instead is that ecoinvent 3.8 and 3.12 both reach the `CFC-10` rows, in every one of the five contexts, and nothing at all reaches the rows EF ships bare. What is *not* here is as deliberate: a collision whose two rows may be two substances gets no ruling, and stays two flows. `Nitrogen, organic bound` against `dinitrogen` was that case in four water contexts, and it is the one that shows why refusing to rule is not the same as settling it: the two rows went on sharing a flow object, so the organic-bound rows were still published under nitrogen gas's name and structure. What settled it was taking the registry number off them at source, in `ef-3.1-manual-fixes.json` and each ecoinvent fixes file, which removes the four collisions rather than ruling on them (#57).\n\nThe other four are the renewable energy resources (#73), and they are a different case in two ways. Neither row carries an identifier of any kind, so nothing this project could supply would have put the pair on one flow object: a curated merge group in `flow-object-overrides.json` does that, and without it these rulings apply to nothing. And neither row carries a characterisation factor, so the survivor cannot be chosen by what it holds. It is chosen by what other lists use -- ecoinvent 3.8, ecoinvent 3.12 and BAFU all publish the `converted` name and their correspondence tables map onto that row, while the legacy `primary energy from ...` name is carried by EF alone. That is a weaker kind of evidence than a factor set, and it is why the reasoning is written on each ruling rather than left to the pattern.\n\nOnly `merge` is understood. A collision judged to be two distinct flows needs no entry: that is what the pipeline already does.\n\nThirteen more rulings, and seven corrections, come from #106. Nine of the thirteen are the carbon tetrachloride case again -- hexafluoroethane as `HFC-116` against `PFC-116` in four air compartments, 1,1,1-trichloroethane as `HCFC-140` against `Methyl chloroform` in four, and beryllium and thallium each published twice under their own name in one. In all nine the factor sets tie, so deduplication's sort would decide on the identifier, and in three of them it would keep the row carrying no EC number, no synonyms and no incoming mapping.\n\nThe corrections are a different kind of thing and worth reading before writing another ruling. Seven rulings named the context `envi-air-hist15me`, and the flows they name are not in it. EF 3.1 calls one compartment `Emissions to non-urban air or from high stacks` and the project maps that whole phrase to rural medium stack under 150 metres, so a ruling written from the second half of EF's own name for the compartment keys on a collision that does not exist and applies to nothing. Four of the seven were collapsed anyway, by deduplication, because their rows happened to agree on every field; three were not, and they are the three #106 reports as compartments the earlier decisions missed. `apply_collision_rulings` now tells a ruling that names a compartment its flows are not in from one whose collision is simply outside a bounded run, and says which it is.\n\nWhat is still not here is two pairs that look exactly like the nine and are not duplicates. Borate against borax is repaired at source instead, by taking borax's registry number off the rows EF names `Borate`, because the two are an ion and a salt of it. Water against water from evapotranspiration stays two flows because EF split them deliberately and says so on the row.\n\nEight more come from #185, and they are the first rulings written because a *source row* could not be placed rather than because a duplicate was noticed. EF 3.1 ships two hydrofluoroethers twice in each of four air compartments, once under the chemical name and once under the industry designation, with the same registry number on both: trifluoromethoxymethane as `Methyl trifluoromethyl ether` and `HFE-143a`, and 1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane as `HFE-569sf2` and `n-HFE-7200`. Stepwise 2006 has a row for each, and on the four-list build of 29 August 2026 they were the only two unplaced rows in 22,005: a standing collision is exactly what a row cannot be placed onto, so both were tied and published nowhere, and each list's row for those substances would have failed the same way. The first four are decided by the factor, as twenty-eight of the rulings above are. The second four are the carbon tetrachloride case again -- 60.7 on both sides -- and are decided by what the rows carry: twelve synonyms, EF's ILCD note and eleven contexts against a bare row with four.",
+  "decisions": [
+    {
+      "flow_object_id": "fo-f3ac0f842abf5525",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "7d124d8e-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-99b4-0050c2490048"
+      ],
+      "names": [
+        "2,2,3,3,3-Pentafluoropropan-1-ol",
+        "pentafluoro-1-propanol"
+      ],
+      "comment": "EF 3.1 publishes 2,2,3,3,3-pentafluoropropan-1-ol twice in this context: as `pentafluoro-1-propanol`, carrying CAS 422-05-9 and no characterisation, and as `2,2,3,3,3-Pentafluoropropan-1-ol`, carrying the climate change factor of 34.3. The second row's CAS is this project's (#35): Common Chemistry names 422-05-9 `2,2,3,3,3-Pentafluoropropanol`, and EF's own identified rows list this exact name among their synonyms. Both sides hold PSQZJKGXDGNDFP-UHFFFAOYSA-N. The named row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-f3ac0f842abf5525",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "7d124938-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-99b5-0050c2490048"
+      ],
+      "names": [
+        "2,2,3,3,3-Pentafluoropropan-1-ol",
+        "pentafluoro-1-propanol"
+      ],
+      "comment": "EF 3.1 publishes 2,2,3,3,3-pentafluoropropan-1-ol twice in this context: as `pentafluoro-1-propanol`, carrying CAS 422-05-9 and no characterisation, and as `2,2,3,3,3-Pentafluoropropan-1-ol`, carrying the climate change factor of 34.3. The second row's CAS is this project's (#35): Common Chemistry names 422-05-9 `2,2,3,3,3-Pentafluoropropanol`, and EF's own identified rows list this exact name among their synonyms. Both sides hold PSQZJKGXDGNDFP-UHFFFAOYSA-N. The named row survives because it holds the factor. (#44)\n\nThe compartment on this ruling was corrected from `envi-air-hist15me` to `envi-air-mest15me-ru10pesq` (#106). EF 3.1 calls one compartment `Emissions to non-urban air or from high stacks`, and the project maps that whole phrase to rural medium stack under 150 metres; the ruling had been written from the second half of EF's name instead of from the context the build assigns, so its key matched no collision and it applied to nothing. Seven rulings had the same slip, and it is what left five of the fifteen pairs in #106 sitting in one compartment."
+    },
+    {
+      "flow_object_id": "fo-f3ac0f842abf5525",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "7d124794-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-99b3-0050c2490048"
+      ],
+      "names": [
+        "2,2,3,3,3-Pentafluoropropan-1-ol",
+        "pentafluoro-1-propanol"
+      ],
+      "comment": "EF 3.1 publishes 2,2,3,3,3-pentafluoropropan-1-ol twice in this context: as `pentafluoro-1-propanol`, carrying CAS 422-05-9 and no characterisation, and as `2,2,3,3,3-Pentafluoropropan-1-ol`, carrying the climate change factor of 34.3. The second row's CAS is this project's (#35): Common Chemistry names 422-05-9 `2,2,3,3,3-Pentafluoropropanol`, and EF's own identified rows list this exact name among their synonyms. Both sides hold PSQZJKGXDGNDFP-UHFFFAOYSA-N. The named row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-f3ac0f842abf5525",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "7d1245fa-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-99b2-0050c2490048"
+      ],
+      "names": [
+        "2,2,3,3,3-Pentafluoropropan-1-ol",
+        "pentafluoro-1-propanol"
+      ],
+      "comment": "EF 3.1 publishes 2,2,3,3,3-pentafluoropropan-1-ol twice in this context: as `pentafluoro-1-propanol`, carrying CAS 422-05-9 and no characterisation, and as `2,2,3,3,3-Pentafluoropropan-1-ol`, carrying the climate change factor of 34.3. The second row's CAS is this project's (#35): Common Chemistry names 422-05-9 `2,2,3,3,3-Pentafluoropropanol`, and EF's own identified rows list this exact name among their synonyms. Both sides hold PSQZJKGXDGNDFP-UHFFFAOYSA-N. The named row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-9a2e409c8256ba30",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "9ae3dcb0-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "ea3de8fe-b0ad-4fb9-8843-5438f643d657"
+      ],
+      "names": [
+        "2,2,3,3,3-Pentafluoropropyl methyl ether",
+        "HFE-365mcf3"
+      ],
+      "comment": "EF 3.1 publishes 2,2,3,3,3-pentafluoropropyl methyl ether twice in this context: under its chemical name, carrying CAS 378-16-5 and no characterisation, and as `HFE-365mcf3`, carrying the climate change factor of 1.6. The CAS on the designation row is this project's, from #19's code table via PubChem CID 2776015, which lists `HFE-365mcf3` among its synonyms and reports C4H5F5O -- the formula the designation's digits decode to. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-9a2e409c8256ba30",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "9ae3db66-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "5298c09a-3c23-4edd-b70c-c29c39d529cb"
+      ],
+      "names": [
+        "2,2,3,3,3-Pentafluoropropyl methyl ether",
+        "HFE-365mcf3"
+      ],
+      "comment": "EF 3.1 publishes 2,2,3,3,3-pentafluoropropyl methyl ether twice in this context: under its chemical name, carrying CAS 378-16-5 and no characterisation, and as `HFE-365mcf3`, carrying the climate change factor of 1.6. The CAS on the designation row is this project's, from #19's code table via PubChem CID 2776015, which lists `HFE-365mcf3` among its synonyms and reports C4H5F5O -- the formula the designation's digits decode to. The designation row survives because it holds the factor. (#44)\n\nThe compartment on this ruling was corrected from `envi-air-hist15me` to `envi-air-mest15me-ru10pesq` (#106). EF 3.1 calls one compartment `Emissions to non-urban air or from high stacks`, and the project maps that whole phrase to rural medium stack under 150 metres; the ruling had been written from the second half of EF's name instead of from the context the build assigns, so its key matched no collision and it applied to nothing. Seven rulings had the same slip, and it is what left five of the fifteen pairs in #106 sitting in one compartment."
+    },
+    {
+      "flow_object_id": "fo-9a2e409c8256ba30",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "9ae3d828-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4eead42f-ddce-492c-941d-2b828e4eed3f"
+      ],
+      "names": [
+        "2,2,3,3,3-Pentafluoropropyl methyl ether",
+        "HFE-365mcf3"
+      ],
+      "comment": "EF 3.1 publishes 2,2,3,3,3-pentafluoropropyl methyl ether twice in this context: under its chemical name, carrying CAS 378-16-5 and no characterisation, and as `HFE-365mcf3`, carrying the climate change factor of 1.6. The CAS on the designation row is this project's, from #19's code table via PubChem CID 2776015, which lists `HFE-365mcf3` among its synonyms and reports C4H5F5O -- the formula the designation's digits decode to. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-437b79cb0b62b121",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c1554-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-9064-0050c2490048"
+      ],
+      "names": [
+        "PFC-41-12",
+        "dodecafluoropentane"
+      ],
+      "comment": "EF 3.1 publishes perfluoropentane twice in this context: as `dodecafluoropentane`, carrying CAS 678-26-2 and no characterisation at all, and as `PFC-41-12`, carrying the climate change factor of 9220 (published twice, as `Climate change` and `Climate change-Fossil`). PFC-4-1-12 is the IPCC designation for C5F12, and the CAS on that row is this project's: #19's code table took it from PubChem CID 12675, which lists the designation among its own synonyms. So the two rows share a flow object because we identified the designation, and this ruling finishes that correction on the flow side. The designation row survives because it holds the factor; ecoinvent's prepared rows name `dodecafluoropentane` and reach the survivor through the replacement, which `merge.prepared` follows. (#44)"
+    },
+    {
+      "flow_object_id": "fo-437b79cb0b62b121",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c143c-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-9065-0050c2490048"
+      ],
+      "names": [
+        "PFC-41-12",
+        "dodecafluoropentane"
+      ],
+      "comment": "EF 3.1 publishes perfluoropentane twice in this context: as `dodecafluoropentane`, carrying CAS 678-26-2 and no characterisation at all, and as `PFC-41-12`, carrying the climate change factor of 9220 (published twice, as `Climate change` and `Climate change-Fossil`). PFC-4-1-12 is the IPCC designation for C5F12, and the CAS on that row is this project's: #19's code table took it from PubChem CID 12675, which lists the designation among its own synonyms. So the two rows share a flow object because we identified the designation, and this ruling finishes that correction on the flow side. The designation row survives because it holds the factor; ecoinvent's prepared rows name `dodecafluoropentane` and reach the survivor through the replacement, which `merge.prepared` follows. (#44)\n\nThe compartment on this ruling was corrected from `envi-air-hist15me` to `envi-air-mest15me-ru10pesq` (#106). EF 3.1 calls one compartment `Emissions to non-urban air or from high stacks`, and the project maps that whole phrase to rural medium stack under 150 metres; the ruling had been written from the second half of EF's name instead of from the context the build assigns, so its key matched no collision and it applied to nothing. Seven rulings had the same slip, and it is what left five of the fifteen pairs in #106 sitting in one compartment."
+    },
+    {
+      "flow_object_id": "fo-437b79cb0b62b121",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c0db6-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-9063-0050c2490048"
+      ],
+      "names": [
+        "PFC-41-12",
+        "dodecafluoropentane"
+      ],
+      "comment": "EF 3.1 publishes perfluoropentane twice in this context: as `dodecafluoropentane`, carrying CAS 678-26-2 and no characterisation at all, and as `PFC-41-12`, carrying the climate change factor of 9220 (published twice, as `Climate change` and `Climate change-Fossil`). PFC-4-1-12 is the IPCC designation for C5F12, and the CAS on that row is this project's: #19's code table took it from PubChem CID 12675, which lists the designation among its own synonyms. So the two rows share a flow object because we identified the designation, and this ruling finishes that correction on the flow side. The designation row survives because it holds the factor; ecoinvent's prepared rows name `dodecafluoropentane` and reach the survivor through the replacement, which `merge.prepared` follows. (#44)"
+    },
+    {
+      "flow_object_id": "fo-437b79cb0b62b121",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c0cee-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-9062-0050c2490048"
+      ],
+      "names": [
+        "PFC-41-12",
+        "dodecafluoropentane"
+      ],
+      "comment": "EF 3.1 publishes perfluoropentane twice in this context: as `dodecafluoropentane`, carrying CAS 678-26-2 and no characterisation at all, and as `PFC-41-12`, carrying the climate change factor of 9220 (published twice, as `Climate change` and `Climate change-Fossil`). PFC-4-1-12 is the IPCC designation for C5F12, and the CAS on that row is this project's: #19's code table took it from PubChem CID 12675, which lists the designation among its own synonyms. So the two rows share a flow object because we identified the designation, and this ruling finishes that correction on the flow side. The designation row survives because it holds the factor; ecoinvent's prepared rows name `dodecafluoropentane` and reach the survivor through the replacement, which `merge.prepared` follows. (#44)"
+    },
+    {
+      "flow_object_id": "fo-794f1f83a6debac8",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c0c30-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-935b-0050c2490048"
+      ],
+      "names": [
+        "FC-318",
+        "PFC-318"
+      ],
+      "comment": "EF 3.1 publishes octafluorocyclobutane twice in this context under two spellings of one designation: `FC-318`, carrying CAS 115-25-3 and no characterisation, and `PFC-318`, carrying the climate change factor of 10200. The CAS on the `PFC-318` row is this project's, from #19's code table via PubChem CID 8263. Two spellings of a designation are not two substances, and the row holding the factor survives. (#44)"
+    },
+    {
+      "flow_object_id": "fo-794f1f83a6debac8",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c0b5e-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-935c-0050c2490048"
+      ],
+      "names": [
+        "FC-318",
+        "PFC-318"
+      ],
+      "comment": "EF 3.1 publishes octafluorocyclobutane twice in this context under two spellings of one designation: `FC-318`, carrying CAS 115-25-3 and no characterisation, and `PFC-318`, carrying the climate change factor of 10200. The CAS on the `PFC-318` row is this project's, from #19's code table via PubChem CID 8263. Two spellings of a designation are not two substances, and the row holding the factor survives. (#44)\n\nThe compartment on this ruling was corrected from `envi-air-hist15me` to `envi-air-mest15me-ru10pesq` (#106). EF 3.1 calls one compartment `Emissions to non-urban air or from high stacks`, and the project maps that whole phrase to rural medium stack under 150 metres; the ruling had been written from the second half of EF's name instead of from the context the build assigns, so its key matched no collision and it applied to nothing. Seven rulings had the same slip, and it is what left five of the fifteen pairs in #106 sitting in one compartment."
+    },
+    {
+      "flow_object_id": "fo-794f1f83a6debac8",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c094c-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-935a-0050c2490048"
+      ],
+      "names": [
+        "FC-318",
+        "PFC-318"
+      ],
+      "comment": "EF 3.1 publishes octafluorocyclobutane twice in this context under two spellings of one designation: `FC-318`, carrying CAS 115-25-3 and no characterisation, and `PFC-318`, carrying the climate change factor of 10200. The CAS on the `PFC-318` row is this project's, from #19's code table via PubChem CID 8263. Two spellings of a designation are not two substances, and the row holding the factor survives. (#44)"
+    },
+    {
+      "flow_object_id": "fo-794f1f83a6debac8",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c088e-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-9359-0050c2490048"
+      ],
+      "names": [
+        "FC-318",
+        "PFC-318"
+      ],
+      "comment": "EF 3.1 publishes octafluorocyclobutane twice in this context under two spellings of one designation: `FC-318`, carrying CAS 115-25-3 and no characterisation, and `PFC-318`, carrying the climate change factor of 10200. The CAS on the `PFC-318` row is this project's, from #19's code table via PubChem CID 8263. Two spellings of a designation are not two substances, and the row holding the factor survives. (#44)"
+    },
+    {
+      "flow_object_id": "fo-10b4ae10d418f62f",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-aicrhe",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "d86cb000-6555-11dd-ad8b-0800200c9a66",
+      "merged_elementary_flow_ids": [
+        "b5e3438d-f01c-4e18-89fb-a0215d5ba067"
+      ],
+      "names": [
+        "Halon-1001",
+        "Methyl bromide"
+      ],
+      "comment": "EF 3.1 publishes bromomethane twice in aircraft cruise height: as `Halon-1001`, carrying CAS 74-83-9, EC 200-813-2 and seven factors, and as `Methyl bromide`, carrying no identifier of any kind and the same six of those factors -- identical values for climate change, freshwater ecotoxicity and human toxicity. What separates them is the seventh: ozone depletion, 0.57, which only the `Halon-1001` row carries. Halon numbering 1001 reads one carbon, no fluorine, no chlorine, one bromine, which is CH3Br, and Common Chemistry lists both names for 74-83-9; the `Methyl bromide` row reached the number through its name rather than through EF. A methyl bromide emission does deplete ozone, so the row without that factor is the incomplete one, and the identified row survives. It is also the row ecoinvent 3.8's `Methane, Bromo-, Halon 1001` maps onto. (#44)"
+    },
+    {
+      "flow_object_id": "fo-4ae840f5a9b43d35",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c07c6-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-9aeb-0050c2490048"
+      ],
+      "names": [
+        "PFC-31-10",
+        "perfluorobutane"
+      ],
+      "comment": "EF 3.1 publishes perfluorobutane twice in this context: as `perfluorobutane` with CAS 355-25-9 and no characterisation, and as `PFC-31-10` with the climate change factor of 10000. PFC-3-1-10 is the IPCC designation for C4F10, and the CAS on the designation row is this project's, from #19's code table via PubChem CID 9638. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-4ae840f5a9b43d35",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c0604-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-9aec-0050c2490048"
+      ],
+      "names": [
+        "PFC-31-10",
+        "perfluorobutane"
+      ],
+      "comment": "EF 3.1 publishes perfluorobutane twice in this context: as `perfluorobutane` with CAS 355-25-9 and no characterisation, and as `PFC-31-10` with the climate change factor of 10000. PFC-3-1-10 is the IPCC designation for C4F10, and the CAS on the designation row is this project's, from #19's code table via PubChem CID 9638. The designation row survives because it holds the factor. (#44)\n\nThe compartment on this ruling was corrected from `envi-air-hist15me` to `envi-air-mest15me-ru10pesq` (#106). EF 3.1 calls one compartment `Emissions to non-urban air or from high stacks`, and the project maps that whole phrase to rural medium stack under 150 metres; the ruling had been written from the second half of EF's name instead of from the context the build assigns, so its key matched no collision and it applied to nothing. Seven rulings had the same slip, and it is what left five of the fifteen pairs in #106 sitting in one compartment."
+    },
+    {
+      "flow_object_id": "fo-4ae840f5a9b43d35",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c0546-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-9aea-0050c2490048"
+      ],
+      "names": [
+        "PFC-31-10",
+        "perfluorobutane"
+      ],
+      "comment": "EF 3.1 publishes perfluorobutane twice in this context: as `perfluorobutane` with CAS 355-25-9 and no characterisation, and as `PFC-31-10` with the climate change factor of 10000. PFC-3-1-10 is the IPCC designation for C4F10, and the CAS on the designation row is this project's, from #19's code table via PubChem CID 9638. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-4ae840f5a9b43d35",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c047e-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "4d9a8790-3ddd-11dd-9ae9-0050c2490048"
+      ],
+      "names": [
+        "PFC-31-10",
+        "perfluorobutane"
+      ],
+      "comment": "EF 3.1 publishes perfluorobutane twice in this context: as `perfluorobutane` with CAS 355-25-9 and no characterisation, and as `PFC-31-10` with the climate change factor of 10000. PFC-3-1-10 is the IPCC designation for C4F10, and the CAS on the designation row is this project's, from #19's code table via PubChem CID 9638. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-4cfe21f6f1b5e527",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c1a22-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "08a91e70-3ddc-11dd-9484-0050c2490048"
+      ],
+      "names": [
+        "PFC-51-14",
+        "perfluorohexane"
+      ],
+      "comment": "EF 3.1 publishes perfluorohexane twice in this context: as `perfluorohexane` with CAS 355-42-0 and no characterisation, and as `PFC-51-14` with the climate change factor of 8620. The evidence joining them is EF 3.1's own -- the designation row carries the synonym `perfluorohexane, C6F14`, which names the substance and states its formula -- and #19 recorded the CAS on that basis. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-4cfe21f6f1b5e527",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c196e-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "08a91e70-3ddc-11dd-9485-0050c2490048"
+      ],
+      "names": [
+        "PFC-51-14",
+        "perfluorohexane"
+      ],
+      "comment": "EF 3.1 publishes perfluorohexane twice in this context: as `perfluorohexane` with CAS 355-42-0 and no characterisation, and as `PFC-51-14` with the climate change factor of 8620. The evidence joining them is EF 3.1's own -- the designation row carries the synonym `perfluorohexane, C6F14`, which names the substance and states its formula -- and #19 recorded the CAS on that basis. The designation row survives because it holds the factor. (#44)\n\nThe compartment on this ruling was corrected from `envi-air-hist15me` to `envi-air-mest15me-ru10pesq` (#106). EF 3.1 calls one compartment `Emissions to non-urban air or from high stacks`, and the project maps that whole phrase to rural medium stack under 150 metres; the ruling had been written from the second half of EF's name instead of from the context the build assigns, so its key matched no collision and it applied to nothing. Seven rulings had the same slip, and it is what left five of the fifteen pairs in #106 sitting in one compartment."
+    },
+    {
+      "flow_object_id": "fo-4cfe21f6f1b5e527",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c18a6-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "08a91e70-3ddc-11dd-9483-0050c2490048"
+      ],
+      "names": [
+        "PFC-51-14",
+        "perfluorohexane"
+      ],
+      "comment": "EF 3.1 publishes perfluorohexane twice in this context: as `perfluorohexane` with CAS 355-42-0 and no characterisation, and as `PFC-51-14` with the climate change factor of 8620. The evidence joining them is EF 3.1's own -- the designation row carries the synonym `perfluorohexane, C6F14`, which names the substance and states its formula -- and #19 recorded the CAS on that basis. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-4cfe21f6f1b5e527",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c17e8-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "08a91e70-3ddc-11dd-9482-0050c2490048"
+      ],
+      "names": [
+        "PFC-51-14",
+        "perfluorohexane"
+      ],
+      "comment": "EF 3.1 publishes perfluorohexane twice in this context: as `perfluorohexane` with CAS 355-42-0 and no characterisation, and as `PFC-51-14` with the climate change factor of 8620. The evidence joining them is EF 3.1's own -- the designation row carries the synonym `perfluorohexane, C6F14`, which names the substance and states its formula -- and #19 recorded the CAS on that basis. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-f67493e282213bda",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c03c0-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "08a91e70-3ddc-11dd-986e-0050c2490048"
+      ],
+      "names": [
+        "PFC-218",
+        "perfluoropropane"
+      ],
+      "comment": "EF 3.1 publishes perfluoropropane twice in this context: as `perfluoropropane` with CAS 76-19-7 and no characterisation, and as `PFC-218` with the climate change factor of 9290. PFC-218 is the IPCC designation for C3F8, and the CAS on that row is this project's, from #19's code table via PubChem CID 6432. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-f67493e282213bda",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19c02e4-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "08a91e70-3ddc-11dd-986f-0050c2490048"
+      ],
+      "names": [
+        "PFC-218",
+        "perfluoropropane"
+      ],
+      "comment": "EF 3.1 publishes perfluoropropane twice in this context: as `perfluoropropane` with CAS 76-19-7 and no characterisation, and as `PFC-218` with the climate change factor of 9290. PFC-218 is the IPCC designation for C3F8, and the CAS on that row is this project's, from #19's code table via PubChem CID 6432. The designation row survives because it holds the factor. (#44)\n\nThe compartment on this ruling was corrected from `envi-air-hist15me` to `envi-air-mest15me-ru10pesq` (#106). EF 3.1 calls one compartment `Emissions to non-urban air or from high stacks`, and the project maps that whole phrase to rural medium stack under 150 metres; the ruling had been written from the second half of EF's name instead of from the context the build assigns, so its key matched no collision and it applied to nothing. Seven rulings had the same slip, and it is what left five of the fifteen pairs in #106 sitting in one compartment."
+    },
+    {
+      "flow_object_id": "fo-f67493e282213bda",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19bffce-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "08a91e70-3ddc-11dd-986d-0050c2490048"
+      ],
+      "names": [
+        "PFC-218",
+        "perfluoropropane"
+      ],
+      "comment": "EF 3.1 publishes perfluoropropane twice in this context: as `perfluoropropane` with CAS 76-19-7 and no characterisation, and as `PFC-218` with the climate change factor of 9290. PFC-218 is the IPCC designation for C3F8, and the CAS on that row is this project's, from #19's code table via PubChem CID 6432. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-f67493e282213bda",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a19bff06-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "08a91e70-3ddc-11dd-986c-0050c2490048"
+      ],
+      "names": [
+        "PFC-218",
+        "perfluoropropane"
+      ],
+      "comment": "EF 3.1 publishes perfluoropropane twice in this context: as `perfluoropropane` with CAS 76-19-7 and no characterisation, and as `PFC-218` with the climate change factor of 9290. PFC-218 is the IPCC designation for C3F8, and the CAS on that row is this project's, from #19's code table via PubChem CID 6432. The designation row survives because it holds the factor. (#44)"
+    },
+    {
+      "flow_object_id": "fo-c4f4bb8d95c22ef6",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "unit": "MJ",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "c0060563-96ea-4322-8305-61c39f2ad3cd",
+      "merged_elementary_flow_ids": [
+        "04202046-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "names": [
+        "Energy, Geothermal, Converted",
+        "Primary Energy From Geothermics"
+      ],
+      "comment": "EF 3.1 publishes this resource twice in one context, once under the name ecoinvent and BAFU also use and once under a name from the legacy ILCD/ELCD block `04202046`-`0420204a`. The two rows agree on unit and on EF's own category, neither carries a CAS, a synonym or a general comment, and neither is characterised by any EF method, so no factor picks one name over the other and none is lost by collapsing them. The `converted` row survives because it is the row every other list here publishes and the row their correspondence tables map onto; the legacy row is deprecated onto it, so an inventory that used it still lands. `flow-object-overrides.json` is what puts the pair on one object -- neither carries an identifier that would have joined them. (#73)"
+    },
+    {
+      "flow_object_id": "fo-bc635179bc43bfc7",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-air",
+      "unit": "MJ",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "1c80d3da-b8c4-4275-a552-c96a709a11dd",
+      "merged_elementary_flow_ids": [
+        "04202048-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "names": [
+        "Energy, Solar, Converted",
+        "Primary Energy From Solar Energy"
+      ],
+      "comment": "EF 3.1 publishes this resource twice in one context, once under the name ecoinvent and BAFU also use and once under a name from the legacy ILCD/ELCD block `04202046`-`0420204a`. The two rows agree on unit and on EF's own category, neither carries a CAS, a synonym or a general comment, and neither is characterised by any EF method, so no factor picks one name over the other and none is lost by collapsing them. The `converted` row survives because it is the row every other list here publishes and the row their correspondence tables map onto; the legacy row is deprecated onto it, so an inventory that used it still lands. `flow-object-overrides.json` is what puts the pair on one object -- neither carries an identifier that would have joined them. (#73)"
+    },
+    {
+      "flow_object_id": "fo-70259b1e9c786701",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-air",
+      "unit": "MJ",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "0ab82f67-9e7e-417a-8de8-9801226a436f",
+      "merged_elementary_flow_ids": [
+        "0420204a-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "names": [
+        "Energy, Kinetic (in Wind), Converted",
+        "Primary Energy From Wind Power"
+      ],
+      "comment": "EF 3.1 publishes this resource twice in one context, once under the name ecoinvent and BAFU also use and once under a name from the legacy ILCD/ELCD block `04202046`-`0420204a`. The two rows agree on unit and on EF's own category, neither carries a CAS, a synonym or a general comment, and neither is characterised by any EF method, so no factor picks one name over the other and none is lost by collapsing them. The `converted` row survives because it is the row every other list here publishes and the row their correspondence tables map onto; the legacy row is deprecated onto it, so an inventory that used it still lands. `flow-object-overrides.json` is what puts the pair on one object -- neither carries an identifier that would have joined them. (#73)"
+    },
+    {
+      "flow_object_id": "fo-98218e5a3fcea37f",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate",
+      "unit": "MJ",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "e89f564c-7250-4fee-b759-dc8b42fe62bf",
+      "merged_elementary_flow_ids": [
+        "04202047-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "names": [
+        "Energy, Potential (in Hydropower Reservoir), Converted",
+        "Primary Energy From Hydro Power"
+      ],
+      "comment": "EF 3.1 publishes this resource twice in one context, once under the name ecoinvent and BAFU also use and once under a name from the legacy ILCD/ELCD block `04202046`-`0420204a`. The two rows agree on unit and on EF's own category, neither carries a CAS, a synonym or a general comment, and neither is characterised by any EF method, so no factor picks one name over the other and none is lost by collapsing them. The `converted` row survives because it is the row every other list here publishes and the row their correspondence tables map onto; the legacy row is deprecated onto it, so an inventory that used it still lands. `flow-object-overrides.json` is what puts the pair on one object -- neither carries an identifier that would have joined them. (#73) `primary energy from waves` shares this context and stays as it is: it is the only wave entry any list here has, so it duplicates nothing."
+    },
+    {
+      "flow_object_id": "fo-e8f7bd337de840c4",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-aicrhe",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "d86c61db-6555-11dd-ad8b-0800200c9a66",
+      "merged_elementary_flow_ids": [
+        "8a314326-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "CFC-10",
+        "Carbon tetrachloride"
+      ],
+      "comment": "Emissions to lower stratosphere and upper troposphere. Nine methods each side; the survivor carries ecoinvent 3.8's `Methane, Tetrachloro-, R-10`. The widest disagreement is human toxicity, cancer, 0.000040473 against 0.0000405 -- the same number to five figures and to three.\n\nEF 3.1 publishes carbon tetrachloride twice in each of five air contexts. One row is `CFC-10`, carrying CAS 56-23-5, EC 200-262-8, a general comment and some fifty synonyms; the other is `Carbon tetrachloride`, carrying no registry number, no EC number, no synonyms and no comment at all. Both hold the same characterisation under the same nine method identifiers, agreeing exactly on six and differing on the toxicity numbers only in how many digits were kept. Until #313 renamed the designation the two were told apart by name; now nothing tells them apart, and this is the collision that made visible.\n\nThe identified row survives, and that is the opposite of what deduplication's sort would do. The factor counts tie, so the sort falls through to the identifier and picks the bare row in all five contexts -- the row with no identifier of any kind, and the row no other list maps onto. The `CFC-10` rows are where ecoinvent's correspondence lands: ecoinvent 3.8 reaches them as `Methane, Tetrachloro-, R-10` and ecoinvent 3.12 as `Carbon Tetrachloride`, in every one of the five contexts bar the aircraft one, which 3.8 alone reaches. Nothing reaches the bare rows. Retiring the identifier a source list maps onto, in favour of one nothing maps onto, is the failure the ruling file exists to prevent, and here the sort would have walked into it five times.\n\nThe two rows are one substance on EF's own terms, not on this project's: the flow object they share is the identification of 56-23-5 given to the bare rows by name lookup (`commonchem-name-cas`), and `Carbon tetrachloride` is what Common Chemistry names that number. Nothing about the identity is in question -- the same nine factors under the same method identifiers are EF saying twice what it characterised. The duplication is EF's, and worth reporting upstream.\n\nThe bare rows carry no factor the survivor does not, so the union adds nothing; where the two publish one number to different precisions the more precise is kept and the other recorded on the factor it lost to. Eight further contexts hold a single `CFC-10` row each -- the three grounds, the five waters -- and are untouched by this. (#105)"
+    },
+    {
+      "flow_object_id": "fo-e8f7bd337de840c4",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "fe0acd60-3ddc-11dd-a92b-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "8a314a38-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "CFC-10",
+        "Carbon tetrachloride"
+      ],
+      "comment": "Urban ground level. Nine methods each side; the survivor carries ecoinvent 3.12 and 3.8. The widest disagreement is human toxicity, non-cancer, 8.3428e-6 against 8.34e-6.\n\nEF 3.1 publishes carbon tetrachloride twice in each of five air contexts. One row is `CFC-10`, carrying CAS 56-23-5, EC 200-262-8, a general comment and some fifty synonyms; the other is `Carbon tetrachloride`, carrying no registry number, no EC number, no synonyms and no comment at all. Both hold the same characterisation under the same nine method identifiers, agreeing exactly on six and differing on the toxicity numbers only in how many digits were kept. Until #313 renamed the designation the two were told apart by name; now nothing tells them apart, and this is the collision that made visible.\n\nThe identified row survives, and that is the opposite of what deduplication's sort would do. The factor counts tie, so the sort falls through to the identifier and picks the bare row in all five contexts -- the row with no identifier of any kind, and the row no other list maps onto. The `CFC-10` rows are where ecoinvent's correspondence lands: ecoinvent 3.8 reaches them as `Methane, Tetrachloro-, R-10` and ecoinvent 3.12 as `Carbon Tetrachloride`, in every one of the five contexts bar the aircraft one, which 3.8 alone reaches. Nothing reaches the bare rows. Retiring the identifier a source list maps onto, in favour of one nothing maps onto, is the failure the ruling file exists to prevent, and here the sort would have walked into it five times.\n\nThe two rows are one substance on EF's own terms, not on this project's: the flow object they share is the identification of 56-23-5 given to the bare rows by name lookup (`commonchem-name-cas`), and `Carbon tetrachloride` is what Common Chemistry names that number. Nothing about the identity is in question -- the same nine factors under the same method identifiers are EF saying twice what it characterised. The duplication is EF's, and worth reporting upstream.\n\nThe bare rows carry no factor the survivor does not, so the union adds nothing; where the two publish one number to different precisions the more precise is kept and the other recorded on the factor it lost to. Eight further contexts hold a single `CFC-10` row each -- the three grounds, the five waters -- and are untouched by this. (#105)"
+    },
+    {
+      "flow_object_id": "fo-e8f7bd337de840c4",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "fe0acd60-3ddc-11dd-a92a-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "8a31416e-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "CFC-10",
+        "Carbon tetrachloride"
+      ],
+      "comment": "Long-term. Three methods each side and the two agree to the last digit, so nothing is chosen here at all; the survivor carries ecoinvent 3.12 and 3.8.\n\nEF 3.1 publishes carbon tetrachloride twice in each of five air contexts. One row is `CFC-10`, carrying CAS 56-23-5, EC 200-262-8, a general comment and some fifty synonyms; the other is `Carbon tetrachloride`, carrying no registry number, no EC number, no synonyms and no comment at all. Both hold the same characterisation under the same nine method identifiers, agreeing exactly on six and differing on the toxicity numbers only in how many digits were kept. Until #313 renamed the designation the two were told apart by name; now nothing tells them apart, and this is the collision that made visible.\n\nThe identified row survives, and that is the opposite of what deduplication's sort would do. The factor counts tie, so the sort falls through to the identifier and picks the bare row in all five contexts -- the row with no identifier of any kind, and the row no other list maps onto. The `CFC-10` rows are where ecoinvent's correspondence lands: ecoinvent 3.8 reaches them as `Methane, Tetrachloro-, R-10` and ecoinvent 3.12 as `Carbon Tetrachloride`, in every one of the five contexts bar the aircraft one, which 3.8 alone reaches. Nothing reaches the bare rows. Retiring the identifier a source list maps onto, in favour of one nothing maps onto, is the failure the ruling file exists to prevent, and here the sort would have walked into it five times.\n\nThe two rows are one substance on EF's own terms, not on this project's: the flow object they share is the identification of 56-23-5 given to the bare rows by name lookup (`commonchem-name-cas`), and `Carbon tetrachloride` is what Common Chemistry names that number. Nothing about the identity is in question -- the same nine factors under the same method identifiers are EF saying twice what it characterised. The duplication is EF's, and worth reporting upstream.\n\nThe bare rows carry no factor the survivor does not, so the union adds nothing; where the two publish one number to different precisions the more precise is kept and the other recorded on the factor it lost to. Eight further contexts hold a single `CFC-10` row each -- the three grounds, the five waters -- and are untouched by this. (#105)"
+    },
+    {
+      "flow_object_id": "fo-e8f7bd337de840c4",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "fe0acd60-3ddc-11dd-a92c-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "8a314826-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "CFC-10",
+        "Carbon tetrachloride"
+      ],
+      "comment": "Rural medium stack under 150 metres. Nine methods each side; the survivor carries ecoinvent 3.12 and 3.8. The widest disagreement is human toxicity, cancer, 0.000040473 against 0.0000405.\n\nEF 3.1 publishes carbon tetrachloride twice in each of five air contexts. One row is `CFC-10`, carrying CAS 56-23-5, EC 200-262-8, a general comment and some fifty synonyms; the other is `Carbon tetrachloride`, carrying no registry number, no EC number, no synonyms and no comment at all. Both hold the same characterisation under the same nine method identifiers, agreeing exactly on six and differing on the toxicity numbers only in how many digits were kept. Until #313 renamed the designation the two were told apart by name; now nothing tells them apart, and this is the collision that made visible.\n\nThe identified row survives, and that is the opposite of what deduplication's sort would do. The factor counts tie, so the sort falls through to the identifier and picks the bare row in all five contexts -- the row with no identifier of any kind, and the row no other list maps onto. The `CFC-10` rows are where ecoinvent's correspondence lands: ecoinvent 3.8 reaches them as `Methane, Tetrachloro-, R-10` and ecoinvent 3.12 as `Carbon Tetrachloride`, in every one of the five contexts bar the aircraft one, which 3.8 alone reaches. Nothing reaches the bare rows. Retiring the identifier a source list maps onto, in favour of one nothing maps onto, is the failure the ruling file exists to prevent, and here the sort would have walked into it five times.\n\nThe two rows are one substance on EF's own terms, not on this project's: the flow object they share is the identification of 56-23-5 given to the bare rows by name lookup (`commonchem-name-cas`), and `Carbon tetrachloride` is what Common Chemistry names that number. Nothing about the identity is in question -- the same nine factors under the same method identifiers are EF saying twice what it characterised. The duplication is EF's, and worth reporting upstream.\n\nThe bare rows carry no factor the survivor does not, so the union adds nothing; where the two publish one number to different precisions the more precise is kept and the other recorded on the factor it lost to. Eight further contexts hold a single `CFC-10` row each -- the three grounds, the five waters -- and are untouched by this. (#105)"
+    },
+    {
+      "flow_object_id": "fo-e8f7bd337de840c4",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "fe0acd60-3ddc-11dd-a929-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "8a313fb6-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "CFC-10",
+        "Carbon tetrachloride"
+      ],
+      "comment": "Unspecified air, the context #105 is written about. Nine methods each side; the survivor carries ecoinvent 3.12 and 3.8. The widest disagreement is human toxicity, cancer, 0.000041784 against 0.0000418 -- half a percent apart, and half a percent is not a disagreement about carbon tetrachloride, it is one number rounded.\n\nEF 3.1 publishes carbon tetrachloride twice in each of five air contexts. One row is `CFC-10`, carrying CAS 56-23-5, EC 200-262-8, a general comment and some fifty synonyms; the other is `Carbon tetrachloride`, carrying no registry number, no EC number, no synonyms and no comment at all. Both hold the same characterisation under the same nine method identifiers, agreeing exactly on six and differing on the toxicity numbers only in how many digits were kept. Until #313 renamed the designation the two were told apart by name; now nothing tells them apart, and this is the collision that made visible.\n\nThe identified row survives, and that is the opposite of what deduplication's sort would do. The factor counts tie, so the sort falls through to the identifier and picks the bare row in all five contexts -- the row with no identifier of any kind, and the row no other list maps onto. The `CFC-10` rows are where ecoinvent's correspondence lands: ecoinvent 3.8 reaches them as `Methane, Tetrachloro-, R-10` and ecoinvent 3.12 as `Carbon Tetrachloride`, in every one of the five contexts bar the aircraft one, which 3.8 alone reaches. Nothing reaches the bare rows. Retiring the identifier a source list maps onto, in favour of one nothing maps onto, is the failure the ruling file exists to prevent, and here the sort would have walked into it five times.\n\nThe two rows are one substance on EF's own terms, not on this project's: the flow object they share is the identification of 56-23-5 given to the bare rows by name lookup (`commonchem-name-cas`), and `Carbon tetrachloride` is what Common Chemistry names that number. Nothing about the identity is in question -- the same nine factors under the same method identifiers are EF saying twice what it characterised. The duplication is EF's, and worth reporting upstream.\n\nThe bare rows carry no factor the survivor does not, so the union adds nothing; where the two publish one number to different precisions the more precise is kept and the other recorded on the factor it lost to. Eight further contexts hold a single `CFC-10` row each -- the three grounds, the five waters -- and are untouched by this. (#105)"
+    },
+    {
+      "flow_object_id": "fo-2eef9f5fb57f623c",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "08a91e70-3ddc-11dd-9340-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "a19bf2e0-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HFC-116",
+        "PFC-116"
+      ],
+      "comment": "Urban air close to ground level. Six factors each side. EF 3.1 publishes hexafluoroethane twice in each of four air compartments, once as `HFC-116` and once as `PFC-116`, both carrying CAS 76-16-4 and the same characterisation. `HFC-116` is wrong as chemistry -- hexafluoroethane is C2F6 and contains no hydrogen at all, so it is not a hydrofluorocarbon -- and it is nonetheless the copy that carries everything else: EC 200-939-8, twelve synonyms, EF's own general comment, and the rows ecoinvent 3.8 and 3.12 both map onto. The `PFC-116` copy carries the registry number and one synonym, and no list reaches it.\n\nSo the survivor is the identified row in all four, and in one of the four that is the opposite of what a sort would do: the factor counts tie, the tiebreak falls through to the identifier, and in rural medium stack it picks the bare `PFC-116` row. Which of the two names is the correct designation does not decide anything here, because neither is published: Common Chemistry and ChEBI agree on `Hexafluoroethane` and the rename has already happened. Both part numbers survive as alternative labels (#106)."
+    },
+    {
+      "flow_object_id": "fo-2eef9f5fb57f623c",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "08a91e70-3ddc-11dd-933f-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "a19bf150-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HFC-116",
+        "PFC-116"
+      ],
+      "comment": "Long-term emissions to air. Two factors each side. EF 3.1 publishes hexafluoroethane twice in each of four air compartments, once as `HFC-116` and once as `PFC-116`, both carrying CAS 76-16-4 and the same characterisation. `HFC-116` is wrong as chemistry -- hexafluoroethane is C2F6 and contains no hydrogen at all, so it is not a hydrofluorocarbon -- and it is nonetheless the copy that carries everything else: EC 200-939-8, twelve synonyms, EF's own general comment, and the rows ecoinvent 3.8 and 3.12 both map onto. The `PFC-116` copy carries the registry number and one synonym, and no list reaches it.\n\nSo the survivor is the identified row in all four, and in one of the four that is the opposite of what a sort would do: the factor counts tie, the tiebreak falls through to the identifier, and in rural medium stack it picks the bare `PFC-116` row. Which of the two names is the correct designation does not decide anything here, because neither is published: Common Chemistry and ChEBI agree on `Hexafluoroethane` and the rename has already happened. Both part numbers survive as alternative labels (#106)."
+    },
+    {
+      "flow_object_id": "fo-2eef9f5fb57f623c",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "fe0acd60-3ddc-11dd-a3e5-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "a19bf218-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HFC-116",
+        "PFC-116"
+      ],
+      "comment": "Rural air, medium stack under 150 metres. Six factors each side, and the one compartment where the survivor named here is not the one the sort would keep. EF 3.1 publishes hexafluoroethane twice in each of four air compartments, once as `HFC-116` and once as `PFC-116`, both carrying CAS 76-16-4 and the same characterisation. `HFC-116` is wrong as chemistry -- hexafluoroethane is C2F6 and contains no hydrogen at all, so it is not a hydrofluorocarbon -- and it is nonetheless the copy that carries everything else: EC 200-939-8, twelve synonyms, EF's own general comment, and the rows ecoinvent 3.8 and 3.12 both map onto. The `PFC-116` copy carries the registry number and one synonym, and no list reaches it.\n\nSo the survivor is the identified row in all four, and in one of the four that is the opposite of what a sort would do: the factor counts tie, the tiebreak falls through to the identifier, and in rural medium stack it picks the bare `PFC-116` row. Which of the two names is the correct designation does not decide anything here, because neither is published: Common Chemistry and ChEBI agree on `Hexafluoroethane` and the rename has already happened. Both part numbers survive as alternative labels (#106)."
+    },
+    {
+      "flow_object_id": "fo-2eef9f5fb57f623c",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "08a91e70-3ddc-11dd-933e-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "a19bf07e-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HFC-116",
+        "PFC-116"
+      ],
+      "comment": "Unspecified air. Six factors each side. EF 3.1 publishes hexafluoroethane twice in each of four air compartments, once as `HFC-116` and once as `PFC-116`, both carrying CAS 76-16-4 and the same characterisation. `HFC-116` is wrong as chemistry -- hexafluoroethane is C2F6 and contains no hydrogen at all, so it is not a hydrofluorocarbon -- and it is nonetheless the copy that carries everything else: EC 200-939-8, twelve synonyms, EF's own general comment, and the rows ecoinvent 3.8 and 3.12 both map onto. The `PFC-116` copy carries the registry number and one synonym, and no list reaches it.\n\nSo the survivor is the identified row in all four, and in one of the four that is the opposite of what a sort would do: the factor counts tie, the tiebreak falls through to the identifier, and in rural medium stack it picks the bare `PFC-116` row. Which of the two names is the correct designation does not decide anything here, because neither is published: Common Chemistry and ChEBI agree on `Hexafluoroethane` and the rename has already happened. Both part numbers survive as alternative labels (#106)."
+    },
+    {
+      "flow_object_id": "fo-49ce0eec1f4341e1",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "4d9a8790-3ddd-11dd-925b-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "9ae45384-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HCFC-140",
+        "Methyl chloroform"
+      ],
+      "comment": "Urban air close to ground level. Seven factors each side. EF 3.1 publishes 1,1,1-trichloroethane twice in each of four air compartments, once as `HCFC-140` -- its refrigerant code -- and once as `Methyl chloroform`, which is what the degreasing trade called it. Both are real names for the solvent and both copies carry CAS 71-55-6, so nothing is in doubt about what the substance is. The `HCFC-140` copy also carries EC 200-756-3, 57 synonyms and EF's general comment; the other carries none of those, and no source list reaches either.\n\nThe identified row survives. The factor counts tie in all four compartments, so a sort would fall through to the identifier, and in unspecified air it would keep the bare row. Both names are already published as one -- `preferred-label-decisions.json` refuses `1,1,1-Trichloroethane` -> `HCFC-140` and approves `Methyl Chloroform` -> `1,1,1-Trichloroethane` -- which is what left nothing but a free-text comment telling the two rows apart (#106)."
+    },
+    {
+      "flow_object_id": "fo-49ce0eec1f4341e1",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "4d9a8790-3ddd-11dd-925a-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "9ae44f9c-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HCFC-140",
+        "Methyl chloroform"
+      ],
+      "comment": "Long-term emissions to air. Three factors each side. EF 3.1 publishes 1,1,1-trichloroethane twice in each of four air compartments, once as `HCFC-140` -- its refrigerant code -- and once as `Methyl chloroform`, which is what the degreasing trade called it. Both are real names for the solvent and both copies carry CAS 71-55-6, so nothing is in doubt about what the substance is. The `HCFC-140` copy also carries EC 200-756-3, 57 synonyms and EF's general comment; the other carries none of those, and no source list reaches either.\n\nThe identified row survives. The factor counts tie in all four compartments, so a sort would fall through to the identifier, and in unspecified air it would keep the bare row. Both names are already published as one -- `preferred-label-decisions.json` refuses `1,1,1-Trichloroethane` -> `HCFC-140` and approves `Methyl Chloroform` -> `1,1,1-Trichloroethane` -- which is what left nothing but a free-text comment telling the two rows apart (#106)."
+    },
+    {
+      "flow_object_id": "fo-49ce0eec1f4341e1",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "4d9a8790-3ddd-11dd-925c-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "9ae45122-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HCFC-140",
+        "Methyl chloroform"
+      ],
+      "comment": "Rural air, medium stack under 150 metres. Seven factors each side. EF 3.1 publishes 1,1,1-trichloroethane twice in each of four air compartments, once as `HCFC-140` -- its refrigerant code -- and once as `Methyl chloroform`, which is what the degreasing trade called it. Both are real names for the solvent and both copies carry CAS 71-55-6, so nothing is in doubt about what the substance is. The `HCFC-140` copy also carries EC 200-756-3, 57 synonyms and EF's general comment; the other carries none of those, and no source list reaches either.\n\nThe identified row survives. The factor counts tie in all four compartments, so a sort would fall through to the identifier, and in unspecified air it would keep the bare row. Both names are already published as one -- `preferred-label-decisions.json` refuses `1,1,1-Trichloroethane` -> `HCFC-140` and approves `Methyl Chloroform` -> `1,1,1-Trichloroethane` -- which is what left nothing but a free-text comment telling the two rows apart (#106)."
+    },
+    {
+      "flow_object_id": "fo-49ce0eec1f4341e1",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "d86cafdf-6555-11dd-ad8b-0800200c9a66",
+      "merged_elementary_flow_ids": [
+        "9ae44d44-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HCFC-140",
+        "Methyl chloroform"
+      ],
+      "comment": "Unspecified air. Seven factors each side, and the one compartment where the survivor named here is not the one the sort would keep. EF 3.1 publishes 1,1,1-trichloroethane twice in each of four air compartments, once as `HCFC-140` -- its refrigerant code -- and once as `Methyl chloroform`, which is what the degreasing trade called it. Both are real names for the solvent and both copies carry CAS 71-55-6, so nothing is in doubt about what the substance is. The `HCFC-140` copy also carries EC 200-756-3, 57 synonyms and EF's general comment; the other carries none of those, and no source list reaches either.\n\nThe identified row survives. The factor counts tie in all four compartments, so a sort would fall through to the identifier, and in unspecified air it would keep the bare row. Both names are already published as one -- `preferred-label-decisions.json` refuses `1,1,1-Trichloroethane` -> `HCFC-140` and approves `Methyl Chloroform` -> `1,1,1-Trichloroethane` -- which is what left nothing but a free-text comment telling the two rows apart (#106)."
+    },
+    {
+      "flow_object_id": "fo-48c318d9e89b48fb",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "4d9a8790-3ddd-11dd-9d8e-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "cd6262a9-9397-4456-beb4-86a736449186"
+      ],
+      "names": [
+        "beryllium",
+        "beryllium"
+      ],
+      "comment": "Rural air, medium stack under 150 metres. Beryllium, 7440-41-7, six factors each side. The least ambiguous pair in #106: two rows with the same name, the same registry number, the same EC number and the same characterisation, in one compartment. Nothing distinguishes them at all except that one carries EF's sentence `CAS number of the metallic form is chosen. Note that this elementary flow is representing also all ions...` and the other carries no comment. A general comment is not a substance. The row with the comment survives because it is also the row ecoinvent 3.8 and 3.12 map onto; the factor counts tie, so a sort would decide it on the identifier and would not be deciding anything (#106)."
+    },
+    {
+      "flow_object_id": "fo-d94072122a6ce33a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "08a91e70-3ddc-11dd-9966-0050c2490048",
+      "merged_elementary_flow_ids": [
+        "1e49a2cf-7772-46ac-8a4f-55e0e170f377"
+      ],
+      "names": [
+        "thallium",
+        "thallium"
+      ],
+      "comment": "Rural air, medium stack under 150 metres. Thallium, 7440-28-0, four factors each side. The least ambiguous pair in #106: two rows with the same name, the same registry number, the same EC number and the same characterisation, in one compartment. Nothing distinguishes them at all except that one carries EF's sentence `CAS number of the metallic form is chosen. Note that this elementary flow is representing also all ions...` and the other carries no comment. A general comment is not a substance. The row with the comment survives because it is also the row ecoinvent 3.8 and 3.12 map onto; the factor counts tie, so a sort would decide it on the identifier and would not be deciding anything (#106)."
+    },
+    {
+      "flow_object_id": "fo-757b6ee59c695209",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "m3",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "0342f5e5-b53e-4cec-9e67-fb197f24fff0",
+      "merged_elementary_flow_ids": [
+        "4b772bba-b5c1-4098-9c1d-3d9d8c74c7fa"
+      ],
+      "names": [
+        "Water",
+        "Water (evapotranspiration)"
+      ],
+      "comment": "Unspecified air, cubic metres. EF 3.1 publishes water vapour twice here: as `Water`, 7732-18-5 and no comment, and as `Water (evapotranspiration)`, the same number and the comment `water vapour, but coming from growing renewables. Some \"water people\" like to distinguish between water vapour and evapotranspirated water.` That comment is EF's own answer to whether these are two substances: the same vapour, with a remark about where it came from, and a distinction EF attributes to `some water people` rather than to itself -- it appears in this one compartment out of the five that hold an m3 water-to-air flow, carries no factor under any method (neither row does), and no qualifier or field states it, so `general_comment` is the only field holding the pair apart, which is the exact shape the queue exists to report. Where the water came from is real information -- evapotranspiration is the consumptive half of agricultural water use -- but a distinction that matters to a water model belongs on an origin qualifier a rule can read, the way biogenic carbon's does, not in a duplicate flow that splits one emission across two identifiers; if AWARE-style accounting ever needs it, EF's uuid and remark survive on the deprecated row and in this ruling. The bare `Water` row survives because every mapping that exists lands on it: ecoinvent 3.8's and 3.12's correspondence tables name 0342f5e5 for their own bare `Water` m3 rows to air, AGRIBALYSE's busiest air row is sent there by `agribalyse-3.2-match-overrides.json` (#353, which had to pick between the pair per row -- the cost #191 records), and nothing in any merged list, table or override names 4b772bba. Deduplication's sort would keep the same row, so for once the sort and the decision agree, and the factor sets -- both empty -- lose nothing. (#191.)"
+    },
+    {
+      "flow_object_id": "fo-48ed32f86342331a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "9308d9b4-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "341eab87-065e-40a8-87f4-87d78776999b"
+      ],
+      "names": [
+        "HFE-143a",
+        "Methyl trifluoromethyl ether"
+      ],
+      "comment": "Urban air close to ground, kilograms. EF 3.1 publishes trifluoromethoxymethane twice here, both rows in kilograms and both carrying 421-14-7: as `Methyl trifluoromethyl ether`, with ten synonyms -- `Trifluoromethoxymethane`, `CF3OCH3`, `Methane, trifluoromethoxy-`, `Methyl perfluoromethyl ether` -- EF's ILCD note, and no characterisation; and as `HFE-143a`, the refrigerant designation, with no synonyms and Climate change 616.0. Whether that is one substance is answered by the number both rows carry: PubChem's CID 73947 is 421-14-7, trifluoromethoxymethane, and its synonyms include `Methyl trifluoromethyl ether` and `Trifluoromethyl methyl ether`. One substance under a chemical name and an industry code, which is the case this file was made for.\n\n`HFE-143a` survives for the ordinary reason: it is the row that holds the factor, and the merge gives it to a row that had none. Retiring the named row loses nothing it carries, because the synonyms and the ILCD note are on the flow object the two share and the substance goes on being published as `Methyl Trifluoromethyl Ether`. The named row's seven soil and water rows are uncontested and stay; so does `HFE-143a`'s own row in the lower stratosphere, which the named row does not reach.\n\nUntil this ruling the collision stood, and a standing collision is what a source row cannot be placed onto: Stepwise 2006's `Ether, 1,1,1-trifluoromethyl methyl-, HFE-143a` was tied between the two rows (`tied-elementary-candidates`) and published nowhere, on the four-list build of 29 August 2026 one of only two unplaced rows in 22,005. (#185)"
+    },
+    {
+      "flow_object_id": "fo-48ed32f86342331a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "9308d5e0-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "6ad38d57-385e-4cd7-8c2f-fad75b9a185f"
+      ],
+      "names": [
+        "HFE-143a",
+        "Methyl trifluoromethyl ether"
+      ],
+      "comment": "Unspecified air, long-term, kilograms. EF 3.1 publishes trifluoromethoxymethane twice here, both rows in kilograms and both carrying 421-14-7: as `Methyl trifluoromethyl ether`, with ten synonyms -- `Trifluoromethoxymethane`, `CF3OCH3`, `Methane, trifluoromethoxy-`, `Methyl perfluoromethyl ether` -- EF's ILCD note, and no characterisation; and as `HFE-143a`, the refrigerant designation, with no synonyms and Climate change 616.0. Whether that is one substance is answered by the number both rows carry: PubChem's CID 73947 is 421-14-7, trifluoromethoxymethane, and its synonyms include `Methyl trifluoromethyl ether` and `Trifluoromethyl methyl ether`. One substance under a chemical name and an industry code, which is the case this file was made for.\n\n`HFE-143a` survives for the ordinary reason: it is the row that holds the factor, and the merge gives it to a row that had none. Retiring the named row loses nothing it carries, because the synonyms and the ILCD note are on the flow object the two share and the substance goes on being published as `Methyl Trifluoromethyl Ether`. The named row's seven soil and water rows are uncontested and stay; so does `HFE-143a`'s own row in the lower stratosphere, which the named row does not reach.\n\nUntil this ruling the collision stood, and a standing collision is what a source row cannot be placed onto: Stepwise 2006's `Ether, 1,1,1-trifluoromethyl methyl-, HFE-143a` was tied between the two rows (`tied-elementary-candidates`) and published nowhere, on the four-list build of 29 August 2026 one of only two unplaced rows in 22,005. (#185)"
+    },
+    {
+      "flow_object_id": "fo-48ed32f86342331a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "9308d8f6-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "bf80615e-1c05-4274-aac2-78f4c0fcd390"
+      ],
+      "names": [
+        "HFE-143a",
+        "Methyl trifluoromethyl ether"
+      ],
+      "comment": "Non-urban air or from high stacks, kilograms. EF 3.1 publishes trifluoromethoxymethane twice here, both rows in kilograms and both carrying 421-14-7: as `Methyl trifluoromethyl ether`, with ten synonyms -- `Trifluoromethoxymethane`, `CF3OCH3`, `Methane, trifluoromethoxy-`, `Methyl perfluoromethyl ether` -- EF's ILCD note, and no characterisation; and as `HFE-143a`, the refrigerant designation, with no synonyms and Climate change 616.0. Whether that is one substance is answered by the number both rows carry: PubChem's CID 73947 is 421-14-7, trifluoromethoxymethane, and its synonyms include `Methyl trifluoromethyl ether` and `Trifluoromethyl methyl ether`. One substance under a chemical name and an industry code, which is the case this file was made for.\n\n`HFE-143a` survives for the ordinary reason: it is the row that holds the factor, and the merge gives it to a row that had none. Retiring the named row loses nothing it carries, because the synonyms and the ILCD note are on the flow object the two share and the substance goes on being published as `Methyl Trifluoromethyl Ether`. The named row's seven soil and water rows are uncontested and stay; so does `HFE-143a`'s own row in the lower stratosphere, which the named row does not reach.\n\nUntil this ruling the collision stood, and a standing collision is what a source row cannot be placed onto: Stepwise 2006's `Ether, 1,1,1-trifluoromethyl methyl-, HFE-143a` was tied between the two rows (`tied-elementary-candidates`) and published nowhere, on the four-list build of 29 August 2026 one of only two unplaced rows in 22,005. (#185)"
+    },
+    {
+      "flow_object_id": "fo-48ed32f86342331a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "9308ce4c-e251-11e6-bf01-fe55135034f3",
+      "merged_elementary_flow_ids": [
+        "5a24f510-a2be-4ff7-b0f2-d90884572b90"
+      ],
+      "names": [
+        "HFE-143a",
+        "Methyl trifluoromethyl ether"
+      ],
+      "comment": "Unspecified air, kilograms. EF 3.1 publishes trifluoromethoxymethane twice here, both rows in kilograms and both carrying 421-14-7: as `Methyl trifluoromethyl ether`, with ten synonyms -- `Trifluoromethoxymethane`, `CF3OCH3`, `Methane, trifluoromethoxy-`, `Methyl perfluoromethyl ether` -- EF's ILCD note, and no characterisation; and as `HFE-143a`, the refrigerant designation, with no synonyms and Climate change 616.0. Whether that is one substance is answered by the number both rows carry: PubChem's CID 73947 is 421-14-7, trifluoromethoxymethane, and its synonyms include `Methyl trifluoromethyl ether` and `Trifluoromethyl methyl ether`. One substance under a chemical name and an industry code, which is the case this file was made for.\n\n`HFE-143a` survives for the ordinary reason: it is the row that holds the factor, and the merge gives it to a row that had none. Retiring the named row loses nothing it carries, because the synonyms and the ILCD note are on the flow object the two share and the substance goes on being published as `Methyl Trifluoromethyl Ether`. The named row's seven soil and water rows are uncontested and stay; so does `HFE-143a`'s own row in the lower stratosphere, which the named row does not reach.\n\nUntil this ruling the collision stood, and a standing collision is what a source row cannot be placed onto: Stepwise 2006's `Ether, 1,1,1-trifluoromethyl methyl-, HFE-143a` was tied between the two rows (`tied-elementary-candidates`) and published nowhere, on the four-list build of 29 August 2026 one of only two unplaced rows in 22,005. (#185)"
+    },
+    {
+      "flow_object_id": "fo-8e701ffd05fb4bc1",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "1b258cbc-798d-4d86-81c1-3cb852a54e8f",
+      "merged_elementary_flow_ids": [
+        "a19b9bce-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HFE-569sf2",
+        "n-HFE-7200"
+      ],
+      "comment": "Urban air close to ground, kilograms. EF 3.1 publishes 1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane twice here, both rows in kilograms, both carrying 163702-05-4 and both carrying Climate change 60.7: as `n-HFE-7200`, with no synonyms and four air contexts and nothing else; and as `HFE-569sf2`, with twelve synonyms -- `1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane`, `HFE-7200`, `Ethyl Nonafluorobutyl Ether`, `Ether, nonafluorobutane ethyl-` -- EF's ILCD note, and eleven contexts across air, soil and water. PubChem's CID 206000 is 163702-05-4 and lists `HFE-7200`, `NOVEC HFE 7200` and `HFE-569sf2 (7200)` among its synonyms, so the designation and the IPCC code are two names for one substance.\n\nThe factor sets are equal, which makes this the carbon tetrachloride case (#105) rather than the ordinary one: deduplication's sort would fall through to the identifier and decide nothing about the chemistry. What decides is what the rows carry and what reaches them. `HFE-569sf2` survives: it holds the registry number's whole synonym set and EF's note, it is the row EF publishes in soil and water as well as air, and one of its synonyms -- `Ether, nonafluorobutane ethyl-` -- is the head of Stepwise 2006's own name for the row this ruling unblocks. `n-HFE-7200` carries the same number and the same factor and nothing else.\n\nWhat is not settled here is EF's separate `HFE-7200` row, which carries 163702-06-5 and no factor. PubChem's CID 205999 is that number and it is ethyl perfluoroisobutyl ether -- a different molecule, the branched isomer -- so that row and `i-HFE-7200` are #19's question and not this one.\n\nUntil this ruling the collision stood: Stepwise 2006's `Ether, nonafluorobutane ethyl-, HFE569sf2 (HFE-7200)` was tied between the two rows (`tied-elementary-candidates`) and published nowhere, on the four-list build of 29 August 2026 one of only two unplaced rows in 22,005. (#185)"
+    },
+    {
+      "flow_object_id": "fo-8e701ffd05fb4bc1",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "f9c7caa5-1b99-4ce5-846c-9ca86fc074c2",
+      "merged_elementary_flow_ids": [
+        "a19b95ca-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HFE-569sf2",
+        "n-HFE-7200"
+      ],
+      "comment": "Unspecified air, long-term, kilograms. EF 3.1 publishes 1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane twice here, both rows in kilograms, both carrying 163702-05-4 and both carrying Climate change 60.7: as `n-HFE-7200`, with no synonyms and four air contexts and nothing else; and as `HFE-569sf2`, with twelve synonyms -- `1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane`, `HFE-7200`, `Ethyl Nonafluorobutyl Ether`, `Ether, nonafluorobutane ethyl-` -- EF's ILCD note, and eleven contexts across air, soil and water. PubChem's CID 206000 is 163702-05-4 and lists `HFE-7200`, `NOVEC HFE 7200` and `HFE-569sf2 (7200)` among its synonyms, so the designation and the IPCC code are two names for one substance.\n\nThe factor sets are equal, which makes this the carbon tetrachloride case (#105) rather than the ordinary one: deduplication's sort would fall through to the identifier and decide nothing about the chemistry. What decides is what the rows carry and what reaches them. `HFE-569sf2` survives: it holds the registry number's whole synonym set and EF's note, it is the row EF publishes in soil and water as well as air, and one of its synonyms -- `Ether, nonafluorobutane ethyl-` -- is the head of Stepwise 2006's own name for the row this ruling unblocks. `n-HFE-7200` carries the same number and the same factor and nothing else.\n\nWhat is not settled here is EF's separate `HFE-7200` row, which carries 163702-06-5 and no factor. PubChem's CID 205999 is that number and it is ethyl perfluoroisobutyl ether -- a different molecule, the branched isomer -- so that row and `i-HFE-7200` are #19's question and not this one.\n\nUntil this ruling the collision stood: Stepwise 2006's `Ether, nonafluorobutane ethyl-, HFE569sf2 (HFE-7200)` was tied between the two rows (`tied-elementary-candidates`) and published nowhere, on the four-list build of 29 August 2026 one of only two unplaced rows in 22,005. (#185)"
+    },
+    {
+      "flow_object_id": "fo-8e701ffd05fb4bc1",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "ed1c4bbd-43e8-432d-8752-1a211ae0e573",
+      "merged_elementary_flow_ids": [
+        "a19b98f4-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HFE-569sf2",
+        "n-HFE-7200"
+      ],
+      "comment": "Non-urban air or from high stacks, kilograms. EF 3.1 publishes 1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane twice here, both rows in kilograms, both carrying 163702-05-4 and both carrying Climate change 60.7: as `n-HFE-7200`, with no synonyms and four air contexts and nothing else; and as `HFE-569sf2`, with twelve synonyms -- `1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane`, `HFE-7200`, `Ethyl Nonafluorobutyl Ether`, `Ether, nonafluorobutane ethyl-` -- EF's ILCD note, and eleven contexts across air, soil and water. PubChem's CID 206000 is 163702-05-4 and lists `HFE-7200`, `NOVEC HFE 7200` and `HFE-569sf2 (7200)` among its synonyms, so the designation and the IPCC code are two names for one substance.\n\nThe factor sets are equal, which makes this the carbon tetrachloride case (#105) rather than the ordinary one: deduplication's sort would fall through to the identifier and decide nothing about the chemistry. What decides is what the rows carry and what reaches them. `HFE-569sf2` survives: it holds the registry number's whole synonym set and EF's note, it is the row EF publishes in soil and water as well as air, and one of its synonyms -- `Ether, nonafluorobutane ethyl-` -- is the head of Stepwise 2006's own name for the row this ruling unblocks. `n-HFE-7200` carries the same number and the same factor and nothing else.\n\nWhat is not settled here is EF's separate `HFE-7200` row, which carries 163702-06-5 and no factor. PubChem's CID 205999 is that number and it is ethyl perfluoroisobutyl ether -- a different molecule, the branched isomer -- so that row and `i-HFE-7200` are #19's question and not this one.\n\nUntil this ruling the collision stood: Stepwise 2006's `Ether, nonafluorobutane ethyl-, HFE569sf2 (HFE-7200)` was tied between the two rows (`tied-elementary-candidates`) and published nowhere, on the four-list build of 29 August 2026 one of only two unplaced rows in 22,005. (#185)"
+    },
+    {
+      "flow_object_id": "fo-8e701ffd05fb4bc1",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "b0681715-c852-4456-ab78-c88e68502c7a",
+      "merged_elementary_flow_ids": [
+        "a19b92e6-e251-11e6-bf01-fe55135034f3"
+      ],
+      "names": [
+        "HFE-569sf2",
+        "n-HFE-7200"
+      ],
+      "comment": "Unspecified air, kilograms. EF 3.1 publishes 1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane twice here, both rows in kilograms, both carrying 163702-05-4 and both carrying Climate change 60.7: as `n-HFE-7200`, with no synonyms and four air contexts and nothing else; and as `HFE-569sf2`, with twelve synonyms -- `1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane`, `HFE-7200`, `Ethyl Nonafluorobutyl Ether`, `Ether, nonafluorobutane ethyl-` -- EF's ILCD note, and eleven contexts across air, soil and water. PubChem's CID 206000 is 163702-05-4 and lists `HFE-7200`, `NOVEC HFE 7200` and `HFE-569sf2 (7200)` among its synonyms, so the designation and the IPCC code are two names for one substance.\n\nThe factor sets are equal, which makes this the carbon tetrachloride case (#105) rather than the ordinary one: deduplication's sort would fall through to the identifier and decide nothing about the chemistry. What decides is what the rows carry and what reaches them. `HFE-569sf2` survives: it holds the registry number's whole synonym set and EF's note, it is the row EF publishes in soil and water as well as air, and one of its synonyms -- `Ether, nonafluorobutane ethyl-` -- is the head of Stepwise 2006's own name for the row this ruling unblocks. `n-HFE-7200` carries the same number and the same factor and nothing else.\n\nWhat is not settled here is EF's separate `HFE-7200` row, which carries 163702-06-5 and no factor. PubChem's CID 205999 is that number and it is ethyl perfluoroisobutyl ether -- a different molecule, the branched isomer -- so that row and `i-HFE-7200` are #19's question and not this one.\n\nUntil this ruling the collision stood: Stepwise 2006's `Ether, nonafluorobutane ethyl-, HFE569sf2 (HFE-7200)` was tied between the two rows (`tied-elementary-candidates`) and published nowhere, on the four-list build of 29 August 2026 one of only two unplaced rows in 22,005. (#185)"
+    }
+  ]
+}

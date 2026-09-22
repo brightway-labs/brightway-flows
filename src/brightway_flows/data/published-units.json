@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "description": "The unit this list publishes a quantity kind in, where that is this list's own convention rather than the unit table's reference unit. `units.json` can say which unit a scale is defined by -- the becquerel for an activity -- but not which multiple of it a list writes; that is a fact about the list, read off what it already publishes, and it belongs in a file a curator signs. Read by `brightway_flows.merge.unit_changes` when a source row mints a flow no list had: the flow states the published unit whenever the row's own unit sits on its scale, so a flow's unit is not an accident of which vendor row happened to mint it (#67, #78, #142). Nothing here converts an amount, and no source row's own unit is restated -- each keeps the unit its list gave it, on its source ref and its concept association, and `units.json` already converts between spellings of one scale, which is why no `qudt:conversionMultiplier` is published for the difference. `comment` is mandatory: an entry asserts a convention, so the evidence is the whole of the entry.",
+  "units": [
+    {
+      "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Activity",
+      "notation": "kBq",
+      "comment": "Every radionuclide flow EF 3.1 ships is in kilobecquerels -- 954 flows in the 2026-08-24 build -- its ionising-radiation factors are stated per kilobecquerel (kBq U235-eq.), and every activity flow the ecoinvent merges add is kilobecquerels too. BAFU is the only merged list that writes becquerels, and it writes both: many of its radionuclide rows -- discharges to rivers, lakes and the ocean, to groundwater, and releases to air -- arrive once in Bq and again in kBq, and whichever spelling minted the flow first became the published unit, so Iodine-131 into a river stood a thousand-fold from the same iodine into the ocean. The becquerel is the SI reference and would win the reference-unit rule, which is the rule this entry overrides: the reference defines the scale, and the list still writes on that scale in kilobecquerels (#142)."
+    }
+  ]
+}

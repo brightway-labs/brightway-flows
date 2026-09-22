@@ -1,0 +1,164 @@
+{#
+  The release, its files, and how to cite it.  `plans/public-site.md` §3, one
+  column top to bottom (Download board, option A -- the redesign in
+  `plans/public-site.md`'s download-page-cleanup canvas, "recommended").
+
+  Every fact about the release -- version, date, DOI, licence, checksums --
+  goes through `placeholder` (§0's first rule), including inside the citations
+  and the two copy buttons' values, so a reader copying one before a fact is
+  decided copies the brackets rather than something that looks real.
+
+  Removed from the old two-column board: the Release picker (there is one
+  release), the facts strip, the Format and SHA-256 table columns, the
+  change-count grid and the Build details/database card -- `/run/` already
+  says all of that, and saying it twice was the page's clutter. What is left
+  points there in one line at the end.  The SQLite database is a row in the
+  Files list rather than a card of its own: decision 8 came back that it may
+  be published, and it is one of the four files a release offers.
+
+  The concept-DOI line is gone with the field behind it: this release has a
+  DOI of its own and no concept DOI to point at (#200).
+
+  Without `app.js` the three citation formats are one after another, each
+  under its own heading, and the Copy buttons (citation, DOI, SHA-256) do not
+  show: a button that cannot copy is worse than none, and every value it
+  would copy is visible as text somewhere on the page already, or -- for a
+  checksum, which has nowhere else to be shown without bringing the column
+  back -- is the same placeholder brackets a reader would see if it were.
+#}
+{% extends "layout.html" %}
+{% from "partials/placeholder.html" import placeholder %}
+{% from "partials/citation.html" import citation_text %}
+{% set page_title = "Download" %}
+{% set active_section = "download" %}
+
+{% set version = placeholder(publication.version, "v1.0.0") %}
+{% set doi = placeholder(publication.doi, "10.5281/zenodo.XXXXXXX") %}
+{% set doi_copy_value = publication.doi or "[10.5281/zenodo.XXXXXXX]" %}
+{% set year = placeholder(publication.release_date[:4] if publication.release_date else none, "2026") %}
+
+{% block content %}
+<div class="release">
+  <header class="release__header">
+    <p class="release__meta">Latest release · {{ version }} · Released {{ placeholder(publication.release_date, "2026-09-DD") }}</p>
+    <h1 class="release__title">Download</h1>
+    <p class="release__lede">A fixed, citable snapshot of the list. Download the files, or cite the release so others get exactly the same data.</p>
+    <div class="release__meta-row">
+      <span class="release__meta-item">DOI {{ doi }}
+        <button class="button release__copy" type="button" data-copy-value="{{ doi_copy_value }}" aria-label="Copy DOI" hidden>Copy</button>
+      </span>
+      <span class="release__meta-item">Licence {{ placeholder(publication.data_licence, "DATA LICENCE") }}</span>
+      <a href="/changes">What changed →</a>
+    </div>
+  </header>
+
+  <section class="release__section" aria-labelledby="files-heading">
+    <div class="release__section-header">
+      <h2 id="files-heading">Files</h2>
+      <a href="/docs/using/outputs">Which file do I need?</a>
+    </div>
+    <div class="release-files">
+      {% for file in files %}
+      {% set checksum_copy_value = publication.checksum(file.key) or "[checksum]" %}
+      <div class="release-files__row{% if loop.first %} release-files__row--first{% endif %}">
+        <div class="release-files__info">
+          <div class="release-files__name">
+            <span class="release-files__title">{{ file.title }}</span>
+            {% if loop.first %}<span class="release-files__start">Start here</span>{% endif %}
+          </div>
+          <p class="release-files__description">{{ file.description }}</p>
+          {# The database is the one file whose size decides whether somebody
+             starts the download at all, so the row says so in words as well
+             as in the meta line -- read off the file, never typed in. #}
+          {% if file.key == "database" and file.exists %}
+          <p class="release-files__description"><strong>{{ file.readable_size }}.</strong> The whole build, so expect a long download and that much free disk space.</p>
+          {% endif %}
+          <div class="release-files__meta">
+            <span class="mono">{{ file.filename }}</span>
+            <span aria-hidden="true">·</span>
+            {# A file the build did not write keeps its row (§4): an absence
+               shown as an absence, as on `/run/`. #}
+            <span{% if not file.exists %} class="muted"{% endif %}>{% if file.exists %}{{ file.readable_size }}{% else %}Not in this build{% endif %}</span>
+            <button class="button release__copy" type="button" data-copy-value="{{ checksum_copy_value }}" hidden>Copy SHA-256</button>
+          </div>
+        </div>
+        {# The build's own file until the release has a DOI; then the
+           archived release, so everyone downloads the same bytes. #}
+        {% if file.exists %}
+        <a class="release-files__download{% if loop.first %} release-files__download--primary{% endif %}"
+           href="{% if publication.doi %}https://doi.org/{{ publication.doi }}{% else %}{{ url_for('overview.download', key=file.key) }}{% endif %}">Download<span class="visually-hidden"> {{ file.title }}</span></a>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <p class="release__note">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v4M8 11v.5" stroke-linecap="round"/></svg>
+      <span>Some fields come from source lists published under their own licences. {{ placeholder(publication.source_list_terms, "Which fields are covered, and on what terms: pending legal review") }} <a href="/about/#licence">Licence and reuse</a></span>
+    </p>
+  </section>
+
+  <section class="release__section" aria-labelledby="use-heading">
+    <h2 id="use-heading">Read it in Python</h2>
+    <p>One gzipped JSON-LD document. The standard library is all you need.</p>
+    <pre class="release__code"><code>import gzip, json
+
+with gzip.open("harmonised-flows-simple.json.gz") as f:
+    data = json.load(f)
+
+print(data["schema_version"])</code></pre>
+    <p><a href="/docs/using/recipes">Recipes</a> · <a href="/docs/using/matching-your-own-list">Matching your own list</a> · <a href="/docs/reference/jsonld">JSON-LD and the context</a> · <a href="/docs/reference/schemas">File schemas</a></p>
+  </section>
+
+  <section class="release__section cite" id="cite" aria-labelledby="cite-heading" data-cite>
+    <h2 id="cite-heading">Cite this release</h2>
+    <div class="cite__tabs" role="tablist" aria-label="Citation format" hidden>
+      <button type="button" role="tab" id="cite-tab-text" aria-controls="cite-text" aria-selected="true">Text</button>
+      <button type="button" role="tab" id="cite-tab-bibtex" aria-controls="cite-bibtex" aria-selected="false" tabindex="-1">BibTeX</button>
+      <button type="button" role="tab" id="cite-tab-cff" aria-controls="cite-cff" aria-selected="false" tabindex="-1">CITATION.cff</button>
+    </div>
+
+    <div class="cite__panel" id="cite-text" aria-labelledby="cite-tab-text">
+      <h3 class="cite__heading" id="cite-heading-text">Text</h3>
+      <div class="cite__box">
+        <p class="mono cite__body">{{ citation_text(publication) }}</p>
+        <button class="button cite__copy" type="button" data-copy hidden>Copy</button>
+      </div>
+    </div>
+
+    <div class="cite__panel" id="cite-bibtex" aria-labelledby="cite-tab-bibtex">
+      <h3 class="cite__heading" id="cite-heading-bibtex">BibTeX</h3>
+      <div class="cite__box">
+        <pre class="mono cite__body">@dataset{brightway_labs_brightway_flows,
+  author    = {Brightway Labs},
+  title     = {Brightway Flows},
+  year      = {{ "{" }}{{ year }}{{ "}" }},
+  version   = {{ "{" }}{{ version }}{{ "}" }},
+  publisher = {Zenodo},
+  doi       = {{ "{" }}{{ doi }}{{ "}" }},
+  url       = {https://doi.org/{{ doi }}}
+}</pre>
+        <button class="button cite__copy" type="button" data-copy hidden>Copy</button>
+      </div>
+    </div>
+
+    <div class="cite__panel" id="cite-cff" aria-labelledby="cite-tab-cff">
+      <h3 class="cite__heading" id="cite-heading-cff">CITATION.cff</h3>
+      <div class="cite__box">
+        <pre class="mono cite__body">cff-version: 1.2.0
+message: "If you use this data set, please cite it as below."
+type: dataset
+title: "Brightway Flows"
+authors:
+  - name: "Brightway Labs"
+version: "{{ version }}"
+date-released: "{{ placeholder(publication.release_date, "2026-09-DD") }}"
+doi: "{{ doi }}"
+license: "{{ placeholder(publication.data_licence, "DATA LICENCE") }}"</pre>
+        <button class="button cite__copy" type="button" data-copy hidden>Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="release__note release__footer">Curious how this release was built? <a href="/run/">Build details</a> live in Build &amp; review.</p>
+</div>
+{% endblock %}

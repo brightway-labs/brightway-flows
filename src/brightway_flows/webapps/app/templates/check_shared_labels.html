@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Shared labels" %}
+{% set active_section = "checks" %}
+{% set args = {'q': query} %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Shared labels</h1>
+  <p class="page__lede">
+    A name claimed by more than one substance, as a preferred or an alternative
+    label. Usually the signature of a false synonym: two substances were told
+    they are the same thing.
+  </p>
+</header>
+
+{{ t.search_form('checks.shared_labels', query, "Label…") }}
+
+{% if page.rows %}
+{{ t.pager(page, 'checks.shared_labels', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Label</th>
+        <th scope="col" class="num">Substances</th>
+        <th scope="col">Claimed by</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>{{ row.label }}</td>
+        <td class="num">{{ row.substances }}</td>
+        <td>
+          {% for claim in row.claims %}
+          <div>
+            {{ t.substance_link(claim.flow_object_id, claim.name or claim.flow_object_id) }}
+            <span class="tag tag--info">{{ claim.kind }}</span>
+          </div>
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'checks.shared_labels', args) }}
+{% else %}
+{{ t.nothing_matches("No label is claimed by more than one substance.") }}
+{% endif %}
+{% endblock %}

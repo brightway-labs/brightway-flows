@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "description": "The particle size window a flow was cut at. Our own vocabulary, published as ours: a window is a pair of aerodynamic-diameter bounds in micrometres, `null` meaning open on that side and `null` on both meaning the source stated no cut -- which is the absence of a statement, not a window of infinite width. Two source names stating one window are one thing, with no crosswalk row required, which is what #153 is about.\n\nNothing here anchors to a published ontology, and that is a decision rather than an omission. The survey in plans/particulate-taxonomy.md section 2 found two usable classes out of seven, both defined on plain diameter where these lists mean aerodynamic diameter and both restricted to solid particles where PM includes droplets, and nothing anywhere for a band. Two loose citations would make a scheme look anchored when five sevenths of it is not.\n\nWhat holds it together instead is the bounds. The nesting is checked against them on every load -- a class's parent must be the smallest class whose window contains its own, and no two classes may state one window -- and tools/build_particulate_size_classes.py validates its own output through the same reader before writing it.\n\nNo concept states a ChemROF class. All seven are brightway:AggregateMeasurement, which aggregate-measurements.json says once for the family rather than seven times here: what kind of thing these are is that file's question, and which cut each one is, is this one's. See plans/particulate-taxonomy.md and issue #153.",
+  "concepts": [
+    {
+      "id": "unsized",
+      "label": "Particles (unspecified size)",
+      "definition": "Airborne particles reported without any statement of the size they were selected at.",
+      "broader": null,
+      "selection": "unstated",
+      "lower_um": null,
+      "upper_um": null,
+      "flow_object_basis": "particulate:unsized",
+      "flow_object_id": "fo-777f2e757f3ff45a",
+      "alt_labels": [
+        "Particulates, unspecified",
+        "Particulates"
+      ],
+      "definition_source": "None stated. The concept is this scheme's own: airborne particles a source reported without saying where the sample was cut.",
+      "comment": "The scheme's root, and the one class that is new. Four flow objects stand in for it today -- BAFU's `Particulates` and `Particulates, unspecified`, and the same two names from Stepwise 2006 -- each with one elementary flow and no characterisation factors at all.\n\nIt states no window, and that is the fact about it: a row that did not say where the cut was has not said the cut was everywhere. So it sits at the top of the scheme without being a superset of anything, and the nesting check is told to treat it that way.\n\nA fresh basis rather than one of the four names it replaces. The new object is not any of them; it is the class they were four spellings of, and giving it one of their identifiers would say it is that one."
+    },
+    {
+      "id": "pm10",
+      "label": "Particles (PM10)",
+      "definition": "Every airborne particle with an aerodynamic diameter below ten micrometres. What air-quality regulation reports, and the form most inventories carry their particulate emissions in.",
+      "broader": "unsized",
+      "selection": "below",
+      "lower_um": null,
+      "upper_um": 10.0,
+      "flow_object_basis": "name:particles (pm10)",
+      "flow_object_id": "fo-4619792929f057e6",
+      "alt_labels": [
+        "Particulates, < 10 um"
+      ],
+      "definition_source": "EU Directive 2008/50/EC, Article 2(18): particulate matter which passes through a size-selective inlet with a 50 % efficiency cut-off at 10 um aerodynamic diameter; ISO 7708:1995 calls the same convention the thoracic fraction.",
+      "comment": "The class #153 is about on one side: BAFU's `Particulates, < 10 um` is this, and reached nothing.\n\nAerodynamic diameter is not a length. It is the diameter of the unit-density sphere that settles at the same speed, so even the selection criterion is an instrument's answer -- which is a large part of why the published vocabularies are no help here: ENVO's nearest class says *diameter*, and says *solid particles* where PM includes droplets.\n\nKeeps the name basis, so the object EF 3.1 already publishes under this identifier does not churn. The basis is a stable seed, not a reading of the name: nothing looks a flow up by it."
+    },
+    {
+      "id": "pm2_5",
+      "label": "Particles (PM2.5)",
+      "definition": "Every airborne particle with an aerodynamic diameter below 2.5 micrometres -- the fine fraction, which every method in this list characterises most heavily.",
+      "broader": "pm10",
+      "selection": "below",
+      "lower_um": null,
+      "upper_um": 2.5,
+      "flow_object_basis": "name:particles (pm2.5)",
+      "flow_object_id": "fo-68bfa13f441778cb",
+      "alt_labels": [
+        "Particulates, < 2.5 um"
+      ],
+      "definition_source": "EU Directive 2008/50/EC, Article 2(19): particulate matter which passes through a size-selective inlet with a 50 % efficiency cut-off at 2.5 um aerodynamic diameter; ISO 7708:1995's high-risk respirable convention.",
+      "comment": "Inside PM10, which the bounds say and the nesting check confirms: 0-2.5 is inside 0-10. Every source list in scope ships a row for it, under four spellings between them."
+    },
+    {
+      "id": "pm0_2",
+      "label": "Particles (PM0.2)",
+      "definition": "Every airborne particle with an aerodynamic diameter below 0.2 micrometres. EF 3.1's finest cut, and the only list that ships it.",
+      "broader": "pm2_5",
+      "selection": "below",
+      "lower_um": null,
+      "upper_um": 0.2,
+      "flow_object_basis": "name:particles (pm0.2)",
+      "flow_object_id": "fo-bc028c1c45f2ada6",
+      "alt_labels": [
+        "Particulates, < 0.2 um"
+      ],
+      "definition_source": "By construction from the bound: the same 50 % cut-off convention as PM10 and PM2.5 at 0.2 um, EF 3.1's finest cut. No standard defines a regulated class at this size; the ultrafine convention elsewhere is 0.1 um.",
+      "comment": "0.2 um is EF's number and not a convention. The term the vocabularies offer here -- *ultrafine* -- carries no numeric bound at all and means 0.1 um where it is used, so it names a different cut and states neither. The bound is the class."
+    },
+    {
+      "id": "pm0_2_to_pm2_5",
+      "label": "Particles (PM0.2 - PM2.5)",
+      "definition": "Airborne particles with an aerodynamic diameter between 0.2 and 2.5 micrometres -- the fine fraction with the ultrafine part taken out.",
+      "broader": "pm2_5",
+      "selection": "between",
+      "lower_um": 0.2,
+      "upper_um": 2.5,
+      "flow_object_basis": "name:particles (pm0.2 - pm2.5)",
+      "flow_object_id": "fo-23325a14efc92ca6",
+      "alt_labels": [
+        "Particulates, > 0.2 um, and < 2.5 um"
+      ],
+      "definition_source": "By construction from the bounds: everything the PM2.5 inlet passes that a 0.2 um inlet would not. A band no standard or vocabulary names.",
+      "comment": "A band rather than a cut. Under PM2.5 because 0.2-2.5 is inside 0-2.5, which the nesting check confirms from the bounds rather than from the name.\n\nEF gives it the same factor as PM2.5 in every compartment. That is a characterisation choice and not a reason to call it the same window: two flows scoring alike are still two flows."
+    },
+    {
+      "id": "pm2_5_to_pm10",
+      "label": "Particles (PM2.5 - PM10)",
+      "definition": "Airborne particles with an aerodynamic diameter between 2.5 and ten micrometres -- the coarse fraction.",
+      "broader": "pm10",
+      "selection": "between",
+      "lower_um": 2.5,
+      "upper_um": 10.0,
+      "flow_object_basis": "name:particles (pm2.5 - pm10)",
+      "flow_object_id": "fo-ae1315a262379c68",
+      "alt_labels": [
+        "Particulates, > 2.5 um, and < 10um"
+      ],
+      "definition_source": "By construction from the bounds: everything the PM10 inlet passes that the PM2.5 inlet would not -- the coarse fraction of air-quality usage, which no standard defines as a class of its own.",
+      "comment": "The class #153 is about on the other side. ecoinvent, BAFU and every SimaPro-shaped list ship a coarse-fraction row, and until the window was a field those rows could reach `Particles (PM10)` by resembling it -- which four BAFU rows did, on a synonym nobody chose for them.\n\nUnder PM10 and not under PM2.5: 2.5-10 is inside 0-10 and is not inside 0-2.5. Both readings mention 2.5, and only the bounds tell them apart.\n\nEF 3.1 gives it no characterisation factor in any compartment. A row landing here correctly still scores zero, and that is EF's answer rather than a defect in the mapping."
+    },
+    {
+      "id": "above_pm10",
+      "label": "Particles (> PM10)",
+      "definition": "Airborne particles with an aerodynamic diameter above ten micrometres -- too coarse to be respirable, and uncharacterised by every method in this list.",
+      "broader": "unsized",
+      "selection": "above",
+      "lower_um": 10.0,
+      "upper_um": null,
+      "flow_object_basis": "name:particles (> pm10)",
+      "flow_object_id": "fo-a30bea921eacba3f",
+      "alt_labels": [
+        "Particulates, > 10 um"
+      ],
+      "definition_source": "By construction from the bound: what a PM10 inlet does not pass. Named by ecoinvent 2 and EF 3.1, defined by neither.",
+      "comment": "Under the root rather than under PM10, which is the whole point of checking the nesting against the bounds: `> PM10` is spelled out of PM10 and is not part of it."
+    }
+  ]
+}

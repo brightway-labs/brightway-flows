@@ -1,0 +1,29 @@
+{#
+  404 and 500, in the site frame.  `plans/public-site.md` §4.
+
+  There was no custom error page before this: a reader who mistyped a flow
+  UUID, or hit a bug, got Flask's own text with no way back into the site.
+  Both codes share one template -- the only thing that differs is the
+  heading, the explanation and, for a 404, the ways out: a search, the
+  homepage and `/browse/`.
+#}
+{% extends "layout.html" %}
+{% set page_title = heading %}
+{% set active_section = none %}
+
+{% block content %}
+<div class="empty">
+  <h1>{{ heading }}</h1>
+  <p>{{ explanation }}</p>
+  {% if code == 404 %}
+  <form class="search__form" role="search" action="/search" method="get">
+    <label class="visually-hidden" for="error-q">Search flows and docs</label>
+    <input class="search__input" id="error-q" name="q" type="search">
+    <button class="search__submit" type="submit">Search</button>
+  </form>
+  <p class="muted">
+    <a href="/">Go to the homepage</a> or <a href="/browse/">browse every section</a>.
+  </p>
+  {% endif %}
+</div>
+{% endblock %}

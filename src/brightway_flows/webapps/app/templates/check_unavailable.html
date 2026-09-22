@@ -1,0 +1,22 @@
+{#
+  A check whose table this database does not have.
+
+  Distinct from "the check found nothing": a database written before the table
+  existed cannot answer, and a zero here would read as a clean bill of health.
+#}
+{% extends "layout.html" %}
+{% set page_title = check %}
+{% set active_section = "checks" %}
+
+{% block content %}
+<div class="empty">
+  <h1>{{ check }}</h1>
+  <p>
+    This database has no <code>{{ table }}</code> table, so the check cannot be
+    answered — which is not the same as finding nothing.
+  </p>
+  <p>It is written by every build:</p>
+  <pre><code>uv run brightway-flows build</code></pre>
+  <p><a href="{{ url_for('checks.index') }}">Back to checks</a></p>
+</div>
+{% endblock %}

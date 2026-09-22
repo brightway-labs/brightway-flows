@@ -1,0 +1,352 @@
+{
+  "schema_version": 1,
+  "description": "Roles asserted by a curator, for substances ChEBI has no `RO:0000087 has role` edge for. The same predicate and the same allow-listed classes as the generated assertions in `chebi-roles.json` -- nothing is minted here either -- and the same materialisation: a row naming `herbicide` publishes `pesticide` too, because a published table that omits what it entails answers wrongly.\n\nWhy the file exists. A source list that has no field for what a substance is *used for* expresses it the only way it can: it stops publishing the substance and publishes `Herbicides, Unspecified` in its place. Undoing that (#206, #76) means the use class has to live somewhere else first, and ChEBI covers only about half of the substances involved -- it has no `has role` edge for the sulfonylurea herbicides, for spinetoram, for sodium fluorosilicate, and for two dozen more. That is a gap in ChEBI's curation, not a claim that these substances have no use class, and this file closes it.\n\nThe source is the Pesticide Properties Database (PPDB) of the Agriculture & Environment Research Unit, University of Hertfordshire, which publishes a `Pesticide type` field per substance. Every row records that field verbatim in `source_states` and links the record, so a reader checks the claim rather than trusting it, and a later curator who disagrees argues with a citation instead of a preference.\n\nKeyed by CAS, never by name. Normalising a name to alphanumerics deletes the stereodescriptor, so `(+)-Mecoprop` matches `Mecoprop` and a racemate acquires its eutomer's roles; that produced two wrong rows in an earlier draft of `plans/pesticide-taxonomy.md`. `cas_agreement` says what the check found: `exact` where the PPDB record carries the same registry number the source list ships, and `different_registry_entry` where it does not -- two numbers naming one commercial substance, which is real and is recorded rather than smoothed over. A row is worth no more than its `cas_agreement` says.\n\n`assertions` is the only section any code reads. `objections` records a substance whose bucket this project declines to reproduce -- the role that would reach its characterisation factor is not one the substance bears, and the criterion asks for the role that reaches the number *where that role is correct*, never for a role invented to reproduce a mis-filing. `undecided` records a substance where the evidence does not settle it, so the gap is a row a reviewer reads rather than a silent zero. Both are documentation today; the guard that consumes them is Stage 6 of `plans/pesticide-taxonomy.md`.\n\nPPDB read 2026-08-14, database version August 2025.",
+  "predicate": "http://purl.obolibrary.org/obo/RO_0000087",
+  "source": {
+    "name": "Pesticide Properties Database (PPDB)",
+    "publisher": "Agriculture & Environment Research Unit, University of Hertfordshire",
+    "url": "https://sitem.herts.ac.uk/aeru/ppdb/",
+    "read_on": "2026-08-14"
+  },
+  "assertions": [
+    {
+      "substance": "Chlorthal",
+      "cas_number": "2136-79-0",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/3419.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "The free acid of chlorthal-dimethyl, and PPDB types it a herbicide in its own right. ecoinvent routes it to both `Herbicides, Unspecified` and `Pesticides, Unspecified`, in different contexts; the herbicide role is right in either."
+    },
+    {
+      "substance": "Cumyluron",
+      "cas_number": "99485-76-4",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1684.htm",
+      "source_states": "Herbicide; Other substance",
+      "cas_agreement": "exact",
+      "comment": "Phenylurea herbicide used in Japanese rice. `Other substance` is PPDB's second bucket for a substance with a non-crop use as well; it names no allow-listed role and nothing is asserted for it."
+    },
+    {
+      "substance": "Cycluron",
+      "cas_number": "2163-69-1",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/190.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Urea herbicide."
+    },
+    {
+      "substance": "Cyhalofop-butyl",
+      "cas_number": "122008-85-9",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/193.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Aryloxyphenoxypropanoate herbicide, selective for grasses in rice."
+    },
+    {
+      "substance": "Diclosulam",
+      "cas_number": "145701-21-9",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1154.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Triazolopyrimidine herbicide for broadleaf weeds."
+    },
+    {
+      "substance": "Diflufenzopyr",
+      "cas_number": "109293-97-2",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1179.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Semicarbazone herbicide, an auxin transport inhibitor sold with dicamba."
+    },
+    {
+      "substance": "Fentrazamide",
+      "cas_number": "158237-07-1",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1174.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Tetrazolinone herbicide for grasses in rice."
+    },
+    {
+      "substance": "Flurenol",
+      "cas_number": "467-69-6",
+      "roles": [
+        "http://purl.obolibrary.org/obo/CHEBI_24527",
+        "http://purl.obolibrary.org/obo/CHEBI_26155"
+      ],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/344.htm",
+      "source_states": "Plant Growth Regulator; Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Two roles, and PPDB names the growth-regulator one first. This is the arity the whole design exists for: a single-valued `pesticide type` field would have to drop one of them, and the one it dropped would be the reason ecoinvent files this substance where it does."
+    },
+    {
+      "substance": "Imazosulfuron",
+      "cas_number": "122548-33-8",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/396.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Sulfonylurea herbicide used in Japanese rice."
+    },
+    {
+      "substance": "Indanofan",
+      "cas_number": "133220-30-1",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1180.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Indandione herbicide for rice paddies."
+    },
+    {
+      "substance": "Ioxynil octanoate",
+      "cas_number": "3861-47-0",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1063.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "The octanoate ester of ioxynil, and a registered herbicide under its own registry number. What ecoinvent shelved beside it as `Ioxynil methyl ester` is not a sibling at all: that row's 2436-73-9 is MCPA's methyl ester, and #46 renamed it `MCPA-methyl`, where it is asserted on PPDB's record for the same number."
+    },
+    {
+      "substance": "Mesosulfuron",
+      "cas_number": "400852-66-6",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/883.htm",
+      "source_states": "Herbicide; Metabolite",
+      "cas_agreement": "exact",
+      "comment": "The free acid, which PPDB gives its own record separate from mesosulfuron-methyl (100784-20-1 is the ester's number, and it is not this one). It is typed a herbicide as well as a transformation product, so the herbicide role holds for the substance ecoinvent actually ships."
+    },
+    {
+      "substance": "Oxasulfuron",
+      "cas_number": "144651-06-9",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/499.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Sulfonylurea herbicide for soybeans."
+    },
+    {
+      "substance": "Oxaziclomefone",
+      "cas_number": "153197-14-9",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1580.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Oxazine herbicide for grasses in rice."
+    },
+    {
+      "substance": "Primisulfuron",
+      "cas_number": "113036-87-6",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/535.htm",
+      "source_states": "Herbicide; Metabolite",
+      "cas_agreement": "exact",
+      "comment": "The free acid, with its own PPDB record; primisulfuron-methyl is 86209-51-0 and a different row. Same shape as mesosulfuron: typed a herbicide as well as a transformation product."
+    },
+    {
+      "substance": "Fenoxaprop",
+      "cas_number": "95617-09-7",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1006.htm",
+      "source_states": "Metabolite; Herbicide",
+      "cas_agreement": "exact",
+      "comment": "The free acid of fenoxaprop-P-ethyl. ecoinvent routes it to `Pesticides, Unspecified`, which carries no characterisation factor under any method; the herbicide role is what a consumer needs to find one."
+    },
+    {
+      "substance": "Copper oxychloride",
+      "cas_number": "1332-65-6",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24127"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/177.htm",
+      "source_states": "Fungicide",
+      "cas_agreement": "different_registry_entry",
+      "comment": "PPDB's copper oxychloride record carries 1332-40-7 and ecoinvent ships 1332-65-6. Both name dicopper chloride trihydroxide, Cu2Cl(OH)3, the copper fungicide -- two registry entries for one substance rather than two substances, which is why this is asserted at all. Recorded as a weaker row than the exact ones because that is what it is."
+    },
+    {
+      "substance": "Laminarin",
+      "cas_number": "9008-22-4",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24127"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/416.htm",
+      "source_states": "Fungicide; Other substance",
+      "cas_agreement": "exact",
+      "comment": "Answers the question `plans/pesticide-taxonomy.md` left open. Laminarin kills nothing itself -- it is a seaweed polysaccharide that switches on the plant's own defences -- and the doubt was whether an elicitor earns the fungicide role. PPDB types it a fungicide, and so does its EU approval, so the role is asserted on their authority rather than on an argument about mechanism. ChEBI gives it `agrochemical` and stops there; both are published, because roles are additive."
+    },
+    {
+      "substance": "Pydiflumetofen",
+      "cas_number": "1228284-64-7",
+      "roles": [
+        "http://purl.obolibrary.org/obo/CHEBI_24127",
+        "http://purl.obolibrary.org/obo/CHEBI_26155"
+      ],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/3086.htm",
+      "source_states": "Fungicide; Plant Growth Regulator",
+      "cas_agreement": "not_shipped",
+      "comment": "**Inert until something supplies the number.** ecoinvent 3.12 ships this flow with no CAS at all, so there is nothing for a CAS-keyed assertion to match, and this row applies to no flow object today. It is written anyway, against the registry number PPDB gives, so that the day the number arrives -- from a manual fix or a later ecoinvent release -- the role arrives with it rather than being rediscovered."
+    },
+    {
+      "substance": "Demeton-S-methylsulfon",
+      "cas_number": "17040-19-6",
+      "roles": [
+        "http://purl.obolibrary.org/obo/CHEBI_24852",
+        "http://purl.obolibrary.org/obo/CHEBI_22153"
+      ],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1534.htm",
+      "source_states": "Insecticide; Acaricide; Metabolite",
+      "cas_agreement": "exact",
+      "comment": "The sulfone oxidation product of demeton-S-methyl, and insecticidal in its own right. Both use roles are asserted; the acaricide one names a bucket that carries no characterisation factor under any method, which is a gap in the method rather than in this row."
+    },
+    {
+      "substance": "Diofenolan",
+      "cas_number": "63837-33-2",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24852"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/2567.htm",
+      "source_states": "Insecticide; Insect Growth Regulator",
+      "cas_agreement": "exact",
+      "comment": "`Insect Growth Regulator` says how it kills rather than what it is used on, and the allow-list has no class for it -- ChEBI's nearest is a mechanism-of-action branch this project deliberately does not import. The insecticide role carries what a consumer needs."
+    },
+    {
+      "substance": "Kaolin",
+      "cas_number": "1332-58-7",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24852"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1306.htm",
+      "source_states": "Insecticide; Other substance; Veterinary substance",
+      "cas_agreement": "exact",
+      "comment": "Answers Q3 of `plans/pesticide-taxonomy.md`. Kaolin is a clay, and the doubt was whether a physical barrier -- it works by coating the leaf so insects will not settle -- earns the insecticide role when ChEBI gives it only `antidiarrhoeal drug` and `excipient`. PPDB lists it in its insecticide A-Z and types it an insecticide, on the same registry number ecoinvent ships. The role is asserted; ChEBI's silence is a gap in ChEBI, and the two biomedical roles it does give are outside the allow-list and would not have been published either way."
+    },
+    {
+      "substance": "Magnesium phosphide",
+      "cas_number": "12057-74-8",
+      "roles": [
+        "http://purl.obolibrary.org/obo/CHEBI_24852",
+        "http://purl.obolibrary.org/obo/CHEBI_33288"
+      ],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1090.htm",
+      "source_states": "Insecticide; Rodenticide",
+      "cas_agreement": "exact",
+      "comment": "An inorganic salt that fumigates by releasing phosphine gas, used against both stored-product insects and burrowing rodents. Two roles, and the rodenticide one is the reason the allow-list keeps a class only eight objects would otherwise earn."
+    },
+    {
+      "substance": "Sodium fluorosilicate",
+      "cas_number": "16893-85-9",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24852"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/3634.htm",
+      "source_states": "Insecticide; Veterinary substance",
+      "cas_agreement": "exact",
+      "comment": "PPDB files it under sodium hexafluorosilicate, its systematic name, with the number ecoinvent ships. An obsolete stomach-poison insecticide; the role describes the use the emission comes from."
+    },
+    {
+      "substance": "Spinetoram",
+      "cas_number": "935545-74-7",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24852"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1144.htm",
+      "source_states": "Insecticide",
+      "cas_agreement": "exact",
+      "comment": "A fermentation-derived spinosyn insecticide, shipped as a mixture of two components that ecoinvent also carries separately."
+    },
+    {
+      "substance": "Spinetoram J",
+      "cas_number": "187166-40-1",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24852"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1144.htm",
+      "source_states": "Insecticide",
+      "cas_agreement": "exact",
+      "comment": "The major component, about three quarters of the mixture. PPDB's spinetoram record names this registry number as a component of the insecticide it describes, which is the evidence for the role; there is no separate record for the component alone."
+    },
+    {
+      "substance": "Spinetoram L",
+      "cas_number": "187166-15-0",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24852"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/1144.htm",
+      "source_states": "Insecticide",
+      "cas_agreement": "exact",
+      "comment": "The minor component, about a quarter of the mixture, and the same evidence as spinetoram J."
+    },
+    {
+      "substance": "Potassium soap",
+      "cas_number": "61789-30-8",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24852"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/3585.htm",
+      "source_states": "Insecticide; Fungicide; Other substance",
+      "cas_agreement": "different_registry_entry",
+      "comment": "PPDB's record is `fatty acids unsaturated potassium salts (generic C7-C18)`, 67701-09-1; ecoinvent ships 61789-30-8, the potassium salts of coconut fatty acids. Both are the soap that kills soft-bodied insects by contact, and neither number names a single molecule -- these are registry entries for mixtures. Only the insecticide role is asserted: PPDB's record also says fungicide, but ecoinvent's flow is filed as an insecticide and the fungicidal use belongs to a different formulation of the same chemistry. Recorded as a weaker row, like copper oxychloride."
+    },
+    {
+      "substance": "Fenothiocarb",
+      "cas_number": "62850-32-2",
+      "roles": [
+        "http://purl.obolibrary.org/obo/CHEBI_22153",
+        "http://purl.obolibrary.org/obo/CHEBI_24852"
+      ],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/301.htm",
+      "source_states": "Acaricide; Insecticide",
+      "cas_agreement": "exact",
+      "comment": "A carbamate for spider mites, and PPDB names the acaricide use first. ecoinvent routes it to `Pesticides, Unspecified`, which carries no factor, so this substance gets nothing today either way; the roles are what let a consumer reach the insecticide number if it decides to."
+    },
+    {
+      "substance": "MCPA-methyl",
+      "cas_number": "2436-73-9",
+      "roles": ["http://purl.obolibrary.org/obo/CHEBI_24527"],
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/3440.htm",
+      "source_states": "Herbicide",
+      "cas_agreement": "exact",
+      "comment": "Was in `undecided`, blocked on #46: ecoinvent shipped this row as `Ioxynil methyl ester` while carrying 2436-73-9, and those name two different molecules, so nothing could be keyed on the number without risking the wrong substance. #46 settled it the way that unblocks this file rather than the way that was assumed -- the registry number is right and the name was wrong, corrected at source to `MCPA-methyl` in every ecoinvent version's fixes file. PPDB's own record for 2436-73-9 is titled `MCPA-methyl` and types it `Herbicide`, on the number this file keys by, so there is no near-miss: the source, the ecoinvent row and the assertion are one registry entry. The parent acid MCPA (94-74-6) is a separate substance, published here as `(4-Chloro-2-methylphenoxy)acetic acid`, and is not what this asserts on. Inert in this build, and counted in `curated_roles_unmatched`, for the same reason Chlorfenapyr's is: no flow object carries 2436-73-9, because the rows still reach `Herbicides, Unspecified` and `Pesticides, Unspecified`. It becomes live when #76 publishes the substance as itself, which is the point of writing it now -- the substance must not arrive without its use class."
+    }
+  ],
+  "objections": [
+    {
+      "substance": "Etoxazole",
+      "cas_number": "153233-91-1",
+      "bucket": "Insecticides, Unspecified",
+      "declined_role": "http://purl.obolibrary.org/obo/CHEBI_24852",
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/284.htm",
+      "source_states": "Acaricide",
+      "comment": "It is an acaricide and not an insecticide. PPDB types it `Acaricide` and nothing else, on the exact registry number ecoinvent ships, and ChEBI independently gives it `acaricide` and `pesticide` with no insecticide edge. Two sources, no disagreement. So the insecticide bucket is ecoinvent's data error, this substance loses the insecticide factor it inherits today, and the loss is this row rather than a role invented to reproduce a mis-filing. Decided 2026-08-12; the source is added here."
+    },
+    {
+      "substance": "Chlormequat",
+      "cas_number": "7003-89-6",
+      "bucket": "Pesticides, Unspecified",
+      "declined_role": "http://purl.obolibrary.org/obo/CHEBI_25944",
+      "source_url": "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:3641",
+      "source_states": "ChEBI role: plant growth retardant",
+      "comment": "Not a pesticide. It shortens cereal stems so they do not fall over; ChEBI files it under plant growth retardant, which sits nowhere under `pesticide`. The generated assertion already publishes `plant growth regulator` for it, which is the true statement, and no pesticide role is added on top. Nothing is lost: `Pesticides, Unspecified` carries no characterisation factor under any method."
+    }
+  ],
+  "undecided": [
+    {
+      "substance": "Halosulfuron",
+      "cas_number": "135397-30-7",
+      "bucket": "Herbicides, Unspecified",
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/2385.htm",
+      "source_states": "Metabolite",
+      "comment": "The free acid of halosulfuron-methyl, and the one sulfonylurea acid PPDB does *not* also type a herbicide -- it gives mesosulfuron and primisulfuron `Herbicide; Metabolite` and this one `Metabolite` alone. Either the acid is herbicidally active and PPDB's typing is narrower than the other two, or ecoinvent is emitting a transformation product into a herbicide bucket. One source, and it points the other way from the source list; not enough to assert on and not enough to object with."
+    },
+    {
+      "substance": "Phosphorous acid",
+      "cas_number": "10294-56-1",
+      "bucket": "Fungicides, Unspecified",
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/2600.htm",
+      "source_states": "Metabolite",
+      "comment": "PPDB types the free acid a metabolite (under 13598-36-2, phosphonic acid -- the same substance under its other name and number) while typing the potassium and disodium phosphonates fungicides. This project's own earlier curation called it a systemic phosphonate fungicide on the strength of its EPA registration. The two readings are both defensible: the acid is what the registered salts become in the plant, and it is also sold and applied as such. Needs a decision, not another lookup."
+    },
+    {
+      "substance": "Triphenyltin",
+      "cas_number": "668-34-8",
+      "bucket": "Fungicides, Unspecified",
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/en/Reports/312.htm",
+      "source_states": "Fentin hydroxide: Fungicide (CAS 76-87-9); fentin acetate: Fungicide; Molluscicide; Algicide (CAS 900-95-8)",
+      "comment": "Q2 of `plans/pesticide-taxonomy.md`, still open and now with the lookup done. PPDB has no record for triphenyltin as such: the registered fungicides are its hydroxide and its acetate, under registry numbers that are not the one ecoinvent ships. ChEBI gives 668-34-8 `antifeedant`, which contradicts this project's own curation of it as a fungicide. Asserting `fungicide` here would be reading the salts' records onto the cation, which is the kind of near-miss this file is keyed by CAS to avoid."
+    },
+    {
+      "substance": "Diphenyltin",
+      "cas_number": "1011-95-6",
+      "bucket": "Pesticides, Unspecified",
+      "source_url": "https://sitem.herts.ac.uk/aeru/ppdb/",
+      "source_states": "no record",
+      "comment": "No PPDB record under any spelling, and ChEBI gives it no allow-listed role. This project's earlier curation called it a biocide on the strength of environmental-monitoring usage rather than a crop-protection registration. Nothing is lost by leaving it: its bucket carries no characterisation factor."
+    }
+  ]
+}

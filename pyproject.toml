@@ -1,0 +1,60 @@
+[project]
+name = "brightway-flows"
+version = "1.0.0"
+description = "Elementary flow list which supports expression in multiple systems"
+readme = "README.md"
+# The code is AGPL; the data the package ships is ODbL, which `LICENSE-DATA`
+# carries and `webapps/app/publication.py` states on the site.
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE", "LICENSE-DATA"]
+authors = [
+    { name = "Chris Mutel", email = "cmutel@gmail.com" }
+]
+requires-python = ">=3.14.3"
+dependencies = [
+    "bleach>=6.3.0",
+    "bw-simapro-csv>=0.4.3",
+    "chemformula>=1.5.1",
+    "ecoinvent-interface>=3.1",
+    "flask>=3.1.3",
+    "gunicorn>=25.3.0",
+    "httpx>=0.28.1",
+    "jsonschema>=4.25",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.7.4",
+    "openpyxl>=3.1.5",
+    "orjson>=3.11.7",
+    "pandas>=3.0.1",
+    "pint>=0.25.2",
+    "platformdirs>=4.9.2",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.13.1",
+    "pygments>=2.19.2",
+    "pytest>=9.0.2",
+    "randonneur>=0.7.2",
+    "randonneur-data>=0.7.2",
+    "py2opsin>=1.2.0",
+    "rdkit>=2026.3.1",
+    "structlog>=25.5.0",
+    "tqdm>=4.67.3",
+    "typer>=0.24.0",
+    "xmltodict>=1.0.4",
+]
+
+[project.scripts]
+brightway-flows = "brightway_flows:main"
+
+[build-system]
+requires = ["uv_build>=0.9.11,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+docs = [
+    "mkdocs",
+]
+# `pyld` is the JSON-LD reference implementation.  The export claims to be
+# JSON-LD, and the only way to know it is is to expand it -- so the test suite
+# does, against the real algorithm rather than a hand-rolled approximation.
+dev = [
+    "pyld>=2.0.4",
+]

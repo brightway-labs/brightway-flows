@@ -1,0 +1,462 @@
+{
+  "schema_version": 2,
+  "method": "stepwise-2006",
+  "description": "A number crossing from one substance to another, signed, for Stepwise 2006. The EF 3.1 file (`lcia-factor-adoptions.json`) answers rows a transcription stated; Stepwise has one implementation and its export names no metal ion except ammonium and the two chromium states, so for `Zinc(2+)` nobody states anything and there is no row to answer (#197). Every entry here says `number_from: donor`: the recipient takes the donor's *published* number, context for context, where the donor is published in the same context and category and nothing is stated or published for the recipient. Read by `brightway_flows.lcia.adoptions` for `lcia.donors`, which runs after `derive`, the moves and the printings and before the context convention, so the ion's own river, lake and forestry-soil flows then take the number the way the element's do. It never overwrites a value, never copies a carried or adopted number, refuses a recipient the method's own publisher characterised anywhere, and refuses a pair whose units differ.\n\nSigned 2026-09-02: 23 ions of 16 elements Stepwise characterises -- antimony, arsenic, barium, beryllium, cadmium, cobalt, copper, iron, lead, manganese, mercury, molybdenum, nickel, selenium, silver and zinc -- each taking the element's number in the categories the element is published in. Stepwise's model does not tell a metal's oxidation states apart, so its number for arsenic is its number for arsenic in any form; the entries therefore include EF 3.1's own speciated flows (`Antimony(3+)`, `Antimony(5+)`, `Arsenic(3+)`, `Arsenic(5+)`, `Copper(2+)`, `Iron(2+)`, `Iron(3+)`), which no inventory list merged today emits. Chromium is deliberately absent: Stepwise names `Chromium III` and `Chromium VI` itself, gives the trivalent ion no ecotoxicity number while giving the metal and the hexavalent ion one, and that is the publisher's decision; `Chromium(3+)`, `Chromium(6+)` and `Chromium IV` stay as the publisher left them and the pass would refuse an entry for a substance the publisher characterised.\n\nThe census that lists every blank ion beside its element is the `identity-blank` table on the coverage page and the last table `tools/count_context_blanks.py` prints; an entry is written from it, never from memory.",
+  "adoptions": [
+    {
+      "flow_object_id": "fo-085a6aec136c4e02",
+      "substance": "Antimony(3+)",
+      "donor": {
+        "flow_object_id": "fo-0bfffb5e4dadc218",
+        "substance": "Antimony"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises antimony in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 23 (flow, category) pairs blank in 9 contexts where antimony is published in the same context -- to water, ecotoxicity, aquatic, antimony states 2.10328e+06. EF 3.1's own flow, which no inventory list merged today emits. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-7512b7a965e97983",
+      "substance": "Antimony(5+)",
+      "donor": {
+        "flow_object_id": "fo-0bfffb5e4dadc218",
+        "substance": "Antimony"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises antimony in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 23 (flow, category) pairs blank in 9 contexts where antimony is published in the same context -- to water, ecotoxicity, aquatic, antimony states 2.10328e+06. EF 3.1's own flow, which no inventory list merged today emits. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-5c42d374aca497d5",
+      "substance": "Antimony, Ion",
+      "donor": {
+        "flow_object_id": "fo-0bfffb5e4dadc218",
+        "substance": "Antimony"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises antimony in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 26 (flow, category) pairs blank in 10 contexts where antimony is published in the same context -- to water, ecotoxicity, aquatic, antimony states 2.10328e+06. Emitted by ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-fe7e16efdf7a7356",
+      "substance": "Arsenic(3+)",
+      "donor": {
+        "flow_object_id": "fo-59b3f7e57542f6bb",
+        "substance": "Arsenic"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-carcinogens",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises arsenic in 4 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 32 (flow, category) pairs blank in 9 contexts where arsenic is published in the same context -- to water, ecotoxicity, aquatic, arsenic states 388045. EF 3.1's own flow, which no inventory list merged today emits. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-150478f522686ef2",
+      "substance": "Arsenic(5+)",
+      "donor": {
+        "flow_object_id": "fo-59b3f7e57542f6bb",
+        "substance": "Arsenic"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-carcinogens",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises arsenic in 4 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 47 (flow, category) pairs blank in 13 contexts where arsenic is published in the same context -- to water, ecotoxicity, aquatic, arsenic states 388045. Emitted by AGRIBALYSE 3.2, BAFU 2026 v1. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-697e126705df00f6",
+      "substance": "Arsenic, Ion",
+      "donor": {
+        "flow_object_id": "fo-59b3f7e57542f6bb",
+        "substance": "Arsenic"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-carcinogens",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises arsenic in 4 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 36 (flow, category) pairs blank in 10 contexts where arsenic is published in the same context -- to water, ecotoxicity, aquatic, arsenic states 388045. Emitted by BAFU 2026 v1, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-836990db2adbb250",
+      "substance": "Barium(2+)",
+      "donor": {
+        "flow_object_id": "fo-228e2a1a69e17e84",
+        "substance": "Barium"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises barium in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 31 (flow, category) pairs blank in 12 contexts where barium is published in the same context -- to water, ecotoxicity, aquatic, barium states 80528.5. Emitted by AGRIBALYSE 3.2, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-7546ea288a538e41",
+      "substance": "Beryllium(2+)",
+      "donor": {
+        "flow_object_id": "fo-48c318d9e89b48fb",
+        "substance": "Beryllium"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "human-toxicity-carcinogens",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises beryllium in 2 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 19 (flow, category) pairs blank in 12 contexts where beryllium is published in the same context -- to water, human toxicity, non-carc., beryllium states 16.0153. Emitted by AGRIBALYSE 3.2, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-31ab226b5e0a22ac",
+      "substance": "Cadmium(2+)",
+      "donor": {
+        "flow_object_id": "fo-078ec99f91794534",
+        "substance": "Cadmium"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-carcinogens",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises cadmium in 4 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 43 (flow, category) pairs blank in 13 contexts where cadmium is published in the same context -- to water, ecotoxicity, aquatic, cadmium states 2.91603e+06. Emitted by AGRIBALYSE 3.2, BAFU 2026 v1, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-f4b61de95e8a0514",
+      "substance": "Cobalt(2+)",
+      "donor": {
+        "flow_object_id": "fo-b16884bcd5615bc6",
+        "substance": "Cobalt"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises cobalt in 2 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 19 (flow, category) pairs blank in 11 contexts where cobalt is published in the same context -- to water, ecotoxicity, aquatic, cobalt states 3.86423e+06. Emitted by AGRIBALYSE 3.2, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-0e3a3178f4066e6d",
+      "substance": "Copper(2+)",
+      "donor": {
+        "flow_object_id": "fo-a9a85c11aea1c46a",
+        "substance": "Copper"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises copper in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 23 (flow, category) pairs blank in 9 contexts where copper is published in the same context -- to water, ecotoxicity, aquatic, copper states 2.05503e+07. EF 3.1's own flow, which no inventory list merged today emits. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-436304b385710fab",
+      "substance": "Copper, Ion",
+      "donor": {
+        "flow_object_id": "fo-a9a85c11aea1c46a",
+        "substance": "Copper"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises copper in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 28 (flow, category) pairs blank in 11 contexts where copper is published in the same context -- to water, ecotoxicity, aquatic, copper states 2.05503e+07. Emitted by BAFU 2026 v1, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-07c012233936d802",
+      "substance": "Iron(2+)",
+      "donor": {
+        "flow_object_id": "fo-968d11f00ea71f40",
+        "substance": "Iron"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises iron in 2 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 14 (flow, category) pairs blank in 8 contexts where iron is published in the same context -- to water, ecotoxicity, aquatic, iron states 0. EF 3.1's own flow, which no inventory list merged today emits. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-eb2df3c892330e00",
+      "substance": "Iron(3+)",
+      "donor": {
+        "flow_object_id": "fo-968d11f00ea71f40",
+        "substance": "Iron"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises iron in 2 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 14 (flow, category) pairs blank in 8 contexts where iron is published in the same context -- to water, ecotoxicity, aquatic, iron states 0. EF 3.1's own flow, which no inventory list merged today emits. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-68a028e14ee2f8de",
+      "substance": "Iron, Ion",
+      "donor": {
+        "flow_object_id": "fo-968d11f00ea71f40",
+        "substance": "Iron"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises iron in 2 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 16 (flow, category) pairs blank in 9 contexts where iron is published in the same context -- to water, ecotoxicity, aquatic, iron states 0. Emitted by BAFU 2026 v1, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-250b361dd7295454",
+      "substance": "Lead(2+)",
+      "donor": {
+        "flow_object_id": "fo-4ec5c05a87990179",
+        "substance": "Lead"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises lead in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 34 (flow, category) pairs blank in 13 contexts where lead is published in the same context -- to water, ecotoxicity, aquatic, lead states 263703. Emitted by AGRIBALYSE 3.2, BAFU 2026 v1, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-80b64837f895a1ee",
+      "substance": "Manganese(2+)",
+      "donor": {
+        "flow_object_id": "fo-399a338738afcc79",
+        "substance": "Manganese"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises manganese in 2 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 19 (flow, category) pairs blank in 11 contexts where manganese is published in the same context -- to water, ecotoxicity, aquatic, manganese states 0. Emitted by AGRIBALYSE 3.2, BAFU 2026 v1, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-26a13f8aea74ba1d",
+      "substance": "Mercury(2+)",
+      "donor": {
+        "flow_object_id": "fo-087268a3358b25bd",
+        "substance": "Mercury"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises mercury in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 34 (flow, category) pairs blank in 13 contexts where mercury is published in the same context -- to water, ecotoxicity, aquatic, mercury states 1.57937e+07. Emitted by AGRIBALYSE 3.2, BAFU 2026 v1, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-38bf6545e590d631",
+      "substance": "Molybdenum(6+)",
+      "donor": {
+        "flow_object_id": "fo-773360d91a44c0c7",
+        "substance": "Molybdenum"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises molybdenum in 1 category and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 12 (flow, category) pairs blank in 12 contexts where molybdenum is published in the same context -- to water, human toxicity, non-carc., molybdenum states 35.7368. Emitted by AGRIBALYSE 3.2, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-68c3d37c7952fd0f",
+      "substance": "Nickel(2+)",
+      "donor": {
+        "flow_object_id": "fo-089e4d40ac7086e6",
+        "substance": "Nickel"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises nickel in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 34 (flow, category) pairs blank in 13 contexts where nickel is published in the same context -- to water, ecotoxicity, aquatic, nickel states 1.27201e+06. Emitted by AGRIBALYSE 3.2, BAFU 2026 v1, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-2a80cc2293a9893d",
+      "substance": "Selenium(4+)",
+      "donor": {
+        "flow_object_id": "fo-476008ff1af94efb",
+        "substance": "Selenium"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises selenium in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 31 (flow, category) pairs blank in 12 contexts where selenium is published in the same context -- to water, ecotoxicity, aquatic, selenium states 3.40278e+06. Emitted by AGRIBALYSE 3.2, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-0ff5da912b923ea9",
+      "substance": "Silver(1+)",
+      "donor": {
+        "flow_object_id": "fo-daff57a8f4e68238",
+        "substance": "Silver"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises silver in 2 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 18 (flow, category) pairs blank in 10 contexts where silver is published in the same context -- to water, ecotoxicity, aquatic, silver states 0. Emitted by AGRIBALYSE 3.2, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-2a649a3e6abb5944",
+      "substance": "Zinc(2+)",
+      "donor": {
+        "flow_object_id": "fo-e921ffc48e632b29",
+        "substance": "Zinc"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "number_from": "donor",
+      "categories": [
+        "ecotoxicity-aquatic",
+        "ecotoxicity-terrestrial",
+        "human-toxicity-non-carcinogens"
+      ],
+      "implemented_by": [
+        "2.-0 LCA consultants"
+      ],
+      "comment": "Stepwise 2006 characterises zinc in 3 categories and names no ion of it; its rows carry the element's registry number, and its model does not tell the oxidation states of a metal apart. On the 2026-09-02 build (run 20260902T0601348875460000) the ion leaves 34 (flow, category) pairs blank in 13 contexts where zinc is published in the same context -- to water, ecotoxicity, aquatic, zinc states 1.4025e+06. Emitted by AGRIBALYSE 3.2, BAFU 2026 v1, ecoinvent 3.12, ecoinvent 3.8. Both substances are in kilograms. The build records the ion as `ion_of` the element. Signed 2026-09-02 (#197), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    }
+  ]
+}

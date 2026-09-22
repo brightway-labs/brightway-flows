@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Contexts" %}
+{% set active_section = "queue" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Context mappings</h1>
+  <p class="page__lede">
+    Each source list's raw compartments, and the consensus context they become.
+    These are the rules the transform applies to every list at once — not the
+    per-release mappings the merge reads to place one list.
+  </p>
+</header>
+
+<form class="filters" method="get" action="{{ url_for('contexts.index') }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Compartment, context, comment…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('contexts.index') }}
+  </div>
+  <div class="filters__selects">
+    {{ t.select("source", "Source", source, sources) }}
+  </div>
+</form>
+
+{% if page.rows %}
+{{ t.pager(page, 'contexts.index', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Source</th>
+        <th scope="col">Its compartment</th>
+        <th scope="col">Consensus context</th>
+        <th scope="col">Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mapping in page.rows %}
+      <tr>
+        <td>{{ mapping.source }}</td>
+        <td>{{ mapping.source_display }}</td>
+        <td>
+          {{ mapping.context_display or "—" }}
+          <div class="muted mono">{{ mapping.context_short }}</div>
+        </td>
+        <td class="muted">{{ mapping.comment or "—" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'contexts.index', args) }}
+{% else %}
+{{ t.nothing_matches() }}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "description": "Two ecoinvent 3.12 elementary exchanges the merge matched and the published list did not carry. `Silicon` and `Oils, unspecified`, both `soil / industrial`, are the whole of the gap between the 9,850 exchanges ecoinvent 3.12 ships and the 9,848 associations the `ecoinvent-3.12` correspondence held on the 2026-08-19 build (run 40482427d770458fa4c43265d26db685, merging ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026-v1). Neither is a matching failure: `merge_outcomes` records both as `prepared`, on the right substance and in their own compartment. What was missing is the link from that decision to the list, so a consumer mapping ecoinvent 3.12 biosphere exchanges had nowhere to send them and could only drop the exchange. Both rows resolved their prepared target through `source-context-target`, which wrote the source reference and the concept association to the row the pass loaded rather than to the copy it publishes. See #321, and #115 for the same cause costing 425 rows of ecoinvent 3.8.",
+  "expectations": [
+    {
+      "id": "0586-silicon-in-industrial-soil-reaches-the-published-list",
+      "issue": 586,
+      "title": "The ecoinvent 3.12 `Silicon` emission to industrial soil is published with a mapping a consumer can follow",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "context": [
+          "soil",
+          "industrial"
+        ],
+        "name": "Silicon"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Silicon",
+        "target_context_display": "Environmental \u2192 Ground \u2192 Industrial"
+      },
+      "comment": "The first of #321's two rows: ecoinvent 3.12 flow a57cb19d-f436-4c0c-a2ab-097c544bd95f, `soil / industrial`, kg, CAS 7440-21-3. On the 2026-08-19 build it was matched -- `prepared`, onto flow 7bd57a67-e05a-426a-9b97-16638d41fad9, `Silicon` in `Environmental -> Ground -> Industrial` -- and `published` was false: no row in `elementary_flow_sources`, and no association in the correspondence. The context is otherwise well covered, 46 of its 48 exchanges mapping, so the gap was never a missing compartment. Updated with #141: the `prepared` outcome came from the published table, which reached this row only through a permitted coarsening -- industrial or groundwater onto the nearest compartment EF has. The tables and the coarsenings are retired, and the row now lands in the compartment its own list named, on a flow of the same substance -- #84's rule, applied to the last rows the tables were still coarsening. The mapping a consumer follows is the algorithm's, recorded like any other."
+    },
+    {
+      "id": "0586-oils-unspecified-in-industrial-soil-reaches-the-published-list",
+      "issue": 586,
+      "title": "The ecoinvent 3.12 `Oils, unspecified` emission to industrial soil is published with a mapping a consumer can follow",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "context": [
+          "soil",
+          "industrial"
+        ],
+        "name": "Oils, Unspecified"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Oils, Unspecified",
+        "target_context_display": "Environmental \u2192 Ground \u2192 Industrial"
+      },
+      "comment": "The second: ecoinvent 3.12 flow e9bf9e2d-4bd1-4679-86ff-e34f6b750ea0, `soil / industrial`, kg, no CAS. Matched `prepared` onto flow 8d467a31-5ee4-4890-83ea-d7d191034dfc in the same compartment, and `published` was false on the 2026-08-19 build for the same reason as `Silicon`. Updated with #141: the `prepared` outcome came from the published table, which reached this row only through a permitted coarsening -- industrial or groundwater onto the nearest compartment EF has. The tables and the coarsenings are retired, and the row now lands in the compartment its own list named, on a flow of the same substance -- #84's rule, applied to the last rows the tables were still coarsening. The mapping a consumer follows is the algorithm's, recorded like any other."
+    },
+    {
+      "id": "0586-every-ecoinvent-312-row-the-merge-placed-reaches-the-list",
+      "issue": 586,
+      "title": "No ecoinvent 3.12 exchange the merge placed is left out of the published list",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "published": false
+      },
+      "expect": {
+        "row_count": 0
+      },
+      "comment": "The general form of the two rows above, and what stops the fix being read as two special cases. A row the merge decided and the writer dropped is invisible in every merge measure, because those count decisions; this counts the ones that did not reach the list. On the 2026-08-19 build it was 2. Rows the merge left `unmatched` are not counted -- they have no decision to publish -- which is why this is phrased about the rows that were placed."
+    }
+  ]
+}

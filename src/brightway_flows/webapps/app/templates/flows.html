@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Elementary flows" %}
+{% set active_section = "flows" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Elementary flows</h1>
+  <p class="page__lede">
+    A substance in a context, from one source list. Deprecated flows are hidden
+    unless you ask for them.
+  </p>
+</header>
+
+<form class="filters" method="get" action="{{ url_for('flows.index') }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ filters.query }}"
+           placeholder="Name, uuid, CAS, context…" data-search>
+    <label class="checkbox">
+      <input type="checkbox" name="name_only" value="1"
+             {% if filters.name_only %}checked{% endif %}> Name only
+    </label>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('flows.index') }}
+  </div>
+
+  <div class="filters__selects">
+    {{ t.select("source", "Source", filters.source, options.source) }}
+    {{ t.select("unit", "Unit", filters.unit, options.unit) }}
+    {{ t.select("type", "Type", filters.flow_type, options.type) }}
+    {{ t.select("qualifier", "Origin", filters.origin_qualifier, options.qualifier) }}
+    {{ t.select("deprecated", "Deprecated", filters.deprecated, [
+        ('exclude', 'Hidden'), ('only', 'Only deprecated'), ('all', 'Shown')]) }}
+    {% for key, label in context_axes %}
+    {{ t.select(key, label, filters.context.get(key, ''), options.get(key, [])) }}
+    {% endfor %}
+  </div>
+</form>
+
+{{ t.filter_chips(filters.active, 'flows.index', args) }}
+
+{#
+  Said out loud, because a list that opens on page 812 with no explanation looks
+  like a bug. The link is the way back to the top, and everything else on the
+  page -- a search, a filter, a sort -- lands on page 1 as it always did.
+#}
+{% if landed_at_random and page.number > 1 %}
+<div class="notice">
+  <p>
+    Opened at page {{ page.number }} of {{ page.pages }}, chosen at random, so
+    that browsing this list is not always browsing the letter A.
+    <a href="{{ url_for('flows.index', page=1) }}">Start at the beginning</a>.
+  </p>
+</div>
+{% endif %}
+
+{% if page.rows %}
+{{ t.pager(page, 'flows.index', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">{{ t.sort_header("Name", "name", sort, 'flows.index', args) }}</th>
+        <th scope="col">{{ t.sort_header("Context", "context", sort, 'flows.index', args) }}</th>
+        <th scope="col">{{ t.sort_header("Source", "source", sort, 'flows.index', args) }}</th>
+        <th scope="col">{{ t.sort_header("Unit", "unit", sort, 'flows.index', args) }}</th>
+        <th scope="col">{{ t.sort_header("Type", "type", sort, 'flows.index', args) }}</th>
+        <th scope="col" class="num">{{ t.sort_header("LCIA", "lcia", sort, 'flows.index', args) }}</th>
+        <th scope="col" class="num">{{ t.sort_header("Changes", "changes", sort, 'flows.index', args) }}</th>
+        <th scope="col">CAS</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          <a href="{{ url_for('flows.detail', uuid=row.uuid) }}">{{ row.name or "(no name)" }}</a>
+          <div class="muted mono">{{ row.uuid }}</div>
+          {#
+            A tag rather than a column: 97 of 79,827 flows carry a qualifier, so
+            a column would be empty on every screen but one.
+          #}
+          {% if row.origin_qualifier %}
+          <span class="tag">{{ row.origin_qualifier }}</span>
+          {% endif %}
+          {% if row.is_deprecated %}
+          <span class="tag tag--info">deprecated{% if row.replaced_by_uuid %} → {{ row.replaced_by_uuid }}{% endif %}</span>
+          {% endif %}
+        </td>
+        <td>{{ row.context_display }}</td>
+        <td>{{ row.source }}</td>
+        <td class="mono">{{ row.unit }}</td>
+        <td>
+          {% if row.flow_object_id %}
+          {{ t.substance_link(row.flow_object_id, row.type_label or "—") }}
+          {% else %}<span class="muted">—</span>{% endif %}
+        </td>
+        <td class="num">{{ row.lcia_factor_count | thousands }}</td>
+        <td class="num">{{ row.change_count | thousands }}</td>
+        <td class="mono">{{ row.cas_numbers | join(", ") or "—" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'flows.index', args) }}
+{% else %}
+{{ t.nothing_matches() }}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "description": "Where a particle flow of one size window has no characterisation factor and the same category characterises another window of the family in the same compartment, this is the one convention that says which window's number it takes, if any. Ours, the same for every LCIA method this list publishes, in the shape of `context-carry-rules.json` and read by `brightway_flows.lcia.size_class_carry`; a factor it publishes carries `derivation: carried` with the donor flow as `source_flow_uuid`. Decided by the project owner on 2 September 2026 from the census in plans/particle-family.md section 0, on the build of 944b274.\n\nHow it is applied. It runs inside one compartment, before the compartment convention: a blank is a (flow, category, place) that no deciding implementation states anything for. The `downward` rules run first: each names a recipient window and its broader windows nearest first, exactly as `particulate-size-classes.json` nests them -- the loader refuses a donor list that is not the recipient's own chain -- and the first donor published in that compartment gives its number. The `upward` rule runs after, from stated numbers only: the size-unstated total takes its children's number only where every child is published and they state the same number -- stricter than the compartment convention on purpose, since PM10 is the total's only characterised child under EF and giving the total PM10's number would be the `unspecified means PM10` reading declined for Stepwise. Nothing is carried onto a withdrawn flow. A stated zero carries like any other number. The compartment convention that runs next treats a number carried across windows as a donor, because it was carried within the compartment and not along a chain of compartments.\n\nWhat it fills on the 944b274 build. Under EF 3.1's particulate matter category the JRC states PM0.2, PM0.2 - PM2.5 and PM2.5 at one number and PM10 at 0.23 times it, and states nothing for the coarse band PM2.5 - PM10, for > PM10, or for the unsized total; the coarse band takes PM10's number in each of its air compartments, and the two above it stay blank because nothing above them is characterised. Under Stepwise 2006's respiratory inorganics, stated in unspecified air only, PM0.2 and PM0.2 - PM2.5 take PM2.5's 1.0, the coarse band takes PM10's 0.536, and > PM10 takes the unsized total's 0.157 once `lcia-factor-collision-rulings.json` publishes it; the compartment convention then spreads each into the outdoor strata.\n\nThe one row that needed saying twice is the coarse band under EF. `docs/reference/limitations.md` read EF's PM10 number as a bulk figure with a fixed fine share, so that giving it to a flow defined as 2.5 - 10 um credits fines the inventory reports apart; the ecoinvent Centre and GreenDelta both give the coarse band that number anyway. The owner's ruling is the rule as written, with the concern recorded beside it: a consumer who disagrees can read the `carried` derivation and drop it.",
+  "downward": [
+    {
+      "recipient": "pm0_2",
+      "donors": ["pm2_5", "pm10", "unsized"],
+      "comment": "The ultrafine cut takes the fine fraction's number. EF's JRC already states exactly this -- PM0.2 carries PM2.5's number in every one of its air compartments -- which is the strongest evidence a publisher can give that a finer cut inside PM2.5 is scored as PM2.5. Fills nothing under EF; under Stepwise it gives the window the 1.0 the fine fraction carries."
+    },
+    {
+      "recipient": "pm0_2_to_pm2_5",
+      "donors": ["pm2_5", "pm10", "unsized"],
+      "comment": "The band between the ultrafine cut and PM2.5, the same as the ultrafine cut: EF states it at PM2.5's number everywhere, and Stepwise ships no such row."
+    },
+    {
+      "recipient": "pm2_5",
+      "donors": ["pm10", "unsized"],
+      "comment": "PM2.5 takes PM10's number where nobody states PM2.5 itself. Fills nothing on the 944b274 build -- both methods state PM2.5 wherever they state PM10 -- and is here so the chain reads whole: a method that states only a PM10 number characterises its fine fraction at that number."
+    },
+    {
+      "recipient": "pm2_5_to_pm10",
+      "donors": ["pm10", "unsized"],
+      "comment": "The coarse band takes PM10's number. EF 3.1 states nothing for its own `Particles (PM2.5 - PM10)` flow in any compartment and 5.48544e-5 for `particles (PM10)` in urban ground-level air; the ecoinvent Centre and GreenDelta both put the coarse band on that number, and ecoinvent's own rows reached it by #37's override while BAFU's and AGRIBALYSE's identical rows scored zero. Eleven EF compartments and one Stepwise compartment on the 944b274 build. The limitations page's reading -- that EF's number is a bulk-PM10 figure with a 0.23 fine share, so this double-counts fines reported apart -- is recorded there beside the rule, and the derivation says `carried` so a consumer can drop it."
+    },
+    {
+      "recipient": "pm10",
+      "donors": ["unsized"],
+      "comment": "PM10 takes the size-unstated total's number where nobody states PM10. Fills nothing on the 944b274 build; the direction matters for a method that characterises `Particulates` alone."
+    },
+    {
+      "recipient": "above_pm10",
+      "donors": ["unsized"],
+      "comment": "The above-ten fraction takes the size-unstated total's number, which is its only broader window. Under EF nothing states the total, so > PM10 stays blank -- every publisher's answer. Under Stepwise the total is 0.157 kg PM2.5-eq once the collision on it is ruled (`lcia-factor-collision-rulings.json`), and the owner's ruling of 2 September 2026 is that > PM10 takes it: what Stepwise scores dust of no stated size at is what it scores dust known to be coarse at."
+    }
+  ],
+  "upward": [
+    {
+      "recipient": "unsized",
+      "donors": ["pm10", "above_pm10"],
+      "comment": "The root takes its two direct children's number only where both are published and state the same number. On the 944b274 build EF states PM10 and not > PM10, and Stepwise states the total itself, so this fills nothing today and is here for a method that states one number for every cut. Not `one child published`: under EF that would hand the total PM10's number, the reading the owner declined for Stepwise."
+    }
+  ]
+}

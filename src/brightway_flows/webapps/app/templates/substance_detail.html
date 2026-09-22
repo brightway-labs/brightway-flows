@@ -1,0 +1,302 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = substance.name or substance.flow_object_id %}
+{% set active_section = "substances" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ substance.name or "(no name)" }}</h1>
+  <p class="page__lede mono">{{ substance.flow_object_id }}</p>
+</header>
+
+<div class="detail-columns">
+  <section class="section">
+    <div class="section__header"><h2>Identity</h2></div>
+    <dl class="facts">
+      <dt>Type</dt><dd>{{ substance.type_label or "—" }}</dd>
+      <dt>CAS</dt><dd class="mono">{{ substance.cas_numbers | join(", ") or "—" }}</dd>
+      <dt>EC</dt><dd class="mono">{{ substance.ec_numbers | join(", ") or "—" }}</dd>
+      {# Which list first published this substance.  Always shown, because an
+         em dash here is itself an answer: the five objects the pipeline minted
+         for itself have no source list. #}
+      <dt>Origin</dt>
+      <dd>
+        {% if substance.origin_source %}
+        <a href="{{ url_for('substances.index', origin=substance.origin_source) }}">{{ substance.origin_source }}</a>
+        {% else %}
+        <span class="muted">minted by the pipeline</span>
+        {% endif %}
+        {% if substance.origin_resolver %}
+        <span class="mono muted term">{{ substance.origin_resolver }}</span>
+        {% endif %}
+      </dd>
+      {% if substance.origin_qualifier %}
+      <dt>Qualifier</dt>
+      <dd>
+        <a href="{{ url_for('substances.index', qualifier=substance.origin_qualifier) }}">{{ substance.origin_qualifier }}</a>
+      </dd>
+      {% endif %}
+      {% if substance.parent_flow_object_id %}
+      <dt>Parent</dt><dd>{{ t.substance_link(substance.parent_flow_object_id) }}</dd>
+      {% endif %}
+      {# Its own row, not the "Parent" one above: that link names the base
+         substance a qualified flow was split from, and a non-material
+         intervention has none -- it is not matter at all (#70). #}
+      {% if substance.parent_intervention_id %}
+      <dt>Intervention</dt>
+      <dd>{{ t.substance_link(substance.parent_intervention_id) }}</dd>
+      {% endif %}
+      <dt>Changes</dt>
+      <dd class="mono">
+        {{ substance.change_count | thousands }}
+        <span class="muted">across every transformer</span>
+      </dd>
+      {# The aggregate rather than the rows: up to two hundred places fan out
+         from one base name, so the number is the readable fact (#192). #}
+      {% if substance.regionalised_source_rows %}
+      <dt>Regionalised</dt>
+      <dd class="mono">
+        {{ substance.regionalised_source_rows | thousands }}
+        <span class="muted">source rows carried a place in the name</span>
+      </dd>
+      {% endif %}
+    </dl>
+  </section>
+
+  {% if substance.has_structure %}
+  <section class="section">
+    <div class="section__header"><h2>Structure</h2></div>
+    {# A separate request, not an inline data URI: RDKit is the heaviest import
+       in the project and a page that shows no diagram should not pay for it. #}
+    <img class="structure"
+         src="{{ url_for('substances.structure', flow_object_id=substance.flow_object_id) }}"
+         alt="Structure diagram for {{ substance.name }}" width="400" height="260">
+    {% if substance.smiles_candidates | length > 1 %}
+    <p class="muted">
+      This substance carries {{ substance.smiles_candidates | length }} candidate
+      structures; the diagram is the first one RDKit could parse, not a settled
+      answer.
+    </p>
+    {% endif %}
+  </section>
+  {% endif %}
+</div>
+
+{% if substance.role_rows %}
+<section class="section">
+  <div class="section__header">
+    <h2>What it is used for</h2>
+    <span class="muted">{{ substance.role_rows | length | thousands }}</span>
+  </div>
+  <p class="section__note">
+    Roles, not types. A substance bears as many as apply — sulfluramid is an
+    insecticide and an acaricide — and each is a class ChEBI curates, asserted
+    with ChEBI’s own <code>has role</code>. The narrow ones publish the broad
+    ones alongside them, so a substance filed as a herbicide is a pesticide
+    here too. See <a href="{{ url_for('agrochemicals.index') }}">agricultural
+    chemicals</a> for what the axis is and which classes are published.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Role</th>
+          <th scope="col">Definition</th>
+          <th scope="col">Evidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in substance.role_rows %}
+        <tr>
+          <td>
+            {{ row.label }}
+            <span class="mono muted term">{{ row.curie }}</span>
+          </td>
+          <td>{{ row.definition | plain_text }}</td>
+          {# Which half of the axis asserted it.  "ChEBI says so" and "a
+             curator read the published record and wrote it down" are not the
+             same claim, and a role is worth the source behind it. #}
+          <td>{{ row.evidence or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+{% if substance.alt_labels %}
+<section class="section">
+  <div class="section__header">
+    <h2>Alternative labels</h2>
+    <span class="muted">{{ substance.alt_labels | length | thousands }}</span>
+  </div>
+  <ul class="labels">
+    {% for label in substance.alt_labels %}<li>{{ label }}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if substance.properties %}
+<section class="section">
+  <div class="section__header"><h2>Properties</h2></div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th scope="col">Property</th><th scope="col">Value</th></tr>
+      </thead>
+      <tbody>
+        {% for row in substance.property_rows %}
+        <tr>
+          {# The words and the term, not one or the other. The label is what
+             the row says; the term is what a curator quotes in an issue and
+             what the published document is keyed by. #}
+          <td>
+            {{ row.label }}
+            <span class="mono muted term">{{ row.term }}</span>
+          </td>
+          <td class="mono">{{ row.entry | property_value }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+{% if substance.reference_rows %}
+<section class="section">
+  <div class="section__header">
+    <h2>Known URLs</h2>
+    <span class="muted">{{ substance.reference_rows | length | thousands }}</span>
+  </div>
+  <p class="section__note">
+    Where else this substance is described. Collected while the pipeline
+    resolved it — from ChEBI's cross-references, from PubChem's identifier
+    list, and from the CAS number — so a link here is a record the merge
+    actually read, not a search it suggests.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Resource</th>
+          <th scope="col">URL</th>
+          <th scope="col">Recorded by</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in substance.reference_rows %}
+        <tr>
+          <td>{{ row.resource or "—" }}</td>
+          {# A reference that is not a URL is still shown. A ChEBI xref whose
+             prefix has no expansion is stored as it was published, and a link
+             to nowhere is worse than plain text. #}
+          <td class="url">
+            {% if row.is_link %}
+            <a class="mono" href="{{ row.url }}" rel="noreferrer">{{ row.url }}</a>
+            {% else %}
+            <span class="mono">{{ row.url }}</span>
+            {% endif %}
+          </td>
+          <td class="mono muted">{{ row.generated_by or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="section__header">
+    <h2>Elementary flows</h2>
+    <span class="muted">{{ substance.flows | length | thousands }}</span>
+  </div>
+  {% if substance.flows %}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Flow</th>
+          <th scope="col">Context</th>
+          <th scope="col">Source</th>
+          <th scope="col">Unit</th>
+          <th scope="col" class="num">CFs</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for flow in substance.flows %}
+        <tr>
+          <td>
+            {{ t.flow_link(flow.uuid) }}
+            {% if flow.is_deprecated %}<span class="tag tag--info">deprecated</span>{% endif %}
+          </td>
+          <td>{{ flow.context_display }}</td>
+          <td>{{ flow.source }}</td>
+          <td class="mono">{{ flow.unit }}</td>
+          <td class="num">{{ flow.lcia_factor_count | thousands }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No elementary flow resolves to this substance.</p>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>History</h2></div>
+  {# Same on-demand fragment as the flow page. `changelog` is keyed by
+     `flow_object_id`, so a substance's history is a filter, not a join. #}
+  <details data-fragment="{{ url_for('changes.substance', flow_object_id=substance.flow_object_id, fragment=1) }}">
+    <summary>
+      Everything that changed this substance
+      <span class="muted">({{ substance.change_count | thousands }} changes)</span>
+    </summary>
+    <div data-fragment-target>
+      <p>
+        <a href="{{ url_for('changes.substance', flow_object_id=substance.flow_object_id) }}">Open the changes page</a>
+      </p>
+    </div>
+  </details>
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>Full record</h2></div>
+  <details>
+    <summary>Flow object JSON</summary>
+    <pre class="json"><code>{{ substance.flow_object_json | pretty_json }}</code></pre>
+  </details>
+</section>
+
+{#
+  What can be wrong about a substance rather than about one of its flows: the
+  name it is published under, the chemical it is said to be, and whether this
+  record is one substance at all.
+
+  The flow page carries the other three; see the note there on the `&amp;`.
+#}
+<section class="section">
+  <div class="section__header"><h2>Something wrong here?</h2></div>
+  {% set substance_ref = (substance.flow_object_id ~ (" · " ~ substance.name if substance.name else "")) | urlencode %}
+  {% set report_url = repository_url ~ "/issues/new?template=" %}
+  <ul>
+    <li>
+      <a href="{{ report_url }}wrong-name.yml&amp;published-flow={{ substance_ref }}">This substance is published under the wrong name</a>
+    </li>
+    <li>
+      <a href="{{ report_url }}wrong-identity.yml&amp;published-flow={{ substance_ref }}">This is not that chemical</a>
+    </li>
+    <li>
+      <a href="{{ report_url }}doubled-or-fused.yml&amp;published-flow={{ substance_ref }}">This record is two substances, or it is a second copy of one</a>
+    </li>
+  </ul>
+  <p class="muted">
+    You do not need to run a build or clone anything. Name the record and say
+    what your evidence is; the measurement is done for you.
+    <a href="{{ repository_url }}/blob/main/CONTRIBUTING.md">How contributing works</a>
+  </p>
+</section>
+{% endblock %}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "description": "A build publishes its flows in one file and its characterisation factors in another, and the two have to agree about which flows exist. `harmonised-flows-simple.json.gz` drops a deprecated flow from `flows` and files it under `redirects`; `lcia-factors.json.gz` went on publishing factors against 166 of those identifiers, 1,674 of them, so a consumer that loaded both saw numbers about flows it did not have. The factors now follow the same redirect the export publishes -- the ones it says to follow, onto the flow that replaced them -- and nothing is published under an identifier the build retires.",
+  "expectations": [
+    {
+      "id": "0778-retired-kresoxim-identifier-carries-nothing",
+      "issue": 778,
+      "title": "The kresoxim-methyl identifier the build merged away publishes no characterisation factor",
+      "subject": {
+        "kind": "flow",
+        "uuid": "8e374806-0927-45ba-bbd5-d31fa2f6cf0e",
+        "include_deprecated": true
+      },
+      "expect": {
+        "deprecated": true,
+        "replaced_by": "08a91e70-3ddc-11dd-95c2-0050c2490048",
+        "jrc_factors": 0,
+        "consensus_factors": 0
+      },
+      "comment": "EF files kresoxim-methyl in agricultural soil twice; the build keeps one row and deprecates this one, and #64 is which of their two freshwater ecotoxicity numbers -- 134.73 and 53,540, 397x apart -- is right. Until #163 both were published, one of them against this identifier, which the export tells a consumer has been replaced. Named by identifier rather than in words because the identifier is what the claim is about."
+    },
+    {
+      "id": "0778-collapsed-context-identifier-carries-nothing",
+      "issue": 778,
+      "title": "A thallium identifier retired because two source contexts collapsed publishes no factor either",
+      "subject": {
+        "kind": "flow",
+        "uuid": "1e49a2cf-7772-46ac-8a4f-55e0e170f377",
+        "include_deprecated": true
+      },
+      "expect": {
+        "deprecated": true,
+        "jrc_factors": 0,
+        "consensus_factors": 0
+      },
+      "comment": "The other kind of redirect, and the reason this is two expectations rather than one: EF filed the two rows in different contexts that our vocabulary cannot tell apart, so following the redirect and carrying the number across it is refused (#1, #36). Both kinds stop being published; only one of them may hand its numbers to the survivor."
+    },
+    {
+      "id": "0778-a-number-only-the-retired-row-held-is-carried",
+      "issue": 778,
+      "title": "2,3,4,5-tetrachlorobenzoyl chloride in unspecified water keeps the freshwater ecotoxicity factor only its retired twin stated",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "3e84801c-288f-4078-80f8-b1a45453d374",
+        "flow_name": "2,3,4,5-tetrachlorobenzoyl Chloride",
+        "context_display": "Environmental → Water → Unknown",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {"count": 1, "amount": "635.3"},
+      "comment": "The surviving row states nothing for this category, and the row it absorbed states 635.3. Dropping the retired identifier without carrying the number would lose a factor EF states about a flow this list publishes, which is #31 by another route; the published factor names the retired identifier as its `source_flow_uuid`, so a reader can see where the number came from. 72 factors are in this position, over three substances. The surviving flow is named by identifier as well as in words, because the whole claim is that the number is on *that* flow: without it the check reads the retired row's own copy and passes before the fix as well."
+    },
+    {
+      "id": "0778-a-settled-disagreement-is-not-reopened",
+      "issue": 778,
+      "title": "Kresoxim-methyl in agricultural soil publishes only the surviving row's freshwater ecotoxicity factor",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Kresoxim-methyl",
+        "context_display": "Environmental → Ground → Agricultural",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {"count": 1, "amount": "134.73"},
+      "comment": "The other half of the redirect. `deduplication.settle_factor_values` chose between 134.73 and 53,540 when it collapsed the two rows, and wrote the number it did not keep onto the survivor as a superseded value. Handing the redirected copy back as a second candidate would make this a collision and publish neither, so the flow's own number stands and the redirected one is counted as a restatement. 132 factors were in this position."
+    }
+  ]
+}

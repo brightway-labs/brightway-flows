@@ -1,0 +1,752 @@
+{
+  "schema_version": 1,
+  "description": "BAFU writes some chemical names the way a CAS index does, family first: `Ethane, chloro-` for chloroethane, `Phenol, 2-chloro-` for 2-chlorophenol. For a SimaPro-shaped list the merge already knows how to turn that habit back into the ordinary spelling (#285), and for fourteen BAFU names the ordinary spelling is not merely a synonym of a substance the list holds -- it is the exact name the list publishes for it. The rewriting runs, finds that substance, and then a safety check throws the match away, because the check re-asks its question of the names the row shipped instead of the rewritten name that found the candidate. `Ethane, chloro-` is nobody's preferred name, so the check sees nothing to accept, and the merge mints a second chloroethane -- one with no registry number, which no impact factor can reach. Measured on the 2026-08-20 build of 805e72fd6698 (run 1e4499fbfe55): 24 BAFU rows across these fourteen names, each minting or joining a duplicate of a substance the list already holds under exactly the rewritten name. The issue's other two 16ths, `Benzene, chloro-` and `Benzene, 1,2-dichloro-`, no longer need this route: BAFU ships their registry numbers on sibling rows, and since #309 the vendor's own number is copied across and they match by CAS. The duplicates do double damage now: the minted copy gets a structure from its parseable name, so the list publishes one molecule twice under two identical InChIKeys, and the true substance loses the BAFU spelling from its published synonyms, because a synonym that is some other object's name is stripped -- the copy makes the original harder to find.\n\nThe rest of the issue is here too, measured on the build of b03c940bae73 (run 58da3bd39637): 26 more BAFU names, 41 rows, each minting a substance whose InChIKey the list already publishes, and none of them shipping a registry number or an EC number anywhere in BAFU. They needed three different answers, and which one each got turned on whether a *pattern* connected the two spellings. Four are the CAS-index inversion again -- `Ethene, 1,1-dichloro-`, `Toluene, 2-chloro-` -- where the rewriting already produced the right name and the safety check refused it for landing on a synonym rather than on a published name; a name this project derived by de-inverting cannot be the trade name that check exists to stop, so it is now admitted. Four are polycyclic aromatic hydrocarbons whose fusion locant BAFU writes in round brackets where the nomenclature uses square ones -- `Benzo(a)anthracene` for benzo[a]anthracene -- which is a habit every list of this lineage carries and so is stated once as a rule. The remaining 18 are pairs of ordinary names for one substance, `Arsine` for hydrogen arsenide and `Methyl Mercaptan` for methanethiol, where there is no pattern to state and the registry number is written on the row instead. Two of those 18 are ties no rule could have broken: `1-Pentanol` reaches both pentan-1-ol and the isomer-unspecified `Pentanol`, and `Nitrogen Monoxide` reaches both nitric oxide and the NOx aggregate, which carry different characterisation factors.",
+  "expectations": [
+    {
+      "id": "0512-ethane-chloro-reaches-chloroethane",
+      "issue": 512,
+      "title": "BAFU's four `Ethane, chloro-` rows land on Chloroethane, through the rewritten name",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Ethane, chloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Chloroethane",
+        "row_count": 4,
+        "same_substance": true
+      },
+      "comment": "The named example. Four rows, none carrying a registry number anywhere in BAFU's list, so nothing upstream can supply one and the name route is all there is. `chloroethane` -- the rewriting's output -- is the preferred name of exactly one substance, fo-be8250491b0f9883, CAS 75-00-3, and of nothing else in the published list. On 805e72fd6698 all four rows minted fo-59bb84d3620ba4ea instead: same InChIKey as Chloroethane, no registry number. The basis is claimed so this stays a match made on the derived spelling, visibly, rather than one reached some other way a later change might guess at."
+    },
+    {
+      "id": "0512-ethene-trichloro-reaches-trichloroethene",
+      "issue": 512,
+      "title": "`Ethene, Trichloro-` lands on Trichloroethene",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Ethene, Trichloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Trichloroethene",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "Rewritten to `trichloroethene`, the preferred name of CAS 79-01-6 and of nothing else. Both rows minted fo-4089dac14547bf49 on 805e72fd6698, publishing trichloroethylene twice under one InChIKey."
+    },
+    {
+      "id": "0512-acetylene-dichloro-reaches-dichloroacetylene",
+      "issue": 512,
+      "title": "`Acetylene, Dichloro-` lands on Dichloroacetylene",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Acetylene, Dichloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Dichloroacetylene",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "Rewritten to `dichloroacetylene`, the preferred name of CAS 7572-29-4. Two rows minted fo-3d9da491ac2dbef2 on 805e72fd6698."
+    },
+    {
+      "id": "0512-benzene-trimethyl-reaches-trimethylbenzene",
+      "issue": 512,
+      "title": "`Benzene, 1,2,4-trimethyl-` lands on 1,2,4-trimethylbenzene",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Benzene, 1,2,4-trimethyl-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "1,2,4-trimethylbenzene",
+        "row_count": 1
+      },
+      "comment": "Rewritten to the preferred name of CAS 95-63-6. Minted fo-ef898a934f0bb580 on 805e72fd6698."
+    },
+    {
+      "id": "0512-benzene-dichloro-reaches-dichlorobenzene",
+      "issue": 512,
+      "title": "`Benzene, Dichloro-` lands on Dichlorobenzene",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Benzene, Dichloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Dichlorobenzene",
+        "row_count": 1
+      },
+      "comment": "The unpositioned parent, not one of the numbered isomers: rewritten to `dichlorobenzene`, the preferred name of CAS 25321-22-6, which the list holds apart from `1,2-Dichlorobenzene` exactly as BAFU does. Minted fo-77ba69d2f3c1ce7c on 805e72fd6698."
+    },
+    {
+      "id": "0512-benzene-pentachloronitro-reaches-quintozene",
+      "issue": 512,
+      "title": "`Benzene, Pentachloronitro-` lands on Pentachloronitrobenzene",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Benzene, Pentachloronitro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Pentachloronitrobenzene",
+        "row_count": 1
+      },
+      "comment": "Rewritten to the preferred name of CAS 82-68-8, the fungicide quintozene. Minted fo-d7adcb2f7c629abf on 805e72fd6698 -- a duplicate with no registry number, so no factor could reach the copy of a substance whose original is characterised."
+    },
+    {
+      "id": "0512-butadiene-hexachloro-reaches-hexachlorobutadiene",
+      "issue": 512,
+      "title": "`Butadiene, Hexachloro-` lands on Hexachlorobutadiene",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Butadiene, Hexachloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Hexachlorobutadiene",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "Rewritten to the preferred name of CAS 87-68-3. Two rows minted fo-8bc5c985c77e3759 on 805e72fd6698."
+    },
+    {
+      "id": "0512-tetrachloroethane-reaches-its-substance",
+      "issue": 512,
+      "title": "`Ethane, 1,1,2,2-tetrachloro-` lands on 1,1,2,2-tetrachloroethane",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Ethane, 1,1,2,2-tetrachloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "1,1,2,2-tetrachloroethane",
+        "row_count": 3,
+        "same_substance": true
+      },
+      "comment": "Rewritten to the preferred name of CAS 79-34-5. Three rows minted fo-785e5da21d2a7abe on 805e72fd6698."
+    },
+    {
+      "id": "0512-dichloroethane-reaches-its-substance",
+      "issue": 512,
+      "title": "`Ethane, 1,1-dichloro-` lands on 1,1-dichloroethane",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Ethane, 1,1-dichloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "1,1-dichloroethane",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "Rewritten to the preferred name of CAS 75-34-3. Two rows minted fo-310f4bb5f2d8d429 on 805e72fd6698."
+    },
+    {
+      "id": "0512-dibromoethane-reaches-its-substance",
+      "issue": 512,
+      "title": "`Ethane, 1,2-dibromo-` lands on 1,2-dibromoethane",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Ethane, 1,2-dibromo-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "1,2-dibromoethane",
+        "row_count": 1
+      },
+      "comment": "Rewritten to the preferred name of CAS 106-93-4. Minted fo-e41204f2a44ff2e4 on 805e72fd6698."
+    },
+    {
+      "id": "0512-phenol-24-dichloro-reaches-its-substance",
+      "issue": 512,
+      "title": "`Phenol, 2,4-dichloro-` lands on 2,4-dichlorophenol",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Phenol, 2,4-dichloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "2,4-dichlorophenol",
+        "row_count": 1
+      },
+      "comment": "Rewritten to the preferred name of CAS 120-83-2. Minted fo-9309a7d70a8ff556 on 805e72fd6698."
+    },
+    {
+      "id": "0512-phenol-2-chloro-reaches-its-substance",
+      "issue": 512,
+      "title": "`Phenol, 2-chloro-` lands on 2-chlorophenol",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Phenol, 2-chloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "2-chlorophenol",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "Rewritten to the preferred name of CAS 95-57-8. Two rows minted fo-d766fc3c20c73ba3 on 805e72fd6698."
+    },
+    {
+      "id": "0512-phenol-4-chloro-reaches-its-substance",
+      "issue": 512,
+      "title": "`Phenol, 4-chloro-` lands on 4-chlorophenol",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Phenol, 4-chloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "4-chlorophenol",
+        "row_count": 1
+      },
+      "comment": "Rewritten to the preferred name of CAS 106-48-9. Minted fo-3587a2f5c16a2c58 on 805e72fd6698."
+    },
+    {
+      "id": "0512-propane-dichloro-reaches-its-substance",
+      "issue": 512,
+      "title": "`Propane, 1,2-dichloro-` lands on 1,2-dichloropropane",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Propane, 1,2-dichloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "1,2-dichloropropane",
+        "row_count": 1
+      },
+      "comment": "Rewritten to the preferred name of CAS 78-87-5. Minted fo-17c88423347effa4 on 805e72fd6698."
+    },
+    {
+      "id": "0512-methylbutanol-stays-matched-by-cas",
+      "issue": 512,
+      "title": "The issue's own example, `3-Methyl-1-butanol`, keeps matching by the vendor's number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "3-Methyl-1-butanol"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "The issue opened with this pair -- an air row shipping 123-51-3 and a water row shipping nothing, the water row minting an empty copy. That healed before this change: #309 copies a number a vendor writes on one row of a name onto its bare siblings, so both rows now match fo-a0b70cd55a7dfe3a by CAS. Claimed here so the healed state is pinned while the rest of the issue is worked, and so the name route accepting more never quietly takes over a row the number already answers for. `Benzene, chloro-` and `Benzene, 1,2-dichloro-` healed the same way."
+    },
+    {
+      "id": "0512-nitrogen-monoxide-reaches-nitric-oxide",
+      "issue": 512,
+      "title": "BAFU's `Nitrogen Monoxide` lands on Nitric oxide, not on the NOx aggregate",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "10102-43-9"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Nitric oxide",
+        "row_count": 1
+      },
+      "comment": "The wider half of #103, and the case that shows why it is curated rather than ruled. No BAFU row of this name ships a number, and the name reaches two substances: `Nitric oxide`, 10102-43-9, the NO molecule, and `Nitrogen Oxides`, 11104-93-1, the NOx aggregate. Those carry different characterisation factors, so a rule that widened the name evidence would have had to guess between them. BAFU ships `Nitrogen Oxides` as a separate row, so this one is the molecule, and `bafu-2026-v1-manual-fixes.json` now says so with the number. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted fo-0a60f46d4998e148 -- same InChIKey as Nitric oxide, no registry number -- and the published Nitric oxide lost `Nitrogen Monoxide` from its synonyms, stripped for being the copy's name. The basis is claimed as `cas` so this stays a match made on a stated number: if a later change reached the same flow by widening name evidence, that would be a different and weaker answer and this would fail. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Nitrogen monoxide` is recorded as `Nitric oxide` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-p-cresol-reaches-para-cresol",
+      "issue": 512,
+      "title": "BAFU's `p-Cresol` lands on Para-cresol",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "106-44-5"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Para-cresol",
+        "row_count": 1
+      },
+      "comment": "`p-` and `para-` are one prefix and 4-methylphenol is one substance, 106-44-5. No pattern connects the two spellings that a rule could state, so the number is written on the row. Measured on the build of b03c940bae73 (run 58da3bd39637) it minted fo-21b92ebb29008322. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `p-Cresol` is recorded as `p-Cresol` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-arsine-reaches-hydrogen-arsenide",
+      "issue": 512,
+      "title": "BAFU's `Arsine` lands on Hydrogen Arsenide",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "7784-42-1"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Hydrogen Arsenide",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "`Arsine` and `Hydrogen Arsenide` are two ordinary names for AsH3, 7784-42-1. The list answers to `arsane` and `arsenic trihydride` for it but not to `Arsine`, and a synonym is refused against a numbered substance. Curated rather than ruled, for the reason this expectation used to give: the same group holds `Black Carbon`, `Barite` and `Chrysotile`, which want a curator and not a wider gate. Measured on the build of b03c940bae73 (run 58da3bd39637) the two rows minted fo-fe6f58a7fb74c89f. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Arsine` is recorded as `Arsine` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-chlorosilane-trimethyl-reaches-its-substance",
+      "issue": 512,
+      "title": "`Chlorosilane, Trimethyl-` lands on Chlorotrimethylsilane, through a rewritten name that is a synonym",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Chlorosilane, Trimethyl-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Chlorotrimethylsilane",
+        "row_count": 3,
+        "same_substance": true
+      },
+      "comment": "The named case for the second half of the rule. `Chlorosilane, Trimethyl-` de-inverts to `trimethylchlorosilane`, which this list holds as a ChEBI synonym of `Chlorotrimethylsilane` rather than as its published name -- so the match was found and then refused, because a synonym is not accepted against a substance carrying a registry number. A name this project derived by de-inverting a CAS-index spelling cannot be a trade name or a catalogue code, which is the only thing that refusal exists to stop, so it is now admitted. The rewriting produces `trimethylchlorosilane`; the substance is 75-77-4. Measured on the build of b03c940bae73 (run 58da3bd39637) the rows minted fo-39e77b63b1213afb, with no registry number and so out of reach of every factor. The basis is claimed so this stays a match made on the derived spelling rather than one reached some later change's other way."
+    },
+    {
+      "id": "0512-ethene-11-dichloro-reaches-its-substance",
+      "issue": 512,
+      "title": "`Ethene, 1,1-dichloro-` lands on 1,1-dichloroethylene, through a rewritten name that is a synonym",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Ethene, 1,1-dichloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "1,1-dichloroethylene",
+        "row_count": 1
+      },
+      "comment": "`-ethene` and `-ethylene` are the systematic and the common suffix for the same double bond. The list publishes the second and answers to the first as a ChEBI synonym. The rewriting produces `1,1-dichloroethene`; the substance is 75-35-4. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted fo-7e57a5c96c595fdf, with no registry number and so out of reach of every factor. The basis is claimed so this stays a match made on the derived spelling rather than one reached some later change's other way."
+    },
+    {
+      "id": "0512-ethene-12-dichloro-reaches-its-substance",
+      "issue": 512,
+      "title": "`Ethene, 1,2-dichloro-` lands on 1,2-dichloroethylene, through a rewritten name that is a synonym",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Ethene, 1,2-dichloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "1,2-dichloroethylene",
+        "row_count": 1
+      },
+      "comment": "The same suffix pair on the 1,2 isomer, whose 540-59-0 is the entry with the cis/trans arrangement left open -- which is what BAFU's unqualified name means too. The rewriting produces `1,2-dichloroethene`; the substance is 540-59-0. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted fo-885735ee52694161, with no registry number and so out of reach of every factor. The basis is claimed so this stays a match made on the derived spelling rather than one reached some later change's other way."
+    },
+    {
+      "id": "0512-toluene-2-chloro-reaches-its-substance",
+      "issue": 512,
+      "title": "`Toluene, 2-chloro-` lands on O-chlorotoluene, through a rewritten name that is a synonym",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Toluene, 2-chloro-"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "O-chlorotoluene",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "`2-` and `o-` are the same position on a benzene ring. The list publishes the letter form and answers to the number as a synonym from Common Chemistry. The rewriting produces `2-chlorotoluene`; the substance is 95-49-8. Measured on the build of b03c940bae73 (run 58da3bd39637) the rows minted fo-4f7d43a6079642f0, with no registry number and so out of reach of every factor. The basis is claimed so this stays a match made on the derived spelling rather than one reached some later change's other way."
+    },
+    {
+      "id": "0512-benzo-a-anthracene-reaches-its-substance",
+      "issue": 512,
+      "title": "`Benzo(a)anthracene` lands on Benzo[a]anthracene, the same name with the locant in brackets",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Benzo(a)anthracene"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Benzo[a]anthracene",
+        "row_count": 3,
+        "same_substance": true
+      },
+      "comment": "A polycyclic aromatic hydrocarbon named for the bond its rings are fused at. The letter belongs in square brackets; a list exported as flat text writes round ones, and the two spellings never meet. Nothing is added or removed by the rewriting, only retyped. The substance is 56-55-3. Measured on the build of b03c940bae73 (run 58da3bd39637) the rows minted fo-204e7caea09b2e28, a copy with no registry number. BAFU ships eight PAHs this way and ecoinvent 3.12 ships seven; the others carry numbers and match on them."
+    },
+    {
+      "id": "0512-benzo-k-fluoranthene-reaches-its-substance",
+      "issue": 512,
+      "title": "`Benzo(k)fluoranthene` lands on Benzo[k]fluoranthene, the same name with the locant in brackets",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Benzo(k)fluoranthene"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Benzo[k]fluoranthene",
+        "row_count": 3,
+        "same_substance": true
+      },
+      "comment": "A polycyclic aromatic hydrocarbon named for the bond its rings are fused at. The letter belongs in square brackets; a list exported as flat text writes round ones, and the two spellings never meet. Nothing is added or removed by the rewriting, only retyped. The substance is 207-08-9. Measured on the build of b03c940bae73 (run 58da3bd39637) the rows minted fo-b83e9b4a3cb51acb, a copy with no registry number. BAFU ships eight PAHs this way and ecoinvent 3.12 ships seven; the others carry numbers and match on them."
+    },
+    {
+      "id": "0512-benzo-ghi-perylene-reaches-its-substance",
+      "issue": 512,
+      "title": "`Benzo(g,h,i)perylene` lands on Benzo[g,h,i]perylene, the same name with the locant in brackets",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Benzo(g,h,i)perylene"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Benzo[g,h,i]perylene",
+        "row_count": 1
+      },
+      "comment": "A polycyclic aromatic hydrocarbon named for the bond its rings are fused at. The letter belongs in square brackets; a list exported as flat text writes round ones, and the two spellings never meet. Nothing is added or removed by the rewriting, only retyped. The substance is 191-24-2. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted fo-51ffae56648c7d41, a copy with no registry number. BAFU ships eight PAHs this way and ecoinvent 3.12 ships seven; the others carry numbers and match on them."
+    },
+    {
+      "id": "0512-dibenz-ah-anthracene-reaches-its-substance",
+      "issue": 512,
+      "title": "`Dibenz(a,h)anthracene` lands on Dibenz[a,h]anthracene, the same name with the locant in brackets",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Dibenz(a,h)anthracene"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "simapro-name-pattern",
+        "target_name": "Dibenz[a,h]anthracene",
+        "row_count": 1
+      },
+      "comment": "A polycyclic aromatic hydrocarbon named for the bond its rings are fused at. The letter belongs in square brackets; a list exported as flat text writes round ones, and the two spellings never meet. Nothing is added or removed by the rewriting, only retyped. The substance is 53-70-3. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted fo-b2e1a87721e018eb, a copy with no registry number. BAFU ships eight PAHs this way and ecoinvent 3.12 ships seven; the others carry numbers and match on them."
+    },
+    {
+      "id": "0512-methyl-mercaptan-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Methyl Mercaptan` lands on Methanethiol, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "74-93-1"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Methanethiol",
+        "row_count": 1
+      },
+      "comment": "The trivial name and the systematic one for CH3SH. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 74-93-1. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Methyl mercaptan` is recorded as `Methanethiol` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-isobutene-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Isobutene` lands on 2-methyl-1-propene, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "115-11-7"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "2-methyl-1-propene",
+        "row_count": 1
+      },
+      "comment": "Isobutene is 2-methylprop-1-ene; the list publishes the systematic name. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 115-11-7. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Isobutene` is recorded as `Isobutene` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-dimethyl-ether-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Dimethyl Ether` lands on Methyl Ether, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "115-10-6"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Methyl Ether",
+        "row_count": 1
+      },
+      "comment": "CH3OCH3 under two equivalent names, one counting the methyl groups and one not. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 115-10-6. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Dimethyl ether` is recorded as `Dimethyl Ether` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-sodium-tetrahydroborate-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Sodium Tetrahydroborate` lands on Sodium borohydride, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "16940-66-2"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Sodium borohydride",
+        "row_count": 1
+      },
+      "comment": "NaBH4: the additive name and the trivial one. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 16940-66-2. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Sodium tetrahydroborate` is recorded as `Sodium borohydride` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-chloramine-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Chloramine` lands on Chloramide, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "10599-90-3"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Chloramide",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "Monochloramine, NH2Cl, formed where chlorine disinfectant meets ammonia. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 10599-90-3. Measured on the build of b03c940bae73 (run 58da3bd39637) the rows minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Chloramine` is recorded as `Chloramine` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-butyrolactone-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Butyrolactone` lands on Γ-butyrolactone, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "96-48-0"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Γ-butyrolactone",
+        "row_count": 3,
+        "same_substance": true
+      },
+      "comment": "The unqualified name and the Greek-lettered one for the same lactone; nothing else in the list is called butyrolactone. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 96-48-0. Measured on the build of b03c940bae73 (run 58da3bd39637) the rows minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Butyrolactone` is recorded as `γ-Butyrolactone` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-diisobutyl-ketone-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Diisobutyl Ketone` lands on 2,6-dimethylheptan-4-one, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "108-83-8"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "2,6-dimethylheptan-4-one",
+        "row_count": 1
+      },
+      "comment": "The solvent DIBK, named for its two isobutyl groups or for the chain they make. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 108-83-8. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Diisobutyl ketone` is recorded as `Diisobutyl Ketone` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-biphenol-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `4,4'-Biphenol` lands on Biphenyl-4,4'-diol, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "92-88-6"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Biphenyl-4,4'-diol",
+        "row_count": 1
+      },
+      "comment": "Two phenol rings joined para to para. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 92-88-6. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `4,4'-Biphenol` is recorded as `4,4'-Biphenol` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-methylpyrrolidinone-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `1-Methyl-2-pyrrolidinone` lands on 1-methyl-2-pyrrolidone, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "872-50-4"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "1-methyl-2-pyrrolidone",
+        "row_count": 1
+      },
+      "comment": "NMP the solvent; `-pyrrolidinone` and `-pyrrolidone` are two spellings of one ring. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 872-50-4. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `1-Methyl-2-pyrrolidinone` is recorded as `1-Methyl-2-pyrrolidinone` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-methylpentanol-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `4-Methyl-2-pentanol` lands on 4-methylpentan-2-ol, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "108-11-2"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "4-methylpentan-2-ol",
+        "row_count": 1
+      },
+      "comment": "MIBC, with the locant beside the suffix in the newer convention. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 108-11-2. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `4-Methyl-2-pentanol` is recorded as `4-Methyl-2-pentanol` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-chlorosulfonic-acid-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Chlorosulfonic Acid` lands on Chlorosulphuric Acid, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "7790-94-5"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Chlorosulphuric Acid",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "HSO3Cl, spelled American and British at once. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 7790-94-5. Measured on the build of b03c940bae73 (run 58da3bd39637) the rows minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Chlorosulfonic acid` is recorded as `Chlorosulfonic Acid` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-silicon-tetrafluoride-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Silicon Tetrafluoride` lands on Silicon Tetrafluoride, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "7783-61-1"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Silicon Tetrafluoride",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "SiF4. The list publishes this compound under the Latin element name and the element itself under the English one. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 7783-61-1. Measured on the build of b03c940bae73 (run 58da3bd39637) the rows minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Silicon tetrafluoride` is recorded as `Silicon Tetrafluoride` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for.\n\nRenamed on 2026-09-02: #187's second fix (cc8ad91) made `Silicon Tetrafluoride` the published name of EF's flow, so the target is named by its current spelling. The row still lands on it by the same registry number, verified on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`)."
+    },
+    {
+      "id": "0512-t-butylamine-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `t-Butylamine` lands on Tert-butylamine, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "75-64-9"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Tert-butylamine",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "`t-` is the abbreviation of `tert-`. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 75-64-9. Measured on the build of b03c940bae73 (run 58da3bd39637) the rows minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `t-Butylamine` is recorded as `tert-Butylamine` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-tmah-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Tetramethyl Ammonium Hydroxide` lands on Tetramethylammonium hydroxide, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "75-59-2"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Tetramethylammonium hydroxide",
+        "row_count": 1
+      },
+      "comment": "The only difference is a space: `tetramethylammonium` is one word. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 75-59-2. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Tetramethyl ammonium hydroxide` is recorded as `Tetramethylammonium hydroxide` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-pentanol-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `1-Pentanol` lands on Pentan-1-ol, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "71-41-0"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Pentan-1-ol",
+        "row_count": 2,
+        "same_substance": true
+      },
+      "comment": "The first of the two ties. The name reaches the straight-chain alcohol, 71-41-0, and `Pentanol`, 30899-19-5, the entry with the isomer left open. BAFU writes the locant, so it means the first, and no rule can choose between an exact substance and the group it belongs to on a name alone. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 71-41-0. Measured on the build of b03c940bae73 (run 58da3bd39637) the rows minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `1-Pentanol` is recorded as `1-Pentanol` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-clay-bentonite-reaches-its-substance",
+      "issue": 512,
+      "title": "BAFU's `Clay, Bentonite` lands on Bentonite, through a curated registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "1302-78-9"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Bentonite",
+        "row_count": 1
+      },
+      "comment": "The phrase rewriting does reach `bentonite clay`, a synonym of `Bentonite`, and is refused there on purpose: an ordinary English phrase is the shape a trade name takes, so it is not admitted as evidence the way a systematic name is. The identity is stated as a number instead. BAFU ships no number under this name and no sibling row carries one, so `bafu-2026-v1-manual-fixes.json` states 1302-78-9. Measured on the build of b03c940bae73 (run 58da3bd39637) the row minted a numberless copy of a substance the list already publishes. Claimed as `basis=cas` because that is what a stated number should produce; a match reached here by name would mean the fix stopped being applied. Selected by the number the fix states rather than by name, and that is #319's lesson in the one shape it did not cover. `subject.name` reads `merge_outcomes.source_name`, which is the row's name *after* harmonisation, not the one the vendor shipped: a row that stops minting a substance of its own and joins an existing one is renamed onto that substance's identity, so BAFU's `Clay, bentonite` is recorded as `Bentonite` the moment this fix works. A check keyed on the vendor's spelling would then ask about a row that no longer answers to it and report **unresolved** -- passing silently, which is the outcome #319 exists to prevent. The number is what this claim is about, so it is the selector the README asks for."
+    },
+    {
+      "id": "0512-bafu-mints-fewer-substances",
+      "issue": 512,
+      "title": "BAFU asks the list to mint no more than 95 new flows",
+      "subject": {
+        "kind": "measure",
+        "key": "merge.bafu-2026-v1.created",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 95
+      },
+      "comment": "Measured on the build of b03c940bae73 (run 58da3bd39637) BAFU had 136 rows given a newly minted flow. 41 of them across 26 names were second copies of substances this list already publishes, which is what #103 is; this change places all 41 and nothing else, so the count should reach 95 and stop. The bound is here rather than an equality so that a later change placing more rows is not a failure -- but a change that mints more, or that places these by moving rows nobody named, is."
+    }
+  ]
+}

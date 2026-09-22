@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "description": "Curated answers for the identifiers `release-migrations` could not resolve between two releases: a flow whose source rows split across several flows, a flow whose unit changed, or a redirect the export tells consumers to refuse. Each ruling names the pair of releases (from_version, to_version), the entity (flow-object, elementary-flow or characterization-factor), the identifier, and the verb: `replace` with `replaced_by` (and `conversion_factor` where the unit moved) or `delete`. Say why in `comment`. A ruling naming an identifier the pair did not leave unresolved is refused as stale. Read by brightway_flows.releases.rulings.",
+  "rulings": [
+    {
+      "from_version": "b445ff6",
+      "to_version": "1006375",
+      "entity": "elementary-flow",
+      "identifier": "033b961dd01b53699d8830bf71d8d28beb794663",
+      "verb": "delete",
+      "comment": "This flow was minted for AGRIBALYSE 3.2's two bare `Carbon Dioxide` rows, 9f281494-cb58-5f23-a894-ba8b7839e534 and d724a400-85de-5a17-bd00-fa94561fdf50, when nothing on either row said which carbon it was. `47dc948` gave both rows an origin, so in the later release the first lands on `Carbon Dioxide (fossil)` (08a91e70-3ddc-11dd-923d-0050c2490048) and the second on `Carbon Dioxide (land Use Change)` (adcb79f3-89cf-45fb-b0b2-65558cb2af26), both in air / unspecified. Neither is the successor of the flow that grouped them: an amount recorded against the group is some of each, and dividing it is a statement about the inventory rather than an arithmetic this list can do. Drop the exchange and re-map it from the origin the inventory itself records."
+    }
+  ]
+}

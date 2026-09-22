@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "description": "A substance should publish one molecular formula and one InChIKey, not two that describe different things. Nickel (ii) acetate published C2H4NiO2 beside C4H6NiO4, and XMOKRCSXICGIDD-UHFFFAOYSA-N beside AIYYMMQIMJOTBM-UHFFFAOYSA-L. The first of each pair is CAS's own answer for 373-02-4 with its ratio lost: the registry states the composition as `C2H4O2 . 1/2 Ni`, two acetic acids to one nickel, and neither SMILES nor InChI can hold half an atom, so the structure CAS derives from its own formula comes out one-to-one. 1,4-diazabicyclooctane is the same fault pointing the other way: the name is incomplete, the name reader returns C14H28N2, and the registry says C6H12N2. Comparing what the registry says a substance is *made of* -- heavy atoms, ratio multiplied out -- settles both, in opposite directions.",
+  "expectations": [
+    {
+      "id": "0518-nickel-acetate-one-formula",
+      "issue": 518,
+      "title": "Nickel (ii) acetate publishes one molecular formula, the salt's",
+      "subject": {"kind": "substance", "cas": "373-02-4"},
+      "expect": {"formula_count": 1},
+      "comment": "Measured on the build of 17 August 2026 (run 20260817T1127, commit b233408, 93,993 flows): two values, C2H4NiO2 from enrich_references.pubchem_semantic and C4H6NiO4 from rdkit_post_consensus, on one flow object fo-fa442e1a073548b5. C4H6NiO4 is the salt and is what the registry's own formula says once the 1/2 Ni is multiplied out."
+    },
+    {
+      "id": "0518-nickel-acetate-one-inchikey",
+      "issue": 518,
+      "title": "Nickel (ii) acetate publishes one InChIKey, so a consumer joining on it matches once",
+      "subject": {"kind": "substance", "cas": "373-02-4"},
+      "expect": {"inchikey_count": 1},
+      "comment": "Two on the same build: AIYYMMQIMJOTBM-UHFFFAOYSA-L, the salt, and XMOKRCSXICGIDD-UHFFFAOYSA-N, which is CAS's key for 373-02-4 and describes acetic acid beside an uncharged nickel because the registry's structure lost the ratio its formula carries."
+    },
+    {
+      "id": "0518-dabco-one-formula",
+      "issue": 518,
+      "title": "DABCO publishes one molecular formula, and it is the registry's",
+      "subject": {"kind": "substance", "cas": "280-57-9"},
+      "expect": {"formula_count": 1},
+      "comment": "Two on the same build: C6H12N2 from ChEBI and PubChem, and C14H28N2 derived from the flow's own name. `1,4-diazabicyclooctane` is not a complete von Baeyer name -- it needs the bridge lengths, [2.2.2] -- and the name reader does not refuse it, it reads `bicyclo` as `two of` and returns a different molecule. The same test that keeps the name-derived answer for nickel acetate withdraws it here, which is the point: nothing is decided on which stage produced a value."
+    },
+    {
+      "id": "0518-dabco-one-inchikey",
+      "issue": 518,
+      "title": "DABCO publishes one InChIKey, IMNIMPAHZVJRPE-UHFFFAOYSA-N",
+      "subject": {"kind": "substance", "cas": "280-57-9"},
+      "expect": {"inchikey_count": 1},
+      "comment": "Two on the same build. KKCOQCVPBASEDD-UHFFFAOYSA-N is the name-derived one; the substance's own synonym list already carries `1,4-diazabicyclo[2.2.2]octane`, `Triethylenediamine` and `DABCO`, and the registry, ChEBI and PubChem all say C6H12N2."
+    },
+    {
+      "id": "0518-zinc-benzoate-one-formula",
+      "issue": 518,
+      "title": "Zinc benzoate publishes one molecular formula, the salt's",
+      "subject": {"kind": "substance", "cas": "553-72-0"},
+      "expect": {"formula_count": 1},
+      "comment": "The second salt of the same shape, kept as a separate claim so that a rule tuned to nickel alone would not satisfy this file. The registry states `C7H6O2 . 1/2 Zn`; multiplied out that is fourteen carbons, four oxygens and one zinc, which is the salt C14H10O4Zn and not the C7H6O2Zn the ratio-less structure yields."
+    },
+    {
+      "id": "0518-registry-agrees-with-nothing-is-left-alone",
+      "issue": 518,
+      "title": "Where the registry agrees with nothing a substance publishes, nothing is withdrawn",
+      "subject": {"kind": "substance", "label": "Disodium Tetraborate"},
+      "expect": {"formula_count": {"at_least": 2}},
+      "comment": "The other half of the rule, and the one that stops it growing into a rule that overrides every source. Disodium tetraborate publishes H4B4Na2O9 and H4B4O9.2Na against a registered B4Na2O7, and the registry backs neither. That disagreement is real and belongs to a curator, so the substance keeps both values and the row stays open. A change that made this one fail would have made the rule decide on the registry's authority rather than on one of the substance's own values having been reproduced by it."
+    }
+  ]
+}

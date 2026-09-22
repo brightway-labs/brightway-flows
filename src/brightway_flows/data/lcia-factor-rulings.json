@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "method": "ef",
+  "description": "Curated answers to the two factor queues `characterise` writes. Keyed on the queue and on the queue item's own key -- `flow_object_id|category_slug` -- so a ruling is about a substance and a category rather than about a flow, and goes on answering the same question when EF publishes the same substance in a fourteenth context. The queue is part of the key because the item key alone is not unique across the two: one substance and category can be contested in one compartment and proposed in another, which is two questions needing two answers.\n\nTwo verdicts, and neither names a source list. `publish` takes the number of the implementation `implemented_by` names, as `derivation: ruled`; `decline` publishes nothing and says so on the record, because 3,455 open questions is too many to leave a curator no way of saying \"looked at, and no\". A verdict per source list -- `jrc`, `ecoinvent` -- was the first shape and could not express a third implementation, and every source list that ships factors is one.\n\nThe comment is mandatory and the loader refuses a ruling without one. Every entry here is a statement about somebody else's published science, and a statement with no reasoning behind it is not reviewable.\n\n`ruled_about` records what every implementation stated when the ruling was made, keyed by the same `implemented_by` the tables and artifacts use. It is required, and a row that states something else -- a different number, an implementation the ruling never heard from, or one that has gone silent -- goes back to the queue as a question rather than being settled by a decision taken about something else -- the same rule `elementary-flow-collision-decisions.json` applies to a collision whose flows have changed.\n\nThe first six rulings here are two substances, and one of each verdict. Kresoxim-methyl is EF publishing one substance twice under two EC numbers, each row with its own factors: this build keeps one number and the ecoinvent Centre's implementation keeps the other, in all 24 rows and never a third number. It is not settled by preferring the JRC as a rule -- there is no such rule, and a plan that had one was rewritten to remove it (plans/lcia-factors.md §4.3) -- but by what the evidence says.\n\nThe other two publish a number only the ecoinvent Centre states: -1 kg CO2-eq for carbon entering a long-lived land carbon pool, in four soil compartments. EF's carbon model has no row for that -- JRC130796 Table 3 is three origins by two directions and a removal is only expressible as a resource from air -- so the number is adopted rather than inherited, and the record says whose it is. It is a documented rule of ecoinvent's rather than a slip: their Table 4 maps the flow with the fossil factor and a negative sign, unconditionally, and their EF chapter says EF's carbon exchanges follow that section. See #139 for the evidence.\n\n**Two vanadium rulings were withdrawn on 2026-08-18, and the reason is worth keeping.** They published EF's 1.3532e-06 against ecoinvent's 1.3532e-05 and ten more pairs like it, on the argument that a decimal point moving while five significant figures stay put is a unit slip and not a model. The digits were real and the conclusion was wrong. EF 3.1 ships *two* vanadium flows in every context -- `vanadium` (7440-62-2) and `vanadium (v)` (pentavalent) -- and states 1.3532e-06 for the first and 1.3532e-05 for the second, in its own workbook, in the same compartment. The factor of ten is EF's own speciation factor for vanadium(V), derived as ten times the element's, which is exactly why the mantissa survives it. ecoinvent's implementation was reading the right EF row all along; this project was comparing it against the wrong one, because the correspondence sent ecoinvent's `Vanadium V` rows to the element. #49's own body raised this as a caveat -- 'if ecoinvent intends a different EF target that our bridge does not see, the ratio is against the wrong baseline' -- and it did. With the routing corrected the two implementations agree to every digit and there is nothing left to rule.\n\n**The seventh is a decline, and the first on the proposed queue.** Carnallite from water carries 1.0375e-05 kg Sb-eq/kg for `Resource use, minerals and metals` under the ecoinvent Centre and nothing under the JRC. The number is documented -- the v3.12 implementation report, Table 20, derives it as chlorine's crustal factor weighted by carnallite's chlorine share, a rule that reads the mineral's formula and not its compartment -- and it is declined because the compartment is the point: the indicator measures depletion of the crust, EF 3.1 files `Non-renewable element resources from water` so the model can decline the ocean, and the same ecoinvent implementation gives `Chlorine` and `Magnesium` from water zero. Carnallite from water is that chlorine with potassium and magnesium attached. See #148, and #137 for the elements.\n\n**The eighth and ninth adopt a greenhouse gas nobody else characterises.** Sulfuryl fluoride is the termite fumigant, vented to the open air at the end of every job and lasting some 36 years there; ecoinvent's v3.12 implementation added a GWP100 of 4630 for it 'following IPCC 2021' (§15.3.1, Table 19) and EF 3.1 states nothing for it under any climate category. The number is AR6 Table 7.SM.7's own GWP100 for the substance, unrounded, and it is the same in both printings of that table -- so unlike the three substances of #342 it settles no vintage question. Published for `Climate change` and `Climate change-Fossil`, which is where ecoinvent files it. See #151, and #131 for the contrast with a proposed factor that is some other substance's number.\n\n**The tenth and eleventh publish the method's own publisher's number over a newer one.** Sulfur hexafluoride: the JRC states 25200 and ecoinvent 24300, 3.6% apart, and the list published neither in the four compartments where both speak -- while publishing 25200 in the two where only the JRC has a flow. The JRC's number is AR6 Table 7.SM.7 exactly, unchanged in the published report and in the errata; ecoinvent's is AR6's radiative efficiency with an atmospheric lifetime near 1000 years instead of AR6's 3200, which reproduces all three of their GWP horizons and AR6's lifetime reproduces none. That is ecoinvent updating an input rather than correcting a transcription, and an implementation of EF 3.1 follows the table EF 3.1 names. See #342, and `lcia-rounded-printings.json` for the other half of that issue, where the two numbers really are one number printed twice.\n\n**The twelfth is a decline, and it is about an accounting convention rather than a number.** EF 3.1's `Water use` counts consumption as water withdrawn minus water returned: every withdrawal (`Water`, `Water to turbine`, `Cooling water`, `River water`, `Groundwater`...) carries +42.95 m3 world-eq deprived per m3 and every return to water carries -42.95, and the JRC lists `Water` to air in its flow list and gives it nothing. The ecoinvent Centre's implementation counts the same consumption the other way round: withdrawals and returns are zero and `Water` to air -- the evaporated share -- carries the 42.95. Both are readings of the same method and either alone balances; together they count every consumed cubic metre twice, because what leaves as vapour is exactly what was withdrawn and not returned. The ecoinvent number reached this list as `restated` -- 42.95 stands published bit for bit on the withdrawals, which is what the identity twin looks for -- and the score comparison found it: over 500 ecoinvent 3.12 datasets this list's water use was twice ecoinvent's, at a median ratio of 2.00. The list follows the JRC's convention because the regional factors are written in it, and declines ecoinvent's air factor. See #154, found by #150.\n\n**The thirteenth is a decline about which of two substances a flow is.** EF 3.1 ships two peats and files them in two places: `peat`, a `Non-renewable energy resource from ground` measured in megajoules and carrying 1.0 under `Resource use, fossils`, and `Peat, horticulture`, a `Renewable material resource from biosphere` measured in kilograms and carrying nothing. That is peat burned as fuel, counted by its energy, and peat dug and sold as a growing medium, counted by its mass. ecoinvent ships one peat flow, in kilograms, which #89 ruled is the second of the two -- and their implementation gives it 9.76, peat's net calorific value per kilogram, under a category whose every other factor, in every implementation, sits on a non-renewable energy resource from the ground and is 1.0 megajoule per megajoule. Publishing it would characterise a growing medium as fuel on a flow the method files as a renewable material. Declined; their number stays theirs. See #160, found by #150.\n\n**The fourteenth publishes a number the method's own rule produces and its flow list never reaches.** `Gas, mine, off-gas, process, coal mining` is the methane that comes out of a coal seam as it is cut, captured and burned; the ecoinvent Centre gives it 36 MJ per standard cubic metre under `Resource use, fossils` and the JRC gives it nothing. EUR 29600 section 4.10 states the JRC's rule as a rule about a class -- \"the CF is equal to 1 for all fossil resources\", expressed MJ/MJ -- but applies it to EF's `Non-renewable energy resources from ground`, whose six flows are all in megajoules. EF files mine off-gas one bucket over, among the `Non-renewable material resources from ground`, in standard cubic metres, where the other resource indicator prices crustal elements in kg Sb-eq and has nothing to price a methane flow from. So a fossil fuel falls between two indicators and is characterised by neither. 36 is the rule's own arithmetic -- one megajoule per megajoule, times this flow's 36 megajoules per standard cubic metre -- and is adopted on that ground, the way #155's minerals were adopted for reproducing the JRC's element factors. See #161.",
+  "rulings": [
+    {
+      "flow_object_id": "fo-0d9630049ff16097",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "Kresoxim-methyl",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "European Commission — JRC": [
+          134.73,
+          5474.8,
+          10624.0,
+          785920.0
+        ],
+        "ecoinvent Centre": [
+          15445.0,
+          20761.0,
+          53540.0,
+          919860.0
+        ]
+      },
+      "comment": "EF 3.1 ships kresoxim-methyl twice in every context -- the same name and the same CAS number, 143390-89-0, under two EC numbers, 417-880-0 and 604-351-6 -- and the two rows carry different factors. This build merges them and publishes one number; the ecoinvent Centre's implementation publishes the other, and in all 24 contested rows of this substance its number is exactly the one this build declined, never a third number. So the disagreement is not about anybody's science: it is one question about EF's own duplication, answered twice, differently.\n\nThe JRC's number is published because it is the number EF states for the row ecoinvent's own flow corresponds to -- the prepared correspondence places ecoinvent's `Kresoxim-methyl` on `08a91e70-3ddc-11dd-95c2-0050c2490048`, and 134.73 in agricultural soil is that row's factor. ecoinvent's 53,540 belongs to `8e374806-0927-45ba-bbd5-d31fa2f6cf0e`, which nothing else maps onto. That reads as their pipeline taking the factor from the other of two rows sharing a CAS rather than as a considered choice between two numbers.\n\nWhat this ruling does not claim is that 134.73 is right and 53,540 is wrong as science. EF publishes both, and the 397x gap between them in soil is a question for the JRC. The list's declined number is still recorded on the factor that kept it (#63), so a reader who wants the other number can find it. (#64)"
+    },
+    {
+      "flow_object_id": "fo-0d9630049ff16097",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "Kresoxim-methyl",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "European Commission — JRC": [
+          134.73,
+          5474.8,
+          10624.0,
+          785920.0
+        ],
+        "ecoinvent Centre": [
+          15445.0,
+          20761.0,
+          53540.0,
+          919860.0
+        ]
+      },
+      "comment": "EF 3.1 ships kresoxim-methyl twice in every context -- the same name and the same CAS number, 143390-89-0, under two EC numbers, 417-880-0 and 604-351-6 -- and the two rows carry different factors. This build merges them and publishes one number; the ecoinvent Centre's implementation publishes the other, and in all 24 contested rows of this substance its number is exactly the one this build declined, never a third number. So the disagreement is not about anybody's science: it is one question about EF's own duplication, answered twice, differently.\n\nThe JRC's number is published because it is the number EF states for the row ecoinvent's own flow corresponds to -- the prepared correspondence places ecoinvent's `Kresoxim-methyl` on `08a91e70-3ddc-11dd-95c2-0050c2490048`, and 134.73 in agricultural soil is that row's factor. ecoinvent's 53,540 belongs to `8e374806-0927-45ba-bbd5-d31fa2f6cf0e`, which nothing else maps onto. That reads as their pipeline taking the factor from the other of two rows sharing a CAS rather than as a considered choice between two numbers.\n\nWhat this ruling does not claim is that 134.73 is right and 53,540 is wrong as science. EF publishes both, and the 397x gap between them in soil is a question for the JRC. The list's declined number is still recorded on the factor that kept it (#63), so a reader who wants the other number can find it. (#64)"
+    },
+    {
+      "flow_object_id": "fo-0d9630049ff16097",
+      "category_slug": "human-toxicity-non-cancer",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "Kresoxim-methyl",
+      "category": "Human toxicity, non-cancer",
+      "ruled_about": {
+        "European Commission — JRC": [
+          4.5599e-10,
+          8.5842e-10,
+          1.5727e-07,
+          1.9607e-07,
+          2.38e-07,
+          3.1009e-07
+        ],
+        "ecoinvent Centre": [
+          1.7644e-08,
+          2.2034e-08,
+          2.2942e-08,
+          3.2731e-08,
+          4.3635e-08,
+          5.7725e-08
+        ]
+      },
+      "comment": "The same ruling as kresoxim-methyl's freshwater ecotoxicity, for the same reason and about the same two EF rows: this substance is published twice in every context under two EC numbers, and the ecoinvent Centre's implementation takes its factor from the row this build declined. In all six contexts here ecoinvent's number is exactly the declined one. The JRC's is published because it belongs to the row ecoinvent's own flow corresponds to.\n\nWorth noting separately: the two soil rows differ by 38x and the four air and water rows by 4x to 8x, so unlike the ecotoxicity case the gap is not concentrated in one compartment. It is the same duplication either way. (#64)"
+    },
+    {
+      "flow_object_id": "fo-0d9630049ff16097",
+      "category_slug": "human-toxicity-non-cancer-organics",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "Kresoxim-methyl",
+      "category": "Human toxicity, non-cancer_organics",
+      "ruled_about": {
+        "European Commission — JRC": [
+          4.5599e-10,
+          8.5842e-10,
+          1.5727e-07,
+          1.9607e-07,
+          2.38e-07,
+          3.1009e-07
+        ],
+        "ecoinvent Centre": [
+          1.7644e-08,
+          2.2034e-08,
+          2.2942e-08,
+          3.2731e-08,
+          4.3635e-08,
+          5.7725e-08
+        ]
+      },
+      "comment": "The same ruling as kresoxim-methyl's freshwater ecotoxicity, for the same reason and about the same two EF rows: this substance is published twice in every context under two EC numbers, and the ecoinvent Centre's implementation takes its factor from the row this build declined. In all six contexts here ecoinvent's number is exactly the declined one. The JRC's is published because it belongs to the row ecoinvent's own flow corresponds to.\n\nWorth noting separately: the two soil rows differ by 38x and the four air and water rows by 4x to 8x, so unlike the ecotoxicity case the gap is not concentrated in one compartment. It is the same duplication either way. (#64)"
+    },
+    {
+      "flow_object_id": "fo-7edfcc35f0a40da5",
+      "category_slug": "climate-change",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre",
+      "substance": "Carbon Dioxide, To Soil Or Biomass Stock",
+      "category": "Climate change",
+      "ruled_about": {
+        "ecoinvent Centre": [
+          -1.0
+        ]
+      },
+      "comment": "ecoinvent's `Carbon dioxide, to soil or biomass stock` records carbon entering a long-lived land carbon pool, and states -1 kg CO2-eq for it in all four soil compartments it ships. This list publishes that number, as ecoinvent's rather than as EF's, and the reasoning has three parts.\n\n**It is deliberate, and documented.** Table 4 of ecoinvent's implementation report puts the carbon-stock flows in a `Land Use-related` group whose rule is \"Mapped with carbon dioxide fossil CF, with a negative sign\" -- with none of the EN 15804 conditional the biogenic group carries -- and §15.3 says EF's carbon exchanges are mapped by §6.4.1. The rule is identical in the 3.10, 3.11 and 3.12 reports. #257 read §6.3.1's biogenic rule as governing this flow and concluded ecoinvent contradicted itself; the grouping says otherwise, and #257's own observation that the -1 \"was never gated on the EN15804 distinction at all\" is what an unconditional land-use rule predicts.\n\n**It is not EF's, and this list does not pretend otherwise.** JRC130796 Table 3 is the whole of EF's carbon model -- three origins by two directions -- and a removal can only be expressed there as `Resource \"...\" from air`, of which only `carbon dioxide (land use change)` is non-zero. There is no row for carbon entering a pool. EF's land-use-change substance is tied to a transformation event by its own flow comment, \"emissions that happen once when the transformation takes place\", and ecoinvent applies this credit to `land already in use` in 102 of the 269 datasets that carry it. So the number is adopted, not inherited: `derivation: ruled`, `implemented_by: ecoinvent Centre`.\n\n**What it rests on, so a reader knows what they are buying.** ecoinvent's §6.4.1.2 assumes the carbon \"will stay in the soil for a much longer period than a typical LCA time frame and hence is considered permanently removed from the atmosphere\". The GHG Protocol handles the failure of that assumption with *reversals*; this list has no such mechanism. And ecoinvent's own §7.4.1 warns that scores including biogenic carbon dioxide \"are subject to potential distortions by allocation, and there is the risk of overestimating uptake ... they should never be used as a stand-alone score\".\n\nThe release side is not ruled here and needs no ruling: `Carbon dioxide, from soil or biomass stock` reaches EF's own `carbon dioxide (land use change)` in air, where EF states +1, ecoinvent states +1, and the list publishes `agreed`. The asymmetry is the sources' -- EF's concept covers the release and not this removal. Evidence in #139, plan in #333.\n\nThe aggregate category, where the credit reaches every climate score. (#139)"
+    },
+    {
+      "flow_object_id": "fo-7edfcc35f0a40da5",
+      "category_slug": "climate-change-land-use",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre",
+      "substance": "Carbon Dioxide, To Soil Or Biomass Stock",
+      "category": "Climate change-Land use and land use change",
+      "ruled_about": {
+        "ecoinvent Centre": [
+          -1.0
+        ]
+      },
+      "comment": "ecoinvent's `Carbon dioxide, to soil or biomass stock` records carbon entering a long-lived land carbon pool, and states -1 kg CO2-eq for it in all four soil compartments it ships. This list publishes that number, as ecoinvent's rather than as EF's, and the reasoning has three parts.\n\n**It is deliberate, and documented.** Table 4 of ecoinvent's implementation report puts the carbon-stock flows in a `Land Use-related` group whose rule is \"Mapped with carbon dioxide fossil CF, with a negative sign\" -- with none of the EN 15804 conditional the biogenic group carries -- and §15.3 says EF's carbon exchanges are mapped by §6.4.1. The rule is identical in the 3.10, 3.11 and 3.12 reports. #257 read §6.3.1's biogenic rule as governing this flow and concluded ecoinvent contradicted itself; the grouping says otherwise, and #257's own observation that the -1 \"was never gated on the EN15804 distinction at all\" is what an unconditional land-use rule predicts.\n\n**It is not EF's, and this list does not pretend otherwise.** JRC130796 Table 3 is the whole of EF's carbon model -- three origins by two directions -- and a removal can only be expressed there as `Resource \"...\" from air`, of which only `carbon dioxide (land use change)` is non-zero. There is no row for carbon entering a pool. EF's land-use-change substance is tied to a transformation event by its own flow comment, \"emissions that happen once when the transformation takes place\", and ecoinvent applies this credit to `land already in use` in 102 of the 269 datasets that carry it. So the number is adopted, not inherited: `derivation: ruled`, `implemented_by: ecoinvent Centre`.\n\n**What it rests on, so a reader knows what they are buying.** ecoinvent's §6.4.1.2 assumes the carbon \"will stay in the soil for a much longer period than a typical LCA time frame and hence is considered permanently removed from the atmosphere\". The GHG Protocol handles the failure of that assumption with *reversals*; this list has no such mechanism. And ecoinvent's own §7.4.1 warns that scores including biogenic carbon dioxide \"are subject to potential distortions by allocation, and there is the risk of overestimating uptake ... they should never be used as a stand-alone score\".\n\nThe release side is not ruled here and needs no ruling: `Carbon dioxide, from soil or biomass stock` reaches EF's own `carbon dioxide (land use change)` in air, where EF states +1, ecoinvent states +1, and the list publishes `agreed`. The asymmetry is the sources' -- EF's concept covers the release and not this removal. Evidence in #139, plan in #333.\n\nThe land-use part of the same eight factors. ecoinvent files both legs of its stock accounting here, which is also where EF files its own land-use pair, so this is the sub-category the credit belongs in -- and not `Climate change-Biogenic`, which would restate the contradiction this whole change removes: EF's biogenic carbon is neutral in both directions. (#139)"
+    },
+    {
+      "flow_object_id": "fo-647037e555db269b",
+      "category_slug": "resource-use-minerals-and-metals",
+      "queue": "proposed-factor",
+      "decision": "decline",
+      "substance": "Carnallite",
+      "category": "Resource use, minerals and metals",
+      "ruled_about": {
+        "ecoinvent Centre": [
+          1.037548743806311e-05
+        ]
+      },
+      "comment": "Carnallite is the potassium-magnesium chloride salt, KMgCl3.6H2O, that crystallises out of Dead Sea brine in evaporation ponds; ecoinvent's `magnesium production, electrolysis, IL` takes 9.5 kg of it per kg of magnesium, and both ecoinvent and EF 3.1 file the flow only from water. In the 21 August 2026 build (`20ad511`) the ecoinvent Centre states 1.0375e-05 kg Sb-eq/kg for it under `Resource use, minerals and metals`; the JRC states nothing.\n\nThe number is not a slip. Section 15.3.2 of ecoinvent's v3.12 LCIA implementation report, Table 20, lists carnallite among 25 minerals whose factors 'were calculated by weighting CFs for contained elements with mass shares' -- 2.71e-05 for chlorine times the 0.383 of carnallite that is chlorine gives 1.0374e-05, and the same arithmetic yields their sodium chloride and sylvite factors. Carnallite is new to that table in 3.12; the 3.10 and 3.11 reports carry the rule with eighteen minerals and no carnallite.\n\nIt is declined because the rule reads the formula and not the compartment, and here the compartment is the whole question. The indicator is abiotic depletion on ultimate reserves, defined on the continental crust; EF 3.1 mints `Non-renewable element resources from water` as its own compartment so that the model can leave the ocean uncharacterised; and ecoinvent's own implementation follows that -- it gives `Chlorine`, `Magnesium` and `Bromine` from water nothing, in the same workbook. Carnallite from water is that chlorine with potassium and magnesium attached, and characterising the salt for its chlorine while the element from the same water is zero is one implementation disagreeing with itself. This list follows the compartment logic both implementations apply to the elements (#137), and publishes nothing.\n\nWhat this does not claim is that carnallite never depletes the crust: it is also mined as rock from the Zechstein evaporites, and a carnallite flow from the ground would carry this number on the same reasoning that gives rock salt its factor. Neither list ships such a flow today. The ecoinvent Centre's number stays published under its own name, as every transcription does. See #148."
+    },
+    {
+      "flow_object_id": "fo-2173e6fdffc50464",
+      "category_slug": "climate-change",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre",
+      "substance": "Sulphuryl Difluoride",
+      "category": "Climate change",
+      "ruled_about": {
+        "ecoinvent Centre": [
+          4630.0
+        ]
+      },
+      "comment": "Sulfuryl fluoride is the fumigant a house is tented with for drywood termites -- Vikane and ProFume, on the market since 1959 and grown into that role as the replacement for methyl bromide after the Montreal Protocol phase-out. Nothing consumes it: at the end of a fumigation the charge is vented to the open air, deliberately, and it then survives about 36 years, destroyed not by OH -- which barely touches it, partial lifetime some 300 years -- but by hydrolysis in the surface ocean. The ecoinvent Centre states 4630 kg CO2-eq per kilogram for it in the two air compartments its flow list has; the JRC states nothing for it under any climate category.\n\n**The number is the IPCC's, read straight off.** AR6 Table 7.SM.7 gives the substance a full row -- lifetime 36.0 years, radiative efficiency 0.211 W m-2 ppb-1, GWP20 7510, GWP100 4630, GWP500 1410 -- and 4630 is that row's GWP100 with no rounding, conversion or weighting applied to it. ecoinvent says as much in its own v3.12 implementation report: Table 19 of §15.3.1 lists the substance among four climate factors that changed since v3.11, with the v3.11 cell blank and the v3.12 cell 4630, and the text reads 'The CF for Sulfuryl fluoride was added following IPCC 2021'. §16.3.3 and Table 23 say the same for the EN15804 variant.\n\n**And it is not a number still in dispute.** #342 is three substances -- sulfur hexafluoride, CFC-11, HFC-134a -- where the two implementations copied that same table at different moments and got different numbers. This substance is not one of them: the earlier printing and the corrected one both say 4630, so the adoption does not settle the vintage question by the back door.\n\n**Nor is it a stand-in.** #131 declines six proposed factors that are a chemical relative's number filling a gap in EF's coverage. Nothing of that kind is happening here -- this is sulfuryl fluoride's own line in the IPCC's table, adopted as ecoinvent's statement of it rather than inherited from a neighbour.\n\nWhat this does not fix, and a reader should know: it fills the two air compartments ecoinvent has a flow for -- non-urban air or from high stacks, and unspecified -- and leaves the four this list carries from EF 3.1's flow list empty, including urban ground level and indoor, which is precisely how the chemical is released. That asymmetry is neither source's judgement; ecoinvent's own §7.3.1 rule is the opposite, 'the same CF is assigned to an exchange emitted to air for all the sub-compartments'. A ruling cannot reach the other four, because `publish` takes a number an implementation stated for that flow and nobody stated one there. It needs a general rule about air sub-compartments, which is its own change. See #151.\n\nThe aggregate category, where the factor reaches every climate score. (#151)"
+    },
+    {
+      "flow_object_id": "fo-2173e6fdffc50464",
+      "category_slug": "climate-change-fossil",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre",
+      "substance": "Sulphuryl Difluoride",
+      "category": "Climate change-Fossil",
+      "ruled_about": {
+        "ecoinvent Centre": [
+          4630.0
+        ]
+      },
+      "comment": "Sulfuryl fluoride is the fumigant a house is tented with for drywood termites -- Vikane and ProFume, on the market since 1959 and grown into that role as the replacement for methyl bromide after the Montreal Protocol phase-out. Nothing consumes it: at the end of a fumigation the charge is vented to the open air, deliberately, and it then survives about 36 years, destroyed not by OH -- which barely touches it, partial lifetime some 300 years -- but by hydrolysis in the surface ocean. The ecoinvent Centre states 4630 kg CO2-eq per kilogram for it in the two air compartments its flow list has; the JRC states nothing for it under any climate category.\n\n**The number is the IPCC's, read straight off.** AR6 Table 7.SM.7 gives the substance a full row -- lifetime 36.0 years, radiative efficiency 0.211 W m-2 ppb-1, GWP20 7510, GWP100 4630, GWP500 1410 -- and 4630 is that row's GWP100 with no rounding, conversion or weighting applied to it. ecoinvent says as much in its own v3.12 implementation report: Table 19 of §15.3.1 lists the substance among four climate factors that changed since v3.11, with the v3.11 cell blank and the v3.12 cell 4630, and the text reads 'The CF for Sulfuryl fluoride was added following IPCC 2021'. §16.3.3 and Table 23 say the same for the EN15804 variant.\n\n**And it is not a number still in dispute.** #342 is three substances -- sulfur hexafluoride, CFC-11, HFC-134a -- where the two implementations copied that same table at different moments and got different numbers. This substance is not one of them: the earlier printing and the corrected one both say 4630, so the adoption does not settle the vintage question by the back door.\n\n**Nor is it a stand-in.** #131 declines six proposed factors that are a chemical relative's number filling a gap in EF's coverage. Nothing of that kind is happening here -- this is sulfuryl fluoride's own line in the IPCC's table, adopted as ecoinvent's statement of it rather than inherited from a neighbour.\n\nWhat this does not fix, and a reader should know: it fills the two air compartments ecoinvent has a flow for -- non-urban air or from high stacks, and unspecified -- and leaves the four this list carries from EF 3.1's flow list empty, including urban ground level and indoor, which is precisely how the chemical is released. That asymmetry is neither source's judgement; ecoinvent's own §7.3.1 rule is the opposite, 'the same CF is assigned to an exchange emitted to air for all the sub-compartments'. A ruling cannot reach the other four, because `publish` takes a number an implementation stated for that flow and nobody stated one there. It needs a general rule about air sub-compartments, which is its own change. See #151.\n\nThe fossil sub-category. ecoinvent files this substance's factor in `climate change` and `climate change: fossil` and in neither of the biogenic or land-use sub-categories, which is what a synthetic fluorinated gas of industrial origin should do: there is no biogenic carbon in it and no land-use transformation behind it. This ruling follows that filing rather than choosing it. (#151)"
+    },
+    {
+      "flow_object_id": "fo-21903c3421b5c942",
+      "category_slug": "climate-change",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "Sulfur hexafluoride",
+      "category": "Climate change",
+      "ruled_about": {
+        "European Commission — JRC": [
+          25200.0
+        ],
+        "ecoinvent Centre": [
+          24300.0
+        ]
+      },
+      "comment": "Sulfur hexafluoride is the insulating gas in high-voltage switchgear and the most potent greenhouse gas either implementation characterises. The JRC's EF 3.1 states 25200 kg CO2-eq per kilogram in all six air compartments; ecoinvent's implementation of the same method states 24300 in the four its own flow list has. 3.6% apart is outside `FACTOR_TOLERANCE`, so the merge published neither, and the list scored an SF6 emission to unspecified air at zero while scoring one at aircraft cruise height at 25200 -- because those are the two compartments where only the JRC speaks.\n\n**The JRC's number is AR6 as published.** Table 7.SM.7 of the Chapter 7 supplementary material reads `Sulfur hexafluoride SF6 3200 0.567 445 18300 2250 25200 10700 34100 11.2 26200 12.1 30600` -- lifetime 3200 years, radiative efficiency 0.567 W m-2 ppb-1, GWP100 25200 -- in the report on ipcc.ch, in the final government distribution, and in the authors' machine-readable supplement, which has not changed since September 2021. The February 2022 errata amends one row of Table 7.15 (methane) and nothing else in the chapter. EF 3.1's climate category is that table, and 25200 is what it says.\n\n**ecoinvent's number is a different atmospheric lifetime, not a corrected printing.** Their v3.12 report (§7.3.4, Table 9) moves SF6 from 18300/25200/34100 to 18200/24300/29000 for GWP20/100/500 and calls the change negligible. It is not a rounding: hold AR6's radiative efficiency and replace the 3200-year lifetime with one near 1000 years, and the three horizons come out at 18175, 24358 and 28986 -- ecoinvent's three numbers to three significant figures, and AR6's lifetime reproduces none of them. A shorter lifetime is what a decade of measurements suggests: WMO's 2022 Ozone Assessment annex lists SF6 at the 3200-year lifetime with an alternative range of 850-1280 years (Ray et al. 2017, Kovacs et al. 2017), and its own metrics, 18400/24700/29800, sit about 1.6% above ecoinvent's, which is the ratio of WMO's radiative efficiency to AR6's.\n\nSo this is not two teams transcribing one table differently. It is ecoinvent updating an input the method's own publisher has not updated. The JRC's number is published because this list publishes EF 3.1, and EF 3.1's climate change category is IPCC AR6's table: adopting a lifetime AR6 did not adopt would make our EF 3.1 something other than EF 3.1, silently, in the column a practitioner reads as EF's.\n\nWhat this ruling does not claim is that 25200 is the better science. It probably is not -- the newer lifetime estimates are measurements and AR6's 3200 years is an older model result, and WMO 2022 already prints the alternative beside it. The argument is about which question this list answers. ecoinvent's 24300 stays published under ecoinvent's name, where a reader who wants the newer lifetime can find it and say so in their own assessment; and if AR7 adopts it, `ruled_about` ends this ruling rather than letting it outlive its evidence. See #342.\n\nThe aggregate category, where the factor reaches every climate score."
+    },
+    {
+      "flow_object_id": "fo-21903c3421b5c942",
+      "category_slug": "climate-change-fossil",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "Sulfur hexafluoride",
+      "category": "Climate change-Fossil",
+      "ruled_about": {
+        "European Commission — JRC": [
+          25200.0
+        ],
+        "ecoinvent Centre": [
+          24300.0
+        ]
+      },
+      "comment": "Sulfur hexafluoride is the insulating gas in high-voltage switchgear and the most potent greenhouse gas either implementation characterises. The JRC's EF 3.1 states 25200 kg CO2-eq per kilogram in all six air compartments; ecoinvent's implementation of the same method states 24300 in the four its own flow list has. 3.6% apart is outside `FACTOR_TOLERANCE`, so the merge published neither, and the list scored an SF6 emission to unspecified air at zero while scoring one at aircraft cruise height at 25200 -- because those are the two compartments where only the JRC speaks.\n\n**The JRC's number is AR6 as published.** Table 7.SM.7 of the Chapter 7 supplementary material reads `Sulfur hexafluoride SF6 3200 0.567 445 18300 2250 25200 10700 34100 11.2 26200 12.1 30600` -- lifetime 3200 years, radiative efficiency 0.567 W m-2 ppb-1, GWP100 25200 -- in the report on ipcc.ch, in the final government distribution, and in the authors' machine-readable supplement, which has not changed since September 2021. The February 2022 errata amends one row of Table 7.15 (methane) and nothing else in the chapter. EF 3.1's climate category is that table, and 25200 is what it says.\n\n**ecoinvent's number is a different atmospheric lifetime, not a corrected printing.** Their v3.12 report (§7.3.4, Table 9) moves SF6 from 18300/25200/34100 to 18200/24300/29000 for GWP20/100/500 and calls the change negligible. It is not a rounding: hold AR6's radiative efficiency and replace the 3200-year lifetime with one near 1000 years, and the three horizons come out at 18175, 24358 and 28986 -- ecoinvent's three numbers to three significant figures, and AR6's lifetime reproduces none of them. A shorter lifetime is what a decade of measurements suggests: WMO's 2022 Ozone Assessment annex lists SF6 at the 3200-year lifetime with an alternative range of 850-1280 years (Ray et al. 2017, Kovacs et al. 2017), and its own metrics, 18400/24700/29800, sit about 1.6% above ecoinvent's, which is the ratio of WMO's radiative efficiency to AR6's.\n\nSo this is not two teams transcribing one table differently. It is ecoinvent updating an input the method's own publisher has not updated. The JRC's number is published because this list publishes EF 3.1, and EF 3.1's climate change category is IPCC AR6's table: adopting a lifetime AR6 did not adopt would make our EF 3.1 something other than EF 3.1, silently, in the column a practitioner reads as EF's.\n\nWhat this ruling does not claim is that 25200 is the better science. It probably is not -- the newer lifetime estimates are measurements and AR6's 3200 years is an older model result, and WMO 2022 already prints the alternative beside it. The argument is about which question this list answers. ecoinvent's 24300 stays published under ecoinvent's name, where a reader who wants the newer lifetime can find it and say so in their own assessment; and if AR7 adopts it, `ruled_about` ends this ruling rather than letting it outlive its evidence. See #342.\n\nThe fossil sub-category, where both implementations file this substance and neither files it as biogenic or land-use: a synthetic fluorinated gas of industrial origin. Ruled separately from the aggregate because the queue asks separately, and an answer to one is not an answer to the other."
+    },
+    {
+      "flow_object_id": "fo-757b6ee59c695209",
+      "category_slug": "water-use",
+      "queue": "proposed-factor",
+      "decision": "decline",
+      "substance": "Water vapour",
+      "category": "Water use",
+      "ruled_about": {
+        "ecoinvent Centre": [
+          42.95
+        ]
+      },
+      "comment": "Water leaving a process as vapour -- ecoinvent's `Water` to air, in five air compartments -- carries 42.95 m3 world-eq deprived per m3 under `Water use` in the ecoinvent Centre's EF 3.1 implementation and nothing under the JRC's, which lists the same flow to air and does not characterise it. On the 25 August 2026 build the number was published as `restated`: 42.95 is exactly what every withdrawal in the category carries, and the identity twin reads a bit-for-bit match as the same number carried across an identity boundary. Here it is not the same number: it is the same consumption, counted at the other end of the process.\n\nEF 3.1's AWARE implementation (the JRC's `Water use` workbook) measures consumption as the balance of what a process takes and what it gives back to water: +42.95 on `Water`, `Water to turbine`, `Cooling water`, `River water`, `Lake water`, `Groundwater` and `Fresh water` as resources, -42.95 on `Water`, `Turbine water` and `Cooling water` emitted to water, and its 209 regional factors are written on those same flows. The ecoinvent Centre's implementation measures the same consumption as what evaporates: it keeps withdrawals and returns at zero and puts the whole factor on `Water` to air, which on a water-balanced dataset -- and ecoinvent's are -- is what was taken in and not given back to water. Either convention alone gives the right answer on such an inventory. Both together give twice the right answer, because the vapour *is* the withdrawn water that was not returned.\n\nThe score comparison measured exactly that. Over 500 ecoinvent 3.12 cutoff datasets scored with EF 3.1 on both sides, `Water use` was the one category systematically apart: this list's score was 2.0x ecoinvent's at the median (1.94x to 2.11x between the quartiles) across the 462 datasets with a nonzero score, and the two flows moving the score were `Water to turbine` (+2.4e11 over the sample) and `Water` to water (-2.4e11) -- a withdrawal and its return, netting to almost nothing, with the vapour counted on top. The hand analysis had seen the same on one wind dataset and read it as withdrawals charged without the return credited; the returns were credited, and the double count was the vapour.\n\nThis list follows the JRC's convention and declines the ecoinvent Centre's air factor, rather than the reverse, because the regional factors -- the part of AWARE that makes a cubic metre in Yemen count for more than one in Norway -- exist only in the JRC's convention, on the withdrawals. What this does not claim is that ecoinvent's reading is wrong: it is a valid implementation of the same method, and their number stays published under their own name. What the list will not do is publish both. See #154, found by #150."
+    },
+    {
+      "flow_object_id": "fo-16964b238004bf84",
+      "category_slug": "resource-use-fossils",
+      "queue": "proposed-factor",
+      "decision": "decline",
+      "substance": "Peat, Horticulture",
+      "category": "Resource use, fossils",
+      "ruled_about": {
+        "ecoinvent Centre": [
+          9.76
+        ]
+      },
+      "comment": "ecoinvent ships one peat resource flow, in kilograms, and their EF 3.1 implementation gives it a `Resource use, fossils` factor of 9.76. That number is not a judgement about horticultural peat: their LCIA implementation report (v3.12, section 6.5.1) lists the flow in Table 5 as a non-renewable **fossil** energy carrier, gives peat's lower heating value in Table 6 as 9.76 MJ/kg, and states the rule -- lower heating values \"are implemented in methods assessing energy resources if no other CFs are given\". So 9.76 is a calorific value filled in where EF is silent. The JRC states nothing for it, and on the 25 August 2026 build the question sits on the proposed queue as `blocking` with this list publishing no number. This is the answer: no, deliberately.\n\nEF 3.1 ships two peat flows and files them in two places. `peat` is a `Non-renewable energy resource from ground`, measured in megajoules, and carries 1.0 -- fuel peat, counted by its energy content. `Peat, horticulture` is a `Renewable material resource from biosphere`, measured in kilograms, and carries nothing -- peat dug and sold as a growing medium, counted by its mass. #89 ruled that these are two substances and that ecoinvent's kilogram flow is the second of them, which is why the merge sends it there; `ecoinvent-3.8-manual-fixes.json` and its 3.12 twin carry that correction and its reasoning.\n\nThe JRC's rule is a rule about a bucket, not a list of substances. EUR 29600 (Fazio et al. 2018), section 4.10, states it: following van Oers et al. (2002), \"a separate impact category for fossil fuels is defined, based on their similar function as energy carriers. CFs for fossil fuels are expressed as MJ/MJ, i.e. the CF is equal to 1 for all fossil resources\". The bucket it is applied to is EF's own `Non-renewable energy resources from ground`, whose flows are measured in megajoules -- and every factor in the category, six in the JRC's implementation and the same six in this list's, is one of them at 1.0 MJ per MJ: brown coal, crude oil, hard coal, natural gas, peat and uranium. The same passage shows the JRC reconciling model and flow list when they disagree, and reconciling toward the flow list: the original model priced uranium by mass, \"in the ILCD flow list, Uranium is included in the list of energy carriers, and measured in MJ. Therefore, a CF equal to 1 is assigned to uranium\".\n\nEF files horticultural peat outside that bucket altogether -- `Renewable material resources from biosphere`, in kilograms -- so the rule does not reach it, and publishing 9.76 would have this list say a kilogram of growing medium is 9.76 MJ of non-renewable energy on a flow its own method calls a renewable material. That is the shape of carnallite from water (#148): a rule reading the substance where the compartment is the question.\n\nWhat this does not claim is that peat is never a fuel. ecoinvent uses this single flow for both kinds, and Irish peat-fired electricity draws on it: in the score comparison over 501 ecoinvent 3.8 APOS datasets, `electricity voltage transformation from high to medium voltage` (IE) scores 0.91x ecoinvent's, and almost all of the gap is 0.0775 kg of this flow. Counting that needs a fuel-peat row in the inventory, not a fuel factor on the growing medium, and charging every kilogram of growing medium as fuel to catch the Irish power stations would be the many datasets wrong to make two right. The ecoinvent Centre's 9.76 stays published under their own name, as every transcription does. See #160, found by #150."
+    },
+    {
+      "flow_object_id": "fo-eb9073f83e17ec30",
+      "category_slug": "resource-use-fossils",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre",
+      "substance": "Gas, Mine, Off-gas, Process, Coal Mining",
+      "category": "Resource use, fossils",
+      "ruled_about": {
+        "ecoinvent Centre": [
+          36.0
+        ]
+      },
+      "comment": "The methane that desorbs from a coal seam as it is cut, captured and burned. The ecoinvent Centre states 36 MJ per standard cubic metre for it under `Resource use, fossils` -- the same energy content their implementation report (v3.12, Table 6) gives natural gas, filled in by the rule in section 6.5.1 that lower heating values \"are implemented in methods assessing energy resources if no other CFs are given\". The JRC states nothing, and nowhere says why.\n\nWhat the JRC does state is the rule, in EUR 29600 (Fazio et al. 2018) section 4.10: following van Oers et al. (2002), \"a separate impact category for fossil fuels is defined, based on their similar function as energy carriers. CFs for fossil fuels are expressed as MJ/MJ, i.e. the CF is equal to 1 for all fossil resources.\" That is a rule about a class of substance, and there is no sentence in the EF documentation or in van Oers excluding coal mine gas -- van Oers characterises \"fossil fuels\" as one aggregate per megajoule and names no flows below it.\n\nThe rule does not reach this flow because of EF's filing, not because of the model. Every flow carrying the factor is in `Resources from ground -> Non-renewable energy resources from ground`, in megajoules, at 1.0: brown coal, crude oil, hard coal, natural gas, peat, uranium. EF files mine off-gas in the neighbouring bucket, `Non-renewable material resources from ground`, in standard cubic metres -- so the energy rule cannot apply, because the flow is not in megajoules, and `Resource use, minerals and metals` cannot either, because it prices crustal elements in kg Sb-eq and a methane flow has no element to be priced from. EF lists the flow and characterises it in no category at all. The same section shows the JRC resolving exactly this mismatch toward the flow list rather than away from it: uranium is not a fossil fuel and van Oers priced it by mass, and it carries 1.0 because \"in the ILCD flow list, Uranium is included in the list of energy carriers, and measured in MJ\".\n\nSo 36 is adopted as the rule's own arithmetic rather than as somebody's opinion: one megajoule per megajoule, times this flow's 36 megajoules per standard cubic metre. That is the ground #155's minerals were approved on -- a number of ecoinvent's that reproduces what the JRC's own rule says, checkable from a published quantity. It is not double counting the coal beside it: the coal's 18.01 MJ/kg is measured on the coal, the methane is a separate substance held in the seam, and ecoinvent's flow is the captured share that goes on to be burned. Published rather than converted, because converting would change the unit of a flow EF publishes in standard cubic metres and the merge records that spelling deliberately (#141). Measured on the score comparison: `no consensus factor` on 481 of 501 ecoinvent 3.8 datasets and 461 of 500 on 3.12, 0.54% and 0.68% of the category, up to 2.2% of one dataset -- the same on both releases, so not a method-version artefact. See #161, found by #150."
+    },
+    {
+      "flow_object_id": "fo-ae1315a262379c68",
+      "category_slug": "particulate-matter",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre",
+      "substance": "Particles (PM2.5 - PM10)",
+      "category": "EF-particulate Matter",
+      "ruled_about": {
+        "ecoinvent Centre": [
+          6.94042e-07,
+          5.48544e-05
+        ]
+      },
+      "comment": "The coarse band takes PM10's number, and here it is the ecoinvent Centre stating it rather than this list's convention carrying it. Until stage 3 of plans/particle-family.md (#196) ecoinvent's `Particulate Matter, > 2.5 um and < 10um` reached EF's `particles (PM10)` by the five override rows of #37, so its factors sat on PM10 and the coarse band was blank; with those rows retired the rows land on `Particles (PM2.5 - PM10)`, the band they name, and the ecoinvent Centre's transcription now states 5.48544e-5 there in unspecified, urban ground-level and long-term air and 6.94042e-7 in non-urban air -- exactly the numbers the JRC states for PM10 in those compartments, and exactly what data/particle-size-carry-rules.json carries onto the band in the seven compartments where nobody speaks. A stated number outranks a carried one and needs a person: the owner's ruling of 2 September 2026 (plan section 6.4) is that the coarse band takes PM10's number under EF, with the limitations page's double-count concern recorded beside it, and this entry is that ruling on the four compartments an implementation happens to state. Published as `ruled`; the other seven stay `carried`."
+    }
+  ]
+}

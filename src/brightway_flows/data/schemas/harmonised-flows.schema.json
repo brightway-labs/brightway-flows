@@ -1,0 +1,603 @@
+{
+  "$defs": {
+    "Context": {
+      "properties": {
+        "dimension": {
+          "$ref": "#/$defs/Dimension"
+        },
+        "geography": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Geography"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "indoor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/IndoorAirClass"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "land_use": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LandUseClass"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "media": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Media"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "population_density": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PopulationDensity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "strata": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VerticalStrata"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "water_body": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WaterBody"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "dimension"
+      ],
+      "title": "Context",
+      "type": "object"
+    },
+    "Dimension": {
+      "enum": [
+        "Environmental",
+        "Resource",
+        "Economic",
+        "Social",
+        "Land Use",
+        "Inventory Indicator",
+        "Impact Assessment Score"
+      ],
+      "title": "Dimension",
+      "type": "string"
+    },
+    "Geography": {
+      "description": "Only applies to the `Ground` dimension.",
+      "enum": [
+        "Unknown",
+        "Industrial",
+        "Residential",
+        "Commercial",
+        "Agricultural",
+        "Silvicultural",
+        "Wetland",
+        "Barren land",
+        "Snow and Ice",
+        "Grassland",
+        "Shrubland",
+        "Forest",
+        "Non-agricultural"
+      ],
+      "title": "Geography",
+      "type": "string"
+    },
+    "IndoorAirClass": {
+      "description": "Differentiation of indoor air emission classes. Based on GLAM indoor air emissions.",
+      "enum": [
+        "Unknown",
+        "Near-person",
+        "Residential",
+        "Industrial"
+      ],
+      "title": "IndoorAirClass",
+      "type": "string"
+    },
+    "LandUseClass": {
+      "enum": [
+        "Occupation",
+        "Transformation"
+      ],
+      "title": "LandUseClass",
+      "type": "string"
+    },
+    "Media": {
+      "description": "The medium in which the the elementary flow expresses its effects.\n\nNotes:\n    * `Water` can include groundwater\n    * `Ground` includes soil and minerals deeper in the lithosphere\n    * `Product` means that a chemical is applied to a product, like toys, food, or construction materials.\n    * The `Other` category can include non-environmental flows, such as economic or social indicators, or elementary flows like land use or transformation",
+      "enum": [
+        "Air",
+        "Water",
+        "Ground",
+        "Biotic",
+        "Product",
+        "Other"
+      ],
+      "title": "Media",
+      "type": "string"
+    },
+    "PopulationDensity": {
+      "enum": [
+        "Unknown",
+        "Urban (>1000 people/square mile)",
+        "Rural (<1000 people/square mile)"
+      ],
+      "title": "PopulationDensity",
+      "type": "string"
+    },
+    "ProvidedValues": {
+      "properties": {
+        "cas_numbers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Cas Numbers",
+          "type": "array"
+        },
+        "context": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Context",
+          "type": "array"
+        },
+        "ec_numbers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Ec Numbers",
+          "type": "array"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "synonyms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Synonyms",
+          "type": "array"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "title": "ProvidedValues",
+      "type": "object"
+    },
+    "VerticalStrata": {
+      "description": "Vertical strata for air emissions.\n\nNotes:\n* Vertical strata is not required for indoor air emissions.\n* `UNKNOWN` represents unspecified outdoor air (no strata information available).\n* `Space` could be added in the future.\n* `LONG_TERM` is not a stratum. It rides on this enum because air's strata\n  value is the one mandatory, mutually-exclusive discriminator the media\n  already has, which lets long-term air exist without adding a temporal\n  field to `Context`. It serialises to ``[\"Environmental\", \"Air\",\n  \"Long-term\"]`` -- exactly what a real temporal field would produce for\n  unspecified-strata long-term air -- so the shortcut can be replaced later\n  without invalidating a single stored context or IRI. The cost is that it\n  cannot be combined with a real stratum or a population density, so a\n  source that knows both (ecoinvent's `low population density, long-term`)\n  has to give one up.",
+      "enum": [
+        "Unknown",
+        "Ground level",
+        "Low stack, <25 meters",
+        "Medium stack, <150 meters",
+        "High stack, >150 meters",
+        "Aircraft cruise height",
+        "Long-term"
+      ],
+      "title": "VerticalStrata",
+      "type": "string"
+    },
+    "WaterBody": {
+      "description": "The water body an emission went to, or a withdrawal was taken from.\n\nUsed on both the `Environmental` and `Resource` dimensions, and required on\neach -- see :func:`check_water_body`, which also names the three values a\nwithdrawal cannot take.\n\n`LONG_TERM` is not a water body; it is the water-side counterpart of\n:attr:`VerticalStrata.LONG_TERM`, and carries the same trade-off.",
+      "enum": [
+        "Unknown",
+        "Surface water",
+        "Lake",
+        "River",
+        "Ocean",
+        "Unconfined aquifer",
+        "Confined aquifer with fossil groundwater",
+        "Waste-water treatment plant",
+        "Secondary water treatment",
+        "Long-term"
+      ],
+      "title": "WaterBody",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Every flow after all transformers have run. A bare list, with no envelope and so no schema_version.",
+  "items": {
+    "additionalProperties": true,
+    "properties": {
+      "@type": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Types"
+      },
+      "_provided": {
+        "$ref": "#/$defs/ProvidedValues"
+      },
+      "_sources": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Pipeline Sources",
+        "type": "object"
+      },
+      "_transformed": {
+        "default": false,
+        "title": "Transformed",
+        "type": "boolean"
+      },
+      "altLabel": {
+        "items": {},
+        "title": "Altlabel",
+        "type": "array"
+      },
+      "cas_match_labels": {
+        "anyOf": [
+          {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Cas Match Labels"
+      },
+      "cas_number_sources": {
+        "anyOf": [
+          {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Cas Number Sources"
+      },
+      "cas_numbers": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Cas Numbers",
+        "type": "array"
+      },
+      "concept_associations": {
+        "items": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "title": "Concept Associations",
+        "type": "array"
+      },
+      "context": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/Context"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "context_iri": {
+        "default": "",
+        "title": "Context Iri",
+        "type": "string"
+      },
+      "ec_numbers": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Ec Numbers",
+        "type": "array"
+      },
+      "flow_object_id": {
+        "default": "",
+        "title": "Flow Object Id",
+        "type": "string"
+      },
+      "general_comment": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "General Comment"
+      },
+      "http://purl.obolibrary.org/obo/RO_0000087": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Roles"
+      },
+      "http://purl.org/dc/terms/isReplacedBy": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Dcterms Is Replaced By"
+      },
+      "http://www.w3.org/2002/07/owl#deprecated": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Owl Deprecated"
+      },
+      "http://www.w3.org/2004/02/skos/core#definition": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Skos Definition"
+      },
+      "identifier": {
+        "default": "",
+        "title": "Identifier",
+        "type": "string"
+      },
+      "input_datasets": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Input Datasets",
+        "type": "array"
+      },
+      "is_replaced_by_uuid": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Is Replaced By Uuid"
+      },
+      "lcia_methods": {
+        "items": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "title": "Lcia Methods",
+        "type": "array"
+      },
+      "name": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Name"
+      },
+      "origin_qualifier": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Origin Qualifier"
+      },
+      "parent_flow_object_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Parent Flow Object Id"
+      },
+      "parent_intervention_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Parent Intervention Id"
+      },
+      "prefLabel": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Preflabel"
+      },
+      "properties": {
+        "additionalProperties": true,
+        "title": "Properties",
+        "type": "object"
+      },
+      "references": {
+        "items": {},
+        "title": "References",
+        "type": "array"
+      },
+      "source": {
+        "default": "unknown",
+        "title": "Source",
+        "type": "string"
+      },
+      "synonyms": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Synonyms",
+        "type": "array"
+      },
+      "unit": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Unit"
+      },
+      "unit_iri": {
+        "default": "",
+        "title": "Unit Iri",
+        "type": "string"
+      },
+      "uuid": {
+        "title": "Uuid",
+        "type": "string"
+      }
+    },
+    "required": [
+      "_provided",
+      "_sources",
+      "_transformed",
+      "altLabel",
+      "cas_numbers",
+      "concept_associations",
+      "context",
+      "context_iri",
+      "ec_numbers",
+      "flow_object_id",
+      "identifier",
+      "input_datasets",
+      "lcia_methods",
+      "properties",
+      "references",
+      "source",
+      "synonyms",
+      "unit_iri",
+      "uuid"
+    ],
+    "type": "object"
+  },
+  "title": "harmonised-flows.json",
+  "type": "array"
+}

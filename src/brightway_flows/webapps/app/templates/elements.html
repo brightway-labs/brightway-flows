@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% import "partials/flow_object_views.html" as v %}
+{% set page_title = "Elements" %}
+{% set active_section = "substances" %}
+
+{#
+  One cell.  Three states, and they are drawn differently because they mean
+  different things: an element the list carries and EF 3.1 references, one that
+  has a flow object nobody references, and one with no flow object at all.
+  A grid where the third looked like the first would make the table useless for
+  the one question it is drawn to answer.
+#}
+{% macro cell(item) %}
+{% if item is none %}
+<span class="ptable__gap" aria-hidden="true"></span>
+{% elif item is string %}
+<span class="ptable__marker">{{ marker_labels[item] }}</span>
+{% elif item.has_flow_object %}
+<a class="ptable__cell ptable__cell--{{ 'linked' if item.is_linked else 'unreferenced' }}"
+   href="{{ url_for('elements.detail', symbol=item.symbol) }}"
+   title="{{ item.name }} — {{ item.status_label }}">
+  <span class="ptable__z">{{ item.atomic_number }}</span>
+  <span class="ptable__symbol">{{ item.symbol }}</span>
+  <span class="ptable__name">{{ item.name }}</span>
+  <span class="ptable__extra">
+    {%- if item.nuclide_count %}{{ item.nuclide_count }}n{% endif -%}
+    {%- if item.nuclide_count and item.ion_count %} {% endif -%}
+    {%- if item.ion_count %}{{ item.ion_count }}i{% endif -%}
+  </span>
+</a>
+{% else %}
+<span class="ptable__cell ptable__cell--missing" title="{{ item.name }} — {{ item.status_label }}">
+  <span class="ptable__z">{{ item.atomic_number }}</span>
+  <span class="ptable__symbol">{{ item.symbol }}</span>
+  <span class="ptable__name">{{ item.name }}</span>
+  <span class="ptable__extra"></span>
+</span>
+{% endif %}
+{% endmacro %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Elements</h1>
+  <p class="page__lede">
+    Which of the 118 elements this list accounts for, laid out where a chemist
+    expects to find them.
+  </p>
+</header>
+
+{{ v.views('elements') }}
+
+{% if table is none %}
+<div class="notice">
+  <p>
+    This database has no element coverage table. It is written by the review
+    stage of a build; run one, and this page fills in.
+  </p>
+</div>
+{% else %}
+
+<section class="section">
+  <div class="cards">
+    <div class="card">
+      <span class="card__label">In the list</span>
+      <span class="card__value">{{ table.linked | thousands }}</span>
+      <span class="card__note">of {{ table.total | thousands }}, and referenced by EF 3.1</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Unreferenced</span>
+      <span class="card__value">{{ table.unreferenced | thousands }}</span>
+      <span class="card__note">a flow object exists; nothing in EF 3.1 points at it</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Not in the list</span>
+      <span class="card__value">{{ table.missing | thousands }}</span>
+      <span class="card__note">no flow object carries this atomic number</span>
+    </div>
+  </div>
+  <p class="section__note">
+    The elements a flow list is missing are not a random selection: they are
+    the short-lived transactinides at the bottom right, which no inventory has
+    ever emitted, and a handful of others that are a scope question rather than
+    a gap. Laid out as the table, that is visible at a glance; stated as a
+    count of uncovered elements, it says nothing at all.
+  </p>
+  <p class="section__note">
+    A cell that links has a flow object. <strong>n</strong> is how many
+    nuclides of that element the list carries and <strong>i</strong> how many
+    ions — both are flow objects in their own right, and both are on the
+    element’s page.
+  </p>
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>The table</h2></div>
+  <div class="table-scroll">
+    <div class="ptable" role="grid" aria-label="Periodic table of the elements">
+      {% for row in rows %}
+      <div class="ptable__row" role="row">
+        {% for item in table.row(row) %}{{ cell(item) }}{% endfor %}
+      </div>
+      {% endfor %}
+      <div class="ptable__spacer" aria-hidden="true"></div>
+      {% for row in f_block_rows %}
+      <div class="ptable__row" role="row">
+        {% for item in table.row(row) %}{{ cell(item) }}{% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

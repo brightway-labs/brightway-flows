@@ -1,0 +1,102 @@
+name: Answer a question the list is waiting on
+description: A row in one of the review queues, or a known limitation, that you can settle.
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The pipeline does everything a rule can do and then stops, because what is left is
+        a judgement: are these two names one substance, is this rename right, which of two
+        published numbers is the real one. Those questions sit in the queues at `/queue/`
+        on the website, and the set of people who could answer them is far larger than the
+        set who know this repository's file formats.
+
+        **You do not need to clone anything, learn a schema, or run a build.** Name the
+        row, give the verdict, and say why. If you know the shape the answer is recorded
+        in you can fill that in too, but nothing here requires it.
+
+        The reasoning is not a formality — it is the point. Every decision already recorded
+        in this project is a paragraph of evidence, because a one-word answer nobody can
+        check is not worth storing.
+
+  - type: dropdown
+    id: queue
+    attributes:
+      label: Which question
+      options:
+        - contested-cas — one registry number, two names, and nothing has checked whether they are one substance
+        - consensus-match — matching found no confident answer
+        - cas-ambiguous — a registry number resolves to several ChEBI records
+        - commonchem-cas-name-differences — Common Chemistry disagrees with the flow's name for a number
+        - commonchem-name-cas — Common Chemistry gives a different number for the flow's name
+        - ec-malformed — no EC number can be recovered from the string
+        - ec-cross-check — a CAS and EC pairing contradicts the ECHA inventory
+        - undecided-label-replacement — a rename is awaiting a ruling
+        - elementary-flow-collision — two live flows share a substance, a context and a unit
+        - land-class-out-of-place — a land-class substance has a flow outside Land Use
+        - A known limitation, from docs/reference/limitations.md
+        - Something else the site says is waiting on a person
+    validations:
+      required: true
+
+  - type: textarea
+    id: the-row
+    attributes:
+      label: The row you are answering
+      description: >-
+        Copy it off the queue page. Whatever identifies it there — a registry number and
+        the names under it, a flow UUID, a pair of flows — is enough.
+      placeholder: |
+        7553-56-2 · iodine, iodine 0.03% in water · 16 flows · comparable 0
+    validations:
+      required: true
+
+  - type: input
+    id: verdict
+    attributes:
+      label: Your answer
+      description: >-
+        In your own words. If the queue takes one of a fixed set of answers — `merge` or
+        `separate` for contested CAS, for instance — use that word, and CI will tell you if
+        it is not one the file accepts.
+      placeholder: separate
+    validations:
+      required: true
+
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: Why
+      description: >-
+        What you know that the pipeline does not. A concentration in a name that means a
+        different resource, a registry entry the enrichment could not reach, a convention
+        in the source list that settles it. This paragraph is what gets recorded.
+      placeholder: >-
+        `iodine, 0.03% in water` is a resource flow for iodine at an extraction grade — the
+        0.03% is the concentration in the brine it is taken from, not a different chemical.
+        It is the same substance as `iodine` and a different thing to extract, which is why
+        EF gives them separate rows.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: The decision row, if you know the shape
+      description: >-
+        **Optional, and genuinely optional.** If you leave it blank a maintainer writes it
+        from your answer above. Each queue is answered by one file in
+        `src/brightway_flows/data/`; the page you took the row from names it.
+      render: json
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **What happens next.** A maintainer approves a CI run — runs are not automatic, so
+        there may be a wait. It checks your answer against the shape the file accepts,
+        builds the list with it applied, and diffs that build against the reference: what
+        your answer does to the list, including anything it moves that you were not
+        thinking about. The result is a workflow run with an artifact attached. Nothing is
+        written to the repository until a pull request is merged.

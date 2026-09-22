@@ -1,0 +1,4230 @@
+/* One stylesheet, shipped in the repo.
+ *
+ * The applications this replaces fetch Pico from jsdelivr, so none of them
+ * render on an air-gapped or offline host -- the tables are still there, but
+ * unstyled and unreadable at this density.  This is hand-written CSS with
+ * custom properties: no npm, no bundler, no build step, because this is a
+ * Python project and a build step is a thing that breaks when nobody is
+ * looking.
+ *
+ * Direction: a dense, quiet, technical reading surface.  Data first, chrome
+ * last.  Tables are the product.
+ */
+
+/* ---------------------------------------------------------------- tokens */
+
+@font-face {
+  font-family: "Inter Variable";
+  src: url("fonts/InterVariable.woff2") format("woff2-variations"),
+    url("fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light dark;
+
+  /* Type. One variable UI face, one monospace face for identifiers.
+   * Identifiers -- uuids, CAS numbers, SMILES, InChIKeys -- are read
+   * character by character, so they need unambiguous, tabular glyphs.
+   * Inter is self-hosted above: this is a Python project, and a page that
+   * fetches a font from Google Fonts does not render on an air-gapped
+   * host any more than one that fetches its stylesheet from a CDN does. */
+  --font-ui: "Inter Variable", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-lg: 1.0625rem;
+  --text-xl: 1.375rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  --radius: 8px;
+  --radius-sm: 3px;
+
+  --measure: 68ch;
+  --nav-height: 4rem;
+
+  /* Theme-invariant colours: a role that does not change between light and
+   * dark, so it is declared once here rather than in both blocks below. */
+  --overlay: rgba(0, 0, 0, 0.45);
+  --structure-bg: #fff;
+  --brand-fill: #1d8a8c;
+}
+
+/* Light is the default set; dark is applied by the media query below and by
+ * an explicit `data-theme`, which the toggle stamps on <html> and which must
+ * win in both directions -- a reader on a dark OS who chose light gets light. */
+:root,
+:root[data-theme="light"] {
+  --bg: #fcfcfd;
+  --bg-sunken: #eff0f3;
+  --bg-raised: #ffffff;
+  --bg-hover: #eff0f3;
+  /* A column set apart inside a raised surface, quieter than `--bg-sunken`. */
+  --bg-subtle: #f9f9fb;
+
+  --border: #e0e1e6;
+  --border-strong: #b9bbc6;
+  --border-input: #8b8d98;
+
+  --fg: #1e1f24;
+  --fg-muted: #62636c;
+
+  --accent: #007c7e;
+  --accent-strong: #163b3c;
+  --accent-fg: #ffffff;
+  --accent-bg: #e2f7f7;
+  --highlight: #d0f1f1;
+
+  --ok: #1a7f45;
+  --ok-bg: #e6f4ec;
+  --warn: #a55f09;
+  --warn-bg: #fdf6e9;
+  --warn-border: #f49725;
+  --danger: #b3261e;
+  --danger-bg: #fceceb;
+
+  --diff-added: #1a7f45;
+  --diff-added-bg: #e6f4ec;
+  --diff-removed: #b3261e;
+  --diff-removed-bg: #fceceb;
+
+  --focus: #5388c6;
+  --shadow: 0 1px 2px rgba(16, 20, 26, 0.06), 0 2px 8px rgba(16, 20, 26, 0.05);
+  --shadow-lifted: 0 1px 2px rgba(16, 20, 26, 0.06), 0 16px 40px rgba(16, 20, 26, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111113;
+    --bg-sunken: #19191b;
+    --bg-raised: #19191b;
+    --bg-hover: #292a2e;
+    --bg-subtle: #111113;
+
+    --border: #393a40;
+    --border-strong: #46484f;
+    --border-input: #6c6e79;
+
+    --fg: #eeeef0;
+    --fg-muted: #b2b3bd;
+
+    --accent: #6bccce;
+    --accent-strong: #adeeef;
+    --accent-fg: #111113;
+    --accent-bg: #082d2e;
+    --highlight: #0d696b;
+
+    --ok: #5cc98b;
+    --ok-bg: #16281e;
+    --warn: #f5b868;
+    --warn-bg: #2b1e0a;
+    --warn-border: #a55f09;
+    --danger: #f2867d;
+    --danger-bg: #2e1917;
+
+    --diff-added: #5cc98b;
+    --diff-added-bg: #16281e;
+    --diff-removed: #f2867d;
+    --diff-removed-bg: #2e1917;
+
+    --focus: #5388c6;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-lifted: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px rgba(0, 0, 0, 0.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #111113;
+  --bg-sunken: #19191b;
+  --bg-raised: #19191b;
+  --bg-hover: #292a2e;
+  --bg-subtle: #111113;
+
+  --border: #393a40;
+  --border-strong: #46484f;
+  --border-input: #6c6e79;
+
+  --fg: #eeeef0;
+  --fg-muted: #b2b3bd;
+
+  --accent: #6bccce;
+  --accent-strong: #adeeef;
+  --accent-fg: #111113;
+  --accent-bg: #082d2e;
+  --highlight: #0d696b;
+
+  --ok: #5cc98b;
+  --ok-bg: #16281e;
+  --warn: #f5b868;
+  --warn-bg: #2b1e0a;
+  --warn-border: #a55f09;
+  --danger: #f2867d;
+  --danger-bg: #2e1917;
+
+  --diff-added: #5cc98b;
+  --diff-added-bg: #16281e;
+  --diff-removed: #f2867d;
+  --diff-removed-bg: #2e1917;
+
+  --focus: #5388c6;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lifted: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* ----------------------------------------------------------------- reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 var(--space-3);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: var(--text-xl);
+}
+h2 {
+  font-size: var(--text-lg);
+}
+h3 {
+  font-size: var(--text-base);
+}
+
+p {
+  margin: 0 0 var(--space-3);
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+code,
+kbd,
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.9375em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Colour is never the only carrier of meaning: every focusable thing gets a
+ * ring, and it is the same ring everywhere. */
+:where(a, button, input, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* -------------------------------------------------------------- skip link */
+
+.skip-link {
+  position: absolute;
+  left: var(--space-2);
+  top: -3rem;
+  z-index: 100;
+  padding: var(--space-2) var(--space-3);
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-radius: var(--radius);
+  transition: top 120ms ease;
+}
+
+.skip-link:focus {
+  top: var(--space-2);
+}
+
+/* ------------------------------------------------------------ navigation */
+
+/* An author `display` beats the browser's own `[hidden]` rule, so without this
+ * every flex element the script unhides would have shown before it ran. */
+[hidden] {
+  display: none !important;
+}
+
+/* The top bar.  Measurements from the canvas's Masthead board (1440px). */
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: var(--nav-height);
+  padding: 0 2.5rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.masthead__brand {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.masthead__version {
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+
+.masthead__nav {
+  margin-left: var(--space-3);
+}
+
+.masthead__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A link and the Browse button look the same: both are places to go. */
+.masthead__link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 var(--space-3);
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--fg);
+  text-decoration: none;
+  white-space: nowrap;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.masthead__link:hover {
+  background: var(--bg-hover);
+}
+
+/* Marked with weight and a fill, never by colour alone. */
+.masthead__link[aria-current],
+.masthead__link[aria-expanded="true"] {
+  font-weight: 600;
+  background: var(--bg-sunken);
+}
+
+/* The label is as wide as its bold copy, drawn with no height and hidden
+ * (and given empty alternative text, so it is not read twice): setting a link
+ * in 600 then changes no widths, and nothing in the bar shifts.  The regular
+ * text is centred in the room the bold copy keeps for it. */
+.masthead__label {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.masthead__label::after {
+  content: attr(data-label);
+  content: attr(data-label) / "";
+  height: 0;
+  overflow: hidden;
+  font-weight: 600;
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.masthead__link[aria-expanded="true"] .masthead__chevron {
+  transform: rotate(180deg);
+}
+
+.masthead__browse {
+  position: relative;
+}
+
+.masthead__tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.masthead__github {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 var(--space-2);
+  font-size: var(--text-base);
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.masthead__github:hover {
+  text-decoration: underline;
+}
+
+/* The search box, 300px on the Masthead board.  It gives up width before
+ * anything else in the bar does, down to what still shows a word or two. */
+.masthead__search {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex: 0 1 auto;
+  width: 300px;
+  min-width: 10rem;
+  height: 40px;
+  margin: 0 var(--space-2) 0 0;
+  padding: 0 var(--space-3);
+  color: var(--fg-muted);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-input);
+  border-radius: 6px;
+}
+
+/* The ring goes round the whole box, not the borderless input inside it. */
+.masthead__search:focus-within {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px var(--focus);
+}
+
+.masthead__search-icon {
+  flex-shrink: 0;
+}
+
+.masthead__search-input {
+  flex-grow: 1;
+  min-width: 0;
+  padding: 0;
+  font: inherit;
+  font-size: var(--text-base);
+  color: var(--fg);
+  background: transparent;
+  border: 0;
+}
+
+.masthead__search-input::placeholder {
+  color: var(--fg-muted);
+}
+
+.masthead__search-input:focus-visible {
+  outline: none;
+}
+
+.masthead__search-hint {
+  flex-shrink: 0;
+  color: var(--fg-muted);
+}
+
+/* Between the phone layout and 75rem the bar has everything in it and less
+ * room than the board's 1440px: the gaps close up, the box narrows further,
+ * and the `/` hint -- a convenience, not a control -- goes first. */
+@media (min-width: 60.0625rem) and (max-width: 75rem) {
+  .masthead {
+    gap: var(--space-4);
+    padding: 0 var(--space-6);
+  }
+
+  .masthead__nav {
+    margin-left: 0;
+  }
+
+  .masthead__search {
+    min-width: 7rem;
+  }
+
+  .masthead__search-hint {
+    display: none;
+  }
+}
+
+/* Below 60rem only, like the menu icon beside it. */
+.masthead__search-link {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--fg);
+}
+
+.masthead__tools {
+  min-width: 0;
+}
+
+/* Below 60rem only; see the media query. */
+.masthead__menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--fg);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.masthead__menu-close,
+.masthead__menu[aria-expanded="true"] .masthead__menu-open {
+  display: none;
+}
+
+.masthead__menu[aria-expanded="true"] .masthead__menu-close {
+  display: block;
+}
+
+/* ---------------------------------------------------------- browse panel */
+
+/* Two columns, one per audience (the "Browse Panel Explorations" canvas,
+ * direction B): the published records on the left with an icon tile and the
+ * build's count, the curators' tools in a tinted column on the right with a
+ * line each.  `app.js` moves the panel left when it would run off the
+ * window's right edge, which it does just above the 60rem breakpoint. */
+.browse-panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16rem;
+  gap: var(--space-2);
+  width: 44rem;
+  box-sizing: border-box;
+  padding: var(--space-2);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.browse-panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.browse-panel__group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-1) 0;
+}
+
+.browse-panel__group--curators {
+  padding: var(--space-1);
+  background: var(--bg-subtle);
+  border-radius: var(--radius);
+}
+
+.browse-panel__heading {
+  margin: 0;
+  padding: var(--space-2) var(--space-3) 6px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--fg-muted);
+}
+
+.browse-panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.browse-panel__entry,
+.browse-panel__tool {
+  display: flex;
+  color: var(--fg);
+  text-decoration: none;
+  border-radius: var(--radius);
+}
+
+.browse-panel__entry {
+  align-items: center;
+  gap: 14px;
+  padding: 10px var(--space-3);
+}
+
+.browse-panel__tool {
+  gap: 10px;
+  padding: var(--space-2) 10px;
+  border-radius: 6px;
+}
+
+.browse-panel__entry:hover,
+.browse-panel__tool:hover {
+  background: var(--bg-hover);
+}
+
+.browse-panel__entry[aria-current],
+.browse-panel__tool[aria-current] {
+  background: var(--accent-bg);
+}
+
+.browse-panel__tile {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-radius: var(--radius);
+}
+
+.browse-panel__entry[aria-current] .browse-panel__tile {
+  background: var(--bg-raised);
+}
+
+.browse-panel__tile .browse-panel__icon {
+  width: 18px;
+  height: 18px;
+}
+
+.browse-panel__tool .browse-panel__icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--fg-muted);
+}
+
+.browse-panel__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.browse-panel__label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.browse-panel__tool-label {
+  font-size: var(--text-base);
+  font-weight: 500;
+}
+
+.browse-panel__summary {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+/* ----------------------------------------------------------- mobile menu */
+
+/* Only ever open below 60rem: the script closes it when the window widens,
+ * and the media query keeps it out of the way if a script never ran. */
+.mobile-menu {
+  position: fixed;
+  top: var(--nav-height);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-3) var(--space-4) var(--space-6);
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.mobile-menu a {
+  display: flex;
+  align-items: center;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.mobile-menu__top {
+  min-height: 52px;
+  font-size: 1.125rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+
+.mobile-menu__label {
+  padding: 20px 0 6px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--fg-muted);
+}
+
+.mobile-menu__entry {
+  min-height: 48px;
+  font-size: 1.0625rem;
+}
+
+.mobile-menu__entry--last {
+  border-bottom: 1px solid var(--border);
+}
+
+.mobile-menu [aria-current] {
+  font-weight: 600;
+}
+
+/* The curators' tools, below the reader's links and set in smaller type,
+ * as they sit apart in the Browse panel. */
+.mobile-menu__label--curators {
+  margin-top: auto;
+  padding-top: var(--space-6);
+}
+
+.mobile-menu__tool {
+  min-height: 44px;
+  font-size: 0.9375rem;
+}
+
+.mobile-menu__attribution {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+@media (min-width: 60.0625rem) {
+  .mobile-menu {
+    display: none !important;
+  }
+}
+
+@media (max-width: 60rem) {
+  :root {
+    --nav-height: 3.5rem;
+  }
+
+  .masthead {
+    gap: var(--space-1);
+    padding: 0 var(--space-2) 0 var(--space-4);
+  }
+
+  .masthead__brand {
+    flex-grow: 1;
+    font-size: 1rem;
+  }
+
+  .masthead__version,
+  .masthead__nav,
+  .masthead__search,
+  .masthead__github {
+    display: none;
+  }
+
+  .masthead__menu,
+  .masthead__search-link {
+    display: flex;
+  }
+}
+
+/* ------------------------------------------------------------ browse page */
+
+.browse {
+  max-width: var(--measure);
+}
+
+.browse__group {
+  margin-top: var(--space-8);
+}
+
+.browse-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.browse-list__item {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.browse-list__label {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.browse-list__blurb {
+  margin: var(--space-1) 0 0;
+  color: var(--fg-muted);
+}
+
+/* --------------------------------------------------------------- buttons */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.button:hover {
+  color: var(--fg);
+  border-color: var(--border-strong);
+  background: var(--bg-hover);
+}
+
+/* ---------------------------------------------------------------- layout */
+
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+}
+
+.page__header {
+  margin-bottom: var(--space-6);
+}
+
+.page__lede {
+  color: var(--fg-muted);
+  max-width: var(--measure);
+}
+
+.section {
+  margin-bottom: var(--space-8);
+}
+
+.section__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+/* A sentence explaining the table under it. Full width, unlike a paragraph of
+ * prose: it is read against the columns it names, and a line ending at 68
+ * characters over a table three times that wide reads as a caption for
+ * something else. */
+.section__note {
+  max-width: none;
+  color: var(--fg-muted);
+}
+
+/* ----------------------------------------------------------------- cards */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-3);
+}
+
+.card {
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.card__label {
+  display: block;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+
+.card__value {
+  display: block;
+  margin-top: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  font-variant-numeric: tabular-nums;
+}
+
+.card__note {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+}
+
+/* ---------------------------------------------------------------- tables */
+
+/* The scrolling box a table sits in, and the only scroll container involved:
+ * `overflow-x` makes an element a scroll container in *both* axes, so a header
+ * inside it sticks to this box, never to the viewport.  That is why the box is
+ * also bounded vertically -- a header that sticks to a box which cannot scroll
+ * is a header that never moves, and one offset by the navigation bar's height
+ * inside such a box is pushed down over the first rows instead.  Bounded here,
+ * the fifty rows of a page scroll under their own header, which stays put. */
+.table-scroll {
+  overflow: auto;
+  max-height: calc(100vh - var(--nav-height) - var(--space-8));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+/* Sticks to the top of `.table-scroll`, so the offset is zero: the box's own
+ * top edge is already below the masthead.  The rule under the row is a shadow
+ * rather than a border because a collapsed border belongs to the table grid,
+ * not to the cell, and so stays behind while the cell scrolls over the rows. */
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  font-weight: 600;
+  color: var(--fg-muted);
+  background: var(--bg-sunken);
+  box-shadow: inset 0 -1px 0 var(--border-strong);
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+tbody tr:hover td {
+  background: var(--bg-hover);
+}
+
+/* Numbers align right and share a width, so a column of counts can be
+ * compared by eye rather than read. */
+.num {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--fg-muted);
+}
+
+/* ------------------------------------------------------------ definition */
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.facts dt {
+  color: var(--fg-muted);
+}
+
+.facts dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The flows an unmatched row could have landed on, listed inside a table
+ * cell. Small and unbulleted: the cell already sits in a row of its own
+ * columns, and a bullet beside a score reads as a second level of nesting the
+ * data does not have. The score keeps a fixed width so a column of them lines
+ * up against the contexts they scored. */
+.candidates {
+  list-style: none;
+  margin: var(--space-1) 0 0;
+  padding: 0;
+  font-size: var(--text-xs);
+}
+
+.candidates li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: 1px 0;
+}
+
+.candidates__score {
+  min-width: 1.5em;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-muted);
+}
+
+/* ----------------------------------------------------------- documentation */
+
+/* The `docs/` tree, rendered into this layout rather than served as a built
+ * mkdocs site: one navigation bar, one stylesheet, no build step.  The sidebar
+ * is the `nav` block of `mkdocs.yml`, so the order a reader sees here is the
+ * order the documentation was written in. */
+.docs {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+
+/* Under the header, only below 60rem: a link to the sidebar, which the
+ * markup renders after the article, so it works with no script at all.
+ * `app.js` swaps the link for the button drawn beside it, hidden, which
+ * opens the same sidebar as a drawer instead of scrolling to it. */
+.docs__mobile-bar {
+  display: none;
+}
+
+.docs__mobile-bar-control {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--fg);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.docs__mobile-bar-group {
+  color: var(--fg-muted);
+}
+
+.docs__breadcrumb {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.docs__breadcrumb a {
+  color: var(--fg-muted);
+}
+
+.docs__breadcrumb a:hover {
+  color: var(--fg);
+}
+
+/* Sticky under the masthead, and scrollable on its own: the contents list runs
+ * to twenty-two entries and the pages it points at are long. */
+.docs__nav {
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-4));
+  max-height: calc(100vh - var(--nav-height) - var(--space-8));
+  overflow-y: auto;
+  font-size: var(--text-sm);
+}
+
+/* Each `mkdocs.yml` group is one of these: closed unless it holds the page
+ * being read.  `summary`'s marker is turned off in favour of the chevron
+ * `documentation.html` puts in `.docs__summary-meta` itself. */
+.docs__group {
+  margin-top: var(--space-1);
+}
+
+.docs__group:first-child {
+  margin-top: 0;
+}
+
+.docs__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: 2.25rem;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  color: var(--fg);
+  cursor: pointer;
+  list-style: none;
+}
+
+.docs__summary::-webkit-details-marker {
+  display: none;
+}
+
+.docs__summary:hover {
+  background: var(--bg-hover);
+}
+
+.docs__summary-meta {
+  flex-shrink: 0;
+  font-weight: 400;
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+}
+
+.docs__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.docs__list li {
+  margin: 0;
+}
+
+.docs__list a {
+  display: block;
+  padding: 2px var(--space-2);
+  border-left: 2px solid transparent;
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+
+.docs__list a:hover {
+  color: var(--fg);
+  background: var(--bg-hover);
+}
+
+/* "Where to start" and "What we have found": not in any group, so not in a
+ * `<details>` either -- a reader should not have to open something to find
+ * them.  They sit at the same level as the groups, so they take a group
+ * row's height and spacing, and give back the width of the left rule so
+ * their text lines up with the group titles. */
+.docs__list--top li + li {
+  margin-top: var(--space-1);
+}
+
+.docs__list--top a {
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0 calc(var(--space-2) - 2px);
+  font-weight: 600;
+  color: var(--fg);
+}
+
+/* The page being read is marked by a rule as well as by weight, because the
+ * two live entries either side of it are the same colour. */
+.docs__list a[aria-current="page"] {
+  color: var(--accent);
+  font-weight: 600;
+  border-left-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.docs__page {
+  min-width: 0;
+  max-width: 52rem;
+}
+
+/* "Report a problem with this page".  "Last updated" and "Edit this page" sit
+ * beside it on the canvas, and are not built here: both need the repository
+ * to be public first (`plans/public-site.md` §7, decision 7). */
+.docs__page-meta {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+  font-size: var(--text-sm);
+}
+
+.docs__pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.docs__pager-link {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.docs__pager-link:hover {
+  border-color: var(--border-strong);
+}
+
+/* Placed explicitly, so the last page's "Previous" alone still sits on the
+ * left, and the first page's "Next" alone still sits on the right. */
+.docs__pager-link--prev {
+  grid-column: 1;
+}
+
+.docs__pager-link--next {
+  grid-column: 2;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.docs__pager-label {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+}
+
+.docs__pager-title {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.docs__page h1 {
+  margin-bottom: var(--space-4);
+}
+
+/* Headings past the first get room above them: a reference page is read by
+ * scanning for the section that answers the question, and a heading that sits
+ * as close to the paragraph above it as to the one below is no landmark. */
+.docs__page h2,
+.docs__page h3,
+.docs__page h4 {
+  margin-top: var(--space-6);
+}
+
+.docs__page h4 {
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.docs__page ul,
+.docs__page ol {
+  max-width: var(--measure);
+  padding-left: var(--space-6);
+}
+
+.docs__page li {
+  margin-bottom: var(--space-1);
+}
+
+/* A list inside a list is a tree, and a level only has to sit readably inside
+ * the one above it.  Repeating the top-level indent at every level pushes a
+ * four-deep tree -- the context tree on `concepts/contexts` -- far enough
+ * right that the leaves stop lining up with the prose. */
+.docs__page li > ul,
+.docs__page li > ol {
+  padding-left: var(--space-4);
+}
+
+.docs__page img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+.docs__page blockquote {
+  margin: 0 0 var(--space-3);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--border-strong);
+  color: var(--fg-muted);
+}
+
+.docs__page pre {
+  overflow-x: auto;
+  margin: 0 0 var(--space-4);
+  padding: var(--space-3);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.docs__page :not(pre) > code {
+  padding: 1px 4px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+/* A mermaid fence is drawn by `docs-mermaid.js`, which marks the element
+ * `data-processed` when it has.  Everything below is about the state before
+ * that, or instead of it: no JavaScript, a blocked script, a diagram that will
+ * not parse.  The source is legible prose, so it is labelled as what it is
+ * rather than left looking like a code block that failed to run. */
+.docs__page pre.mermaid:not([data-processed])::before {
+  content: "Diagram source";
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+}
+
+/* Drawn, the element is no longer holding text, so the code-block treatment it
+ * inherits from `pre` has to come off: no monospace, no preserved newlines, no
+ * sunken panel.  The diagram is the figure on the page.
+ *
+ * The face matters more than it looks.  `docs-mermaid.js` tells mermaid to
+ * inherit its font, and the element it inherits from is this one, so without
+ * the reset every label is measured and drawn in the code face: wider letters,
+ * more labels wrapped onto a second line, and a question's diamond -- which is
+ * drawn around its label's box -- larger with it.  On `deciding/index` the
+ * face alone is the difference between a chart 1,274 units tall and one
+ * 1,138 tall. */
+.docs__page pre.mermaid[data-processed] {
+  white-space: normal;
+  font-family: var(--font-ui);
+  background: none;
+  border: none;
+  padding: 0;
+  margin: var(--space-5) 0;
+  text-align: center;
+  /* `docs-mermaid.js` sets mermaid's `fontFamily` to `inherit` so the diagram
+   * reads as the page reads.  What it inherits here is `pre`, which is
+   * monospace, so without this the one figure on a page of prose is the one
+   * thing set in the identifier face. */
+  font-family: var(--font-ui);
+}
+
+.docs__page pre.mermaid[data-processed] svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.docs__contents {
+  margin-bottom: var(--space-6);
+  font-size: var(--text-sm);
+}
+
+.docs__contents ul {
+  list-style: none;
+  padding-left: var(--space-4);
+}
+
+.docs__contents > .toc > ul {
+  padding-left: 0;
+}
+
+/* The same contents, as a sticky column instead of a fold -- shown only
+ * 1200px and wider, where `.docs__contents` above is hidden instead (see the
+ * media query below). */
+.docs__toc {
+  display: none;
+  font-size: var(--text-sm);
+}
+
+.docs__toc-heading {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+
+.docs__toc .toc > ul,
+.docs__toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.docs__toc a {
+  display: block;
+  padding: var(--space-1) var(--space-2);
+  border-left: 2px solid var(--border);
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.docs__toc a:hover {
+  border-left-color: var(--accent);
+  color: var(--accent);
+}
+
+.docs__toc ul ul a {
+  padding-left: var(--space-4);
+}
+
+.docs__toc-top {
+  display: block;
+  margin-top: var(--space-4);
+  padding: var(--space-1) var(--space-2);
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+
+/* An admonition, from the `admonition` extension the documentation already
+ * uses.  A note and a warning differ by colour and by their own title, never
+ * by colour alone. */
+.docs__page .admonition {
+  margin: 0 0 var(--space-4);
+  padding: var(--space-3);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--fg-muted);
+  border-radius: var(--radius);
+}
+
+.docs__page .admonition > :last-child {
+  margin-bottom: 0;
+}
+
+.docs__page .admonition-title {
+  margin: 0 0 var(--space-2);
+  font-weight: 600;
+}
+
+.docs__page .admonition.warning {
+  border-left-color: var(--warn);
+  background: var(--warn-bg);
+}
+
+.docs__page .admonition.warning .admonition-title {
+  color: var(--warn);
+}
+
+.docs__page .admonition.note,
+.docs__page .admonition.info {
+  border-left-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.docs__page .admonition.note .admonition-title,
+.docs__page .admonition.info .admonition-title {
+  color: var(--accent);
+}
+
+/* Syntax colours for the code samples, mapped onto the tokens this stylesheet
+ * already defines rather than pulled from a Pygments theme: five roles, both
+ * palettes, and anything unclassified reads as ordinary text. */
+.docs__page .c,
+.docs__page .c1,
+.docs__page .cm,
+.docs__page .sd {
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
+.docs__page .k,
+.docs__page .kc,
+.docs__page .kd,
+.docs__page .kn,
+.docs__page .kt,
+.docs__page .ow {
+  color: var(--accent);
+}
+
+.docs__page .s,
+.docs__page .s1,
+.docs__page .s2,
+.docs__page .sb,
+.docs__page .se {
+  color: var(--ok);
+}
+
+.docs__page .m,
+.docs__page .mi,
+.docs__page .mf {
+  color: var(--warn);
+}
+
+/* A key in YAML or JSON, and an attribute in markup: what the value belongs
+ * to, which is what a reader scans a configuration block for. */
+.docs__page .nt,
+.docs__page .na,
+.docs__page .nv {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.docs__page .gd {
+  color: var(--diff-removed);
+}
+
+.docs__page .gi {
+  color: var(--diff-added);
+}
+
+/* The sidebar sits after the article in the markup (so the mobile Contents
+ * bar can point at it before any script runs), but reads left of it once
+ * there is room for two columns: `order` puts it back without touching the
+ * markup. */
+@media (min-width: 60.0625rem) {
+  .docs__nav {
+    order: 1;
+  }
+
+  .docs__page {
+    order: 2;
+  }
+
+  .docs__toc {
+    order: 3;
+  }
+}
+
+/* A third column for "On this page", once the article has room to keep its
+ * own measure beside it.  `.docs__contents` -- the folded version under the
+ * heading -- goes: this is the same contents, not a second copy of them. */
+@media (min-width: 75.0625rem) {
+  .docs {
+    grid-template-columns: 15rem minmax(0, 1fr) 15rem;
+  }
+
+  .docs__toc {
+    display: block;
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-6));
+    max-height: calc(100vh - var(--nav-height) - var(--space-8));
+    overflow-y: auto;
+  }
+
+  .docs__contents {
+    display: none;
+  }
+}
+
+/* One column below the width the sidebar and a readable measure need. */
+@media (max-width: 60rem) {
+  .docs {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .docs__nav {
+    position: static;
+    max-height: none;
+  }
+
+  .docs__mobile-bar {
+    display: block;
+    margin-bottom: var(--space-4);
+  }
+
+  /* The drawer `initDocsToc` (`app.js`) opens: fixed under the header, over
+   * the page, closed by default once the script is managing it. Without a
+   * script this attribute is never set, and the sidebar stays the plain,
+   * static block above renders it as. */
+  .docs__nav[data-docs-drawer] {
+    position: fixed;
+    top: var(--nav-height);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    padding: var(--space-4) var(--space-4) var(--space-6);
+    overflow-y: auto;
+    background: var(--bg);
+  }
+}
+
+/* ------------------------------------------------------------------ tags */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+/* Each severity carries a word as well as a colour. */
+.tag--blocking {
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-color: var(--danger);
+}
+
+.tag--review {
+  color: var(--warn);
+  background: var(--warn-bg);
+  border-color: var(--warn);
+}
+
+.tag--info {
+  color: var(--fg-muted);
+  background: var(--bg-sunken);
+  border-color: var(--border);
+}
+
+.tag--ok {
+  color: var(--ok);
+  background: var(--ok-bg);
+  border-color: var(--ok);
+}
+
+/* --------------------------------------------------------------- notices */
+
+.notice {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  margin-bottom: var(--space-4);
+}
+
+.notice--warn {
+  border-left-color: var(--warn);
+  background: var(--warn-bg);
+}
+
+.notice--action {
+  border-left-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.notice p:last-child {
+  margin-bottom: 0;
+}
+
+.notice__title {
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+/* ------------------------------------------------------------ placeholder */
+
+/* An undecided fact -- plan §0's first rule.  Dashed rather than solid, so it
+ * reads as unfinished rather than as an ordinary tag, in both themes. */
+.placeholder {
+  display: inline-block;
+  padding: 0 var(--space-1);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--warn);
+  background: var(--warn-bg);
+  border: 1px dashed var(--warn-border);
+  border-radius: var(--radius-sm);
+}
+
+/* ----------------------------------------------------------- empty state */
+
+.empty {
+  max-width: var(--measure);
+  margin: var(--space-8) auto;
+}
+
+.empty pre {
+  padding: var(--space-3);
+  overflow-x: auto;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+/* ------------------------------------------------------------- shortcuts */
+
+dialog.shortcuts {
+  padding: var(--space-6);
+  max-width: 26rem;
+  color: var(--fg);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+dialog.shortcuts::backdrop {
+  background: var(--overlay);
+}
+
+kbd {
+  padding: 0 var(--space-1);
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  font-size: var(--text-xs);
+}
+
+/* --------------------------------------------------------------- filters */
+
+.filters {
+  margin-bottom: var(--space-4);
+}
+
+.filters__search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.filters__search input[type="search"] {
+  flex: 1;
+  min-width: 16rem;
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.filters__selects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--space-2) var(--space-3);
+}
+
+.filters__field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Every select is labelled. The page this replaces had eleven bare dropdowns,
+ * and the only way to learn what one filtered was to change it. */
+.filters__field label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+
+select {
+  width: 100%;
+  padding: var(--space-1) var(--space-2);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+/* ----------------------------------------------------------------- chips */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  color: var(--fg);
+  text-decoration: none;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+}
+
+.chip:hover {
+  background: var(--bg-hover);
+}
+
+.chip__label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+
+.chip__value {
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- pager */
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: var(--space-3) 0;
+  font-size: var(--text-sm);
+}
+
+/* Wraps: seven buttons are wider than a 390px phone (§4, no sideways scroll). */
+.pager__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pager [aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: default;
+}
+
+th a.sortable {
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+th a.sortable:hover {
+  text-decoration: underline;
+}
+
+/* ---------------------------------------------------------------- detail */
+
+.detail-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.card--link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card--link:hover {
+  border-color: var(--accent);
+  background: var(--bg-hover);
+}
+
+.labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.labels li {
+  padding: 1px var(--space-2);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.structure {
+  max-width: 100%;
+  height: auto;
+  background: var(--structure-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+details summary {
+  cursor: pointer;
+  padding: var(--space-2) 0;
+  color: var(--accent);
+}
+
+pre.json {
+  max-height: 32rem;
+  overflow: auto;
+  padding: var(--space-3);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+}
+
+/* ------------------------------------------------------------- values */
+
+/* The vocabulary term beside a property's name, on the flow-object page.
+ *
+ * On its own line and smaller than the label, because it is the answer to a
+ * second question -- "what is this keyed by in the published document?" -- and
+ * a reader who is not asking it should be able to skim past. */
+.term {
+  display: block;
+  font-size: var(--text-xs);
+}
+
+/* A cross-reference URL, which is long, unspaced and not worth truncating: the
+ * resource is at the front and the record's identifier at the end, and a
+ * reader checking which record was linked needs both ends.
+ *
+ * The floor is the same one `td.value-cell` needs and for the same reason --
+ * a cell whose content can break between any two characters has a minimum
+ * width of one character, and an auto table layout will hand it exactly
+ * that. */
+td.url {
+  min-width: 34ch;
+}
+
+td.url .mono {
+  overflow-wrap: anywhere;
+}
+
+/* An old and a new value in a change-log row.
+ *
+ * Marked by a left rule as well as by colour, and by their column headers
+ * ("From", "To"): the diff highlighting this replaces used colour alone, so
+ * a reader who cannot distinguish red from green got two identical cells. */
+.value {
+  display: inline-block;
+  max-width: 42ch;
+  padding: 0 var(--space-2);
+  border-left: 3px solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  overflow-wrap: anywhere;
+}
+
+/* The cell a `.value` sits in, wide enough to read the value in.
+ *
+ * `overflow-wrap: anywhere` above lets the span break between any two
+ * characters, so the narrowest the cell can be is one character wide -- and an
+ * auto table layout will make it exactly that, handing the width to the "Why"
+ * column beside it, whose ordinary prose breaks only at spaces. Both diff
+ * columns then arrived as a ragged one-character ribbon of the value they were
+ * supposed to show.
+ *
+ * A floor on the cell rather than on the span: a span with a minimum width
+ * would draw its tinted box that wide for an em dash as well, and most of what
+ * a change log records is a field that was empty before. Where the floors add
+ * up to more than the page, `.table-scroll` scrolls. */
+td.value-cell {
+  min-width: 28ch;
+}
+
+.value--old {
+  color: var(--diff-removed);
+  border-left-color: var(--diff-removed);
+  background: var(--diff-removed-bg);
+}
+
+.value--new {
+  color: var(--diff-added);
+  border-left-color: var(--diff-added);
+  background: var(--diff-added-bg);
+}
+
+/* A fragment being fetched. No spinner: the `<details>` is already open and
+ * the link inside it still works, so this only dims what is about to be
+ * replaced. */
+[aria-busy="true"] {
+  opacity: 0.55;
+}
+
+/* ------------------------------------------------------------- tallies */
+
+/* A stage's counters, wrapped inline rather than one per row: a stage has
+ * between two and a dozen of them, and a table per stage would be twelve
+ * tables where the reader wants one scan. */
+.stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  margin: 0 var(--space-2) var(--space-1) 0;
+  padding: 0 var(--space-2);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+
+.stat__key {
+  color: var(--fg-muted);
+}
+
+.stat__value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* ------------------------------------------------- implementation stack */
+
+/* What every input implementation states, inside one table cell.
+ *
+ * A column per implementation reads well at two and stops reading at six, and
+ * the number of implementations is data: the factors section will hold more
+ * methods than EF 3.1 and read more lists than the JRC's and ecoinvent's. A
+ * stack makes a new one a new line rather than a new column, and the two-track
+ * grid keeps the numbers aligned down the table the way a column would. */
+.sources {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  gap: 0 var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.sources__row {
+  display: contents;
+}
+
+.sources__label {
+  color: var(--fg-muted);
+  overflow-wrap: anywhere;
+}
+
+.sources__value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* A card whose number is zero. Dimmed rather than hidden: "this implementation
+ * published nothing" is an answer, and the note beside it says why. */
+.card--empty {
+  background: var(--bg-sunken);
+}
+
+.card--empty .card__value {
+  color: var(--fg-muted);
+}
+
+/* ------------------------------------------------------- screen reader */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------ motion off
+
+ * `transition: none`, not the usual `transition-duration: 0.01ms`.  Duration
+ * alone leaves `transition-property` at its default of `all`, so the rule does
+ * not shorten the transitions a page has -- it gives every element on the page
+ * one, on every property.  Mermaid writes a label's styles and measures it in
+ * the same breath, and a measurement taken one frame into a transition comes
+ * back as the value it started from: the diagram on `docs/deciding/index.md`
+ * laid out at 6725x12947 instead of 1012x1079, nodes the right size and
+ * thousands of pixels apart.  Turning transitions off, rather than making them
+ * brief, is also the more honest reading of the preference. */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* --------------------------------------------------- flow-object sub-views
+
+ * The ways into the flow objects, under the page heading rather than in the
+ * masthead.  An element, an agricultural chemical and a land class are all
+ * flow objects; promoting each way of looking at them to a top-level section
+ * would put four spellings of one noun in the navigation. */
+
+.subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-bottom: var(--space-6);
+  border-bottom: 1px solid var(--border);
+}
+
+.subnav__link {
+  padding: var(--space-2) var(--space-3);
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.subnav__link:hover {
+  color: var(--fg);
+  background: var(--bg-hover);
+}
+
+.subnav__link[aria-current="page"] {
+  color: var(--fg);
+  font-weight: 600;
+  border-bottom-color: var(--accent);
+}
+
+/* ---------------------------------------------------------- the taxonomies
+
+ * One tree style for both: the ChEBI role forest and an element's nuclides and
+ * ions.  They are the same shape -- a named thing, a count, and what hangs off
+ * it -- and drawing them twice would let the two drift.
+ *
+ * The indent guide is a border on the nested list rather than a glyph per row,
+ * so a row can wrap without the guide breaking. */
+
+.tree {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tree .tree {
+  margin-left: var(--space-3);
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--border);
+}
+
+.tree__item {
+  padding: var(--space-1) 0;
+}
+
+.tree__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.tree__name {
+  font-weight: 600;
+}
+
+/* The count reads as a quantity rather than as part of the name: same
+ * treatment as a numeric table cell, which is what it is. */
+.tree__count {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  padding: 0 var(--space-2);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.tree__note {
+  max-width: var(--measure);
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+/* ---------------------------------------------------------- periodic table
+
+ * Eighteen fixed columns, because the table *is* the layout: a grid that
+ * reflowed to fit a narrow screen would put nitrogen next to lithium and stop
+ * being a periodic table.  It scrolls inside `.table-scroll` instead, which is
+ * how every other wide thing in this application behaves. */
+
+.ptable {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 62rem;
+}
+
+.ptable__row {
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  gap: 2px;
+}
+
+.ptable__spacer {
+  height: var(--space-4);
+}
+
+.ptable__gap {
+  display: block;
+}
+
+.ptable__cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 4.25rem;
+  padding: 3px 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+}
+
+a.ptable__cell:hover {
+  border-color: var(--accent);
+  background: var(--bg-hover);
+}
+
+/* The three states, drawn apart because they mean different things.  An
+ * element with a flow object EF 3.1 references is what the list carries; one
+ * with an unreferenced object is a curation question; one with no object at
+ * all is a scope question. */
+.ptable__cell--linked {
+  background: var(--ok-bg);
+  border-color: var(--ok);
+}
+
+.ptable__cell--unreferenced {
+  background: var(--warn-bg);
+  border-color: var(--warn);
+}
+
+.ptable__cell--missing {
+  background: var(--bg-sunken);
+  color: var(--fg-muted);
+  border-style: dashed;
+}
+
+.ptable__z {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--fg-muted);
+  line-height: 1.2;
+}
+
+.ptable__symbol {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+/* The name is the first thing to go when a cell is too narrow for it: the
+ * symbol and the atomic number identify the element on their own, and a
+ * truncated name is more use than a cell that grows to fit the longest one. */
+.ptable__name {
+  font-size: 0.625rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ptable__extra {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--fg-muted);
+  line-height: 1.2;
+  min-height: 0.75rem;
+}
+
+/* The two f-block markers.  A cell rather than a gap, so the row keeps its
+ * shape and the reader is told where the lanthanides went. */
+.ptable__marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 4.25rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+}
+
+/* A hierarchy, as an indent on a taxonomy page.
+ *
+ * Both taxonomies have a depth and neither has a nested list: the rows are a
+ * sortable table and a tree would give up the sort.  What the depth counts
+ * differs -- a land class's is how many qualifiers it states, because dropping
+ * the most specific one gives its parent, and a kind of water's is the length
+ * of its chain of `skos:broader` up to a root -- so one rule serves both
+ * rather than each page carrying its own copy of the same declaration. */
+
+.tree__indent {
+  display: inline-block;
+  width: calc(var(--depth, 0) * var(--space-3));
+}
+
+/* Several short statements in one table cell.
+ *
+ * A list because they are a list -- a kind of water can state its own parent
+ * and its own identifier, and running them together as a sentence would hide
+ * that those are two separate claims -- and unbulleted because a bullet inside
+ * a table cell reads as a second column. */
+
+.plain {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The chip a quick filter is currently on.  It was used by four templates and
+   defined by none, so "which of these am I looking at?" had no answer. */
+.chip--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
+
+.chip--active .chip__label {
+  color: inherit;
+  opacity: 0.85;
+}
+
+.chip--active:hover {
+  background: var(--accent);
+}
+
+/* ------------------------------------------------------------------ footer */
+
+/* On every page (`plans/public-site.md` §3).  Five columns at desktop width,
+ * one at mobile, in the order the Home-Mobile board draws them. */
+.footer {
+  margin-top: var(--space-8);
+  padding: var(--space-8) 2.5rem var(--space-6);
+  background: var(--bg-sunken);
+  border-top: 1px solid var(--border);
+}
+
+.footer__inner {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(4, 1fr);
+  gap: var(--space-8);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.footer__logo-link {
+  display: inline-block;
+  line-height: 0;
+}
+
+.footer__logo {
+  display: block;
+}
+
+/* Light shows by default; dark by the OS preference or the explicit toggle,
+ * the same three-tier rule `app.css`'s own colour tokens use above, which is
+ * what lets the right logo show before `app.js` has run. */
+.footer__logo--dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .footer__logo--light {
+    display: none;
+  }
+  :root:not([data-theme="light"]) .footer__logo--dark {
+    display: block;
+  }
+}
+
+:root[data-theme="dark"] .footer__logo--light {
+  display: none;
+}
+
+:root[data-theme="dark"] .footer__logo--dark {
+  display: block;
+}
+
+.footer__name {
+  margin: var(--space-4) 0 0;
+  font-weight: 600;
+}
+
+.footer__attribution {
+  margin: var(--space-2) 0 0;
+  max-width: 28ch;
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+}
+
+.footer__heading {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.footer__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.footer__list a {
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+
+.footer__list a:hover {
+  color: var(--fg);
+  text-decoration: underline;
+}
+
+.footer__note {
+  margin: var(--space-3) 0 0;
+  color: var(--fg-muted);
+  font-size: var(--text-xs);
+}
+
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 1400px;
+  margin: var(--space-8) auto 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+  color: var(--fg-muted);
+  font-size: var(--text-xs);
+}
+
+.footer__bottom a {
+  color: var(--fg-muted);
+}
+
+/* The theme switch, at the end of the bottom line (the "Theme toggle
+ * placement" canvas, direction A).  Three radios drawn as a segmented
+ * control: the checked one gets the raised fill and weight, never colour
+ * alone.  The radios themselves are visually hidden, so focus is drawn on the
+ * face beside each. */
+.theme-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+}
+
+.theme-switch__options {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.theme-switch__option {
+  position: relative;
+  display: flex;
+  cursor: pointer;
+}
+
+.theme-switch__face {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.theme-switch__option:hover .theme-switch__face {
+  color: var(--fg);
+}
+
+.theme-switch input:checked + .theme-switch__face {
+  color: var(--fg);
+  font-weight: 600;
+  background: var(--bg-raised);
+  /* The ring, because `--bg-raised` and `--bg-sunken` are one colour in dark. */
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+
+.theme-switch input:focus-visible + .theme-switch__face {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+@media (max-width: 60rem) {
+  .footer {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .footer__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  /* A row of its own, first on the bottom line, with 44px targets. */
+  .theme-switch {
+    order: -1;
+    flex-basis: 100%;
+    margin: 0 0 var(--space-2);
+  }
+
+  .theme-switch__options {
+    flex-grow: 1;
+  }
+
+  .theme-switch__option {
+    flex: 1 1 0;
+  }
+
+  .theme-switch__face {
+    height: 44px;
+  }
+}
+
+/* ----------------------------------------------------- download and about
+
+ * `/about/`, from the About board (1440px), and `/download/`, from the
+ * "Download: three cleaner directions" canvas's option A ("One column,
+ * recommended"): a single narrow reading column, top to bottom, so a page of
+ * mixed surfaces (a white file card, a sunken code block, a white cite card
+ * on the raised page) reads as separate sections rather than a stacked
+ * dashboard. Every colour is still a token: the dark code block and the
+ * tinted "Start here" row are the sunken fill and a tint of `--accent-bg`, so
+ * both follow the theme. */
+
+.about {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-8) 0 0;
+  font-size: 1rem;
+}
+
+.about p {
+  max-width: none;
+}
+
+.about h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.about__title {
+  margin: 0;
+  font-size: 3.25rem;
+  letter-spacing: -0.02em;
+}
+
+.about .about__lede {
+  margin: 0;
+  max-width: 760px;
+  font-size: 1.1875rem;
+  line-height: 1.5;
+}
+
+.release {
+  max-width: 47.5rem;
+  margin: 0 auto;
+  padding: var(--space-8) 0 var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  font-size: 1rem;
+}
+
+.release p {
+  max-width: none;
+}
+
+.release h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.release__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.release__meta {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--fg-muted);
+}
+
+.release__title {
+  margin: 0;
+  font-size: 3.25rem;
+  letter-spacing: -0.02em;
+}
+
+.release .release__lede {
+  margin: 0;
+  font-size: 1.1875rem;
+  line-height: 1.5;
+}
+
+.release__meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) 1.75rem;
+  margin-top: var(--space-2);
+  font-size: var(--text-base);
+  color: var(--fg-muted);
+}
+
+.release__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.button.release__copy {
+  min-height: 1.75rem;
+  padding: 0 var(--space-2);
+  color: var(--fg-muted);
+  border: 0;
+  background: transparent;
+}
+
+.button.release__copy:hover {
+  color: var(--fg);
+  background: var(--bg-hover);
+}
+
+.release__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  min-width: 0;
+}
+
+.release .release__section p {
+  margin: 0;
+}
+
+.release__section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  font-size: var(--text-base);
+}
+
+.release__note {
+  display: flex;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+
+.release__note svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.release__footer {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+
+/* One card, its rows separated by a border rather than the whole row shaded
+ * on hover -- there is nothing to click on a row outside its own buttons. */
+.release-files {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.release-files__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: 1.375rem var(--space-6);
+  border-bottom: 1px solid var(--border);
+}
+
+.release-files__row:last-child {
+  border-bottom: 0;
+}
+
+.release-files__row--first {
+  background: color-mix(in srgb, var(--accent-bg) 45%, var(--bg-raised));
+}
+
+.release-files__info {
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.release-files__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.release-files__title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.release-files__start {
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  background: var(--accent-bg);
+  color: var(--accent-strong);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+
+.release .release-files__description {
+  margin: 0;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+
+.release-files__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.release-files__download {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 8rem;
+  height: 2.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--fg);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.release-files__download:hover {
+  background: var(--bg-hover);
+}
+
+.release-files__download--primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-weight: 600;
+}
+
+.release-files__download--primary:hover {
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
+}
+
+.release__code {
+  margin: 0;
+  padding: 1.25rem;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-sunken);
+  font-size: var(--text-base);
+  line-height: 1.7;
+}
+
+/* The citation formats.  Without `app.js` all three panels show, each under
+ * its `h3`; with it, the tab list replaces the headings and one panel shows
+ * at a time.  `data-cite-tabs`, set on the section by the script, is what
+ * switches between the two. */
+
+.cite__tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--border);
+}
+
+.cite__tabs [role="tab"] {
+  min-height: 2.75rem;
+  padding: 0 0.875rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--fg-muted);
+  font: inherit;
+  font-size: var(--text-base);
+  cursor: pointer;
+}
+
+.cite__tabs [role="tab"][aria-selected="true"] {
+  border-bottom-color: var(--accent);
+  color: var(--fg);
+  font-weight: 600;
+}
+
+[data-cite-tabs] .cite__heading {
+  display: none;
+}
+
+.release .cite__heading {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-base);
+}
+
+.cite__box {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 1.125rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+}
+
+.release .cite__body {
+  flex-grow: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.button.cite__copy {
+  flex-shrink: 0;
+  min-height: 2.25rem;
+  color: var(--fg);
+  border-color: var(--border-strong);
+}
+
+/* About: a sticky "On this page" column beside the article. */
+
+.about {
+  display: flex;
+  gap: 5rem;
+}
+
+.about__toc {
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-6));
+  align-self: flex-start;
+  width: 15rem;
+  flex-shrink: 0;
+  padding-top: 9.375rem;
+  font-size: var(--text-base);
+}
+
+.about .about__toc-heading {
+  margin: 0 0 0.625rem;
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.about__toc ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.about__toc a {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-left: 2px solid var(--border);
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.about__toc a:hover {
+  border-left-color: var(--accent);
+}
+
+.about__article {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  width: 50rem;
+  min-width: 0;
+}
+
+.about__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+}
+
+.about .about__lede {
+  font-size: 1.3125rem;
+}
+
+.about__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  line-height: 1.65;
+  scroll-margin-top: calc(var(--nav-height) + var(--space-4));
+}
+
+.about .about__section p {
+  margin: 0;
+}
+
+.about .about__section h2 {
+  font-size: 1.625rem;
+}
+
+.about-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+}
+
+.about-people {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-people {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.about-people .about-card {
+  gap: var(--space-1);
+}
+
+.about-people__name {
+  font-weight: 600;
+}
+
+.about-people__role {
+  font-size: var(--text-base);
+  color: var(--fg-muted);
+}
+
+/* Who builds it: the company first, then the maintainers under it. */
+.about-org {
+  flex-direction: row;
+  gap: var(--space-8);
+  align-items: flex-start;
+  padding: var(--space-6);
+}
+
+.about-org__logo {
+  width: 9.375rem;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.about-org__img {
+  display: block;
+}
+
+/* The logo by theme, the same three-tier rule as the footer's. */
+.about-org__img--dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .about-org__img--light {
+    display: none;
+  }
+  :root:not([data-theme="light"]) .about-org__img--dark {
+    display: block;
+  }
+}
+
+:root[data-theme="dark"] .about-org__img--light {
+  display: none;
+}
+
+:root[data-theme="dark"] .about-org__img--dark {
+  display: block;
+}
+
+.about-org__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
+.about-org__link {
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.about .about__subheading {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--fg-muted);
+}
+
+.about__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.about__action {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 1.125rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  color: var(--fg);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.about__action:hover {
+  background: var(--bg-hover);
+}
+
+.about__action--plain {
+  padding: 0 var(--space-3);
+  border-color: transparent;
+  background: transparent;
+  color: var(--accent);
+}
+
+.about__licences {
+  display: grid;
+  grid-template-columns: 12.5rem minmax(0, 1fr);
+  gap: 0.875rem var(--space-6);
+  margin: 0;
+  line-height: 1.55;
+}
+
+.about__licences dt {
+  font-weight: 600;
+}
+
+.about__licences dd {
+  margin: 0;
+}
+
+.about__address {
+  font-style: normal;
+  line-height: 1.7;
+}
+
+@media (max-width: 75rem) {
+  .about {
+    gap: var(--space-8);
+  }
+
+  .about__toc {
+    width: 12rem;
+  }
+}
+
+/* One column, in reading order.  The "On this page" column goes: on a phone
+ * the sections are one scroll apart, and the list would push the first of
+ * them below the fold. `.release` is already one column at every width, so
+ * it only needs smaller type and a stacked file row -- no layout to
+ * collapse. */
+@media (max-width: 60rem) {
+  .about {
+    padding-top: var(--space-4);
+  }
+
+  .about__title {
+    font-size: 2.5rem;
+  }
+
+  .about__toc {
+    display: none;
+  }
+
+  .about__article {
+    width: auto;
+    gap: var(--space-8);
+  }
+
+  .about .about__lede {
+    font-size: 1.125rem;
+  }
+
+  .about-people {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .about-org {
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: 1.25rem;
+  }
+
+  /* A 44px tap target on a phone. */
+  .about-org__link {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+
+  .about__licences {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+
+  .about__licences dd + dt {
+    margin-top: var(--space-3);
+  }
+
+  .release {
+    padding-top: var(--space-4);
+    gap: var(--space-8);
+  }
+
+  .release__title {
+    font-size: 2.5rem;
+  }
+
+  .release .release__lede {
+    font-size: 1.125rem;
+  }
+
+  .release-files__row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .release-files__download {
+    width: 100%;
+  }
+}
+
+/* -------------------------------------------------------------- homepage
+ *
+ * The Home D boards.  Wide: what the list is on the left, the lookup box and
+ * the example on the right, and one row of links beneath both.  Narrow: one
+ * column in reading order, the example after the counts. */
+
+.home {
+  max-width: 1200px;
+  margin: 0 auto;
+  font-size: 1rem;
+}
+
+.home p {
+  max-width: none;
+}
+
+/* `min-height` is what gives the row its presence when the lookup box is the
+ * only thing in the right column; with an example under the box the content is
+ * taller than it and the padding is what decides the row, which is why it is
+ * 3rem and not the 4.5rem the board drew: the page is meant to reach its
+ * footer without scrolling. */
+.home__top {
+  display: grid;
+  grid-template-columns: minmax(0, 35rem) minmax(0, 1fr);
+  align-items: center;
+  gap: 5rem;
+  min-height: 34rem;
+  padding: 3rem 0;
+}
+
+.home__hero {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  min-width: 0;
+}
+
+.home .home__release {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 4px 12px 4px 4px;
+  border-radius: 999px;
+  background: var(--accent-bg);
+  color: var(--accent-strong);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.home__badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.home__title {
+  margin: 0;
+  font-size: 3.75rem;
+  font-weight: 650;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.home .home__pitch {
+  margin: 0;
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+.home__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.home-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: 48px;
+  padding: 0 1.375rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--fg);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.home-action:hover {
+  background: var(--bg-hover);
+}
+
+.home-action--primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-weight: 600;
+}
+
+.home-action--primary:hover {
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
+}
+
+.home .home-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) 1.25rem;
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--fg-muted);
+}
+
+.home-counts__number {
+  color: var(--fg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The lookup box, with the example beneath it as what a lookup finds. */
+
+.home-lookup {
+  --home-lookup-radius: 16px;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--home-lookup-radius);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-lifted);
+}
+
+.home-lookup__form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: 64px;
+  padding: 0 1.25rem;
+  /* The card's inner corners, less its 1px border, on all four: the focus
+   * ring follows this radius, so the card's rounded clip no longer cuts its
+   * corners off.  The line under the row is the next block's top border, so
+   * rounding the bottom corners does not bend it. */
+  border-radius: calc(var(--home-lookup-radius) - 1px);
+  color: var(--fg-muted);
+}
+
+.home-lookup__form:focus-within {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+
+.home-lookup__icon {
+  flex-shrink: 0;
+}
+
+.home-lookup__input {
+  flex-grow: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  font-size: 1.0625rem;
+}
+
+.home-lookup__input::placeholder {
+  color: var(--fg-muted);
+}
+
+.home-lookup__hint {
+  padding: 1px 7px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+}
+
+.home .home-lookup__try {
+  margin: 0;
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 1.75rem;
+  font-size: var(--text-base);
+  color: var(--fg-muted);
+}
+
+/* The examples, under the lookup box: the label and the arrows on one bar,
+ * then one card per example.  Only one card is on screen once `app.js` has
+ * hidden the rest; with the file blocked they stack, separated by a rule. */
+
+.home-examples {
+  border-top: 1px solid var(--border);
+}
+
+.home-examples__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 1rem 1.75rem 0;
+}
+
+.home-examples__eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.home-examples__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.home-examples__count {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.home-examples__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: none;
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+
+.home-examples__arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Only while the cards are stacked.  `hidden` does not stop a card matching
+ * `+`, so once `app.js` is stepping through them the card on screen is still
+ * "the one after another card" and drew a rule directly under the label bar.
+ * `app.js` marks the region when it takes over, the same way it marks the
+ * citation section on Download. */
+.home-examples:not([data-examples-stepped]) .home-example + .home-example {
+  border-top: 1px solid var(--border);
+}
+
+/* The diagram is floated and the name and the facts flow around it: the facts
+ * are one list, so the ones that fit beside the diagram sit beside it and the
+ * rest run on under it, rather than the registry numbers being trapped in a
+ * column while the properties have the whole card.
+ *
+ * `flow-root` so the float is contained by the card and cannot reach the
+ * source lists below it. */
+.home-example__identity {
+  display: flow-root;
+  padding: 0.875rem 1.75rem 1.25rem;
+}
+
+/* Drawn by `substances.structure` at 400x260 and shown small: the card is
+ * saying that this identity has a structure, and the readable drawing is on
+ * the flow object page.  The white plate is RDKit's own background, which the
+ * diagram paints over the theme in both themes, as on that page. */
+.home-example__structure {
+  float: right;
+  width: 9.5rem;
+  height: auto;
+  margin: 0.25rem 0 0.75rem 1.5rem;
+  background: var(--structure-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+/* Everything the substance is, as inline boxes rather than a flex row: a flex
+ * container is its own formatting context and would be pushed aside by the
+ * diagram whole, where inline boxes flow around it line by line.  Each fact is
+ * one unbreakable token, so a line breaks between two facts. */
+.home-example__facts {
+  margin: 0.5rem 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.9;
+  color: var(--fg-muted);
+}
+
+.home-example__facts > span {
+  display: inline-block;
+  margin-right: 1.25rem;
+  white-space: nowrap;
+}
+
+/* A SMILES and an IUPAC name are not words and carry no break points of their
+ * own, so they are the two that may break mid-string rather than push the card
+ * wider than its column. */
+.home-example__smiles,
+.home-example__iupac {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Below the diagram, never beside it: four registry names fit on the card's
+ * full width and on none of the widths a float leaves. */
+.home-example__links {
+  clear: right;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.25rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.home-example__name {
+  display: block;
+  color: var(--fg);
+  font-size: 1.625rem;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  text-decoration: none;
+}
+
+.home-example__name:hover {
+  color: var(--accent);
+}
+
+.home-example__sources {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 0 1.75rem;
+  padding: 1rem 0 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.home .home-example__lede {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.home-example__rows {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 0.5rem var(--space-3);
+  align-items: baseline;
+  margin: 0;
+}
+
+.home-example__rows > div {
+  display: contents;
+}
+
+.home-example__rows dt {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.home-example__rows dd {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+/* The card's two links.  `column-gap` is wide enough that the two read as two
+ * and `row-gap` small enough that the card grows by one line rather than two
+ * where the second wraps under the first, which is what the narrowest columns
+ * do with a label naming a substance. */
+.home-example__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.5rem;
+  margin: 0;
+}
+
+.home-example__more {
+  font-size: var(--text-base);
+  font-weight: 500;
+}
+
+/* Smaller and quieter than "View the flow object": the record is what a reader
+ * came to the card for, and this is the reading behind it. */
+.home-example__decision {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.home-example__decision:hover {
+  color: var(--accent);
+}
+
+/* "Start here": four docs pages, and the rest one link away. */
+
+.home-start {
+  display: flex;
+  align-items: center;
+  gap: 2.25rem;
+  padding: 1.75rem 0 2.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.home-start__heading {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--fg-muted);
+}
+
+.home-start__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) 2.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+}
+
+.home-start__links a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.home-start__links a:hover {
+  color: var(--accent);
+}
+
+.home-start__all {
+  margin-left: auto;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Between the wide board and the phone: the two columns stack. */
+@media (max-width: 75rem) {
+  .home__top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3rem;
+    min-height: 0;
+    padding: 3rem 0;
+  }
+
+  .home__hero {
+    max-width: 40rem;
+  }
+
+  .home-lookup {
+    max-width: 40rem;
+  }
+}
+
+@media (max-width: 60rem) {
+  .home__top {
+    gap: 2.25rem;
+    padding: 1.25rem 0 2.5rem;
+  }
+
+  .home__hero {
+    gap: 1.375rem;
+  }
+
+  .home__title {
+    font-size: 2.375rem;
+    line-height: 1.06;
+  }
+
+  .home .home__pitch {
+    font-size: 1.0625rem;
+  }
+
+  .home__actions {
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .home-lookup {
+    --home-lookup-radius: 14px;
+  }
+
+  .home-lookup__form {
+    height: 56px;
+    padding: 0 var(--space-4);
+  }
+
+  .home-lookup__input {
+    font-size: 1rem;
+  }
+
+  .home-lookup__hint {
+    display: none;
+  }
+
+  .home-examples__bar {
+    padding: 0.875rem 1.125rem 0;
+  }
+
+  .home-example__identity {
+    padding: 0.75rem 1.125rem 1rem;
+  }
+
+  .home-example__structure {
+    width: 6rem;
+    margin-left: 1rem;
+  }
+
+  .home-example__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+  }
+
+  .home-example__name {
+    min-height: 44px;
+    font-size: 1.3125rem;
+  }
+
+  .home-example__inchikey {
+    display: none;
+  }
+
+  .home-example__sources {
+    margin: 0 1.125rem;
+    padding: 1rem 0 1.125rem;
+  }
+
+  .home-example__rows {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.125rem;
+  }
+
+  .home-example__rows > div + div dt {
+    margin-top: 0.625rem;
+  }
+
+  .home-example__more,
+  .home-example__decision,
+  .home-lookup__try a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* One under the other at this width, and each its own tap target, so the
+   * row gap above is the one between two 44px targets rather than the 0.25rem
+   * that keeps them close when they share a line. */
+  .home-example__actions {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .home-start {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0 0 var(--space-8);
+    border-top: 0;
+  }
+
+  .home-start__heading {
+    padding-bottom: var(--space-2);
+  }
+
+  .home-start__links {
+    flex-direction: column;
+    gap: 0;
+    font-size: 1rem;
+  }
+
+  .home-start__links a,
+  .home-start__all {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 52px;
+    border-top: 1px solid var(--border);
+  }
+
+  .home-start__links a::after {
+    content: "›" / "";
+    color: var(--fg-muted);
+  }
+
+  .home-start__all {
+    margin-left: 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 1rem;
+  }
+}
+
+/* ---------------------------------------------------------------- search
+ *
+ * `/search`, from the Search and Search-Exact boards (1440px) and
+ * Search-Mobile (390px).  Results on the left at the width of a reading
+ * column, the identifier help and the report links beside them. */
+
+.search {
+  display: flex;
+  align-items: flex-start;
+  gap: 4rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-8) 0 0;
+  font-size: 1rem;
+}
+
+.search__main {
+  flex: 0 1 880px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.search__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.search .search__title {
+  margin: 0;
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.search__title .mono {
+  font-size: 0.9em;
+}
+
+.search__form {
+  display: flex;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.search__input {
+  flex-grow: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 var(--space-4);
+  font: inherit;
+  font-size: 1rem;
+  color: var(--fg);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius);
+}
+
+.search__submit {
+  height: 48px;
+  padding: 0 1.375rem;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--accent-fg);
+  background: var(--accent);
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.search__submit:hover {
+  background: var(--accent-strong);
+}
+
+/* The 404 page borrows the form: room above it, and a line under it. */
+.empty .search__form {
+  margin: var(--space-4) 0;
+}
+
+/* Tabs by weight and a rule, never by colour alone. */
+.search-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--border);
+}
+
+.search-types__type {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 44px;
+  padding: 0 0.875rem;
+  font-size: 0.9375rem;
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+a.search-types__type:hover {
+  background: var(--bg-hover);
+}
+
+.search-types__type[aria-current] {
+  font-weight: 600;
+  border-bottom-color: var(--accent);
+}
+
+.search-types__type[aria-disabled] {
+  color: var(--fg-muted);
+}
+
+.search-types__count {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--fg-muted);
+}
+
+/* `--fg` rather than the link colour it sits in: teal on the teal fill is
+ * 4.2:1 in light and 2.6:1 in dark, and the fill already says "this matched". */
+mark {
+  padding: 0 1px;
+  color: var(--fg);
+  background: var(--highlight);
+  border-radius: 2px;
+}
+
+.search-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.search-group__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.search .search-group__title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.search-group__all {
+  font-size: var(--text-base);
+  white-space: nowrap;
+}
+
+.search-group__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.search-group__list > li + li {
+  border-top: 1px solid var(--border);
+}
+
+.search-result--object {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: 0.875rem 1.125rem;
+}
+
+.search-result--flow {
+  display: grid;
+  grid-template-columns: minmax(0, 18.75rem) minmax(0, 1fr) 3.75rem;
+  gap: var(--space-4);
+  align-items: baseline;
+  padding: 0.875rem 1.125rem;
+}
+
+.search-result__name {
+  font-weight: 600;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.search-result--flow .search-result__name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.search-result__name:hover,
+.search-result__title:hover {
+  text-decoration: underline;
+}
+
+.search-result__meta,
+.search-result__count,
+.search-result__group,
+.search-result__unit {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.search-result--object .search-result__count {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.search-result__context {
+  font-size: var(--text-base);
+  overflow-wrap: anywhere;
+}
+
+.search-result__unit {
+  text-align: right;
+}
+
+.search-docs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-result--doc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) 0;
+}
+
+.search-result--doc + .search-result--doc {
+  border-top: 1px solid var(--border);
+}
+
+.search-result__title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.search .search-result__snippet {
+  margin: 0;
+  max-width: none;
+  font-size: var(--text-base);
+  line-height: 1.55;
+}
+
+/* The Exact match card: a 2px accent border, the only card on the site with
+ * one, because it is the only result the search is sure of. */
+.exact {
+  overflow: hidden;
+  background: var(--bg-raised);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+}
+
+.exact__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1.125rem 1.375rem;
+  background: var(--accent-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.search .exact__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.exact__badge {
+  padding: 2px var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--accent-fg);
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+.search .exact__note {
+  margin: 0;
+  max-width: none;
+  font-size: var(--text-base);
+}
+
+.exact__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exact__item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: var(--space-3) 1.375rem;
+  border-top: 1px solid var(--border);
+}
+
+.exact__list:first-of-type > .exact__item:first-child {
+  border-top: 0;
+}
+
+.exact__name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.exact__item .search-result__count {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.exact__more {
+  border-top: 1px solid var(--border);
+}
+
+.exact__more > summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1.375rem;
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.exact__more[open] > summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.search__aside {
+  flex: 0 0 21rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  /* Level with the first result, under the heading, the form and the tabs. */
+  padding-top: 10.5rem;
+}
+
+.search-help {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 1.375rem;
+  font-size: var(--text-base);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.search-help--sunken {
+  background: var(--bg-sunken);
+  border-color: transparent;
+}
+
+.search .search-help h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.search .search-help p {
+  margin: 0;
+  max-width: none;
+  line-height: 1.55;
+}
+
+.search .search-help__examples {
+  font-size: var(--text-sm);
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.search-help > a {
+  font-weight: 500;
+}
+
+/* One column: the results, then the help.  The tabs become pills, as on the
+ * Search-Mobile board, and every row a single tap target. */
+@media (max-width: 60rem) {
+  .search {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-8);
+    padding-top: var(--space-2);
+  }
+
+  .search__main {
+    flex-basis: auto;
+    gap: var(--space-6);
+  }
+
+  .search .search__title {
+    font-size: 1.375rem;
+  }
+
+  .search__header {
+    gap: 0.875rem;
+  }
+
+  .search-types {
+    gap: var(--space-2);
+    border-bottom: 0;
+  }
+
+  .search-types__type {
+    height: 40px;
+    margin: 0;
+    padding: 0 0.875rem;
+    font-size: var(--text-base);
+    background: var(--bg-raised);
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+  }
+
+  .search-types__type[aria-current] {
+    color: var(--bg);
+    background: var(--fg);
+    border-color: var(--fg);
+  }
+
+  .search-types__type[aria-current] .search-types__count {
+    color: inherit;
+  }
+
+  .search .search-group__title {
+    font-size: 1.0625rem;
+  }
+
+  .search-result--object,
+  .search-result--flow {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-height: 56px;
+    padding: 0.625rem 0.875rem;
+  }
+
+  .search-result--object .search-result__count {
+    margin-left: 0;
+  }
+
+  .search-result__unit {
+    text-align: left;
+  }
+
+  .search-group__all {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .search__aside {
+    flex-basis: auto;
+    padding-top: 0;
+  }
+}

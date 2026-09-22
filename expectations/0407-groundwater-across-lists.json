@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "description": "The last of #77's shape: two lists say an emission went to groundwater, and it is published in two places. ecoinvent files it in `water / ground-` and BAFU in `emissions to water / groundwater`; both context rules point at `envi-wate-unaq`, so the two lists already agree. What separated them was the Randonneur correspondence table, which points ecoinvent's rows at EF 3.1's fresh water flow because EF 3.1 has no groundwater emission compartment. Reading the compartment off that target as well as the substance is the same act #84 refused for forestry and industrial soil, and it had been allowed here on the grounds that ecoinvent's own `EF v3.1` implementation characterises these rows with the freshwater factor. That reason is about characterisation, not about where the release happened, and the source's stated intent is the stronger evidence: a release to groundwater is published as a release to groundwater. On the 2026-08-15 build (run 20260815T1846394229660000, commit c7d05e9, merging ecoinvent 3.8, ecoinvent 3.12 and BAFU 2026-v1), 576 of ecoinvent's 695 `water / ground-` rows came out on `Water -> Surface water` because the table covered them, while all 63 of BAFU's placed groundwater rows sat on `Water -> Unconfined aquifer`; 32 substances were split between the two lists by CAS. See #77.",
+  "expectations": [
+    {
+      "id": "0407-ecoinvent-groundwater-chromium-is-published-in-groundwater",
+      "issue": 407,
+      "title": "Chromium(6+) released to groundwater by ecoinvent is published as a release to groundwater",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "context": ["water", "ground-"],
+        "name": "Chromium(6+)"
+      },
+      "expect": {
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unaq"
+      },
+      "comment": "The named row, and #77's worked example on this compartment: ecoinvent flow 9bbae55a-35de-4eff-a219-814a9fec5ac2, `water / ground-`, kg, CAS 18540-29-9, shipped identically by 3.8 and 3.12. On the 2026-08-15 build both versions came out on EF 3.1's flow 4d9a8790-3ddd-11dd-8fd7-0050c2490048, `Environmental -> Water -> Surface water`, with 6 characterisation factors, by outcome `prepared` -- the correspondence table naming the nearest flow EF has. BAFU's row for the same substance, f22c32fd-3e1c-5724-a5f6-a189abea12fb, was on `Water -> Unconfined aquifer` the whole time."
+    },
+    {
+      "id": "0407-bafu-groundwater-chromium-stays-in-groundwater",
+      "issue": 407,
+      "title": "Chromium(6+) released to groundwater by BAFU is published in the same place as ecoinvent's",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "context": ["emissions to water", "groundwater"],
+        "name": "Chromium(6+)"
+      },
+      "expect": {
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unaq"
+      },
+      "comment": "The side that was already right, and the side ecoinvent's rows now join. Stated so that a change closing the split from the other end -- moving BAFU's groundwater onto surface water to meet ecoinvent -- would not pass. BAFU has no correspondence table, so nothing was pulling these rows off the compartment BAFU named."
+    },
+    {
+      "id": "0407-groundwater-chromium-is-one-flow",
+      "issue": 407,
+      "title": "A groundwater release of Chromium(6+) is one flow, whichever list it came from",
+      "subject": {
+        "kind": "flow",
+        "name": "Chromium(6+)",
+        "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unaq"
+      },
+      "expect": {"count": 1},
+      "comment": "Landing in the same compartment is what makes two lists meet; this is the check that they meet on one flow rather than minting a second beside it. The flow BAFU created, c2943f5ed0e0042e2c70c49d7972cceab66d3a29, is the one ecoinvent's rows join. It held before the change too -- BAFU created the flow and ecoinvent's rows were elsewhere -- and it is here as the invariant the fix must not break, because bringing a second list onto a compartment is exactly the move that mints a duplicate where the two lists resolve the substance differently."
+    },
+    {
+      "id": "0407-a-groundwater-release-carries-no-characterisation-factors",
+      "issue": 407,
+      "title": "A release to groundwater is published without characterisation factors, and that is what this decision cost",
+      "subject": {
+        "kind": "flow",
+        "name": "Chromium(6+)",
+        "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unaq"
+      },
+      "expect": {"exists": true, "characterised": false},
+      "comment": "Not a defect to fix here, and written down so that it cannot be forgotten. EF 3.1 has no groundwater emission compartment, so no method characterises one, and the six factors ecoinvent's rows carried on `Water -> Surface water` are not carried here. Those factors were the reason the coarsening had been published: ecoinvent's own `EF v3.1` implementation reads the freshwater factor for these flows. The trade was decided the other way round -- what the source said about where the release went is the stronger claim, and reading a freshwater factor for a groundwater release is a judgement for whoever consumes this list. The same trade as #84's forestry soil, decided the same way. If a later change gives groundwater a documented fallback, this is the expectation that has to be rewritten, deliberately."
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 names a family of refrigerants, blowing agents and heat-transfer fluids by their industry code and gives them no identifier of any kind -- no formula, no structure, no CAS, no EC number. #19 counted them and cleared most of them by asking PubChem whether any record listed the code among its own synonyms. Twenty-one were left over, and they were left over for one reason: PubChem holds no record carrying the code, so there was nothing to cite. Between them they carry 190 elementary flows and every one of the 216 characterisation factors the issue's last measurement counted.\n\nWhat identifies them is the factor itself. EF 3.1's `Climate change` category is a transcription of IPCC AR6 WGI Table 7.SM.7, and that table prints the industry designation, the chemical structure and the GWP100 on one line. A flow EF names only `HFE-143a` still carries the number 616, AR6's `HFE-143a` row is CH3OCF3 at 616, and PubChem's record for CH3OCF3 is CAS 421-14-7. The identification runs backwards from the number, and nothing in it decodes the digits of the code.\n\nThe expectations below claim that chain rather than only its result, which is why several of them name the factor and the substance in the same breath. Two of them are about identifications this method makes possible and a synonym search would get wrong: the 1234ze pair, whose stereo-unspecified parent record carries both isomers' designations in one synonym list, and the two perfluorodecalins, which PubChem folds onto one record and which the factor keeps apart.\n\nThe last one is the counterweight. `i-HFE-7200` is not identified here, deliberately: its registry number already sits on EF's `HFE-7200` flow, which is the commercial mixture of the n- and i- ethers, and asserting it would merge a mixture with one of its components.",
+  "expectations": [
+    {
+      "id": "0202-hfe-143a-is-methyl-trifluoromethyl-ether",
+      "issue": 202,
+      "title": "The flow EF 3.1 ships as `HFE-143a` says which substance it is",
+      "subject": {
+        "kind": "flow",
+        "uuid": "9308ce4c-e251-11e6-bf01-fe55135034f3"
+      },
+      "expect": {
+        "substance_cas": "421-14-7"
+      },
+      "comment": "The worked example, and the one where EF 3.1 confirms the answer in its own data: it publishes the same substance as `Methyl trifluoromethyl ether` over eleven flows carrying 421-14-7, and one of those eleven lists `HFE-143a` among its synonyms. Measured on the 2026-08-18 build at commit fffe12a: five flows, ten characterisation factors, and a flow object with an empty classifications bag -- no CAS, no EC number, typed `unclassified`.\n\nRewritten after the first full build, keeping its id: the subject was named by its label, and the identification changes that label. EF's two entries for this substance become one flow object, and the naming step then publishes every flow on it under the chemical name, so a selector reading `name` found nothing and the expectation reported `unresolved` -- which is the right answer to the question it asked and the wrong question. The uuid is what does not move."
+    },
+    {
+      "id": "0202-hfe-143a-carries-the-factor-that-identified-it",
+      "issue": 202,
+      "title": "`HFE-143a` is worth 616 kilograms of CO2-equivalent, which is what named it",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "9308ce4c-e251-11e6-bf01-fe55135034f3",
+        "category": "Climate change",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "616"
+      },
+      "comment": "This one holds before the fix as well, and it is here because it is the evidence rather than the outcome. AR6 Table 7.SM.7 gives `HFE-143a` -- CH3OCF3 -- a GWP100 of 616, and no other row in that table states 616. If a re-transcription of EF 3.1 ever moves this number, the ground the identification above stands on has moved with it, and the pair of expectations is what makes that visible instead of silent.\n\nRewritten after the first full build, keeping its id: the subject was named by its label, and the identification changes that label. EF's two entries for this substance become one flow object, and the naming step then publishes every flow on it under the chemical name, so a selector reading `name` found nothing and the expectation reported `unresolved` -- which is the right answer to the question it asked and the wrong question. The uuid is what does not move."
+    },
+    {
+      "id": "0202-hfe-143a-is-not-hfc-143a",
+      "issue": 202,
+      "title": "`HFE-143a` and `HFC-143a` stay two substances",
+      "subject": {
+        "kind": "substance",
+        "cas": "421-14-7"
+      },
+      "expect": {
+        "count": 1,
+        "flow_type": "NeutralMolecule",
+        "flow_count": {
+          "at_least": 12
+        }
+      },
+      "comment": "The ether and the ethane share a number in the designation and nothing else. `HFC-143a` is 1,1,1-trifluoroethane, CH3CF3, CAS 420-46-2, and AR6 gives it a GWP100 of 5810 against this substance's 616. A name search on the string `143a` reaches the wrong one of the two, which is why the factor rather than the name decides here.\n\nTwo of the three claims hold already and are guards: on the 2026-08-18 build at commit fffe12a, 421-14-7 names one substance, `Methyl Trifluoromethyl Ether`, typed `NeutralMolecule` over eleven flows. What fails is `flow_count`, and it is the one that states the identification: the five flows EF names by the designation join those eleven, because the source entered one substance twice. A bound rather than sixteen exactly, since which flows are live is a question a later deprecation may reopen and the claim here is about the join.\n\n**The bound moved from 16 to 12 with #185, and the claim did not.** `flow_count` counts live flows, and #185 ruled that the four air compartments holding both of EF's entries hold one flow each, deprecating the named row's copy onto the designation's in each: 16 flows on the substance still, 12 of them live. The join is what this claim is about and the join is untouched -- 12 is more than either entry brings on its own, the named one having seven live flows after the rulings and the designation five -- so the bound is restated rather than the claim withdrawn. The comment above anticipated exactly this (\"which flows are live is a question a later deprecation may reopen\") and then wrote a bound a deprecation breaks; 12 is the number that survives one."
+    },
+    {
+      "id": "0202-the-two-1234ze-isomers-are-two-substances",
+      "issue": 202,
+      "title": "The E and Z isomers of 1234ze reach two different substances",
+      "subject": {
+        "kind": "flow",
+        "name": "(E)-HFC-1234ze"
+      },
+      "expect": {
+        "substance_cas": "29118-24-9"
+      },
+      "comment": "The trap the first pass at this issue was right to avoid. PubChem's record for 1645-83-6 is the stereo-unspecified parent and its synonym list carries `HFO-1234ze`, `HFO-1234ze(E)` and a `(1Z)-` spelling together, so a synonym match puts both of EF's isomers on one number and merges two substances the list characterises differently. AR6 gives 1.37 for (E) and 0.315 for (Z); EF carries 1.37 on this row and 0.315 on the other, so the factor says which is which and the stereo-specific record, CID 5708720, supplies the number."
+    },
+    {
+      "id": "0202-the-z-isomer-of-1234ze-has-its-own-number",
+      "issue": 202,
+      "title": "The Z isomer of 1234ze carries the other registry number",
+      "subject": {
+        "kind": "flow",
+        "name": "(Z)-HFC-1234ze"
+      },
+      "expect": {
+        "substance_cas": "29118-25-0"
+      },
+      "comment": "Stated separately from its partner because the pair is only kept apart if both halves hold; one expectation about one isomer passes just as well when the other has been merged into it."
+    },
+    {
+      "id": "0202-perfluorodecalin-cis-and-trans-stay-apart",
+      "issue": 202,
+      "title": "The cis and trans perfluorodecalins are two substances, not one",
+      "subject": {
+        "kind": "flow",
+        "name": "Perfluorodecalin (cis)"
+      },
+      "expect": {
+        "substance_cas": "60433-11-6"
+      },
+      "comment": "PubChem folds both isomers and their stereo-unspecified parent onto CID 9386, whose synonym list carries 306-94-5, 60433-11-6 and 60433-12-7 without saying which is which, which is why the first pass held both rows back. The NIST Chemistry WebBook holds the two numbers as two records, `Perfluorodecaline, cis-` and `trans-Perfluorodecalin`, and EF's own row says `(cis)`. AR6's 7800 for Z-C10F18 and 7120 for E-C10F18, which are exactly EF's two factors, are what say the rows are two substances rather than one entered twice."
+    },
+    {
+      "id": "0202-perfluorodecalin-trans-carries-the-other-number",
+      "issue": 202,
+      "title": "The trans perfluorodecalin carries the trans registry number",
+      "subject": {
+        "kind": "flow",
+        "name": "Perfluorodecalin (trans)"
+      },
+      "expect": {
+        "substance_cas": "60433-12-7"
+      },
+      "comment": "The other half, for the same reason the 1234ze pair is claimed twice. EF also carries the stereo-unspecified parent, as `PFC-9-1-18` with 306-94-5 on it, and all three stay distinct."
+    },
+    {
+      "id": "0202-n-hfe-7200-is-hfe-569sf2",
+      "issue": 202,
+      "title": "`n-HFE-7200` and `HFE-569sf2` are one substance entered twice",
+      "subject": {
+        "kind": "flow",
+        "uuid": "a19b92e6-e251-11e6-bf01-fe55135034f3",
+        "include_deprecated": true
+      },
+      "expect": {
+        "substance_cas": "163702-05-4",
+        "deprecated": true,
+        "replaced_by": "b0681715-c852-4456-ab78-c88e68502c7a"
+      },
+      "comment": "The case where the factor does all of the work. AR6 has no `n-HFE-7200` row at all -- it calls the substance `HFE-569sf2` -- so there is no designation to match on either side. What there is: AR6 gives HFE-569sf2 a GWP100 of 60.7 and i-HFE-7200 34.3, and EF characterises `n-HFE-7200` at 60.7. EF says the same thing from the other side by publishing an `HFE-569sf2` flow already carrying 163702-05-4, so identifying the designation puts the two on one flow object.\n\nRewritten after the first full build, keeping its id: the subject was named by its label, and the identification changes that label. EF's two entries for this substance become one flow object, and the naming step then publishes every flow on it under the chemical name, so a selector reading `name` found nothing and the expectation reported `unresolved` -- which is the right answer to the question it asked and the wrong question. The uuid is what does not move.\n\n**Rewritten again by #185, keeping the id and gaining evidence.** The flow this claim names is one of the two EF entries, and #185 ruled the two one flow in each of four air compartments: `a19b92e6` is now deprecated onto `b0681715`, EF's `HFE-569sf2` row in the same compartment. A flow selector skips deprecated flows unless asked, so the subject stopped resolving and the expectation reported `unresolved` -- the same failure mode as the first rewrite, from the other direction.\n\n`include_deprecated` keeps the subject, and the two new claims say more than the CAS did on its own. `substance_cas` was evidence that the list had identified the designation; `deprecated` and `replaced_by` are the list acting on it, retiring one entry onto the other by name. If a later change unpicked the identification, the flow object would split and `replaced_by` would have nothing to point at."
+    },
+    {
+      "id": "0202-the-damaged-label-is-hg-02",
+      "issue": 202,
+      "title": "The label a line break broke is HG-02, and joins the substance EF already publishes",
+      "subject": {
+        "kind": "flow",
+        "uuid": "7d11fdfc-e251-11e6-bf01-fe55135034f3"
+      },
+      "expect": {
+        "substance_cas": "205367-61-9"
+      },
+      "comment": "The last of the five damaged labels the issue opened with, and the one whose damage is an unbalanced bracket rather than a split word. Repairing the string would only have handed OPSIN a name nobody had checked; the factor checks it instead. EF characterises this flow at 5730, AR6's `HG-02` row is CHF2(OCF2CF2)2OCHF2 at 5730, and EF 3.1 already publishes `HG-02` under that name with 205367-61-9 on it. Named by uuid rather than by its label, because the label is the thing being changed."
+    },
+    {
+      "id": "0202-the-damaged-label-is-repaired",
+      "issue": 202,
+      "title": "Nothing is published under the corrupted spelling of the HG-02 name",
+      "subject": {
+        "kind": "substance",
+        "cas": "205367-61-9"
+      },
+      "expect": {
+        "label": "1,1′-Oxybis[2-(difluoromethoxy)-1,1,2,2-tetrafluoroethane]"
+      },
+      "comment": "The half of the identification that the merge makes urgent. Deduplication keeps the designation-side flows and deprecates EF's own `HG-02` rows onto them, so once the two share a substance the four surviving flows carry the corrupted string as their published name unless it is repaired. It is repaired from the registry rather than guessed at: 205367-61-9 is registered as `1,1'-oxybis[2-(difluoromethoxy)-1,1,2,2-tetrafluoroethane]`, which is the damaged string with its apostrophe and its closing bracket put back and nothing else altered. On the 2026-08-18 build at commit fffe12a this substance is published as `HG-02`, and the corrupted spelling names four other flows."
+    },
+    {
+      "id": "0202-i-hfe-7200-keeps-no-number",
+      "issue": 202,
+      "title": "`i-HFE-7200` is left unidentified, because its number names a mixture in this list",
+      "subject": {
+        "kind": "substance",
+        "label": "i-HFE-7200"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "unclassified"
+      },
+      "comment": "The counterweight, and the one expectation here that asks for nothing to change. 163702-06-5 is the right number for ethyl perfluoroisobutyl ether, and it is also the number EF 3.1 carries on its `HFE-7200` flow, which is the commercial product -- a mixture of the n- and i- ethers. Asserting it would merge a mixture with one of its components. The defect underneath is EF's number on the mixture, and it wants its own issue rather than a code-table entry."
+    },
+    {
+      "id": "0202-fewer-substances-with-nothing-to-resolve-from",
+      "issue": 202,
+      "title": "Far fewer substances reach the end of the build with no structure and no registry number",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.assign_semantic_types.untyped_no_structure_and_no_registry_identifier"
+      },
+      "expect": {
+        "at_most": 13
+      },
+      "comment": "32 on the 2026-08-18 build at commit fffe12a. Twenty designations identified here, and the bound is what says the change reached the population rather than only the rows the expectations above name. What is left after it is the set with no characterisation factor to fingerprint -- `HG-10`, `HG-30`, `H-Galden 1040x`, `Halon-2404`, `PFC-c216`, `HFE-236ca` -- plus the UVCB-shaped names, which want an EC number and not a structure.\n\nMeasured after the fix, on the run of 18 August 2026 at commit 961f9ed: 12. The sharper way to say the same thing, which no measure states: 20 published objects still carry no formula, no structure, no CAS and no EC number, and exactly one of them -- `i-HFE-7200`, held back on purpose -- carries a characterisation factor. Before, 21 of them did, between them holding all 216 the issue counted."
+    },
+    {
+      "id": "0202-a-merged-designation-stays-findable",
+      "issue": 202,
+      "title": "The six designations that merge into a chemical name are still names that find the substance",
+      "subject": {
+        "kind": "substance",
+        "cas": "421-14-7"
+      },
+      "expect": {
+        "alt_label": "HFE-143a"
+      },
+      "comment": "Recorded here and not fixed, which is what `pending` is for. Six of the twenty identifications put the designation's flows onto a substance EF 3.1 already publishes under a chemical name, and the naming step then republishes every flow on the merged object under that name. The designation survives as `elementary_flow_sources.source_flow_name`, so nothing that maps by EF's uuid breaks, but it stops being a published label and a name search over the list no longer finds it. The six are `HFE-143a`, `HFE-216`, `Halon-2301`, `(Z)-HFC-1336`, `n-HFE-7200` and `HG-02`.\n\n#521 states the principle for the renames it made -- every one sets `retain_original_as_synonym`, because an inventory written against EF 3.1 holds no other string for the substance -- and that flag acts on a rename a fix performs. Here the rename is the pipeline's, made when two flows become one substance, and no curated entry is in a position to carry the flag. `PFC-1114` and `PFC-51-14`, the two merges this project made before, keep their designations only because PubChem's synonym list happens to hold them; for these six it does not, which is the whole reason they needed the factor to identify them at all.\n\nThe pass that drops it is `resolve_flow_layers`, not deduplication, and the changelog says so: `bootstrap_labels` writes `HFE-143a` as the flow's own prefLabel and nothing overwrites it, so the flow still knows its name. What the published list shows is the *object's* label, and where several flows become one object the longest member name wins by the length rule in `flow_layers/layering.py`. The retention this needs already exists one branch away: where a merge group states its object's label, the demoted member name is kept as an alternative, \"so the name a source list published is still searchable\". An object grouped by a shared registry number states no label, so that branch never runs and the demoted name goes nowhere.\n\nIt is a general defect rather than these six. On the 2026-08-18 build of `main` at commit fffe12a, 425 flow objects carry at least one source name the published list does not answer to, 620 names in all; 210 of those, on 188 objects, are substance names rather than flow names -- `Carbon Dioxide, Fossil`, `Quizalofop-P-tefuryl`, `Dalapon-sodium`, and ecoinvent's own `Ethane, 1,1,2-trichloro-1,2,2-trifluoro-, CFC-113`. The other 397 carry a compartment (`Hafnium, In Ground`) and are flow names, which is why the fix is not \"keep every member name\" and why it wants its own issue rather than six more rows in a code table. Claimed on `HFE-143a` because it is the one an inventory is most likely to hold: 5 flows and 10 characterisation factors, and EF 3.1 itself lists the designation among the synonyms of the flow it merges with. Filed as #113.\n\nNo longer pending. `flow_layers/synonyms.py` carries a member name the substance would otherwise stop answering to, and it does it for every substance rather than for these six: the pass establishes that a published name names exactly one substance, and a name two substances reach is carried by neither. All six designations are findable again, and `expectations/0571-a-name-names-one-substance.json` claims the property they now depend on."
+    }
+  ]
+}

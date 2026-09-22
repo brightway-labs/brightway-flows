@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "description": "Every pair in the `undecided-label-replacement` queue now has a ruling in `preferred-label-decisions.json`, so the names the rename rules proposed are either published or refused on the record rather than left waiting. These expectations pin one substance per kind of ruling: a repair the build's own name caser caused, a repair the source list's typesetting caused, a proposal that ran backwards and was refused, and the one flow that needed a manual fix as well as a ruling to reach the name the rest of its substance already had. See #313, and #312 and #105 for the two pairs deliberately left out of it.",
+  "expectations": [
+    {
+      "id": "0527-copper-i-chloride",
+      "issue": 527,
+      "title": "Copper(I) chloride is published under its oxidation-state name rather than the name caser's",
+      "subject": {"kind": "substance", "cas": "7758-89-6"},
+      "expect": {"label": "copper(I) chloride"},
+      "comment": "Published as `Copper (i) Chloride` before this change, over 13 flows. A Roman numeral marking oxidation state is not a word and does not take title case, and the space in front of it was not in the source either. Common Chemistry lists `Copper(I) chloride` among the names of 7758-89-6, whose record is `Cuprous chloride`. Measured on the 2026-08-16 build, where the substance still read `Copper (i) Chloride`."
+    },
+    {
+      "id": "0527-hexamethylenediamine",
+      "issue": 527,
+      "title": "Hexamethylenediamine is published as one word, which is how the sources spell it",
+      "subject": {"kind": "substance", "cas": "124-09-4"},
+      "expect": {"label": "Hexamethylenediamine"},
+      "comment": "Published as `Hexamethylene Diamine` before this change: EF 3.1 carried a space, and the name caser then title-cased what followed it into a second word. Common Chemistry names 124-09-4 `Hexamethylenediamine`, C6H16N2. Stated alongside the copper ruling because the two fail differently -- this one is a source-side space, that one is a casing rule applied to something that is not a word."
+    },
+    {
+      "id": "0527-terephthaloyl-dichloride",
+      "issue": 527,
+      "title": "Terephthaloyl dichloride is published with the space the source list lost",
+      "subject": {"kind": "substance", "cas": "100-20-9"},
+      "expect": {"label": "Terephthaloyl dichloride"},
+      "comment": "Published as `Terephthaloyldichloride` before this change -- two words run together in the EF 3.1 row. `Terephthaloyl dichloride` is a Common Chemistry synonym for 100-20-9, C8H4Cl2O2. One of eight pairs in this queue that were nothing but a missing space."
+    },
+    {
+      "id": "0527-polypropylene-glycol-monobutyl-ether-alpha",
+      "issue": 527,
+      "title": "The butyl-hydroxy polyether keeps a lower-case alpha, not the capital Greek letter the name caser wrote",
+      "subject": {"kind": "substance", "cas": "9003-13-8"},
+      "expect": {"label": "Poly[oxy(methyl-1,2-ethanediyl)],α-butyl-ω-hydroxy-"},
+      "comment": "The one approval in this batch that the identity audit flags, and it is flagged for whitespace rather than for identity. Common Chemistry's spelling for 9003-13-8 is `Poly[oxy(methyl-1,2-ethanediyl)], α-butyl-ω-hydroxy-`, with a space after the comma and a lower-case alpha; the published name had the space but a capital Greek Alpha, which the name caser produced and which is not a locant at all. The approved replacement fixes the letter and loses the space, which is the lesser of the two errors -- so this claim pins a name that is still not the source's exactly, and says so on purpose. If the whitespace is ever repaired too, rewrite this expectation rather than retiring it."
+    },
+    {
+      "id": "0527-glycerol-octanoate-decanoate",
+      "issue": 527,
+      "title": "The glycerol caprylate-caprate ester is published under its three-word name, not its fourteen-word one",
+      "subject": {"kind": "substance", "cas": "65381-09-1"},
+      "expect": {"label": "Glycerol octanoate decanoate"},
+      "comment": "Published as `Decanoic Acid, Ester With 1,2,3-propanetriol Octanoate` before this change, which is a name for the substance but not a readable one. Both names are Common Chemistry's for 65381-09-1, so nothing about identity was at stake and the choice was readability. This one needed two changes rather than one: a `reject` ruling to stop the rename rule pushing the twelve flows already named `Glycerol octanoate decanoate` onto the systematic name, and an `ef-3.1-manual-fixes.json` entry to move the thirteenth, which EF ships under the systematic name and which was deciding the substance's label for all of them. Either change alone leaves the substance reading the wrong way, which is why the claim is written about the substance and not about a flow."
+    },
+    {
+      "id": "0527-hc-blue-no-1-keeps-its-space",
+      "issue": 527,
+      "title": "HC Blue No. 1 keeps the space the rename rule wanted to delete",
+      "subject": {"kind": "substance", "cas": "2784-94-3"},
+      "expect": {"label": "HC Blue No. 1"},
+      "comment": "This one holds on the 2026-08-16 build already, and is written down because the queue proposed breaking it: the rule wanted `HC Blue No.1`, which appears in no source, while Common Chemistry's record for 2784-94-3 lists `HC Blue No. 1` -- spaced, exactly as published -- among its synonyms. A guard rather than a repair, so it is not evidence that this change did anything; it is what would catch the ruling being flipped later."
+    }
+  ]
+}

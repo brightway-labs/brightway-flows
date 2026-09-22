@@ -1,0 +1,103 @@
+{#
+  The footer.  `plans/public-site.md` §3, on every page.
+
+  Every undecided fact -- the two licences on the bottom line -- goes through
+  `placeholder`, the same as everywhere else (plan §0's first rule).  The logo
+  is drawn twice, light and dark, and CSS picks one by `data-theme` the same
+  way the theme tokens themselves do (`app.css`), which is what lets it work
+  before `app.js` has run.
+#}
+{% from "partials/placeholder.html" import placeholder %}
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <a class="footer__logo-link" href="https://brightway-lca.com">
+        <img class="footer__logo footer__logo--light" src="{{ url_for('static', filename='brand/brightway-labs.svg') }}" width="135" height="28" alt="Brightway Labs">
+        <img class="footer__logo footer__logo--dark" src="{{ url_for('static', filename='brand/brightway-labs-inverted.svg') }}" width="135" height="28" alt="Brightway Labs">
+      </a>
+      <p class="footer__name">Brightway Flows</p>
+      <p class="footer__attribution">Built and maintained by Brightway Labs.</p>
+    </div>
+
+    <nav class="footer__column" aria-labelledby="footer-dataset">
+      <h2 class="footer__heading" id="footer-dataset">Dataset</h2>
+      <ul class="footer__list">
+        <li><a href="/download/">Download</a></li>
+        <li><a href="/changes">Changelog</a></li>
+        <li><a href="/download/#cite">How to cite</a></li>
+        <li><a href="/about/#licence">Licence</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer__column" aria-labelledby="footer-documentation">
+      <h2 class="footer__heading" id="footer-documentation">Documentation</h2>
+      <ul class="footer__list">
+        <li><a href="/#start">Where to start</a></li>
+        <li><a href="/docs/using/outputs">Using the data</a></li>
+        <li><a href="/docs/findings">What we have found</a></li>
+        <li><a href="/docs/reference/limitations">Known limitations</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer__column" aria-labelledby="footer-community">
+      <h2 class="footer__heading" id="footer-community">Community</h2>
+      <ul class="footer__list">
+        <li><a href="{{ repository_url }}">GitHub</a></li>
+        <li><a href="{{ repository_url }}/issues/new/choose">Report a problem</a></li>
+        <li><a href="{{ repository_url }}/blob/main/CONTRIBUTING.md">Contributing</a></li>
+        <li><a href="/docs/reference/limitations#open-questions-by-source-list-and-by-topic">Open questions</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer__column" aria-labelledby="footer-build">
+      <h2 class="footer__heading" id="footer-build">Build &amp; review</h2>
+      <ul class="footer__list">
+        <li><a href="/run/">Current run</a></li>
+        <li><a href="/scores/">Scores</a></li>
+        <li><a href="/queue/">Review queue</a></li>
+        <li><a href="/merge/outcomes">Merge outcomes</a></li>
+      </ul>
+      <p class="footer__note">Working tools for curators</p>
+    </nav>
+  </div>
+
+  <div class="footer__bottom">
+    <span>© 2026 Brightway Labs GmbH</span>
+    <span>Data {{ placeholder(publication.data_licence, "DATA LICENCE") }}</span>
+    <span>Code {{ placeholder(publication.code_licence, "CODE LICENCE") }}</span>
+    <a href="/about/">About</a>
+    <a href="/about/#privacy">Privacy</a>
+    <a href="/about/#contact">Legal notice</a>
+    {# Hidden until the script runs: a switch that cannot switch is worse than
+       the OS setting alone.  System, Light, Dark rather than a two-way
+       toggle, so a reader who chose one can go back to following the OS.
+       `app.js` checks the radio for the stored choice. #}
+    <fieldset class="theme-switch" data-theme-switch hidden>
+      <legend class="visually-hidden">Theme</legend>
+      <span class="theme-switch__label" aria-hidden="true">Theme</span>
+      <span class="theme-switch__options">
+        <label class="theme-switch__option">
+          <input class="visually-hidden" type="radio" name="theme" value="system">
+          <span class="theme-switch__face">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.75" y="2.5" width="12.5" height="8.5" rx="1.25"/><path d="M5.5 14h5M8 11v3"/></svg>
+            System
+          </span>
+        </label>
+        <label class="theme-switch__option">
+          <input class="visually-hidden" type="radio" name="theme" value="light">
+          <span class="theme-switch__face">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/></svg>
+            Light
+          </span>
+        </label>
+        <label class="theme-switch__option">
+          <input class="visually-hidden" type="radio" name="theme" value="dark">
+          <span class="theme-switch__face">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5Z"/></svg>
+            Dark
+          </span>
+        </label>
+      </span>
+    </fieldset>
+  </div>
+</footer>

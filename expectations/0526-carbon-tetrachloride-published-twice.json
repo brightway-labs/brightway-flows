@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 ships carbon tetrachloride twice in each of five air contexts -- once as `CFC-10`, carrying registry number 56-23-5 and EC 200-262-8, and once as `Carbon tetrachloride`, carrying neither, no synonyms and no comment. The two hold the same nine characterisation factors under the same method identifiers, agreeing exactly on six and differing on three only in how many digits were kept. Until the `CFC-10` copy was renamed in #313 the two were told apart by name alone; the rename put all five pairs into the `elementary-flow-collision` queue, and #105 rules on them. The identified copy survives, against what deduplication's sort would have done: the factor counts tie, so the sort falls through to the identifier and picks the bare row -- which is also the row no source list maps onto, while ecoinvent 3.8 and 3.12 both reach the `CFC-10` rows in every one of the five contexts. See #105.\n\n#747 replaced this file's one population-wide claim. It asked that the substance have fourteen live flows, on the reasoning that fourteen was one per context and one per context is what `(flow_object_id, context_iri)` being unique means. The reasoning is right and the number was not a way to say it: a substance gains a context whenever a source row lands somewhere it had not, BAFU's river rows made it fifteen, and the failure read exactly like the duplicate this issue is about. The five contexts that actually held a pair are now claimed one at a time. That loses the removed id's history in `baseline.json`, which is the cost of the claim having been the wrong shape.",
+  "expectations": [
+    {
+      "id": "0526-one-carbon-tetrachloride-in-unspecified-air",
+      "issue": 526,
+      "title": "Carbon tetrachloride is published once in unspecified air, not twice",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon tetrachloride",
+        "context_display": "Environmental → Air → Unknown"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "Two live flows on the 2026-08-16 build: `fe0acd60-…-a929`, which came in as `CFC-10` with 56-23-5 and 200-262-8 on it, and `8a313fb6-…-34f3`, which came in already named `Carbon tetrachloride` with no identifier at all and was matched to 56-23-5 by name lookup. Both were characterised, both were in the same context, and someone adding up an inventory could count the substance twice. The ruling in `elementary-flow-collision-decisions.json` keeps the first and deprecates the second onto it."
+    },
+    {
+      "id": "0526-one-carbon-tetrachloride-in-aircraft-cruise-height",
+      "issue": 526,
+      "title": "Carbon tetrachloride is published once in Environmental → Air → Aircraft cruise height",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon tetrachloride",
+        "context_display": "Environmental → Air → Aircraft cruise height"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "One of the five air contexts EF 3.1 shipped carbon tetrachloride twice in, claimed one context at a time.\n\nThis replaces `0526-carbon-tetrachloride-is-published-once-per-context`, which said the same thing as `count: 14` over the whole substance and was removed by #345. Fourteen was the number of contexts the substance reached on the build of 16 August 2026, and the claim it was standing in for -- one flow per context -- survives a fifteenth context appearing while the count does not. A fifteenth did appear: BAFU reaches `Environmental → Water → River`, the count read 15, and the report said `expected 14, got 15`, which is indistinguishable from the duplicate this issue was about. Asked per context, the question cannot go stale, because a context a source row has not reached has no flow to count."
+    },
+    {
+      "id": "0526-one-carbon-tetrachloride-in-urban-ground-level",
+      "issue": 526,
+      "title": "Carbon tetrachloride is published once in Environmental → Air → Ground level → Urban (>1000 people/square mile)",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon tetrachloride",
+        "context_display": "Environmental → Air → Ground level → Urban (>1000 people/square mile)"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "One of the five air contexts EF 3.1 shipped carbon tetrachloride twice in, claimed one context at a time.\n\nThis replaces `0526-carbon-tetrachloride-is-published-once-per-context`, which said the same thing as `count: 14` over the whole substance and was removed by #345. Fourteen was the number of contexts the substance reached on the build of 16 August 2026, and the claim it was standing in for -- one flow per context -- survives a fifteenth context appearing while the count does not. A fifteenth did appear: BAFU reaches `Environmental → Water → River`, the count read 15, and the report said `expected 14, got 15`, which is indistinguishable from the duplicate this issue was about. Asked per context, the question cannot go stale, because a context a source row has not reached has no flow to count."
+    },
+    {
+      "id": "0526-one-carbon-tetrachloride-in-long-term-air",
+      "issue": 526,
+      "title": "Carbon tetrachloride is published once in Environmental → Air → Long-term",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon tetrachloride",
+        "context_display": "Environmental → Air → Long-term"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "One of the five air contexts EF 3.1 shipped carbon tetrachloride twice in, claimed one context at a time.\n\nThis replaces `0526-carbon-tetrachloride-is-published-once-per-context`, which said the same thing as `count: 14` over the whole substance and was removed by #345. Fourteen was the number of contexts the substance reached on the build of 16 August 2026, and the claim it was standing in for -- one flow per context -- survives a fifteenth context appearing while the count does not. A fifteenth did appear: BAFU reaches `Environmental → Water → River`, the count read 15, and the report said `expected 14, got 15`, which is indistinguishable from the duplicate this issue was about. Asked per context, the question cannot go stale, because a context a source row has not reached has no flow to count."
+    },
+    {
+      "id": "0526-one-carbon-tetrachloride-in-rural-medium-stack",
+      "issue": 526,
+      "title": "Carbon tetrachloride is published once in Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon tetrachloride",
+        "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "One of the five air contexts EF 3.1 shipped carbon tetrachloride twice in, claimed one context at a time.\n\nThis replaces `0526-carbon-tetrachloride-is-published-once-per-context`, which said the same thing as `count: 14` over the whole substance and was removed by #345. Fourteen was the number of contexts the substance reached on the build of 16 August 2026, and the claim it was standing in for -- one flow per context -- survives a fifteenth context appearing while the count does not. A fifteenth did appear: BAFU reaches `Environmental → Water → River`, the count read 15, and the report said `expected 14, got 15`, which is indistinguishable from the duplicate this issue was about. Asked per context, the question cannot go stale, because a context a source row has not reached has no flow to count."
+    },
+    {
+      "id": "0526-the-retired-identifier-says-where-it-went",
+      "issue": 526,
+      "title": "Someone holding the retired identifier is told which flow replaced it",
+      "subject": {
+        "kind": "flow",
+        "uuid": "8a313fb6-e251-11e6-bf01-fe55135034f3",
+        "include_deprecated": true
+      },
+      "expect": {
+        "deprecated": true,
+        "replaced_by": "fe0acd60-3ddc-11dd-a929-0050c2490048"
+      },
+      "comment": "This is the half of #105 that is a decision about published identifiers rather than about matching. Deduplicating the pair retires one of two identifiers consumers may already hold, and retiring it silently would leave an inventory keyed on it finding nothing. The redirect is what makes the collapse safe to publish, and `pipeline/redirects.py` classifies it `identity-merge` on its own evidence -- both rows come from the same source context, which is what that reason means."
+    },
+    {
+      "id": "0526-the-surviving-flow-is-the-identified-one",
+      "issue": 526,
+      "title": "The flow that survives in unspecified air is the one carrying the registry number",
+      "subject": {
+        "kind": "flow",
+        "uuid": "fe0acd60-3ddc-11dd-a929-0050c2490048"
+      },
+      "expect": {
+        "deprecated": false,
+        "characterised": true,
+        "substance_cas": "56-23-5",
+        "substance_id": "fo-e8f7bd337de840c4"
+      },
+      "comment": "Which of the two survives is the decision #105 was opened to make, so it is written down as data rather than left implicit in the count above. `fe0acd60-…-a929` is the row EF ships as `CFC-10` with 56-23-5 and 200-262-8, and the row ecoinvent 3.8 and 3.12 both map onto; `8a313fb6-…-34f3` carries no identifier and nothing maps onto it. Deduplication's sort would keep the second -- the factor counts tie at nine and the identifier breaks it -- which is why a curated ruling and not a signature answers this."
+    },
+    {
+      "id": "0526-carbon-tetrachloride-factors-agree",
+      "issue": 526,
+      "title": "However many carbon tetrachloride flows there are in unspecified air, they are characterised",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon tetrachloride",
+        "context_display": "Environmental → Air → Unknown"
+      },
+      "expect": {
+        "characterised": true
+      },
+      "comment": "Held before the fix as well as after, and written down because the risk in deduplicating them is keeping the wrong one. The two carried identical climate-change (2200.0) and ozone-depletion (0.72) factors; the only differences were the human-toxicity numbers, where one copy keeps five significant figures and the other three. Whichever survives #105 has to still be characterised afterwards, and this is what would catch a repair that retired the characterised copy."
+    }
+  ]
+}

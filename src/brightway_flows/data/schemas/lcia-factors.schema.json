@@ -1,0 +1,341 @@
+{
+  "$defs": {
+    "AreaOfProtection": {
+      "description": "What a category is protecting.\n\n``ASSETS`` is availability rather than damage: a resource or a service that\nsomebody else no longer has.  ``CLIMATE_CHANGE`` is its own value rather\nthan being split across the three it acts on, because that is how every\nmethod that reports it reports it.",
+      "enum": [
+        "Unknown",
+        "Human Health",
+        "Resources and ecosystem services",
+        "Ecosystem Quality",
+        "Climate Change"
+      ],
+      "title": "AreaOfProtection",
+      "type": "string"
+    },
+    "CharacterizationFactor": {
+      "properties": {
+        "amount": {
+          "title": "Amount",
+          "type": "number"
+        },
+        "derivation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Derivation"
+        },
+        "elementary_flow_uuid": {
+          "title": "Elementary Flow Uuid",
+          "type": "string"
+        },
+        "geography": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Geography"
+        },
+        "impact_category_id": {
+          "format": "uuid",
+          "title": "Impact Category Id",
+          "type": "string"
+        },
+        "source_flow_uuid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Flow Uuid"
+        }
+      },
+      "required": [
+        "elementary_flow_uuid",
+        "impact_category_id",
+        "amount"
+      ],
+      "title": "CharacterizationFactor",
+      "type": "object"
+    },
+    "ImpactTimeframe": {
+      "description": "Which emissions a category characterises.\n\nNot how far into the future the model runs: ``SHORT`` is the convention of\nexcluding emissions a source list files as long-term, and ``LONG`` is\nincluding every one the implementer could reach.",
+      "enum": [
+        "Unknown",
+        "Short term impacts (<100 years after emission)",
+        "Long term impacts (no time horizon)"
+      ],
+      "title": "ImpactTimeframe",
+      "type": "string"
+    },
+    "LCIAMethod": {
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "meta": {
+          "additionalProperties": true,
+          "title": "Meta",
+          "type": "object"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "LCIAMethod",
+      "type": "object"
+    },
+    "MidpointEndpoint": {
+      "description": "Where along the cause-and-effect chain the number is stated.",
+      "enum": [
+        "Unknown",
+        "Midpoint",
+        "Endpoint"
+      ],
+      "title": "MidpointEndpoint",
+      "type": "string"
+    },
+    "UncertaintyLevel": {
+      "description": "Which factors an implementation kept, where its method grades them.",
+      "enum": [
+        "Unknown",
+        "Only certain impacts",
+        "All uncertainty levels"
+      ],
+      "title": "UncertaintyLevel",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Three implementations of EF 3.1 -- the European Commission's JRC, the ecoinvent Centre's, and this list's -- as impact categories and the characterisation factors they hold, on the consensus flows. A factor is unique per (impact_category_id, flow_id, geography).",
+  "properties": {
+    "characterization_factors": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "title": "Amount",
+            "type": "number"
+          },
+          "derivation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Derivation"
+          },
+          "elementary_flow_uuid": {
+            "title": "Elementary Flow Uuid",
+            "type": "string"
+          },
+          "geography": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Geography"
+          },
+          "impact_category_id": {
+            "format": "uuid",
+            "title": "Impact Category Id",
+            "type": "string"
+          },
+          "source_flow_uuid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Flow Uuid"
+          }
+        },
+        "required": [
+          "amount",
+          "derivation",
+          "elementary_flow_uuid",
+          "geography",
+          "impact_category_id",
+          "source_flow_uuid"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "impact_categories": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "area_of_protection": {
+            "$ref": "#/$defs/AreaOfProtection"
+          },
+          "category_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Category Group"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "implemented_by": {
+            "title": "Implemented By",
+            "type": "string"
+          },
+          "indicator": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Indicator"
+          },
+          "meta": {
+            "additionalProperties": true,
+            "title": "Meta",
+            "type": "object"
+          },
+          "method": {
+            "$ref": "#/$defs/LCIAMethod"
+          },
+          "midpoint_endpoint": {
+            "$ref": "#/$defs/MidpointEndpoint",
+            "default": "Endpoint"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "timeframe": {
+            "$ref": "#/$defs/ImpactTimeframe",
+            "default": "Unknown"
+          },
+          "uncertainty_cutoff": {
+            "$ref": "#/$defs/UncertaintyLevel",
+            "default": "All uncertainty levels"
+          },
+          "unit_iri": {
+            "title": "Unit Iri",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "area_of_protection",
+          "category_group",
+          "description",
+          "id",
+          "implemented_by",
+          "indicator",
+          "meta",
+          "method",
+          "midpoint_endpoint",
+          "name",
+          "timeframe",
+          "uncertainty_cutoff",
+          "unit_iri",
+          "version"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "methods": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "meta": {
+            "additionalProperties": true,
+            "title": "Meta",
+            "type": "object"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "meta",
+          "name"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 2,
+      "type": "integer"
+    },
+    "stats": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "methods",
+    "impact_categories",
+    "characterization_factors"
+  ],
+  "title": "lcia-factors.json.gz",
+  "type": "object"
+}

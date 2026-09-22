@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "description": "An ion carries an electric charge and a neutral molecule, by definition, does not. This list published seven substances whose **only stated formula carries a charge** and typed every one of them `NeutralMolecule`: `Borate` (`BO3-3`), `Thiocyanate, Ion` (`CNS-`), `Titanium, ion` (`Ti+4`), `Aluminium (iii)` (`Al+3`), `Methyl Borate` (`CH3BO3-2`), `Phosphonic Acid, Dibutyl Ester` and `Tricyclo[3.3.1.1~3,7~]tetrastibathiane`. See #326.\n\nThe typing rules read a charge from the `elemental_charge` property, which most objects do not carry, and the branch that reaches `NeutralMolecule` comes from the structure rules -- so a charged species with a SMILES was called neutral, and nothing on that path asked the formula. The formula is the evidence and it is unambiguous: `BO3-3` is the oxyanion with three negative charges.\n\nThe type is published, and it is also *used*: the ion layer recognises an ion by its base name resolving to an object typed `chemrof:ChemicalElement`, and the catch-all guard of #76 and #123 keys on whether a target is a grouping class. A wrong type is an input to later decisions, not only a wrong statement.\n\nThe fallback added for this reads the charge off the formulas, and its guard is agreement: **every** stated formula must carry a charge and all of them must agree. The claims below are the substances it moved, and the two it must not touch.\n\nMeasured on the unbounded build of 21 August 2026 at `6727d35`; the `NeutralMolecule` readings are the ones recorded when #326 was filed, against the build of 20 August 2026.",
+  "expectations": [
+    {
+      "id": "0628-borate-is-an-anion",
+      "issue": 628,
+      "title": "Borate is published as an anion",
+      "subject": {
+        "kind": "substance",
+        "label": "Borate"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "MolecularAnion",
+        "flow_count": 7
+      },
+      "comment": "The plainest case in the class, and the one where the wrong type was also a wrong reading of the substance. `Borate` typed `NeutralMolecule` reads as boric acid; borate is the oxyanion, and the substance's only formula, `BO3-3`, says so three times over.\n\n`flow_count` is claimed beside the type for the reason #327's aluminium claim does it: seven flows before and seven after, so this is borate being recognised rather than borate being replaced by some other object that happens to be typed as an anion. The seven are also the ones #110 renumbered away from borax, so a check that named the number instead of the name would have gone unresolved."
+    },
+    {
+      "id": "0628-a-charged-atom-is-a-cation",
+      "issue": 628,
+      "title": "EF's titanium ion is published as a cation",
+      "subject": {
+        "kind": "substance",
+        "label": "Titanium, ion"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "AtomCation",
+        "flow_count": 15
+      },
+      "comment": "The other half of the mechanism: the fallback has to choose the *kind* of ion as well as notice there is one. `Ti+4` is a single atom carrying a positive charge, so `AtomCation` rather than `MolecularAnion`, chosen the same way it is chosen for the substances that were already typed correctly.\n\nStated here rather than left to the unit tests because the choice is made from published data -- the formula -- and a rule that stopped distinguishing an atom from a molecule would still pass a test that only asked whether the substance is an ion.\n\nThe count moved 5 -> 14 with #141 and the edit went unexplained until the #336 review asked; recorded now: the fourteen are EF 3.1's four flows plus the ten the retirement's evidence matching created for ecoinvent's `Titanium, ion` rows in their own compartments, one substance recognised across all of them -- verified per-flow on the 2026-08-23 build. Fifteen since #198: AGRIBALYSE's twelve `Titanium, ion` rows, the element's number taken off them, reach this substance by name, and one of them is in a river, a compartment none of the fourteen had."
+    },
+    {
+      "id": "0628-a-molecular-anion-is-not-an-atom",
+      "issue": 628,
+      "title": "Thiocyanate is published as a molecular anion",
+      "subject": {
+        "kind": "substance",
+        "label": "Thiocyanate, Ion"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "MolecularAnion",
+        "flow_count": 5
+      },
+      "comment": "The mirror of the claim above, and the reason both are here: `CNS-` is three atoms and one negative charge. Thiocyanate and titanium are the two shapes the fallback can produce, and a rule that read the sign correctly but the atom count wrongly would satisfy either one alone."
+    },
+    {
+      "id": "0628-a-doubly-charged-ester-is-an-anion",
+      "issue": 628,
+      "title": "The `Methyl Borate` duplicate is not published at all any more",
+      "subject": {
+        "kind": "substance",
+        "label": "Methyl Borate"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Rewritten with #338, reason recorded: the substance this claim typed was itself a defect. `Methyl Borate` existed only because two BAFU rows carrying the retired 2.2 spelling matched nothing and minted it, odd charged formula (`CH3BO3-2`) and all; the historical-name aliases send those rows to `Trimethyl borate`, the neutral ester every release since 2.2 names, so the subject is gone and gone is correct. The formula-charge fallback the original claim guarded is still claimed by the substances above, which are real and stay; what is lost is only its smallest instance -- two flows, a name nobody queries, a formula no other rule reads. Claimed as `exists: false` so the duplicate coming back is what this claim would notice now."
+    },
+    {
+      "id": "0628-a-salt-is-not-an-ion",
+      "issue": 628,
+      "title": "Benzethonium chloride is still published as a salt",
+      "subject": {
+        "kind": "substance",
+        "label": "Benzethonium Chloride"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "ChemicalSalt"
+      },
+      "comment": "**The first guard, and the population it protects.** Six substances state formulas at more than one charge because they are salts -- a cation and its counter-ion, written both ways -- and `ChemicalSalt` is right for every one of them. They were typed correctly before this change and a rule that took the first charged formula it found would have retyped all six as ions.\n\nBenzethonium chloride stands for them because its three formulas make the disagreement explicit: `C27H42ClNO2`, `C27H42NO2` and `C27H42NO2.Cl` -- the whole salt, the cation alone, and the salt written as its two parts."
+    },
+    {
+      "id": "0628-two-opposite-formulas-are-not-a-charge",
+      "issue": 628,
+      "title": "The substance stating two opposite formulas is not typed from either of them",
+      "subject": {
+        "kind": "substance",
+        "label": "Phosphonic Acid, Dibutyl Ester"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "NeutralMolecule",
+        "flow_count": 13
+      },
+      "comment": "**The second guard.** This substance states `C8H18O3P+` *and* `C8H18O3P-`, which is not a charge but two contradictory readings of one substance, from the same enrichment. Taking either would publish whichever the enrichment happened to write down first, and the sign would flip with a cache refresh; requiring the stated formulas to agree is what makes the rule reproducible.\n\nThe claim is that the type did not move, not that `NeutralMolecule` is the right answer for it -- the row wants a curator rather than a typing rule, and both formulas are still on the record for whoever takes it. This entry is what would notice if the agreement guard came loose, because this is the one substance in the population where it decides anything."
+    },
+    {
+      "id": "0628-a-charge-with-no-formula-is-still-an-ion",
+      "issue": 628,
+      "title": "Rhenium(2+) is published as an ion rather than as a mixture of unknown composition",
+      "subject": {
+        "kind": "substance",
+        "label": "Rhenium(2+)"
+      },
+      "expect": {
+        "flow_type": "MonoatomicIon"
+      },
+      "pending": true,
+      "comment": "**The half of the class this change does not reach, recorded where the rest of it is.** The typing rules overwrite an ion marker in two directions: with `NeutralMolecule` where there is a structure, which is what the fallback fixes, and with `ImpreciseChemicalMixture` where there is not, which it cannot -- reading the formulas is no help to a substance that has none.\n\n`Rhenium(2+)` states `elemental_charge` 2, no formula and no SMILES, and is published across thirteen flows as a substance of variable composition and unknown stoichiometry. It is a rhenium atom that has lost two electrons. The same shape is recorded from the other side in `0396-a-stated-charge-is-published`, and it is pending here because the project agrees it is not true yet.\n\n`MonoatomicIon` rather than `AtomCation` is written deliberately: the stated charge says it is an ion of one atom and nothing published says which way the sign resolves in the typing tree, so the claim asks for the term the ion machinery already uses for BAFU's `Iron, ion` and `Arsenic, ion` in #71."
+    }
+  ]
+}

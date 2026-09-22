@@ -1,0 +1,154 @@
+{
+  "$defs": {
+    "Band": {
+      "description": "How far apart two implementations are about one factor.\n\nBands rather than the ratio alone, because the ratio is what a reader sorts\nby and the band is what they filter on: \"show me everything over ten times\"\nis the question, and 2% is the line `contested_cas` already draws between a\nrounding and a disagreement.",
+      "enum": [
+        "identical",
+        "within-tolerance",
+        "2x",
+        "10x",
+        "100x",
+        "over-100x",
+        "incomparable"
+      ],
+      "title": "Band",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Where two implementations of EF 3.1 state different numbers for one flow, category and place, and where each of them characterises a substance in one context and skips the context beside it. A difference is not an error: most are modelling choices.",
+  "properties": {
+    "coverage": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "dimension": {
+            "title": "Dimension",
+            "type": "string"
+          },
+          "flows": {
+            "title": "Flows",
+            "type": "integer"
+          },
+          "implemented_by": {
+            "title": "Implemented By",
+            "type": "string"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dimension",
+          "flows",
+          "implemented_by",
+          "method",
+          "value"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "differences": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "title": "Amount",
+            "type": "number"
+          },
+          "band": {
+            "$ref": "#/$defs/Band"
+          },
+          "category_slug": {
+            "title": "Category Slug",
+            "type": "string"
+          },
+          "derivation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Derivation"
+          },
+          "elementary_flow_uuid": {
+            "title": "Elementary Flow Uuid",
+            "type": "string"
+          },
+          "geography": {
+            "title": "Geography",
+            "type": "string"
+          },
+          "implemented_by": {
+            "title": "Implemented By",
+            "type": "string"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "ratio": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ratio"
+          },
+          "source_flow_uuid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Flow Uuid"
+          }
+        },
+        "required": [
+          "amount",
+          "band",
+          "category_slug",
+          "derivation",
+          "elementary_flow_uuid",
+          "geography",
+          "implemented_by",
+          "method",
+          "ratio",
+          "source_flow_uuid"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 2,
+      "type": "integer"
+    },
+    "stats": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "differences",
+    "coverage"
+  ],
+  "title": "lcia-differences.json",
+  "type": "object"
+}

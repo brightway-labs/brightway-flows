@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "method": "ef",
+  "description": "Factors EF 3.1 states against a substance they are not about, moved onto the substance they describe, in the consensus implementation only. This is the case `lcia-factor-rulings.json` cannot express: a ruling answers a queue item, and here nothing is inconsistent as far as the pipeline can see -- EF states a number, both transcriptions agree, no queue item is written, and no implementation states the factor for the right substance at all, so no `publish` verdict could name one.\n\nA row names two substances and a category and moves what it finds, context by context. The amount, the unit and the geography stay the method's throughout, because what is known is narrow and checkable -- *this factor, the one EF states over there, belongs here* -- and asserting a number instead would be this project inventing a characterisation factor that went on being asserted after EF restated it.\n\n`stated_about_the_source` and `stated_about_the_destination` record what every implementation said when the row was written, and a build that states something else does not apply it. That is what makes a re-transcription which fixes this at source undo the move with nobody editing the file: if EF moves the factor to the right substance, the destination stops being silent and the guard says no. Borrowed from `lcia-factor-rulings.json`, which learned it the hard way.\n\nThe comment is mandatory. Every row here overrules the method's own publisher about which substance a number describes.",
+  "moves": [
+    {
+      "category_slug": "ozone-depletion",
+      "category": "Ozone depletion",
+      "from_flow_object_id": "fo-f1b6ac0f57c85bc6",
+      "from_substance": "1,1,2-trichloroethane",
+      "to_flow_object_id": "fo-49ce0eec1f4341e1",
+      "to_substance": "1,1,1-Trichloroethane",
+      "stated_about_the_source": {
+        "European Commission — JRC": [
+          0.14
+        ]
+      },
+      "stated_about_the_destination": {},
+      "comment": "EF 3.1 states an ozone-depletion factor of 0.14 for 1,1,2-trichloroethane, in five air compartments, and this list publishes it. 1,1,2-trichloroethane depletes no ozone. It is not in the Montreal Protocol's annexes, it has no published ozone-depletion potential, and no other method gives it one; it is a suspected carcinogen used to make vinylidene chloride. 1,1,1-trichloroethane is the degreasing solvent the Montreal Protocol controls *because* it eats ozone -- Annex B, with a published potential -- and this list publishes it with no ozone-depletion factor at all.\n\nThree things say the number is the solvent's.\n\n**The company it keeps.** EF 3.1 gives an ozone-depletion factor to 23 distinct substances. Every other one is a genuine ozone depleter: the CFCs, the halons, bromomethane, carbon tetrachloride, the HCFCs, halothane. It is a list of controlled substances with one impostor on it.\n\n**Which flows carry it.** No flow carrying 71-55-6, the solvent's number, has an ozone-depletion factor. All five that do carry 79-00-5. EF's ozone-depletion method appears to have been keyed to the flow's *name* while its toxicity methods were keyed to the flow's *registry number*, so the two disagree about which chemical the flow is.\n\n**#121 found the same split and settled it for the name.** EF named those same five air flows `1,1,1-trichloroethane` while giving them 79-00-5, and `ef-3.1-manual-fixes.json` corrects the name to the one the number says. This is the half that lives in the factors, and a mapping change cannot reach it: a characterisation factor sits on the flow, not on the mapping, so repointing ecoinvent's rows moved the rows and left the factor where EF put it.\n\nApplied in the consensus implementation only. The JRC's transcription goes on saying 0.14 for 1,1,2-trichloroethane, because that is what the JRC published and a reader comparing this list against EF 3.1 has to be able to see the difference rather than have it quietly reconciled. (#126)"
+    }
+  ]
+}

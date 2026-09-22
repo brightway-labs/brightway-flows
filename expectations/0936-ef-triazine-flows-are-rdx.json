@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 names thirteen flows `1,3,5-triazine` and gives every one of them RDX's registry number 121-82-4, RDX's EC number 204-500-1, and thirty synonyms that all name RDX; USEtox 2.1, where EF's toxicity factors come from, lists 121-82-4 as trinitrohexahydro-triazine. The name is the one field on the row that disagrees with the rest of it, and the published substance was RDX wearing the wrong name. Stepwise 2006 ships `1,3,5-Triazine` under 290-87-9, the real ring, and its six rows were landing on the RDX object by name. #199 corrects EF's name, keyed on the number, and the Stepwise rows then mint the substance they are.",
+  "expectations": [
+    {
+      "id": "0936-ef-rdx-is-called-rdx",
+      "issue": 936,
+      "title": "The substance carrying RDX's number 121-82-4 is called RDX, and there is one of it",
+      "subject": {"kind": "substance", "cas": "121-82-4"},
+      "expect": {"exists": true, "count": 1, "label": "RDX"},
+      "comment": "On the build of 2 September 2026 (b445ff6) the substance carrying 121-82-4 was labelled `1,3,5-triazine`, EF's name for it. The correction in `ef-3.1-manual-fixes.json` is keyed on the registry number, as the paraquat dichloride correction is (#119), and does not keep the old name as a synonym, because it is the name of a different chemical."
+    },
+    {
+      "id": "0936-ef-fourteen-rdx-flows",
+      "issue": 936,
+      "title": "EF 3.1's thirteen flows named for RDX are published under that name",
+      "subject": {"kind": "flow", "name": "RDX"},
+      "expect": {"exists": true, "count": 13},
+      "comment": "Thirteen compartments: six in air, three on the ground and four in water. A fourteenth flow on the object, in the unconfined aquifer, was minted for a Stepwise row that no longer lands here, which is why the object held fourteen on the build of 2 September 2026."
+    },
+    {
+      "id": "0936-stepwise-triazine-is-its-own-substance",
+      "issue": 936,
+      "title": "Stepwise's six `1,3,5-Triazine` rows reach one substance, and it carries the triazine's number 290-87-9",
+      "subject": {"kind": "source_row", "list": "stepwise", "name": "1,3,5-Triazine"},
+      "expect": {"row_count": 6, "outcome": "placed", "same_substance": true, "target_cas": "290-87-9"},
+      "comment": "On the build of 2 September 2026 all six reached the RDX object, basis `label`, because nothing held 290-87-9 and the name hit the object's preferred label exactly. Once the object is called RDX the name finds nothing, and the rows mint their own substance under the number the vendor wrote."
+    },
+    {
+      "id": "0936-the-triazine-exists-once",
+      "issue": 936,
+      "title": "The substance carrying 290-87-9 exists once and is called 1,3,5-triazine",
+      "subject": {"kind": "substance", "cas": "290-87-9"},
+      "expect": {"exists": true, "count": 1, "label": "1,3,5-Triazine"},
+      "comment": "Nothing carried 290-87-9 on the build of 2 September 2026. The label is the vendor's spelling; names are compared without regard to case."
+    }
+  ]
+}

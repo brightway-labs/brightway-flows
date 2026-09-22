@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "description": "When a source row matches no substance the list already holds, the merge creates one for it, which is right -- the alternative is losing the flow. What it created was a label and nothing else: on the build of 5f77d7b4de1f, 261 of 330 created substances carry no property at all and 206 are typed `unclassified`. The enrichment chain does run over these rows before they are matched -- 69 of the 330 come out with a full set of chemistry -- so the question is what the chain had to go on, and the answer is three different gaps. (1) The layer that recognises a monoatomic ion by its name and links it to the element it is an ion of never ran on a merged row: it sits inside the layering behind the same switch as the isotope machinery a merged batch has no use for, and it looks the element up among the objects it was handed, while a merge mints no elements. Five substances. (2) The name-to-structure parser refused every substance whose synonyms spell one molecule more than one way, because it counted spellings where it meant to count structures; `Sulfur Dichloride` is eight names for `ClSCl` and got nothing. Twenty-one substances have a readable name and none had exactly one. (3) A row with no registry number got none, even where another row of the *same list* gives that name one -- and a registry number is what every lookup that fills in chemistry is keyed on, as well as the strongest thing the matcher has. Twelve substances, all BAFU. Reading the number off ChEBI and PubChem instead would reach twenty-one more, and a build of a branch that did showed it cannot be done that way: their name indexes carry trade names, so `Granite` resolved to penoxsulam's number and BAFU's granite matched Penoxsulam, and thirteen nuclides were split off the substance their sibling rows reach because those databases index `krypton-85m` under krypton-85. Those claims stay pending. What is left after all three is not a pipeline gap at all: 154 of the 206 `unclassified` ones are land occupation, waste categories, noise or economic flows rather than substances (#65, #66), and others are duplicates of substances the list already holds (#103). See #71.",
+  "expectations": [
+    {
+      "id": "0396-iron-ion-is-an-ion",
+      "issue": 396,
+      "title": "The substance created for BAFU's `Iron, ion` is published as an ion, not as `unclassified`",
+      "subject": {
+        "kind": "substance",
+        "label": "Iron, Ion"
+      },
+      "expect": {
+        "flow_type": "MonoatomicIon"
+      },
+      "comment": "`unclassified` on a build of main. Nothing can say whether this is ferrous or ferric -- the name does not say, and guessing would assign a toxicity by regex -- but that it is an iron ion is not in question, and the list holds iron. This is the claim the ion layer answers by running: it recognises the name, links the object to the iron flow object, and the typing pass leaves the answer standing because it has no structure of its own to give a more specific one."
+    },
+    {
+      "id": "0396-arsenic-ion-is-an-ion",
+      "issue": 396,
+      "title": "The substance created for BAFU's `Arsenic, ion` is published as an ion",
+      "subject": {
+        "kind": "substance",
+        "label": "Arsenic, Ion"
+      },
+      "expect": {
+        "flow_type": "MonoatomicIon"
+      },
+      "comment": "The same shape as the iron row and stated separately, because a fix that reached one element's spelling and not another's would satisfy a single claim and leave the defect. `unclassified` on a build of main."
+    },
+    {
+      "id": "0396-a-stated-charge-is-published",
+      "issue": 396,
+      "title": "BAFU's `Calcium II` row reaches the calcium ion the list already holds",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "e9af3c60-dbac-5f27-9055-8f8f32335f6b"
+      },
+      "expect": {
+        "basis": "cas",
+        "target_name": "Calcium(2+)"
+      },
+      "comment": "`unclassified` with no registry number and no properties on the build of 5f77d7b4de1f. This spelling states the charge where `Iron, ion` does not, so the ion layer publishes `chemrof:elemental_charge` 2 and looks the ion up by its canonical name, which is how 14127-61-8 -- calcium(2+) -- reaches it. This claim asked for `flow_type: MonoatomicIon` until a full build showed why that is the wrong thing to ask: once the object has a registry number and still no structure, the typing rules call it `ImpreciseChemicalMixture`, and the ion marker is overwritten. That is a defect in the typing rules -- a substance known to be one calcium atom with a charge of 2 is not a mixture of unknown composition -- and it is a different issue from this one. The registry number is the claim that survives it, and it is the stronger statement anyway: it says which calcium ion, where the type would only have said that it is one. The id is kept so the baseline keeps its history for this question.\n\n**Restated about the rows by #127, keeping the id, and for exactly the reason `0396-created-substances-carry-their-chemistry` was restated two entries down: a full build answered it by removing the substance.** The claim was about the flow object created for BAFU's `Calcium II`, and there is no longer one -- the three rows now carry 14127-61-8 on the source flow and reach the `Calcium(2+)` this list already published, so nothing is created and the selector matched nothing. `unresolved` reads as no news, which is the wrong report for a question that has been answered well.\n\nWhat the entry asked is unchanged and is still the interesting thing: this spelling states the charge where `Iron, ion` does not, and the number it implies is what should decide where the row lands. `basis` is claimed because that is now the whole of it -- the row arrives on the registry number, which is how every other BAFU ion row arrives and is what #127 found was never happening on the name.\n\nThe observation about typing that this comment records above is also settled, and by removal rather than by repair: the object typed `ImpreciseChemicalMixture` was the created one, and `Calcium(2+)` is typed `AtomCation`.\n\n**Named by uuid, and that is the second thing this entry has had to learn.** Restating it about the rows was not enough: `merge_outcomes` records the *harmonised* name, and once the row carries 14127-61-8 this list renames it from `Calcium II` to `Calcium(2+)`, so a selector written on the name it was filed under stopped matching the moment the fix worked. The vendor's own identifier does not move -- BAFU ships `e9af3c60-dbac-5f27-9055-8f8f32335f6b` for the emission to unspecified water in every release on disk -- so that is what the claim names, which is what `expectations/README.md` means by naming the subject the way it will still be findable. The other two `Calcium II` rows, to ocean and river, go the same way and are checked in `tests/test_charged_forms_reach_the_list.py` rather than by repeating this entry three times."
+    },
+    {
+      "id": "0396-created-substances-carry-their-chemistry",
+      "issue": 396,
+      "title": "BAFU's second `3-Methyl-1-butanol` row reaches the isoamyl alcohol the list already holds",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "3-Methyl-1-butanol"
+      },
+      "expect": {
+        "same_substance": true
+      },
+      "comment": "This asked that the substance created for `3-Methyl-1-butanol` carry a chemistry payload, and a full build answered it by removing the substance instead: BAFU ships isoamyl alcohol twice, once with 123-51-3 and once without, and the row without it now takes the number from the row with it and reaches the substance the list already had. `unresolved` is what an expectation reports when its subject has gone away, which reads as no news, so the claim is restated about the rows rather than about the substance that should not have existed. Two rows, one substance, and the second copy is gone."
+    },
+    {
+      "id": "0396-sulfur-dichloride-has-a-structure",
+      "issue": 396,
+      "title": "The substance created for `Sulfur Dichloride` is published as a molecule, not as a mixture of unknown composition",
+      "subject": {
+        "kind": "substance",
+        "label": "Sulfur Dichloride"
+      },
+      "expect": {
+        "flow_type": "NeutralMolecule"
+      },
+      "comment": "`ImpreciseChemicalMixture` on the build of 5f77d7b4de1f, with no properties at all, from ecoinvent rows 0e71868c and 7bade07b carrying 10545-99-0. Neither ChEBI nor PubChem knows that number, so the name is the only evidence there is -- and the name-to-structure parser reads five of this substance's eight spellings, all of them as `ClSCl`. It refused because there were five rather than one: it counted spellings where it meant to count structures. Sulfur dichloride is two chlorines on a sulfur and is not a mixture of anything."
+    },
+    {
+      "id": "0396-ammonium-bisulfate-is-a-salt",
+      "issue": 396,
+      "title": "The substance created for `Ammonium Bisulfate` is published with its composition",
+      "subject": {
+        "kind": "substance",
+        "label": "Ammonium Bisulfate"
+      },
+      "expect": {
+        "flow_type": "MolecularComplex"
+      },
+      "comment": "`ImpreciseChemicalMixture` on the build of 5f77d7b4de1f, from ecoinvent row a1935676 carrying 7803-63-6. Stated beside the sulfur dichloride claim rather than instead of it because the two exercise different halves of the answer: sulfur dichloride is one molecule and this is two components, so the structure the parser recovers has to survive as far as the typing rules and be read as more than one thing. This asked for `ChemicalSalt` until a full build: the spelling that won is `N.O=S(=O)(O)O`, ammonia beside sulfuric acid, which is the neutral reading of the same composition and types as a complex rather than a salt. Which of the two the substance is depends on which spelling the parser was given, not on this rule, so the claim is what the build produces and the id is kept."
+    },
+    {
+      "id": "0396-trioctyltin-takes-the-majority",
+      "issue": 396,
+      "title": "Where a substance's spellings disagree lopsidedly, `Trioctyltin` takes the answer four of them give",
+      "subject": {
+        "kind": "substance",
+        "label": "Trioctyltin"
+      },
+      "expect": {
+        "flow_type": "MolecularComplex"
+      },
+      "comment": "`ImpreciseChemicalMixture` on the build of 5f77d7b4de1f, from ecoinvent row e2ee2329 carrying 869-59-0. Four of this substance's five readable spellings -- `Stannane, trioctyl-`, `Trioctylstannane`, `Trioctyltin hydride`, `Tris(n-octyl)stannane` -- resolve to one structure, and the bare name `Trioctyltin` resolves to another, because a tin with three octyls on it and nothing said about the fourth bond is not a complete molecule. Four against one is not a disagreement about what the substance is. `Zoxamide` is the case where it is -- two spellings against two -- and that one is left alone; it is pinned in `tests/test_opsin_structure_agreement.py` rather than here, because a claim that already holds cannot fail if the rule is widened to break it. This asked for `NeutralMolecule` until a full build. What the parser returns for `Stannane, trioctyl-` is `[CH2]CCCCCCC.[CH2]CCCCCCC.[CH2]CCCCCCC.[H].[Sn]` -- three octyl fragments, a hydrogen and a tin, with none of the bonds between them drawn -- so the composition is right, C24H52Sn, and the connectivity is not. Organometallics are where that parser is weakest. The formula is the gain here and the type follows the fragments; a substance whose structure is drawn in pieces is worth its own issue rather than a reason to publish nothing."
+    },
+    {
+      "id": "0396-bafu-hfc-125-reaches-the-hfc-125-the-list-has",
+      "issue": 396,
+      "title": "BAFU's `Ethane, Pentafluoro-, HFC-125` rows all reach one substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Ethane, Pentafluoro-, HFC-125"
+      },
+      "expect": {
+        "same_substance": true
+      },
+      "comment": "Three BAFU rows. Two carry 354-33-6 and reached pentafluoroethane; the third, 2e05e0c0 in `emissions to air, unspecified`, carries nothing and minted a second substance under the same name on the build of 5f77d7b4de1f. `same_substance` rather than `same_target` because the three rows are in three compartments and reaching three flows is correct -- reaching two substances is not. The number is written onto the third row from the other two while the list is being enriched, before it is matched."
+    },
+    {
+      "id": "0396-bafu-n-octane-reaches-the-octane-the-list-has",
+      "issue": 396,
+      "title": "BAFU's `N-octane` reaches the octane the list already holds",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "N-octane"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas"
+      },
+      "comment": "`created` on the build of 5f77d7b4de1f: BAFU row f007b217 ships no registry number, the matcher had only the name, and it minted an empty substance. ChEBI and PubChem both know `n-octane` as 111-65-9, which exactly one substance in the list carries -- `Octane`, fo-42175612fb15f8a2. Pending, and deliberately not fixed by taking that number: a build of the branch that did showed the reference data cannot be read this way, because its name indexes carry trade names. `Granite` resolved to 219714-96-2 and BAFU's granite matched Penoxsulam, which is the exact pairing the merge's label narrowing exists to prevent. The route that would reach this row is a lookup restricted to a ChEBI or PubChem record's primary name, and it needs a measurement of its own. The basis is claimed as well as the outcome because reaching `Octane` by name instead is the weaker evidence #103 is about, and this claim should not pass for that reason.",
+      "pending": true
+    },
+    {
+      "id": "0396-bafu-chrysotile-reaches-the-asbestos-the-list-has",
+      "issue": 396,
+      "title": "BAFU's `Chrysotile` reaches the white asbestos the list already holds",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Chrysotile"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas"
+      },
+      "comment": "`created` on the build of 5f77d7b4de1f, as fo-120accc5d30d8247, while ecoinvent's `Chrysotile` row carries 12001-29-5 and matched `Asbestos (white)`, fo-63d747e8b6b07701, three rows away. Stated beside the octane claim because the two are found by different names: `n-octane` is a systematic name a structure parser could also have read, and `Chrysotile` is a mineral name no parser will ever read. Only a registry lookup reaches this one -- and BAFU never gives the name a number on any of its own rows, so the step that closed #26 cannot either. Pending for the same reason as the octane claim.",
+      "pending": true
+    }
+  ]
+}

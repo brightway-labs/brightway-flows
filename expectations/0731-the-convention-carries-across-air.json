@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "description": "#152 found that a kilogram of sulphuryl difluoride from a rural stack was worth 4,630 kg CO2-eq and the same kilogram over a suburb was worth nothing, and answered it with a rule that carried one air factor across every air sub-compartment in three well-mixed categories, indoor and long-term air included. That rule is retired: `data/context-carry-rules.json` carries the outdoor strata from unspecified air in every category, and indoor and long-term air are walls nothing crosses. This file replaces `0731-one-air-factor-covers-every-compartment.json`, whose indoor expectations it deliberately inverts.",
+  "expectations": [
+    {
+      "id": "0731-the-fumigant-is-characterised-where-it-is-released",
+      "issue": 731,
+      "title": "Sulphuryl difluoride released over a suburb is worth what it is worth from a stack",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sulphuryl Difluoride",
+        "context_display": "Environmental → Air → Ground level → Urban (>1000 people/square mile)",
+        "category": "Climate change",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "4630",
+        "derivation": "carried"
+      },
+      "comment": "The expectation the first rule was written for, kept. The urban ground level takes unspecified air's number under the convention, and unspecified air carries the 4,630 a ruling published (#151)."
+    },
+    {
+      "id": "0731-but-not-indoors",
+      "issue": 731,
+      "title": "The same kilogram released indoors is not characterised",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sulphuryl Difluoride",
+        "context_display": "Environmental → Air → Indoor",
+        "category": "Climate change",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Indoor air is a wall of the convention: a different fate model, and one convention has no per-category holes in a wall. The first rule carried fifteen indoor factors for HFCs and halons on the strength of the gas being well mixed; they are withdrawn with it, and whether a greenhouse gas should cross this wall is recorded as an open decision in `plans/lcia-consensus-decisions.md` §9 rather than answered by a category list."
+    },
+    {
+      "id": "0731-a-high-stack-in-a-city-behaves-as-rural",
+      "issue": 731,
+      "title": "A high urban stack takes the rural stack's number",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_context_carry_carried_downward",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 1000
+      },
+      "comment": "The downward rules carry 1,515 factors for EF 3.1 on the 2026-09-01 build -- 1,029 rivers, 121 lakes, 170 silvicultural and 125 industrial soils, 30 non-agricultural soils, and 40 air strata -- and 8,257 for Stepwise. Bounded from below rather than pinned, because the count grows with every list that brings a context somebody else characterised; what must not happen is the pass going silent, which a thousand guards against."
+    }
+  ]
+}

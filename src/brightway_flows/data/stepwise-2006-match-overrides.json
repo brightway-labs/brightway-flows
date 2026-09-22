@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "description": "Curated targets for Stepwise 2006 flows. Stepwise arrives as an LCIA method file and declares no correspondence table, so every row here is appended rather than rewritten -- `apply_match_overrides` appends an override whose source flow the table has no row for, which for a list with no table at all is every row. Targets are EF 3.1 elementary flow ids, because that is what the flow objects these reach are keyed on. `comment` is mandatory: each row asserts something no published table says, and the assertion needs its reasoning attached.\n\nTwo groups. The first is one row: Stepwise's unqualified carbon dioxide, sent to fossil carbon dioxide on the evidence of the method's own factor for it (#175). The second is the twelve energy carriers whose mass or volume reaches an EF 3.1 flow declared in megajoules; every one of them states the conversion Stepwise itself states, and every one is also listed in `unit-change-allowlist.json` -- this file supplies the number, that file accepts the crossing (#171). Where a row's own name states the energy content, that is the number, which is the rule `simapro-lineage-manual-fixes.json` applies to `Uranium, 451 GJ per kg`; where the name says nothing, the method's `Non-renewable energy` factor is what Stepwise multiplies an inventoried kilogram by and is the number. Another list's measurement is not used for Stepwise's pair, which is what #162 settled. See `brightway_flows.match_overrides`.",
+  "overrides": [
+    {
+      "source_uuid": "81bef0b2-3ddf-541f-a485-26355997c376",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "Air",
+        "(unspecified)"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-923d-0050c2490048",
+      "target_name": "carbon dioxide (fossil)",
+      "comment": "Stepwise's unqualified carbon dioxide is fossil, and Stepwise's own method says so. It ships four carbon dioxide rows into unspecified air, all four carrying 124-38-9: `Carbon dioxide, fossil` characterised 1.0 under `Global warming, fossil`, `Carbon dioxide, biogenic` characterised 1.0 under `Global warming, non-fossil`, `Carbon dioxide, land transformation` characterised 1.0 under `Global warming, fossil`, and this bare row -- characterised 1.0 under `Global warming, fossil` and under nothing else. A method that ships a separate fossil row and still counts its plain row as fossil has resolved the catch-all in one direction, and this is that direction. The row is the SimaPro-lineage shape BAFU ships too: a plain row beside the qualified ones, which an inventory written against the list uses for the ordinary case, and BAFU's two are sent to this same substance for the same kind of reason (#139 §17). Without this row the name and the registry number agree on the origin-less carbon dioxide, the merge matches there on `cas+label`, and -- EF shipping no air flow for that substance -- the merge adds an eighth flow to it, in `Environmental → Air → Unknown`, which is `033b961dd01b53699d8830bf71d8d28beb794663` on the build of 2026-08-29 (`20260829T1158418340740000`). That flow exists in no build of `main`, so nothing is withdrawn. The target is the flow BAFU's own `emissions to air / unspecified` row reaches, so the two lists' unqualified rows meet. See #175."
+    },
+    {
+      "source_uuid": "7d86a5b7-c5d1-549b-aad3-29286a5e5346",
+      "source_name": "Coal, hard",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
+      "target_name": "hard coal",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 19.1,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "EF 3.1 accounts fossil energy carriers by energy content rather than mass, deliberately, so `hard coal` is declared in MJ and Stepwise's kilogram row reaches it across a quantity kind. 19.1 MJ/kg is Stepwise's own number, stated twice in its own export: the substance block gives a higher heating value of 19.1 MJ/kg, and the method's `Non-renewable energy` factor for this flow is 19.1. The list's own evidence about its own pair, which is the rule #162 settled when BAFU's crude oil took BAFU's 43.1 over ecoinvent's 43.4: another list's measurement is for a pair that has none of its own. ecoinvent's and BAFU's kilograms of hard coal go on reaching this flow at 18.01, the ecoinvent Centre's implementation of EF 3.1, which is 6% lower -- Stepwise is on a gross basis and that one is not, and neither is the IPCC 2006 Guidelines Vol. 2 Table 1.2 default of 25.8 MJ/kg for other bituminous coal. Which basis EF intends is a question about the target flow and every list reaching it, not about this row. Accepted as a crossing in `unit-change-allowlist.json`; the number is here. See #171."
+    },
+    {
+      "source_uuid": "cede79a3-3e82-562b-ac7c-8f0483604f8b",
+      "source_name": "Coal, brown",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
+      "target_name": "brown coal",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 9.9,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "As for `Coal, hard`: a mass onto EF 3.1's energy-content basis, at the number Stepwise states for it twice -- a higher heating value of 9.90 MJ/kg in the substance block, and 9.9 as the method's `Non-renewable energy` factor. ecoinvent's and BAFU's kilograms take 9.41 on the same flow, 5% lower and on a net basis; Stepwise's own lower heating value is 8.75, which is what the difference is. See #171."
+    },
+    {
+      "source_uuid": "146c61d4-321a-53ef-b58e-35d53bc57de6",
+      "source_name": "Oil, crude",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
+      "target_name": "crude oil",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 45.8,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "As for the coals. 45.8 MJ/kg is Stepwise's higher heating value for the row and its `Non-renewable energy` factor, the same number stated in both places. It is the highest of the four values this project now holds for a kilogram of crude oil -- BAFU's own 43.1, ecoinvent 3.12's 43.4, ecoinvent 3.8's 42.3, and the IPCC default of 42.3 -- and the gap is the gross basis rather than a disagreement about the oil: Stepwise's own lower heating value is 43.2, which sits among the other three. See #171."
+    },
+    {
+      "source_uuid": "b28ffb76-dac7-5bdc-9aa9-f3a00f1ce266",
+      "source_name": "Peat",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "peat",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 9.9,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "As for the coals, and the one carrier where Stepwise's substance block says nothing: it ships no heating value for peat at all, so the only number the method states for a kilogram of it is its `Non-renewable energy` factor of 9.9. That is the operative one either way -- it is what Stepwise multiplies an inventoried kilogram by -- and it is within 1.5% of the 9.76 BAFU's kilogram takes onto this same flow. See #171."
+    },
+    {
+      "source_uuid": "2a7ddb41-4644-5f68-a2ac-81cf18772938",
+      "source_name": "Uranium",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "uranium",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 560000.0,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "EF 3.1 accounts uranium by the energy extractable from it, under the same `Resource use, fossils` indicator as the fossil carriers, so a kilogram of it reaches a flow in MJ. 560,000 MJ/kg is Stepwise's `Non-renewable energy` factor for this row and is exactly the number ecoinvent's and BAFU's uranium rows already take onto this flow: the gross fission energy content of natural uranium, which the vendor's own `Uranium, 560 GJ per kg` row names in full. The two rules agree here, which is the corroboration this family's other numbers do not get. Fission energy content, never a heating value. See #171."
+    },
+    {
+      "source_uuid": "177b2fed-48df-5222-b7a7-be3b71a0e73c",
+      "source_name": "Gas, natural/m3",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "natural gas",
+      "source_unit": "m3",
+      "target_unit": "MJ",
+      "conversion_factor": 40.3,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "A standard volume onto an energy content, on the same EF 3.1 basis as the coals. This is the one row of the twelve where Stepwise's two statements about itself disagree: the substance block gives a higher heating value of 38.3 MJ/m3 and a lower of 34.5, and the method's `Non-renewable energy` factor is 40.3. The factor is taken, because it is the number the method actually multiplies an inventoried cubic metre by, and a mapping onto EF's energy-content flow is asking exactly that question. The disagreement is recorded rather than resolved: 34.5 is what ecoinvent's own cubic-metre row takes onto this flow and 36.0 is what its standard-cubic-metre row and both of BAFU's take, so 40.3 is 12% above the highest of them and worth a reader's attention. See #171."
+    },
+    {
+      "source_uuid": "bbc7d9ed-0d3a-541b-8ea4-9b80d7c93b66",
+      "source_name": "Gas, natural, 30.3 MJ per kg",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "natural gas",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 30.3,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "One of six Stepwise gas rows whose *name* states what a unit of it is worth, which is the shape `Uranium, 451 GJ per kg` has in `simapro-lineage-manual-fixes.json`: the value is part of the flow's identity, so it is the value the mapping uses. 30.3 MJ/kg is the name's number, the substance block's lower heating value, and the method's `Non-renewable energy` factor, all three agreeing. See #171."
+    },
+    {
+      "source_uuid": "1da85908-9de5-5f8c-ad12-c5c2031a675d",
+      "source_name": "Gas, natural, 46.8 MJ per kg",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "natural gas",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 46.8,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "As for the 30.3 row: the name, the substance block's lower heating value and the method's factor all say 46.8 MJ/kg. See #171."
+    },
+    {
+      "source_uuid": "00e5682e-99d0-53ca-9142-8ddb8c14325a",
+      "source_name": "Gas, natural, feedstock, 46.8 MJ per kg",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "natural gas",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 46.8,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "The feedstock row of the same gas, and the same three-way agreement at 46.8 MJ/kg. `feedstock` says what the gas is used for rather than what it is, and EF 3.1 has one natural gas resource whichever it is, so the row reaches the same flow with the same number. See #171."
+    },
+    {
+      "source_uuid": "3e88af6a-0f31-5fb7-a035-7a4577e02c9b",
+      "source_name": "Gas, natural, 35 MJ per m3",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "natural gas",
+      "source_unit": "m3",
+      "target_unit": "MJ",
+      "conversion_factor": 35.0,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "As for the 30.3 row, by volume: the name, the lower heating value and the method's factor all say 35.0 MJ/m3. See #171."
+    },
+    {
+      "source_uuid": "01aa0043-f4ce-5461-9eab-6f7725cecbf2",
+      "source_name": "Gas, natural, feedstock, 35 MJ per m3",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "natural gas",
+      "source_unit": "m3",
+      "target_unit": "MJ",
+      "conversion_factor": 35.0,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "The feedstock row of the same gas, at the same 35.0 MJ/m3. See #171."
+    },
+    {
+      "source_uuid": "26eeeb1c-17c9-539c-a654-3a995495c235",
+      "source_name": "Gas, natural, 36.6 MJ per m3",
+      "source_context": [
+        "Raw",
+        "(unspecified)"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "natural gas",
+      "source_unit": "m3",
+      "target_unit": "MJ",
+      "conversion_factor": 36.6,
+      "conversion_checked_against": [
+        "2006-1.09"
+      ],
+      "comment": "As for the 35 MJ row: the name, the lower heating value and the method's factor all say 36.6 MJ/m3, which is also within 2% of the 36.0 ecoinvent's standard cubic metre and both of BAFU's gas rows take onto this flow. See #171."
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Outcome" %}
+{% set active_section = "merge" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ outcomes[0].source_name if outcomes else source_uuid }}</h1>
+  <p class="page__lede mono">{{ source_uuid }}</p>
+</header>
+
+{% if not outcomes %}
+<div class="notice">
+  <p>No outcome recorded for this source flow in run <code>{{ run.run_id }}</code>.</p>
+  <p><a href="{{ url_for('merge.outcomes') }}">Back to outcomes</a></p>
+</div>
+{% else %}
+{% if outcomes | length > 1 %}
+{# The case the JSON report could not describe: one file per version meant one
+   outcome per file, and a divergent mapping was invisible. #}
+<div class="notice notice--warn">
+  <div class="notice__title">Present in {{ outcomes | length }} source lists</div>
+  <p>Each list resolved it independently. Where they disagree, that is a conflict.</p>
+</div>
+{% endif %}
+
+{% for outcome in outcomes %}
+{% set candidates = candidate_summaries[loop.index0] %}
+<section class="section">
+  <div class="section__header">
+    <h2>{{ outcome.list_name }} {{ outcome.list_version }}</h2>
+    <span class="tag tag--{{ 'blocking' if outcome.outcome | string == 'unmatched' else 'ok' }}">{{ outcome.outcome }}</span>
+  </div>
+  <dl class="facts">
+    <dt>Name</dt><dd>{{ outcome.source_name or "—" }}</dd>
+    <dt>Context</dt><dd>{{ outcome.source_context | join(" → ") or "—" }}</dd>
+    <dt>Unit</dt><dd class="mono">{{ outcome.source_unit or "—" }}</dd>
+    <dt>CAS</dt><dd class="mono">{{ outcome.source_cas or "—" }}</dd>
+    <dt>EC</dt><dd class="mono">{{ outcome.source_ec or "—" }}</dd>
+    {% if outcome.reason %}<dt>Reason</dt><dd>{{ outcome.reason }}</dd>{% endif %}
+    {% if outcome.basis %}
+    <dt>Basis</dt><dd>{{ outcome.basis }} <span class="muted mono">{{ outcome.basis_value }}</span></dd>
+    {% endif %}
+    {% if outcome.matching_method %}
+    <dt>Method</dt><dd class="mono">{{ outcome.matching_method }}</dd>
+    {% endif %}
+    {% if outcome.flow_object_id %}
+    <dt>Substance</dt><dd>{{ t.substance_link(outcome.flow_object_id) }}</dd>
+    {% endif %}
+    {% if outcome.target_elementary_flow_id %}
+    <dt>Target flow</dt><dd>{{ t.flow_link(outcome.target_elementary_flow_id) }}</dd>
+    {% endif %}
+    {% if outcome.has_flow_object_candidates is not none %}
+    <dt>Candidate substances</dt>
+    <dd>{{ "yes" if outcome.has_flow_object_candidates else "no" }}</dd>
+    {% endif %}
+    {% if outcome.has_context_inconsistency %}
+    <dt>Stale decision</dt>
+    <dd>
+      A curator's stored decision placed this row, and the flow it names sits in
+      a different context from the one this row's own context maps to. The
+      decision stands — a person made it — but either the correspondence table
+      or the context registry has moved since it was written, so the pair is
+      worth looking at again.
+    </dd>
+    {% endif %}
+  </dl>
+  {# The candidates, spelled out. "Tied elementary candidates" says the
+     selector could not choose and stops there; a curator choosing in its place
+     needs what it was choosing between, which is the name, the unit and the
+     context of each flow. Two candidates alike in all three are a duplicate in
+     the consensus list -- a different job from a source row whose context is
+     ambiguous. #}
+  {% if candidates.objects or candidates.flows %}
+  <h3>What it could have been</h3>
+  {% if candidates.objects %}
+  <p>
+    {{ candidates.objects | length }}
+    candidate substance{{ "" if candidates.objects | length == 1 else "s" }}:
+    {% for object in candidates.objects %}
+    {{ t.substance_link(object.flow_object_id, object.name or object.flow_object_id) }}{%
+      if object.basis_hits %} <span class="muted">({{ object.basis_hits | join(", ") }})</span>{%
+      endif %}{{ "," if not loop.last }}
+    {% endfor %}
+  </p>
+  {% endif %}
+  {% if candidates.flows %}
+  <p class="muted">
+    {{ candidates.flow_count | thousands }}
+    flow{{ "" if candidates.flow_count == 1 else "s" }} between them{%
+      if candidates.eligible_count %}, {{ candidates.eligible_count }} of them eligible
+      after the dimension and media filter{% endif %}{%
+      if candidates.filtered_out_count %}, {{ candidates.filtered_out_count }} removed
+      because the context did not agree{% endif %}{%
+      if candidates.tied_count %}, and {{ candidates.tied_count }} tied on the winning
+      score of {{ candidates.winning_score }}{% endif %}.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col" class="num">Score</th>
+          <th scope="col">Name</th>
+          <th scope="col">Unit</th>
+          <th scope="col">Context</th>
+          <th scope="col" class="num">LCIA</th>
+          <th scope="col">Flow</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for flow in candidates.flows %}
+        <tr>
+          <td class="num">
+            {% if flow.score is not none %}{{ flow.score }}{% else %}<span class="muted">—</span>{% endif %}
+            {% if flow.tied_at_top %}<span class="tag tag--review">tied</span>{% endif %}
+          </td>
+          <td>
+            {% if flow.resolved %}{{ flow.name or "—" }}
+            {% else %}<span class="muted">not in the published list</span>{% endif %}
+            {% if flow.is_deprecated %}<span class="tag tag--blocking">deprecated</span>{% endif %}
+          </td>
+          <td class="mono">{{ flow.unit or "—" }}</td>
+          <td>{{ flow.context | join(" → ") or "—" }}</td>
+          <td class="num">{{ flow.lcia_factor_count | thousands }}</td>
+          <td>{{ t.flow_link(flow.elementary_flow_id) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  {% endif %}
+  <details>
+    <summary>Everything this outcome recorded</summary>
+    <pre class="json"><code>{{ decode_detail(outcome) }}</code></pre>
+  </details>
+</section>
+{% endfor %}
+{% endif %}
+{% endblock %}

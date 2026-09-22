@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "description": "GreenDelta files 56 flows under three compartments that name a place where this list names an action or a kind of water -- `Resource / land`, `Resource / in water` and `Resource / unspecified` -- and every route into the list needs a compartment, so all 1,528 of their factors reached nothing. `Occupation, agriculture` is the shape of it: the word `Occupation` is our context and never our label, and `agriculture` is the land class.\n\n**The class was already decided, once, by this project.** The package is distributed inside BAFU's openLCA database and names its flows as BAFU names them, so 51 of the 56 are spelled exactly as a flow in `bafu-2026-v1`, and `land-flow-classes.json` and `water-flow-materials.json` have read every one of those. `data/lcia-substance-decisions.json` -- the table #347 built for a publisher's own spelling of an ion -- carries that reading to a package that arrived with no identifier to follow.\n\n**Two checks agree with every row that has one.** Their own file resolves 76 of its `Resource / land` flows by ecoinvent uuid, 23 to Land Use -> Occupation and 53 to Land Use -> Transformation and none anywhere else, so a shorter form of the same name usually says the cover and the direction: `Occupation, forest, intensive` reaches `Forest, intensive`. And 640 of the 1,528 factors are bit-identical to what the JRC states for the same flow, category and country, with not one of the 1,528 disagreeing.\n\nMeasured by running `characterise` over the build of 2026-08-29 (`20260829T0723544328260000`): 56 more flows reached, 1,523 more factors published -- five of the 1,528 are a number their file states twice, which `lcia.collisions` settles -- and the consensus implementation unchanged. Seven of the nine claims below fail on `main`, where the table holds #347's 25 rows only. The other two are guards rather than gains -- the consensus is unmoved and the five real unit crossings are still reported -- and a change that met them by publishing nothing would fail the seven.\n\n**The second change, 2026-08-30: the 196 rows that write the country into the flow name.** `Water, well, CH` beside `Water, well`: the site-generic row already carries one factor for each of 209 countries, so the coded row is the same number written a second time and keyed on a name. Before this change 47 `Water, XX` rows reached `Water` in Environmental -> Water -> River by their registry number and put 47 different site-generic numbers on one flow, which the build reported as a collision; 49 more tied between `Water` and `Water vapour`; the rest reached nothing. `lcia.regionalised_names` sets every one of them aside behind its site-generic sibling, or behind the `GLO` member where the set has no site-generic row, and the one `GLO` member of such a set -- `Water, unspecified natural origin, GLO` -- reaches `Water` in Resource -> Water -> Unknown by a curated decision, where its 42.95 is the number their `Resource / unspecified` copy already publishes. Measured by running `characterise` over the build of 2026-08-29 (`20260829T1927246446400000`): 195 rows set aside, 46 factors withdrawn (45 on `Water` in the river and one on the fossil aquifer), the collision gone, and the consensus unchanged at 323,890. BAFU's rows of the same names are untouched: the build reads their country into a location and places them on the site-generic flows as before.",
+  "expectations": [
+    {
+      "id": "0785-the-table-reaches-fifty-six-more-flows",
+      "issue": 785,
+      "title": "56 land and water flows are found by a curated decision",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_matched_on_curated_decision"
+      },
+      "expect": {
+        "at_least": 74
+      },
+      "comment": "18 before, which are #347's ions. The other three bases are unchanged at 289, 2 and 16: this adds rows to a table and takes nothing from the routes that already worked. It has to be the curated basis rather than `name`, because a name comparison is exactly what cannot reach these flows -- `Occupation, agriculture` matches no published label of ours, and the compartment it is stated in maps to no context."
+    },
+    {
+      "id": "0785-the-factors-those-flows-carry",
+      "issue": 785,
+      "title": "GreenDelta's published factors rise to 25,100",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_factors_published"
+      },
+      "expect": {
+        "at_least": 25100
+      },
+      "comment": "23,577 before, of the 26,179 their file states. The 1,523 added are the 56 rows' own factors less the five their file states twice: `Occupation, urban, discontinuously built` and three like it appear in `Resource / land` with an ecoinvent uuid and again in `Resource / unspecified` without one, and `Water, well` does the same, so both copies state one number for one place and `lcia.collisions` keeps it once.\n\n`at_least`. The regionalised names were not left to raise it: the 2026-08-30 change set them aside instead, and the count is 25,266 -- 46 fewer, the 45 country numbers `Water, XX` rows had put on `Water` in the river under no country, and one on the fossil aquifer -- which this bound still holds above."
+    },
+    {
+      "id": "0785-fewer-of-their-flows-reach-nothing",
+      "issue": 785,
+      "title": "230 of GreenDelta's flows reach no flow of ours, down from 286",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_flow-not-reached"
+      },
+      "expect": {
+        "at_most": 230
+      },
+      "comment": "What is left is the tail #166 described: 195 rows whose country sits inside the flow name (`Water, unspecified natural origin, CH`), set aside on purpose since 2026-08-30 and each reported with the reason; the ties #165 reports; the seven lake rows #347 declined on purpose; and `Water, process, surface`, which states its factor per kilogram against a flow published per cubic metre. 220 on the build of 2026-08-29 with the 2026-08-30 change, 222 without it: the 48 `Water, XX` rows that used to reach a flow are now among them, and the 49 that were a tie are reported once rather than twice.\n\n`at_most`, so a row that stopped reaching its flow shows up here rather than only in the published count."
+    },
+    {
+      "id": "0785-fifty-one-more-flows-are-characterised",
+      "issue": 785,
+      "title": "GreenDelta characterises 1,507 of this list's flows",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_flows_characterised"
+      },
+      "expect": {
+        "at_least": 1507
+      },
+      "comment": "1,456 before. 56 rows and 51 more flows, because five of them reach a flow another row of theirs already characterised -- the same five duplicates the published count is short by."
+    },
+    {
+      "id": "0785-occupation-agriculture-is-the-agriculture-class",
+      "issue": 785,
+      "title": "GreenDelta's `Occupation, agriculture` characterises `Agriculture` in 213 countries",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Agriculture",
+        "context_display": "Land Use → Occupation",
+        "category": "Land use",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "count": 213
+      },
+      "comment": "The row #166 was written about, and the one the numbers settle rather than the names: 211 of its 213 country factors are what the JRC already states for `Agriculture` in the same country, to the digit, and the JRC states nothing for the other two. Switzerland is 118.27 on both sides.\n\nA count rather than an amount, because the factor is regionalised and 213 numbers are the claim. Before this change the flow carried the JRC's 213 and the consensus's 213 and nothing of GreenDelta's."
+    },
+    {
+      "id": "0785-the-older-forest-naming-reaches-its-class",
+      "issue": 785,
+      "title": "`Transformation, to forest, intensive, normal` characterises the normal-rotation class",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "To forest, intensive, normal rotation",
+        "context_display": "Land Use → Transformation",
+        "category": "Land use",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "count": 213
+      },
+      "comment": "The other kind of row, and why the table is BAFU's list rather than the JRC's numbers: nobody else characterises this class. EF 3.1 does not carry ecoinvent's older forest naming, so there is no number to agree with, and what the row rests on is BAFU's flow of exactly this name and their own `Transformation, to forest, intensive`, which resolves by ecoinvent uuid to `To forest, intensive`.\n\nIt is also the direction claim: `to forest` and `from forest` are a balanced pair of factors that the land taxonomy split into two flows precisely so they could not collapse (`land-taxonomy-overview.md`), and a row reading one as the other would put +817 where -451 belongs."
+    },
+    {
+      "id": "0785-water-well-is-groundwater",
+      "issue": 785,
+      "title": "`Water, well` characterises `Groundwater` in 209 countries",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Groundwater",
+        "context_display": "Resource → Water → Unconfined aquifer",
+        "category": "Water use",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "count": 209
+      },
+      "comment": "Their compartment `Resource / in water` is where every withdrawal of theirs is filed, and the three flows in it that resolve by ecoinvent uuid go to three different water bodies, so the compartment cannot say which water this is and the name has to. All 209 factors are bit-identical to the JRC's for the same flow and country.\n\n209 rather than the JRC's 210: their package states this flow in 209 places."
+    },
+    {
+      "id": "0785-a-unit-spelled-two-ways-is-not-a-crossing",
+      "issue": 785,
+      "title": "No unit spelled two ways is reported as a crossing",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_unit-crossing"
+      },
+      "expect": {
+        "at_most": 5
+      },
+      "comment": "openLCA writes the area-time unit `m2*a` and this list publishes `m2.a`, and `lcia.conversion.UnitCrossing` compares notations as text, so the 443 occupation factors these rows carry would have been dropped as a unit crossing against themselves. `domain.units.canonical_unit` is what the other two routes already got for free, from the merge, which stores a canonical notation on the source reference.\n\n`at_most`, because the fix must not work by silencing the guard and the guard is allowed to answer more of them over time. It was an equality at 5 when this was written -- four rows stated per kilogram against a flow published per cubic metre and one per cubic metre against a flow published per megajoule. #170 answered two of the four from a conversion the build already recorded, so the count is 3, and the equality that stops the guard being silenced lives in that issue's file now."
+    },
+    {
+      "id": "0785-it-still-decides-nothing",
+      "issue": 785,
+      "title": "Reaching GreenDelta's land and water flows changes no factor this list publishes",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_factors_published"
+      },
+      "expect": {
+        "at_most": 327064
+      },
+      "comment": "The bound #157, #165 and #347 all state, and the one that matters most here: 1,523 factors is the largest arrival from GreenDelta so far, and `decides: false` on their row in `data/lcia-impact-categories.json` is what keeps every one of them out of the consensus. They are published as a comparison -- `difference_shared` rises by 636, all of them identical to the JRC's -- and as evidence of nothing.\n\n323,890 is what the build of 2026-08-29 publishes with and without this change. The three earlier files pinned 324,694, which is what the build of 2026-08-25 published; #349 restated all three to this number and made each an upper bound rather than an equality, which is what this one now states too. A rise is a factor of theirs becoming one of ours, which is the failure; a fall is a deciding implementation correcting its own numbers, which is `expectations/baseline.json`'s to record and not this file's to fail on. Moved to 323,898 with the AGRIBALYSE stack (#188): giving Beta-cyfluthrin the product's own registry number took ecoinvent's rows off the consensus `Cyfluthrin` flows, and the ecoinvent Centre's factors followed its flows -- 64 arrive on the Beta-cyfluthrin substance, 40 leave with the vacated ecoinvent-compartment Cyfluthrin copies, pair-identical amounts, measured on the stack build of d98a075 (1 September 2026). That is +24 against the 323,874 the #178/#826 retirements left, none of it a comparison implementation reaching the consensus -- the movement is one deciding implementation's numbers following its own renamed substance, which is the accounting this guard exists to force. (This file's 323,890 had also gone quietly stale: an upper bound tolerates a fall, so the #178/#826 retirements that made the count 323,874 never forced an edit here.) Moved again on 2026-09-01 when the context convention in `data/context-carry-rules.json` began carrying 1,482 more factors into the contexts nobody characterised -- a river taking surface water's number, silvicultural soil taking non-agricultural soil's -- on top of the 323,898 the cyfluthrin split left: 325,380, the two movements measured on different builds and added, until the next full build records the count. A carried number is this list's own convention applied to a number it already published, not a third publisher's number becoming ours, which is still what this bound is about.\n\nRecorded at 327,064 on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), which is the full build the previous sentence was waiting for. The convention's carry came to 1,866 factors over the four-list baseline's 1,491 (3,357 `carried`), not the 1,482 measured on a branch, because AGRIBALYSE's merge added flows in contexts the convention carries into; `sole` moved by 24 the other way. `adopted` stayed at 1,334, which is the number this bound is really watching: nothing a third publisher stated became ours."
+    },
+    {
+      "id": "0785-a-country-in-the-name-is-set-aside",
+      "issue": 785,
+      "title": "195 GreenDelta rows with the country in the flow name are set aside",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_source_flows_regionalised_in_name"
+      },
+      "expect": {
+        "equals": 195
+      },
+      "comment": "196 of their names split into a water name and a place by the same rule BAFU's extractor uses, in ten sets. 195 are set aside: 115 behind a site-generic sibling in the same compartment (`Water`, `Water, well`, `Water, river`, `Water, lake`, and `Water, cooling, unspecified natural origin/m3`, which is the sibling with its unit in its name), 77 behind `Water, unspecified natural origin, GLO`, and 3 in sets with neither -- `Water, well, RER` and `Water, cooling, unspecified natural origin, RER` filed under `Resource / in ground`, and `Water, NO` under `Emission to water / fossil-`. The 196th is the `GLO` member itself, which is left to the routes that follow. An equality: a release that adds a country should move this number, and be noticed."
+    },
+    {
+      "id": "0785-set-aside-is-not-declined",
+      "issue": 785,
+      "title": "The curated declines stay at nine",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_source_flows_declined"
+      },
+      "expect": {
+        "equals": 9
+      },
+      "comment": "#347's seven lake rows and #166's two. What a rule found is counted under `source_flows_regionalised_in_name` and not here: a curated decline is a row somebody wrote and argued, and folding 195 rows a rule set aside into that count would make the table look ten times more opinionated than it is."
+    },
+    {
+      "id": "0785-the-global-member-reaches-the-site-generic-flow",
+      "issue": 785,
+      "title": "`Water, unspecified natural origin, GLO` is found by a curated decision",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_matched_on_curated_decision"
+      },
+      "expect": {
+        "at_least": 82
+      },
+      "comment": "81 before. The one set of coded names with no site-generic member is `Water, unspecified natural origin` in `Resource / in water`, stated for 77 countries and `GLO`; the world member is the site-generic row under another spelling, and the decision says it means `Water` in Resource -> Water -> Unknown -- where BAFU's 78 rows of these names already go, and where the JRC characterises 209 countries. Its 42.95 is the number their `Resource / unspecified` copy of the same name already publishes there for no country, so the published count does not rise by it; what rises is this."
+    },
+    {
+      "id": "0785-no-country-number-under-no-country",
+      "issue": 785,
+      "title": "GreenDelta no longer characterises `Water` emitted to a river",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Water",
+        "context_display": "Environmental → Water → River",
+        "category": "Water use",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "45 factors before this change, and every one of them a country's number -- Switzerland's -1.34, Egypt's -98.4 -- published under no country, because the row that stated it was `Water, CH` and the registry number reached `Water`. The 47 rows stated 47 different numbers for one flow and one place, which the build reported as a `factor-collision`. Nobody else characterises water emitted to a river, so the flow now carries nothing, which is the truthful count: EF 3.1 states its water-use factors on the withdrawal."
+    },
+    {
+      "id": "0785-the-collision-is-gone",
+      "issue": 785,
+      "title": "No two GreenDelta rows state different numbers for one flow and place",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_factor-collision",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "One before, listing the 47 `Water, XX` river rows. `value_when_absent`, because the count comes off a stats table that writes no row for nothing."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "description": "Four source lists ship a row for land occupied by a building site, and all four spell it the same way. Three of them reached the flow this list already publishes for it; Stepwise 2006 made a new one, named the way Stepwise writes it rather than the way this list does.\n\nA land row does not say what it is in a way an algorithm can read: `Occupation, construction site` is a building site and `Occupation, heterogeneous, agricultural` is an agricultural mosaic, and no rule derives the second from its name. So the class is curated, one row per vendor flow, in `land-flow-classes.json`, and the merge looks the row up by the list it came from and the flow's identifier. Stepwise was registered in #164 and merged from #169, and no row of it was in that file -- so every land row of Stepwise's missed the curated route and fell through to name matching.\n\nOn the four-list build of 2026-08-29 (`20260829T1158418340740000`) that cost 35 new flows out of 41 land rows, and the damage was not only the duplicates: the new flows carry a *vendor's* spelling, the lookup matches on names, and so a caller asking where ecoinvent's `Occupation, construction site` belongs was answered with Stepwise's new flow while the build had put that row on EF's `Construction site`. `lookup.land_class.other_flow` -- #328's standing claim that a land row the lookup cannot classify is declined rather than guessed at -- read 33 against 0 on every build before Stepwise merged, and all 33 name one of ten flows Stepwise minted.\n\nStepwise's rows are curated here: 28 of the 41, which is every one whose name the land-class axes can read. Twenty-five of those reach a class another list already ships, and three are classes new to the file. The remaining 13 name the state the land was in before -- `sealed, on grassland`, `forest, on arable land`, `accelerated denaturalisation, primary forest to intensive forest` -- which no axis in `domain/land_use.py` has a word for. They go on being published under Stepwise's own spelling, and are recorded as such in `tests/data/observed-land-classes.json`'s `unparsed` list rather than left silent.",
+  "expectations": [
+    {
+      "id": "0810-the-construction-site-row-reaches-the-flow-the-list-has",
+      "issue": 810,
+      "title": "Stepwise's building-site row reaches the building-site flow the list already publishes",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "uuid": "95f8ed6d-0c05-56d4-92ad-c5704605838a"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "land_class",
+        "target_name": "Construction site",
+        "target_uuid": "2de36d9f-313b-4fb1-8060-676eecbfec29"
+      },
+      "comment": "The row the issue is named for. On the build of 2026-08-29 it was `created` with no basis, minting `fbec231c1c262e2136fa5c2928af85f3bcacd4f3`, while ecoinvent 3.12, ecoinvent 3.8 and BAFU all reached `2de36d9f-313b-4fb1-8060-676eecbfec29` on `land_class` from the identical name. The basis is claimed as well as the target: reaching the right flow because the names happen to agree once somebody recapitalises them is a different fact from a curator having said which class this is, and the second is what a land row needs."
+    },
+    {
+      "id": "0810-no-building-site-flow-under-stepwises-spelling",
+      "issue": 810,
+      "title": "No flow is published as `Occupation, Construction Site`",
+      "subject": {
+        "kind": "flow",
+        "name": "Occupation, Construction Site"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "The duplicate itself, named the way it was published rather than by its identifier, because what has to stop is a *vendor's* spelling being a published flow name in `Land Use → Occupation`. That is what misdirects the lookup: three lists ship the string `Occupation, construction site` and the flow this list publishes for it is called `Construction site`, so a flow carrying the vendor string wins any name match against it. It exists in no build of `main` -- the shared build of 505ba28 merges three lists and not Stepwise -- so nothing is withdrawn."
+    },
+    {
+      "id": "0810-no-industrial-area-flow-under-stepwises-spelling",
+      "issue": 810,
+      "title": "No flow is published as `Occupation, Industrial Area`",
+      "subject": {
+        "kind": "flow",
+        "name": "Occupation, Industrial Area"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "The worst of the ten by how many rows it misdirected: five of the 33 disagreements the lookup reports are ecoinvent's and BAFU's `Occupation, Industrial Area` rows being answered with `e76d1a87f712ceca9ce4f25c907fcd7c240a1cb3` while the build put every one of them on EF's `Industrial area`, `eb84226d-129f-49d8-8d69-cc484b7a6cbf`. Claimed separately from the building site so that curating one class and not the other cannot read as curating both."
+    },
+    {
+      "id": "0810-the-rows-that-matched-by-name-now-match-by-class",
+      "issue": 810,
+      "title": "The Stepwise land rows that already reached their flow now reach it by their class",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "uuid": "7b76ef56-ecaf-5bf2-808f-4b1be6ed335c"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "land_class",
+        "target_uuid": "44e73da5ad108ced178eba933d60579b550b7972"
+      },
+      "comment": "Six of Stepwise's 41 land rows did find the flow the list already had, by name -- `Occupation, forest, intensive, normal` is one, reaching `Forest, intensive, normal rotation` on `label`. Reaching the right flow two different ways is worse than it sounds: the name route is the one that breaks when a vendor recapitalises, and it is the route this file exists to remove. So all 28 curated rows are claimed to arrive the same way, and this is the one that would still pass if only the failures had been curated."
+    },
+    {
+      "id": "0810-the-thirteen-that-name-a-previous-state-are-still-published",
+      "issue": 810,
+      "title": "The Stepwise rows naming the land's previous state keep a flow of their own",
+      "subject": {
+        "kind": "flow",
+        "name": "Occupation, Sealed, On Grassland"
+      },
+      "expect": {
+        "exists": true,
+        "context_display": "Land Use → Occupation"
+      },
+      "comment": "Stated so that what this change does *not* do is a claim somebody can run rather than a sentence in a pull request. Thirteen of Stepwise's land rows name the state the land was in before it was paved or planted -- a square metre of paving that was grassland costs 0.7 in Stepwise's `Nature occupation` where the same paving on arable land costs 0.2, so the previous state is what the number turns on -- and a land class here is a cover with axes that all describe the land as it is. They are not duplicates: no other list ships these classes and none of the 33 lookup disagreements names one. They stay published under Stepwise's own spelling until the axes can say what they mean, which is #176."
+    }
+  ]
+}

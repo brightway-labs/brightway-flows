@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "Which source names describe where a flow is rather than what the substance is.\n\nA substance gathers several source flows, and the ones whose names lost the contest for the substance's published name are carried as alternative names so that an inventory written against a source list still finds the substance (#113). Most of those names are worth keeping -- `Dichloroethylene`, `Quizalofop-P-tefuryl`, ecoinvent's `Ethane, 1,1,2-trichloro-1,2,2-trifluoro-, CFC-113` -- and a large minority are not, because they name a flow and not a substance.\n\n`Hafnium, In Ground` is the case. Hafnium in the ground and hafnium anywhere else are the same substance; `In Ground` says which flow, and the list already says that on the flow's context. Publishing it as another name for hafnium would tell a reader that the substance is called that, which it is not. `Occupation, Annual Crop, Irrigated` is the same thing from the other end: the whole name describes a land use, and the substance it resolves to is a land class.\n\nSo this file is the vocabulary that separates the two, and it is data rather than a pattern in code because every entry is a curator's reading of what a vendor meant by a word. Measured on the 2026-08-18 build merging ecoinvent 3.12 and 3.8, it rejects 392 of the 598 candidate names.\n\nThere is a third test and it is not here, because it is not a membership question: a comma-separated segment containing a per-cent sign states a concentration -- `Aluminium, 24% In Bauxite, 11% In Crude Ore, In Ground`, `Pt, Pt 2.5E-4%, Pd 7.3E-4%, ... In Ore, In Ground` -- and a concentration is an ore grade, which is a property of the deposit and not a name of the metal. That rule is stated in `flow_layers/synonyms.py` where it is applied.",
+  "land_flow_prefixes": {
+    "comment": "A name whose first comma-separated segment is one of these describes a land use over a period, which is what the flow measures; the substance behind it is a land class. ecoinvent names every one of its land flows this way, 182 of the 392 rejections. Matched on the whole first segment rather than as a prefix of the string, so a substance whose name merely begins with these letters is untouched.",
+    "values": [
+      "occupation",
+      "transformation"
+    ]
+  },
+  "places": {
+    "comment": "A comma-separated segment reading `in <one of these>` says where the substance was found or measured, not what it is. Every value here was read off the names this rejects: `in ground` accounts for 200 of them, `in ore` and `in mixed ore` for 17 each, and the rest are single figures. `natural gas` is here because `Methane, In Natural Gas` is methane in a deposit and not a name for methane; the substance natural gas is a different row with its own registry number.",
+    "values": [
+      "air",
+      "biomass",
+      "crude ore",
+      "ground",
+      "mixed ore",
+      "natural gas",
+      "ore",
+      "water"
+    ]
+  },
+  "chemical_classes": {
+    "comment": "Names that name a family of chemicals rather than any one member. A source list that uses one as a flow name is naming a substance it could have named properly -- EF 3.1's `polyhaloalkene` is HFO-1234yf, CAS 754-12-1, and ships under both spellings -- and once the flow is renamed for the member, the class word must not come back as a synonym: a synonym asserts `this substance is also called X`, and a family name is a name for every member at once, so it is a name for none of them. Same reasoning as a place: the word says what kind of thing the substance is, not what it is called. (#116)",
+    "values": [
+      "polyhaloalkene"
+    ]
+  }
+}

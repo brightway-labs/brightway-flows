@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Merge conflicts" %}
+{% set active_section = "merge" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Conflicts</h1>
+  <p class="page__lede">
+    Where two source lists disagree: both claiming the same target, or
+    disagreeing about its unit or context.
+  </p>
+</header>
+
+{% if conflicts %}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Kind</th>
+        <th scope="col">Target flow</th>
+        <th scope="col">Claimants</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for conflict in conflicts %}
+      <tr>
+        <td><span class="tag tag--blocking">{{ conflict.kind }}</span></td>
+        <td>{{ t.flow_link(conflict.target_elementary_flow_id) }}</td>
+        <td>
+          {% for claimant in conflict.claimants %}
+          <div>
+            <span class="mono">{{ claimant.get("list_name", "") }}-{{ claimant.get("list_version", "") }}</span>
+            {% if claimant.get("source_name") %}<span>{{ claimant["source_name"] }}</span>{% endif %}
+            {% if claimant.get("source_unit") %}<span class="muted mono">{{ claimant["source_unit"] }}</span>{% endif %}
+            {% if claimant.get("source_uuid") %}
+            <a class="muted mono" href="{{ url_for('merge.outcome_detail', source_uuid=claimant['source_uuid']) }}">{{ claimant["source_uuid"] }}</a>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% elif source_lists | length > 1 %}
+<div class="notice">
+  <p>
+    This run merged {{ source_lists | length }} source lists
+    ({{ source_lists | join(", ") }}) and they agree.
+  </p>
+</div>
+{% else %}
+{# Empty because there is one list, not because nothing was checked. The old
+   page could not make that distinction and readers assumed the worse one. #}
+<div class="notice">
+  <p>
+    This run merged 1 source list, so there is nothing to disagree with. A
+    conflict is a disagreement <em>between</em> lists.
+  </p>
+</div>
+{% endif %}
+{% endblock %}

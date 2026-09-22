@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "description": "Stepwise 2006 counts injuries. Three of its rows -- `Injuries, fatal`, `Injuries, non-fatal, at work` and `Injuries, non-fatal, road` -- are not emissions and not resources: they are counts of people hurt, measured in persons where every other row of every list this project merges is measured in a mass, a volume, an energy or an area-time, and filed under a `Social` compartment that says nothing about the environment.\n\nOn the four-list build of 2026-08-29 (`20260829T1158418340740000`) all three were unmatched, minted a consensus flow of their own in `https://vocab.brightway.one/flow-contexts/soci`, and carried one published characterisation factor each -- 1.0, 0.00075 and 0.0078 under Stepwise's `Injuries, road or work`. That context had been empty since #115 and deliberately so, and the claim that emptied it was written about the whole context rather than about ecoinvent's three rows, so that the next row landing there would have to be argued for. These were that next row, and the argument went against them.\n\nThey are refused, in `stepwise-2006-additional-flows.json`'s `excluded` list rather than deleted, and the `Social / (unspecified)` context rule that put them in `soci` goes with them, as ecoinvent's did: a mapping for a compartment no flow has claims a decision nobody makes. Nothing is withdrawn, because nothing was published -- Stepwise is merged in no build of `main`.\n\nWhat is not decided here is what a social flow would be for. That is the larger question, and refusing three rows is not an answer to it; it is the answer to whether these three belong in a list of environmental flows.",
+  "expectations": [
+    {
+      "id": "0809-no-injury-row-reaches-the-list",
+      "issue": 809,
+      "title": "No row Stepwise counts in injuries reaches a consensus flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "name_contains": "Injuries"
+      },
+      "expect": {
+        "row_count": 0
+      },
+      "comment": "Three rows on the build of 2026-08-29, each `created` with no basis: the merge found nothing to match them to, which is right, and then minted a flow, which is the step this stops. An excluded row is removed from the fetched rows before the merge sees it, so the claim is that the selector finds nothing at all rather than that the rows land somewhere better. Written on the name rather than on the three uuids because it is the whole shape that is refused: a fourth injury row in a later Stepwise release would have to be argued for, and this is what would notice it."
+    },
+    {
+      "id": "0809-fatal-injuries-is-not-published",
+      "issue": 809,
+      "title": "The flow minted from `Injuries, fatal` is gone",
+      "subject": {
+        "kind": "flow",
+        "uuid": "3ce6876f9dba7e2de3dbc742ebed4f1f5f14424c"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Published on the build of 2026-08-29 as `Injuries, Fatal` in `https://vocab.brightway.one/flow-contexts/soci`, source `stepwise algorithm addition`, unit `#`, with no registry number and no properties -- a name, a unit and a compartment is the whole record, because the row is a count of people and there is no substance behind it. Named by uuid because what has to stop is the identifier being published."
+    },
+    {
+      "id": "0809-non-fatal-injuries-at-work-is-not-published",
+      "issue": 809,
+      "title": "The flow minted from `Injuries, non-fatal, at work` is gone",
+      "subject": {
+        "kind": "flow",
+        "uuid": "248da71ef02eb2d8286c22f17068a3159ecc9033"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "As above. It carried Stepwise's factor of 0.00075 -- a non-fatal injury at work weighted against a fatal one, which is what makes the category an endpoint."
+    },
+    {
+      "id": "0809-non-fatal-road-injuries-is-not-published",
+      "issue": 809,
+      "title": "The flow minted from `Injuries, non-fatal, road` is gone",
+      "subject": {
+        "kind": "flow",
+        "uuid": "c31cbbb8be9f3133861a3d5013f020aeaee116f9"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "As above, with a factor of 0.0078."
+    },
+    {
+      "id": "0809-the-injury-category-characterises-nothing",
+      "issue": 809,
+      "title": "Stepwise's `Injuries, road or work` publishes no characterisation factor",
+      "subject": {
+        "kind": "factor",
+        "category": "Injuries, road or work"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "The other half of the ruling, and the half a reader of the method sees. Stepwise states exactly three factors under this category and all three name a refused row, so the category is kept and publishes nothing -- which says `this method characterises something this list does not carry`, where dropping the category would say `this method has eighteen categories`. Six factors on the build of 2026-08-29 -- the same three in each of the two implementations, `2.-0 LCA consultants` and `brightway-flows` -- and the claim is stated without `implemented_by` so that it covers both."
+    }
+  ]
+}

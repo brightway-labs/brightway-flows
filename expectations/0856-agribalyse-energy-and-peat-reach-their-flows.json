@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "description": "AGRIBALYSE inventories a few resources on the other quantity basis from the published list -- a kilogram of peat where the list splits peat into a megajoule fuel and a kilogram growing medium, kilograms of wood energy where the list keeps megajoules, energy rows whose published counterpart already exists. On the first five-list build (1 September 2026, b0b8d76) the two peat rows crossed silently onto the megajoule fuel flow and five energy rows minted duplicate flows, one of them in a ground context. The rulings: an agricultural database's kilogram of peat in the biotic compartment is the growing medium (#354, following #160's fuel-versus-growing-medium distinction); wood and biomass energy rows go to the published `Wood` and `Biomass` megajoule flows their sibling lists reach; the two rows whose names state their own energy content are rebased at the vendor's own numbers (`unit-change-allowlist.json`); and oil-field off-gas keeps its own flow, because #80 settled that mine off-gas is not natural gas and the same reasoning holds at an oil well.",
+  "expectations": [
+    {
+      "id": "0856-a-kilogram-of-peat-is-the-growing-medium",
+      "issue": 856,
+      "title": "AGRIBALYSE's biotic kilogram of peat reaches Peat, Horticulture, not the megajoule fuel",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "d1e2ddc8-c24d-55ca-ae4a-78b5d99d8813"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_name": "Peat, Horticulture",
+        "target_uuid": "126514fa-415f-454a-8425-aa5d54a1402b"
+      },
+      "pending": true,
+      "comment": "The issue's peat example, 2,192 processes. On the build of 1 September 2026 this kilogram row matched the fuel `Peat` (megajoules) with `has_unit_mismatch` set -- a growing medium priced as fuel across a silent quantity crossing, the exact reading #160 declined from the factor side. The curated target sends it to the kilogram growing-medium flow in its own compartment; same unit, no conversion. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    },
+    {
+      "id": "0856-the-bare-heading-peat-agrees-with-its-twin",
+      "issue": 856,
+      "title": "The bare-heading Peat row is re-filed biotic and reaches the same growing medium",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "fc379dc0-4b59-5cc3-b454-3538dd8f9f60"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_name": "Peat, Horticulture",
+        "target_uuid": "126514fa-415f-454a-8425-aa5d54a1402b"
+      },
+      "pending": true,
+      "comment": "The same kilogram of peat under the vendor's bare `Resources /` heading, which the compartment rule read as a ground resource -- so on the build of 1 September 2026 it crossed onto the megajoule fuel in the ground context. Re-filed to `Resources / biotic` beside its twin (`agribalyse-3.2-manual-fixes.json`) and sent to the growing medium with it. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    },
+    {
+      "id": "0856-unqualified-biomass-energy-joins-its-siblings",
+      "issue": 856,
+      "title": "AGRIBALYSE's unqualified gross-calorific-value row reaches the Biomass flow ecoinvent and BAFU reach",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "c4898890-5cdc-59a8-8632-4055832784ab"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_name": "Biomass",
+        "target_uuid": "fe0acd60-3ddc-11dd-a6fd-0050c2490048"
+      },
+      "pending": true,
+      "comment": "2,855 processes -- biomass energy is what an agricultural database is about. ecoinvent 3.8 and 3.12 send the identical unqualified name to the published `Biomass` megajoule flow by prepared match and BAFU reaches it by label; on the build of 1 September 2026 AGRIBALYSE's row minted a duplicate beside it. The qualified `..., Primary Forest` flow stays separate for every list. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    },
+    {
+      "id": "0856-the-row-that-states-its-own-energy-content-is-rebased",
+      "issue": 856,
+      "title": "Wood and wood waste, 9.5 MJ per kg is rebased at its own number onto the Wood flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "f65c0b45-7781-5ae0-aeb1-d329b21796dd"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_name": "Wood",
+        "target_uuid": "3e4d9eab-6556-11dd-ad8b-0800200c9a66"
+      },
+      "pending": true,
+      "comment": "An ecoinvent 2 name that asserts its own conversion, the `Uranium, 451 GJ per kg` shape. The published list keeps wood energy in megajoules; the row is rebased at the 9.5 MJ/kg its name states (`agribalyse-3.2-match-overrides.json`, accepted in `unit-change-allowlist.json`) instead of minting a kilogram flow with a factor in its name, which is what the build of 1 September 2026 did. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    },
+    {
+      "id": "0856-oil-field-off-gas-keeps-its-own-flow",
+      "issue": 856,
+      "title": "Gas, off-gas, oil production mints its own flow rather than landing on natural gas",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "60ae15fa-2666-5cdb-9b6a-01dae94ea313"
+      },
+      "expect": {
+        "row_count": 1,
+        "target_name": "Gas, Off-gas, Oil Production"
+      },
+      "pending": true,
+      "comment": "The #190 triage sent this row to #354 as an energy-unit question, and the answer is a deliberate-behaviour guard rather than a fix: #80 settled that mine off-gas is not natural gas, an oil well's off-gas is the same question, and the build of 1 September 2026 already minted it faithfully. This claim pins the mint so a future widening of a natural-gas rule cannot absorb the row. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    },
+    {
+      "id": "0856-no-duplicate-energy-flow-under-a-vendor-spelling",
+      "issue": 856,
+      "title": "No flow is published under AGRIBALYSE's Energy, From Wood spelling",
+      "subject": {
+        "kind": "flow",
+        "name": "Energy, From Wood"
+      },
+      "expect": {
+        "count": 0
+      },
+      "pending": true,
+      "comment": "The build of 1 September 2026 published two -- one of them in a ground context, from the bare-heading row. With the twin re-filed and both rows sent to `Wood`, nothing mints under this spelling; `Energy, From Biomass` and the unqualified gross-calorific-value spelling retire the same way through their own overrides. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    },
+    {
+      "id": "0856-the-fuel-peat-has-no-biotic-copy",
+      "issue": 856,
+      "title": "The megajoule fuel Peat is published in the ground and nowhere else",
+      "subject": {
+        "kind": "flow",
+        "name": "Peat",
+        "context_iri": "https://vocab.brightway.one/flow-contexts/reso-biot"
+      },
+      "expect": {
+        "count": 0
+      },
+      "pending": true,
+      "comment": "On the build of 1 September 2026 the biotic `Energy, From Peat` row minted a biotic copy of the megajoule fuel, and the biotic kilogram of peat then found a fuel flow inside its own compartment to cross onto. Fuel peat is a ground resource -- the baseline files it there and #160 keeps the growing medium apart -- so the biotic row is re-filed to `Resources / in ground` with its two siblings (`agribalyse-3.2-manual-fixes.json`) and the copy never mints. `Peat, Horticulture` is a different name and is untouched by this claim. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    }
+  ]
+}

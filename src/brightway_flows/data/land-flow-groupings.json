@@ -1,0 +1,694 @@
+{
+  "schema_version": 1,
+  "description": "The land classes a source list is allowed to publish as one consensus flow, each with the reasoning for it. A correspondence table maps flows one at a time, so nothing in it ever says `these five are now one`, and applied flow by flow it can fold five classes onto one with nothing recording that it happened: until #111 was measured, ecoinvent's five landfill classes were published as one `Dump Site`, twice over. This file is the other half of the answer. The folds worth keeping are written here with why; the ones that lose a class the source list drew are declined in `ecoinvent-match-overrides.json`, and the source flow is published under its own name. A land flow that two of one list's rows reach and this file does not name stops the build, so the number of folded land classes is one this project states rather than one a reader discovers. A row names its list and not its release: within one list a uuid names the same flow across releases, and a member no release ships is inert, exactly as a match override for a dropped flow is. Read by `brightway_flows.merge.land_groupings`.",
+  "groupings": [
+    {
+      "list_name": "ecoinvent",
+      "target_uuid": "b88d3b6d-229e-477e-bce1-e16376f75c7b",
+      "target_name": "Arable",
+      "absorbs": [
+        {
+          "source_uuid": "c5aafa60-495c-461c-a1d4-b262a34c45b9",
+          "source_name": "Occupation, annual crop"
+        },
+        {
+          "source_uuid": "8c173ca1-5f74-4a6e-89e5-dd18e0f18d1a",
+          "source_name": "Occupation, arable land, unspecified use"
+        }
+      ],
+      "comment": "ecoinvent ships two names for arable land held in an unqualified use, and both mean EF 3.1's `arable`: `Occupation, annual crop` is the current one and `Occupation, arable land, unspecified use` the older. That they are one class is not a reading of the two names but what the correspondence table does with the whole family -- ecoinvent's nine annual-crop classes map one to one onto EF's nine arable ones, `annual crop, greenhouse` onto `arable, greenhouse`, `annual crop, irrigated, intensive` onto `arable, irrigated, intensive`, and so through flooded crops, irrigation and intensity. Annual cropping is what EF means by arable; the land EF calls `permanent crops` is ecoinvent's `permanent crop`, mapped just as evenly beside it. So publishing these two as one flow loses nothing a reader could have used, and splitting them would put the same land under two names. Measured on the build of 18 August 2026, ecoinvent 3.12 and 3.8 alike (#111)."
+    },
+    {
+      "list_name": "ecoinvent",
+      "target_uuid": "9699a63f-c966-43a4-816c-b1fbbf0a3e88",
+      "target_name": "From Arable",
+      "absorbs": [
+        {
+          "source_uuid": "f05cca02-ec18-4acc-9939-59658ff9a554",
+          "source_name": "Transformation, from annual crop"
+        },
+        {
+          "source_uuid": "4d166779-88fd-441b-9537-f3b974e3bff7",
+          "source_name": "Transformation, from arable land, unspecified use"
+        }
+      ],
+      "comment": "ecoinvent ships two names for arable land held in an unqualified use, and both mean EF 3.1's `from arable`: `Transformation, from annual crop` is the current one and `Transformation, from arable land, unspecified use` the older. That they are one class is not a reading of the two names but what the correspondence table does with the whole family -- ecoinvent's nine annual-crop classes map one to one onto EF's nine arable ones, `annual crop, greenhouse` onto `arable, greenhouse`, `annual crop, irrigated, intensive` onto `arable, irrigated, intensive`, and so through flooded crops, irrigation and intensity. Annual cropping is what EF means by arable; the land EF calls `permanent crops` is ecoinvent's `permanent crop`, mapped just as evenly beside it. So publishing these two as one flow loses nothing a reader could have used, and splitting them would put the same land under two names. Measured on the build of 18 August 2026, ecoinvent 3.12 and 3.8 alike (#111)."
+    },
+    {
+      "list_name": "ecoinvent",
+      "target_uuid": "933debfd-2aa5-4a35-b07b-2732350ea29c",
+      "target_name": "To Arable",
+      "absorbs": [
+        {
+          "source_uuid": "c3f83a91-4888-41a4-add9-fd01678a1e5f",
+          "source_name": "Transformation, to annual crop"
+        },
+        {
+          "source_uuid": "2f1e926a-ec96-432b-b2a6-bd5e3de2ff87",
+          "source_name": "Transformation, to arable land, unspecified use"
+        }
+      ],
+      "comment": "ecoinvent ships two names for arable land held in an unqualified use, and both mean EF 3.1's `to arable`: `Transformation, to annual crop` is the current one and `Transformation, to arable land, unspecified use` the older. That they are one class is not a reading of the two names but what the correspondence table does with the whole family -- ecoinvent's nine annual-crop classes map one to one onto EF's nine arable ones, `annual crop, greenhouse` onto `arable, greenhouse`, `annual crop, irrigated, intensive` onto `arable, irrigated, intensive`, and so through flooded crops, irrigation and intensity. Annual cropping is what EF means by arable; the land EF calls `permanent crops` is ecoinvent's `permanent crop`, mapped just as evenly beside it. So publishing these two as one flow loses nothing a reader could have used, and splitting them would put the same land under two names. Measured on the build of 18 August 2026, ecoinvent 3.12 and 3.8 alike (#111)."
+    },
+    {
+      "list_name": "ecoinvent",
+      "target_uuid": "52a7fc6d-de3b-4348-9ef2-11b119da6c98",
+      "target_name": "From Unspecified",
+      "absorbs": [
+        {
+          "source_uuid": "12264257-7f8b-4afe-b3cb-3ac28ca1661a",
+          "source_name": "Transformation, from unknown"
+        },
+        {
+          "source_uuid": "29630a65-f38c-48a5-9744-c0121f586640",
+          "source_name": "Transformation, from unspecified"
+        }
+      ],
+      "comment": "`Transformation, from unknown` and `Transformation, from unspecified` are two spellings of the same absence of information: neither says anything about the land beyond that something was there. EF 3.1 has one flow for that, `from unspecified`, and publishing both ecoinvent rows as it says something true -- unlike the landfill and tillage folds this file does not carry, where a class the source list drew would have been lost. Declining them instead would mint a consensus flow whose whole content is that ecoinvent spells unknown two ways. Measured on the build of 18 August 2026, ecoinvent 3.12 and 3.8 alike (#111)."
+    },
+    {
+      "list_name": "ecoinvent",
+      "target_uuid": "7db3936a-8686-46e7-a694-107a117c6360",
+      "target_name": "To Unspecified",
+      "absorbs": [
+        {
+          "source_uuid": "36965153-1daf-452a-8089-f4b5222c46ae",
+          "source_name": "Transformation, to unknown"
+        },
+        {
+          "source_uuid": "512a5356-8059-4772-a43f-42e3c4f3d299",
+          "source_name": "Transformation, to unspecified"
+        }
+      ],
+      "comment": "`Transformation, to unknown` and `Transformation, to unspecified` are two spellings of the same absence of information: neither says anything about the land beyond that something was there. EF 3.1 has one flow for that, `to unspecified`, and publishing both ecoinvent rows as it says something true -- unlike the landfill and tillage folds this file does not carry, where a class the source list drew would have been lost. Declining them instead would mint a consensus flow whose whole content is that ecoinvent spells unknown two ways. Measured on the build of 18 August 2026, ecoinvent 3.12 and 3.8 alike (#111)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "1d443c61-ff6f-419a-99a8-9ff3055f4922",
+      "target_name": "agriculture, mosaic",
+      "absorbs": [
+        {
+          "source_uuid": "67bd690b-2d7b-5e89-932d-f76b6fc7e179",
+          "source_name": "Occupation, agriculture, mosaic"
+        },
+        {
+          "source_uuid": "e11304e1-e14d-512b-9f1a-8daafcb08c5a",
+          "source_name": "Occupation, heterogeneous, agricultural"
+        }
+      ],
+      "comment": "BAFU ships 2 names for one land class and this project publishes them as one flow: `Occupation, agriculture, mosaic`, `Occupation, heterogeneous, agricultural`. They decompose onto the same axes -- occupation/agriculture/built_form=mosaic -- so nothing a reader could have used is lost by the fold, and splitting them would put the same ground under two names. The names are not BAFU's invention: it carries both EF 3.1's word for this class and ecoinvent's, which is what a list assembled from both looks like. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "641d3aa1-93d3-4fb2-9bd8-17600536c3c0",
+      "target_name": "forest",
+      "absorbs": [
+        {
+          "source_uuid": "15fad180-1d46-5ede-9c9c-9b23c1c800d8",
+          "source_name": "Occupation, forest, unspecified"
+        },
+        {
+          "source_uuid": "62bdaebe-33ff-5382-933b-beaeca6635b7",
+          "source_name": "Occupation, forest, unspecified"
+        }
+      ],
+      "comment": "One BAFU land class, filed by BAFU in 2 compartments -- `resources / land`, `resources / unspecified` -- and therefore shipped under 2 uuids. This is #66 \u00a71.9: a fifth of BAFU's land-named rows sit outside `resources / land`, and the context mapping now routes all of them to the land dimension. They are one class arriving by several routes rather than several classes being merged, so publishing them as one flow states what BAFU means rather than losing a distinction it drew. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66). The target is EF 3.1's `forest`, not its `Occup. as Forest land`: EF ships two names for unqualified forest, they are one land class, and the second carries no characterisation factor at all, so the deduplication retires it onto the first. The BAFU rows reach the flow that carries the 213 factors."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "eb84226d-129f-49d8-8d69-cc484b7a6cbf",
+      "target_name": "industrial area",
+      "absorbs": [
+        {
+          "source_uuid": "3a15e13f-0785-598b-9bc5-8e22dfead3f8",
+          "source_name": "Occupation, industrial area"
+        },
+        {
+          "source_uuid": "b95575db-d180-54d3-aea0-876317fb01ec",
+          "source_name": "Occupation, industrial area"
+        },
+        {
+          "source_uuid": "e9a56e13-a23c-5a83-a502-14e6f294ab17",
+          "source_name": "Occupation, industrial area"
+        }
+      ],
+      "comment": "One BAFU land class, filed by BAFU in 3 compartments -- `resources / in ground`, `resources / land`, `resources / unspecified` -- and therefore shipped under 3 uuids. This is #66 \u00a71.9: a fifth of BAFU's land-named rows sit outside `resources / land`, and the context mapping now routes all of them to the land dimension. They are one class arriving by several routes rather than several classes being merged, so publishing them as one flow states what BAFU means rather than losing a distinction it drew. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "e1f89e32-e86c-452d-91bc-57d93ded3d0d",
+      "target_name": "traffic area, rail network",
+      "absorbs": [
+        {
+          "source_uuid": "579ba345-686d-570b-88e5-4e22c4e65e33",
+          "source_name": "Occupation, traffic area, rail network"
+        },
+        {
+          "source_uuid": "9edd2fce-4dc7-5dcd-886c-7629c0ed99a2",
+          "source_name": "Occupation, traffic area, rail network"
+        }
+      ],
+      "comment": "One BAFU land class under two uuids: the Swiss row and the unregionalised one. #290 reads the place out of a BAFU flow name into a `location` field, and two of the eleven base labels it whitelists are land classes -- both of them BAFU's rail rows, of which this is one. The place is part of the flow's identity seed, so the two remain two flows; what they share is the land class, which is what this row records. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "1dea9abe-eef4-4e7e-9439-fa041242ceb5",
+      "target_name": "traffic area, rail/road embankment",
+      "absorbs": [
+        {
+          "source_uuid": "6965e8df-56a2-5d85-9a0f-983468087784",
+          "source_name": "Occupation, traffic area, rail/road embankment"
+        },
+        {
+          "source_uuid": "c71f28d2-17c1-5451-a583-63581d8773cb",
+          "source_name": "Occupation, traffic area, rail/road embankment"
+        }
+      ],
+      "comment": "One BAFU land class under two uuids: the Swiss row and the unregionalised one. #290 reads the place out of a BAFU flow name into a `location` field, and two of the eleven base labels it whitelists are land classes -- both of them BAFU's rail rows, of which this is one. The place is part of the flow's identity seed, so the two remain two flows; what they share is the land class, which is what this row records. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "92f1554f-121d-4f07-a1bb-b07cd2f7c2f5",
+      "target_name": "traffic area, road network",
+      "absorbs": [
+        {
+          "source_uuid": "27c96f3b-3b91-5e20-b4bc-3a7f85c8238f",
+          "source_name": "Occupation, traffic area, road network"
+        },
+        {
+          "source_uuid": "9197c18e-9c5b-5dac-a1d1-598d12e299e2",
+          "source_name": "Occupation, traffic area, road network"
+        }
+      ],
+      "comment": "One BAFU land class, filed by BAFU in 2 compartments -- `resources / land`, `resources / unspecified` -- and therefore shipped under 2 uuids. This is #66 \u00a71.9: a fifth of BAFU's land-named rows sit outside `resources / land`, and the context mapping now routes all of them to the land dimension. They are one class arriving by several routes rather than several classes being merged, so publishing them as one flow states what BAFU means rather than losing a distinction it drew. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "0860f823-69da-48ae-b3ea-4ede3b661b7d",
+      "target_name": "urban, discontinuously built",
+      "absorbs": [
+        {
+          "source_uuid": "253c65e4-fd9c-5d93-9e01-5e7752a18aed",
+          "source_name": "Occupation, urban, discontinuously built"
+        },
+        {
+          "source_uuid": "71f78aaa-7ea8-5044-8a7a-3f051e19c7b8",
+          "source_name": "Occupation, urban, discontinuously built"
+        }
+      ],
+      "comment": "One BAFU land class, filed by BAFU in 2 compartments -- `resources / land`, `resources / unspecified` -- and therefore shipped under 2 uuids. This is #66 \u00a71.9: a fifth of BAFU's land-named rows sit outside `resources / land`, and the context mapping now routes all of them to the land dimension. They are one class arriving by several routes rather than several classes being merged, so publishing them as one flow states what BAFU means rather than losing a distinction it drew. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "aeea42cc-4215-465f-981f-ae2ab387fbb9",
+      "target_name": "from agriculture, mosaic",
+      "absorbs": [
+        {
+          "source_uuid": "728b9e7b-d2e3-57de-8f0c-3dc10780781d",
+          "source_name": "Transformation, from agriculture, mosaic"
+        },
+        {
+          "source_uuid": "a0147ec9-d4e0-5377-985b-822c2871a9bd",
+          "source_name": "Transformation, from heterogeneous, agricultural"
+        }
+      ],
+      "comment": "BAFU ships 2 names for one land class and this project publishes them as one flow: `Transformation, from agriculture, mosaic`, `Transformation, from heterogeneous, agricultural`. They decompose onto the same axes -- transformation-from/agriculture/built_form=mosaic -- so nothing a reader could have used is lost by the fold, and splitting them would put the same ground under two names. The names are not BAFU's invention: it carries both EF 3.1's word for this class and ecoinvent's, which is what a list assembled from both looks like. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "25a53117-7717-41f6-9085-64b1728c9b0d",
+      "target_name": "from forest",
+      "absorbs": [
+        {
+          "source_uuid": "bc7954a6-cb24-5c3d-97ba-16ef15f70d74",
+          "source_name": "Transformation, from forest, unspecified"
+        },
+        {
+          "source_uuid": "cb3bac55-fc1d-5736-94a0-815469f3097e",
+          "source_name": "Transformation, from forest, unspecified"
+        }
+      ],
+      "comment": "One BAFU land class, filed by BAFU in 2 compartments -- `resources / land`, `resources / unspecified` -- and therefore shipped under 2 uuids. This is #66 \u00a71.9: a fifth of BAFU's land-named rows sit outside `resources / land`, and the context mapping now routes all of them to the land dimension. They are one class arriving by several routes rather than several classes being merged, so publishing them as one flow states what BAFU means rather than losing a distinction it drew. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "52a7fc6d-de3b-4348-9ef2-11b119da6c98",
+      "target_name": "from unspecified",
+      "absorbs": [
+        {
+          "source_uuid": "7f4df42a-efa8-5450-a64f-31df47317724",
+          "source_name": "Transformation, from unknown"
+        },
+        {
+          "source_uuid": "87b9bc60-9a7a-564a-a0d6-b7a2ae1693e9",
+          "source_name": "Transformation, from unknown"
+        },
+        {
+          "source_uuid": "abe1a203-fefd-52d9-955f-3c6434224f9a",
+          "source_name": "Transformation, from unspecified"
+        }
+      ],
+      "comment": "BAFU ships 2 names for one land class and this project publishes them as one flow: `Transformation, from unknown`, `Transformation, from unknown`, `Transformation, from unspecified`. They decompose onto the same axes -- transformation-from/unspecified -- so nothing a reader could have used is lost by the fold, and splitting them would put the same ground under two names. The names are not BAFU's invention: it carries both EF 3.1's word for this class and ecoinvent's, which is what a list assembled from both looks like. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "12411c15-bb42-428a-8bb0-b8b7276e7c63",
+      "target_name": "from unspecified, used",
+      "absorbs": [
+        {
+          "source_uuid": "3c843d13-cd3f-5aea-9b63-a2b24c2282a4",
+          "source_name": "Transformation, from unspecified, used"
+        },
+        {
+          "source_uuid": "c5121293-f3c7-5d84-b5d7-3a0175937780",
+          "source_name": "Transformation, from unspecified, used"
+        }
+      ],
+      "comment": "One BAFU land class, filed by BAFU in 2 compartments -- `resources / in ground`, `resources / unspecified` -- and therefore shipped under 2 uuids. This is #66 \u00a71.9: a fifth of BAFU's land-named rows sit outside `resources / land`, and the context mapping now routes all of them to the land dimension. They are one class arriving by several routes rather than several classes being merged, so publishing them as one flow states what BAFU means rather than losing a distinction it drew. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "933debfd-2aa5-4a35-b07b-2732350ea29c",
+      "target_name": "to arable",
+      "absorbs": [
+        {
+          "source_uuid": "a0caeffb-fca2-5d59-bd06-a3c615271566",
+          "source_name": "Transformation, to annual crop"
+        },
+        {
+          "source_uuid": "d49fad2b-f313-5c50-a4d9-ba87d7575dc0",
+          "source_name": "Transformation, to arable land, unspecified use"
+        }
+      ],
+      "comment": "BAFU ships 2 names for one land class and this project publishes them as one flow: `Transformation, to annual crop`, `Transformation, to arable land, unspecified use`. They decompose onto the same axes -- transformation-to/cropland -- so nothing a reader could have used is lost by the fold, and splitting them would put the same ground under two names. The names are not BAFU's invention: it carries both EF 3.1's word for this class and ecoinvent's, which is what a list assembled from both looks like. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "2f8cc78f-7f63-4b5c-9010-70a847737d23",
+      "target_name": "to industrial area",
+      "absorbs": [
+        {
+          "source_uuid": "1214eed2-6eea-508d-a21b-8bf2eb184438",
+          "source_name": "Transformation, to industrial area"
+        },
+        {
+          "source_uuid": "1dea6434-7ca7-5461-8222-20b2601ec59c",
+          "source_name": "Transformation, to industrial area"
+        },
+        {
+          "source_uuid": "93345ad4-f82b-5acf-a24d-02775690e9d0",
+          "source_name": "Transformation, to industrial area"
+        }
+      ],
+      "comment": "One BAFU land class, filed by BAFU in 3 compartments -- `resources / in ground`, `resources / land`, `resources / unspecified` -- and therefore shipped under 3 uuids. This is #66 \u00a71.9: a fifth of BAFU's land-named rows sit outside `resources / land`, and the context mapping now routes all of them to the land dimension. They are one class arriving by several routes rather than several classes being merged, so publishing them as one flow states what BAFU means rather than losing a distinction it drew. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "4a227586-270a-4b07-9f15-79da640bec83",
+      "target_name": "to traffic area, road network",
+      "absorbs": [
+        {
+          "source_uuid": "35bf3d0c-c00a-5475-a37f-86577be0e987",
+          "source_name": "Transformation, to traffic area, road network"
+        },
+        {
+          "source_uuid": "abe79f79-5a70-5b35-8d54-37c0909f5b52",
+          "source_name": "Transformation, to traffic area, road network"
+        }
+      ],
+      "comment": "One BAFU land class, filed by BAFU in 2 compartments -- `resources / land`, `resources / unspecified` -- and therefore shipped under 2 uuids. This is #66 \u00a71.9: a fifth of BAFU's land-named rows sit outside `resources / land`, and the context mapping now routes all of them to the land dimension. They are one class arriving by several routes rather than several classes being merged, so publishing them as one flow states what BAFU means rather than losing a distinction it drew. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "dc3f4893-9db3-4d19-b108-bcd3a44ed78d",
+      "target_name": "to urban, discontinuously built",
+      "absorbs": [
+        {
+          "source_uuid": "4e4899ec-4f45-5804-b663-b8a59f5aebe7",
+          "source_name": "Transformation, to urban, discontinuously built"
+        },
+        {
+          "source_uuid": "e49ace2c-0cb1-5e85-aa0a-09c423d99966",
+          "source_name": "Transformation, to urban, discontinuously built"
+        }
+      ],
+      "comment": "One BAFU land class, filed by BAFU in 2 compartments -- `resources / land`, `resources / unspecified` -- and therefore shipped under 2 uuids. This is #66 \u00a71.9: a fifth of BAFU's land-named rows sit outside `resources / land`, and the context mapping now routes all of them to the land dimension. They are one class arriving by several routes rather than several classes being merged, so publishing them as one flow states what BAFU means rather than losing a distinction it drew. Measured on the full build of 19 August 2026 (EF 3.1 base, ecoinvent 3.12 and 3.8 and BAFU 2026 v1 merged), the first build in which BAFU's land rows reach EF's flows at all (#66)."
+    },
+    {
+      "list_name": "bafu",
+      "target_uuid": "9b62c56f8eb4efa47ba8d0cf5f997f7fe1a96bca",
+      "target_name": "From unspecified, natural, not used",
+      "absorbs": [
+        {
+          "source_uuid": "bdda2bb9-7a2b-5e7e-b117-8a2e9fc5ed11",
+          "source_name": "Transformation, From Unspecified, Natural (non-use)"
+        },
+        {
+          "source_uuid": "3d2aa4bc-8af5-59d4-ad07-f3bb4f2cb94b",
+          "source_name": "Transformation, From Unspecified, Natural (non-use)"
+        }
+      ],
+      "comment": "One BAFU transformation, exported twice: SimaPro writes the same name under resources / land and resources / unspecified, and both decompose to the class this flow mints. The fold is not new -- the build of 2026-08-22 already lands both rows on this flow, as creations, which the guard does not count -- it became visible when retiring ecoinvent's correspondence table (#141) let ecoinvent's own land rows mint the flow first, turning BAFU's two creations into two matches. Same substance, same class, same flow; recorded rather than declined because splitting one transformation across two flows for an export artefact would be the duplicate #66 exists to prevent."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "b0708e9b5bc6ef05ea245a24b56366616320ace4",
+      "target_name": "From forest, intensive, clear-cutting",
+      "absorbs": [
+        {
+          "source_uuid": "203d7810-34ff-5e63-a245-a1091f8a1692",
+          "source_name": "Transformation, from forest, intensive, clear-cutting"
+        },
+        {
+          "source_uuid": "4bba8b26-fab3-5ebb-825f-50e172b1eb7b",
+          "source_name": "Transformation, from forest, intensive, clear-cutting"
+        }
+      ],
+      "comment": "One AGRIBALYSE transformation, exported twice: the same name, unit (m2) and CORINE code (31b2) under the bare `Resources /` heading and under `Resources / land`, the same SimaPro habit the BAFU entry above records for its two compartment spellings. Both rows decompose to this class by name, so they are one land flow written in two compartments, not two classes -- recorded rather than declined for the BAFU entry's reason. AGRIBALYSE duplicates fourteen of its fifteen bare-heading land names into `Resources / land` this way; the other twelve pairs do not fold on the build of 1 September 2026 because their classes are not yet in the land table (#351), and #351's change is where their groupings belong, keyed to the flows its own build mints."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "abbbdf3d31cf26b391249fdbb20aaed7421d92d5",
+      "target_name": "From shrubland, sclerophyllous",
+      "absorbs": [
+        {
+          "source_uuid": "52486deb-5fc9-5dee-ba55-5f7a0d950be8",
+          "source_name": "Transformation, from shrub land, sclerophyllous"
+        },
+        {
+          "source_uuid": "5b1f209e-6cbb-5213-8c45-90d6f54f4374",
+          "source_name": "Transformation, from shrub land, sclerophyllous"
+        }
+      ],
+      "comment": "The second of AGRIBALYSE's two currently-folding duplicate pairs: `Transformation, from shrub land, sclerophyllous` (CORINE 323, m2) under the bare heading and under `Resources / land`. Same reading as the clear-cutting entry above."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "2de36d9f-313b-4fb1-8060-676eecbfec29",
+      "target_name": "Construction site",
+      "absorbs": [
+        {
+          "source_uuid": "ce3f1152-232f-5496-a027-77b5d090bdb0",
+          "source_name": "Occupation, construction site"
+        },
+        {
+          "source_uuid": "fe8fca64-4807-521d-94e6-d315db91b86c",
+          "source_name": "Occupation, construction site"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "b88d3b6d-229e-477e-bce1-e16376f75c7b",
+      "target_name": "Cropland",
+      "absorbs": [
+        {
+          "source_uuid": "06f9aca4-4c2e-5bb6-a568-b95484262d88",
+          "source_name": "Occupation, annual crop"
+        },
+        {
+          "source_uuid": "5311264b-f45f-5801-bd52-2d5f2d17fa73",
+          "source_name": "Occupation, annual crop"
+        },
+        {
+          "source_uuid": "b8a66e15-d200-5ed4-a07a-593f42cf25a1",
+          "source_name": "Occupation, annual crop"
+        },
+        {
+          "source_uuid": "7eae2373-1d74-547e-845b-e0c2a8a3ac0d",
+          "source_name": "Occupation, annual crop, CN"
+        },
+        {
+          "source_uuid": "982ea06a-86eb-5e3b-a968-eb64853e0084",
+          "source_name": "Occupation, annual crop, TH"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 5 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records; country spellings (CN, TH) whose place is split off the name (#65) and is not a land class; a copy filed under Resources / biotic -- a compartment spelling, not a different transformation. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "9699a63f-c966-43a4-816c-b1fbbf0a3e88",
+      "target_name": "From cropland",
+      "absorbs": [
+        {
+          "source_uuid": "f09dd74c-3f3a-5692-9435-cf1d9509bf24",
+          "source_name": "Transformation, from annual crop"
+        },
+        {
+          "source_uuid": "6261ecb1-6e98-5700-a94c-15d845d4fdb4",
+          "source_name": "Transformation, from annual crop, CN"
+        },
+        {
+          "source_uuid": "3a5fcc1c-69a9-5118-a383-b0f51de0960d",
+          "source_name": "Transformation, from annual crop, TH"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 3 ways: country spellings (CN, TH) whose place is split off the name (#65) and is not a land class. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "25a53117-7717-41f6-9085-64b1728c9b0d",
+      "target_name": "From forest",
+      "absorbs": [
+        {
+          "source_uuid": "cbc63f21-df8c-5388-82f7-c6cbb15a3400",
+          "source_name": "Transformation, from forest, unspecified"
+        },
+        {
+          "source_uuid": "ddfb5f67-15be-5512-8379-9a3e8b228481",
+          "source_name": "Transformation, from forest, unspecified"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: a copy filed under Resources / in water -- a compartment spelling, not a different transformation. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "80a0d183-7b74-4497-95f5-8bf25681c32e",
+      "target_name": "From grassland",
+      "absorbs": [
+        {
+          "source_uuid": "39da6a40-d251-5f35-8193-1d546db53a2a",
+          "source_name": "Transformation, from grassland"
+        },
+        {
+          "source_uuid": "cabbc7c7-7e81-5bfd-8d30-4afee920335c",
+          "source_name": "Transformation, from grassland"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "f49ad273-9482-453c-8bdb-dadf8751e3ae",
+      "target_name": "From permanent cropland",
+      "absorbs": [
+        {
+          "source_uuid": "aff2dda8-b52f-5550-b631-62d4b7db4a0d",
+          "source_name": "Transformation, from permanent crop"
+        },
+        {
+          "source_uuid": "dd72a9a1-cabb-5f43-a154-71d59b115d9c",
+          "source_name": "Transformation, from permanent crop"
+        },
+        {
+          "source_uuid": "12a933f5-9e0b-58d1-ae19-b27e0a246812",
+          "source_name": "Transformation, from permanent crop, CN"
+        },
+        {
+          "source_uuid": "26d5a5f5-1b25-5c0c-bcdc-869fe3bde5bb",
+          "source_name": "Transformation, from permanent crop, TH"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 4 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records; country spellings (CN, TH) whose place is split off the name (#65) and is not a land class. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "a6e91bef-0f5a-4c02-8f01-05d7240bd4b5",
+      "target_name": "From permanent cropland, irrigated",
+      "absorbs": [
+        {
+          "source_uuid": "1407279a-11af-5bbe-bc16-90d81c75dfad",
+          "source_name": "Transformation, from permanent crop, irrigated"
+        },
+        {
+          "source_uuid": "a4f43395-1e31-5cbd-a581-1ec7bc528837",
+          "source_name": "Transformation, from permanent crop, irrigated"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "204480e6-eae8-43dc-b42b-3de73765deba",
+      "target_name": "From permanent cropland, non-irrigated",
+      "absorbs": [
+        {
+          "source_uuid": "0caaa6e4-6a3a-5045-aeab-6488cd2dee66",
+          "source_name": "Transformation, from permanent crop, non-irrigated"
+        },
+        {
+          "source_uuid": "dadc621d-8d09-5136-8784-adae0174f518",
+          "source_name": "Transformation, from permanent crop, non-irrigated"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "eb84226d-129f-49d8-8d69-cc484b7a6cbf",
+      "target_name": "Industrial area",
+      "absorbs": [
+        {
+          "source_uuid": "328d5ede-caee-57e6-a7a8-417215d1b776",
+          "source_name": "Occupation, industrial area"
+        },
+        {
+          "source_uuid": "53d46daa-85f4-57ed-b951-6297683cb659",
+          "source_name": "Occupation, industrial area"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "b0744c5e-9859-470f-99dc-b117be5a32c5",
+      "target_name": "Mineral extraction site",
+      "absorbs": [
+        {
+          "source_uuid": "44200a18-a8c0-54f1-b599-6254c5e24360",
+          "source_name": "Occupation, mineral extraction site"
+        },
+        {
+          "source_uuid": "57b50b48-817e-589c-bb16-cbac987d1bc8",
+          "source_name": "Occupation, mineral extraction site"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: a copy filed under Resources / in water -- a compartment spelling, not a different transformation. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "ceabbb26-5d70-41f2-81bd-c1b096dc0931",
+      "target_name": "Permanent cropland",
+      "absorbs": [
+        {
+          "source_uuid": "0de831e6-1e42-5709-b78d-b093d641c597",
+          "source_name": "Occupation, permanent crop"
+        },
+        {
+          "source_uuid": "e5a1c5e4-97af-5202-a156-fdecdb9c42c5",
+          "source_name": "Occupation, permanent crop"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "e0e757b9-3cfe-46d2-846b-f5f1beb2e41b",
+      "target_name": "Permanent cropland, irrigated",
+      "absorbs": [
+        {
+          "source_uuid": "4e4dfa5f-cdf5-5be5-bd1c-9fb384ef1187",
+          "source_name": "Occupation, permanent crop, irrigated"
+        },
+        {
+          "source_uuid": "4f5237bb-c5ea-513a-b551-d3d14339457b",
+          "source_name": "Occupation, permanent crop, irrigated"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "933debfd-2aa5-4a35-b07b-2732350ea29c",
+      "target_name": "To cropland",
+      "absorbs": [
+        {
+          "source_uuid": "02c1c36c-eaef-56b0-9b46-9ed0b276838b",
+          "source_name": "Transformation, to annual crop"
+        },
+        {
+          "source_uuid": "88c21e91-d4b4-5fe7-93ea-ce40489021ca",
+          "source_name": "Transformation, to annual crop"
+        },
+        {
+          "source_uuid": "7ac50f12-0e3d-5070-946b-0e41078eddf9",
+          "source_name": "Transformation, to annual crop, CN"
+        },
+        {
+          "source_uuid": "1d0a59a6-4bc2-578b-a3d5-77b2c2ca0df3",
+          "source_name": "Transformation, to annual crop, TH"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 4 ways: country spellings (CN, TH) whose place is split off the name (#65) and is not a land class; a copy filed under Resources / in ground -- a compartment spelling, not a different transformation. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "68f57e2a-2909-423c-ad8e-6a695f59a48f",
+      "target_name": "To mineral extraction site",
+      "absorbs": [
+        {
+          "source_uuid": "8dab19f5-c588-5403-85bc-e3493087561d",
+          "source_name": "Transformation, to mineral extraction site"
+        },
+        {
+          "source_uuid": "c9fd363f-382e-5e9c-b1e2-c83a8c6261b5",
+          "source_name": "Transformation, to mineral extraction site"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: a copy filed under Resources / in water -- a compartment spelling, not a different transformation. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "6d205e19-e6c2-4090-b138-01a1b9326a76",
+      "target_name": "To permanent cropland",
+      "absorbs": [
+        {
+          "source_uuid": "31b7cffb-46e5-51d9-be84-a8f9a7314da1",
+          "source_name": "Transformation, to permanent crop"
+        },
+        {
+          "source_uuid": "6966ccaf-de55-5752-9504-14525bb520ec",
+          "source_name": "Transformation, to permanent crop"
+        },
+        {
+          "source_uuid": "920c6904-d975-551a-8153-57b2c06f236e",
+          "source_name": "Transformation, to permanent crop"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 3 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records; a copy filed under Resources / in ground -- a compartment spelling, not a different transformation. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "a41d68cf-dc3f-4ced-b76b-10f3b9289a76",
+      "target_name": "To permanent cropland, irrigated",
+      "absorbs": [
+        {
+          "source_uuid": "27e26034-eb9a-5c5a-97cb-ab97085fb933",
+          "source_name": "Transformation, to permanent crop, irrigated"
+        },
+        {
+          "source_uuid": "46d07afd-b621-5946-b95c-f3c789c43d64",
+          "source_name": "Transformation, to permanent crop, irrigated"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    },
+    {
+      "list_name": "agribalyse",
+      "target_uuid": "ce732468-207d-4c2f-80dc-3a2e565cfe43",
+      "target_name": "To permanent cropland, non-irrigated",
+      "absorbs": [
+        {
+          "source_uuid": "25a1914b-041a-57c5-944f-7783213f59bd",
+          "source_name": "Transformation, to permanent crop, non-irrigated"
+        },
+        {
+          "source_uuid": "d15ec75e-7e89-5e53-8f72-1db07a8c05f2",
+          "source_name": "Transformation, to permanent crop, non-irrigated"
+        }
+      ],
+      "comment": "One AGRIBALYSE land class written 2 ways: the bare `Resources /` heading beside `Resources / land` -- the SimaPro export habit the clear-cutting entry above records. Every member decomposes to the class this flow publishes, so they are one flow in several spellings, not several classes -- recorded rather than declined for the reason the clear-cutting entry states. Measured on the build of 1 September 2026 after #351's classes were added."
+    }
+  ]
+}

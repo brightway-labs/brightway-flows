@@ -1,0 +1,210 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Merge" %}
+{% set active_section = "merge" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Merge</h1>
+  <p class="page__lede">
+    What the run did with each source flow. Every source flow gets exactly one
+    outcome, so this page, the outcome list and the per-flow detail are three
+    views of one table.
+  </p>
+</header>
+
+<section class="section">
+  <div class="section__header"><h2>The run</h2></div>
+  <dl class="facts">
+    <dt>Run</dt><dd class="mono">{{ run.run_id }}</dd>
+    <dt>Started</dt><dd>{{ run.started_at | timestamp }}</dd>
+    <dt>Finished</dt><dd>{{ run.finished_at | timestamp }}</dd>
+  </dl>
+</section>
+
+<section class="section">
+  <div class="section__header">
+    <h2>Source lists</h2>
+    <span class="muted">in merge order</span>
+  </div>
+  <p class="section__note">
+    A source list carries one row per substance per context, so its rows are
+    not its substances: <strong>flow objects</strong> counts the distinct names
+    its rows use.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">List</th>
+          <th scope="col">Version</th>
+          <th scope="col" class="num">Rows</th>
+          <th scope="col" class="num">Flow objects</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for input in run.inputs %}
+        <tr>
+          <td class="num">{{ input.sequence }}</td>
+          <td>{{ input.list_name }}</td>
+          <td class="mono">{{ input.list_version }}</td>
+          <td class="num">{{ input.row_count | thousands }}</td>
+          <td class="num">{{ input.flow_object_count | thousands }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if run.inputs | length > 1 %}
+  <p class="muted">
+    Order matters: a later list can match a flow an earlier one created.
+  </p>
+  {% endif %}
+</section>
+
+{% if run.stats %}
+<section class="section">
+  <div class="section__header">
+    <h2>Outcomes</h2>
+    <span class="muted">rows, and what they are</span>
+  </div>
+  {# Three counts rather than one. A count of rows says how big the job was;
+     what a curator asks of this table is how many substances and how many
+     consensus flows are behind it, and those are smaller numbers. #}
+  <p class="section__note">
+    <strong>Flow objects</strong> counts the distinct substance names the rows
+    carry; <strong>elementary flows</strong> counts the consensus flows they
+    landed on, which is why unmatched has none. The last line counts every row
+    once, so it is smaller than the columns added up.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col" class="num">Source rows</th>
+          <th scope="col" class="num">Flow objects</th>
+          <th scope="col" class="num">Elementary flows</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in counts %}
+        <tr>
+          <td>
+            <a href="{{ url_for('merge.outcomes', outcome=row.outcome) }}">{{ row.outcome }}</a>
+          </td>
+          <td class="num">{{ row.rows | thousands }}</td>
+          <td class="num">{{ row.flow_objects | thousands }}</td>
+          <td class="num">
+            {% if row.elementary_flows %}{{ row.elementary_flows | thousands }}
+            {% else %}<span class="muted">—</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+        {# Not the columns added up: a substance unmatched in one list and
+           matched in another is one substance, and two lists can send a row
+           each to the same consensus flow. #}
+        <tr>
+          <td class="muted">Every row</td>
+          <td class="num">{{ totals.rows | thousands }}</td>
+          <td class="num">{{ totals.flow_objects | thousands }}</td>
+          <td class="num">{{ totals.elementary_flows | thousands }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {# Only what the table does not already say. Every outcome has a line above,
+     and a card repeating one of them is a second number to keep in agreement
+     with the first. #}
+  <div class="cards">
+    <a class="card card--link"
+       href="{{ url_for('merge.outcomes', outcome='unmatched', candidates='yes') }}">
+      <span class="card__label">unmatched with candidates</span>
+      <span class="card__value">{{ run.stats["unmatched with candidates"] | thousands }}</span>
+      <span class="card__note">a substance to attach to, and no flow to choose</span>
+    </a>
+    <a class="card card--link"
+       href="{{ url_for('merge.outcomes', outcome='unmatched', candidates='no') }}">
+      <span class="card__label">unmatched without candidates</span>
+      <span class="card__value">{{ run.stats["unmatched without candidates"] | thousands }}</span>
+      <span class="card__note">no substance in the list matches the row</span>
+    </a>
+    {# Named on the card, because "stale" says something is wrong and not what.
+       The decision stands -- a curator made it -- but the flow it names sits in
+       a different context from the one this row's own context maps to, so
+       either the correspondence table or the context registry has moved since
+       it was written. #}
+    <a class="card card--link"
+       href="{{ url_for('merge.outcomes', inconsistent='yes') }}">
+      <span class="card__label">stale decisions</span>
+      <span class="card__value">{{ run.stats["stale decisions"] | thousands }}</span>
+      <span class="card__note">stored decision points at another context</span>
+    </a>
+  </div>
+  <p>
+    <a class="button" href="{{ url_for('merge.outcomes') }}">Every outcome</a>
+    <a class="button" href="{{ url_for('merge.outcomes', outcome='unmatched', candidates='yes') }}">Needs a decision</a>
+    <a class="button" href="{{ url_for('merge.outcomes', outcome='unmatched', candidates='no') }}">Needs a substance</a>
+  </p>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="section__header"><h2>Why rows could not be placed</h2></div>
+  {% if reasons %}
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col">Reason</th><th scope="col" class="num">Source rows</th></tr></thead>
+      <tbody>
+        {% for row in reasons %}
+        <tr>
+          <td>
+            <a href="{{ url_for('merge.outcomes', outcome='unmatched') }}">{{ row.reason }}</a>
+          </td>
+          <td class="num">{{ row.count | thousands }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">Every source flow was placed.</p>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>What matches rested on</h2></div>
+  {% if bases %}
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col">Basis</th><th scope="col" class="num">Source rows</th></tr></thead>
+      <tbody>
+        {% for row in bases %}
+        <tr><td class="mono">{{ row.basis }}</td><td class="num">{{ row.count | thousands }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No algorithmic match was made.</p>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>Conflicts</h2></div>
+  {% if conflicts %}
+  <p>
+    <a class="button" href="{{ url_for('merge.conflicts') }}">
+      {{ conflicts | length | thousands }} conflict{{ "" if conflicts | length == 1 else "s" }}
+    </a>
+  </p>
+  {% elif run.inputs | length > 1 %}
+  <p class="muted">This run merged {{ run.inputs | length }} source lists and they agree.</p>
+  {% else %}
+  <p class="muted">
+    This run merged one source list, so there is nothing to disagree with.
+  </p>
+  {% endif %}
+</section>
+{% endblock %}

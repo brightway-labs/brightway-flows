@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "description": "AGRIBALYSE 3.2 ships a `Final waste flows` compartment: 43 rows over 4,640 exchange rows, `Organic carbon, placed in landfill` alone in 2,151 of them. A SimaPro final-waste row is an accounting device -- waste leaving the product system boundary -- not an exchange with the environment, and the consensus vocabulary has no waste compartment. #189 decided the rows are refused and the refusal recorded: every one is an `excluded` record in `agribalyse-3.2-additional-flows.json`, published on the list's correspondence under `brightway:excludedSourceConcept`, so a consumer counting ADEME's rows against the associations sees a decision rather than an oversight (the #115 lesson). The published half of the refusal lives outside the build database, so it is pinned by `tests/test_agribalyse_excluded_flows.py` (43 records, each recomputing the uuid it claims, each publishable) rather than claimed here; what this file claims is the build-side half.",
+  "expectations": [
+    {
+      "id": "0855-no-waste-row-reaches-the-merge",
+      "issue": 855,
+      "title": "No AGRIBALYSE final-waste row reaches the merge",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "context": ["Final waste flows"]
+      },
+      "expect": {
+        "row_count": 0
+      },
+      "pending": true,
+      "comment": "A decision guard in the #356 style: it already holds on the before build of b0b8d76 (the adapter then withheld the compartment) and must go on holding now that the adapter extracts the 43 rows and the excluded list removes them at load -- the regression it exists to catch is the exclusion file being unwired from the manifest or a record's uuid drifting from the row it names, either of which would put accounting rows into the merge in a compartment whose context resolves to Inventory Indicator. Drop the pending flag when the shared build first merges agribalyse-3.2."
+    }
+  ]
+}

@@ -1,0 +1,1426 @@
+{
+  "schema_version": 1,
+  "description": "One implementation's flow, and the flow of this list it is about, where neither a registry number nor a name reaches one. `lcia.substance_matching` is the rule -- a number, then an exact name, both inside the compartment the factor was stated in -- and this is what the rule cannot say. GreenDelta's package writes 25 of its flows under a spelling for an ion that no published label of ours matches (`Copper ion` where this list publishes `Copper, Ion`, `Cadmium II` where it publishes `Cadmium(2+)`), and states no registry number for any of them. #347.\n\n**The evidence is their own package, not a resemblance between names.** Each of these names appears in their file 9 to 13 times, once per compartment, and most of those copies carry an ecoinvent uuid that already resolves. So their file says what the name means, in the compartments where it can be read, and a row here carries it into the compartments where it cannot. Every comment records that count. Where a name resolves nowhere in their package -- `Arsenic V`, once -- the comment says so and argues from what their file distinguishes instead.\n\n**A row states a compartment and never a substance alone.** The same rule the matching pass holds to: a factor is a number about a substance in a place, so a decision that reached across compartments could put a freshwater number on an emission to air. Each row names one flow of theirs, which is one substance in one compartment, and one flow of ours.\n\n**`substance`, `context` and `unit` are a guard, not decoration.** They record what the target flow published when the row was written, and a build where that uuid carries something else does not apply the row -- it raises. A uuid is not a stable name for a substance across releases -- #108 added `only_when_named` to `ecoinvent-match-overrides.json` for exactly this, after a uuid ecoinvent 3.8 calls `Vanadium` turned out to be `Vanadium V` in 3.12 -- and a curated decision that silently lands on a different substance is worse than one that stops working.\n\n**A declined row is a decision too, and is recorded here rather than left to look like an oversight.** Seven of GreenDelta's rows are metals emitted to a lake, and Water → Lake publishes only BAFU's element-named flows -- `Cadmium`, never `Cadmium(2+)`. Each comment says why the number is not put there and shows that the same number is already published from another of their own compartments. A declined row still reports: it reaches no flow, and `flow-not-reached` carries the reason from here.\n\nThe comment is mandatory on every row. Each one asserts which substance a publisher meant, over a name that publisher chose.\n\n**The second thing this table carries is a land class or a water material (#166).** Three of GreenDelta's compartments -- `Resource / land`, `Resource / in water` and `Resource / unspecified` -- name a place where this list names an action or a kind of water, so `context-manual-mapping.json` has no rule for them and every route that needs a compartment is closed. 56 of their flows sit there with no identifier that resolves, carrying 1,528 factors, and `Occupation, agriculture` is the shape of all of them: the word `Occupation` is our context and never our label, and `agriculture` is the land class.\n\n**What settles which class is BAFU's own list, not a resemblance between two strings.** The package is distributed inside BAFU's openLCA database and names its flows as BAFU names them, so 51 of the 56 are spelled exactly as a flow in `bafu-2026-v1` -- and this project has already read every one of those, once, in `land-flow-classes.json` and `water-flow-materials.json`. `Occupation, agriculture` is `occupation/agriculture` there, published as `Agriculture` in Land Use → Occupation. The judgement #166 asked for was made when those files were written; a row here carries it to a package that arrived without identifiers.\n\n**Two further checks, and every row that has one passes it.** Their own file resolves 76 of its `Resource / land` flows by ecoinvent uuid -- 23 to Land Use → Occupation, 53 to Land Use → Transformation, none anywhere else -- so a shorter form of the same name usually says the cover and the direction without being asked: `Occupation, forest, intensive` reaches `Forest, intensive`, and this row is that class on a normal rotation. And where the JRC characterises the same flow, the numbers are the row's own: 640 of the 1,528 factors are bit-identical to the JRC's for the same flow, category and country, and not one of the 1,528 disagrees. Each comment says which of the three it rests on.\n\n**What is left out is left out on purpose.** `Water, process, surface` states its factor per kilogram against a flow this list publishes per cubic metre, and the conversion between a mass and a volume of water is not this table's to invent. The regionalised names -- `Water, unspecified natural origin, CH` and 197 more, 382 factors -- carry their country inside the flow name and are a separate question from which substance is meant.",
+  "decisions": [
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "a4b01216-5a08-4078-b5fd-16e437929eb9",
+      "source_flow_name": "Aluminium III",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "in ground"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "fe0acd60-3ddc-11dd-ab5f-0050c2490048",
+      "substance": "Aluminium",
+      "context": "Resource → Ground",
+      "unit": "kg",
+      "comment": "Their name says an ion and their compartment says a resource, and the number settles which they meant. They state 1.09e-09 for resource use, minerals and metals. This list already publishes 1.09e-09 for `Aluminium` in Resource → Ground, the JRC and the ecoinvent Centre both state it, and the consensus factor's derivation is `agreed`. Their other twelve flows of this name are all emissions and all reach `Aluminium(3+)`, which is not published in a resource compartment and would not be the right substance there if it were: aluminium in the ground is the element, not a dissolved ion. So this row is the element resource carrying the ion's name, and reading it that way makes a third implementation agreeing to the digit rather than a factor going nowhere."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "f5aa8364-8feb-4e1b-a9d0-2ceffa388306",
+      "source_flow_name": "Antimony ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "fresh water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "a7a01388d3fc9ca42b2689da95011bffd94ee366",
+      "substance": "Antimony, Ion",
+      "context": "Environmental → Water → Surface water",
+      "unit": "kg",
+      "comment": "8 of their 9 flows of this name resolve by ecoinvent uuid to `Antimony, Ion`, and none of them to any other substance. Three air compartments, three soil compartments, ground water and unspecified water; this is the ninth and last. `Antimony, Ion` publishes `Antimony Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied. #157 leaves open whether antimony's ion in this list should be `Antimony(3+)` or `Antimony(5+)`. This row does not touch that question: their package never points this name at either of them."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "75deed5b-c78a-33e5-b4c3-f5850f833ac1",
+      "source_flow_name": "Arsenic V",
+      "source_context": [
+        "Elementary flows",
+        "Emission to soil",
+        "industrial"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "65bc388d0498c7c96f962d771676f948545ee56e",
+      "substance": "Arsenic(5+)",
+      "context": "Environmental → Ground → Industrial",
+      "unit": "kg",
+      "comment": "The only flow of this name in their whole package, so nothing of theirs settles it by identifier. What settles it is that their file ships `Arsenic V` and `Arsenic ion` as two flows in this same compartment, so they mean two substances, and arsenic(V) is arsenate. `Arsenic(5+)` is published in Environmental → Ground → Industrial and publishes `arsenic (v)` as an alternative label, which is EF 3.1's own spelling. Their `Arsenic ion` row in this compartment is separate and reaches `Arsenic, Ion`."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "cef77e08-b1c6-4893-a8eb-be2ada072c7a",
+      "source_flow_name": "Arsenic ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to soil",
+        "agricultural"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "436e4db97f79e2102ba102a3546f67ed1248c7d6",
+      "substance": "Arsenic, Ion",
+      "context": "Environmental → Ground → Agricultural",
+      "unit": "kg",
+      "comment": "6 of their 11 flows of this name resolve by ecoinvent uuid to `Arsenic, Ion`, and none of them to any other substance. Their package names `Arsenic V` separately, and never points this name at `Arsenic(3+)` or `Arsenic(5+)`. `Arsenic, Ion` publishes `Arsenic Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "0e907e32-c2f3-4cd6-a7e6-64363f82d635",
+      "source_flow_name": "Arsenic ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to soil",
+        "industrial"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "cc0b83ce73fe5ff455897e34c4a0484eefaaaad8",
+      "substance": "Arsenic, Ion",
+      "context": "Environmental → Ground → Industrial",
+      "unit": "kg",
+      "comment": "6 of their 11 flows of this name resolve by ecoinvent uuid to `Arsenic, Ion`, and none of them to any other substance. Their package names `Arsenic V` separately, and never points this name at `Arsenic(3+)` or `Arsenic(5+)`. `Arsenic, Ion` publishes `Arsenic Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "78443a3c-a25a-47bc-a1a1-48d2a57e04df",
+      "source_flow_name": "Arsenic ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "fresh water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "0f3651eed9d17d16e04034fa0249ef108012b027",
+      "substance": "Arsenic, Ion",
+      "context": "Environmental → Water → Surface water",
+      "unit": "kg",
+      "comment": "6 of their 11 flows of this name resolve by ecoinvent uuid to `Arsenic, Ion`, and none of them to any other substance. Their package names `Arsenic V` separately, and never points this name at `Arsenic(3+)` or `Arsenic(5+)`. `Arsenic, Ion` publishes `Arsenic Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "8a377f10-d147-41ff-b9ef-53fad50245ce",
+      "source_flow_name": "Arsenic ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "9e01530a7a30d59f118a995cf4e35539191bbfcc",
+      "substance": "Arsenic, Ion",
+      "context": "Environmental → Water → Unknown",
+      "unit": "kg",
+      "comment": "6 of their 11 flows of this name resolve by ecoinvent uuid to `Arsenic, Ion`, and none of them to any other substance. Their package names `Arsenic V` separately, and never points this name at `Arsenic(3+)` or `Arsenic(5+)`. `Arsenic, Ion` publishes `Arsenic Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "e2a4c2f8-3671-47e7-8649-f5e97a4ad32e",
+      "source_flow_name": "Copper ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "fresh water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "5889bdb350d6b05b45e689c9151bd06b0f24a491",
+      "substance": "Copper, Ion",
+      "context": "Environmental → Water → Surface water",
+      "unit": "kg",
+      "comment": "7 of their 12 flows of this name resolve by ecoinvent uuid to `Copper, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Copper, Ion` publishes `Copper Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "ea6de79e-ce2c-44b2-994e-d2ea0125732b",
+      "source_flow_name": "Copper ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "ground water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "e5bbea955d736a4e722be2dde9a701e281aef832",
+      "substance": "Copper, Ion",
+      "context": "Environmental → Water → Unconfined aquifer",
+      "unit": "kg",
+      "comment": "7 of their 12 flows of this name resolve by ecoinvent uuid to `Copper, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Copper, Ion` publishes `Copper Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "2f100cfa-4feb-45e9-a43a-357128228889",
+      "source_flow_name": "Copper ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "0c988396a794b281c0a04992b40373fef5e39769",
+      "substance": "Copper, Ion",
+      "context": "Environmental → Water → Unknown",
+      "unit": "kg",
+      "comment": "7 of their 12 flows of this name resolve by ecoinvent uuid to `Copper, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Copper, Ion` publishes `Copper Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "6c445f1d-db0f-431c-a2f0-d25aa28bdfd1",
+      "source_flow_name": "Iron ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "fresh water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "530160531b5ed654d0429fd949159da30ad5dad7",
+      "substance": "Iron, Ion",
+      "context": "Environmental → Water → Surface water",
+      "unit": "kg",
+      "comment": "7 of their 10 flows of this name resolve by ecoinvent uuid to `Iron, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Iron, Ion` publishes `Iron Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied. `Iron(2+)` and `Iron(3+)` are published in the same compartment and their name does not say which of the two it is, which is why this list holds a separate substance for the unspecified ion at all (#71)."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "63e7d74e-8549-11e0-9d78-0800200c9a66",
+      "source_flow_name": "Iron ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "384a7d4000e351b8cab39798dcf35f8ec41a61b9",
+      "substance": "Iron, Ion",
+      "context": "Environmental → Water → Unknown",
+      "unit": "kg",
+      "comment": "7 of their 10 flows of this name resolve by ecoinvent uuid to `Iron, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Iron, Ion` publishes `Iron Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied. `Iron(2+)` and `Iron(3+)` are published in the same compartment and their name does not say which of the two it is, which is why this list holds a separate substance for the unspecified ion at all (#71)."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "df28f5b4-4754-4e51-ac98-31238976d7c7",
+      "source_flow_name": "Tin ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "fresh water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "0f06f91dd6bcb87bc097d182d2ed2117c1d05a44",
+      "substance": "Tin, Ion",
+      "context": "Environmental → Water → Surface water",
+      "unit": "kg",
+      "comment": "5 of their 9 flows of this name resolve by ecoinvent uuid to `Tin, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Tin, Ion` publishes `Tin Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "7b66aae2-1d58-490b-8ee7-7677f93c4282",
+      "source_flow_name": "Tin ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "ground water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "1a16e64d9fee2d888e9164c13d4a410f8fc29083",
+      "substance": "Tin, Ion",
+      "context": "Environmental → Water → Unconfined aquifer",
+      "unit": "kg",
+      "comment": "5 of their 9 flows of this name resolve by ecoinvent uuid to `Tin, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Tin, Ion` publishes `Tin Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "63e8256a-8549-11e0-9d78-0800200c9a66",
+      "source_flow_name": "Tin ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "fcf82ad88b79810cd8654bed06ae0c6bf031e027",
+      "substance": "Tin, Ion",
+      "context": "Environmental → Water → Unknown",
+      "unit": "kg",
+      "comment": "5 of their 9 flows of this name resolve by ecoinvent uuid to `Tin, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Tin, Ion` publishes `Tin Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "a86c05d6-fd47-4f0d-8ece-559afa4fd339",
+      "source_flow_name": "Titanium ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "fresh water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "fa00767c-9b51-4b4f-a30d-abbd9c15152d",
+      "substance": "Titanium, ion",
+      "context": "Environmental → Water → Surface water",
+      "unit": "kg",
+      "comment": "5 of their 9 flows of this name resolve by ecoinvent uuid to `Titanium, ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Titanium, ion` publishes no alternative label, which is the only reason a name match misses it where the other five ionic names are reached by one."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "df8c7706-a6c7-37f7-81d6-5feb3dd08b92",
+      "source_flow_name": "Titanium ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "ground water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "5d7e594c7aa25af1d1e0bfb04c8cc5864674a392",
+      "substance": "Titanium, ion",
+      "context": "Environmental → Water → Unconfined aquifer",
+      "unit": "kg",
+      "comment": "5 of their 9 flows of this name resolve by ecoinvent uuid to `Titanium, ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Titanium, ion` publishes no alternative label, which is the only reason a name match misses it where the other five ionic names are reached by one."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "6089e9e4-f382-4066-9968-fc7e42b51066",
+      "source_flow_name": "Titanium ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "d409933f-a19f-4ff0-8fbd-1ca38e0819c1",
+      "substance": "Titanium, ion",
+      "context": "Environmental → Water → Unknown",
+      "unit": "kg",
+      "comment": "5 of their 9 flows of this name resolve by ecoinvent uuid to `Titanium, ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Titanium, ion` publishes no alternative label, which is the only reason a name match misses it where the other five ionic names are reached by one."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "c0f8b131-19e5-4787-9c2d-142378b08c2a",
+      "source_flow_name": "Arsenic ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "lake"
+      ],
+      "decision": "declined",
+      "comment": "Water → Lake publishes 42 flows, every one of them BAFU's, and BAFU names a dissolved metal for its element: `Arsenic`, with no ionic flow beside it. This list keeps the element and the ion apart in all four water contexts where both are published, so a number about the ion does not go onto the flow named for the element. #71 answered the same question the same way, from the other side: when BAFU named an emission `Iron, ion` and nothing here answered to it, the merge minted a substance for the row rather than folding it onto iron.\n\nDeclining costs no number. Every value this row states is stated again by their own `fresh water`, `ground water` and `unspecified` rows -- the ecotoxicity figures identical to the last digit in all four compartments, the human-toxicity figures identical to `unspecified` and `ground water` -- and those three rows reach `Arsenic, Ion` through the decisions above."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "68701316-d3f5-4e08-8814-6b3b28712d85",
+      "source_flow_name": "Cadmium II",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "lake"
+      ],
+      "decision": "declined",
+      "comment": "Water → Lake publishes 42 flows, every one of them BAFU's, and BAFU names a dissolved metal for its element: `Cadmium`, with no ionic flow beside it. This list keeps the element and the ion apart in all four water contexts where both are published, so a number about the ion does not go onto the flow named for the element. #71 answered the same question the same way, from the other side: when BAFU named an emission `Iron, ion` and nothing here answered to it, the merge minted a substance for the row rather than folding it onto iron.\n\nDeclining costs no number. Its ecotoxicity figure, 674495, is what their `fresh water`, `ground water` and `unspecified` rows all state, to the last digit; its human-toxicity figures are identical to their `unspecified` and `ground water` rows. All three of those already reach `Cadmium(2+)`."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "916801f0-3980-4408-a577-62b222aa1543",
+      "source_flow_name": "Copper ion",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "lake"
+      ],
+      "decision": "declined",
+      "comment": "Water → Lake publishes 42 flows, every one of them BAFU's, and BAFU names a dissolved metal for its element: `Copper`, with no ionic flow beside it. This list keeps the element and the ion apart in all four water contexts where both are published, so a number about the ion does not go onto the flow named for the element. #71 answered the same question the same way, from the other side: when BAFU named an emission `Iron, ion` and nothing here answered to it, the merge minted a substance for the row rather than folding it onto iron.\n\nDeclining costs no number. Its ecotoxicity figure, 46.4759, is what their `fresh water`, `ground water` and `unspecified` rows all state; its human-toxicity figures are identical to their `unspecified` and `ground water` rows. Those three reach `Copper, Ion` through the decisions above."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "540106ac-eb8e-446b-91f5-3fdbad5a5886",
+      "source_flow_name": "Lead II",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "lake"
+      ],
+      "decision": "declined",
+      "comment": "Water → Lake publishes 42 flows, every one of them BAFU's, and BAFU names a dissolved metal for its element: `Lead`, with no ionic flow beside it. This list keeps the element and the ion apart in all four water contexts where both are published, so a number about the ion does not go onto the flow named for the element. #71 answered the same question the same way, from the other side: when BAFU named an emission `Iron, ion` and nothing here answered to it, the merge minted a substance for the row rather than folding it onto iron.\n\nDeclining costs no number. Its figures are identical to their `unspecified` and `ground water` rows, and its ecotoxicity figure to their `fresh water` row as well. All three already reach `Lead(2+)`."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "aef694fb-8da8-4e26-8b7d-6769a6aa03a4",
+      "source_flow_name": "Mercury II",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "lake"
+      ],
+      "decision": "declined",
+      "comment": "Water → Lake publishes 42 flows, every one of them BAFU's, and BAFU names a dissolved metal for its element: `Mercury`, with no ionic flow beside it. This list keeps the element and the ion apart in all four water contexts where both are published, so a number about the ion does not go onto the flow named for the element. #71 answered the same question the same way, from the other side: when BAFU named an emission `Iron, ion` and nothing here answered to it, the merge minted a substance for the row rather than folding it onto iron.\n\nDeclining costs no number. All six of its figures are identical to their `unspecified` row's, and its ecotoxicity figures to their `fresh water` row's. Both already reach `Mercury(2+)`."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "c742a8cc-6f9c-4742-879c-a18be0d6e5ad",
+      "source_flow_name": "Nickel II",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "lake"
+      ],
+      "decision": "declined",
+      "comment": "Water → Lake publishes 42 flows, every one of them BAFU's, and BAFU names a dissolved metal for its element: `Nickel`, with no ionic flow beside it. This list keeps the element and the ion apart in all four water contexts where both are published, so a number about the ion does not go onto the flow named for the element. #71 answered the same question the same way, from the other side: when BAFU named an emission `Iron, ion` and nothing here answered to it, the merge minted a substance for the row rather than folding it onto iron.\n\nDeclining costs no number. Its figures are identical to their `unspecified` and `ground water` rows, and its ecotoxicity figure to their `fresh water` row as well. All three already reach `Nickel(2+)`."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "d4477f26-283d-492c-bc05-5252e09f9156",
+      "source_flow_name": "Zinc II",
+      "source_context": [
+        "Elementary flows",
+        "Emission to water",
+        "lake"
+      ],
+      "decision": "declined",
+      "comment": "Water → Lake publishes 42 flows, every one of them BAFU's, and BAFU names a dissolved metal for its element: `Zinc`, with no ionic flow beside it. This list keeps the element and the ion apart in all four water contexts where both are published, so a number about the ion does not go onto the flow named for the element. #71 answered the same question the same way, from the other side: when BAFU named an emission `Iron, ion` and nothing here answered to it, the merge minted a substance for the row rather than folding it onto iron.\n\nDeclining costs no number. All four of its figures are identical to their `unspecified` row's. That row already reaches `Zinc(2+)`."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "5dbd8205-fa09-3895-90d3-5e1d7406c179",
+      "source_flow_name": "Occupation, agriculture",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "e1d56d4e-afe3-4b92-bd51-0a21f75e50a8",
+      "substance": "Agriculture",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/agriculture` -- published as `Agriculture` in Land Use → Occupation. 211 of its 213 factors are bit-identical to what the JRC states for `Agriculture` in the same category and place, the JRC states nothing for the other 2, and none of the 213 disagrees."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "310b68ea-1ea1-385f-add3-b49c49ac7293",
+      "source_flow_name": "Occupation, agriculture, mosaic",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "1d443c61-ff6f-419a-99a8-9ff3055f4922",
+      "substance": "Agriculture, mosaic",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/agriculture/built_form=mosaic` -- published as `Agriculture, mosaic` in Land Use → Occupation. `Occupation, heterogeneous, agricultural` is their own newer name for the same class and already reaches `Agriculture, mosaic` by ecoinvent uuid, stating 48.218 for Land use; this row states 48.218, which is that number. Its single factor is bit-identical to what the JRC states for `Agriculture, mosaic` in the same category and place. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "04eb6f40-8671-3a31-b27b-ef82f04be46f",
+      "source_flow_name": "Occupation, annual crop, non-irrigated, diverse-intensive",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "34d540bf7c53947a9510c806152d8814001f32ea",
+      "substance": "Cropland, non-irrigated, diverse-intensive",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/cropland/irrigation=rainfed/intensity=diverse-intensive` -- published as `Cropland, non-irrigated, diverse-intensive` in Land Use → Occupation. Their own file says as much: `Occupation, annual crop, non-irrigated` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `Cropland, non-irrigated` in Land Use → Occupation. The JRC states no factor for `Cropland, non-irrigated, diverse-intensive`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "23309f61-c8db-3224-abcc-d65ae4800611",
+      "source_flow_name": "Occupation, annual crop, organic",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "38ea867bec03970c342d75b5e3c1de84be074de5",
+      "substance": "Cropland, organic",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/cropland/intensity=organic` -- published as `Cropland, organic` in Land Use → Occupation. Their own file says as much: `Occupation, annual crop` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `Cropland` in Land Use → Occupation. The JRC states no factor for `Cropland, organic`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "c033dd2f-87a4-435d-a7cb-477b15310066",
+      "source_flow_name": "Occupation, dump site, benthos",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "a72d9e4e519907c3e87fa2258211be83e01ac9d1",
+      "substance": "Dump site, benthic",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/dump-site/substrate=benthic` -- published as `Dump site, benthic` in Land Use → Occupation. Their own file says as much: `Occupation, dump site` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `Dump site` in Land Use → Occupation. The JRC states no factor for `Dump site, benthic`, so nothing here rests on a number agreeing. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "fc924940-e7cd-3238-9d9c-cdb1b59c6aec",
+      "source_flow_name": "Occupation, forest, intensive, normal",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "44e73da5ad108ced178eba933d60579b550b7972",
+      "substance": "Forest, intensive, normal rotation",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/forest/intensity=intensive/silviculture=normal-rotation` -- published as `Forest, intensive, normal rotation` in Land Use → Occupation. Their own file says as much: `Occupation, forest, intensive` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `Forest, intensive` in Land Use → Occupation. The JRC states no factor for `Forest, intensive, normal rotation`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "bafff3e8-f51e-42d6-8924-dcab1098c8ef",
+      "source_flow_name": "Occupation, forest, intensive, short-cycle",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "608eddcafc39860a052f45465883cf05d0ee5424",
+      "substance": "Forest, intensive, short rotation",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/forest/intensity=intensive/silviculture=short-rotation` -- published as `Forest, intensive, short rotation` in Land Use → Occupation. Their own file says as much: `Occupation, forest, intensive` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `Forest, intensive` in Land Use → Occupation. The JRC states no factor for `Forest, intensive, short rotation`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "b0828a29-0261-4a12-a5d3-9e72c7e89619",
+      "source_flow_name": "Occupation, industrial area, benthos",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "af1721a358dbc60680f0db177080720051028d8c",
+      "substance": "Industrial area, benthic",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/industrial/substrate=benthic` -- published as `Industrial area, benthic` in Land Use → Occupation. Their own file says as much: `Occupation, industrial area` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `Industrial area` in Land Use → Occupation. The JRC states no factor for `Industrial area, benthic`, so nothing here rests on a number agreeing. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "cf39ec61-e779-4614-97b7-ec622556040d",
+      "source_flow_name": "Occupation, industrial area, built up",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "3b6d74e86588587722800b77df060b52de3d4e25",
+      "substance": "Industrial area, built up",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships two flows of exactly this name, in `resources / land` and `resources / unspecified`, and `land-flow-classes.json` reads it as `occupation/industrial/built_form=built-up` -- published as `Industrial area, built up` in Land Use → Occupation. Their own file says as much: `Occupation, industrial area` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `Industrial area` in Land Use → Occupation. The JRC states no factor for `Industrial area, built up`, so nothing here rests on a number agreeing. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "44ea6f89-8780-45b4-a80a-cfc3abcfef5f",
+      "source_flow_name": "Occupation, industrial area, vegetation",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "e3c3d7d372409f881a99abf9ced9d3436680da4c",
+      "substance": "Industrial area, vegetated",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships two flows of exactly this name, in `resources / land` and `resources / unspecified`, and `land-flow-classes.json` reads it as `occupation/industrial/built_form=vegetated` -- published as `Industrial area, vegetated` in Land Use → Occupation. Their own file says as much: `Occupation, industrial area` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `Industrial area` in Land Use → Occupation. The JRC states no factor for `Industrial area, vegetated`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "59734866-f67e-3c7e-a2de-6d269f99788c",
+      "source_flow_name": "Occupation, pasture, man made, organic",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "93d2b9d81efb05aa9a49888878667c94601bf788",
+      "substance": "Pasture, man-made, organic",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/pasture/origin=man-made/intensity=organic` -- published as `Pasture, man-made, organic` in Land Use → Occupation. Their own file says as much: `Occupation, pasture, man made` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `Pasture, man-made` in Land Use → Occupation. The JRC states no factor for `Pasture, man-made, organic`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "2997b0b4-f6ec-4df0-9481-4bdab4e86507",
+      "source_flow_name": "Occupation, permanent crop, fruit, intensive",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "d877162084f0f82810e60308c26a000fa8b58936",
+      "substance": "Permanent cropland, intensive, fruit",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/permanent-cropland/intensity=intensive/crop_type=fruit` -- published as `Permanent cropland, intensive, fruit` in Land Use → Occupation. The JRC states no factor for `Permanent cropland, intensive, fruit` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "3cc6b9e3-fda3-4712-b5b2-df07b0b996f3",
+      "source_flow_name": "Occupation, sealed soil",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "4af0d44758a8d5cc4e1de421e08b741c773f454d",
+      "substance": "Sealed soil",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/sealed` -- published as `Sealed soil` in Land Use → Occupation. The JRC states no factor for `Sealed soil` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "14b92328-e08d-4fac-b16a-da5dcd0e5627",
+      "source_flow_name": "Occupation, traffic area, road embankment",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "1e944bedd8a2f4043feb83d54d2a52e1dc870dd8",
+      "substance": "Traffic area, road embankment",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/traffic/infrastructure=road-embankment` -- published as `Traffic area, road embankment` in Land Use → Occupation. The JRC states no factor for `Traffic area, road embankment` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "72745257-3534-4ca3-adfa-a2eb63f1e7d9",
+      "source_flow_name": "Occupation, traffic area, road network",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "92f1554f-121d-4f07-a1bb-b07cd2f7c2f5",
+      "substance": "Traffic area, road network",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships two flows of exactly this name, in `resources / land` and `resources / unspecified`, and `land-flow-classes.json` reads it as `occupation/traffic/infrastructure=road-network` -- published as `Traffic area, road network` in Land Use → Occupation. Their file carries this name twice, and the other copy -- in `Resource / land`, with an ecoinvent uuid -- already reaches `Traffic area, road network`. This row states the same number, 161.52 for Land use, from the copy that has no identifier. Its single factor is bit-identical to what the JRC states for `Traffic area, road network` in the same category and place. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "a4c4b2e8-7611-4690-b00f-80789d4eb9fe",
+      "source_flow_name": "Occupation, tropical rain forest",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "9eb67b73c0d05f841227e3a37a879a193afba011",
+      "substance": "Tropical rainforest",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/tropical-rainforest` -- published as `Tropical rainforest` in Land Use → Occupation. The JRC states no factor for `Tropical rainforest` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "63cf5ffa-3b2c-3ab8-b726-0bab20804237",
+      "source_flow_name": "Occupation, unspecified, used",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "3b93ab27-c0b5-4376-be16-7946c7dd6d87",
+      "substance": "Unspecified, used",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `occupation/unspecified/use_status=used` -- published as `Unspecified, used` in Land Use → Occupation. Its single factor is bit-identical to what the JRC states for `Unspecified, used` in the same category and place. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "89823c78-b1cc-398f-946e-36a47fdac7cb",
+      "source_flow_name": "Occupation, urban",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "d433f59a-a45d-42a4-88bc-ae8a4f29af39",
+      "substance": "Urban",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / unspecified`, and `land-flow-classes.json` reads it as `occupation/urban` -- published as `Urban` in Land Use → Occupation. Its single factor is bit-identical to what the JRC states for `Urban` in the same category and place. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "080bf4c6-fab3-4e21-88c7-20b435aa42e8",
+      "source_flow_name": "Occupation, urban, discontinuously built",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "0860f823-69da-48ae-b3ea-4ede3b661b7d",
+      "substance": "Urban, discontinuously built",
+      "context": "Land Use → Occupation",
+      "unit": "m2.a",
+      "comment": "BAFU's list ships two flows of exactly this name, in `resources / land` and `resources / unspecified`, and `land-flow-classes.json` reads it as `occupation/urban/built_form=discontinuous` -- published as `Urban, discontinuously built` in Land Use → Occupation. Their file carries this name twice, and the other copy -- in `Resource / land`, with an ecoinvent uuid -- already reaches `Urban, discontinuously built`. This row states the same number, 116.16 for Land use, from the copy that has no identifier. Its single factor is bit-identical to what the JRC states for `Urban, discontinuously built` in the same category and place. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "c228acda-5e76-3c9c-908d-467e0d5493e2",
+      "source_flow_name": "Transformation, from agriculture, mosaic",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "aeea42cc-4215-465f-981f-ae2ab387fbb9",
+      "substance": "From agriculture, mosaic",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/agriculture/built_form=mosaic` -- published as `From agriculture, mosaic` in Land Use → Transformation. Their own file says as much: `Transformation, from agriculture` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `From agriculture` in Land Use → Transformation. `Transformation, from heterogeneous, agricultural` is their own newer name for the same class and already reaches `From agriculture, mosaic` by ecoinvent uuid, stating -482.18 for Land use; this row states -482.18, which is that number. Its single factor is bit-identical to what the JRC states for `From agriculture, mosaic` in the same category and place."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "436403fd-caa1-3abb-9de4-e3dde0774798",
+      "source_flow_name": "Transformation, from annual crop, non-irrigated, diverse-intensive",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "2cde107c7e7c679556deebeb61ea451b99fb16c8",
+      "substance": "From cropland, non-irrigated, diverse-intensive",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU writes this class `from arable, non-irrigated, diverse-intensive` where their package writes `from annual crop, non-irrigated, diverse-intensive`, and it is one class under two spellings in BAFU's own file, which uses both: `arable` and `annual crop` decompose to cropland in `land-flow-classes.json` alike. That flow of BAFU's is read as `transformation-from/cropland/irrigation=rainfed/intensity=diverse-intensive` -- published as `From cropland, non-irrigated, diverse-intensive` in Land Use → Transformation. Their own file says as much: `Transformation, from annual crop, non-irrigated` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `From cropland, non-irrigated` in Land Use → Transformation. The JRC states no factor for `From cropland, non-irrigated, diverse-intensive`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "777b7fc7-d7a2-3e6d-a326-cfa1f6b11aea",
+      "source_flow_name": "Transformation, from annual crop, non-irrigated, fallow",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "e378a9c2cf98bb68979d5472db3343e8bf79ec2d",
+      "substance": "From cropland, non-irrigated, fallow",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/cropland/irrigation=rainfed/use_status=fallow` -- published as `From cropland, non-irrigated, fallow` in Land Use → Transformation. Their own file says as much: `Transformation, from annual crop, non-irrigated` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `From cropland, non-irrigated` in Land Use → Transformation. The JRC states no factor for `From cropland, non-irrigated, fallow`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "43c8b65e-8551-37da-9f00-7fedc95fe17d",
+      "source_flow_name": "Transformation, from arable, organic",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "252907328aab5b2b106f2ec4b2bd3ed35e9a016a",
+      "substance": "From cropland, organic",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/cropland/intensity=organic` -- published as `From cropland, organic` in Land Use → Transformation. The JRC states no factor for `From cropland, organic` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "8c920eda-3eee-4782-ace6-c706fb363b88",
+      "source_flow_name": "Transformation, from forest, intensive, clear-cutting",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "b0708e9b5bc6ef05ea245a24b56366616320ace4",
+      "substance": "From forest, intensive, clear-cutting",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/forest/intensity=intensive/silviculture=clear-cutting` -- published as `From forest, intensive, clear-cutting` in Land Use → Transformation. The JRC states no factor for `From forest, intensive, clear-cutting` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "963b17e3-ec2a-3715-85eb-01d84a8fce7b",
+      "source_flow_name": "Transformation, from forest, intensive, normal",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "9be743ff4162887c7782a96892de40bf57c6ab68",
+      "substance": "From forest, intensive, normal rotation",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/forest/intensity=intensive/silviculture=normal-rotation` -- published as `From forest, intensive, normal rotation` in Land Use → Transformation. The JRC states no factor for `From forest, intensive, normal rotation` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "99f1deff-a149-49bf-b1fd-95f7ff7d1331",
+      "source_flow_name": "Transformation, from forest, intensive, short-cycle",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "91ca401bf99b9fb9fecc5aa26de52be4b65761d4",
+      "substance": "From forest, intensive, short rotation",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/forest/intensity=intensive/silviculture=short-rotation` -- published as `From forest, intensive, short rotation` in Land Use → Transformation. The JRC states no factor for `From forest, intensive, short rotation` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "b93fac73-b3b1-4825-b1db-c129d404d3f3",
+      "source_flow_name": "Transformation, from industrial area, benthos",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "af19224125bb347378c3b1ec7906b224b9ee6f41",
+      "substance": "From industrial area, benthic",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/industrial/substrate=benthic` -- published as `From industrial area, benthic` in Land Use → Transformation. Their own file says as much: `Transformation, from industrial area` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `From industrial area` in Land Use → Transformation. The JRC states no factor for `From industrial area, benthic`, so nothing here rests on a number agreeing. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "12be05aa-48ad-49a8-a864-7a51ba56075b",
+      "source_flow_name": "Transformation, from industrial area, built up",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "1e0976fa8e1b7242a30882358154e1949e07f04d",
+      "substance": "From industrial area, built up",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/industrial/built_form=built-up` -- published as `From industrial area, built up` in Land Use → Transformation. Their own file says as much: `Transformation, from industrial area` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `From industrial area` in Land Use → Transformation. The JRC states no factor for `From industrial area, built up`, so nothing here rests on a number agreeing. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "f9795c43-391d-4e31-a4ce-bee8259adb03",
+      "source_flow_name": "Transformation, from industrial area, vegetation",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "893a75e4c8cf8e128c2a188262e74975b6b89cc2",
+      "substance": "From industrial area, vegetated",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/industrial/built_form=vegetated` -- published as `From industrial area, vegetated` in Land Use → Transformation. Their own file says as much: `Transformation, from industrial area` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `From industrial area` in Land Use → Transformation. The JRC states no factor for `From industrial area, vegetated`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "54d144f3-a534-429d-bdd6-f3d8448ab4cc",
+      "source_flow_name": "Transformation, from pasture and meadow",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "e29e7755-623d-47fb-b2ac-c0615a1b709f",
+      "substance": "From pasture",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/pasture` -- published as `From pasture` in Land Use → Transformation. Its single factor is bit-identical to what the JRC states for `From pasture` in the same category and place. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "7eb4fceb-e6d0-3ae3-9f92-db8148633e6d",
+      "source_flow_name": "Transformation, from pasture and meadow, organic",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "43975f972d8211c615f1e756a8106c315503e8a3",
+      "substance": "From pasture, organic",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/pasture/intensity=organic` -- published as `From pasture, organic` in Land Use → Transformation. The JRC states no factor for `From pasture, organic` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "fe91efc5-25ce-4316-b0d1-43173a755777",
+      "source_flow_name": "Transformation, from permanent crop, fruit, extensive",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "e1bf3777d5214903a060a487d5beb28d5845a478",
+      "substance": "From permanent cropland, extensive, fruit",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/permanent-cropland/intensity=extensive/crop_type=fruit` -- published as `From permanent cropland, extensive, fruit` in Land Use → Transformation. The JRC states no factor for `From permanent cropland, extensive, fruit` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "7899bb60-56fd-3d8b-8c3a-9d6341b9d747",
+      "source_flow_name": "Transformation, from tropical rain forest",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "077f9f129846219dfeaf19ce6cc682c9f1e4f53a",
+      "substance": "From tropical rainforest",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-from/tropical-rainforest` -- published as `From tropical rainforest` in Land Use → Transformation. The JRC states no factor for `From tropical rainforest` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "85a087a2-6217-3cc1-9f2f-1cc9dccf6f9d",
+      "source_flow_name": "Transformation, from unspecified, used",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "12411c15-bb42-428a-8bb0-b8b7276e7c63",
+      "substance": "From unspecified, used",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships two flows of exactly this name, in `resources / in ground` and `resources / unspecified`, and `land-flow-classes.json` reads it as `transformation-from/unspecified/use_status=used` -- published as `From unspecified, used` in Land Use → Transformation. Their own file says as much: `Transformation, from unspecified` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `From unspecified` in Land Use → Transformation. Its single factor is bit-identical to what the JRC states for `From unspecified, used` in the same category and place. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "984054e3-b91c-3e32-aeca-59f6cdedeb97",
+      "source_flow_name": "Transformation, to annual crop, non-irrigated, diverse-intensive",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "d0be30ae82f2e39f44125b1fec63ded4ebe6f732",
+      "substance": "To cropland, non-irrigated, diverse-intensive",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU writes this class `to arable, non-irrigated, diverse-intensive` where their package writes `to annual crop, non-irrigated, diverse-intensive`, and it is one class under two spellings in BAFU's own file, which uses both: `arable` and `annual crop` decompose to cropland in `land-flow-classes.json` alike. That flow of BAFU's is read as `transformation-to/cropland/irrigation=rainfed/intensity=diverse-intensive` -- published as `To cropland, non-irrigated, diverse-intensive` in Land Use → Transformation. Their own file says as much: `Transformation, to annual crop, non-irrigated` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `To cropland, non-irrigated` in Land Use → Transformation. The JRC states no factor for `To cropland, non-irrigated, diverse-intensive`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "3e88be44-3a9b-38ab-aa3a-544ba1ecf359",
+      "source_flow_name": "Transformation, to annual crop, non-irrigated, fallow",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "f2c52a74ac955554cca1bb0f6501e319652b4f9f",
+      "substance": "To cropland, non-irrigated, fallow",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU writes this class `to arable, non-irrigated, fallow` where their package writes `to annual crop, non-irrigated, fallow`, and it is one class under two spellings in BAFU's own file, which uses both: `arable` and `annual crop` decompose to cropland in `land-flow-classes.json` alike. That flow of BAFU's is read as `transformation-to/cropland/irrigation=rainfed/use_status=fallow` -- published as `To cropland, non-irrigated, fallow` in Land Use → Transformation. Their own file says as much: `Transformation, to annual crop, non-irrigated` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `To cropland, non-irrigated` in Land Use → Transformation. The JRC states no factor for `To cropland, non-irrigated, fallow`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "2e1a4ab8-76e5-44cf-a726-ea75ac62efac",
+      "source_flow_name": "Transformation, to arable, organic",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "23429b274f56fc7adc82ce00efc7449dc43c9697",
+      "substance": "To cropland, organic",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/cropland/intensity=organic` -- published as `To cropland, organic` in Land Use → Transformation. The JRC states no factor for `To cropland, organic` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "6c4a3fb1-813d-33f2-87e7-157699f2a835",
+      "source_flow_name": "Transformation, to dump site, benthos",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "f5e41ba66c207d1b1693f19d907d4724fd902dc3",
+      "substance": "To dump site, benthic",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/dump-site/substrate=benthic` -- published as `To dump site, benthic` in Land Use → Transformation. Their own file says as much: `Transformation, to dump site` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `To dump site` in Land Use → Transformation. The JRC states no factor for `To dump site, benthic`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "cdbfd224-21fe-457e-a47d-26a525965051",
+      "source_flow_name": "Transformation, to forest, intensive, clear-cutting",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "c3b169f1b53291bafbf2989b1a400a8bfb67221c",
+      "substance": "To forest, intensive, clear-cutting",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/forest/intensity=intensive/silviculture=clear-cutting` -- published as `To forest, intensive, clear-cutting` in Land Use → Transformation. Their own file says as much: `Transformation, to forest, intensive` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `To forest, intensive` in Land Use → Transformation. The JRC states no factor for `To forest, intensive, clear-cutting`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "05a9f970-d413-321a-8161-88b70933593f",
+      "source_flow_name": "Transformation, to forest, intensive, normal",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "dc8a3f99567de13263f5201b5b119e4d466a5c01",
+      "substance": "To forest, intensive, normal rotation",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/forest/intensity=intensive/silviculture=normal-rotation` -- published as `To forest, intensive, normal rotation` in Land Use → Transformation. Their own file says as much: `Transformation, to forest, intensive` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `To forest, intensive` in Land Use → Transformation. The JRC states no factor for `To forest, intensive, normal rotation`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "3573b5ab-5158-4048-a364-aad9e706acb4",
+      "source_flow_name": "Transformation, to forest, intensive, short-cycle",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "7cf488f6194cacaf6895914afe9ddd0a57d18a7b",
+      "substance": "To forest, intensive, short rotation",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/forest/intensity=intensive/silviculture=short-rotation` -- published as `To forest, intensive, short rotation` in Land Use → Transformation. Their own file says as much: `Transformation, to forest, intensive` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `To forest, intensive` in Land Use → Transformation. The JRC states no factor for `To forest, intensive, short rotation`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "e6dd1a4b-0a12-4b46-9245-6ec9b63c8255",
+      "source_flow_name": "Transformation, to industrial area, benthos",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "ffcc3ba642ffac018599ba5587825d4fa439cdfb",
+      "substance": "To industrial area, benthic",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/industrial/substrate=benthic` -- published as `To industrial area, benthic` in Land Use → Transformation. Their own file says as much: `Transformation, to industrial area` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `To industrial area` in Land Use → Transformation. The JRC states no factor for `To industrial area, benthic`, so nothing here rests on a number agreeing. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "c24fe83a-3170-49a3-ab67-279d34b8d920",
+      "source_flow_name": "Transformation, to industrial area, built up",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "7056b2a0a942064b92f3a18d7e0496bae57a3d4a",
+      "substance": "To industrial area, built up",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships two flows of exactly this name, in `resources / land` and `resources / unspecified`, and `land-flow-classes.json` reads it as `transformation-to/industrial/built_form=built-up` -- published as `To industrial area, built up` in Land Use → Transformation. Their own file says as much: `Transformation, to industrial area` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `To industrial area` in Land Use → Transformation. The JRC states no factor for `To industrial area, built up`, so nothing here rests on a number agreeing. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "6f2f97dc-2aeb-482c-a20a-9747f0746898",
+      "source_flow_name": "Transformation, to industrial area, vegetation",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "f568b4e3b34c607655f38afd4b5b360301aa2987",
+      "substance": "To industrial area, vegetated",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships two flows of exactly this name, in `resources / land` and `resources / unspecified`, and `land-flow-classes.json` reads it as `transformation-to/industrial/built_form=vegetated` -- published as `To industrial area, vegetated` in Land Use → Transformation. Their own file says as much: `Transformation, to industrial area` -- this name with its last qualifier dropped -- carries an ecoinvent uuid that resolves to `To industrial area` in Land Use → Transformation. The JRC states no factor for `To industrial area, vegetated`, so nothing here rests on a number agreeing."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "f1211810-39f3-49bd-826f-310dbe82950c",
+      "source_flow_name": "Transformation, to pasture and meadow, organic",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "3245371cd888663596f98e86c768cd6d32dacbdf",
+      "substance": "To pasture, organic",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/pasture/intensity=organic` -- published as `To pasture, organic` in Land Use → Transformation. The JRC states no factor for `To pasture, organic` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "07a366fe-1c9e-4651-ad1a-1da666316417",
+      "source_flow_name": "Transformation, to permanent crop, fruit, intensive",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "acb2fd75bfcfe884a0072714d0fdb1607d739da5",
+      "substance": "To permanent cropland, intensive, fruit",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/permanent-cropland/intensity=intensive/crop_type=fruit` -- published as `To permanent cropland, intensive, fruit` in Land Use → Transformation. The JRC states no factor for `To permanent cropland, intensive, fruit` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "345281db-4ed3-e458-5ead-00003fdd1e9a",
+      "source_flow_name": "Transformation, to sealed soil",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "b7a2678581fded101cef01b2eb7790cfba987852",
+      "substance": "To sealed soil",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/sealed` -- published as `To sealed soil` in Land Use → Transformation. The JRC states no factor for `To sealed soil` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "f4d4db7e-0763-3193-b5a9-a954e6434de9",
+      "source_flow_name": "Transformation, to traffic area",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "0becf44a-3734-4bd0-bd5f-70ec2a4e1571",
+      "substance": "To traffic area",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / unspecified`, and `land-flow-classes.json` reads it as `transformation-to/traffic` -- published as `To traffic area` in Land Use → Transformation. Its single factor is bit-identical to what the JRC states for `To traffic area` in the same category and place. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "565414ae-fff7-4f41-9668-a5a7d12874a9",
+      "source_flow_name": "Transformation, to traffic area, road embankment",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "a1208deef7d2afa9f66c6d5ee915d825f6397dea",
+      "substance": "To traffic area, road embankment",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/traffic/infrastructure=road-embankment` -- published as `To traffic area, road embankment` in Land Use → Transformation. The JRC states no factor for `To traffic area, road embankment` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "c8a8cc97-c00f-31a0-ac0e-017f59071ac5",
+      "source_flow_name": "Transformation, to tropical rain forest",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "04ebe6f7a1b98106ed5c47fc95a8a8548e780cdb",
+      "substance": "To tropical rainforest",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / land`, and `land-flow-classes.json` reads it as `transformation-to/tropical-rainforest` -- published as `To tropical rainforest` in Land Use → Transformation. The JRC states no factor for `To tropical rainforest` and no shorter form of this name resolves in their own file, so the row rests on BAFU's flow alone: same name, same unit, and a class this project read before this package arrived."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "325dbf5f-dda2-328a-852c-d7b4d5d2ff58",
+      "source_flow_name": "Transformation, to urban",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "dc65135e-0c62-40de-8f66-b41f519bd9e6",
+      "substance": "To urban",
+      "context": "Land Use → Transformation",
+      "unit": "m2",
+      "comment": "BAFU's list ships one flow of exactly this name, in `resources / unspecified`, and `land-flow-classes.json` reads it as `transformation-to/urban` -- published as `To urban` in Land Use → Transformation. Its single factor is bit-identical to what the JRC states for `To urban` in the same category and place. Their compartment is `Resource / unspecified`, which says only that this is a resource: the direction and the class are in the name, and it is the name BAFU's flow carries."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "0c6d244f-6086-3c6e-bd96-f287f8bb74f7",
+      "source_flow_name": "Water, cooling, unspecified natural origin/m3",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "in water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "21868f36-62ab-4e8e-98ed-7106228c17be",
+      "substance": "Cooling water",
+      "context": "Resource → Water → Unknown",
+      "unit": "m3",
+      "comment": "The `/m3` is openLCA's unit suffix rather than part of what the flow is called -- their file writes `Water, process, unspecified natural origin/kg` and the same name ending `/m3` in the same way -- so the name to read is `Water, cooling, unspecified natural origin`. BAFU's list ships seven flows named `Water, cooling, unspecified natural origin`, and `water-flow-materials.json` reads every one as cooling water -- published as `Cooling water` in Resource → Water → Unknown. All 209 of this row's country factors are bit-identical to what the JRC states for that flow in the same category and place, and none disagrees."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "26e62e38-880d-3c67-a705-33aa05ca78e3",
+      "source_flow_name": "Water, fossil",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "in water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "841879b20a610a77644a4e7f51f04abfe1cd920d",
+      "substance": "Fossil groundwater",
+      "context": "Resource → Water → Confined aquifer with fossil groundwater",
+      "unit": "m3",
+      "comment": "BAFU's list ships `Water, fossil` in `resources / in water`, and `water-flow-materials.json` reads it as fossil groundwater -- published as `Fossil groundwater` in Resource → Water → Confined aquifer with fossil groundwater. Neither the JRC nor the ecoinvent Centre states a factor for that flow, so this row rests on BAFU's flow alone: same name, same compartment, same unit. Their file keeps the two waters apart exactly as this list does -- `Water, well` is a second flow beside it, with 209 factors of its own -- so folding fossil groundwater onto groundwater would lose a distinction they made."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "7c0da4f3-d0f3-33c2-b2ae-1da5f9954dda",
+      "source_flow_name": "Water, unspecified natural origin/m3",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "substance": "Water",
+      "context": "Resource → Water → Unknown",
+      "unit": "m3",
+      "comment": "The one row here where a name reaches different flows in different lists, and their compartment is what settles it. Reading past openLCA's `/m3` suffix, BAFU ships this name 78 times and every one is read as plain water -- `Water`, in Resource → Water → Unknown; ecoinvent's flows of the same name reach three flows of ours, because ecoinvent ships copies of it in `in water`, `in ground` and `fossil well` and the compartment is what says which aquifer is meant. This row's compartment is `Resource / unspecified`, which states no water body at all, and an unstated water body is what `Unknown` says. Its single factor is bit-identical to the JRC's for that flow."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "0c755f21-5270-3341-9239-4f4fd780e143",
+      "source_flow_name": "Water, well",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "in water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "4f462198-40cd-4184-8733-86648a20dc3f",
+      "substance": "Groundwater",
+      "context": "Resource → Water → Unconfined aquifer",
+      "unit": "m3",
+      "comment": "BAFU's list ships six flows named `Water, well`, in `resources / in water`, `in ground` and `unspecified` alike, and `water-flow-materials.json` reads every one as groundwater -- published as `Groundwater` in Resource → Water → Unconfined aquifer. All 209 of this row's country factors are bit-identical to what the JRC states for that flow in the same category and place, and none disagrees. Their compartment cannot say this on its own: `Resource / in water` is where they file every kind of withdrawal, and the three flows in it that do resolve by ecoinvent uuid go to three different water bodies -- `Water, lake` to `Lake water`, `Water, river` to `River water`, `Water, turbine use, unspecified natural origin` to `Turbine water`. Which water it is is in the name."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "7e09a71d-ec9f-3a09-8c17-070cb8cd4524",
+      "source_flow_name": "Water, well",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "4f462198-40cd-4184-8733-86648a20dc3f",
+      "substance": "Groundwater",
+      "context": "Resource → Water → Unconfined aquifer",
+      "unit": "m3",
+      "comment": "The second copy of `Water, well` in their file, under `Resource / unspecified`, and it reaches what the first one does: BAFU's six flows of this name are all groundwater, published as `Groundwater` in Resource → Water → Unconfined aquifer. Its single factor is bit-identical to the JRC's for that flow. The compartment adds nothing here -- 29 of their flows sit in `Resource / unspecified` and not one carries an identifier that resolves -- so the name is the whole of what they state, and they state the same name twice."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "a5e216e9-1b15-3a08-ae24-8f8ad8e44f29",
+      "source_flow_name": "Water, process, surface",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "in water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "f21cd78e163bcc18b4aff7578fc28b39e5e7cd4f",
+      "substance": "Surface water",
+      "context": "Resource → Water → Surface water",
+      "unit": "m3",
+      "comment": "BAFU's list ships `Water, process, surface` and `water-flow-materials.json` reads it as surface water -- published as `Surface water` in Resource → Water → Surface water. The JRC states no factor for that flow, so the row rests on BAFU's flow; what agrees is their own arithmetic. They state 0.04295 per kilogram here and 42.95 per cubic metre on their unspecified-origin row, which is the same number a thousand times over, and 42.95 is what the JRC states for `Water` in Resource → Water → Unknown.\n\nStated per kilogram against a flow published per cubic metre. The conversion is not invented here: the merge recorded 0.001 cubic metres per kilogram on BAFU's own kilogram water rows, and #170 is what lets this pass read it."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "e4521dfd-1897-3ab4-a281-b8de776efeb4",
+      "source_flow_name": "Water, process, unspecified natural origin/kg",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "substance": "Water",
+      "context": "Resource → Water → Unknown",
+      "unit": "m3",
+      "comment": "BAFU's list ships three flows of this name and `water-flow-materials.json` reads every one as plain water -- published as `Water` in Resource → Water → Unknown. Their number is the JRC's: they state 0.04295 per kilogram, and 42.95 is exactly what the JRC states for that flow.\n\nThe `/m3` and `/kg` endings are openLCA's way of telling two flows of one name apart, and BAFU's list carries the same two spellings: `water-flow-materials.json` holds `Water, process, unspecified natural origin/kg` and `.../m3` as separate rows and reads both as plain water.\n\nStated per kilogram against a flow published per cubic metre, and the two are the same statement: 0.04295 per kilogram is 42.95 per cubic metre. The conversion is not invented here -- the merge recorded 0.001 cubic metres per kilogram on BAFU's own kilogram water rows, and #170 is what lets this pass read it.\n\nTheir compartment is `Resource / land`, which names no water body at all, and an unstated water body is what `Unknown` says."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "d2fc8c70-6510-3f1f-933a-39f3a263c609",
+      "source_flow_name": "Water, process, unspecified natural origin/kg",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "substance": "Water",
+      "context": "Resource → Water → Unknown",
+      "unit": "m3",
+      "comment": "BAFU's list ships three flows of this name and `water-flow-materials.json` reads every one as plain water -- published as `Water` in Resource → Water → Unknown. Their number is the JRC's: they state 0.04295 per kilogram, and 42.95 is exactly what the JRC states for that flow.\n\nThe `/m3` and `/kg` endings are openLCA's way of telling two flows of one name apart, and BAFU's list carries the same two spellings: `water-flow-materials.json` holds `Water, process, unspecified natural origin/kg` and `.../m3` as separate rows and reads both as plain water.\n\nStated per kilogram against a flow published per cubic metre, and the two are the same statement: 0.04295 per kilogram is 42.95 per cubic metre. The conversion is not invented here -- the merge recorded 0.001 cubic metres per kilogram on BAFU's own kilogram water rows, and #170 is what lets this pass read it.\n\nTheir compartment is `Resource / unspecified`, which names no water body at all, and an unstated water body is what `Unknown` says."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "68ee3cd2-e897-3388-b259-38ece38752f2",
+      "source_flow_name": "Water, process, unspecified natural origin/m3",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "in water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "substance": "Water",
+      "context": "Resource → Water → Unknown",
+      "unit": "m3",
+      "comment": "BAFU's list ships three flows of this name and `water-flow-materials.json` reads every one as plain water -- published as `Water` in Resource → Water → Unknown. Their number is the JRC's: they state 42.95 per cubic metre, and 42.95 is exactly what the JRC states for that flow.\n\nThe `/m3` and `/kg` endings are openLCA's way of telling two flows of one name apart, and BAFU's list carries the same two spellings: `water-flow-materials.json` holds `Water, process, unspecified natural origin/kg` and `.../m3` as separate rows and reads both as plain water."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "f8b55757-7bc1-38e6-b663-6053878c7ebb",
+      "source_flow_name": "Water, process, unspecified natural origin/m3",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "land"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "substance": "Water",
+      "context": "Resource → Water → Unknown",
+      "unit": "m3",
+      "comment": "BAFU's list ships three flows of this name and `water-flow-materials.json` reads every one as plain water -- published as `Water` in Resource → Water → Unknown. Their number is the JRC's: they state 42.95 per cubic metre, and 42.95 is exactly what the JRC states for that flow.\n\nThe `/m3` and `/kg` endings are openLCA's way of telling two flows of one name apart, and BAFU's list carries the same two spellings: `water-flow-materials.json` holds `Water, process, unspecified natural origin/kg` and `.../m3` as separate rows and reads both as plain water.\n\nTheir compartment is `Resource / land`, which names no water body at all, and an unstated water body is what `Unknown` says."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "28182006-69ba-388d-9289-00d649518c9d",
+      "source_flow_name": "Water, process, unspecified natural origin/m3",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "substance": "Water",
+      "context": "Resource → Water → Unknown",
+      "unit": "m3",
+      "comment": "BAFU's list ships three flows of this name and `water-flow-materials.json` reads every one as plain water -- published as `Water` in Resource → Water → Unknown. Their number is the JRC's: they state 42.95 per cubic metre, and 42.95 is exactly what the JRC states for that flow.\n\nThe `/m3` and `/kg` endings are openLCA's way of telling two flows of one name apart, and BAFU's list carries the same two spellings: `water-flow-materials.json` holds `Water, process, unspecified natural origin/kg` and `.../m3` as separate rows and reads both as plain water.\n\nTheir compartment is `Resource / unspecified`, which names no water body at all, and an unstated water body is what `Unknown` says."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "2071631d-7d90-4040-ac40-1829af0bd3c2",
+      "source_flow_name": "Particulates, < 10 um (stationary)",
+      "source_context": [
+        "Elementary flows",
+        "Emission to air",
+        "unspecified"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "08a91e70-3ddc-11dd-91be-0050c2490048",
+      "substance": "Particles (PM10)",
+      "context": "Environmental → Air → Unknown",
+      "unit": "kg",
+      "comment": "`(stationary)` is a source of the dust, not a size of it, and size is what this list files a particulate by. The name is BAFU's -- theirs is the only list that ships it -- and BAFU's own flow of exactly this name, in exactly this compartment, is merged onto `Particles (PM10)` in Environmental → Air → Unknown.\n\nTheir own package settles it too, and to the digit: they ship `Particulates, < 10 um` beside this one in the same compartment, that flow carries this list's own PM10 identifier and already publishes 5.48544e-05 for EF-particulate matter, and this row states 5.48544e-05. So the two are one statement written twice, and `lcia.collisions` keeps it once.\n\nReaching it anyway is worth doing: an unmatched row is reported as a flow this list could not place, and this one it can."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "929b7d7e-39d5-4320-8282-856d9a9f7f3f",
+      "source_flow_name": "Platinum",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "declined",
+      "comment": "Platinum taken from the ground is `Platinum` in Resource → Ground, and their number is already published there: their own `Platinum, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Ni 3.7E-2%, Cu 5.2E-2% in ore` row, filed under `Resource / in ground`, reaches that flow by ecoinvent uuid and states 2.22 for resource use, minerals and metals. This row states 2.22 as well, in a compartment that says only that something was taken.\n\nDeclining costs no number. Reaching the same flow would restate a figure the list already carries from them, and `Resource / unspecified` gives no reason to prefer this copy to the one that arrived with an identifier. The JRC, the ecoinvent Centre and this list all publish 2.22 for that flow, so there is nothing here that is not already said."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "ed65c408-2351-4f62-8430-dcd2f62ab70e",
+      "source_flow_name": "Uranium",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "unspecified"
+      ],
+      "decision": "declined",
+      "comment": "The same as `Platinum`, one compartment over. Uranium taken from the ground is `Uranium` in Resource → Ground, which this list publishes per megajoule because EF 3.1 accounts it by the energy extractable from it, and their number is already there: their own `Uranium` row under `Resource / in ground` carries ecoinvent's uuid, states 560,000 per kilogram, and is published as 1.0 per megajoule through the 560,000 MJ/kg the merge recorded for that pair. This row states the same 560,000 in a compartment that names no place.\n\nDeclining costs no number, and the JRC, the ecoinvent Centre and this list all publish 1.0 for that flow."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "source_flow_uuid": "e02aa261-4006-3888-bc5c-3d2485e0d1af",
+      "source_flow_name": "Water, unspecified natural origin, GLO",
+      "source_context": [
+        "Elementary flows",
+        "Resource",
+        "in water"
+      ],
+      "decision": "reaches",
+      "elementary_flow_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "substance": "Water",
+      "context": "Resource → Water → Unknown",
+      "unit": "m3",
+      "comment": "The one set of their regionalised water names with no site-generic member: `Water, unspecified natural origin` is stated for 77 countries and for `GLO`, and never on its own, in `Resource / in water`. The global member is the site-generic row under another spelling, and this is what it means. BAFU ships all 78 of these names, `integrations.bafu` reads each as `Water, unspecified natural origin` in a place, and `water-flow-materials.json` places every one of them on `Water` in Resource → Water → Unknown, the same flow the JRC characterises with 209 country factors and no site-generic one. Their number is 42.95 for water use, which is EF 3.1's world-average scarcity factor, and it goes on that flow for no country. The 77 country members are set aside behind this row by `lcia.regionalised_names`, since a country's number is its geography and not its name (#166)."
+    }
+  ]
+}

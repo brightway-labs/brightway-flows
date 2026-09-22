@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "description": "Three ways a factor only ecoinvent states becomes a factor this list publishes, and the population each is allowed to reach.\n\nThe queue this drains asks one question: should this list publish a number the method's own publisher never stated? Measured on the 2026-08-24 build, 4,402 of its 5,326 factors were not a new number at all — this list already publishes the same value in the same category, either for the same substance in another context (within the 2% tolerance that separates a rounding from a disagreement, so a unit conversion moving the last digits of a double does not keep a twin apart) or bit for bit on another flow, which is how an ion reaches its element's factors when EF's flow list has no ion flows. Those publish as `derivation: restated`. A further 876 are the factors of 62 pesticides whose numbers are a catch-all's, approved as a population in `data/lcia-catch-all-factor-approvals.json` and published as `derivation: approved`. What none of the three reaches — 40 factors over 38 questions, almost all minerals ecoinvent prices for resource depletion and EF never did — stays a question.\n\nThe expectations here are the boundaries, not the counts: a number ecoinvent states alone and nobody else has anywhere is still a question, across substances only the bit-identical number counts (never a 2% neighbour, never a zero), and `restated` must never publish a number nobody stated.",
+  "expectations": [
+    {
+      "id": "factors-silvicultural-soil-restates-the-neighbour",
+      "title": "An ecoinvent factor for forestry soil is published when the same substance already carries that number in another compartment",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "2,3,7,8-tetrachlorodibenzo-p-dioxin",
+        "context_display": "Environmental → Ground → Silvicultural",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "derivation": "restated"
+      },
+      "comment": "EF 3.1 has no forestry soil compartment, so its publisher states nothing here and only ecoinvent does. Its number, 1.2028e+06, is the one this list already publishes for the same substance in non-agricultural soil — so ecoinvent is not proposing a factor of its own, it is carrying EF's into a compartment EF cannot express. Measured on the 2026-08-24 build, the three missing compartments are 3,950 of the 4,402 restated factors, 2,815 of them silvicultural soil."
+    },
+    {
+      "id": "factors-an-unconfined-aquifer-restates-surface-water",
+      "title": "An ecoinvent factor for groundwater is published when the substance already carries that number for surface water",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "2,3,7,8-tetrachlorodibenzo-p-dioxin",
+        "context_display": "Environmental → Water → Unconfined aquifer",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "derivation": "restated"
+      },
+      "comment": "The same rule on the water side, and worth stating separately because the missing compartment is a different one: EF 3.1 ships four water compartments — fresh water, sea water, unspecified and unspecified long-term — and no groundwater at all, which is why 260 substances publish a groundwater flow carrying no factor beside a surface-water flow that carries one (#48). 984 of the restated factors on the 2026-08-24 build are the unconfined aquifer."
+    },
+    {
+      "id": "factors-a-twin-apart-by-float-noise-still-restates",
+      "title": "A number a unit conversion moved by its last bit is the substance's own number, not ecoinvent's",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Chromium(6+)",
+        "context_display": "Environmental → Water → Unconfined aquifer",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "derivation": "restated"
+      },
+      "comment": "ecoinvent states 12274.01347021746 for hexavalent chromium in an unconfined aquifer, and this list publishes 12274.013470217462 — the same digits to the last bit of a double — for its surface water. An earlier revision demanded exact equality of the twin and left this row in the queue as \"a number of ecoinvent's own\", which it never was: the gap is the merge's unit-conversion multiplier, not anybody's science. The twin match is now `FACTOR_TOLERANCE`, the same 2% that separates a rounding from a disagreement everywhere else in this project."
+    },
+    {
+      "id": "factors-an-ion-restates-its-elements-number",
+      "title": "An ecoinvent factor for an ion is published because a person signed for the ion taking its element's number",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Copper, Ion",
+        "context_display": "Environmental → Air → Ground level → Urban (>1000 people/square mile)",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "derivation": "adopted"
+      },
+      "comment": "EF 3.1's flow list has no ion flows, so no factor of `Copper, Ion` is ever published by the JRC and the substance-keyed twin cannot exist — every compartment of the ion is EF-silent at once. ecoinvent's number for the ion is its number for copper: 17.00696037116091 here, the value this list publishes for copper in urban air. Until 2026-09-01 that published as `restated`, because some flow of the category carried the same digits; the same rule carried lindane's numbers onto its manufacturing contaminants (#131), so it is gone (#156). The ion's factor now publishes as `adopted`, on a signed entry in `lcia-factor-adoptions.json` whose relationship is `ion-of` and whose donor is copper — the build records the ion as `ion_of` the element — and a number crosses a substance boundary that way or not at all."
+    },
+    {
+      "id": "factors-a-catch-all-pesticide-is-approved",
+      "issue": 405,
+      "title": "A pesticide this project moved out of a catch-all keeps the catch-all's factors, and says so",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Alanycarb",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "derivation": "adopted"
+      },
+      "comment": "ecoinvent's correspondence table routes `Alanycarb` into `Insecticides, unspecified` and its own implementation characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent and nobody to contest the numbers. Approved as a population in `data/lcia-catch-all-factor-approvals.json` — 62 substances, 876 factors — rather than by a rule, because what makes them acceptable is a fact about these substances and not about their numbers. The approval is checked before the bit-identical twin, deliberately: the bucket's numbers would match that twin too, and where a curator has spoken about a population, their record — the mechanism and the reasoning — is the one a reader should find."
+    },
+    {
+      "id": "factors-a-number-of-ecoinvents-own-is-still-a-question",
+      "title": "A number ecoinvent states that nothing else in the list carries stays in the queue",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Granite",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "The boundary, and the reason the rules are narrow. ecoinvent prices granite for mineral depletion; EF 3.1 never characterised the rock, and no flow of the category carries ecoinvent's number. Adopting it would be a decision about somebody else's science taken by a mechanical test, so it is not taken. 40 factors over 38 questions are in this position on the 2026-08-24 build — 34 of them rocks and minerals like this one, plus sulfuryl difluoride's global warming potential, peat and coal-mine off-gas — and they are what a curator has in front of them instead of 5,326."
+    },
+    {
+      "id": "factors-nothing-is-published-that-nobody-stated",
+      "title": "Every factor this list publishes is a number an implementation stated",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_factors_published"
+      },
+      "expect": {
+        "at_most": 347000
+      },
+      "comment": "The guard on `restated`, expressed as the thing that would break if it ever inherited rather than restated. This list publishes 324,629 factors on the 2026-08-24 build, and the ceiling here is what the two transcriptions state between them — 319,575 from the JRC and 27,415 from ecoinvent, less what they share. A `restated` factor is ecoinvent's own row with a derivation on it, so the count can only rise by adopting stated numbers; a rule that copied a neighbouring context's number onto a flow nobody characterised would carry it past this bound, which is the coarsening #84 removed and §4.3 rejected."
+    }
+  ]
+}

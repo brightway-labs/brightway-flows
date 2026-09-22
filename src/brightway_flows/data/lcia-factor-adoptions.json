@@ -1,0 +1,2806 @@
+{
+  "schema_version": 2,
+  "method": "ef",
+  "description": "A number crossing from one substance to another, signed. Every entry is one recipient substance whose factors, as one deciding transcription states them, are another substance's number -- an ion taking its element's, a named pesticide taking a catch-all's, a subtype of land taking its family's -- and a person's verdict on it: `adopt`, and the factors publish as `derivation: adopted`; `decline`, and the rows stay on the proposed-factor page as a record. Read by `brightway_flows.lcia.adoptions` for `lcia.consensus`, which consults it only for a row the method's own publisher is silent about and nobody disputes: an adoption never overwrites a value the reference states or two implementations agree on, and never reaches a context the convention walls off, because it is not about contexts.\n\nThe relationship is one word from a closed set, so the page can say what happened without opening the file: ion-of, salt-of, conjugate-of, catch-all, land-family, formula-weighted, trade-name, substitute, own-number. An entry about a relationship is not pinned to a number -- a revised factor for copper is still copper's factor reaching its ion. An entry whose reason is arithmetic (the formula-weighted minerals, #155) records the numbers in `adopted_about` and stops applying when they move.\n\nPopulations, in the order they were signed. 62 pesticides ecoinvent's correspondence routes into `Insecticides, unspecified` and its siblings and this list publishes under their own names (#76, adopted 2026-08-24). 23 minerals priced as the JRC's element factors weighted by the formula (#155, 2026-08-25). On 2026-09-01, replacing the rule that published a proposed number when any flow of the category carried the same digits (#145, retired by #156): ten ions taking their element's number (#329 group 1); acrylate taking acrylic acid's and flupyrsulfuron-methyl its sodium salt's, with the mass correction stated; 53 land classes taking their family's number (#132); and nine declines -- the five relatives ecoinvent substituted, which EF's own numbers hold apart wherever both are characterised (#131), and the three named substances a catch-all's number reached (#329 group 3). Fenoxycarb's two rows are #130's twin and are not entered here.\n\nThe census that lists every candidate pair with the relationship the build records is `tools/count_identity_crossings.py`; an entry is written from it, never from memory.",
+  "adoptions": [
+    {
+      "flow_object_id": "fo-fb499695320237ca",
+      "substance": "2,4-dichlorophenoxyacetic Acid, Isopropyl Ester",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "8 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `2,4-dichlorophenoxyacetic Acid, Isopropyl Ester` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-f3aa2fc7eef6751a",
+      "substance": "Abamectin",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Abamectin` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-ea094bf5c2a6412f",
+      "substance": "Alanycarb",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Alanycarb` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-3e52ac7a3621d9cf",
+      "substance": "Benthiavalicarb",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Benthiavalicarb` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-77df758312b593fc",
+      "substance": "Bicyclopyrone",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "4 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Bicyclopyrone` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-a3b8ea10f3df3cae",
+      "substance": "Boscalid",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Boscalid` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-b318225dd9c0e2f9",
+      "substance": "Chlorfenapyr",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Chlorfenapyr` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-3292b27164209d45",
+      "substance": "Chlorimuron-ethyl",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Chlorimuron-ethyl` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-61477f8d50732c96",
+      "substance": "Chlorthal",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Chlorthal` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-3074f4ed9b8c905c",
+      "substance": "Chlozolinate",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Chlozolinate` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-c0c050f0863c58d3",
+      "substance": "Cinidon ethyl",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Cinidon ethyl` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-fc381f6a7e331106",
+      "substance": "Copper Oxychloride",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "28 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Copper Oxychloride` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-41c587c77ba451a2",
+      "substance": "Copper hydroxide",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "8 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Copper hydroxide` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-fb82eb3ac544e53f",
+      "substance": "Cycluron",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Cycluron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-b3ccc6f98f1deb87",
+      "substance": "Demeton-S-methylsulfon",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Demeton-S-methylsulfon` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-aaf87f193fcf83c0",
+      "substance": "Diafenthiuron",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Diafenthiuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-d2c978313e091185",
+      "substance": "Diflufenzopyr",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "20 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Diflufenzopyr` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-08b9d0309ae5d343",
+      "substance": "Dimefuron",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Dimefuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-eed5e43d51bb7e40",
+      "substance": "Diofenolan",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Diofenolan` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-8fcce8ebda79d4e0",
+      "substance": "Emamectin Benzoate",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "24 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Emamectin Benzoate` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-176aa65f0919b34b",
+      "substance": "Ethaboxam",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Ethaboxam` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-8fc99f6a18fd11dc",
+      "substance": "Etoxazole",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Etoxazole` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-d1c9463f1437d770",
+      "substance": "Flurenol",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Flurenol` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-640ff33e375a0819",
+      "substance": "Fosetyl",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Fosetyl` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-1fd21bb5d48ba684",
+      "substance": "Furathiocarb",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Furathiocarb` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-14a44fdd08950e78",
+      "substance": "Glufosinate",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Glufosinate` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-065979af3253aa07",
+      "substance": "Glyphosate-trimesium",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Glyphosate-trimesium` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-6f41a775a5715b25",
+      "substance": "Guazatine",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Guazatine` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-f55df5843de60e33",
+      "substance": "Halosulfuron",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Halosulfuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-4590b120d03a37f8",
+      "substance": "Hexaconazole",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Hexaconazole` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-baf66efeaeea5cc8",
+      "substance": "Hexaflumuron",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Hexaflumuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-f2aad546c4251c15",
+      "substance": "Iodosulfuron",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Iodosulfuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-d803442dfbc0ab23",
+      "substance": "Kaolin",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Kaolin` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-45f68e112f2cb803",
+      "substance": "MCPA-methyl",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `MCPA-methyl` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-90021f2dbcf37c8e",
+      "substance": "Magnesium Phosphide",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Magnesium Phosphide` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-f967a68639f45d28",
+      "substance": "Mecoprop",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "4 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Mecoprop` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-106c12643c147de2",
+      "substance": "Mepanipyrim",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Mepanipyrim` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-9d3f51093b47c9c3",
+      "substance": "Mepronil",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Mepronil` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-a79304073e835a6c",
+      "substance": "Mesosulfuron",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Mesosulfuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-0dcf36d951a1c329",
+      "substance": "Novaluron",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Novaluron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-33fba82c50125bf2",
+      "substance": "Oxasulfuron",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Oxasulfuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-e508f49fef4d1565",
+      "substance": "Pethoxamid",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Pethoxamid` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-f9bdd98f88dd2d79",
+      "substance": "Potassium Soap",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Potassium Soap` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-2270827c3d53dc09",
+      "substance": "Primisulfuron",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Primisulfuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-4e593be5dd4d2c0e",
+      "substance": "Pydiflumetofen",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "20 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Pydiflumetofen` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-854b805c7a0dc635",
+      "substance": "Pyraflufen-ethyl",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "28 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Pyraflufen-ethyl` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-273b4dd8681e341e",
+      "substance": "Pyroxasulfone",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Pyroxasulfone` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-31e12b38a99ceb6c",
+      "substance": "Quinoxyfen",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Quinoxyfen` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-9da9a99cf1aec7e6",
+      "substance": "Saflufenacil",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Saflufenacil` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-60c5e2545096c407",
+      "substance": "Sodium Fluorosilicate",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Sodium Fluorosilicate` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-4ac37874434ff9f1",
+      "substance": "Spinetoram",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Spinetoram` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-b6b9cdf8ec5cdb6b",
+      "substance": "Spinetoram J",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "4 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Spinetoram J` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-369a3bd9cf423e64",
+      "substance": "Spinetoram L",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "4 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Spinetoram L` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-1f7fb5ae5f24b1ec",
+      "substance": "Spinosad",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Spinosad` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-cfb8cc8917aab6aa",
+      "substance": "Tebutam",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Tebutam` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-9078b599a8d986ca",
+      "substance": "Thiacloprid",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Thiacloprid` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-5ce9e2a56ef16e5f",
+      "substance": "Thiocyclam",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Thiocyclam` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-177ccaf06c16ce83",
+      "substance": "Tolfenpyrad",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Tolfenpyrad` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-7247f2c59edc9035",
+      "substance": "Triazamate",
+      "catch_all": "Insecticides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Triazamate` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-0f4fd2f8d7e38e15",
+      "substance": "Tribenuron",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Tribenuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-2adf533936d0f243",
+      "substance": "Trifloxystrobin",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Trifloxystrobin` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-49fef123b84aa311",
+      "substance": "Zoxamide",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Zoxamide` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
+    },
+    {
+      "flow_object_id": "fo-158c51809f34ac40",
+      "substance": "Sodium Chloride",
+      "formula": "NaCl",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          1.646069874734259e-05
+        ]
+      },
+      "comment": "Sodium Chloride is NaCl. By mass it is 60.7% chlorine, 39.3% sodium. 0.607 × 2.71e-05 (chlorine) + 0.393 × 5.5e-08 (sodium) = 1.646e-05 kg Sb-eq per kg, and the ecoinvent Centre states 1.646e-05 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-9f8ef3045d0a2ce5",
+      "substance": "Potassium Chloride",
+      "formula": "KCl",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          1.289527155951242e-05
+        ]
+      },
+      "comment": "Potassium Chloride is KCl. By mass it is 47.6% chlorine, 52.4% potassium. 0.476 × 2.71e-05 (chlorine) + 0.524 × 1.6e-08 (potassium) = 1.29e-05 kg Sb-eq per kg, and the ecoinvent Centre states 1.29e-05 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-3a6c70d527c4aabb",
+      "substance": "Sodium Nitrate",
+      "formula": "NaNO3",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          1.487682358264349e-08
+        ]
+      },
+      "comment": "Sodium Nitrate is NaNO3. By mass it is 27.0% sodium, and the rest (nitrogen, oxygen) carries no factor of the JRC's. 0.270 × 5.5e-08 (sodium) = 1.488e-08 kg Sb-eq per kg, and the ecoinvent Centre states 1.488e-08 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-2ef5b435557b98ff",
+      "substance": "Sodium sulfate",
+      "formula": "Na2SO4",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          4.359192788208415e-05
+        ]
+      },
+      "comment": "Sodium sulfate is Na2SO4. By mass it is 22.6% sulfur, 32.4% sodium, and the rest (oxygen) carries no factor of the JRC's. 0.226 × 0.000193 (sulfur) + 0.324 × 5.5e-08 (sodium) = 4.358e-05 kg Sb-eq per kg, and the ecoinvent Centre states 4.359e-05 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-2a8b305c0d2195bb",
+      "substance": "Calcium Sulfate",
+      "formula": "CaSO4",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          4.546229782733242e-05
+        ]
+      },
+      "comment": "Calcium Sulfate is CaSO4. By mass it is 23.6% sulfur, and the rest (calcium, oxygen) carries no factor of the JRC's. 0.236 × 0.000193 (sulfur) = 4.545e-05 kg Sb-eq per kg, and the ecoinvent Centre states 4.546e-05 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-f08be7b167af152f",
+      "substance": "Gypsum",
+      "formula": "CaSO4.2H2O",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          3.594873850013939e-05
+        ]
+      },
+      "comment": "Gypsum is CaSO4.2H2O. By mass it is 18.6% sulfur, and the rest (calcium, oxygen, hydrogen) carries no factor of the JRC's. 0.186 × 0.000193 (sulfur) = 3.594e-05 kg Sb-eq per kg, and the ecoinvent Centre states 3.595e-05 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-4c501e378290c372",
+      "substance": "Kieserite",
+      "formula": "MgSO4.H2O",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          4.47267721886607e-05
+        ]
+      },
+      "comment": "Kieserite is MgSO4.H2O. By mass it is 23.2% sulfur, 17.6% magnesium, and the rest (oxygen, hydrogen) carries no factor of the JRC's. 0.232 × 0.000193 (sulfur) + 0.176 × 2.02e-09 (magnesium) = 4.472e-05 kg Sb-eq per kg, and the ecoinvent Centre states 4.473e-05 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-752f9c95c55100e0",
+      "substance": "Pyrite",
+      "formula": "FeS2",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          0.0001032000834805801
+        ]
+      },
+      "comment": "Pyrite is FeS2. By mass it is 53.4% sulfur, 46.6% iron. 0.534 × 0.000193 (sulfur) + 0.466 × 5.24e-08 (iron) = 0.0001032 kg Sb-eq per kg, and the ecoinvent Centre states 0.0001032 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-9e0601596c070443",
+      "substance": "Cinnabar",
+      "formula": "HgS",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          0.07951769754147683
+        ]
+      },
+      "comment": "Cinnabar is HgS. By mass it is 86.2% mercury, 13.8% sulfur. 0.862 × 0.0922 (mercury) + 0.138 × 0.000193 (sulfur) = 0.07952 kg Sb-eq per kg, and the ecoinvent Centre states 0.07952 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-bcced2e63aa9ec49",
+      "substance": "Stibnite",
+      "formula": "Sb2S3",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          0.7168591779648544
+        ]
+      },
+      "comment": "Stibnite is Sb2S3. By mass it is 71.7% antimony, 28.3% sulfur. 0.717 × 1 (antimony) + 0.283 × 0.000193 (sulfur) = 0.7169 kg Sb-eq per kg, and the ecoinvent Centre states 0.7169 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-29fe090c6e792484",
+      "substance": "Pyrolusite",
+      "formula": "MnO2",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          1.605118217945055e-06
+        ]
+      },
+      "comment": "Pyrolusite is MnO2. By mass it is 63.2% manganese, and the rest (oxygen) carries no factor of the JRC's. 0.632 × 2.54e-06 (manganese) = 1.605e-06 kg Sb-eq per kg, and the ecoinvent Centre states 1.605e-06 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-6916f8c928f877fe",
+      "substance": "Baddeleyite",
+      "formula": "ZrO2",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          4.027307698550536e-06
+        ]
+      },
+      "comment": "Baddeleyite is ZrO2. By mass it is 74.0% zirconium, and the rest (oxygen) carries no factor of the JRC's. 0.740 × 5.44e-06 (zirconium) = 4.027e-06 kg Sb-eq per kg, and the ecoinvent Centre states 4.027e-06 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-fbbc8431491260df",
+      "substance": "Silicon Dioxide",
+      "formula": "SiO2",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          6.544113975666994e-12
+        ]
+      },
+      "comment": "Silicon Dioxide is SiO2. By mass it is 46.7% silicon, and the rest (oxygen) carries no factor of the JRC's. 0.467 × 1.4e-11 (silicon) = 6.544e-12 kg Sb-eq per kg, and the ecoinvent Centre states 6.544e-12 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-7cee9bc5c5904159",
+      "substance": "Magnesium Carbonate",
+      "formula": "MgCO3",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          5.823075919490471e-10
+        ]
+      },
+      "comment": "Magnesium Carbonate is MgCO3. By mass it is 28.8% magnesium, and the rest (carbon, oxygen) carries no factor of the JRC's. 0.288 × 2.02e-09 (magnesium) = 5.823e-10 kg Sb-eq per kg, and the ecoinvent Centre states 5.823e-10 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-f3d002b031afbbbb",
+      "substance": "Dolomite",
+      "formula": "CaMg(CO3)2",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          2.662463869501793e-10
+        ]
+      },
+      "comment": "Dolomite is CaMg(CO3)2. By mass it is 13.2% magnesium, and the rest (calcium, carbon, oxygen) carries no factor of the JRC's. 0.132 × 2.02e-09 (magnesium) = 2.662e-10 kg Sb-eq per kg, and the ecoinvent Centre states 2.662e-10 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-4d3abdbe4deb66c7",
+      "substance": "Talc",
+      "formula": "Mg3Si4O10(OH)2",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          3.92505016360851e-10
+        ]
+      },
+      "comment": "Talc is Mg3Si4O10(OH)2. By mass it is 19.2% magnesium, 29.6% silicon, and the rest (oxygen, hydrogen) carries no factor of the JRC's. 0.192 × 2.02e-09 (magnesium) + 0.296 × 1.4e-11 (silicon) = 3.925e-10 kg Sb-eq per kg, and the ecoinvent Centre states 3.925e-10 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-cf5c075eab1a7071",
+      "substance": "Steatite, In Ground",
+      "formula": "Mg3Si4O10(OH)2",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          3.88e-10
+        ]
+      },
+      "comment": "Steatite, In Ground is Mg3Si4O10(OH)2. By mass it is 19.2% magnesium, 29.6% silicon, and the rest (oxygen, hydrogen) carries no factor of the JRC's. 0.192 × 2.02e-09 (magnesium) + 0.296 × 1.4e-11 (silicon) = 3.925e-10 kg Sb-eq per kg, and the ecoinvent Centre states 3.88e-10 -- the same number to 1.2%. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-63d747e8b6b07701",
+      "substance": "Asbestos (white)",
+      "formula": "Mg3Si2O5(OH)4",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          5.343572902983674e-10
+        ]
+      },
+      "comment": "Asbestos (white) is Mg3Si2O5(OH)4. By mass it is 26.3% magnesium, 20.3% silicon, and the rest (oxygen, hydrogen) carries no factor of the JRC's. 0.263 × 2.02e-09 (magnesium) + 0.203 × 1.4e-11 (silicon) = 5.344e-10 kg Sb-eq per kg, and the ecoinvent Centre states 5.344e-10 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-1309643cf584c81c",
+      "substance": "Kaolinite",
+      "formula": "Al2Si2O5(OH)4",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          2.30891845598087e-10
+        ]
+      },
+      "comment": "Kaolinite is Al2Si2O5(OH)4. By mass it is 20.9% aluminium, 21.8% silicon, and the rest (oxygen, hydrogen) carries no factor of the JRC's. 0.209 × 1.09e-09 (aluminium) + 0.218 × 1.4e-11 (silicon) = 2.309e-10 kg Sb-eq per kg, and the ecoinvent Centre states 2.309e-10 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-12728f82d57762d4",
+      "substance": "Borax",
+      "formula": "Na2B4O7.10H2O",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          0.0004841517196535228
+        ]
+      },
+      "comment": "Borax is Na2B4O7.10H2O. By mass it is 11.3% boron, 12.1% sodium, and the rest (oxygen, hydrogen) carries no factor of the JRC's. 0.113 × 0.00427 (boron) + 0.121 × 5.5e-08 (sodium) = 0.0004842 kg Sb-eq per kg, and the ecoinvent Centre states 0.0004842 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-19e76f24fdeaea43",
+      "substance": "Ulexite",
+      "formula": "NaCaB5O9.8H2O",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          0.0005695390920980382
+        ]
+      },
+      "comment": "Ulexite is NaCaB5O9.8H2O. By mass it is 13.3% boron, 5.7% sodium, and the rest (calcium, oxygen, hydrogen) carries no factor of the JRC's. 0.133 × 0.00427 (boron) + 0.057 × 5.5e-08 (sodium) = 0.0005695 kg Sb-eq per kg, and the ecoinvent Centre states 0.0005695 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-2229321285bd5a78",
+      "substance": "Colemanite",
+      "formula": "CaB3O4(OH)3.H2O",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          0.0006737119420848294
+        ]
+      },
+      "comment": "Colemanite is CaB3O4(OH)3.H2O. By mass it is 15.8% boron, and the rest (calcium, oxygen, hydrogen) carries no factor of the JRC's. 0.158 × 0.00427 (boron) = 0.0006737 kg Sb-eq per kg, and the ecoinvent Centre states 0.0006737 -- the same number. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-af05996c4dd3e45f",
+      "substance": "Spodumene",
+      "formula": "LiAlSi2O6",
+      "relationship": "formula-weighted",
+      "verdict": "adopt",
+      "categories": [
+        "resource-use-minerals-and-metals"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "adopted_about": {
+        "ecoinvent Centre": [
+          4.326195358839062e-07
+        ]
+      },
+      "comment": "Spodumene is LiAlSi2O6. By mass it is 3.7% lithium, 14.5% aluminium, 30.2% silicon, and the rest (oxygen) carries no factor of the JRC's. 0.037 × 1.15e-05 (lithium) + 0.145 × 1.09e-09 (aluminium) + 0.302 × 1.4e-11 (silicon) = 4.29e-07 kg Sb-eq per kg, and the ecoinvent Centre states 4.326e-07 -- the same number to 0.8%. That is the rule of ecoinvent's v3.12 LCIA implementation report, section 15.3.2 (Table 20): a mineral the JRC lists but never priced carries the JRC's own factors for the elements it is made of, weighted by mass share. Approved because the JRC characterises those elements in the crust and this mineral is those elements in the crust, and because the arithmetic is checkable from the formula. Bounded to this number: a revised statement is a new question. See #155."
+    },
+    {
+      "flow_object_id": "fo-60578a290a1719d5",
+      "substance": "Lithium(1+)",
+      "donor": {
+        "flow_object_id": "fo-700b514edbb34f5b",
+        "substance": "Lithium"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-inorganics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-inorganics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "10 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Lithium. EF 3.1's flow list has no ion of lithium; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-5c42d374aca497d5",
+      "substance": "Antimony, Ion",
+      "donor": {
+        "flow_object_id": "fo-0bfffb5e4dadc218",
+        "substance": "Antimony"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-inorganics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-inorganics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "16 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Antimony. EF 3.1's flow list has no ion of antimony; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-436304b385710fab",
+      "substance": "Copper, Ion",
+      "donor": {
+        "flow_object_id": "fo-a9a85c11aea1c46a",
+        "substance": "Copper"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-inorganics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-inorganics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "10 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Copper. EF 3.1's flow list has no ion of copper; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-e5a848d167fbab09",
+      "substance": "Tin, Ion",
+      "donor": {
+        "flow_object_id": "fo-1f7f3e8ecadf768d",
+        "substance": "Tin"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-inorganics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "2 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, every one of them the number this list publishes for Tin. EF 3.1's flow list has no ion of tin; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-68a028e14ee2f8de",
+      "substance": "Iron, Ion",
+      "donor": {
+        "flow_object_id": "fo-968d11f00ea71f40",
+        "substance": "Iron"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-inorganics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "2 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, every one of them the number this list publishes for Iron. EF 3.1's flow list has no ion of iron; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-697e126705df00f6",
+      "substance": "Arsenic, Ion",
+      "donor": {
+        "flow_object_id": "fo-59b3f7e57542f6bb",
+        "substance": "Arsenic"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-inorganics",
+        "human-toxicity-cancer",
+        "human-toxicity-cancer-inorganics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-inorganics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "24 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, `human-toxicity-cancer`, `human-toxicity-cancer-inorganics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Arsenic. EF 3.1's flow list has no ion of arsenic; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-bb650b137c697bce",
+      "substance": "Titanium, ion",
+      "donor": {
+        "flow_object_id": "fo-d84e95cea44ee87b",
+        "substance": "Titanium"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-inorganics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-inorganics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "16 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Titanium. EF 3.1's flow list has no ion of titanium; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-bfa054d9244abf7c",
+      "substance": "Aluminium(3+)",
+      "donor": {
+        "flow_object_id": "fo-2fad20130f1b5fd6",
+        "substance": "Aluminium"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "categories": [
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-inorganics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "14 factors in `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Aluminium. EF 3.1's flow list has no ion of aluminium; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-f4b61de95e8a0514",
+      "substance": "Cobalt(2+)",
+      "donor": {
+        "flow_object_id": "fo-b16884bcd5615bc6",
+        "substance": "Cobalt"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "categories": [
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-inorganics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "14 factors in `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Cobalt. EF 3.1's flow list has no ion of cobalt; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-2a80cc2293a9893d",
+      "substance": "Selenium(4+)",
+      "donor": {
+        "flow_object_id": "fo-476008ff1af94efb",
+        "substance": "Selenium"
+      },
+      "relationship": "ion-of",
+      "verdict": "adopt",
+      "categories": [
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-inorganics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Selenium. EF 3.1's flow list has no ion of selenium; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
+    },
+    {
+      "flow_object_id": "fo-db575aa66eea639d",
+      "substance": "Acrylate",
+      "donor": {
+        "flow_object_id": "fo-b0f9149cb30b07db",
+        "substance": "Acrylic Acid"
+      },
+      "relationship": "conjugate-of",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "6 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, every one of them acrylic acid's. Acrylate is the acid's anion -- the same species in water, one proton apart, 71 daltons against 72 -- and EF 3.1 characterises only the acid. Adopted on 2026-09-01 with that correction stated: a kilogram of the anion is 1.4% more molecules than a kilogram of the acid, and the number is taken as it stands."
+    },
+    {
+      "flow_object_id": "fo-0649fbf4ea936986",
+      "substance": "Flupyrsulfuron-methyl",
+      "donor": {
+        "flow_object_id": "fo-75ee258742104690",
+        "substance": "Flupyrsulfuron-methyl Sodium"
+      },
+      "relationship": "salt-of",
+      "verdict": "adopt",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "28 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, every one of them the sodium salt's. The herbicide and its sodium salt are the same active species; the sodium is 23 daltons of 487, so a kilogram of the free compound is 5% more of it than a kilogram of the salt, and EF 3.1 characterises only the salt. Adopted on 2026-09-01 with that correction stated rather than applied: the number is taken as the salt's (#329 group 1)."
+    },
+    {
+      "flow_object_id": "fo-3621a03e14de757b",
+      "substance": "Cropland, conservation tillage",
+      "donor": {
+        "flow_object_id": "fo-9308e9d7d96a2d3d",
+        "substance": "Cropland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Cropland` and for 9 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Cropland, conservation tillage` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-7358e873a3f1bd5e",
+      "substance": "Wetland, not used, inland",
+      "donor": {
+        "flow_object_id": "fo-a21441d466be9232",
+        "substance": "Wetland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Wetland, not used, inland` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-752667931cc136fb",
+      "substance": "From dump site, slag compartment",
+      "donor": {
+        "flow_object_id": "fo-a47247157cd7cf67",
+        "substance": "From dump site"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From dump site, slag compartment` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-d59f1ac87826be38",
+      "substance": "To urban or industrial fallow, not used",
+      "donor": {
+        "flow_object_id": "fo-876aff99022305c8",
+        "substance": "To urban or industrial fallow"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To urban or industrial fallow`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To urban or industrial fallow, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-67ca2a92d395ca57",
+      "substance": "To grassland, natural, not used",
+      "donor": {
+        "flow_object_id": "fo-1bc620081fee6269",
+        "substance": "To grassland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To grassland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To grassland, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-23eb404c1e7da6fe",
+      "substance": "Snow and ice, not used",
+      "donor": {
+        "flow_object_id": "fo-ded3df0410fd818d",
+        "substance": "Barren land"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Snow and ice, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-437f98cf365de05a",
+      "substance": "From forest, not used, primary",
+      "donor": {
+        "flow_object_id": "fo-8d4ac2f78c5b2082",
+        "substance": "From forest, natural"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From forest, natural` and for 1 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From forest, not used, primary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-ae2236120050820f",
+      "substance": "To wetland, not used, coastal",
+      "donor": {
+        "flow_object_id": "fo-490d966eddf91a70",
+        "substance": "To wetland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To wetland, not used, coastal` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-77d84383d09680d2",
+      "substance": "From pasture, man-made",
+      "donor": {
+        "flow_object_id": "fo-d52a8618c2997793",
+        "substance": "From pasture"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From pasture, man-made` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-77936484d9cd01df",
+      "substance": "Pasture, man-made, extensive",
+      "donor": {
+        "flow_object_id": "fo-3b112749be85252c",
+        "substance": "Pasture, extensive"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Pasture, extensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Pasture, man-made, extensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-8a189e6ad0a80cc9",
+      "substance": "From grassland, natural, not used",
+      "donor": {
+        "flow_object_id": "fo-ab893569b67cec11",
+        "substance": "From grassland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From grassland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From grassland, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-e4f980bad4dfe5a7",
+      "substance": "From pasture, man-made, extensive",
+      "donor": {
+        "flow_object_id": "fo-16eda0f902f73dd4",
+        "substance": "From pasture, extensive"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From pasture, extensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From pasture, man-made, extensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-4663ca20bb6dcec2",
+      "substance": "Barren land, not used",
+      "donor": {
+        "flow_object_id": "fo-ded3df0410fd818d",
+        "substance": "Barren land"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Barren land, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-8d262dba2c35c829",
+      "substance": "From barren land, not used",
+      "donor": {
+        "flow_object_id": "fo-44e8de360a176c6e",
+        "substance": "From barren land"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From barren land, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-0b1d6b5d7240738c",
+      "substance": "To dump site, slag compartment",
+      "donor": {
+        "flow_object_id": "fo-e05ac9a5455271fb",
+        "substance": "To dump site"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To dump site, slag compartment` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-f4bdf7df061aabff",
+      "substance": "To dump site, sanitary landfill",
+      "donor": {
+        "flow_object_id": "fo-e05ac9a5455271fb",
+        "substance": "To dump site"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To dump site, sanitary landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-cdfd4dd8f52d750f",
+      "substance": "From wetland, not used, inland",
+      "donor": {
+        "flow_object_id": "fo-f12126b324687fb9",
+        "substance": "From wetland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From wetland, not used, inland` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-4fb7d680f52e3bbf",
+      "substance": "Forest, not used, primary",
+      "donor": {
+        "flow_object_id": "fo-e3e9e4619429be02",
+        "substance": "Forest, natural"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Forest, natural` and for 1 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Forest, not used, primary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-88c49c08315c6d18",
+      "substance": "From dump site, inert material landfill",
+      "donor": {
+        "flow_object_id": "fo-a47247157cd7cf67",
+        "substance": "From dump site"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From dump site, inert material landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-42fc0f6d3138fe4b",
+      "substance": "To snow and ice, not used",
+      "donor": {
+        "flow_object_id": "fo-e928e0275bf0fecc",
+        "substance": "To barren land"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To snow and ice, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-422d91cd1a8ebb94",
+      "substance": "Unspecified, natural, not used",
+      "donor": {
+        "flow_object_id": "fo-381ea2c15b489ad1",
+        "substance": "Unspecified, natural"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Unspecified, natural`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Unspecified, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-1e5f40432c06344a",
+      "substance": "Grassland, natural, not used",
+      "donor": {
+        "flow_object_id": "fo-4d900f422f67b258",
+        "substance": "Grassland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Grassland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Grassland, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-1107dae343e08ca5",
+      "substance": "Pasture, man-made",
+      "donor": {
+        "flow_object_id": "fo-e38c62654ebf774a",
+        "substance": "Pasture"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Pasture, man-made` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-7ed0ff48f3995233",
+      "substance": "Cropland, reduced tillage",
+      "donor": {
+        "flow_object_id": "fo-9308e9d7d96a2d3d",
+        "substance": "Cropland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Cropland` and for 9 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Cropland, reduced tillage` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-8aa48636ed811c52",
+      "substance": "To unspecified, natural, not used",
+      "donor": {
+        "flow_object_id": "fo-f3585204589a1553",
+        "substance": "To unspecified, natural"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To unspecified, natural`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To unspecified, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-01a74962fefb180f",
+      "substance": "Urban or industrial fallow, not used",
+      "donor": {
+        "flow_object_id": "fo-b7da53603ffb48b2",
+        "substance": "Urban or industrial fallow"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Urban or industrial fallow`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Urban or industrial fallow, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-5e433aae8e70b5b1",
+      "substance": "From urban or industrial fallow, not used",
+      "donor": {
+        "flow_object_id": "fo-2d23f5bedbd491a9",
+        "substance": "From urban or industrial fallow"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From urban or industrial fallow`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From urban or industrial fallow, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-01d6cd3a8b8431d3",
+      "substance": "To pasture, man-made",
+      "donor": {
+        "flow_object_id": "fo-185c21b0d003683c",
+        "substance": "To pasture"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To pasture, man-made` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-cfddb2055ba7426e",
+      "substance": "To pasture, man-made, intensive",
+      "donor": {
+        "flow_object_id": "fo-572b599f547640c5",
+        "substance": "To pasture, intensive"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To pasture, intensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To pasture, man-made, intensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-331c2f3d85e25810",
+      "substance": "To forest, not used, primary",
+      "donor": {
+        "flow_object_id": "fo-3904a1f5a18a227f",
+        "substance": "To forest, natural"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To forest, natural` and for 1 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To forest, not used, primary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-c8cbe64eff3dbf56",
+      "substance": "Grassland, natural, grazed",
+      "donor": {
+        "flow_object_id": "fo-e38c62654ebf774a",
+        "substance": "Pasture"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Grassland, natural, grazed` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-39d1d43198acf7d5",
+      "substance": "To shrubland, sclerophyllous",
+      "donor": {
+        "flow_object_id": "fo-6f2afadce78ad8db",
+        "substance": "To shrubland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To shrubland`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To shrubland, sclerophyllous` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-be6126a62e01d15e",
+      "substance": "From dump site, residual material landfill",
+      "donor": {
+        "flow_object_id": "fo-a47247157cd7cf67",
+        "substance": "From dump site"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From dump site, residual material landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-8b4db64f82a17b23",
+      "substance": "From pasture, man-made, intensive",
+      "donor": {
+        "flow_object_id": "fo-7efe3dff9181a555",
+        "substance": "From pasture, intensive"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From pasture, intensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From pasture, man-made, intensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-5c9c42a322b9b571",
+      "substance": "To forest, not used, secondary",
+      "donor": {
+        "flow_object_id": "fo-5f93020203cd611a",
+        "substance": "To forest, secondary"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To forest, secondary`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To forest, not used, secondary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-9e35952f528b4ae8",
+      "substance": "From unspecified, natural, not used",
+      "donor": {
+        "flow_object_id": "fo-00e3498a59338dc7",
+        "substance": "From unspecified, natural"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From unspecified, natural`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From unspecified, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-34b7912cd77f7b43",
+      "substance": "From snow and ice, not used",
+      "donor": {
+        "flow_object_id": "fo-44e8de360a176c6e",
+        "substance": "From barren land"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From snow and ice, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-d1b77c9dcbb5d45a",
+      "substance": "From shrubland, sclerophyllous",
+      "donor": {
+        "flow_object_id": "fo-4287e918df11ccaa",
+        "substance": "From shrubland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From shrubland`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From shrubland, sclerophyllous` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-5f73a00824fe2873",
+      "substance": "From forest, not used, secondary",
+      "donor": {
+        "flow_object_id": "fo-8a215eddf4c04f40",
+        "substance": "From forest, secondary"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From forest, secondary`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From forest, not used, secondary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-2db0a70adbae2b2d",
+      "substance": "To pasture, man-made, extensive",
+      "donor": {
+        "flow_object_id": "fo-0a1e0aba5f586e4c",
+        "substance": "To pasture, extensive"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To pasture, extensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To pasture, man-made, extensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-522440bfe52199ba",
+      "substance": "From dump site, sanitary landfill",
+      "donor": {
+        "flow_object_id": "fo-a47247157cd7cf67",
+        "substance": "From dump site"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From dump site, sanitary landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-211540ba29eb942a",
+      "substance": "To barren land, not used",
+      "donor": {
+        "flow_object_id": "fo-e928e0275bf0fecc",
+        "substance": "To barren land"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To barren land, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-0336c53f8403050a",
+      "substance": "Shrubland, sclerophyllous",
+      "donor": {
+        "flow_object_id": "fo-bd365ab0c3a28a07",
+        "substance": "Shrubland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Shrubland`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Shrubland, sclerophyllous` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-2e879def8c42ce09",
+      "substance": "To grassland, natural, grazed",
+      "donor": {
+        "flow_object_id": "fo-185c21b0d003683c",
+        "substance": "To pasture"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To grassland, natural, grazed` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-9ef733beb325ffbd",
+      "substance": "To wetland, not used, inland",
+      "donor": {
+        "flow_object_id": "fo-490d966eddf91a70",
+        "substance": "To wetland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To wetland, not used, inland` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-5d2547a1b758bed9",
+      "substance": "From grassland, natural, grazed",
+      "donor": {
+        "flow_object_id": "fo-d52a8618c2997793",
+        "substance": "From pasture"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From grassland, natural, grazed` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-a00ac169cf8d925b",
+      "substance": "Forest, not used, secondary",
+      "donor": {
+        "flow_object_id": "fo-8ba3fee4048065de",
+        "substance": "Forest, secondary"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Forest, secondary`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Forest, not used, secondary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-d61e03d32fdf1e1e",
+      "substance": "Pasture, man-made, intensive",
+      "donor": {
+        "flow_object_id": "fo-4a5a02eee2526490",
+        "substance": "Pasture, intensive"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Pasture, intensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Pasture, man-made, intensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-7a0afdd2fe78d36b",
+      "substance": "From wetland, not used, coastal",
+      "donor": {
+        "flow_object_id": "fo-f12126b324687fb9",
+        "substance": "From wetland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `From wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From wetland, not used, coastal` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-2bacda2b1401efb0",
+      "substance": "Cropland, conventional tillage",
+      "donor": {
+        "flow_object_id": "fo-9308e9d7d96a2d3d",
+        "substance": "Cropland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Cropland` and for 9 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Cropland, conventional tillage` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-a8b7af8ed9497351",
+      "substance": "To dump site, residual material landfill",
+      "donor": {
+        "flow_object_id": "fo-e05ac9a5455271fb",
+        "substance": "To dump site"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To dump site, residual material landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-2602366948f34c87",
+      "substance": "Wetland, not used, coastal",
+      "donor": {
+        "flow_object_id": "fo-a21441d466be9232",
+        "substance": "Wetland"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `Wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Wetland, not used, coastal` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-2d03e359176f1ee9",
+      "substance": "To dump site, inert material landfill",
+      "donor": {
+        "flow_object_id": "fo-e05ac9a5455271fb",
+        "substance": "To dump site"
+      },
+      "relationship": "land-family",
+      "verdict": "adopt",
+      "categories": [
+        "land-use"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "One `land-use` factor, the number this list publishes for `To dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To dump site, inert material landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
+    },
+    {
+      "flow_object_id": "fo-664853ebe99e6026",
+      "substance": "Dimethyl Hexynediol",
+      "catch_all": "Oils, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "decline",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "4 factors, every one of them the number this list publishes for `Oils, Unspecified`. A catch-all's number reaching a named substance is the shape this file adopts one substance at a time, and this one is declined: a named glycol is not an unspecified oil, and the bucket's number carries nothing about it (#329 group 3)."
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "substance": "Fenpropimorph",
+      "catch_all": "Fungicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "decline",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "4 factors, every one of them the number this list publishes for `Fungicides, Unspecified`. A catch-all's number reaching a named substance is the shape this file adopts one substance at a time, and this one is declined: most of fenpropimorph's proposed factors are the bucket's and sixteen are numbers of ecoinvent's own, so it stays a question rather than being carried in on the strength of its neighbours -- the refusal this file has recorded since #155."
+    },
+    {
+      "flow_object_id": "fo-90b40201fe98966a",
+      "substance": "δ-Hexachlorocyclohexane",
+      "donor": {
+        "flow_object_id": "fo-d387fe83c1891298",
+        "substance": "Lindane"
+      },
+      "relationship": "substitute",
+      "verdict": "decline",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-cancer",
+        "human-toxicity-cancer-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "30 factors, every one of them Lindane's. Where EF 3.1 characterises both δ-Hexachlorocyclohexane and Lindane it holds them 21 to 34x, never identical, over 130 comparisons (#131): EF's own numbers say the two are different substances. ecoinvent's implementation substituted the relative; this list declines the substitution on the record, and the row stays a question until somebody states a number for δ-Hexachlorocyclohexane itself."
+    },
+    {
+      "flow_object_id": "fo-8786c629d8e12ae2",
+      "substance": "α-Hexachlorocyclohexane",
+      "donor": {
+        "flow_object_id": "fo-d387fe83c1891298",
+        "substance": "Lindane"
+      },
+      "relationship": "substitute",
+      "verdict": "decline",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-cancer",
+        "human-toxicity-cancer-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "18 factors, every one of them Lindane's. Where EF 3.1 characterises both α-Hexachlorocyclohexane and Lindane it holds them 21 to 34x, never identical, over 130 comparisons (#131): EF's own numbers say the two are different substances. ecoinvent's implementation substituted the relative; this list declines the substitution on the record, and the row stays a question until somebody states a number for α-Hexachlorocyclohexane itself."
+    },
+    {
+      "flow_object_id": "fo-fa7a3c575545f593",
+      "substance": "(s)-.alpha.-cyano-3-phenoxybenzyl (z)-(1r)-cis-3-(2-chloro-3,3,3-trifluoropropenyl)-2,2-dimethylcyclopropanecarboxylate",
+      "donor": {
+        "flow_object_id": "fo-b787c996ac086501",
+        "substance": "Cyhalothrin"
+      },
+      "relationship": "substitute",
+      "verdict": "decline",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors, every one of them cyhalothrin's. Lambda-cyhalothrin is the resolved isomer pair of cyhalothrin, and where EF 3.1 characterises both it holds them a median 236x and up to 1,442x apart, never identical (#131). ecoinvent's implementation routes the substance onto cyhalothrin's flow; this list publishes it under its own name and declines the substitution: nothing is published until somebody states a number for lambda-cyhalothrin itself."
+    },
+    {
+      "flow_object_id": "fo-abd2a26865a998ab",
+      "substance": "β-Hexachlorocyclohexane",
+      "donor": {
+        "flow_object_id": "fo-d387fe83c1891298",
+        "substance": "Lindane"
+      },
+      "relationship": "substitute",
+      "verdict": "decline",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-cancer",
+        "human-toxicity-cancer-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "18 factors, every one of them Lindane's. Where EF 3.1 characterises both β-Hexachlorocyclohexane and Lindane it holds them 21 to 34x, never identical, over 130 comparisons (#131): EF's own numbers say the two are different substances. ecoinvent's implementation substituted the relative; this list declines the substitution on the record, and the row stays a question until somebody states a number for β-Hexachlorocyclohexane itself."
+    },
+    {
+      "flow_object_id": "fo-f29062b7017c592e",
+      "substance": "(R)-2-(4-chloro-2-methylphenoxy)propionic Acid",
+      "donor": {
+        "flow_object_id": "fo-f967a68639f45d28",
+        "substance": "Mecoprop"
+      },
+      "relationship": "substitute",
+      "verdict": "decline",
+      "categories": [
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "8 factors, every one of them Mecoprop's. Where EF 3.1 characterises both (R)-2-(4-chloro-2-methylphenoxy)propionic Acid and Mecoprop it holds them a median 3.9x and up to 13x, never identical, over 26 comparisons (#131): EF's own numbers say the two are different substances. ecoinvent's implementation substituted the relative; this list declines the substitution on the record, and the row stays a question until somebody states a number for (R)-2-(4-chloro-2-methylphenoxy)propionic Acid itself."
+    },
+    {
+      "flow_object_id": "fo-1981bacf59b2464a",
+      "substance": "2,4-D Ester",
+      "catch_all": "Herbicides, Unspecified",
+      "relationship": "catch-all",
+      "verdict": "decline",
+      "categories": [
+        "ecotoxicity-freshwater",
+        "ecotoxicity-freshwater-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "12 factors in four categories, every one of them the number this list publishes for `Herbicides, Unspecified` -- or for one of the named pesticides adopted from that bucket, which is the same number. A catch-all's number reaching a named substance is the shape this file adopts one substance at a time, and this one is declined: 2,4-D is a named herbicide EF characterises in its own right in other categories, and the bucket's number is not its (#329 group 3)."
+    },
+    {
+      "flow_object_id": "fo-861fc8984d25d1fb",
+      "substance": "Tetrachlorvinphos",
+      "donor": {
+        "flow_object_id": "fo-74f74bce650f7909",
+        "substance": "Rabon"
+      },
+      "relationship": "substitute",
+      "verdict": "decline",
+      "categories": [
+        "human-toxicity-cancer",
+        "human-toxicity-cancer-organics",
+        "human-toxicity-non-cancer",
+        "human-toxicity-non-cancer-organics"
+      ],
+      "implemented_by": [
+        "ecoinvent Centre"
+      ],
+      "comment": "16 factors, every one of them Rabon's. Where EF 3.1 characterises both Tetrachlorvinphos and Rabon it holds them a median 1.3x and up to 47x, never identical, over 26 comparisons (#131): EF's own numbers say the two are different substances. ecoinvent's implementation substituted the relative; this list declines the substitution on the record, and the row stays a question until somebody states a number for Tetrachlorvinphos itself."
+    }
+  ]
+}

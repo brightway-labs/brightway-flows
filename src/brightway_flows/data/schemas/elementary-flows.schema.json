@@ -1,0 +1,356 @@
+{
+  "$defs": {
+    "Context": {
+      "properties": {
+        "dimension": {
+          "$ref": "#/$defs/Dimension"
+        },
+        "geography": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Geography"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "indoor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/IndoorAirClass"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "land_use": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LandUseClass"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "media": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Media"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "population_density": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PopulationDensity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "strata": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VerticalStrata"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "water_body": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WaterBody"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "dimension"
+      ],
+      "title": "Context",
+      "type": "object"
+    },
+    "Dimension": {
+      "enum": [
+        "Environmental",
+        "Resource",
+        "Economic",
+        "Social",
+        "Land Use",
+        "Inventory Indicator",
+        "Impact Assessment Score"
+      ],
+      "title": "Dimension",
+      "type": "string"
+    },
+    "Geography": {
+      "description": "Only applies to the `Ground` dimension.",
+      "enum": [
+        "Unknown",
+        "Industrial",
+        "Residential",
+        "Commercial",
+        "Agricultural",
+        "Silvicultural",
+        "Wetland",
+        "Barren land",
+        "Snow and Ice",
+        "Grassland",
+        "Shrubland",
+        "Forest",
+        "Non-agricultural"
+      ],
+      "title": "Geography",
+      "type": "string"
+    },
+    "IndoorAirClass": {
+      "description": "Differentiation of indoor air emission classes. Based on GLAM indoor air emissions.",
+      "enum": [
+        "Unknown",
+        "Near-person",
+        "Residential",
+        "Industrial"
+      ],
+      "title": "IndoorAirClass",
+      "type": "string"
+    },
+    "LandUseClass": {
+      "enum": [
+        "Occupation",
+        "Transformation"
+      ],
+      "title": "LandUseClass",
+      "type": "string"
+    },
+    "Media": {
+      "description": "The medium in which the the elementary flow expresses its effects.\n\nNotes:\n    * `Water` can include groundwater\n    * `Ground` includes soil and minerals deeper in the lithosphere\n    * `Product` means that a chemical is applied to a product, like toys, food, or construction materials.\n    * The `Other` category can include non-environmental flows, such as economic or social indicators, or elementary flows like land use or transformation",
+      "enum": [
+        "Air",
+        "Water",
+        "Ground",
+        "Biotic",
+        "Product",
+        "Other"
+      ],
+      "title": "Media",
+      "type": "string"
+    },
+    "PopulationDensity": {
+      "enum": [
+        "Unknown",
+        "Urban (>1000 people/square mile)",
+        "Rural (<1000 people/square mile)"
+      ],
+      "title": "PopulationDensity",
+      "type": "string"
+    },
+    "VerticalStrata": {
+      "description": "Vertical strata for air emissions.\n\nNotes:\n* Vertical strata is not required for indoor air emissions.\n* `UNKNOWN` represents unspecified outdoor air (no strata information available).\n* `Space` could be added in the future.\n* `LONG_TERM` is not a stratum. It rides on this enum because air's strata\n  value is the one mandatory, mutually-exclusive discriminator the media\n  already has, which lets long-term air exist without adding a temporal\n  field to `Context`. It serialises to ``[\"Environmental\", \"Air\",\n  \"Long-term\"]`` -- exactly what a real temporal field would produce for\n  unspecified-strata long-term air -- so the shortcut can be replaced later\n  without invalidating a single stored context or IRI. The cost is that it\n  cannot be combined with a real stratum or a population density, so a\n  source that knows both (ecoinvent's `low population density, long-term`)\n  has to give one up.",
+      "enum": [
+        "Unknown",
+        "Ground level",
+        "Low stack, <25 meters",
+        "Medium stack, <150 meters",
+        "High stack, >150 meters",
+        "Aircraft cruise height",
+        "Long-term"
+      ],
+      "title": "VerticalStrata",
+      "type": "string"
+    },
+    "WaterBody": {
+      "description": "The water body an emission went to, or a withdrawal was taken from.\n\nUsed on both the `Environmental` and `Resource` dimensions, and required on\neach -- see :func:`check_water_body`, which also names the three values a\nwithdrawal cannot take.\n\n`LONG_TERM` is not a water body; it is the water-side counterpart of\n:attr:`VerticalStrata.LONG_TERM`, and carries the same trade-off.",
+      "enum": [
+        "Unknown",
+        "Surface water",
+        "Lake",
+        "River",
+        "Ocean",
+        "Unconfined aquifer",
+        "Confined aquifer with fossil groundwater",
+        "Waste-water treatment plant",
+        "Secondary water treatment",
+        "Long-term"
+      ],
+      "title": "WaterBody",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "description": "Substances in contexts. The (flow_object_id, context_iri) pair is unique across non-deprecated flows.",
+  "properties": {
+    "elementary_flows": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "cas_match_labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Cas Match Labels",
+            "type": "object"
+          },
+          "concept_associations": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Concept Associations"
+          },
+          "context": {
+            "$ref": "#/$defs/Context"
+          },
+          "context_iri": {
+            "title": "Context Iri",
+            "type": "string"
+          },
+          "elementary_flow_id": {
+            "title": "Elementary Flow Id",
+            "type": "string"
+          },
+          "flow_object_id": {
+            "title": "Flow Object Id",
+            "type": "string"
+          },
+          "general_comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "General Comment"
+          },
+          "http://purl.org/dc/terms/isReplacedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Dcterms Is Replaced By"
+          },
+          "http://www.w3.org/2002/07/owl#deprecated": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Owl Deprecated"
+          },
+          "is_replaced_by_uuid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Replaced By Uuid"
+          },
+          "lcia_methods": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Lcia Methods",
+            "type": "array"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "unit_iri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Iri"
+          }
+        },
+        "required": [
+          "cas_match_labels",
+          "context",
+          "context_iri",
+          "elementary_flow_id",
+          "flow_object_id",
+          "general_comment",
+          "lcia_methods",
+          "source",
+          "unit",
+          "unit_iri"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 7,
+      "type": "integer"
+    },
+    "stats": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "elementary_flows"
+  ],
+  "title": "elementary-flows.json",
+  "type": "object"
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "description": "Fifteen more EF 3.1 substances are published twice in one environmental compartment, the way carbon tetrachloride was in #105. They are not one problem. Nine are one substance written down twice and are collapsed here, with the copy carrying the identifiers and the incoming mappings kept. Four more are compartments that earlier decisions missed -- every ruling written before #105 covers the same four air compartments and none of them covers rural medium stack, so five of the fifteen sit in that one place. Two are not duplicates at all and are deliberately left as two flows.\n\nThe two that stay apart are the ones worth stating as expectations, because nothing marks a decision not to act. Borate and borax are one flow object only because EF 3.1 gives its six `Borate` rows borax's registry number; borate is the ion and borax is a particular sodium salt of it, and ecoinvent tells them apart -- Borate 11129-12-7, Borax 1303-96-4. Taking the wrong number off the borate rows separates them, which is the repair #57 made for organic-bound nitrogen. Water and water from evapotranspiration are two flows because EF split them on purpose, to keep water breathed out by a crop apart from water evaporated by a boiler, and says so in its own comment.",
+  "expectations": [
+    {
+      "id": "0530-hexafluoroethane-published-once",
+      "issue": 530,
+      "title": "Hexafluoroethane is published once in unspecified air, not twice",
+      "subject": {
+        "kind": "flow",
+        "name": "Hexafluoroethane",
+        "context_display": "Environmental → Air → Unknown"
+      },
+      "expect": {"count": 1},
+      "comment": "Measured on the 2026-08-17 build at commit 87a5918: two live flows, `08a91e70-…-933e` from EF's `HFC-116` rows and `a19bf07e-…` from its `PFC-116` rows, both carrying CAS 76-16-4, EC 200-939-8 and six characterisation factors. Since the CC/ChEBI rename both read `Hexafluoroethane` and nothing tells them apart but a free-text comment. Four air compartments are doubled this way."
+    },
+    {
+      "id": "0530-hexafluoroethane-keeps-both-part-numbers",
+      "issue": 530,
+      "title": "Hexafluoroethane is still findable as `HFC-116` and as `PFC-116`",
+      "subject": {"kind": "substance", "cas": "76-16-4"},
+      "expect": {"alt_label": "HFC-116"},
+      "comment": "`HFC-116` is wrong as chemistry -- hexafluoroethane contains no hydrogen, so it is not a hydrofluorocarbon -- and it is nonetheless the string EF 3.1 ships on the copy carrying every identifier, and the string an inventory written against EF 3.1 holds. Being wrong is a reason not to publish it as the preferred label, not a reason to make it unfindable. On the 2026-08-17 build the substance publishes eight alternative labels, all of them Common Chemistry's, and neither of EF's own two names is among them."
+    },
+    {
+      "id": "0530-trichloroethane-published-once",
+      "issue": 530,
+      "title": "1,1,1-Trichloroethane is published once in urban ground-level air",
+      "subject": {
+        "kind": "flow",
+        "name": "1,1,1-Trichloroethane",
+        "context_display": "Environmental → Air → Ground level → Urban (>1000 people/square mile)"
+      },
+      "expect": {"count": 1},
+      "comment": "The degreasing solvent phased out under the Montreal Protocol, registry number 71-55-6, shipped by EF 3.1 as `HCFC-140` and as `Methyl chloroform` and published twice in each of four air compartments, seven characterisation factors on each copy. The `HCFC-140` copy carries the EC number and 57 synonyms; the other carries neither."
+    },
+    {
+      "id": "0530-beryllium-published-once",
+      "issue": 530,
+      "title": "Beryllium is published once in rural medium-stack air",
+      "subject": {
+        "kind": "flow",
+        "name": "Beryllium",
+        "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)"
+      },
+      "expect": {"count": 1},
+      "comment": "The least ambiguous of the fifteen: two flows with the same name, the same registry number 7440-41-7, the same EC number and the same six characterisation factors, held apart by a free-text note on one of them. Thallium is the same case in the same compartment."
+    },
+    {
+      "id": "0530-thallium-published-once",
+      "issue": 530,
+      "title": "Thallium is published once in rural medium-stack air",
+      "subject": {
+        "kind": "flow",
+        "name": "Thallium",
+        "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)"
+      },
+      "expect": {"count": 1},
+      "comment": "As for beryllium: 7440-28-0 on both copies, four characterisation factors on each, one general comment between them."
+    },
+    {
+      "id": "0530-rural-medium-stack-leftovers",
+      "issue": 530,
+      "title": "Octafluorocyclobutane is published once in rural medium-stack air, the compartment earlier decisions missed",
+      "subject": {
+        "kind": "flow",
+        "name": "Octafluorocyclobutane",
+        "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)"
+      },
+      "expect": {"count": 1},
+      "comment": "Ruled on in #44 for four compartments -- urban ground level, high stack, long-term and unspecified -- and left doubled in the fifth. The same one compartment is left over for 2,2,3,3,3-pentafluoropropan-1-ol and 2,2,3,3,3-pentafluoropropyl methyl ether, which is what says the decisions were written from a list of four compartments rather than from the substance."
+    },
+    {
+      "id": "0530-borax-is-published-as-a-salt",
+      "issue": 530,
+      "title": "The substance carrying borax's registry number is published as Borax",
+      "subject": {"kind": "substance", "cas": "1303-96-4"},
+      "expect": {"label": "Borax", "flow_type": "ChemicalSalt"},
+      "comment": "Registry number 1303-96-4 is borax -- sodium tetraborate decahydrate -- and Common Chemistry's names for it are all borax's. The check was written in #106 against 12447-40-4, which is also borax and which EF 3.1 filed the row under; #110 renumbered the row on 2026-08-18 because 12447-40-4 has been superseded, and 1303-96-4 is the number in use and the one ChEBI holds for both `borax` (CHEBI:86222) and `disodium tetraborate decahydrate` (CHEBI:131366). Only the way of finding the subject moved, so the check keeps its id and follows the number. What it guards: on the 2026-08-17 build the substance carrying borax's number was typed `ChemicalSalt` and published as `Borate`, which is the ion, because EF 3.1 put borax's number on six rows it names `Borate` and one it names `borax`, and the object took the ion's name. A salt named after an ion is the visible half of the defect; the shared number is the other half."
+    },
+    {
+      "id": "0530-borate-is-its-own-substance",
+      "issue": 530,
+      "title": "Borate is a separate substance from borax, and only one flow of it is published in Resource → Ground",
+      "subject": {
+        "kind": "flow",
+        "name": "Borate",
+        "context_display": "Resource → Ground"
+      },
+      "expect": {"count": 1},
+      "comment": "Two live flows today, one named `borax` by EF 3.1 and one named `Borate`, sharing Resource → Ground and sharing registry number 12447-40-4. Taking that number off the six EF rows named `Borate` gives borate its own flow object, which leaves one `Borate` flow in this context and one `Borax` flow. ecoinvent already tells the two apart, reaching the borax rows as `Borax` under 1303-96-4 and the borate rows as `Borate` under 11129-12-7, so nothing that maps onto either loses its target."
+    },
+    {
+      "id": "0530-borate-has-its-own-flow-object",
+      "issue": 530,
+      "title": "Borate has a flow object of its own",
+      "subject": {"kind": "substance", "label": "Borate"},
+      "expect": {"exists": true, "flow_count": {"at_least": 6}},
+      "comment": "The other half of the separation, stated about the substance rather than about one context: EF 3.1 ships six rows named `Borate` -- five water compartments and Resource → Ground -- and today all six sit on borax's flow object, publishing borax's structure and 24 of borax's trade names. Once the shared registry number is off them they are one substance of their own, and `Borax` is another."
+    },
+    {
+      "id": "0530-evapotranspiration-stays-separate",
+      "issue": 530,
+      "title": "EF's evapotranspiration copy of water vapour is folded onto the one flow every list reaches",
+      "subject": {
+        "kind": "flow",
+        "name": "Water vapour",
+        "context_display": "Environmental → Air → Unknown",
+        "unit": "m3"
+      },
+      "expect": {"count": 1},
+      "comment": "This one is here to record a decision not to act. The two rows look like every other pair in the queue -- same name after the object label is applied, same registry number 7732-18-5, same unit, neither carrying a characterisation factor -- and they are not a duplication. EF's own comment on the second reads `water vapour, but coming from growing renewables. Some \"water people\" like to distinguish between water vapour and evapotranspirated water.` A tiebreak that collapsed them would throw away a distinction somebody made on purpose. The unit is named in the selector because the same object also carries a third flow in this compartment measured in kilograms, which is a different question.\n\nOne on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`): #191 folded the evapotranspiration copy onto `0342f5e5-b53e-4cec-9e67-fb197f24fff0`, the flow ecoinvent's, BAFU's, Stepwise's and AGRIBALYSE's vapour rows all reach, by the 48th collision ruling; the distinction this entry once declined to collapse was collapsed on the record, with the reason there. Kept under its id as the history of the earlier decision; the count is what the fold left."
+    }
+  ]
+}

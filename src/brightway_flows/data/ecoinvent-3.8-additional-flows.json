@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "source_version": "3.8",
+  "description": "Elementary exchanges ecoinvent 3.8 ships in a system model the adapter does not read, and what was decided about each. Compared release by release from each system model's MasterData/ElementaryExchanges.xml -- cutoff 4,421, apos 4,424, consequential 4,424, EN15804 4,421 exchanges. apos and consequential carry the 3 records below and cutoff does not; no flow is only in cutoff, and every shared record is equal field for field. EN15804 matches cutoff exactly. Regenerate the comparison with tools/compare_ecoinvent_system_models.py. All three records are excluded rather than added: they are products, not elementary flows. See #25, #100 and #115.",
+  "comparison": {
+    "compared_on": "2026-08-15",
+    "reference_system_model": "cutoff",
+    "system_models": [
+      "cutoff",
+      "apos",
+      "consequential",
+      "EN15804"
+    ],
+    "release_type": "ecoSpold02 MasterData/ElementaryExchanges.xml",
+    "exchange_counts": {
+      "cutoff": 4421,
+      "apos": 4424,
+      "consequential": 4424,
+      "EN15804": 4421
+    },
+    "flows_only_in_another_system_model": 3,
+    "flows_only_in_cutoff": 0,
+    "shared_records_differing": 0,
+    "file_attributes_differing": {
+      "apos": [
+        "@minorRevision"
+      ],
+      "consequential": [
+        "@minorRevision"
+      ]
+    }
+  },
+  "flows": [],
+  "excluded": [
+    {
+      "uuid": "22cbd60c-8017-49c4-ae6f-7f0c1c6ebf0b",
+      "name": "venting of argon, crude, liquid",
+      "context": [
+        "social",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A product, not an elementary flow. ecoinvent 3.8's apos and consequential releases duplicate intermediate exchange ccde15d5-179a-4bf2-a323-17fb1e056261 into their elementary list under a compartment ecoinvent uses nowhere else; no dataset in the release references the elementary uuid, and 3.9.1 removed it.",
+      "withdrew_identifier": "3b5f85d9601a67605e692bb34b268dd3e2b6e41c",
+      "evidence": {
+        "intermediate_exchange_uuid": "ccde15d5-179a-4bf2-a323-17fb1e056261",
+        "intermediate_exchange_present_in": "3.8 through 3.12, every system model",
+        "datasets_referencing_elementary_uuid": 0,
+        "datasets_referencing_intermediate_uuid": 2,
+        "last_release_carrying_the_elementary_record": "3.8"
+      },
+      "comment": "Checked 2026-08-25 against the eleven ecoSpold02 releases cached on this machine (3.8, 3.9.1, 3.10, 3.10.1, 3.11, 3.12; cutoff and apos for all but 3.10). The uuid occurs in exactly one file in the whole cache: 3.8 apos MasterData/ElementaryExchanges.xml. `social` is the compartment of all three records here and of nothing else in any release. Grepping the 19,727 datasets of 3.8 apos returns no hit for the elementary uuid and two for the intermediate one."
+    },
+    {
+      "uuid": "2d8d9c78-e7da-4b71-8c5e-8d1de08696c0",
+      "name": "venting of nitrogen, liquid",
+      "context": [
+        "social",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A product, not an elementary flow. ecoinvent 3.8's apos and consequential releases duplicate intermediate exchange 1adfc43f-187a-4153-996c-aced5301536a into their elementary list under a compartment ecoinvent uses nowhere else; no dataset in the release references the elementary uuid, and 3.9.1 removed it.",
+      "withdrew_identifier": "e3378e2056920fcd33aaa3650e0c8ae90e47468d",
+      "evidence": {
+        "intermediate_exchange_uuid": "1adfc43f-187a-4153-996c-aced5301536a",
+        "intermediate_exchange_present_in": "3.8 through 3.12, every system model",
+        "datasets_referencing_elementary_uuid": 0,
+        "last_release_carrying_the_elementary_record": "3.8"
+      },
+      "comment": "Checked 2026-08-25 against the eleven ecoSpold02 releases cached on this machine (3.8, 3.9.1, 3.10, 3.10.1, 3.11, 3.12; cutoff and apos for all but 3.10). The uuid occurs in exactly one file in the whole cache: 3.8 apos MasterData/ElementaryExchanges.xml. The intermediate exchange keeps the same uuid in every one of the eleven."
+    },
+    {
+      "uuid": "c7075d71-2cfb-42ac-bd96-4661486e1ff7",
+      "name": "residual wood, dry",
+      "context": [
+        "social",
+        "unspecified"
+      ],
+      "unit": "m3",
+      "reason": "A product, not an elementary flow. ecoinvent 3.8's apos and consequential releases duplicate intermediate exchange 019600be-f3ce-4399-9e31-19cdc087ed5f into their elementary list under a compartment ecoinvent uses nowhere else; no dataset in the release references the elementary uuid, and 3.9.1 removed it.",
+      "withdrew_identifier": "a2b1125471a3d31a3094deb35114e6e62d809d73",
+      "evidence": {
+        "intermediate_exchange_uuid": "019600be-f3ce-4399-9e31-19cdc087ed5f",
+        "intermediate_exchange_present_in": "3.8 through 3.12, every system model; renamed 'residual wood, dry, measured as dry volume' in 3.12 under the same uuid",
+        "datasets_referencing_elementary_uuid": 0,
+        "last_release_carrying_the_elementary_record": "3.8"
+      },
+      "comment": "Checked 2026-08-25 against the eleven ecoSpold02 releases cached on this machine (3.8, 3.9.1, 3.10, 3.10.1, 3.11, 3.12; cutoff and apos for all but 3.10). The uuid occurs in exactly one file in the whole cache: 3.8 apos MasterData/ElementaryExchanges.xml. The intermediate exchange is renamed in 3.12 but keeps its uuid, which is the ordinary way ecoinvent carries a product forward and is what the elementary duplicate never did."
+    }
+  ]
+}

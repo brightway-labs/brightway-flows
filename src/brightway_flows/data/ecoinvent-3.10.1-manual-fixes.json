@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "description": "Manual corrections for ecoinvent 3.10.1 biosphere flows. Applied as the first step of the merge pipeline, before any automated matching. Flows are identified by UUID unless a correction is about the substance rather than about one row, in which case it matches on the field that names the substance -- ecoinvent repeats a substance once per context, so a per-row rule would state itself nine times here and go stale when a context is added. Every correction below is also in ecoinvent-3.12-manual-fixes.json, on the same rows under the same UUIDs: 3.10.1 ships the same uncorrected values, and a correction applied to one version and not another leaves the merge two lists that disagree about what a substance is (#26).",
+  "fixes": [
+    {
+      "match": {
+        "name": "Uranium-238"
+      },
+      "field": "cas_number",
+      "original_value": "7440-61-1",
+      "new_value": "24678-82-8",
+      "comment": "7440-61-1 is the registry number for *uranium*, the element; U-238's own is 24678-82-8. ecoinvent 3.10.1 ships the element's number on all nine of its Uranium-238 rows -- 543421e8-f0b3-45a2-b0ed-03489e878138 and eight others -- as do 3.12 and EF 3.1, and the same correction is in ecoinvent-3.12-manual-fixes.json and ef-3.1-manual-fixes.json: it has to be made on every list that carries the row, or they disagree about what a nuclide's CAS is and the merge has to arbitrate. Keying a nuclide by its nuclide already stops the CAS deciding which flow object a row lands on (#17); this is about what the object then publishes. Matched on name rather than UUID for the reason given in the description above."
+    },
+    {
+      "match": {
+        "name": "Strontium II"
+      },
+      "field": "cas_number",
+      "original_value": "7440-24-6",
+      "new_value": "22537-39-9",
+      "comment": "7440-24-6 is the registry number for strontium the *metal*; the strontium(2+) ion's own is 22537-39-9. ecoinvent names these rows `Strontium II`, thirteen rows, one per emission context, and registers every one of them as the metal, the slip `Molybdenum VI` above made in 3.10.1 (#181). Every other Roman-numeral metal in the release carries the ion's number. The name is the half that is right: the vendor's history says so (3.8 and 3.9.1 shipped the same uuids as the bare element with the element's number, and this release names the ion again, still under the element's number), and the ruling on #198 is that a name stating a charge is the vendor's statement of what the flow is. What the wrong number cost: a registry number outranks a name, so on the build of 2 September 2026 (b445ff6) the rows were published as `Strontium`, the element, while `Strontium(2+)`, the substance EF 3.1's `strontium (ii)` rows already make under 22537-39-9 and AGRIBALYSE's twelve `Strontium(2+)` rows reach -- one vendor name on two substances, decided by which number each vendor typed. With the ion's number the rows reach Strontium(2+). Matched on the name with the element's number as the guard, so a row already carrying the ion's number, or any other, is left alone; ecoinvent's bare `Strontium` resource row keeps the element's number, because a bare name is the element. 3.8's bare rows follow this release's corrected identity through `ecoinvent-canonical-identities.json`, which is derived from the fixed rows, so no entry is needed in 3.8's own file. (#198)"
+    },
+    {
+      "match": {
+        "name": "Caesium I"
+      },
+      "field": "cas_number",
+      "original_value": "7440-46-2",
+      "new_value": "18459-37-5",
+      "comment": "7440-46-2 is the registry number for caesium the *metal*; the caesium(1+) ion's own is 18459-37-5. ecoinvent names these rows `Caesium I`, five rows, one per water context, and registers every one of them as the metal, the slip `Molybdenum VI` above made in 3.10.1 (#181). Every other Roman-numeral metal in the release carries the ion's number. The name is the half that is right: the vendor's history says so (3.8 and 3.9.1 shipped the same uuids as the bare element with the element's number, and this release names the ion again, still under the element's number), and the ruling on #198 is that a name stating a charge is the vendor's statement of what the flow is. What the wrong number cost: a registry number outranks a name, so on the build of 2 September 2026 (b445ff6) the rows were published as `Cesium`, the element, while `Cesium(1+)`, the substance EF 3.1's `cesium (i)` rows already make under 18459-37-5 and AGRIBALYSE's three `Cesium (I)` rows reach -- one vendor name on two substances, decided by which number each vendor typed. With the ion's number the rows reach Cesium(1+). Matched on the name with the element's number as the guard, so a row already carrying the ion's number, or any other, is left alone; ecoinvent's bare `Cesium` resource row keeps the element's number, because a bare name is the element. 3.8's bare rows follow this release's corrected identity through `ecoinvent-canonical-identities.json`, which is derived from the fixed rows, so no entry is needed in 3.8's own file. (#198)"
+    },
+    {
+      "match": {
+        "name": "Silver-110"
+      },
+      "field": "name",
+      "original_value": "Silver-110",
+      "new_value": "Silver-110m",
+      "comment": "Silver-110 is the 24.56-second ground state; the species a reactor-effluent inventory reports is the isomer, Ag-110m, at 249.863 days. EF 3.1 writes the same bare name on twelve rows and neither list carries a separate Silver-110m row, so the correction has to be made on both or the two lists disagree about which nuclide this is and the merge has to arbitrate -- the reasoning, and the characterisation-factor evidence it rests on, is in ef-3.1-manual-fixes.json (#24). ecoinvent ships no LCIA factors of its own here, so this list has nothing to add to that evidence; what it has is the same label, on nine rows, all kBq. CAS 14391-76-5 is left in place: it is indexed as `Silver, isotope of mass 110`, a mass number rather than a nuclear state, and there is no cited nuclide-specific number for the isomer to replace it with. Matched on name rather than UUID for the reason given in the description above.  `Silver-110` is retained as an alternative label: it is not a wrong name, it is the name both vendor lists ship for this substance, and correcting the preferred one to `Silver-110m` otherwise deletes the only string a consumer holding one of those inventories can search the published list for.",
+      "retain_original_as_synonym": true
+    },
+    {
+      "uuid": "a1f19e68-e0ca-4d2b-a159-38e9036542f3",
+      "field": "cas_number",
+      "original_value": null,
+      "new_value": "1417782-03-6",
+      "comment": "Mefentrifluconazole (soil/agricultural) carries no CAS in ecoinvent 3.10.1 -- the version that introduces it -- and no other identifier, so nothing downstream can place it: the PubChem and ChEBI enrichment is keyed on a CAS, and the name is a trivial one OPSIN cannot parse. It is a real substance -- BASF's triazole fungicide, sold as Revysol -- and PubChem CID 71230671 lists `Mefentrifluconazole` among its synonyms, reports C18H15ClF3N3O2, and cross-references CHEBI:144539. Its synonym list also holds 1417782-23-0; the record's `Other Identifiers -> CAS` section lists 1417782-03-6 alone, which is the one asserted here. 1 flow, under the same UUID 3.11 and 3.12 ship. (#19)"
+    },
+    {
+      "match": {
+        "uuid": "79238018-8ec1-4615-9469-2b0df95a43c3"
+      },
+      "field": "cas_number",
+      "remove_value": "7732-18-5",
+      "comment": "`Water, salt, sole` is brine -- `Sole` is the German for a saturated salt solution -- and 7732-18-5 is the registry number of the water molecule. A mixture does not have the CAS of one of its constituents. Dropped from EF 3.1's copy of this flow in ef-3.1-manual-fixes.json for the same reason; ecoinvent's carries it too, and while today's base build reads only EF, the merge-creation path mints a flow object from whichever list reaches a substance first. An ecoinvent brine row arriving before EF's would mint an object carrying water's chemistry while the taxonomy types it ImpreciseChemicalMixture -- the molecule-and-mixture contradiction the taxonomy exists to remove. See plans/water-taxonomy.md, Q4."
+    },
+    {
+      "match": {
+        "uuid": "79238018-8ec1-4615-9469-2b0df95a43c3"
+      },
+      "field": "synonyms",
+      "remove_value": "oxidane",
+      "comment": "`oxidane` is the IUPAC name of water, carried on brine from 3.9.1 on. Same argument as the CAS above: a mixture is not named by one of its constituents, and a synonym is what the label rules and the name index read."
+    },
+    {
+      "match": {
+        "name": "Nitrogen, organic bound"
+      },
+      "field": "cas_number",
+      "remove_value": "7727-37-9",
+      "comment": "7727-37-9 is dinitrogen -- N2, the inert gas that is 78% of the air, indexed by Common Chemistry as `Nitrogen` with structure `N#N`. `Nitrogen, organic bound` is not a compound: it is the nitrogen locked inside the organic matter of a discharge, reported as a mass of nitrogen, and no registry number can name it because a number names one compound and this is a measurement over many. ecoinvent writes the gas's number on all five of its organic-bound rows -- water ground-, ground- long-term, ocean, surface water and unspecified -- and so does EF 3.1 on its five, so the number has to come off in every fixes file or the merge is handed two lists that disagree about whether a nutrient load is nitrogen gas (#26). Removed rather than corrected: there is nothing to correct it to, and with it gone the rows group by name, onto the same flow object EF's do. ecoinvent's own `Nitrogen` rows keep the number, which is theirs. The reasoning and the evidence are in ef-3.1-manual-fixes.json. Matched on name rather than UUID for the reason given in the description above. (#57)"
+    },
+    {
+      "match": {
+        "name": "Nitrogen, organic bound"
+      },
+      "field": "synonyms",
+      "remove_value": "dinitrogen",
+      "comment": "`dinitrogen` names the gas, and this flow is not the gas -- same argument as the CAS above. Carried on the organic-bound rows from 3.9.1 on, where ecoinvent has given them the synonym set of its `Nitrogen` rows. A synonym is what the label rules and the name index read, so leaving it would re-assert by name the identity the CAS removal takes away. (#57)"
+    },
+    {
+      "match": {
+        "name": "Nitrogen, organic bound"
+      },
+      "field": "synonyms",
+      "remove_value": "molecular nitrogen",
+      "comment": "The second of the two gas synonyms ecoinvent puts on the organic-bound rows from 3.9.1 on. Removed for the same reason as `dinitrogen` above. (#57)"
+    },
+    {
+      "match": {
+        "cas_number": "2436-73-9"
+      },
+      "field": "name",
+      "original_value": "Ioxynil methyl ester",
+      "new_value": "MCPA-methyl",
+      "comment": "2436-73-9 is not an ioxynil compound's registry number. Every ioxynil is a diiodobenzonitrile -- ioxynil itself is 4-hydroxy-3,5-diiodobenzonitrile, 1689-83-4 -- and 2436-73-9 contains no iodine at all: it is C10H11ClO3, methyl 2-(4-chloro-2-methylphenoxy)acetate, which is the methyl ester of MCPA. PubChem titles CID 17089 `MCPA methyl ester` for it, and Wikidata resolves the number to `mcpa-methyl` (Q27275530) via P231. ecoinvent's three other ioxynil flows all carry correct numbers -- Ioxynil 1689-83-4, Ioxynil octanoate 3861-47-0, Ioxynil sodium 2961-62-8 -- so the family is otherwise coherently modelled, and one outlier is what says the name slipped rather than the number (#46). Written as `MCPA-methyl`, the ISO 1750 common name, because that is the spelling ecoinvent already uses for the same parent acid's other derivatives: it ships MCPA-sodium and MCPA-thioethyl, and no methyl ester under any spelling, so there is no flow to merge into. Keyed on the registry number rather than on the name, because the number is the half this project has decided is right and keying on the name would restate the wrong one. `retain_original_as_synonym` is deliberately absent: the flag asserts that the replaced string is a name the substance genuinely has, and `Ioxynil methyl ester` is not one -- it names a different substance, which is the whole of the issue. All five registered versions ship the row under the same UUIDs, 3.8 through 3.10.1 with only the agricultural-soil context and 3.11 and 3.12 with seven contexts each, so the correction is stated in every one."
+    },
+    {
+      "match": {
+        "uuid": "fdb1b2d0-f537-401e-b845-1d93da512174"
+      },
+      "field": "unit",
+      "original_value": "m2",
+      "new_value": "m2.a",
+      "conversion_factor": 1.0,
+      "comment": "A land occupation is an area held in a use for a time, and ecoinvent says so everywhere else: of the sixty flows it files in `natural resource / land` whose name begins `Occupation,`, fifty-seven are in m2*a and these three are in m2 -- the same fifty-seven and the same three in every registered release, 3.8 through 3.12. EF 3.1 draws no distinction either; every land-occupation flow it carries is in m2*a. So the unit on these three is a slip rather than a different way of measuring the land, and publishing them in m2 would put an area beside fifty-seven area-times and leave a reader to notice.\n\necoinvent states what it means by them itself: every one of its correspondence tables to EF 3.1 -- 3.9.1, 3.10.1, 3.11 and the 3.8 chain composed here -- maps this flow onto EF's m2*a `arable` with a factor of 1.0, commented `Assumed conversion based on land use through an entire year`. The amount is one year's occupation. That is a modelling choice and not a measurement, which is why this project refuses to inherit it silently from a table; asserted here, with the reasoning attached, it is this project's own statement.\n\nThe factor is 1.0 and is stated rather than left out for the reason the `m3` to `sm3` rewrite states its own: `units.json` reads m2 as an area and m2*a as an area-time, so it implies nothing between them, and the number is what keeps the rewrite from silently reinterpreting the vendor's amounts. It is the only conversion in this project that crosses a time dimension.\n\nUntil #111 these three rows were mapped onto EF 3.1's unqualified `arable`, carrying this same factor on the mapping, and the tillage regime was lost. The mapping is declined now and the flow is published under its own name, so the factor moves onto the row it was always about."
+    },
+    {
+      "match": {
+        "uuid": "e489cce4-a80f-417d-9ae6-9fc14cc7dd49"
+      },
+      "field": "unit",
+      "original_value": "m2",
+      "new_value": "m2.a",
+      "conversion_factor": 1.0,
+      "comment": "A land occupation is an area held in a use for a time, and ecoinvent says so everywhere else: of the sixty flows it files in `natural resource / land` whose name begins `Occupation,`, fifty-seven are in m2*a and these three are in m2 -- the same fifty-seven and the same three in every registered release, 3.8 through 3.12. EF 3.1 draws no distinction either; every land-occupation flow it carries is in m2*a. So the unit on these three is a slip rather than a different way of measuring the land, and publishing them in m2 would put an area beside fifty-seven area-times and leave a reader to notice.\n\necoinvent states what it means by them itself: every one of its correspondence tables to EF 3.1 -- 3.9.1, 3.10.1, 3.11 and the 3.8 chain composed here -- maps this flow onto EF's m2*a `arable` with a factor of 1.0, commented `Assumed conversion based on land use through an entire year`. The amount is one year's occupation. That is a modelling choice and not a measurement, which is why this project refuses to inherit it silently from a table; asserted here, with the reasoning attached, it is this project's own statement.\n\nThe factor is 1.0 and is stated rather than left out for the reason the `m3` to `sm3` rewrite states its own: `units.json` reads m2 as an area and m2*a as an area-time, so it implies nothing between them, and the number is what keeps the rewrite from silently reinterpreting the vendor's amounts. It is the only conversion in this project that crosses a time dimension.\n\nUntil #111 these three rows were mapped onto EF 3.1's unqualified `arable`, carrying this same factor on the mapping, and the tillage regime was lost. The mapping is declined now and the flow is published under its own name, so the factor moves onto the row it was always about."
+    },
+    {
+      "match": {
+        "uuid": "81e07a67-28e0-4392-a553-d86e54a9b8a9"
+      },
+      "field": "unit",
+      "original_value": "m2",
+      "new_value": "m2.a",
+      "conversion_factor": 1.0,
+      "comment": "A land occupation is an area held in a use for a time, and ecoinvent says so everywhere else: of the sixty flows it files in `natural resource / land` whose name begins `Occupation,`, fifty-seven are in m2*a and these three are in m2 -- the same fifty-seven and the same three in every registered release, 3.8 through 3.12. EF 3.1 draws no distinction either; every land-occupation flow it carries is in m2*a. So the unit on these three is a slip rather than a different way of measuring the land, and publishing them in m2 would put an area beside fifty-seven area-times and leave a reader to notice.\n\necoinvent states what it means by them itself: every one of its correspondence tables to EF 3.1 -- 3.9.1, 3.10.1, 3.11 and the 3.8 chain composed here -- maps this flow onto EF's m2*a `arable` with a factor of 1.0, commented `Assumed conversion based on land use through an entire year`. The amount is one year's occupation. That is a modelling choice and not a measurement, which is why this project refuses to inherit it silently from a table; asserted here, with the reasoning attached, it is this project's own statement.\n\nThe factor is 1.0 and is stated rather than left out for the reason the `m3` to `sm3` rewrite states its own: `units.json` reads m2 as an area and m2*a as an area-time, so it implies nothing between them, and the number is what keeps the rewrite from silently reinterpreting the vendor's amounts. It is the only conversion in this project that crosses a time dimension.\n\nUntil #111 these three rows were mapped onto EF 3.1's unqualified `arable`, carrying this same factor on the mapping, and the tillage regime was lost. The mapping is declined now and the flow is published under its own name, so the factor moves onto the row it was always about."
+    },
+    {
+      "uuid": "11a2a7b1-ab2f-47b8-9e29-6f33d5207fa6",
+      "field": "synonyms",
+      "remove_value": "sulfate",
+      "comment": "ecoinvent ships this flow's one real synonym, `Calcium sulfate dihydrate`, and beside it that phrase's individual words as synonyms of their own. 3.8 ships `calcium`, `sulfate` and `dihydrate`; 3.9.1 onwards ship `sulfate` and `dihydrate`. None of the three is a name of gypsum: they are the words the phrase is made of, in lower case, and the phrase itself is shipped whole in the same list, which is what says they are an artifact of splitting it rather than names anybody uses.\n\nA synonym is a name the merge looks a row up under, so each fragment is a way for gypsum to reach a substance it is not -- and two of them name substances this list publishes. Measured on a full build of 20 August 2026 at commit d7ba19c, with #119's routing correction in place and this one not: ecoinvent 3.12's `Gypsum` reached the `Sulfate` flow object on `basis=label, basis_value=sulfate`, and ecoinvent 3.8's `Gypsum, in ground` reached no flow at all, reported `multiple-flow-object-candidates` with `labels_used = [calcium, gypsum, sulfate]` against the `Calcium` and `Sulfate` objects. Gypsum's own name matched nothing, because until this row mints one there is no gypsum in the list for it to find.\n\nSo this is what lets #119's gypsum correction work. That correction declines the published mapping that sends ecoinvent's gypsum to EF 3.1's anhydrite flow, because no EF 3.1 flow carries gypsum's 13397-24-5; the declined row is then supposed to mint a consensus flow, which BAFU's gypsum row joins by registry number. It cannot, while the row answers to `sulfate`.\n\nStated in all five releases because all five ship the fragments, and `tests/test_cross_version_manual_fixes.py` requires a value one release calls wrong to be corrected wherever it appears. The whole phrase is left alone: `Calcium sulfate dihydrate` is what gypsum is, and it is the only one of the four strings that names it. Four other ecoinvent flows have the same shape -- `Sylvite, in ground`, `Chrysotile`, `Diflufenzopyr-sodium` and `Prohexadione calcium`, counted over the five extracted releases on 2026-08-20 -- and they are left alone here: none of them is being declined, so none is currently reaching a substance on a fragment. (#119)"
+    },
+    {
+      "uuid": "11a2a7b1-ab2f-47b8-9e29-6f33d5207fa6",
+      "field": "synonyms",
+      "remove_value": "dihydrate",
+      "comment": "The same correction for `dihydrate`, which is the second of the words. See the row above for the reasoning. (#119)"
+    },
+    {
+      "match": {
+        "name": "Zirconia, as baddeleyite"
+      },
+      "field": "name",
+      "original_value": "Zirconia, as baddeleyite",
+      "new_value": "Baddeleyite",
+      "comment": "Baddeleyite is the mineral, and it is what this flow is: ecoinvent extracts it from the ground in kilograms and registers it 12036-23-6 from 3.10.1 onwards and 1314-23-4 in 3.8 and 3.9.1 -- two registrations of zirconium dioxide, ZrO2. `Zirconia, as baddeleyite` says the same thing twice and says it backwards: zirconia *is* ZrO2, and `as baddeleyite` is then qualifying the oxide by the mineral it occurs as. The mineral's own name is the shorter and the more accurate, and it is what the published list should show a reader looking at where zirconium is mined.\n\nThis is a name correction and nothing else. The flow goes on mapping where it mapped -- onto EF 3.1's elemental `zirconium`, which is the pair #118 is about, and which is a separate question from what the row is called. What changes is the string a reader sees on the flow page and the alternative label the consensus keeps: `Zirconium` carried `Zirconia, As Baddeleyite` and now carries `Baddeleyite`.\n\nThe renumbering between 3.9.1 and 3.10.1 is worth recording rather than acting on: both numbers are zirconium dioxide, so the flow is the same substance under two registrations and the correction is right for both. (#118)"
+    },
+    {
+      "match": {
+        "uuid": "3e0034cd-21d6-4582-9fbf-09c26edd05df"
+      },
+      "field": "cas_number",
+      "original_value": "1345-04-6",
+      "new_value": "1317-86-8",
+      "comment": "Both numbers are antimony trisulfide, Sb2S3. IARC (vol. 47) separates them: **1345-04-6 is the manufactured chemical and 1317-86-8 is its mineral form, stibnite.** ecoinvent extracts this flow from `natural resource / in ground` in kilograms -- it is the ore being mined -- and registers it as the manufactured compound.\n\nThe three source lists settle which is meant, and they agree. **Every row in any list that says \"stibnite\" is a resource taken out of the ground**: ecoinvent's in all five releases, and BAFU's `Stibnite` in `resources / in ground`. **Every row for the compound is an emission**: EF 3.1's thirteen, which carry 1345-04-6 and are air, water and soil releases. Nobody mines the manufactured chemical and nobody emits the ore, so the two senses never compete and the compartment tells them apart every time.\n\nBAFU already registers its stibnite 1317-86-8, which is the mineral's number and is right. This brings ecoinvent into line, so the two lists publish one mineral rather than two substances -- and keeps it distinct from EF's `antimony trisulfide`, which is the compound with thirteen emission flows and four factors each.\n\n**A curated assertion that the vendor's registry number is wrong, which is heavier than a rename**, so the evidence is set out above rather than summarised: the compartment says mineral, IARC says 1317-86-8 is the mineral, and BAFU reached that number independently. EF 3.1 carries no flow for 1317-86-8 at all, checked across all 94,062 of them, so this cannot collide with something EF already names.\n\nMatched on the uuid, not the name: this file also renames flows, and a fix keyed on a field another fix rewrites stops matching once that one has run. ecoinvent registers this flow 1345-04-6 in every release on disk, so no release guard is needed. (#123)"
+    },
+    {
+      "uuid": "a4375a18-172c-4f82-90b7-bca972f75548",
+      "field": "cas_number",
+      "remove_value": "219714-96-2",
+      "comment": "This flow is granite, the rock -- `Granite` in this release, `natural resource / in ground`, kilograms -- and 219714-96-2 is the registry number of penoxsulam, a rice herbicide. The collision is a trade name: penoxsulam is sold as 'Granite', and PubChem lists 'Granite' among its synonyms, which is how the number plausibly reached the rock. ecoinvent removed it in 3.11, which is the vendor saying the older releases were wrong; this makes the older releases say what the newer ones do, the same reading the Uranium-238 fix above takes. What leaving it costs: enrichment reads a registry number as authoritative and relabels the merged row `Penoxsulam`, so the review queue asked a curator to approve `Granite: Resource use, minerals and metals` with a herbicide named as its source (#140, first case; corrected 2026-08-22 -- the correspondence table's granite target was right all along, and the registry number was the error). Matched on the uuid: the name is `Granite`-family in every release and 3.11 onward also name seven *emission* flows `Granite` that really are the herbicide, so a name-keyed fix here would be ambiguous where a uuid cannot be."
+    },
+    {
+      "uuid": "c5035ce2-5ee5-431f-a287-4b25da42be74",
+      "field": "name",
+      "original_value": "Peat",
+      "new_value": "Peat, horticulture",
+      "retain_original_as_synonym": true,
+      "comment": "The same flow as ecoinvent 3.12's, which 3.10.1 ships under the name `Peat`, and the same correction -- made on every version that ships this uuid, because a correction applied to one and not another leaves the merge two lists that disagree about what a substance is (#26). EF 3.1 ships two peat flows and they are two substances. `peat` is a `Non-renewable energy resource from ground`, measured in megajoules, and carries the `Resource use, fossils` factor of 1.0 -- that is peat burned as a fuel, counted by its energy content. This one is a `Renewable material resource from biosphere`, measured in kilograms, and carries no factor: it is peat dug and sold as a growing medium, counted by its mass. A mass of horticultural peat and a megajoule of fuel peat are not one substance measured two ways, and the list said they were only because both were called some form of `peat`.\n\nWhat that cost: ecoinvent's kilogram row reached the megajoule flow, so the match recorded a unit crossing and the ecoinvent Centre's own factor for it -- `Resource use, fossils`, 9.76 per kilogram, which is peat's calorific value -- stopped being published, because 9.76 per kilogram is wrong by an order of magnitude on a flow measured in megajoules. Named for what it is used for rather than where it is found, because `Peat, in ground` says where and the question here is which of the two peats this is. The vendor's own spelling is retained as an alternative label: an inventory written against these lists holds no other string for it. (#89)"
+    },
+    {
+      "match": {
+        "name": "Molybdenum VI"
+      },
+      "field": "cas_number",
+      "original_value": "7439-98-7",
+      "new_value": "16065-87-5",
+      "comment": "7439-98-7 is the registry number for molybdenum the *metal*; the hexavalent ion's own is 16065-87-5. ecoinvent names its dissolved molybdenum `Molybdenum VI` on thirteen rows -- one per emission context -- writes the formula `Mo+6` on them and the synonyms `Molybdenum (+6)` and `Molybdenum ion`, and registers every one of them as the metal. Every other metal ion in the release carries the ion's number (`Chromium VI` 18540-29-9, `Zinc II` 23713-49-7), and so did these rows: 3.9.1 shipped the same thirteen uuids under the same name with 16065-87-5, and 3.10.1 is where the number changed to the metal's while the name, the formula and the synonyms stayed. The name is the half that is right, and the vendor's own earlier release says so.\n\nWhat the wrong number cost: a registry number outranks a name, so on the 2026-08-29 build of 54b0f9d all thirteen rows were published as `Molybdenum`, the element, beside ecoinvent's own `Molybdenum` resource row and BAFU's fourteen elemental rows -- while the one 3.8 row 3.12 no longer carries, `697e8ecf` in the stratosphere, is decided by 3.9.1's number and was published as `Molybdenum(6+)`. Fourteen rows of one vendor name, two substances, decided by which release last shipped the row. With the ion's number the thirteen reach EF 3.1's `molybdenum (vi)`, which EF publishes in all thirteen contexts, and 3.8's rows -- which 3.8 names plain `Molybdenum` under the metal's number and which `ecoinvent-canonical-identities.json` reads as this release's `Molybdenum VI` -- follow, because that file is derived from the corrected rows.\n\nStated in 3.10.1, 3.11 and 3.12, the releases that ship the metal's number on this name; 3.9.1 ships the ion's already and 3.8 does not use the name. Matched on the name because the number is the field being changed (#237); `original_value` records what the vendor wrote and keeps the second pass a quiet no-op. The same shape as EF's `vanadium (v)` (#49) and BAFU's `Cadmium II` (#146). Worth reporting to ecoinvent: 3.9.1 had the ion's number and the later releases lost it. (#181)"
+    },
+    {
+      "match": {
+        "name": "Beta-cyfluthrin"
+      },
+      "field": "cas_number",
+      "original_value": "68359-37-5",
+      "new_value": "1820573-27-0",
+      "comment": "68359-37-5 is cyfluthrin, the commercial mixture of eight isomers; these rows are named Beta-cyfluthrin, the product enriched in the two most insecticidally active diastereoisomeric pairs of the same set, and PPDB gives that product its own registry number, 1820573-27-0 (PPDB record 74; plain cyfluthrin is record 192, 68359-37-5). ecoinvent's own naming history says the flow is the beta product -- the 2.2-to-3.12 transition table retired the name Cyfluthrin for these uuids in favour of Beta-cyfluthrin (ecoinvent-historical-names.json) -- while EF 3.1 ships plain cyfluthrin rows under the same number, so one number was carrying two vendors' different substances and the merge folded ecoinvent's beta rows into the plain substance by CAS. With the product's own number the beta rows separate at the registry-number index itself, the way the U-238 rows separated from the element's number. The EC number 269-855-7 is stated by both PPDB records and is left alone; only the CAS can tell the two apart. 5 such row(s) in this release, all shipped as Beta-cyfluthrin with no EC of their own. The same correction is in every ecoinvent release's fixes file, because it has to be made on all of them or the releases disagree about what the number names. See #188."
+    }
+  ]
+}

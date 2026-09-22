@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "description": "Aluminium is an element. This list publishes 92 substances typed `chemrof:ChemicalElement` and every one carries an atomic number, a symbol, an element link and a list of isotopes. Aluminium was not one of them: typed `NeutralMolecule`, carrying none of those, across nineteen flows reached by both ecoinvent and BAFU.\n\nThe cause is one letter. The element enrichment matches PubChem's element list against the base list's published names, on the element's name and on its symbol. **PubChem calls element 13 `Aluminum`**; this list publishes IUPAC's `Aluminium`; and `Al` is nobody's published name. See #327.\n\nAn element is now also looked up among the *synonyms* of the base list's objects, where `aluminum` already sits -- but only after the name and the symbol have both found nothing, only where exactly one substance carries it, and only where that substance could be the element at all. The last condition is the one this file is mostly about: the first two builds of it found things wearing an element's name that were not the element.\n\nMeasured on the unbounded build of 21 August 2026 at `a00386e`.",
+  "expectations": [
+    {
+      "id": "0629-aluminium-is-typed-as-an-element",
+      "issue": 629,
+      "title": "Aluminium is published as a chemical element",
+      "subject": {
+        "kind": "substance",
+        "label": "Aluminium"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "ChemicalElement",
+        "flow_count": 18
+      },
+      "comment": "The defect itself. `NeutralMolecule` before, with no atomic number, no symbol, no element link and no isotope list, while all 92 other elements had them.\n\n`flow_count` is claimed alongside the type because the type is the thing that moved and the flows are the thing that must not: nineteen before and nineteen after, so this is aluminium being recognised rather than aluminium being replaced by some other object that happened to be typed correctly. 18 from the retirement build (#141): the ore-content flow (`Aluminium, 24% in bauxite...`) is published as bauxite the mineral rather than as a flow of elemental aluminium, the #118/#606 reading applied to the last ore the tables were converting."
+    },
+    {
+      "id": "0629-its-ion-is-recognised-as-an-ion",
+      "issue": 629,
+      "title": "EF 3.1's aluminium(3+) is published as a cation, named for its charge",
+      "subject": {
+        "kind": "substance",
+        "label": "Aluminium(3+)"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "AtomCation"
+      },
+      "comment": "**The cost of the missing type, and the reason this is one issue rather than four.** The ion layer finds an ion by resolving its base name against an object typed `chemrof:ChemicalElement` -- and there was no such aluminium object. So EF 3.1's `aluminium (iii)` flow, carrying 22537-23-1 and the formula `Al+3`, was published typed `NeutralMolecule`, with no `elemental_charge` property, and under EF's own spelling where every other ion of a properly typed element is renamed to the `X(n+)` convention.\n\nAll three followed from the same missing type, and all three are fixed by supplying it. The substance `Aluminium(3+)` did not exist before this change; `Aluminium (iii)` did."
+    },
+    {
+      "id": "0629-a-nuclide-is-not-its-element",
+      "issue": 629,
+      "title": "Neptunium is still published as a substance of its own",
+      "subject": {
+        "kind": "substance",
+        "label": "Neptunium"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "ChemicalElement"
+      },
+      "comment": "**A regression this change introduced and then bounded, and the claim that stops it coming back.** EF 3.1 ships no flow called `Neptunium` at all -- which is why the element is minted rather than matched -- and its `Neptunium-237` carries the synonym `NEPTUNIUM`. So the first build of the synonym fallback matched the *isotope*, gave it neptunium's atomic number, symbol and isotope list, and stopped the element object being minted. `Neptunium` disappeared from the published list, and nothing else moved.\n\nOnly a build could have caught that: no test asserted the substance existed, because until now nothing threatened it. The fallback now refuses any candidate whose own label parses as a nuclide, asked with `parse_nuclide_label` so that it cannot drift from how the isotope machinery decides the same question.\n\nAn element and its isotope are different substances and the isotope is the more specific of the two, which is the direction that must never win."
+    },
+    {
+      "id": "0629-an-allotrope-is-not-its-element",
+      "issue": 629,
+      "title": "Dinitrogen is still published as an allotrope, not as the element nitrogen",
+      "subject": {
+        "kind": "substance",
+        "label": "Dinitrogen"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "Allotrope"
+      },
+      "comment": "**The same regression one step subtler, found by the build after the one that found neptunium.** EF 3.1 ships no flow called `Nitrogen`, and `Dinitrogen` carries `nitrogen` among its synonyms -- so the fallback matched it and typed N2 as `ChemicalElement`. It is an allotrope: two atoms of nitrogen bonded together, not the element. `parse_nuclide_label` does not catch it, because `Dinitrogen` is not a nuclide label.\n\nOne discriminator now settles both, and it says what a chemist would say: **the element is the substance whose formula is the bare symbol.** `Al` is aluminium; `N2` is not nitrogen; `Np` on a nuclide never reaches the formula test because the nuclide test runs first.\n\nStated as an expectation rather than left to the unit tests because it is a *published* type that silently changed, and because the fallback was too loose twice in the same direction -- it kept finding things *of* an element rather than the element. A third such case would show up here."
+    },
+    {
+      "id": "0629-only-one-element-needs-the-fallback",
+      "issue": 629,
+      "title": "Exactly one element is reached through a synonym rather than by its own name",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.resolve_flow_layers.element_matched_on_a_synonym"
+      },
+      "expect": {
+        "at_most": 1
+      },
+      "comment": "The bound on the whole mechanism, and the number that tracked getting it right: three in the first build, two once nuclides were refused, one once allotropes were. The one that remains is aluminium, which is the case the fallback exists for.\n\nThis is a fallback, not a second opinion. A build where it starts answering for several elements is a build where the published names have drifted from the periodic table, or where the bounds have come loose again -- and either is worth being told about rather than inferring from a substance quietly changing type."
+    }
+  ]
+}

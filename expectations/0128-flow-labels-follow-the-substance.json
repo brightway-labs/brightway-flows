@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "description": "A published flow is called what its substance is called. The name of a substance is written twice -- on the flow object, where every correction lands, and on each of its flows, which is what the export publishes -- and until `substance_label_v1` nothing carried a correction from the first copy to the second. On the build of 19 August 2026 at commit b9ef40b (EF 3.1 base with ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026 v1 merged) 886 published flows carried a name their own substance had superseded, and 149 substances appeared in the export under two different names at once. These expectations pin one substance per family of the defect: a metal ion whose thirteen flows split between EF 3.1's roman-numeral spelling and the substance's, a land class renamed by #66 whose flow kept the old name, and a ruled name (#313) that eleven flows carried and a twelfth spelled differently. The bound at the end is the guard: the count of disagreeing flows must not climb back, whichever pass causes it. The known conflations that a rename would silently bury are excluded from the fix by the `substance-label-conflict` queue and are tracked in #116.",
+  "expectations": [
+    {
+      "id": "0128-the-ion-spelling-is-the-substances",
+      "issue": 128,
+      "title": "Mercury's ionic flows all carry the substance's spelling",
+      "subject": {
+        "kind": "flow",
+        "name": "Mercury(2+)"
+      },
+      "expect": {
+        "count": 18
+      },
+      "comment": "On the build of 19 August 2026 the substance `Mercury(2+)` (#49's split) published 13 flows named `Mercury (ii)` -- EF 3.1's roman-numeral convention, which `flow_layers.pubchem_element_enrichment` superseded on the substance and nothing carried down to the flows. All thirteen answer to the substance's name once the propagation runs. Sixteen since #141: the retirement's evidence matching landed mercury rows in three compartments the tables never reached (Ground -> Industrial, Ground -> Silvicultural, Water -> Unconfined aquifer), and each minted flow takes the substance's name the same way -- verified per-flow on the 2026-08-23 build during the #336 review.\n\nEighteen on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`): AGRIBALYSE's mercury rows in lake and river water minted two more flows under the ion, and both carry the substance's spelling, which is the claim."
+    },
+    {
+      "id": "0128-the-ion-old-spelling-is-not-a-name",
+      "issue": 128,
+      "title": "The roman-numeral spelling no longer names any published flow",
+      "subject": {
+        "kind": "flow",
+        "name": "Mercury (ii)"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "The other half of the same claim, stated separately because a rename that copied the new name onto some flows and left others would meet the first expectation's count only by accident. 13 flows carried this spelling on the build of 19 August 2026. The demoted spelling survives as a synonym on each flow, which no expectation kind can claim; tests/test_substance_labels.py pins it."
+    },
+    {
+      "id": "0128-the-land-class-rename-reaches-the-flow",
+      "issue": 128,
+      "title": "The land transformation renamed by #66 is published under its new name",
+      "subject": {
+        "kind": "flow",
+        "name": "From cropland, irrigated, extensive"
+      },
+      "expect": {
+        "count": 1,
+        "context_iri": "https://vocab.brightway.one/flow-contexts/laus-tran"
+      },
+      "comment": "#66 named this class from its fields -- cropland, irrigated, held extensively -- and the substance took the name while its one flow kept EF 3.1's `From Arable, Irrigated, Extensive`. On the build of 19 August 2026 no published flow carried the new name; the rename existed only in the substance layer. 129 land flows were in this state and this one stands for them. Met on the full branch build of 19 August 2026 (EF 3.1 + ecoinvent 3.12 + 3.8 + BAFU 2026 v1), which also confirms the old name is published as the flow's synonym."
+    },
+    {
+      "id": "0128-the-ruled-name-covers-every-flow",
+      "issue": 128,
+      "title": "HC Blue No. 1's fourteenth flow carries the ruled name like the other thirteen",
+      "subject": {
+        "kind": "substance",
+        "cas": "2784-94-3"
+      },
+      "expect": {
+        "count": 1,
+        "label": "HC Blue No. 1",
+        "flow_count": 14
+      },
+      "comment": "#313 ruled the capitals into the name. On the build of 19 August 2026 the substance carried the ruling and twelve of its thirteen flows did; the indoor-air flow the merge added published `Hc Blue No. 1`, so one dye appeared in the export under two names. The claim is on the substance because the flow-name selector folds case and cannot see the difference; the flow-level guard is the measure below, whose canonical folding also ignores case -- which is exactly why the unit tests pin the respelling case directly.\n\nFourteen flows on the build of 29 August 2026 (`20260829T1158418340740000`), the first to merge Stepwise 2006. Stepwise ships this dye in `Water/groundwater`, which no other list has a row for, so the merge minted a flow in `Environmental -> Water -> Unconfined aquifer` -- and it publishes `HC Blue No. 1`, which is the propagation doing on a minted flow what this claim says it must. The count is the size of the family the claim is made about and moves when a list brings a compartment the others do not have; the ruling is what must hold over all of them."
+    },
+    {
+      "id": "0128-disagreement-does-not-climb-back",
+      "issue": 128,
+      "title": "Few published flows disagree with their substance about the name, and each one left is queued or ruled",
+      "subject": {
+        "kind": "measure",
+        "key": "flows.label_disagrees_with_substance"
+      },
+      "expect": {
+        "at_most": 5
+      },
+      "comment": "391 on the build of 19 August 2026, counting past case and punctuation the way label rulings do. On a full build of the same inputs on this branch the base pass repaired 951 labels (440 renames, 511 respellings) and the merges added none back: 5 flows remain, all of them the one `substance-label-conflict` the queue holds -- `Water` on `Water vapour`, #116's phase question, where renaming would delete the only visible symptom. The bound is that remainder; the ruling or the split lowers it to zero. Replaying the repair over a copy of main's 19 August database instead gives 31 held flows, because there the merge had already minted `Arsenic V` and `Vanadium V` -- records that share their CAS with `Arsenic(5+)` and `Vanadium(5+)`, one substance split in two -- and the demoted names collide with them; a from-scratch build renames the ion flows before those records exist. The split records themselves persist either way and are reported on #7. The measure is computed from the published payloads rather than from the pass's own counters, so a label writer added after the pass shows up here rather than in the next export diff."
+    }
+  ]
+}

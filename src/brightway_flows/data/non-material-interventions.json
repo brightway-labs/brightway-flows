@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "description": "The families of non-material intervention this list carries. A non-material intervention is a burden a process imposes that is not a release of matter: it has no formula, no mass and no registry number, and no chemical ontology has a class for it. The candidates are decided by the context -- every flow whose contexts all count something other than a substance, which today means BAFU's `non material emissions` compartment mapped to `Environmental / Other` -- and the family a candidate belongs to is decided here, by name. Each family earns one minted flow object that no source list carries, and its members point at it with `brightway:baseIntervention`. A candidate matching no family is reported by the run rather than swept into one, because a second kind of non-material flow arriving is a decision to make and not a default to inherit. See issue #70.",
+  "families": [
+    {
+      "id": "noise",
+      "label": "Noise",
+      "definition": "Sound emitted by a human activity, counted as an environmental burden against the activity that produced it rather than as a release of matter. BAFU models it per person-kilometre for passenger transport and per tonne-kilometre for freight, so what is counted is not how much noise there is but how much transport it accompanied.",
+      "name_pattern": "^noise\\b",
+      "comment": "The six BAFU rows are noise from an aircraft, a lorry, a passenger car, a freight train and a passenger train. Each keeps its own flow object, because each is a distinct measurement with its own unit and its own characterisation factors; this family is what they are all noise of. Anchored to no external vocabulary: ENVO types materials and environments, and has no class for a transport-attributed sound burden."
+    }
+  ]
+}

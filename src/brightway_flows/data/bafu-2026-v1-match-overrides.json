@@ -1,0 +1,360 @@
+{
+  "schema_version": 1,
+  "description": "Curated targets for BAFU 2026 v1 flows. BAFU declares no correspondence table, so every row here is appended rather than rewritten -- `apply_match_overrides` appends an override whose source flow the table has no row for, which for a list with no table at all is every row. Targets are EF 3.1 elementary flow ids, because that is what the flow objects these reach are keyed on. `comment` is mandatory: each row asserts something no published table says, and the assertion needs its reasoning attached. Two groups. The first collapses BAFU's six `Energy, from X` rows onto the flows the list already publishes for them; none states a `conversion_factor`, and that is the finding rather than an omission, because EF 3.1 accounts fossil energy carriers by energy content and both sides of every pair are already MJ. The second collapses BAFU's mass rows for those same carriers onto those same flows, and every one of them does state a factor, because there the units really do cross from mass to energy. Each of those pairs is also listed in `unit-change-allowlist.json`: this file supplies the number, that file accepts the crossing. Every factor is the one this project already applies to ecoinvent's flow onto the same target, so that two source lists reaching one flow reach it by one conversion; where that value differs from the IPCC default the comment says so and says by how much. The two gas rows are by volume rather than mass, and BAFU's `Nm3` and `m3` spellings of natural gas take the same number because for natural gas the two units are the same quantity. BAFU's coal-mine off-gas is deliberately not here: #80 established that gas drawn off a coal seam is a different substance from natural gas, and both of BAFU's spellings of it are handled on main without an override. A third group, since #178, is not about energy at all: BAFU's five `Hydrocarbons, unspecified` rows, sent to EF's `hydrocarbons (unspecified)` because the two spellings differ by a comma and a pair of brackets, no row carries a registry number, and a synonym on EF's rows never reaches the merge's label index. Two of the five name EF's fresh-water flow for a lake and a river EF does not have; the merge keeps the row's own water body and mints the substance's flow there, which is what a curated target onto a compartment the row denies has meant since #84. See `brightway_flows.match_overrides`.",
+  "overrides": [
+    {
+      "source_uuid": "3d3fcad0-110b-549b-9092-7d8cafc44fb4",
+      "source_name": "Energy, from coal",
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
+      "target_name": "hard coal",
+      "comment": "The same quantity the list already publishes as `Hard Coal`, in the same unit and the same compartment. EF 3.1 accounts fossil energy carriers by energy content rather than mass on purpose -- `hard coal` is MJ, not kg -- so BAFU's MJ row is not a second view of a mass flow, it is the flow itself under another name. No conversion factor: both sides are MJ in Resource -> Ground, and `units.json` already states MJ to MJ, which the conversion guard refuses to restate. This does not double-count the mass row BAFU also ships (`Coal, hard`, kg): measured over all 11,947 datasets in the BAFU 2026 ecoSpold release, `Energy, from coal` appears in 14 and `Coal, hard` in 139, and in none of them do both appear. The two are alternative accounting conventions used by different data sources inside BAFU, never a mass and its energy stated together. That answers the double-counting concern left open in #3. `Energy, from coal` occurs only in the 14 PlasticsEurope eco-profile datasets, which carry `Oil, crude` and `Gas, natural` as masses but no coal mass at all, so before this row the coal those datasets extract reached no coal flow in the list."
+    },
+    {
+      "source_uuid": "156b4e11-1135-5657-b345-dec81c8918f3",
+      "source_name": "Energy, from coal, brown",
+      "target_uuid": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
+      "target_name": "brown coal",
+      "comment": "The same quantity the list already publishes as `Brown Coal`, in the same unit and the same compartment, for the reason given on `Energy, from coal`. This is the pair #3 named as its canonical case. It records BAFU shipping `Coal, brown` in kg and `Energy, from coal, brown` in MJ, and asks for a flag because merging them 'still double-counts'. Measured on the release: `Energy, from coal, brown` appears in 14 datasets, `Coal, brown` in 128, and the two never appear together. No flag is needed because the overlap is empty. Note that ecoinvent's `Coal, brown` (kg) already reaches this same target with a stated 9.41 MJ/kg, listed in `unit-change-allowlist.json`; that conversion is between kg and MJ and has nothing to convert here, where the source is already MJ."
+    },
+    {
+      "source_uuid": "16b4382a-901e-52a0-a8f4-816b157b8f56",
+      "source_name": "Energy, from oil",
+      "target_uuid": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
+      "target_name": "crude oil",
+      "comment": "The same quantity the list already publishes as `Crude Oil`, in MJ. BAFU files this one in `resources / unspecified` rather than `in ground`, which is where the other five sit; the context rules resolve it to Resource -> Ground, the same compartment as the target, so the mapping is between like and like. This is the one energy carrier that does co-occur with its mass flow: `Burnt shale, at plant [DE]` and `Cement ZN, D, at plant [CH]` carry both `Energy, from oil` and `Oil, crude`. They are not a mass and its energy content -- the implied ratios are 602 and 43 MJ/kg, and crude oil is about 43.4 -- so the cement dataset is consistent with the two being the same quantity stated twice while the burnt shale one is an order of magnitude out and is a defect in that dataset, not evidence about the flow. Two datasets out of 2,721 carrying resources, both with a product that is not oil, is not a basis for treating this flow differently from the other five."
+    },
+    {
+      "source_uuid": "b2b18479-42c0-51f4-9da9-27df4541fb8b",
+      "source_name": "Energy, from peat",
+      "target_uuid": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "peat",
+      "comment": "The same quantity the list already publishes as `Peat` in MJ in Resource -> Ground. `Energy, from peat` occurs in exactly one dataset (`Ethylene, average, at plant`) at 1.8e-05 MJ, and `Peat` as a mass in 135; they never co-occur. This row used to note that the flow object already held both quantity kinds, BAFU's kilogram of peat having landed on it in Resource -> Biotic. That was not a reconciliation of the two, it was the defect #87 reports: the kilogram belongs to the other peat substance, which is where ecoinvent's kilogram goes, and it is routed there now.\n\nBoth of BAFU's kilogram peat rows now reach this flow as well, converted at 9.76 MJ/kg. The remark above that the kilogram belongs to the other peat substance was #87's reading and is withdrawn by #89: the kilogram ecoinvent means is horticultural peat, and the kilogram BAFU means is this one, measured as mass. (#89)"
+    },
+    {
+      "source_uuid": "32f249ab-b66f-5a1f-87b0-658b3704103d",
+      "source_name": "Energy, from uranium",
+      "target_uuid": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "uranium",
+      "comment": "The same quantity the list already publishes as `Uranium` in MJ in Resource -> Ground, which BAFU's own `Uranium` resource row already reaches. Worth stating explicitly that the MJ here is fission energy content, not a calorific value: the existing kg-to-MJ entry for uranium in `unit-change-allowlist.json` is 560,000 MJ/kg, four orders of magnitude above any combustion figure, because the two quantities are related by fission rather than burning. That distinction does not affect this row -- both sides are MJ on the same basis -- but it is the reason the uranium factor must never be read as a heating value. `Energy, from uranium` appears in 7 datasets, `Uranium` as a mass in 145, and never both."
+    },
+    {
+      "source_uuid": "7ce60787-e722-5bfd-b595-a8924e189472",
+      "source_name": "Energy, from hydro power",
+      "target_uuid": "e89f564c-7250-4fee-b759-dc8b42fe62bf",
+      "target_name": "Energy, potential (in hydropower reservoir), converted",
+      "comment": "Unlike the five fossil and nuclear carriers, this one has no mass flow anywhere -- there is no kilogram of hydro power -- so the target is the renewable energy resource the list already carries for the same thing, in the same unit and the same compartment (Resource -> Water -> Unknown). BAFU ships both names: `Energy, potential (in hydropower reservoir), converted` in 156 datasets and `Energy, from hydro power` in one, `Polystyrene, expandable, at plant`, at 2.2e-13 MJ against that same dataset's 0.302 MJ of the properly named flow. A second name used once, alongside the first, at a value twelve orders of magnitude smaller, is a stray rather than a distinct quantity."
+    },
+    {
+      "source_uuid": "d144bede-fdfa-580c-ad08-4fbaf0b35291",
+      "source_name": "Coal, hard",
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
+      "target_name": "hard coal",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 18.01,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "BAFU's mass row for the substance `Energy, from coal` states by energy content, and the flow ecoinvent's own `Coal, hard` already reaches. Without this row it is `created` instead: algorithmic matching finds no kg flow to land on, because EF 3.1 declares hard coal in MJ, so it mints a separate `Coal, Hard` substance (`fo-7bcc5c3366b1b207`) beside the `Hard Coal` every other list shares. 18.01 MJ/kg is the EF 3.1 LCIA method as implemented by the ecoinvent Centre, which is the factor this project already carries for ecoinvent's kg flow onto this same target. It is used here so that two source lists reaching one flow reach it by one conversion; a second factor on the same target would make an ecoinvent kilogram and a BAFU kilogram of the same coal contribute differently. Note it is not the IPCC default: IPCC 2006 Guidelines Vol. 2 Table 1.2 gives 25.8 MJ/kg for other bituminous coal, 43% higher. Which basis EF intends is worth settling, but it is a question about the target flow and every list that reaches it, not about this row."
+    },
+    {
+      "source_uuid": "80922cad-30bf-5248-ae0a-656cae92b95c",
+      "source_name": "Coal, brown",
+      "target_uuid": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
+      "target_name": "brown coal",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 9.41,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "As for `Coal, hard`, and this is the pair #3 opened on: BAFU shipping `Coal, brown` in kg beside `Energy, from coal, brown` in MJ. Both now reach `Brown Coal`, the mass row through this factor and the energy row unconverted. That is safe because the two never appear in the same dataset -- 128 datasets carry the mass, 14 carry the energy, none carries both -- so nothing is counted twice by their sharing a flow. 9.41 MJ/kg is the EF 3.1 LCIA method as implemented by the ecoinvent Centre, matching the factor already carried for ecoinvent's `Coal, brown` onto this target. It is not the IPCC default: Table 1.2 gives 18.9 MJ/kg for sub-bituminous coal and 11.9 for lignite, both well above this."
+    },
+    {
+      "source_uuid": "e48b3dc1-e9e7-54c1-aafb-3332dbd06a3e",
+      "source_name": "Oil, crude",
+      "target_uuid": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
+      "target_name": "crude oil",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 43.1,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "As for the coals, except that this is the one carrier where BAFU's own archive says what a kilogram of it is worth, so BAFU's number is used rather than ecoinvent's. `Cement ZN, D, at plant [CH]` is one of only two datasets in the 11,947 of the release that carry both this flow and `Energy, from oil`, and its implied ratio is 43.1 MJ/kg. The other, `Burnt shale, at plant [DE]`, implies 602 MJ/kg and is a defect in that dataset rather than evidence about the substance, so the check rests on one dataset and says so.\n\n43.1 sits between the two published values it might have taken: the IPCC 2006 Guidelines Vol. 2 Table 1.2 default of 42.3 MJ/kg, and the 43.4 of the EF 3.1 LCIA method as implemented by the ecoinvent Centre, which this row carried until now and which ecoinvent's own flow still carries. The three are within 2.5% of each other, unlike the coals, where the IPCC and ecoinvent bases diverge widely.\n\nUntil now this row took 43.4 on the rule that one target takes one conversion whichever list the kilogram came from, and 43.1 was recorded beside it as a corroboration. That rule is withdrawn. It was written for the case where two lists offer a target the *same* unit pair and one of them has no number of its own -- which is every other row in this file, each of them ecoinvent's number because BAFU states none. It is not a reason to prefer another list's measurement over this list's own, and a conversion is a statement about a pair, so BAFU's pair takes BAFU's evidence. Nothing about ecoinvent's row changes. (#162)"
+    },
+    {
+      "source_uuid": "25d290ab-0e08-5963-9141-cbcbb998c559",
+      "source_name": "Peat",
+      "target_uuid": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "peat",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 9.76,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "This row already reaches the right flow -- algorithmic matching lands it on `Peat` in MJ on a label match -- but reaches it with the units disagreeing and no factor, so the mapping is right and only the number is missing. That is what this row supplies. 9.76 MJ/kg is the IPCC 2006 Guidelines Vol. 2 Table 1.2 default for peat, whose 95% confidence interval is 7.80 to 12.5 MJ/kg; content varies that widely with moisture, which is why the value is stated with its source rather than derived. Peat is the one carrier here where the IPCC default and the value this project already uses are the same number, because no ecoinvent association for peat ever existed and IPCC is the only source. BAFU's other peat row, in the biotic compartment, now goes to `Peat, in ground` instead, on the same substance as ecoinvent's kilogram of peat. It was left alone here on the grounds that its units already agreed with this flow's, which was true and was never what was wrong with it: it was on the wrong substance (#87). The two BAFU rows therefore land on the two peats EF 3.1 ships, each on the one its compartment names, which is as close to consistent as this list gets until #266 decides whether those two are one substance.\n\nBAFU's biotic peat row now reaches this flow too, with the same conversion: the archive says it is the extraction for `Peat, at mine` under `fuels / peat`, so it is this substance rather than the material peat #87 sent it to. The sentence above about the two BAFU rows landing on the two peats EF ships is therefore no longer what happens, and was never right: BAFU has one peat and it is the fuel. (#89)"
+    },
+    {
+      "source_uuid": "0417d728-9c64-5755-9685-e547485968d4",
+      "source_name": "Peat",
+      "target_uuid": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "peat",
+      "comment": "BAFU's main peat row, in 134 of the 11,947 datasets in the 2026 v1 release, and it is peat burned as fuel. The archive says which peat this is. The row is the extraction input to `Peat, at mine`, one kilogram per kilogram of product, and that dataset is filed under `fuels / peat`; its output feeds `Peat, burned in power plant` and `Electricity, peat, at power plant`. The other 133 datasets carrying this row are ordinary products -- glass, acetone, gypsum, polyols -- at 1e-4 to 1e-8 kg, which is peat-fired electricity reaching them through the background: `Electricity imports` alone carries `Electricity, peat, at power plant` 211 times. Nothing in the release uses peat as a growing medium.\n\nIt used to go to EF 3.1's material peat -- `Peat, in ground`, now published as `Peat, horticulture` -- on the reasoning that BAFU's row has the same name, the same `biotic` compartment and the same kilogram as ecoinvent 3.12's, which is that substance (#87). Same name and same compartment, different substance: BAFU's flows came out of ecoinvent 2, where peat was a fuel, and ecoinvent 3 restructured. #89 renamed the material peat for exactly this reason -- so that a row on the wrong one of the two is visible -- and this row was on the wrong one.\n\n9.76 MJ/kg is the IPCC 2006 Guidelines Vol. 2 Table 1.2 default for peat, the same figure and the same source as BAFU's `resources / in ground` peat row below, which is the same substance from the other compartment. Both of BAFU's kilogram rows and its megajoule row now reach one flow. (#89, #87)",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 9.76,
+      "conversion_checked_against": [
+        "2026-v1"
+      ]
+    },
+    {
+      "source_uuid": "dbfc8434-b713-5719-94bf-3b6643530e07",
+      "source_name": "Uranium",
+      "target_uuid": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "uranium",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 560000.0,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "Like peat, this already reaches the right flow, on a cas+label match, and reaches it with the units disagreeing and no factor. 560000 MJ/kg is fission energy content on a gross basis, not a calorific value: four orders of magnitude above any combustion figure, because the two quantities are related by fission rather than burning, and it must never be read as a heating value. IPCC Table 1.2 lists no value for uranium at all -- it is a table of combustion fuels -- so the number is the one this project already carries for ecoinvent's `Uranium` onto this same target, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre. BAFU's `resources / in ground` compartment, which is the only resource context EF 3.1 gives uranium."
+    },
+    {
+      "source_uuid": "8daa605b-050a-50ea-800d-e491a93eb282",
+      "source_name": "Uranium",
+      "target_uuid": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "uranium",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 560000.0,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "BAFU files uranium in three compartments; this is the `unspecified` one. Same substance, same target, same fission energy content as the `in ground` row. A separate row because overrides are keyed by source flow and BAFU gives each compartment its own uuid."
+    },
+    {
+      "source_uuid": "108c7884-7e7d-5765-a951-3276d4e09499",
+      "source_name": "Uranium",
+      "target_uuid": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "uranium",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 560000.0,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "The third of BAFU's uranium compartments, filed under `land`, which is an odd place for an extracted metal and may be a filing error on BAFU's part. Mapping it to Resource -> Ground is not a choice between compartments: EF 3.1 carries exactly one uranium resource flow, `uranium` in MJ under `Non-renewable energy resources from ground`, and every other uranium it declares is an emission. There is no resource-from-land or resource-unspecified uranium for this row to prefer. Same fission energy content as the other two."
+    },
+    {
+      "source_uuid": "528d5071-4006-5f56-adc9-b39f23d13a03",
+      "source_name": "Gas, natural/m3",
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "natural gas",
+      "source_unit": "m3",
+      "target_unit": "MJ",
+      "conversion_factor": 36.0,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "Unmatched before this row, on `multiple-flow-object-candidates`, so 137 datasets' worth of natural gas reached no gas flow at all. 36.0 MJ per cubic metre is the EF 3.1 LCIA method as implemented by the ecoinvent Centre, and is what ecoinvent states for its own `Gas, natural` onto this same target -- in m3 at 3.8 and in Sm3 from 3.9, at the same number. Not an IPCC value: Table 1.2 is TJ/Gg throughout, with no volumetric column, so it gives natural gas at 48.0 MJ/kg and nothing per volume. For natural gas a normal cubic metre and a standard cubic metre are the same quantity, so the two unit spellings take the same factor and there is no conversion between them. Both name 15.00 C (288.15 K) at 101.325 kPa: for Nm3 see the ScienceDirect engineering topic page for 'cubic metre', which gives the normalised cubic metre applied to natural gas as base conditions of 101.325 kPa and 15.00 C; for sm3 see the standard cubic metre, defined as the gas contained in a cubic metre at 15 C and 101.325 kPa. The 0 C reading of Nm3 -- DIN 1343, which `units.json` records -- is the general industrial convention and is not the one the gas industry uses for natural gas, which is the only substance this unit appears on here."
+    },
+    {
+      "source_uuid": "99bbee18-e1d0-5600-82df-d0bfa91394c7",
+      "source_name": "Gas, natural",
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "natural gas",
+      "source_unit": "sm3",
+      "target_unit": "MJ",
+      "conversion_factor": 36.0,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "115 datasets' worth of natural gas. #289 took the `/m3` tail off this row's name, because the name said `m3` while the unit field said `Nm3`, so it is `Gas, natural` by the time the merge sees it. Same 36.0 MJ per cubic metre as the `m3` spelling of this same flow. BAFU writes this row's unit `Nm3`, which normalises to `sm3`: for gas the two are one quantity and the alias in `domain/units.py` says so, so the pair the merge builds is sm3 to MJ and that is what this row states. Both name 15.00 C (288.15 K) at 101.325 kPa: for Nm3 see the ScienceDirect engineering topic page for 'cubic metre', which gives the normalised cubic metre applied to natural gas as base conditions of 101.325 kPa and 15.00 C; for sm3 see the standard cubic metre, defined as the gas contained in a cubic metre at 15 C and 101.325 kPa. The 0 C reading of Nm3 -- DIN 1343, which `units.json` records -- is the general industrial convention and is not the one the gas industry uses for natural gas, which is the only substance this unit appears on here. BAFU uses the two spellings for this flow in different datasets -- 115 in Nm3 against 137 in m3, and no dataset uses both -- which tracks the vintage of the data rather than a difference in what is measured: the Nm3 rows carry an Enerdata 2024 comment and no CAS number, the m3 rows carry the legacy CAS and no comment."
+    },
+    {
+      "source_uuid": "44360b86-a3d8-5623-b211-44ec41853fcd",
+      "source_name": "Water, salt, ocean",
+      "target_uuid": "172a3db9-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "sea water",
+      "source_unit": "m3",
+      "target_unit": "kg",
+      "conversion_factor": 1025.0,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "The target this row already reaches, restated so the factor can ride with it. Matching finds EF 3.1's `sea water` on its own -- the material assignment says BAFU's `Water, salt, ocean` is sea water and the withdrawal rule puts it in the ocean -- and what it cannot supply is the density, because BAFU declares no correspondence table for anything to have stated one in.\n\nThis is the one water crossing that converting BAFU's own rows cannot settle, and it runs the other way from the rest: BAFU states the volume and EF 3.1 states the mass. Converting BAFU into kilograms would move it away from every other water withdrawal in the list rather than towards them, and ecoinvent's identical row -- same vendor name, same target -- is kept in cubic metres with the factor stated, in `unit-change-allowlist.json`. Two lists shipping one vendor row should not be treated differently.\n\n1025 kg/m3, the same value ecoinvent's pair carries, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre; a rough average of the 1020-1029 kg/m3 range. Sea water rather than the 1000 kg/m3 the fresh-water rows are converted at, because it is salt. (#78)"
+    },
+    {
+      "source_uuid": "94b15b96-c2b5-5dfc-acb4-0cec3414d037",
+      "source_name": "Carbon dioxide, in air",
+      "source_context": [
+        "resources",
+        "in air"
+      ],
+      "target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e",
+      "target_name": "carbon dioxide (biogenic)",
+      "comment": "Atmospheric carbon dioxide taken up by growing biomass. ecoinvent's flow of the same name reaches this same EF row through its own correspondence table, and #257 settled that it is the right one: EF's biogenic uptake from air, characterised 0, which is also what ecoinvent's own implementation states for it. BAFU's row reached unqualified `Carbon Dioxide` instead -- its registry number finds carbon dioxide and nothing in `in air` is a qualifier, so the label branch matched the substance that declines to say where the carbon came from. A curated target rather than a rule, because no rule can read `in air` as an origin: it is a compartment, and what makes this flow biogenic is what it means. (#135)"
+    },
+    {
+      "source_uuid": "38e9ff00-8bf9-5a6f-aee4-1033bf899e94",
+      "source_name": "Carbon dioxide, in air",
+      "source_context": [
+        "resources",
+        "biotic"
+      ],
+      "target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e",
+      "target_name": "carbon dioxide (biogenic)",
+      "comment": "The same flow in a second BAFU compartment, and this row carries no registry number, so it minted `Carbon Dioxide, In Air` -- a substance named for a compartment, which is a thing this list holds in the context and not in the name. The compartment is wrong as well as the substance: the carbon is taken *from the air*, not from the biosphere, and a resource compartment names where a resource comes from. (#135)"
+    },
+    {
+      "source_uuid": "513f1d03-fdd8-5906-9eee-00ef20a0dea8",
+      "source_name": "Carbon dioxide, in air",
+      "source_context": [
+        "resources",
+        "unspecified"
+      ],
+      "target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e",
+      "target_name": "carbon dioxide (biogenic)",
+      "comment": "The third of BAFU's `Carbon dioxide, in air` rows, and the one whose published compartment read worst: `resources / unspecified` maps to `Resource \u2192 Ground`, so carbon dioxide whose own name says *in air* was published as a resource taken from the ground. Naming the target flow settles the compartment with the substance. (#135)"
+    },
+    {
+      "source_uuid": "2c3a4703-fb4e-5333-b38d-ed5c4e05f304",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "emissions to air",
+        "low. pop."
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-9c13-0050c2490048",
+      "target_name": "carbon dioxide (fossil)",
+      "comment": "BAFU's unqualified carbon dioxide is fossil, and its own published results already say so. The name is a residue rather than a category: 14 exchanges out of 5,635, on one flow id distinct from `Carbon dioxide, fossil`, always an emission to air. Where real mass sits behind it, it is provably fossil -- three demolition-diesel processes emit exactly 3.15 kg of it per kilogram of diesel and BAFU's own 2026 replacement dataset emits `Carbon dioxide, fossil` at the same 3.150, and a quicklime-with-CCS dataset uses it for the uncaptured fraction of a flow BAFU itself labels fossil in the same compartment. BAFU's published EF 3.1 result puts the mass in `Climate change (fossil)` at CF 1; mapping it to an uncharacterised substance would not be neutral, it would break that dataset by a factor of four. Any residual doubt is score-neutral: at most seven of the fourteen exchanges may be land-use change rather than fossil, EF gives both +1 under `Climate change`, and they are 1-120 ppm of their datasets' total carbon dioxide. See #139 \u00a717."
+    },
+    {
+      "source_uuid": "8658d26b-02b4-5e39-b010-15ed7c1eb2ed",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "emissions to air",
+        "unspecified"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-923d-0050c2490048",
+      "target_name": "carbon dioxide (fossil)",
+      "comment": "The second of BAFU's two unqualified rows, in air / unspecified, and the one that carries thirteen of the fourteen exchanges. Same reasoning as its `low. pop.` sibling: see #139 \u00a717. With both moved, unqualified `Carbon Dioxide` is reached by no source row in any list -- the seven flows EF ships remain, characterised by nobody and claimed by nobody."
+    },
+    {
+      "source_uuid": "52b760ca-3444-564a-a215-271d4af41250",
+      "source_name": "TiO2, 54% In Ilmenite, 2.6% In Crude Ore",
+      "source_context": [
+        "resources",
+        "in ground"
+      ],
+      "target_uuid": "2906898f-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "titanium",
+      "source_unit": "kg",
+      "target_unit": "kg",
+      "conversion_factor": 0.599,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "BAFU ships the ore flow in the spelling and under the uuid ecoinvent 3.8 used -- the `, In Ground` suffix included -- and this project already converts ecoinvent's three sibling spellings to elemental titanium at 0.599 kg/kg (see the TiO2 rows in ecoinvent-match-overrides.json, and the #118 ruling they carry). Same ore, same decision, same stated factor. These two rows were first written into the ecoinvent overrides file under the mistaken belief that the uuids were ecoinvent's own; they are BAFU's, this is the file BAFU reads, and without them the build minted a duplicate `Titanium Dioxide` substance at an implied factor of 1 -- one substance decided two ways. (#141)"
+    },
+    {
+      "source_uuid": "73746710-2506-50d1-811a-521b48526172",
+      "source_name": "TiO2, 95% In Rutile, 0.40% In Crude Ore",
+      "source_context": [
+        "resources",
+        "in ground"
+      ],
+      "target_uuid": "2906898f-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "titanium",
+      "source_unit": "kg",
+      "target_unit": "kg",
+      "conversion_factor": 0.599,
+      "conversion_checked_against": [
+        "2026-v1"
+      ],
+      "comment": "BAFU ships the ore flow in the spelling and under the uuid ecoinvent 3.8 used -- the `, In Ground` suffix included -- and this project already converts ecoinvent's three sibling spellings to elemental titanium at 0.599 kg/kg (see the TiO2 rows in ecoinvent-match-overrides.json, and the #118 ruling they carry). Same ore, same decision, same stated factor. These two rows were first written into the ecoinvent overrides file under the mistaken belief that the uuids were ecoinvent's own; they are BAFU's, this is the file BAFU reads, and without them the build minted a duplicate `Titanium Dioxide` substance at an implied factor of 1 -- one substance decided two ways. (#141)"
+    },
+    {
+      "source_uuid": "3a47b869-9ac2-5e24-b6cd-d695188a0cb7",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "emissions to air",
+        "unspecified"
+      ],
+      "target_uuid": "d86b9e8a-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "hydrocarbons (unspecified)",
+      "target_context": [
+        "Emissions",
+        "Emissions to air",
+        "Emissions to air, unspecified"
+      ],
+      "comment": "There is one \"hydrocarbons, unspecified\" -- a bucket for an emission somebody measured as hydrocarbons and did not speciate -- and EF 3.1 publishes it as `hydrocarbons (unspecified)` in fourteen contexts, characterised in most. No row of it on any list carries a registry number, because a bucket has none, so the name is the only evidence, and ecoinvent's and BAFU's spelling differs from EF's by a comma and a pair of brackets. BAFU 2026 v1 ships `Hydrocarbons, unspecified` on five rows -- air, unspecified and four water bodies -- with no correspondence table, so every one had only the name to match on. On the 2026-08-29 build of 54b0f9d the two ecoinvent rows minted `Hydrocarbons, Unspecified`, a second bucket with no factor, and BAFU's five rows of the same name then joined the copy rather than the original: seven rows on a duplicate. EF carries the bucket in this very context, so the row lands on a flow that exists. A curated target rather than a name: a synonym written onto EF's rows was tried first and does not work, because `bootstrap_labels` deletes a base-list row's synonyms before the merge builds the index it matches names against, and a rule reading `, unspecified` as `(unspecified)` would be a name rule for two substances, the other of which -- `inorganic salts and acids (unspecified)` -- no row anywhere needs. (#178)"
+    },
+    {
+      "source_uuid": "3b50226c-c9ab-5cbf-9af7-2da71da1e042",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "emissions to water",
+        "unspecified"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aaa8-0050c2490048",
+      "target_name": "hydrocarbons (unspecified)",
+      "target_context": [
+        "Emissions",
+        "Emissions to water",
+        "Emissions to water, unspecified"
+      ],
+      "comment": "There is one \"hydrocarbons, unspecified\" -- a bucket for an emission somebody measured as hydrocarbons and did not speciate -- and EF 3.1 publishes it as `hydrocarbons (unspecified)` in fourteen contexts, characterised in most. No row of it on any list carries a registry number, because a bucket has none, so the name is the only evidence, and ecoinvent's and BAFU's spelling differs from EF's by a comma and a pair of brackets. BAFU 2026 v1 ships `Hydrocarbons, unspecified` on five rows -- air, unspecified and four water bodies -- with no correspondence table, so every one had only the name to match on. On the 2026-08-29 build of 54b0f9d the two ecoinvent rows minted `Hydrocarbons, Unspecified`, a second bucket with no factor, and BAFU's five rows of the same name then joined the copy rather than the original: seven rows on a duplicate. EF carries the bucket in this very context, so the row lands on a flow that exists. A curated target rather than a name: a synonym written onto EF's rows was tried first and does not work, because `bootstrap_labels` deletes a base-list row's synonyms before the merge builds the index it matches names against, and a rule reading `, unspecified` as `(unspecified)` would be a name rule for two substances, the other of which -- `inorganic salts and acids (unspecified)` -- no row anywhere needs. (#178)"
+    },
+    {
+      "source_uuid": "612a6cef-d1e7-524d-a3c3-c664e7c20e51",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "emissions to water",
+        "ocean"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aaa9-0050c2490048",
+      "target_name": "hydrocarbons (unspecified)",
+      "target_context": [
+        "Emissions",
+        "Emissions to water",
+        "Emissions to sea water"
+      ],
+      "comment": "There is one \"hydrocarbons, unspecified\" -- a bucket for an emission somebody measured as hydrocarbons and did not speciate -- and EF 3.1 publishes it as `hydrocarbons (unspecified)` in fourteen contexts, characterised in most. No row of it on any list carries a registry number, because a bucket has none, so the name is the only evidence, and ecoinvent's and BAFU's spelling differs from EF's by a comma and a pair of brackets. BAFU 2026 v1 ships `Hydrocarbons, unspecified` on five rows -- air, unspecified and four water bodies -- with no correspondence table, so every one had only the name to match on. On the 2026-08-29 build of 54b0f9d the two ecoinvent rows minted `Hydrocarbons, Unspecified`, a second bucket with no factor, and BAFU's five rows of the same name then joined the copy rather than the original: seven rows on a duplicate. EF carries the bucket in this very context, so the row lands on a flow that exists. A curated target rather than a name: a synonym written onto EF's rows was tried first and does not work, because `bootstrap_labels` deletes a base-list row's synonyms before the merge builds the index it matches names against, and a rule reading `, unspecified` as `(unspecified)` would be a name rule for two substances, the other of which -- `inorganic salts and acids (unspecified)` -- no row anywhere needs. (#178)"
+    },
+    {
+      "source_uuid": "21aa7a0c-606f-5d29-b960-a50c2f5bc0dd",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "emissions to water",
+        "lake"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aaa6-0050c2490048",
+      "target_name": "hydrocarbons (unspecified)",
+      "target_context": [
+        "Emissions",
+        "Emissions to water",
+        "Emissions to fresh water"
+      ],
+      "comment": "There is one \"hydrocarbons, unspecified\" -- a bucket for an emission somebody measured as hydrocarbons and did not speciate -- and EF 3.1 publishes it as `hydrocarbons (unspecified)` in fourteen contexts, characterised in most. No row of it on any list carries a registry number, because a bucket has none, so the name is the only evidence, and ecoinvent's and BAFU's spelling differs from EF's by a comma and a pair of brackets. BAFU 2026 v1 ships `Hydrocarbons, unspecified` on five rows -- air, unspecified and four water bodies -- with no correspondence table, so every one had only the name to match on. On the 2026-08-29 build of 54b0f9d the two ecoinvent rows minted `Hydrocarbons, Unspecified`, a second bucket with no factor, and BAFU's five rows of the same name then joined the copy rather than the original: seven rows on a duplicate. EF has no lake: its fresh-water flow is the compartment a lake emission belongs in under EF's own scheme, and it is named here for the substance it carries. A lake is not a vaguer fresh water but a named one, so the merge refuses to publish the row on it and keeps the row's own water body, minting the bucket's lake flow as it does for every other substance BAFU reports to a lake (#84, #85). A curated target rather than a name: a synonym written onto EF's rows was tried first and does not work, because `bootstrap_labels` deletes a base-list row's synonyms before the merge builds the index it matches names against, and a rule reading `, unspecified` as `(unspecified)` would be a name rule for two substances, the other of which -- `inorganic salts and acids (unspecified)` -- no row anywhere needs. (#178)"
+    },
+    {
+      "source_uuid": "83944839-e21a-5c7d-92c0-70ee8dbc60a4",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "emissions to water",
+        "river"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aaa6-0050c2490048",
+      "target_name": "hydrocarbons (unspecified)",
+      "target_context": [
+        "Emissions",
+        "Emissions to water",
+        "Emissions to fresh water"
+      ],
+      "comment": "There is one \"hydrocarbons, unspecified\" -- a bucket for an emission somebody measured as hydrocarbons and did not speciate -- and EF 3.1 publishes it as `hydrocarbons (unspecified)` in fourteen contexts, characterised in most. No row of it on any list carries a registry number, because a bucket has none, so the name is the only evidence, and ecoinvent's and BAFU's spelling differs from EF's by a comma and a pair of brackets. BAFU 2026 v1 ships `Hydrocarbons, unspecified` on five rows -- air, unspecified and four water bodies -- with no correspondence table, so every one had only the name to match on. On the 2026-08-29 build of 54b0f9d the two ecoinvent rows minted `Hydrocarbons, Unspecified`, a second bucket with no factor, and BAFU's five rows of the same name then joined the copy rather than the original: seven rows on a duplicate. EF has no river: its fresh-water flow is the compartment a river emission belongs in under EF's own scheme, and it is named here for the substance it carries. A river is not a vaguer fresh water but a named one, so the merge refuses to publish the row on it and keeps the row's own water body, minting the bucket's river flow as it does for every other substance BAFU reports to a river (#84, #85). A curated target rather than a name: a synonym written onto EF's rows was tried first and does not work, because `bootstrap_labels` deletes a base-list row's synonyms before the merge builds the index it matches names against, and a rule reading `, unspecified` as `(unspecified)` would be a name rule for two substances, the other of which -- `inorganic salts and acids (unspecified)` -- no row anywhere needs. (#178)"
+    }
+  ]
+}

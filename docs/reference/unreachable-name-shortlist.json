@@ -1,0 +1,2183 @@
+{
+  "schema_version": 1,
+  "description": "Names that were placed on a flow object which does not publish them, and that are also some other flow object's own published name -- so the same string reaches one substance and names a second. Built by tools/build_unreachable_name_shortlist.py from merge run bc41657b2d2d48b38a2a2620d56a323a. A shortlist for a curator, not a ruling: see brightway_flows.curation.unreachable_names for what it drops and why.",
+  "run_id": "bc41657b2d2d48b38a2a2620d56a323a",
+  "count": 129,
+  "names": [
+    {
+      "name": "Heat, Waste",
+      "placed_on": [
+        "fo-ff36590a002c9fbb"
+      ],
+      "placed_on_labels": [
+        "Waste Heat"
+      ],
+      "names": [
+        "fo-f9645076fd64836f"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 27
+    },
+    {
+      "name": "Hydrogen-3, Tritium",
+      "placed_on": [
+        "fo-636906eac63af14b"
+      ],
+      "placed_on_labels": [
+        "Hydrogen-3"
+      ],
+      "names": [
+        "fo-c8f15d091084ecaa"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 16
+    },
+    {
+      "name": "Hydrocarbons, Unspecified",
+      "placed_on": [
+        "fo-55c13adbe216bb82"
+      ],
+      "placed_on_labels": [
+        "Hydrocarbons (unspecified)"
+      ],
+      "names": [
+        "fo-4530ac067990d82a"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 14
+    },
+    {
+      "name": "Benzo(k)fluoranthene",
+      "placed_on": [
+        "fo-76c386faaeea080b"
+      ],
+      "placed_on_labels": [
+        "Benzo[k]fluoranthene"
+      ],
+      "names": [
+        "fo-b83e9b4a3cb51acb"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 13
+    },
+    {
+      "name": "Vanadium V",
+      "placed_on": [
+        "fo-4a5e946df5e4203b",
+        "fo-dbed6cc9cce7bb19"
+      ],
+      "placed_on_labels": [
+        "Vanadium",
+        "Vanadium(3+)"
+      ],
+      "names": [
+        "fo-e16b74f5b2f8d2eb"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 13
+    },
+    {
+      "name": "Methane, Dichlorofluoro-, HCFC-21",
+      "placed_on": [
+        "fo-767c8b62f67c5dc4"
+      ],
+      "placed_on_labels": [
+        "HCFC-21"
+      ],
+      "names": [
+        "fo-6cbdfe8356678176"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 11
+    },
+    {
+      "name": "Acidity, Unspecified",
+      "placed_on": [
+        "fo-6f1455ba68cb912a"
+      ],
+      "placed_on_labels": [
+        "Acid (as H+)"
+      ],
+      "names": [
+        "fo-d89a0dbfd1435e68"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 10
+    },
+    {
+      "name": "BOD5, Biological Oxygen Demand",
+      "placed_on": [
+        "fo-a79827dcb0ba8212"
+      ],
+      "placed_on_labels": [
+        "Biological Oxygen Demand"
+      ],
+      "names": [
+        "fo-f19fea9f8c4b2662"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 10
+    },
+    {
+      "name": "COD, Chemical Oxygen Demand",
+      "placed_on": [
+        "fo-44ac622598b3431b"
+      ],
+      "placed_on_labels": [
+        "Chemical Oxygen Demand"
+      ],
+      "names": [
+        "fo-8fcbac36c7300317"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 10
+    },
+    {
+      "name": "TOC, Total Organic Carbon",
+      "placed_on": [
+        "fo-996214584dce7754"
+      ],
+      "placed_on_labels": [
+        "Total Organic Carbon"
+      ],
+      "names": [
+        "fo-ecf262fb98267fef"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 10
+    },
+    {
+      "name": "Boscalid",
+      "placed_on": [
+        "fo-08d9dd2d1d8a87d5"
+      ],
+      "placed_on_labels": [
+        "Fungicides, Unspecified"
+      ],
+      "names": [
+        "fo-a3b8ea10f3df3cae"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 8
+    },
+    {
+      "name": "Chlormequat",
+      "placed_on": [
+        "fo-2792da6d627a40e6",
+        "fo-3f2b8ed1be731e7d"
+      ],
+      "placed_on_labels": [
+        "Pesticides, Unspecified",
+        "Chlormequat Chloride"
+      ],
+      "names": [
+        "fo-dd48e1212f4eeb1e"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 8
+    },
+    {
+      "name": "Etoxazole",
+      "placed_on": [
+        "fo-700f8fbcf27ee535"
+      ],
+      "placed_on_labels": [
+        "Insecticides, Unspecified"
+      ],
+      "names": [
+        "fo-8fc99f6a18fd11dc"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 8
+    },
+    {
+      "name": "Mecoprop",
+      "placed_on": [
+        "fo-601ee65225568e0a"
+      ],
+      "placed_on_labels": [
+        "Herbicides, Unspecified"
+      ],
+      "names": [
+        "fo-f967a68639f45d28"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 8
+    },
+    {
+      "name": "Methane, Trifluoro-, HFC-23",
+      "placed_on": [
+        "fo-46d5797987aae1ee"
+      ],
+      "placed_on_labels": [
+        "Hfc-23"
+      ],
+      "names": [
+        "fo-fbd43352b03b12ca"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 8
+    },
+    {
+      "name": "Primisulfuron",
+      "placed_on": [
+        "fo-601ee65225568e0a"
+      ],
+      "placed_on_labels": [
+        "Herbicides, Unspecified"
+      ],
+      "names": [
+        "fo-0690ccc027641ca3"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 8
+    },
+    {
+      "name": "Thiacloprid",
+      "placed_on": [
+        "fo-700f8fbcf27ee535"
+      ],
+      "placed_on_labels": [
+        "Insecticides, Unspecified"
+      ],
+      "names": [
+        "fo-9078b599a8d986ca"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 8
+    },
+    {
+      "name": "Zoxamide",
+      "placed_on": [
+        "fo-08d9dd2d1d8a87d5"
+      ],
+      "placed_on_labels": [
+        "Fungicides, Unspecified"
+      ],
+      "names": [
+        "fo-49fef123b84aa311"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 8
+    },
+    {
+      "name": "1,1,2-Trichloroethane",
+      "placed_on": [
+        "fo-9195455fc638d364"
+      ],
+      "placed_on_labels": [
+        "Hydrocarbons, Chlorinated"
+      ],
+      "names": [
+        "fo-f1b6ac0f57c85bc6"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 7
+    },
+    {
+      "name": "Ethane, 1,1-difluoro-, HFC-152a",
+      "placed_on": [
+        "fo-69dd3b89d69d6be5"
+      ],
+      "placed_on_labels": [
+        "HFC-152a"
+      ],
+      "names": [
+        "fo-ae064af3287c9274"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 7
+    },
+    {
+      "name": "Ethane, Pentafluoro-, HFC-125",
+      "placed_on": [
+        "fo-e3152ba08c5633b6"
+      ],
+      "placed_on_labels": [
+        "HFC-125"
+      ],
+      "names": [
+        "fo-363afeb3c66e75d3"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 7
+    },
+    {
+      "name": "Methane, Bromotrifluoro-, Halon 1301",
+      "placed_on": [
+        "fo-2726f6eaa557ac3e"
+      ],
+      "placed_on_labels": [
+        "Halon-1301"
+      ],
+      "names": [
+        "fo-9277f5050f025b55"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 7
+    },
+    {
+      "name": "Ethane, 1,2-dichloro-1,1,2,2-tetrafluoro-, CFC-114",
+      "placed_on": [
+        "fo-529a090298361c1f"
+      ],
+      "placed_on_labels": [
+        "CFC-114"
+      ],
+      "names": [
+        "fo-398b2a7ac364392b"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 6
+    },
+    {
+      "name": "VOC, Volatile Organic Compounds, Unspecified Origin",
+      "placed_on": [
+        "fo-b064e510341a62cb"
+      ],
+      "placed_on_labels": [
+        "Volatile Organic Compound"
+      ],
+      "names": [
+        "fo-c6d54fe862b4d687"
+      ],
+      "decided_by": [
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 6
+    },
+    {
+      "name": "AOX, Adsorbable Organic Halogen As Cl",
+      "placed_on": [
+        "fo-b9081903fbd8d902"
+      ],
+      "placed_on_labels": [
+        "Adsorbable Organic Halogen Compounds"
+      ],
+      "names": [
+        "fo-1a8b07aba01b7967"
+      ],
+      "decided_by": [
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 5
+    },
+    {
+      "name": "Arsenic, Ion",
+      "placed_on": [
+        "fo-150478f522686ef2"
+      ],
+      "placed_on_labels": [
+        "Arsenic(5+)"
+      ],
+      "names": [
+        "fo-c72851595d9ad270"
+      ],
+      "decided_by": [
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 5
+    },
+    {
+      "name": "Dibenz(a,h)anthracene",
+      "placed_on": [
+        "fo-2f7b43e38a499122"
+      ],
+      "placed_on_labels": [
+        "Dibenz[a,h]anthracene"
+      ],
+      "names": [
+        "fo-b2e1a87721e018eb"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 5
+    },
+    {
+      "name": "NMVOC, Non-methane Volatile Organic Compounds",
+      "placed_on": [
+        "fo-34fd0bc222929f8f"
+      ],
+      "placed_on_labels": [
+        "Non-methane Volatile Organic Compounds"
+      ],
+      "names": [
+        "fo-4314077f310737cc"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 5
+    },
+    {
+      "name": "NMVOC, Non-methane Volatile Organic Compounds, Unspecified Origin",
+      "placed_on": [
+        "fo-34fd0bc222929f8f"
+      ],
+      "placed_on_labels": [
+        "Non-methane Volatile Organic Compounds"
+      ],
+      "names": [
+        "fo-da4f1a1ca2afe6fb"
+      ],
+      "decided_by": [
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 5
+    },
+    {
+      "name": "Particulates, < 2.5 Um",
+      "placed_on": [
+        "fo-68bfa13f441778cb"
+      ],
+      "placed_on_labels": [
+        "Particles (PM2.5)"
+      ],
+      "names": [
+        "fo-75e7d3da7e7a4ae0"
+      ],
+      "decided_by": [
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 5
+    },
+    {
+      "name": "Particulates, > 10 Um",
+      "placed_on": [
+        "fo-a30bea921eacba3f"
+      ],
+      "placed_on_labels": [
+        "Particles (> PM10)"
+      ],
+      "names": [
+        "fo-d3d80f524f7cf770"
+      ],
+      "decided_by": [
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 5
+    },
+    {
+      "name": "Particulates, > 2.5 Um, And < 10um",
+      "placed_on": [
+        "fo-4619792929f057e6"
+      ],
+      "placed_on_labels": [
+        "Particles (PM10)"
+      ],
+      "names": [
+        "fo-a739137572d7696a"
+      ],
+      "decided_by": [
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 5
+    },
+    {
+      "name": "Carbon",
+      "placed_on": [
+        "fo-4ed0770a2cce0c2f"
+      ],
+      "placed_on_labels": [
+        "Elemental Carbon"
+      ],
+      "names": [
+        "fo-fad0ab6e5c415c5e"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 4
+    },
+    {
+      "name": "Fenoxaprop",
+      "placed_on": [
+        "fo-2792da6d627a40e6",
+        "fo-5520858ad664f7d5"
+      ],
+      "placed_on_labels": [
+        "Pesticides, Unspecified",
+        "Fenoxaprop-p-ethyl"
+      ],
+      "names": [
+        "fo-59d070e353c89c2b"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 4
+    },
+    {
+      "name": "Trifloxystrobin",
+      "placed_on": [
+        "fo-08d9dd2d1d8a87d5"
+      ],
+      "placed_on_labels": [
+        "Fungicides, Unspecified"
+      ],
+      "names": [
+        "fo-2adf533936d0f243"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 4
+    },
+    {
+      "name": "Carbon Dioxide, Biogenic",
+      "placed_on": [
+        "fo-c830feb8dfc643a1"
+      ],
+      "placed_on_labels": [
+        "Carbon Dioxide (biogenic)"
+      ],
+      "names": [
+        "fo-daa076cd39d22fa2"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Carbon Monoxide, Biogenic",
+      "placed_on": [
+        "fo-ce9e4bacf707af37"
+      ],
+      "placed_on_labels": [
+        "Carbon Monoxide (biogenic)"
+      ],
+      "names": [
+        "fo-330a5ff4d8548ca5"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Energy, Gross Calorific Value, In Biomass",
+      "placed_on": [
+        "fo-e0dbc6aec0ed87bd"
+      ],
+      "placed_on_labels": [
+        "Biomass"
+      ],
+      "names": [
+        "fo-fc011c01f0a8ab8a"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Gas, Mine, Off-gas, Process, Coal Mining",
+      "placed_on": [
+        "fo-634eaeddc2496342"
+      ],
+      "placed_on_labels": [
+        "Natural Gas"
+      ],
+      "names": [
+        "fo-eb9073f83e17ec30"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Kaolin",
+      "placed_on": [
+        "fo-700f8fbcf27ee535"
+      ],
+      "placed_on_labels": [
+        "Insecticides, Unspecified"
+      ],
+      "names": [
+        "fo-d803442dfbc0ab23"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Annual Crop",
+      "placed_on": [
+        "fo-54f852fd3711a2a1"
+      ],
+      "placed_on_labels": [
+        "Arable"
+      ],
+      "names": [
+        "fo-9a0314e5d6afa9c2"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Annual Crop, Irrigated",
+      "placed_on": [
+        "fo-d27a086b1b2749ad"
+      ],
+      "placed_on_labels": [
+        "Arable, Irrigated"
+      ],
+      "names": [
+        "fo-b39ef704b9a96d33"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Annual Crop, Non-irrigated",
+      "placed_on": [
+        "fo-a393a84405b7eb73"
+      ],
+      "placed_on_labels": [
+        "Arable, Non-irrigated"
+      ],
+      "names": [
+        "fo-1a41b9399023d13d"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Annual Crop, Non-irrigated, Intensive",
+      "placed_on": [
+        "fo-5a01d67847868d22"
+      ],
+      "placed_on_labels": [
+        "Arable, Non-irrigated, Intensive"
+      ],
+      "names": [
+        "fo-a13693ff5037ec00"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Construction Site",
+      "placed_on": [
+        "fo-9e7204481c51c2bd"
+      ],
+      "placed_on_labels": [
+        "Construction Site"
+      ],
+      "names": [
+        "fo-f4c936100176a69e"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Dump Site",
+      "placed_on": [
+        "fo-24fd48bbc57c7a23"
+      ],
+      "placed_on_labels": [
+        "Dump Site"
+      ],
+      "names": [
+        "fo-995b74eb19c80340"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Forest, Extensive",
+      "placed_on": [
+        "fo-d27e034cb90c1f2b"
+      ],
+      "placed_on_labels": [
+        "Forest, Extensive"
+      ],
+      "names": [
+        "fo-5d551f1897de5af6"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Forest, Intensive",
+      "placed_on": [
+        "fo-1464a632979a35c7"
+      ],
+      "placed_on_labels": [
+        "Forest, Intensive"
+      ],
+      "names": [
+        "fo-c6bf2fa35dd352e0"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Forest, Unspecified",
+      "placed_on": [
+        "fo-bb35422efc4a66e0"
+      ],
+      "placed_on_labels": [
+        "Forest"
+      ],
+      "names": [
+        "fo-30f30ea253854461"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Heterogeneous, Agricultural",
+      "placed_on": [
+        "fo-ac6e3f8c3d44fdab"
+      ],
+      "placed_on_labels": [
+        "Agriculture, Mosaic"
+      ],
+      "names": [
+        "fo-9c7ab83c8213a692"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Industrial Area",
+      "placed_on": [
+        "fo-c09d8ca5c986014f"
+      ],
+      "placed_on_labels": [
+        "Industrial Area"
+      ],
+      "names": [
+        "fo-1f91f5b4e77441a0"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Mineral Extraction Site",
+      "placed_on": [
+        "fo-bbd9df7000a6397b"
+      ],
+      "placed_on_labels": [
+        "Mineral Extraction Site"
+      ],
+      "names": [
+        "fo-0f68282a27153cbf"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Pasture, Man Made",
+      "placed_on": [
+        "fo-473e24ffe8b52842"
+      ],
+      "placed_on_labels": [
+        "Pasture/meadow"
+      ],
+      "names": [
+        "fo-66e0fd8531915955"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Pasture, Man Made, Extensive",
+      "placed_on": [
+        "fo-d35827a7c608ecfa"
+      ],
+      "placed_on_labels": [
+        "Pasture/meadow, Extensive"
+      ],
+      "names": [
+        "fo-eaaf639c3776bfff"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Pasture, Man Made, Intensive",
+      "placed_on": [
+        "fo-e9e7dfbc9b9c48c8"
+      ],
+      "placed_on_labels": [
+        "Pasture/meadow, Intensive"
+      ],
+      "names": [
+        "fo-23d1c87fa3ca5e2b"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Seabed, Infrastructure",
+      "placed_on": [
+        "fo-d5379437243a09c0"
+      ],
+      "placed_on_labels": [
+        "Seabed, Marine Infrastructure"
+      ],
+      "names": [
+        "fo-c8f4bb957563b24f"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Shrub Land, Sclerophyllous",
+      "placed_on": [
+        "fo-9d8145ce12788b10"
+      ],
+      "placed_on_labels": [
+        "Shrub Land"
+      ],
+      "names": [
+        "fo-84bcc283743d48c4"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Traffic Area, Rail Network",
+      "placed_on": [
+        "fo-77091954be5e09f8"
+      ],
+      "placed_on_labels": [
+        "Traffic Area, Rail Network"
+      ],
+      "names": [
+        "fo-e1dbcbf5d4b70731"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Traffic Area, Rail/road Embankment",
+      "placed_on": [
+        "fo-fe7ba8558a910bae"
+      ],
+      "placed_on_labels": [
+        "Traffic Area, Rail/road Embankment"
+      ],
+      "names": [
+        "fo-5399c41dce7196e5"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Traffic Area, Road Network",
+      "placed_on": [
+        "fo-c6563d781bd4d19b"
+      ],
+      "placed_on_labels": [
+        "Traffic Area, Road Network"
+      ],
+      "names": [
+        "fo-23b53f1ce983c0f1"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Unspecified, Natural (non-use)",
+      "placed_on": [
+        "fo-ad4465a9f2557f05"
+      ],
+      "placed_on_labels": [
+        "Unspecified, Natural"
+      ],
+      "names": [
+        "fo-de5cbbd0fc9eb9a7"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Urban, Continuously Built",
+      "placed_on": [
+        "fo-eb12e2c814076738"
+      ],
+      "placed_on_labels": [
+        "Urban, Continuously Built"
+      ],
+      "names": [
+        "fo-805dd0b97e7fbca2"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Occupation, Urban, Discontinuously Built",
+      "placed_on": [
+        "fo-64acc5ac99672ff2"
+      ],
+      "placed_on_labels": [
+        "Urban, Discontinuously Built"
+      ],
+      "names": [
+        "fo-f9dc48af37a1d396"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Silver-110",
+      "placed_on": [
+        "fo-6529610dacf19339"
+      ],
+      "placed_on_labels": [
+        "Silver-110m"
+      ],
+      "names": [
+        "fo-d3316417528121c7"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Annual Crop",
+      "placed_on": [
+        "fo-30cc344b484bf914"
+      ],
+      "placed_on_labels": [
+        "From Arable"
+      ],
+      "names": [
+        "fo-4d1ea1900d10c0ed"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Annual Crop, Irrigated",
+      "placed_on": [
+        "fo-502ce9dd26bce2fb"
+      ],
+      "placed_on_labels": [
+        "From Arable, Irrigated"
+      ],
+      "names": [
+        "fo-4b6b5170a87aafdd"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Annual Crop, Non-irrigated",
+      "placed_on": [
+        "fo-51a8d945279e3bad"
+      ],
+      "placed_on_labels": [
+        "From Arable, Non-irrigated"
+      ],
+      "names": [
+        "fo-189610e76a0f7ea4"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Annual Crop, Non-irrigated, Intensive",
+      "placed_on": [
+        "fo-95148c41f0f4fd16"
+      ],
+      "placed_on_labels": [
+        "From Arable, Non-irrigated, Intensive"
+      ],
+      "names": [
+        "fo-e4d9a7756580cd68"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Dump Site, Inert Material Landfill",
+      "placed_on": [
+        "fo-96c95516f57653bf"
+      ],
+      "placed_on_labels": [
+        "From Dump Site"
+      ],
+      "names": [
+        "fo-9017c29de6913e3c"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Dump Site, Residual Material Landfill",
+      "placed_on": [
+        "fo-96c95516f57653bf"
+      ],
+      "placed_on_labels": [
+        "From Dump Site"
+      ],
+      "names": [
+        "fo-a46cde15880a18e8"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Dump Site, Sanitary Landfill",
+      "placed_on": [
+        "fo-96c95516f57653bf"
+      ],
+      "placed_on_labels": [
+        "From Dump Site"
+      ],
+      "names": [
+        "fo-a5a96643b124fc44"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Dump Site, Slag Compartment",
+      "placed_on": [
+        "fo-96c95516f57653bf"
+      ],
+      "placed_on_labels": [
+        "From Dump Site"
+      ],
+      "names": [
+        "fo-29a31642d77b8ae3"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Forest, Extensive",
+      "placed_on": [
+        "fo-802969af70420bac"
+      ],
+      "placed_on_labels": [
+        "From Forest, Extensive"
+      ],
+      "names": [
+        "fo-e8532b0269f4b3ef"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Forest, Unspecified",
+      "placed_on": [
+        "fo-a36730c3efc3de3e"
+      ],
+      "placed_on_labels": [
+        "From Forest"
+      ],
+      "names": [
+        "fo-306529702560898d"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Heterogeneous, Agricultural",
+      "placed_on": [
+        "fo-8690a4c893046246"
+      ],
+      "placed_on_labels": [
+        "From Agriculture, Mosaic"
+      ],
+      "names": [
+        "fo-c2920e2dd0804f07"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Industrial Area",
+      "placed_on": [
+        "fo-f59814c8af15beb8"
+      ],
+      "placed_on_labels": [
+        "From Industrial Area"
+      ],
+      "names": [
+        "fo-953ee91ed024eed3"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Mineral Extraction Site",
+      "placed_on": [
+        "fo-4230f7e9982d0613"
+      ],
+      "placed_on_labels": [
+        "From Mineral Extraction Site"
+      ],
+      "names": [
+        "fo-168cc939e3cdb370"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Pasture, Man Made",
+      "placed_on": [
+        "fo-d2fd40b4dc0ff2e7"
+      ],
+      "placed_on_labels": [
+        "From Pasture/meadow"
+      ],
+      "names": [
+        "fo-84f032e926da1d72"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Pasture, Man Made, Extensive",
+      "placed_on": [
+        "fo-435ec522e7719373"
+      ],
+      "placed_on_labels": [
+        "From Pasture/meadow, Extensive"
+      ],
+      "names": [
+        "fo-511e1d84a1dd2b01"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Pasture, Man Made, Intensive",
+      "placed_on": [
+        "fo-23ce2fabb4ec3dd0"
+      ],
+      "placed_on_labels": [
+        "From Pasture/meadow, Intensive"
+      ],
+      "names": [
+        "fo-a2c12f331f212e3f"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Seabed, Unspecified",
+      "placed_on": [
+        "fo-fa7c42563b9a4a00"
+      ],
+      "placed_on_labels": [
+        "From Seabed"
+      ],
+      "names": [
+        "fo-fb34415bd170638f"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Shrub Land, Sclerophyllous",
+      "placed_on": [
+        "fo-4e4ec6b2c9113851"
+      ],
+      "placed_on_labels": [
+        "From Shrub Land"
+      ],
+      "names": [
+        "fo-5ea091e72a4fe67e"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Traffic Area, Rail/road Embankment",
+      "placed_on": [
+        "fo-5413a9f4ae72ecad"
+      ],
+      "placed_on_labels": [
+        "From Traffic Area, Rail/road Embankment"
+      ],
+      "names": [
+        "fo-a26f925ff86f8285"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Traffic Area, Road Network",
+      "placed_on": [
+        "fo-5c0ccb92a2c8a0ba"
+      ],
+      "placed_on_labels": [
+        "From Traffic Area, Road Network"
+      ],
+      "names": [
+        "fo-92636094b5478d36"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Unknown",
+      "placed_on": [
+        "fo-415203603a355639"
+      ],
+      "placed_on_labels": [
+        "From Unspecified"
+      ],
+      "names": [
+        "fo-56f96fef7e9e0282"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Unspecified",
+      "placed_on": [
+        "fo-415203603a355639"
+      ],
+      "placed_on_labels": [
+        "From Unspecified"
+      ],
+      "names": [
+        "fo-5009c3e98f10bad4"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Unspecified, Natural (non-use)",
+      "placed_on": [
+        "fo-8dd26c87c0a1a342"
+      ],
+      "placed_on_labels": [
+        "From Unspecified, Natural"
+      ],
+      "names": [
+        "fo-968b9706e808d6a1"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Urban, Continuously Built",
+      "placed_on": [
+        "fo-491ef671af7f25a0"
+      ],
+      "placed_on_labels": [
+        "From Urban, Continuously Built"
+      ],
+      "names": [
+        "fo-0e4b809948658169"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, From Urban, Discontinuously Built",
+      "placed_on": [
+        "fo-5c45fc122432fa94"
+      ],
+      "placed_on_labels": [
+        "From Urban, Discontinuously Built"
+      ],
+      "names": [
+        "fo-11480aa3a10dc97b"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Annual Crop",
+      "placed_on": [
+        "fo-42a5a5d610812a2a"
+      ],
+      "placed_on_labels": [
+        "To Arable"
+      ],
+      "names": [
+        "fo-7c0198157190c85b"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Annual Crop, Irrigated",
+      "placed_on": [
+        "fo-fa7ad836cf7bc969"
+      ],
+      "placed_on_labels": [
+        "To Arable, Irrigated"
+      ],
+      "names": [
+        "fo-850ec323b3e8b952"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Annual Crop, Non-irrigated",
+      "placed_on": [
+        "fo-8437d4b596a1f0d6"
+      ],
+      "placed_on_labels": [
+        "To Arable, Non-irrigated"
+      ],
+      "names": [
+        "fo-74be9c6c11cde91e"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Annual Crop, Non-irrigated, Intensive",
+      "placed_on": [
+        "fo-5ad9f9318fc9d8b8"
+      ],
+      "placed_on_labels": [
+        "To Arable, Non-irrigated, Intensive"
+      ],
+      "names": [
+        "fo-2570c9325b487729"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Arable Land, Unspecified Use",
+      "placed_on": [
+        "fo-42a5a5d610812a2a"
+      ],
+      "placed_on_labels": [
+        "To Arable"
+      ],
+      "names": [
+        "fo-968d2eaf3363c96f"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Dump Site",
+      "placed_on": [
+        "fo-15ab8364100a1f66"
+      ],
+      "placed_on_labels": [
+        "To Dump Site"
+      ],
+      "names": [
+        "fo-64cda4a411613f2a"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Dump Site, Inert Material Landfill",
+      "placed_on": [
+        "fo-15ab8364100a1f66"
+      ],
+      "placed_on_labels": [
+        "To Dump Site"
+      ],
+      "names": [
+        "fo-8ef070269e6e4737"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Dump Site, Residual Material Landfill",
+      "placed_on": [
+        "fo-15ab8364100a1f66"
+      ],
+      "placed_on_labels": [
+        "To Dump Site"
+      ],
+      "names": [
+        "fo-f14ca538a8d615ad"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Dump Site, Sanitary Landfill",
+      "placed_on": [
+        "fo-15ab8364100a1f66"
+      ],
+      "placed_on_labels": [
+        "To Dump Site"
+      ],
+      "names": [
+        "fo-8b90dc129e8aa306"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Dump Site, Slag Compartment",
+      "placed_on": [
+        "fo-15ab8364100a1f66"
+      ],
+      "placed_on_labels": [
+        "To Dump Site"
+      ],
+      "names": [
+        "fo-632037805c41b31b"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Forest, Extensive",
+      "placed_on": [
+        "fo-e48cbb72eb773f3b"
+      ],
+      "placed_on_labels": [
+        "To Forest, Extensive"
+      ],
+      "names": [
+        "fo-bd623940bcfc1a18"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Forest, Intensive",
+      "placed_on": [
+        "fo-3c71bf113e3ec027"
+      ],
+      "placed_on_labels": [
+        "To Forest, Intensive"
+      ],
+      "names": [
+        "fo-29e6ffd5d7f679e9"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Forest, Unspecified",
+      "placed_on": [
+        "fo-61effae208769c85"
+      ],
+      "placed_on_labels": [
+        "To Forest"
+      ],
+      "names": [
+        "fo-313a7a2c754e7888"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Heterogeneous, Agricultural",
+      "placed_on": [
+        "fo-888f6fd63ea0e6cf"
+      ],
+      "placed_on_labels": [
+        "To Agriculture, Mosaic"
+      ],
+      "names": [
+        "fo-8ac0c77e410d4188"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Industrial Area",
+      "placed_on": [
+        "fo-ec40db57d6091969"
+      ],
+      "placed_on_labels": [
+        "To Industrial Area"
+      ],
+      "names": [
+        "fo-e8a39c9b229732f0"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Mineral Extraction Site",
+      "placed_on": [
+        "fo-8b6903d5c2e3ade5"
+      ],
+      "placed_on_labels": [
+        "To Mineral Extraction Site"
+      ],
+      "names": [
+        "fo-bdfda5253a5995aa"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Pasture, Man Made",
+      "placed_on": [
+        "fo-c93fa5d88a38cf66"
+      ],
+      "placed_on_labels": [
+        "To Pasture/meadow"
+      ],
+      "names": [
+        "fo-5101622e71b1a3bc"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Pasture, Man Made, Extensive",
+      "placed_on": [
+        "fo-322f5b1dc125660f"
+      ],
+      "placed_on_labels": [
+        "To Pasture/meadow, Extensive"
+      ],
+      "names": [
+        "fo-e8fa73f99d26f4ce"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Pasture, Man Made, Intensive",
+      "placed_on": [
+        "fo-1e089c95c073a5d6"
+      ],
+      "placed_on_labels": [
+        "To Pasture/meadow, Intensive"
+      ],
+      "names": [
+        "fo-88576260d788ec0a"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Shrub Land, Sclerophyllous",
+      "placed_on": [
+        "fo-f3aab7f80fbcf025"
+      ],
+      "placed_on_labels": [
+        "To Shrub Land"
+      ],
+      "names": [
+        "fo-6fa80ae1f7139944"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Traffic Area, Rail Network",
+      "placed_on": [
+        "fo-5f7df6f38c6228de"
+      ],
+      "placed_on_labels": [
+        "To Traffic Area, Rail Network"
+      ],
+      "names": [
+        "fo-729a834289aa2969"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Traffic Area, Rail/road Embankment",
+      "placed_on": [
+        "fo-47ae48f34d815ac6"
+      ],
+      "placed_on_labels": [
+        "To Traffic Area, Rail/road Embankment"
+      ],
+      "names": [
+        "fo-e59e18a71c8448af"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Traffic Area, Road Network",
+      "placed_on": [
+        "fo-adefacaa04d844a8"
+      ],
+      "placed_on_labels": [
+        "To Traffic Area, Road Network"
+      ],
+      "names": [
+        "fo-300ae855afda1a1e"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Unknown",
+      "placed_on": [
+        "fo-3d5d5af4bccfc0cb"
+      ],
+      "placed_on_labels": [
+        "To Unspecified"
+      ],
+      "names": [
+        "fo-c07d2cd69e7c897a"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Urban, Continuously Built",
+      "placed_on": [
+        "fo-f32d80ba27952c0a"
+      ],
+      "placed_on_labels": [
+        "To Urban, Continuously Built"
+      ],
+      "names": [
+        "fo-58b7c1fb794e7916"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Transformation, To Urban, Discontinuously Built",
+      "placed_on": [
+        "fo-7ff1acff90e8c0ea"
+      ],
+      "placed_on_labels": [
+        "To Urban, Discontinuously Built"
+      ],
+      "names": [
+        "fo-dc28943ed20a717b"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Water, Salt, Ocean",
+      "placed_on": [
+        "fo-4c8d5ea2fe574622"
+      ],
+      "placed_on_labels": [
+        "Sea water"
+      ],
+      "names": [
+        "fo-bd42be6a6cecf3f2"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Water, Salt, Sole",
+      "placed_on": [
+        "fo-7763a503b7741389"
+      ],
+      "placed_on_labels": [
+        "Brine"
+      ],
+      "names": [
+        "fo-8f64614cecc23e12"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Wood, Hard, Standing",
+      "placed_on": [
+        "fo-69208b2927145f68"
+      ],
+      "placed_on_labels": [
+        "Wood, Primary Forest, Standing"
+      ],
+      "names": [
+        "fo-46a4cbfba3bf39e1"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared",
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 2
+    },
+    {
+      "name": "Calcite",
+      "placed_on": [
+        "fo-f434de0da55ecfe3"
+      ],
+      "placed_on_labels": [
+        "Calcium Carbonate"
+      ],
+      "names": [
+        "fo-24189f599dd16c17"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 1
+    },
+    {
+      "name": "Clay, Unspecified",
+      "placed_on": [
+        "fo-062fe803f752beb6"
+      ],
+      "placed_on_labels": [
+        "Clay"
+      ],
+      "names": [
+        "fo-9024209021d01d57"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 1
+    },
+    {
+      "name": "Coal, Brown",
+      "placed_on": [
+        "fo-76e5fa3b224dcd42"
+      ],
+      "placed_on_labels": [
+        "Brown Coal"
+      ],
+      "names": [
+        "fo-4719d418cb3db9d4"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 1
+    },
+    {
+      "name": "Coal, Hard",
+      "placed_on": [
+        "fo-83837092807da333"
+      ],
+      "placed_on_labels": [
+        "Hard Coal"
+      ],
+      "names": [
+        "fo-7bcc5c3366b1b207"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 1
+    },
+    {
+      "name": "Oil, Crude",
+      "placed_on": [
+        "fo-6dc597941b42bfee"
+      ],
+      "placed_on_labels": [
+        "Crude Oil"
+      ],
+      "names": [
+        "fo-510782d8d88a4ad0"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 1
+    },
+    {
+      "name": "Peat",
+      "placed_on": [
+        "fo-cbc8b4371a39fc62"
+      ],
+      "placed_on_labels": [
+        "Peat, In Ground"
+      ],
+      "names": [
+        "fo-45935aa51b158f4c"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 1
+    },
+    {
+      "name": "Penoxsulam",
+      "placed_on": [
+        "fo-cfb0b34eb789f898"
+      ],
+      "placed_on_labels": [
+        "Granite"
+      ],
+      "names": [
+        "fo-dcb83caa3a54b096"
+      ],
+      "decided_by": [
+        "ecoinvent 3.8/prepared"
+      ],
+      "row_count": 1
+    },
+    {
+      "name": "Pumice",
+      "placed_on": [
+        "fo-bba6ed6b45f80aad"
+      ],
+      "placed_on_labels": [
+        "Natural Pumice"
+      ],
+      "names": [
+        "fo-2d014ec0bcd8722f"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 1
+    },
+    {
+      "name": "Sand",
+      "placed_on": [
+        "fo-8160a0e32bb93473"
+      ],
+      "placed_on_labels": [
+        "Quartz Sand"
+      ],
+      "names": [
+        "fo-bc5255bd1e34dc77"
+      ],
+      "decided_by": [
+        "bafu 2026-v1/algorithm"
+      ],
+      "row_count": 1
+    },
+    {
+      "name": "Spodumene",
+      "placed_on": [
+        "fo-f8905dc3d2912d30"
+      ],
+      "placed_on_labels": [
+        "Spodumene, In Ground"
+      ],
+      "names": [
+        "fo-1cd15862dcb88a6a"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 1
+    },
+    {
+      "name": "Stibnite",
+      "placed_on": [
+        "fo-9423b192101c9ff1"
+      ],
+      "placed_on_labels": [
+        "Antimonite"
+      ],
+      "names": [
+        "fo-bcced2e63aa9ec49"
+      ],
+      "decided_by": [
+        "ecoinvent 3.12/prepared"
+      ],
+      "row_count": 1
+    }
+  ]
+}

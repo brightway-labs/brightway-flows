@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "description": "An EC number ends in a check digit: multiply the first six digits by 1 to 6, add them up, take the remainder on division by 11. The arithmetic has eleven possible answers and only ten of them are single digits, so the usual account of the scheme is that a remainder of 10 means the number was never issued -- the registrar skipped that slot. That holds for EINECS, the inventory of substances already on the market in 1981. It does not hold for ELINCS, the inventory of substances notified as new afterwards, whose numbers begin with 4: there the slot was not skipped, and the number was issued with a check digit of 1. Counted over the ECHA inventory this repository ships, 106,213 substances: 106,032 pass the rule as written, 181 have remainder 10 and every one of the 181 publishes check digit 1, and not one number anywhere in the inventory has a check digit wrong in any other way. All 181 begin with 4. Ten of them reach EF 3.1 -- Peonile, HFE-7500, furilazole, acryloylmorpholine and six more -- and on the 2026-08-19 build the check filed all ten as unfixable data errors at the source, 130 blocking rows over thirteen compartments each, when every one is a real number ECHA still publishes with an infocard. See #120.",
+  "expectations": [
+    {
+      "id": "0598-no-ec-number-is-filed-as-malformed",
+      "issue": 598,
+      "title": "No EC number the build reads is filed as having no valid check digit",
+      "subject": {
+        "kind": "measure",
+        "key": "queue.ec-malformed"
+      },
+      "expect": {
+        "equals": 0
+      },
+      "comment": "130 on the 2026-08-20 build of 3874978, which is ten distinct EC numbers in thirteen compartments each, and all ten are in the ECHA inventory under their own infocard: 418-140-1 ACRYLOYLMORPHOLIN, 423-740-1 PEONILE, 424-090-1 DMBA, 424-620-1 TUPH, 425-430-1 CYCLOPROPYLACETYLENE, 427-440-1 MMBC, 429-200-1 IDS NA-SALZ, 431-060-1 OXADIAZINAMIN, 434-800-1 MON 13900, 435-790-1 HFE-7500. Zero is the right number rather than a smaller one because the queue's contents are not a sample: counted off `ef-31-flows.json` directly, 130 of the 94,062 flows carry a remainder-10 EC number, they are exactly these ten numbers, and no EC string in EF 3.1 fails the format check at all -- so once the ELINCS numbers are read correctly the queue has nothing left to hold. A count over a population can still fall for the wrong reason -- the step stopping, the rows never being reached -- so the rule itself is pinned separately, by a test that asserts all 181 remainder-10 numbers in the shipped inventory validate and that none of the other 106,032 stops validating. This measure says what the curator sees; that test says why."
+    }
+  ]
+}

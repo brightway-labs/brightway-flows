@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "source_version": "3.11",
+  "description": "Nothing to add: ecoinvent 3.11 ships the same elementary exchanges in all four of its system models. Compared release by release from each one's MasterData/ElementaryExchanges.xml -- cutoff 9,795, apos 9,795, consequential 9,795, EN15804 9,795 exchanges -- with the same uuids throughout and every shared record equal field for field, not merely in the fields the adapter keeps. This file exists so that a version nobody has checked and a version checked and found clean do not look alike: the empty list is the finding. Regenerate with tools/compare_ecoinvent_system_models.py. See #100.",
+  "comparison": {
+    "compared_on": "2026-08-15",
+    "reference_system_model": "cutoff",
+    "system_models": [
+      "cutoff",
+      "apos",
+      "consequential",
+      "EN15804"
+    ],
+    "release_type": "ecoSpold02 MasterData/ElementaryExchanges.xml",
+    "exchange_counts": {
+      "cutoff": 9795,
+      "apos": 9795,
+      "consequential": 9795,
+      "EN15804": 9795
+    },
+    "flows_only_in_another_system_model": 0,
+    "flows_only_in_cutoff": 0,
+    "shared_records_differing": 0,
+    "file_attributes_differing": {}
+  },
+  "flows": []
+}

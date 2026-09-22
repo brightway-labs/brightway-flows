@@ -1,0 +1,66 @@
+name: A documentation page is wrong or unclear
+description: A page states something that is not true, is out of date, or does not answer the question it promises to.
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The documentation is written for an environmental engineer rather than for a
+        programmer, and a page that only makes sense if you have read the code is a defect
+        in the page. So "I could not follow this" is a legitimate report here, not a
+        smaller one than "this number is wrong".
+
+        Three pages are deliberately for programmers and say so at the top —
+        `reference/architecture.md`, `reference/conventions.md` and `reference/data-model.md`.
+        Every other page, including `reference/harmonisation-steps.md`, is for the engineer.
+
+  - type: input
+    id: page
+    attributes:
+      label: Which page
+      description: Its path in the repository, or the address it is served at.
+      placeholder: docs/deciding/registry-numbers.md
+    validations:
+      required: true
+
+  - type: input
+    id: section
+    attributes:
+      label: Which section
+      description: The heading it sits under, if the page is a long one.
+
+  - type: dropdown
+    id: problem
+    attributes:
+      label: What is wrong with it
+      options:
+        - It states something that is not true
+        - A number or a list in it no longer matches the build or the data
+        - It is out of date — it describes something that has since changed
+        - It is unclear, or assumes knowledge the reader does not have
+        - A link is broken, or lands in the wrong place
+        - It does not answer the question its title promises
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: What it says, and what it should say
+      description: >-
+        Quote the sentence. If a **count** is wrong, say where you got the right one —
+        a figure quoted from a build goes stale silently and is caught by nothing, so a
+        report of one is genuinely useful.
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **What happens next.** Pages are checked by the test suite for links that do not
+        resolve, headings that are not there, commands that no longer exist and lists
+        copied out of the data that have drifted — so a report of one of those turns into a
+        test as well as a correction. Whether the prose is *true* is what the tests cannot
+        check, and is why this form exists.

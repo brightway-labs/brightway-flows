@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "description": "GreenDelta's openLCA package identifies a flow by the ecoinvent UUID it was built against, and 1,223 of its 1,781 flows are found that way. The other 558 name a substance under an identifier nothing here has -- and none of them is a substance this list is missing. This is the second route: the substance, in the compartment the factor is about.\n\n**A substance and a place, never a substance alone.** A factor is a number about a substance in a compartment, so a match needs both halves; reaching a flow by name and letting the compartment fall where it may would put a freshwater number on an emission to air, which is a wrong factor rather than a missing one. The compartments are 21 curated rows in `data/context-manual-mapping.json` under the source `GreenDelta`, each recording the evidence it was written from.\n\n**The registry number outranks the name.** #146 and #157 are both cases where a name and a number disagreed and the number was right. Where two flows carry one number -- `Water` and `Water vapour` both carry 7732-18-5 -- the name settles which, and only settles: it narrows what the number chose and never reaches outside it. Where nothing settles it, the row is reported and matched to neither.\n\nMeasured on the build of 2026-08-25 (`20260825T1354430622920000`) characterised 2026-08-28: 307 more flows reached, 1,166 more factors published, and the consensus implementation unmoved. The consensus count itself was re-measured for #349 on the full build of 2026-08-29 (`20260829T1158418340740000`), where it is 323,890 rather than 324,694 for a reason that is the JRC's and not GreenDelta's. Every claim below fails on `main` and on the branch that added the implementation, where the second route does not exist.",
+  "expectations": [
+    {
+      "id": "0784-the-second-route-reaches-three-hundred-flows",
+      "issue": 784,
+      "title": "307 flows no identifier reaches are found by their substance",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_source_flows_by_substance"
+      },
+      "expect": {
+        "at_least": 307
+      },
+      "comment": "289 on a registry number alone, 2 on a number two flows carry with the name settling which, and 16 on a name where their file states no number. The identifier route is not reconsidered: it reached 1,223 and those are not re-decided on a weaker claim."
+    },
+    {
+      "id": "0784-the-factors-those-flows-carry",
+      "issue": 784,
+      "title": "GreenDelta's published factors rise to 23,508",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_factors_published"
+      },
+      "expect": {
+        "at_least": 23508
+      },
+      "comment": "22,342 before, of the 26,179 their file states. The remaining 2,671 are the 1,711 in the three resource compartments this list files as a context rather than a name (#166), 235 on flows whose substance is not published in the compartment the factor is about, and the rest the regionalised water rows -- `Water, DK` and 56 others -- whose place is in their name and in nothing of ours.\n\n`at_least`, because #166 should raise it."
+    },
+    {
+      "id": "0784-a-number-two-flows-carry-is-not-guessed-at",
+      "issue": 784,
+      "title": "A row whose number reaches two flows is reported, not placed on one",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_matched_on_registry_number_and_name"
+      },
+      "expect": {
+        "at_least": 2
+      },
+      "comment": "The tie-break, and the number is small because it is meant to be: 52 rows state 7732-18-5 in a compartment where `Water` and `Water vapour` both sit, and only the two whose name is exactly one of ours are placed. The other 50 carry a country in the name -- `Water, DK` -- which no label of ours does, and are left unmatched with a finding naming both candidates.\n\nA claim about what the rule *declines* to do, held as the count of the only case where a name is allowed to act on a number's candidates."
+    },
+    {
+      "id": "0784-it-still-decides-nothing",
+      "issue": 784,
+      "title": "Reaching more of GreenDelta's factors changes no factor this list publishes",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_factors_published"
+      },
+      "expect": {
+        "at_most": 327064
+      },
+      "comment": "The same bound #157's file states, restated here because this change is the one that could break it: 1,166 more numbers from a publisher whose implementation is comparison and not evidence. The method file's `decides: false` on GreenDelta's row is what keeps it true.\n\nAn upper bound, per #349 and for the reason #157's file argues: the count rising is this claim failing, and the count falling is one of the deciding implementations correcting its own numbers. Moved to 323,898 with the AGRIBALYSE stack (#188): giving Beta-cyfluthrin the product's own registry number took ecoinvent's rows off the consensus `Cyfluthrin` flows, and the ecoinvent Centre's factors followed its flows -- 64 arrive on the Beta-cyfluthrin substance, 40 leave with the vacated ecoinvent-compartment Cyfluthrin copies, pair-identical amounts, measured on the stack build of d98a075 (1 September 2026). That is +24 against the 323,874 the #178/#826 retirements left, none of it a comparison implementation reaching the consensus -- the movement is one deciding implementation's numbers following its own renamed substance, which is the accounting this guard exists to force. (This file's 323,890 had also gone quietly stale: an upper bound tolerates a fall, so the #178/#826 retirements that made the count 323,874 never forced an edit here.) Moved again on 2026-09-01 when the context convention in `data/context-carry-rules.json` began carrying 1,482 more factors into the contexts nobody characterised -- a river taking surface water's number, silvicultural soil taking non-agricultural soil's -- on top of the 323,898 the cyfluthrin split left: 325,380, the two movements measured on different builds and added, until the next full build records the count. A carried number is this list's own convention applied to a number it already published, not a third publisher's number becoming ours, which is still what this bound is about.\n\nRecorded at 327,064 on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), which is the full build the previous sentence was waiting for. The convention's carry came to 1,866 factors over the four-list baseline's 1,491 (3,357 `carried`), not the 1,482 measured on a branch, because AGRIBALYSE's merge added flows in contexts the convention carries into; `sole` moved by 24 the other way. `adopted` stayed at 1,334, which is the number this bound is really watching: nothing a third publisher stated became ours."
+    },
+    {
+      "id": "0784-a-lake-factor-reaches-its-flow",
+      "issue": 784,
+      "title": "A lake factor reaches the flow it is about, in the compartment it was stated in",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Fluoride",
+        "context_display": "Environmental → Water → Lake",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "20.361"
+      },
+      "comment": "`Emission to water/lake` is one of the compartments ecoinvent 3 does not have, so no flow of theirs resolves in it by identifier and the rule for it rests on BAFU's evidence: 50 of BAFU's rows, every one in `Environmental -> Water -> Lake`. Fluoride reaches this flow on its registry number and 20.361 is GreenDelta's own number republished unchanged. Before this change every lake row of theirs was dropped, so the whole compartment was missing from the comparison rather than differing in it."
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "description": "BAFU brought 279 river and 42 lake flows that no method's flow list has, and every one of them carried no characterisation factor in any category while the same substance was characterised in surface water next door (#159). `data/context-carry-rules.json` is the convention that says a river or a lake takes the surface-water number, failing that the unspecified-water number; `lcia.context_carry` applies it to every method. The unconfined aquifer is left blank by the same file, on purpose.",
+  "expectations": [
+    {
+      "id": "0768-ammonium-in-a-river-is-characterised",
+      "issue": 768,
+      "title": "Ammonium discharged to a river scores what it scores in surface water",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Ammonium",
+        "context_display": "Environmental → Water → River",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "2493.2",
+        "derivation": "carried"
+      },
+      "comment": "The issue's own example. Nobody states a river number; the surface-water number is 2,493.2 CTUe/kg by two implementations, and the convention's river rule carries it in. The factor names the surface-water flow it was carried from."
+    },
+    {
+      "id": "0768-and-to-a-lake",
+      "issue": 768,
+      "title": "Ammonium discharged to a lake scores the same",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Ammonium",
+        "context_display": "Environmental → Water → Lake",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "2493.2",
+        "derivation": "carried"
+      },
+      "comment": "The lake rule is the river rule: both are surface water in our water vocabulary, asserted by this project because ENVO does not file them there."
+    },
+    {
+      "id": "0768-the-aquifer-is-left-blank-by-decision",
+      "issue": 768,
+      "title": "A substance nobody characterised in groundwater stays uncharacterised there",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_context_carry_rules",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "equals": 19
+      },
+      "comment": "The convention has fifteen downward rules and five upward ones, and none of them names the unconfined aquifer, agricultural soil, the fossil aquifer or aircraft cruise height as a recipient -- each left blank by decision, with the reasoning in the file. Claimed as the rule count rather than as an absent factor, because the absence this guards is a property of the file: adding a rule is a data change that should move this number and the comment beside it. `tests/test_lcia_context_carry.py` states which recipients those nineteen are."
+    },
+    {
+      "id": "0768-nothing-a-queue-holds-is-filled",
+      "issue": 768,
+      "title": "Kresoxim-methyl in silvicultural soil stays with its queue",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Kresoxim-methyl",
+        "context_display": "Environmental → Ground → Silvicultural",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "ecoinvent states 53,540 here against a soil number this list publishes as 134.73, and the row is on the proposed-factor queue. The silvicultural rule would carry 134.73 in from non-agricultural soil, and does not: a context an implementation speaks about is a queue's business, and the pass counts it under `held_by_a_queue` rather than answering the question by accident."
+    },
+    {
+      "id": "0768-the-same-rules-fill-stepwise",
+      "issue": 768,
+      "title": "Stepwise's ammonia reaches the rural stack it never stated",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Ammonia",
+        "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+        "category": "Ecotoxicity, aquatic",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "3.901162726",
+        "derivation": "carried"
+      },
+      "comment": "Stepwise 2006's export states one air row per substance, in unspecified air, because SimaPro applies that row to every sub-compartment without one. The convention is one file for every method, and the rural-stack rule takes unspecified air's number for Stepwise exactly as it does for EF 3.1: 8,258 factors on the 2026-09-01 build, against 9,622 the export states."
+    }
+  ]
+}

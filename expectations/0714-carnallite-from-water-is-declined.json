@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "description": "Carnallite -- the Dead Sea salt ecoinvent's Israeli magnesium takes 9.5 kg of per kg of metal -- is filed from water by both ecoinvent and EF 3.1, and the ecoinvent Centre gives it a `Resource use, minerals and metals` factor of 1.0375e-05 that the JRC does not. The number is chlorine's crustal factor weighted by carnallite's chlorine share, from a rule in the v3.12 implementation report (Table 20) that reads a mineral's formula and not its compartment. The same implementation gives chlorine from water nothing, and #137 recorded why: the indicator depletes the crust, and the ocean is not in it. So the list declines carnallite's number, on the record, in `lcia-factor-rulings.json`; the ecoinvent Centre's statement of it stays published as theirs.",
+  "expectations": [
+    {
+      "id": "0714-carnallite-from-water-is-not-restated",
+      "issue": 714,
+      "title": "Carnallite taken from water carries no `Resource use, minerals and metals` factor of this list's",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Carnallite",
+        "context_display": "Resource → Water → Unknown",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Before the ruling this was true by accident -- a factor only one implementation states sits on the proposed queue and is published by nobody until somebody answers -- and after it, on purpose. The ruling is what turns the queue row from `blocking` to `info`, which the measure below claims."
+    },
+    {
+      "id": "0714-the-ecoinvent-centre-still-says-so",
+      "issue": 714,
+      "title": "The ecoinvent Centre's 1.04E-05 for carnallite from water is still published under their name",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Carnallite",
+        "context_display": "Resource → Water → Unknown",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "ecoinvent Centre"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "1.04E-05"
+      },
+      "comment": "A decline withholds this list's number and erases nobody's. Quoted as Table 20 of the v3.12 report prints it; the workbook holds 1.037548743806311e-05."
+    },
+    {
+      "id": "0714-the-proposed-question-is-answered",
+      "issue": 714,
+      "title": "At least one proposed-factor question is answered by a ruling",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_proposed-factor_items_ruled",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 3
+      },
+      "comment": "Two on the 21 August 2026 build of `20ad511`, both the pool credit's (#139) and both `publish`; this ruling makes three, and is the first `decline` on any queue. Bounded below rather than stated exactly, because the count is the queue's and a fourth answer to some other question should not fail a claim about this one. The count says the ruling was read and applied rather than merely present in the file."
+    }
+  ]
+}

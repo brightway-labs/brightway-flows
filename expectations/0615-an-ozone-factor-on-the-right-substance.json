@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "description": "1,1,1-trichloroethane is the degreasing solvent the Montreal Protocol controls because it eats ozone. Destroying the ozone layer is the whole reason it was banned, and it is the effect an LCA practitioner reaches for this substance to measure. This list publishes it with no ozone-depletion factor at all, and publishes its ozone-depletion factor on 1,1,2-trichloroethane -- a suspected carcinogen that depletes no ozone, is in none of the Montreal Protocol's annexes, and has no published ozone-depletion potential. See #126.\n\nEF 3.1 gives an ozone-depletion factor to 23 distinct substances. Every other one is a genuine ozone depleter -- the CFCs, the halons, bromomethane, carbon tetrachloride, the HCFCs, halothane. It is a list of controlled substances with one impostor on it, and the impostor is the isomer of the substance that should be there.\n\n#599 found the same split in the name and settled it; this is the half a mapping change cannot reach, because a characterisation factor sits on the flow rather than on the mapping. Repointing ecoinvent's rows moved the rows and left the factor where EF put it.\n\nMeasured on the unbounded build of 20 August 2026 at `4a60213`, merging ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026 v1.",
+  "expectations": [
+    {
+      "id": "0615-the-solvent-carries-the-ozone-factor",
+      "issue": 615,
+      "title": "A kilogram of 1,1,1-trichloroethane released to rural air is scored for ozone depletion",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "1,1,1-Trichloroethane",
+        "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+        "category": "Ozone depletion",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "0.14"
+      },
+      "comment": "The number EF 3.1 states, published against the substance it describes. Before this change the selector matches nothing at all: no flow carrying 71-55-6 -- the solvent's registry number -- has an ozone-depletion factor in any compartment, so a practitioner asking what a kilogram of it does to the ozone layer is told nothing.\n\n0.14 is claimed rather than some number of this project's own, because what is known here is narrow and checkable: EF states this factor, and it belongs to this substance rather than to the one EF states it against. A file saying \"publish 0.14 for 1,1,1-trichloroethane\" would be this project inventing a characterisation factor, and would go on saying 0.14 after EF restated it as something else. The move carries EF's amount, unit and geography throughout.\n\nOne of the five air compartments is claimed rather than all five, because the claim is that the number reaches the substance; that it reaches every compartment the source factor covered is what `tests/` checks, and is bounded by construction -- a move can only land on the destination's flow of the same compartment and nowhere else."
+    },
+    {
+      "id": "0615-the-jrc-transcription-still-says-what-the-jrc-said",
+      "issue": 615,
+      "title": "The JRC's implementation goes on stating 0.14 against 1,1,2-trichloroethane",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "1,1,2-trichloroethane",
+        "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+        "category": "Ozone depletion",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "0.14"
+      },
+      "comment": "**A control, and it holds before and after.** The transcriptions are left exactly as they are: the JRC's implementation goes on saying 0.14 for 1,1,2-trichloroethane, because that is what the JRC published, and a reader comparing this list against EF 3.1 has to be able to see the difference rather than have it quietly reconciled. Only the consensus implementation moves the factor.\n\nThat is the stance `lcia.contradictions` already takes about biphenyl, where USEtox says something a millionth of what EF says and both transcriptions go on saying EF's number. It is here as an expectation because a change that reconciled the transcription would make the other claim in this file true and would be the wrong fix -- this is what stops it passing for the wrong reason."
+    }
+  ]
+}

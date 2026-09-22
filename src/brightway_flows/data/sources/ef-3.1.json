@@ -1,0 +1,19 @@
+{
+  "list_name": "EF",
+  "list_version": "3.1",
+  "role": "base",
+  "adapter": "brightway_flows.integrations.ef31:fetch",
+  "source_label": "EF 3.1",
+  "flow_iri_prefix": "https://vocab.brightway.one/ef/3.1/flow/",
+  "prepared_match_table": null,
+  "concept_associations": {
+    "scheme": "ef-3.1",
+    "pairs_from": "source_refs",
+    "primary_source": "https://eplca.jrc.ec.europa.eu/permalink/EF3_1/EF-v3.1.zip"
+  },
+  "inputs": {
+    "flows": "ef-31-flows.json",
+    "manual_fixes": "ef-3.1-manual-fixes.json",
+    "manual_additions": null
+  }
+}

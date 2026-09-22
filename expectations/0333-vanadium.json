@@ -1,0 +1,1728 @@
+{
+  "schema_version": 1,
+  "description": "Vanadium, and the metals table that settles what a speciation is worth.\n\n#333 opened on a factor: ecoinvent's `EF v3.1` implementation gives vanadium a human-toxicity factor exactly ten times EF 3.1's own, in all fourteen rows, mantissa preserved to five significant figures, which reads as a decimal point rather than a model. **That diagnosis does not survive the measurement.** EF 3.1 ships two vanadium flows in every context, `vanadium` and `vanadium (v)`, and states 1.3532e-06 for the first and 1.3532e-05 for the second in its own workbook: the ten is EF's speciation factor for vanadium(V), which is exactly why the mantissa survives it. ecoinvent was reading the right EF row; this project was comparing it against the wrong one, because its `Vanadium V` flows were routed to the element. The issue's own body raised this as a caveat and it was the answer. The two rulings that published EF's elemental number over ecoinvent's are withdrawn with this change, and no bug report is owed.\n\nMeasuring it turned up two more things, and both are matching defects rather than factor ones. ecoinvent's thirteen `Vanadium V` flows (CAS 22537-31-1) reached *two* substances, split by nothing but the compartment -- elemental `Vanadium` from air and soil, `Vanadium(3+)` from water -- and neither is pentavalent vanadium. And the reason the right target was unreachable is that EF 3.1 gives its own thirteen `vanadium (v)` flows the registry number 15121-26-3, which belongs to vanadium(2+); the list followed the number, renamed the object `Vanadium(2+)`, and published EF's pentavalent vanadium as the divalent ion.\n\nThe rest of the file is JRC 130796 Table 6, transcribed. It is the document that says when an element carries a speciation's factor and when it carries its own -- footnote **c** for the eighteen pairs where 'the CF of the element was set equal to the CF of the speciation', and footnote **d** for antimony, arsenic and iron, where the element's is the average of two forms and belongs to neither. Both halves are claimed here, because an expectation that checked only the speciation would pass on a build that had quietly stopped publishing the element, which is half of what this issue found. Values are written as the table prints them and compared to the significant figures they state.",
+  "expectations": [
+    {
+      "id": "0333-vanadium-v-is-not-the-divalent-ion",
+      "issue": 333,
+      "title": "The substance EF 3.1 calls `vanadium (v)` is published with pentavalent vanadium's registry number",
+      "subject": {
+        "kind": "substance",
+        "cas": "22537-31-1"
+      },
+      "expect": {
+        "exists": true,
+        "flow_count": {
+          "at_least": 13
+        }
+      },
+      "comment": "EF 3.1 ships thirteen flows named `vanadium (v)`, one per context, and gives every one of them 15121-26-3 -- vanadium(2+)'s number. Enrichment followed the number to ChEBI 33004 and `consensus_match` renamed the object `Vanadium(2+)`, so up to `fa1f4aa` the whole of EF's pentavalent vanadium was published as the divalent ion and 22537-31-1 named no substance in the list at all. `ef-3.1-manual-fixes.json` corrects the number; the name was never in doubt, because EF spells this family with the roman numeral everywhere -- `chromium (iii)` and `chromium (vi)`, `arsenic (iii)` and `arsenic (v)`, `iron (ii)` and `iron (iii)`."
+    },
+    {
+      "id": "0333-ecoinvents-vanadium-v-reaches-one-substance",
+      "issue": 333,
+      "title": "Every ecoinvent row carrying 22537-31-1 reaches one substance, whatever compartment it is in",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "cas": "22537-31-1"
+      },
+      "expect": {
+        "same_substance": true
+      },
+      "comment": "ecoinvent ships thirteen `Vanadium V` flows, all carrying 22537-31-1. In the 2026-08-18 build of `fa1f4aa` they reached two substances, split by nothing but the compartment: the four air and four soil rows landed on elemental `Vanadium` (7440-62-2) and the five water rows on `Vanadium(3+)` (22541-77-1). Neither is the substance the row states. This is the same defect as #46, #316 and the `Trifloxystrobin` case in #206, reached from the metals side."
+    },
+    {
+      "id": "0333-ecoinvents-vanadium-v-reaches-pentavalent-vanadium",
+      "issue": 333,
+      "title": "The ecoinvent rows carrying 22537-31-1 reach the substance carrying 22537-31-1",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "cas": "22537-31-1"
+      },
+      "expect": {
+        "target_cas": "22537-31-1"
+      },
+      "comment": "The positive half, and the reason the claim above is not satisfied by sending all thirteen rows to the element. EF 3.1 has the right target and the correspondence table does not use it: `vanadium (v)`, in all thirteen contexts. The thirteen rewrites in `ecoinvent-match-overrides.json` each keep the target *context* the table chose and change only the substance."
+    },
+    {
+      "id": "0333-the-element-keeps-its-own-flows",
+      "issue": 333,
+      "title": "Elemental vanadium is still published, and separately",
+      "subject": {
+        "kind": "substance",
+        "cas": "7440-62-2"
+      },
+      "expect": {
+        "exists": true,
+        "label": "Vanadium"
+      },
+      "comment": "The negative control for the two claims above. EF 3.1 publishes `vanadium` and `vanadium (v)` as different flows in the same thirteen contexts, with their own rows and their own factors, and moving ecoinvent's rows off the element must not merge the two or leave the element behind. Table 6 is why they carry the same ecotoxicity number and are still not the same substance: the CF of the element was *set equal to* the speciation's, which is a statement about two things agreeing rather than about one thing."
+    },
+    {
+      "id": "0333-the-jrc-keeps-its-own-human-toxicity-number",
+      "issue": 333,
+      "title": "EF 3.1 gives elemental vanadium a human-toxicity factor of 1.3532E-06 in air",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-62-2",
+        "category": "Human toxicity, non-cancer",
+        "context_display": "Environmental → Air → Unknown",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.3532E-06"
+      },
+      "comment": "The element's own number, and half of the pair the issue compared. **#49 opened on this number and its diagnosis does not survive the measurement.** The issue reported that ecoinvent's `EF v3.1` implementation gives vanadium a human-toxicity factor exactly ten times EF 3.1's own, in all fourteen rows, with the mantissa preserved to five significant figures, and reasoned that a decimal point moving while the digits stay is a unit slip rather than a model. The digits were real. The conclusion was not: EF 3.1 ships *two* vanadium flows in every context, `vanadium` (7440-62-2) and `vanadium (v)` (pentavalent), and its own workbook states 1.3532e-06 for the first and 1.3532e-05 for the second in air/unspecified. The factor of ten is EF's speciation factor for vanadium(V), derived as ten times the element's, which is precisely why the mantissa survives it.\n\nWhat was wrong was this project's bridge. ecoinvent's `Vanadium V` rows carry 22537-31-1 and were routed to EF's *element*, so its factors were compared against the wrong EF row. #49's own body raised exactly this as a caveat -- \"if ecoinvent intends a different EF target that our bridge does not see, the ratio is against the wrong baseline\" -- and it did. The two factor rulings that published EF's elemental number over ecoinvent's are withdrawn with this change, because with the routing corrected the two implementations agree to every digit and there is nothing left to rule."
+    },
+    {
+      "id": "0333-ecoinvent-keeps-its-own-human-toxicity-number",
+      "issue": 333,
+      "title": "EF 3.1 gives pentavalent vanadium ten times that, and says so itself",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-31-1",
+        "category": "Human toxicity, non-cancer",
+        "context_display": "Environmental → Air → Unknown",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.3532E-05"
+      },
+      "comment": "The other half, and the one that settles it. This is the JRC's own implementation -- EF's number for EF's own `vanadium (v)` flow -- not ecoinvent's. Reading it required the two corrections this change makes: EF gives those thirteen flows vanadium(2+)'s registry number, so the substance was published as the divalent ion and 22537-31-1 named nothing; and ecoinvent's rows were routed to the element, so nobody was comparing these two rows at all. **#49 opened on this number and its diagnosis does not survive the measurement.** The issue reported that ecoinvent's `EF v3.1` implementation gives vanadium a human-toxicity factor exactly ten times EF 3.1's own, in all fourteen rows, with the mantissa preserved to five significant figures, and reasoned that a decimal point moving while the digits stay is a unit slip rather than a model. The digits were real. The conclusion was not: EF 3.1 ships *two* vanadium flows in every context, `vanadium` (7440-62-2) and `vanadium (v)` (pentavalent), and its own workbook states 1.3532e-06 for the first and 1.3532e-05 for the second in air/unspecified. The factor of ten is EF's speciation factor for vanadium(V), derived as ten times the element's, which is precisely why the mantissa survives it.\n\nWhat was wrong was this project's bridge. ecoinvent's `Vanadium V` rows carry 22537-31-1 and were routed to EF's *element*, so its factors were compared against the wrong EF row. #49's own body raised exactly this as a caveat -- \"if ecoinvent intends a different EF target that our bridge does not see, the ratio is against the wrong baseline\" -- and it did. The two factor rulings that published EF's elemental number over ecoinvent's are withdrawn with this change, because with the routing corrected the two implementations agree to every digit and there is nothing left to rule."
+    },
+    {
+      "id": "0333-the-consensus-takes-the-methods-own-publisher",
+      "issue": 333,
+      "title": "ecoinvent's implementation agrees with EF once its rows reach the right substance",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-31-1",
+        "category": "Human toxicity, non-cancer",
+        "context_display": "Environmental → Air → Unknown",
+        "implemented_by": "ecoinvent Centre"
+      },
+      "expect": {
+        "amount": "1.3532E-05"
+      },
+      "comment": "The claim that turns #49 from a bug report into a closed question. ecoinvent's implementation was reading EF's `vanadium (v)` row all along; once this list's own routing sends its `Vanadium V` flows to pentavalent vanadium, the two implementations state the same number and `characterise` records the factor as `agreed` rather than contested. No bug report is owed to the ecoinvent Centre. **#49 opened on this number and its diagnosis does not survive the measurement.** The issue reported that ecoinvent's `EF v3.1` implementation gives vanadium a human-toxicity factor exactly ten times EF 3.1's own, in all fourteen rows, with the mantissa preserved to five significant figures, and reasoned that a decimal point moving while the digits stay is a unit slip rather than a model. The digits were real. The conclusion was not: EF 3.1 ships *two* vanadium flows in every context, `vanadium` (7440-62-2) and `vanadium (v)` (pentavalent), and its own workbook states 1.3532e-06 for the first and 1.3532e-05 for the second in air/unspecified. The factor of ten is EF's speciation factor for vanadium(V), derived as ten times the element's, which is precisely why the mantissa survives it.\n\nWhat was wrong was this project's bridge. ecoinvent's `Vanadium V` rows carry 22537-31-1 and were routed to EF's *element*, so its factors were compared against the wrong EF row. #49's own body raised exactly this as a caveat -- \"if ecoinvent intends a different EF target that our bridge does not see, the ratio is against the wrong baseline\" -- and it did. The two factor rulings that published EF's elemental number over ecoinvent's are withdrawn with this change, because with the routing corrected the two implementations agree to every digit and there is nothing left to rule."
+    },
+    {
+      "id": "0333-what-this-list-publishes-for-pentavalent-vanadium",
+      "issue": 333,
+      "title": "This list publishes 1.3532E-05 for pentavalent vanadium in air",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-31-1",
+        "category": "Human toxicity, non-cancer",
+        "context_display": "Environmental → Air → Unknown",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.3532E-05"
+      },
+      "comment": "What a consumer reads, and the reason the two claims above matter beyond tidiness. Until this change an ecoinvent inventory's release of vanadium(V) to air was scored with elemental vanadium's factor, one tenth of the number EF states for the substance the row names. **#49 opened on this number and its diagnosis does not survive the measurement.** The issue reported that ecoinvent's `EF v3.1` implementation gives vanadium a human-toxicity factor exactly ten times EF 3.1's own, in all fourteen rows, with the mantissa preserved to five significant figures, and reasoned that a decimal point moving while the digits stay is a unit slip rather than a model. The digits were real. The conclusion was not: EF 3.1 ships *two* vanadium flows in every context, `vanadium` (7440-62-2) and `vanadium (v)` (pentavalent), and its own workbook states 1.3532e-06 for the first and 1.3532e-05 for the second in air/unspecified. The factor of ten is EF's speciation factor for vanadium(V), derived as ten times the element's, which is precisely why the mantissa survives it.\n\nWhat was wrong was this project's bridge. ecoinvent's `Vanadium V` rows carry 22537-31-1 and were routed to EF's *element*, so its factors were compared against the wrong EF row. #49's own body raised exactly this as a caveat -- \"if ecoinvent intends a different EF target that our bridge does not see, the ratio is against the wrong baseline\" -- and it did. The two factor rulings that published EF's elemental number over ecoinvent's are withdrawn with this change, because with the routing corrected the two implementations agree to every digit and there is nothing left to rule."
+    },
+    {
+      "id": "0333-table6-aluminium-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Aluminium` a freshwater ecotoxicity factor of 4.35E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7429-90-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.35E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `aluminium` as 4.35E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Aluminium` (7429-90-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-aluminium-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.35E+03 CTUe/kg for `Aluminium` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7429-90-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.35E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `aluminium` as 4.35E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Aluminium` (7429-90-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-aluminium-iii-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Aluminium (iii)` a freshwater ecotoxicity factor of 4.35E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-23-1",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.35E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `aluminium (iii)` as 4.35E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Aluminium (iii)` (22537-23-1), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-aluminium-iii-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.35E+03 CTUe/kg for `Aluminium (iii)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-23-1",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.35E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `aluminium (iii)` as 4.35E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Aluminium (iii)` (22537-23-1), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-antimony-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Antimony` a freshwater ecotoxicity factor of 1.12E+04 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-36-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.12E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `antimony` as 1.12E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Antimony` (7440-36-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **d**: the element's CF is the average of its two chemical forms, so this number is the element's own and is not shared with either speciation. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-antimony-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.12E+04 CTUe/kg for `Antimony` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-36-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.12E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `antimony` as 1.12E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Antimony` (7440-36-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **d**: the element's CF is the average of its two chemical forms, so this number is the element's own and is not shared with either speciation. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-antimony3-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Antimony(3+)` a freshwater ecotoxicity factor of 1.43E+02 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "23713-48-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.43E+02"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `antimony (iii)` as 1.43E+02 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Antimony(3+)` (23713-48-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-antimony3-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.43E+02 CTUe/kg for `Antimony(3+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "23713-48-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.43E+02"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `antimony (iii)` as 1.43E+02 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Antimony(3+)` (23713-48-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-antimony5-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Antimony(5+)` a freshwater ecotoxicity factor of 2.23E+04 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-51-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "2.23E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `antimony (v)` as 2.23E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Antimony(5+)` (22537-51-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-antimony5-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 2.23E+04 CTUe/kg for `Antimony(5+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-51-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "2.23E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `antimony (v)` as 2.23E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Antimony(5+)` (22537-51-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-arsenic-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Arsenic` a freshwater ecotoxicity factor of 3.26E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-38-2",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "3.26E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `arsenic` as 3.26E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Arsenic` (7440-38-2), and the context the table means is `Environmental → Water → Surface water`. The table marks it **d**: the element's CF is the average of its two chemical forms, so this number is the element's own and is not shared with either speciation. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-arsenic-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 3.26E+03 CTUe/kg for `Arsenic` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-38-2",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "3.26E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `arsenic` as 3.26E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Arsenic` (7440-38-2), and the context the table means is `Environmental → Water → Surface water`. The table marks it **d**: the element's CF is the average of its two chemical forms, so this number is the element's own and is not shared with either speciation. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-arsenic3-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Arsenic(3+)` a freshwater ecotoxicity factor of 1.79E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22541-54-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.79E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `arsenic (iii)` as 1.79E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Arsenic(3+)` (22541-54-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-arsenic3-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.79E+03 CTUe/kg for `Arsenic(3+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22541-54-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.79E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `arsenic (iii)` as 1.79E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Arsenic(3+)` (22541-54-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-arsenic5-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Arsenic(5+)` a freshwater ecotoxicity factor of 4.74E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "17428-41-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.74E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `arsenic (v)` as 4.74E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Arsenic(5+)` (17428-41-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-arsenic5-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.74E+03 CTUe/kg for `Arsenic(5+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "17428-41-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.74E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `arsenic (v)` as 4.74E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Arsenic(5+)` (17428-41-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number.\n\n**Pending, and this one is a finding rather than a transcription check.** The ecoinvent Centre's implementation states this flow's factor as the *element's* Table 6 number -- 2.11E+03 for iron, 3.26E+03 for arsenic, both footnote **d**, both the average of two chemical forms and the factor for neither of them. The JRC states the speciation's. That is a contested factor, so this list publishes nothing at all for the substance in fresh water and the claim reports `unresolved`. It is left open deliberately: the vanadium case in this same file is a warning that a disagreement between two implementations can be an artefact of which EF row each one was resolved against, and settling these two needs the same check of ecoinvent's own correspondence that vanadium got. Recorded here so it is a question somebody can pick up rather than a silent zero. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    },
+    {
+      "id": "0333-table6-barium-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Barium` a freshwater ecotoxicity factor of 3.70E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-39-3",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "3.70E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `barium` as 3.70E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Barium` (7440-39-3), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-barium-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 3.70E+03 CTUe/kg for `Barium` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-39-3",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "3.70E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `barium` as 3.70E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Barium` (7440-39-3), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-barium2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Barium(2+)` a freshwater ecotoxicity factor of 3.70E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22541-12-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "3.70E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `barium (ii)` as 3.70E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Barium(2+)` (22541-12-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-barium2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 3.70E+03 CTUe/kg for `Barium(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22541-12-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "3.70E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `barium (ii)` as 3.70E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Barium(2+)` (22541-12-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-beryllium-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Beryllium` a freshwater ecotoxicity factor of 1.63E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-41-7",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.63E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `beryllium` as 1.63E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Beryllium` (7440-41-7), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-beryllium-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.63E+03 CTUe/kg for `Beryllium` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-41-7",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.63E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `beryllium` as 1.63E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Beryllium` (7440-41-7), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-beryllium2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Beryllium(2+)` a freshwater ecotoxicity factor of 1.63E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-20-8",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.63E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `beryllium (ii)` as 1.63E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Beryllium(2+)` (22537-20-8), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-beryllium2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.63E+03 CTUe/kg for `Beryllium(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-20-8",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.63E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `beryllium (ii)` as 1.63E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Beryllium(2+)` (22537-20-8), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-chromium-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Chromium` a freshwater ecotoxicity factor of 1.23E+04 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-47-3",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.23E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `chromium` as 1.23E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Chromium` (7440-47-3), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-chromium-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.23E+04 CTUe/kg for `Chromium` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-47-3",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.23E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `chromium` as 1.23E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Chromium` (7440-47-3), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-chromium3-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Chromium(3+)` a freshwater ecotoxicity factor of 9.52E+02 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "16065-83-1",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "9.52E+02"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `chromium (iii)` as 9.52E+02 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Chromium(3+)` (16065-83-1), and the context the table means is `Environmental → Water → Surface water`. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-chromium3-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 9.52E+02 CTUe/kg for `Chromium(3+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "16065-83-1",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "9.52E+02"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `chromium (iii)` as 9.52E+02 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Chromium(3+)` (16065-83-1), and the context the table means is `Environmental → Water → Surface water`. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-chromium6-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Chromium(6+)` a freshwater ecotoxicity factor of 1.23E+04 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "18540-29-9",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.23E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `chromium (vi)` as 1.23E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Chromium(6+)` (18540-29-9), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-chromium6-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.23E+04 CTUe/kg for `Chromium(6+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "18540-29-9",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.23E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `chromium (vi)` as 1.23E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Chromium(6+)` (18540-29-9), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-cadmium-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Cadmium` a freshwater ecotoxicity factor of 6.74E+05 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-43-9",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "6.74E+05"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cadmium` as 6.74E+05 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cadmium` (7440-43-9), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-cadmium-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 6.74E+05 CTUe/kg for `Cadmium` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-43-9",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "6.74E+05"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cadmium` as 6.74E+05 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cadmium` (7440-43-9), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-cadmium2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Cadmium(2+)` a freshwater ecotoxicity factor of 6.74E+05 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-48-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "6.74E+05"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cadmium (ii)` as 6.74E+05 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cadmium(2+)` (22537-48-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-cadmium2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 6.74E+05 CTUe/kg for `Cadmium(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-48-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "6.74E+05"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cadmium (ii)` as 6.74E+05 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cadmium(2+)` (22537-48-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-cesium-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Cesium` a freshwater ecotoxicity factor of 4.47E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-46-2",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.47E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cesium` as 4.47E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cesium` (7440-46-2), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-cesium-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.47E+03 CTUe/kg for `Cesium` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-46-2",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.47E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cesium` as 4.47E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cesium` (7440-46-2), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-cesium1-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Cesium(1+)` a freshwater ecotoxicity factor of 4.47E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "18459-37-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.47E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cesium (i)` as 4.47E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cesium(1+)` (18459-37-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-cesium1-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.47E+03 CTUe/kg for `Cesium(1+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "18459-37-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.47E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cesium (i)` as 4.47E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cesium(1+)` (18459-37-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-cobalt-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Cobalt` a freshwater ecotoxicity factor of 5.53E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-48-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "5.53E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cobalt` as 5.53E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cobalt` (7440-48-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-cobalt-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 5.53E+03 CTUe/kg for `Cobalt` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-48-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "5.53E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cobalt` as 5.53E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cobalt` (7440-48-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-cobalt2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Cobalt(2+)` a freshwater ecotoxicity factor of 5.53E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22541-53-3",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "5.53E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cobalt (ii)` as 5.53E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cobalt(2+)` (22541-53-3), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-cobalt2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 5.53E+03 CTUe/kg for `Cobalt(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22541-53-3",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "5.53E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cobalt (ii)` as 5.53E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cobalt(2+)` (22541-53-3), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-copper-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Copper` a freshwater ecotoxicity factor of 4.65E+01 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-50-8",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.65E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `copper` as 4.65E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Copper` (7440-50-8), and the context the table means is `Environmental → Water → Surface water`. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-copper-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.65E+01 CTUe/kg for `Copper` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-50-8",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.65E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `copper` as 4.65E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Copper` (7440-50-8), and the context the table means is `Environmental → Water → Surface water`. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-copper2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Copper(2+)` a freshwater ecotoxicity factor of 4.65E+01 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "15158-11-9",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.65E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `copper (ii)` as 4.65E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Copper(2+)` (15158-11-9), and the context the table means is `Environmental → Water → Surface water`. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-copper2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.65E+01 CTUe/kg for `Copper(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "15158-11-9",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.65E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `copper (ii)` as 4.65E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Copper(2+)` (15158-11-9), and the context the table means is `Environmental → Water → Surface water`. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-iron-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Iron` a freshwater ecotoxicity factor of 2.11E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7439-89-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "2.11E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `iron` as 2.11E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Iron` (7439-89-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **d**: the element's CF is the average of its two chemical forms, so this number is the element's own and is not shared with either speciation. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-iron-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 2.11E+03 CTUe/kg for `Iron` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7439-89-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "2.11E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `iron` as 2.11E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Iron` (7439-89-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **d**: the element's CF is the average of its two chemical forms, so this number is the element's own and is not shared with either speciation. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-iron2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Iron(2+)` a freshwater ecotoxicity factor of 1.58E+02 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "15438-31-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.58E+02"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `iron (ii)` as 1.58E+02 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Iron(2+)` (15438-31-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-iron2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.58E+02 CTUe/kg for `Iron(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "15438-31-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.58E+02"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `iron (ii)` as 1.58E+02 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Iron(2+)` (15438-31-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number.\n\n**Pending, and this one is a finding rather than a transcription check.** The ecoinvent Centre's implementation states this flow's factor as the *element's* Table 6 number -- 2.11E+03 for iron, 3.26E+03 for arsenic, both footnote **d**, both the average of two chemical forms and the factor for neither of them. The JRC states the speciation's. That is a contested factor, so this list publishes nothing at all for the substance in fresh water and the claim reports `unresolved`. It is left open deliberately: the vanadium case in this same file is a warning that a disagreement between two implementations can be an artefact of which EF row each one was resolved against, and settling these two needs the same check of ecoinvent's own correspondence that vanadium got. Recorded here so it is a question somebody can pick up rather than a silent zero. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    },
+    {
+      "id": "0333-table6-iron3-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Iron(3+)` a freshwater ecotoxicity factor of 4.06E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "20074-52-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.06E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `iron (iii)` as 4.06E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Iron(3+)` (20074-52-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-iron3-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.06E+03 CTUe/kg for `Iron(3+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "20074-52-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.06E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `iron (iii)` as 4.06E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Iron(3+)` (20074-52-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b**: no ecotoxicological data from EU sources were available, so the HC20 endpoint was extrapolated from USEtox's HC50 by the factor 0.34, which raises the EF3.0 number by 18%. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-lead-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Lead` a freshwater ecotoxicity factor of 6.83E+01 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7439-92-1",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "6.83E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `lead` as 6.83E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Lead` (7439-92-1), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-lead-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 6.83E+01 CTUe/kg for `Lead` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7439-92-1",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "6.83E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `lead` as 6.83E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Lead` (7439-92-1), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-lead2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Lead(2+)` a freshwater ecotoxicity factor of 6.83E+01 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "14280-50-3",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "6.83E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `lead (ii)` as 6.83E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Lead(2+)` (14280-50-3), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-lead2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 6.83E+01 CTUe/kg for `Lead(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "14280-50-3",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "6.83E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `lead (ii)` as 6.83E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Lead(2+)` (14280-50-3), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-manganese-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Manganese` a freshwater ecotoxicity factor of 5.17E+01 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7439-96-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "5.17E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `manganese` as 5.17E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Manganese` (7439-96-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-manganese-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 5.17E+01 CTUe/kg for `Manganese` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7439-96-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "5.17E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `manganese` as 5.17E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Manganese` (7439-96-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-manganese2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Manganese(2+)` a freshwater ecotoxicity factor of 5.17E+01 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "16397-91-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "5.17E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `manganese (ii)` as 5.17E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Manganese(2+)` (16397-91-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-manganese2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 5.17E+01 CTUe/kg for `Manganese(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "16397-91-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "5.17E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `manganese (ii)` as 5.17E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Manganese(2+)` (16397-91-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-mercury-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Mercury` a freshwater ecotoxicity factor of 3.32E+04 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7439-97-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "3.32E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `mercury` as 3.32E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Mercury` (7439-97-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-mercury-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 3.32E+04 CTUe/kg for `Mercury` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7439-97-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "3.32E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `mercury` as 3.32E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Mercury` (7439-97-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-mercury2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Mercury(2+)` a freshwater ecotoxicity factor of 3.32E+04 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "14302-87-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "3.32E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `mercury (ii)` as 3.32E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Mercury(2+)` (14302-87-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-mercury2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 3.32E+04 CTUe/kg for `Mercury(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "14302-87-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "3.32E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `mercury (ii)` as 3.32E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Mercury(2+)` (14302-87-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-molybdenum-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Molybdenum` a freshwater ecotoxicity factor of 9.84E-01 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7439-98-7",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "9.84E-01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `molybdenum` as 9.84E-01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Molybdenum` (7439-98-7), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-molybdenum-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 9.84E-01 CTUe/kg for `Molybdenum` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7439-98-7",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "9.84E-01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `molybdenum` as 9.84E-01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Molybdenum` (7439-98-7), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-molybdenum6-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Molybdenum(6+)` a freshwater ecotoxicity factor of 9.84E-01 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "16065-87-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "9.84E-01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `molybdenum (vi)` as 9.84E-01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Molybdenum(6+)` (16065-87-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-molybdenum6-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 9.84E-01 CTUe/kg for `Molybdenum(6+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "16065-87-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "9.84E-01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `molybdenum (vi)` as 9.84E-01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Molybdenum(6+)` (16065-87-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-nickel-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Nickel` a freshwater ecotoxicity factor of 2.70E+04 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-02-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "2.70E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `nickel` as 2.70E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Nickel` (7440-02-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-nickel-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 2.70E+04 CTUe/kg for `Nickel` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-02-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "2.70E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `nickel` as 2.70E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Nickel` (7440-02-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-nickel2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Nickel(2+)` a freshwater ecotoxicity factor of 2.70E+04 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "14701-22-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "2.70E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `nickel (ii)` as 2.70E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Nickel(2+)` (14701-22-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-nickel2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 2.70E+04 CTUe/kg for `Nickel(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "14701-22-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "2.70E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `nickel (ii)` as 2.70E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Nickel(2+)` (14701-22-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-selenium-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Selenium` a freshwater ecotoxicity factor of 8.61E+01 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7782-49-2",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "8.61E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `selenium` as 8.61E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Selenium` (7782-49-2), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-selenium-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 8.61E+01 CTUe/kg for `Selenium` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7782-49-2",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "8.61E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `selenium` as 8.61E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Selenium` (7782-49-2), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-selenium4-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Selenium(4+)` a freshwater ecotoxicity factor of 8.61E+01 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22541-55-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "8.61E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `selenium (iv)` as 8.61E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Selenium(4+)` (22541-55-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-selenium4-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 8.61E+01 CTUe/kg for `Selenium(4+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22541-55-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "8.61E+01"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `selenium (iv)` as 8.61E+01 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Selenium(4+)` (22541-55-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-silver-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Silver` a freshwater ecotoxicity factor of 1.77E+05 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-22-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.77E+05"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `silver` as 1.77E+05 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Silver` (7440-22-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-silver-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.77E+05 CTUe/kg for `Silver` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-22-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.77E+05"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `silver` as 1.77E+05 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Silver` (7440-22-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-silver1-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Silver(1+)` a freshwater ecotoxicity factor of 1.77E+05 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "14701-21-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.77E+05"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `silver (i)` as 1.77E+05 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Silver(1+)` (14701-21-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-silver1-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.77E+05 CTUe/kg for `Silver(1+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "14701-21-4",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.77E+05"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `silver (i)` as 1.77E+05 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Silver(1+)` (14701-21-4), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-strontium-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Strontium` a freshwater ecotoxicity factor of 1.81E+04 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-24-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.81E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `strontium` as 1.81E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Strontium` (7440-24-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-strontium-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.81E+04 CTUe/kg for `Strontium` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-24-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.81E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `strontium` as 1.81E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Strontium` (7440-24-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-strontium2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Strontium(2+)` a freshwater ecotoxicity factor of 1.81E+04 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-39-9",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.81E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `strontium (ii)` as 1.81E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Strontium(2+)` (22537-39-9), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-strontium2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.81E+04 CTUe/kg for `Strontium(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-39-9",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.81E+04"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `strontium (ii)` as 1.81E+04 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Strontium(2+)` (22537-39-9), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-thallium-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Thallium` a freshwater ecotoxicity factor of 4.15E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-28-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.15E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `thallium` as 4.15E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Thallium` (7440-28-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-thallium-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.15E+03 CTUe/kg for `Thallium` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-28-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.15E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `thallium` as 4.15E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Thallium` (7440-28-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-thallium1-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Thallium(1+)` a freshwater ecotoxicity factor of 4.15E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-56-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.15E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `thallium (i)` as 4.15E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Thallium(1+)` (22537-56-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-thallium1-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.15E+03 CTUe/kg for `Thallium(1+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-56-0",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.15E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `thallium (i)` as 4.15E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Thallium(1+)` (22537-56-0), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-tin-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Tin` a freshwater ecotoxicity factor of 5.13E+02 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-31-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "5.13E+02"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `tin` as 5.13E+02 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Tin` (7440-31-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-tin-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 5.13E+02 CTUe/kg for `Tin` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-31-5",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "5.13E+02"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `tin` as 5.13E+02 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Tin` (7440-31-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-tin2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Tin(2+)` a freshwater ecotoxicity factor of 5.13E+02 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22541-90-8",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "5.13E+02"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `tin (ii)` as 5.13E+02 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Tin(2+)` (22541-90-8), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-tin2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 5.13E+02 CTUe/kg for `Tin(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22541-90-8",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "5.13E+02"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `tin (ii)` as 5.13E+02 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Tin(2+)` (22541-90-8), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-vanadium-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Vanadium` a freshwater ecotoxicity factor of 4.78E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-62-2",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.78E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `vanadium` as 4.78E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Vanadium` (7440-62-2), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-vanadium-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.78E+03 CTUe/kg for `Vanadium` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-62-2",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.78E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `vanadium` as 4.78E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Vanadium` (7440-62-2), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-vanadium5-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Vanadium(5+)` a freshwater ecotoxicity factor of 4.78E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-31-1",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "4.78E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `vanadium (v)` as 4.78E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Vanadium(5+)` (22537-31-1), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-vanadium5-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 4.78E+03 CTUe/kg for `Vanadium(5+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "22537-31-1",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "4.78E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `vanadium (v)` as 4.78E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Vanadium(5+)` (22537-31-1), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-zinc-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Zinc` a freshwater ecotoxicity factor of 1.66E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-66-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.66E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `zinc` as 1.66E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Zinc` (7440-66-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-zinc-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.66E+03 CTUe/kg for `Zinc` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "7440-66-6",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.66E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `zinc` as 1.66E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Zinc` (7440-66-6), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    },
+    {
+      "id": "0333-table6-zinc2-as-ef-published-it",
+      "issue": 333,
+      "title": "EF 3.1 gives `Zinc(2+)` a freshwater ecotoxicity factor of 1.66E+03 CTUe/kg",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "23713-49-7",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "amount": "1.66E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `zinc (ii)` as 1.66E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Zinc(2+)` (23713-49-7), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+    },
+    {
+      "id": "0333-table6-zinc2-as-this-list-publishes-it",
+      "issue": 333,
+      "title": "This list publishes 1.66E+03 CTUe/kg for `Zinc(2+)` in fresh water",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "23713-49-7",
+        "category": "Ecotoxicity, freshwater",
+        "context_display": "Environmental → Water → Surface water",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "amount": "1.66E+03"
+      },
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `zinc (ii)` as 1.66E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Zinc(2+)` (23713-49-7), and the context the table means is `Environmental → Water → Surface water`. The table marks it **c**: the CF of the element was set equal to the CF of the speciation, which is why the same number has to appear on both, and why an expectation that only checked one of them would pass on a build that had lost the other. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+    }
+  ]
+}

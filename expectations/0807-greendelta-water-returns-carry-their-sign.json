@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 measures water use as a pair. Taking a cubic metre of water out of a French river costs +6.98; putting a cubic metre back is −6.98, and a process that withdraws and returns the same water scores about nothing, which is the point of the pair.\n\nGreenDelta's package states the second half positive. Their 1,438 withdrawal factors are all positive, which is right, and all 416 of their water-use factors on flows emitted to water are positive too, which is not. As shipped, returning water to the environment adds to a water-use score under their implementation, and a process that takes a cubic metre and gives it back scores twice the withdrawal rather than nothing.\n\nThe magnitudes are the JRC's exactly — where this list can compare a withdrawal of theirs with the JRC's, 1,046 of them on groundwater, lake water, river water, turbine water and cooling water, every one agrees to the digit — so what is missing is the sign rather than a different model. And the convention is not lost everywhere in their file: land transformation is a pair in the same way, `from forest` against `to forest`, and 5,733 of their land-use factors are negative.\n\nWhich half of the pair a factor is, is not stated on the factor. It is the **direction of the flow** it characterises, and openLCA states that in the flow's own category path: `Elementary flows/Resource/...` for a withdrawal, `Elementary flows/Emission to water/...` for a return. So the sign is applied where the package is read, from the direction the package itself states — not patched flow by flow, and not left for a reader of the difference report to notice.\n\nOne category, and emissions to water rather than emissions. Water evaporated to air is a loss from the catchment and counts positively — the ecoinvent Centre states +42.95 for `Water vapour` in every air compartment — and `Water use` is the only EF 3.1 category stated as a pair at all: `Land use` looks like one and is not, because `Transformation, from forest` and `Transformation, to forest` are two flows, both resources, with the sign on the flow. Measured on the archive this project holds, the rule moves 416 of 26,179 factors and no other.\n\nNothing this list publishes moves. GreenDelta's implementation is in the comparison and decides nothing (#157), so the consensus stays at 323,890 factors either way. What changes is what the comparison says: 209 rows that were `incomparable` because a ratio between a positive and a negative number is not a ratio now agree with the JRC's to the digit.",
+  "expectations": [
+    {
+      "id": "0807-a-water-return-of-theirs-is-negative",
+      "issue": 807,
+      "title": "GreenDelta's water-use factor for water returned to an unconfined aquifer is negative",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Water",
+        "context_display": "Environmental → Water → Unconfined aquifer",
+        "category": "Water use",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "count": 1,
+        "amount": "-42.95"
+      },
+      "comment": "A row of the returning half that is a row on its own, which is what makes it claimable: their `Water` in `Emission to water / ground water` states one number for no country, 42.95, and the flow is an emission to water, so it is the returning half and EF states it negative. 42.95 is the world-average scarcity factor, the magnitude the JRC states for the withdrawal.\n\nRestated on 2026-08-30. This claim was first written about `Water` in Environmental -> Water -> Confined aquifer with fossil groundwater, at -0.634, and that factor came from a row called `Water, NO` -- Norway's number, published under no country because the country was in the flow name. #166's second change sets every such row aside (`lcia.regionalised_names`), so the subject went away; the claim is the same one, about the sign of a return, on a row whose number is the world's."
+    },
+    {
+      "id": "0807-a-withdrawal-of-theirs-is-untouched",
+      "issue": 807,
+      "title": "GreenDelta's water-use factor for water withdrawn is still positive",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Water",
+        "context_display": "Resource → Water → Unknown",
+        "category": "Water use",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "count": 1,
+        "amount": "42.95"
+      },
+      "comment": "The control, and the other half of the same pair on the same substance: a cubic metre taken out, where the row above is a cubic metre put back. Already true on the build of 2026-08-29 and pinned so it stays true, because a rule that read the category slug and not the flow's direction would negate this one too and halve every water-use score their implementation reports. 42.95 is also the magnitude the JRC states for `Water` emitted to surface water, at −42.95, which is the pairing this whole file is about."
+    }
+  ]
+}

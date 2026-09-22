@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "description": "A row that names a compartment this list holds is published in that compartment, rather than on the nearest coarser flow that happens to exist when the row is processed. The scoring fallback used to take the best-scoring flow of the right substance whatever compartment it was in, and on the 18 August 2026 build all twelve of its uses landed a row whose compartment is known onto a flow whose compartment is `Unknown`. Because the list grows as the merge runs, that also made the answer depend on ordering: `Aerosols, Radioactive, Unspecified` matched onto `Air → Unknown` during the ecoinvent 3.12 pass and, the identical row, minted a flow in its own compartment during the 3.8 pass. These claims name one row per compartment the fallback coarsened. See #112, and #85 for the contradiction veto this reuses.",
+  "expectations": [
+    {
+      "id": "0566-the-aerosols-row-is-one-flow-in-both-releases",
+      "issue": 566,
+      "title": "ecoinvent's radioactive aerosols reach one consensus flow whichever release they come from",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "uuid": "2e18b480-7449-4800-85bd-c8ad0e649c03"},
+      "expect": {
+        "row_count": 2,
+        "same_target": true,
+        "target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+        "target_characterised": false
+      },
+      "comment": "The row the issue is named for, and the only one of the twelve that both releases ship. It says `air / urban air close to ground` in 3.8 and in 3.12 alike, and normalises to `Environmental → Air → Ground level → Urban (>1000 people/square mile)` both times. On the 18 August build (head fffe12a, merge f9b89db5) the two passes answered differently: 3.12 matched it onto `1a1379bc…`, `Air → Unknown`, on a best score of 3 against 2, and 3.8 minted `04b62d52…` in the row's own compartment, because by then a third flow of the substance existed and two candidates tied at 3. `same_target` is the claim that carries the issue -- an inventory built on 3.8 and the same inventory built on 3.12 must point at one flow -- and the context IRI says which of the two answers is the right one. `target_characterised` is stated because nothing about this may move a published number: neither target carried a factor before, and the flow the row now reaches must not either."
+    },
+    {
+      "id": "0566-thifensulfuron-on-farm-soil-stays-on-farm-soil",
+      "issue": 566,
+      "title": "Thifensulfuron applied to agricultural soil is published in agricultural soil",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "uuid": "bc44051d-e6c4-4aa2-a939-73ae1afd9c64"},
+      "expect": {"target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri"},
+      "comment": "Published on `d402297a…`, `Ground → Unknown`, before this change. Stated beside the silvicultural row below because the two were reaching the *same* flow: two compartments this list holds, collapsed into one that says the compartment is not known."
+    },
+    {
+      "id": "0566-thifensulfuron-on-forest-soil-stays-on-forest-soil",
+      "issue": 566,
+      "title": "Thifensulfuron applied to forestry soil is published in forestry soil",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "uuid": "0f8ac5f0-eece-5ad6-8fd5-ac22290eb4f3"},
+      "expect": {"target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-silv"},
+      "comment": "The other half of the pair. Forestry soil and farm soil are different places -- it is the distinction #84 exists for -- and a herbicide sprayed on one is not a herbicide sprayed on the other."
+    },
+    {
+      "id": "0566-pesticides-to-surface-water-stay-in-surface-water",
+      "issue": 566,
+      "title": "Unspecified pesticides released to surface water are published in surface water",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "uuid": "d57c6fb8-b614-5f6b-a8ac-b5fa9dade725"},
+      "expect": {"target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa"},
+      "comment": "One of three `Pesticides, Unspecified` rows -- surface water, the unconfined aquifer, and long-term water -- that all reached `92524e9f…`, `Water → Unknown`, on the 18 August build. Three compartments, one flow."
+    },
+    {
+      "id": "0566-pesticides-to-the-aquifer-stay-in-the-aquifer",
+      "issue": 566,
+      "title": "Unspecified pesticides reaching the unconfined aquifer are published there",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "uuid": "3d7e26d4-d1a8-5681-8e99-a7bbf25f0e97"},
+      "expect": {"target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unaq"},
+      "comment": "The second of the three. Groundwater is the compartment the water taxonomy work was most careful about, and publishing a release to it as a release to water unspecified is the loss that work exists to stop."
+    },
+    {
+      "id": "0566-pesticides-in-long-term-water-stay-there",
+      "issue": 566,
+      "title": "Unspecified pesticides in the long-term water compartment are published there",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "uuid": "80460ad0-9b86-50cd-b3aa-741e11716c71"},
+      "expect": {"target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lote"},
+      "comment": "The third. A long-term release is a statement about when, not about not knowing where, so folding it into `Water → Unknown` loses a fact the row states plainly."
+    },
+    {
+      "id": "0566-a-row-in-a-known-compartment-is-never-coarsened-onto-unknown",
+      "issue": 566,
+      "title": "No ecoinvent row that names a compartment is published on a flow whose compartment is unknown",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "uuid": "cf324a50-c79e-5cc6-bfe4-6e8ae9674568"},
+      "expect": {"target_context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq"},
+      "comment": "Tribenuron from a medium stack over rural land, published on `901bc9e4…`, `Air → Unknown`, before this change. The twelfth and last shape the fallback coarsened, kept as a claim because it is the one where the row's compartment is four levels deep: a rule that only looked at the media would call `Air → Unknown` close enough."
+    }
+  ]
+}

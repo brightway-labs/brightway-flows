@@ -1,0 +1,305 @@
+{
+  "$defs": {
+    "ArtifactCategory": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "indicator": {
+          "title": "Indicator",
+          "type": "string"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "method_family": {
+          "title": "Method Family",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "method_family",
+        "category",
+        "indicator",
+        "unit"
+      ],
+      "title": "ArtifactCategory",
+      "type": "object"
+    },
+    "ArtifactFactor": {
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "title": "Amount",
+          "type": "number"
+        },
+        "category_key": {
+          "title": "Category Key",
+          "type": "string"
+        },
+        "source_flow_uuid": {
+          "title": "Source Flow Uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "category_key",
+        "source_flow_uuid",
+        "amount"
+      ],
+      "title": "ArtifactFactor",
+      "type": "object"
+    },
+    "ArtifactFlow": {
+      "additionalProperties": false,
+      "properties": {
+        "cas_number": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cas Number"
+        },
+        "context": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Context",
+          "type": "array"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "source_flow_uuid": {
+          "title": "Source Flow Uuid",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_flow_uuid",
+        "name",
+        "unit",
+        "context"
+      ],
+      "title": "ArtifactFlow",
+      "type": "object"
+    },
+    "ArtifactRelease": {
+      "additionalProperties": false,
+      "properties": {
+        "brightway_database": {
+          "title": "Brightway Database",
+          "type": "string"
+        },
+        "brightway_project": {
+          "title": "Brightway Project",
+          "type": "string"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "generator": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Generator",
+          "type": "object"
+        },
+        "list_name": {
+          "title": "List Name",
+          "type": "string"
+        },
+        "list_version": {
+          "title": "List Version",
+          "type": "string"
+        },
+        "method_family": {
+          "title": "Method Family",
+          "type": "string"
+        },
+        "sample_seed": {
+          "title": "Sample Seed",
+          "type": "integer"
+        },
+        "sample_size": {
+          "title": "Sample Size",
+          "type": "integer"
+        },
+        "system_model": {
+          "title": "System Model",
+          "type": "string"
+        }
+      },
+      "required": [
+        "list_name",
+        "list_version",
+        "system_model",
+        "brightway_project",
+        "brightway_database",
+        "method_family",
+        "generator",
+        "created_at",
+        "sample_size",
+        "sample_seed"
+      ],
+      "title": "ArtifactRelease",
+      "type": "object"
+    },
+    "InventoryLine": {
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "title": "Amount",
+          "type": "number"
+        },
+        "source_flow_uuid": {
+          "title": "Source Flow Uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_flow_uuid",
+        "amount"
+      ],
+      "title": "InventoryLine",
+      "type": "object"
+    },
+    "UnitProcess": {
+      "additionalProperties": false,
+      "properties": {
+        "activity_code": {
+          "title": "Activity Code",
+          "type": "string"
+        },
+        "activity_uuid": {
+          "title": "Activity Uuid",
+          "type": "string"
+        },
+        "classifications": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Classifications",
+          "type": "object"
+        },
+        "geography": {
+          "title": "Geography",
+          "type": "string"
+        },
+        "inventory": {
+          "items": {
+            "$ref": "#/$defs/InventoryLine"
+          },
+          "title": "Inventory",
+          "type": "array"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "product_amount": {
+          "title": "Product Amount",
+          "type": "number"
+        },
+        "product_unit": {
+          "title": "Product Unit",
+          "type": "string"
+        },
+        "reference_product": {
+          "title": "Reference Product",
+          "type": "string"
+        },
+        "scores": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Scores",
+          "type": "object"
+        }
+      },
+      "required": [
+        "activity_code",
+        "activity_uuid",
+        "name",
+        "reference_product",
+        "product_amount",
+        "product_unit",
+        "geography",
+        "classifications",
+        "inventory",
+        "scores"
+      ],
+      "title": "UnitProcess",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "What a vendor's own tooling says a sample of its unit processes are worth: each one's cumulative inventory by the vendor's own flow identifiers, the factors that tooling applied, and the scores the two reproduce. Written by tools/export_unit_process_scores.py under brightway; read by compare-scores.",
+  "properties": {
+    "categories": {
+      "items": {
+        "$ref": "#/$defs/ArtifactCategory"
+      },
+      "title": "Categories",
+      "type": "array"
+    },
+    "factors": {
+      "items": {
+        "$ref": "#/$defs/ArtifactFactor"
+      },
+      "title": "Factors",
+      "type": "array"
+    },
+    "flows": {
+      "items": {
+        "$ref": "#/$defs/ArtifactFlow"
+      },
+      "title": "Flows",
+      "type": "array"
+    },
+    "release": {
+      "$ref": "#/$defs/ArtifactRelease"
+    },
+    "schema_version": {
+      "const": 1,
+      "type": "integer"
+    },
+    "unit_processes": {
+      "items": {
+        "$ref": "#/$defs/UnitProcess"
+      },
+      "title": "Unit Processes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "categories",
+    "factors",
+    "flows",
+    "release",
+    "schema_version",
+    "unit_processes"
+  ],
+  "title": "unit-process-scores.json",
+  "type": "object"
+}

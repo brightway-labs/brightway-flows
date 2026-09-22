@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "description": "A source row is looked up under every name it is known by, and a hit is a hit -- nothing asks which kind of name it landed on. Where one substance answers, that costs nothing. Where several answer it is the whole question, and BAFU's water is the worst case: every kind of water is H2O and carries 7732-18-5, so a row named simply `Water` reached twelve substances and was placed nowhere. 253 of BAFU's 2,679 rows were lost to it, 9.6% of the list. Two answers are needed and they are different answers. What kind of water a row is cannot be read off a name at all -- 55 rows called `Water` are in an air compartment and are vapour, 114 are in a water one and are water -- so it is curated, in `water-flow-materials.json`. What is left after that is four rows where one candidate is simply *called* what the row is called, and that is a tie-break. See #86.",
+  "expectations": [
+    {
+      "id": "0441-bafu-water-is-placed-by-its-material",
+      "issue": 441,
+      "title": "A BAFU water row is placed by what kind of water it is, not by the registry number twelve substances share",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water", "context": ["emissions to water", "river"]},
+      "expect": {"outcome": "matched", "basis": "material", "target_name": "Water"},
+      "comment": "53 rows. On a build of main all 169 BAFU rows named `Water` came back `multiple-flow-object-candidates`; on the 2026-08-15 build of this change these land on the consensus `Water` flow in `Environmental -> Water -> River`. `basis` is the claim that matters: `material` means the curated assignment answered, and no reading of a name or a number did."
+    },
+    {
+      "id": "0441-bafu-water-in-air-is-vapour",
+      "issue": 441,
+      "title": "A BAFU water row in an air compartment is vapour, not water",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water", "context": ["emissions to air", "low. pop."]},
+      "expect": {"outcome": "matched", "basis": "material", "target_name": "Water vapour"},
+      "comment": "Stated separately from the row above, and with a different answer, because this is the distinction no ranking of names could make: the two rows are spelled identically and are not the same substance. 3 rows here -- two kilograms and one cubic metre -- each reaching the `Water vapour` flow stating its own unit. The 50 rows in `emissions to air / unspecified` reach `Water vapour` too, and reach the right one of its flows because #90 landed first; that pair of claims is in `0455-exact-compartment.json` and this change is what makes them true."
+    },
+    {
+      "id": "0441-bafu-water-mints-no-thirteenth-water",
+      "issue": 441,
+      "title": "No BAFU row named `Water` mints a substance of its own",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water"},
+      "expect": {"not_outcome": "created"},
+      "comment": "The regression this change could most easily have been: resolving the tie by minting is a worse answer than refusing it, because a thirteenth spelling of water is what the tie is made of. On the 2026-08-15 build all 169 are matched and none is created."
+    },
+    {
+      "id": "0441-bafu-water-well-joins-groundwater",
+      "issue": 441,
+      "title": "BAFU's `Water, well` is the groundwater the list already holds",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water, well"},
+      "expect": {"outcome": "matched", "target_name": "Groundwater"},
+      "comment": "6 rows. `Water, well` is ecoinvent's `Water, well, in ground` with the compartment left out of the name, and before this change these rows minted a substance called `Water, Well` beside the `Groundwater` the list already holds. Two of the six land on a flow stating kilograms while measured in cubic metres, which the merge flags rather than converts (#78); that is a separate defect and has its own expectation."
+    },
+    {
+      "id": "0441-the-three-concepts-added-for-bafu-have-flows",
+      "issue": 441,
+      "title": "The three kinds of water the taxonomy carries for BAFU are published under the taxonomy's names",
+      "subject": {"kind": "substance", "label": "Waste water"},
+      "expect": {"exists": true, "flow_count": {"at_least": 1}},
+      "comment": "`environmental-materials.json` cites BAFU's `Chemically polluted water`, `Waste water` and `Water, process, surface` as the reason contaminated water, waste water and surface water are in the scheme at all. All three had a concept, an ENVO anchor and a flow object identifier, and not one flow, because BAFU's rows had never been assigned to them. Five flows on the 2026-08-15 build: three waste water, one surface water, one contaminated water. Waste water is named here because it is the one with more than one flow, so a change that published only the first would still fail."
+    },
+    {
+      "id": "0441-thorium-is-the-element-it-is-named-after",
+      "issue": 441,
+      "title": "A row called `Thorium` is thorium, not thorium-232",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Thorium"},
+      "expect": {"outcome": "matched", "target_name": "Thorium"},
+      "comment": "2 rows. Thorium-232 carries the element's registry number -- a number names a substance, and the source lists do not agree that an isotope is one -- and lists `thorium` among its own alternative names, so the row reaches both and both answer equally well. One of the two is *called* `Thorium`. Unmatched on the 2026-08-15 build of the material assignment alone, which answers a different question and does not reach these; matched once the tie-break runs."
+    },
+    {
+      "id": "0441-praseodymium-is-the-element",
+      "issue": 441,
+      "title": "The same holds for praseodymium and its isotope",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Praseodymium"},
+      "expect": {"outcome": "matched", "target_name": "Praseodymium"},
+      "comment": "1 row, reaching Praseodymium and Praseodymium-147. Stated separately from thorium so that a fix which special-cased one element rather than asking the general question would still fail here."
+    },
+    {
+      "id": "0441-a-trade-name-does-not-outrank-the-name",
+      "issue": 441,
+      "title": "A row carrying two dozen trade names is still the compound it is named after",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "1,1,1-Trichloroethane", "context": ["emissions to water", "unspecified"]},
+      "expect": {"outcome": "matched", "target_name": "1,1,1-Trichloroethane"},
+      "comment": "1 row reaching nine substances: enrichment gives it Chlorothene, Inhibisol, Aerothene TT and the rest, and each of those is some other compound's alternative label. The widest form of the tie, and the one that shows the rule is about which *kind* of name was hit rather than about how many candidates there are. The compartment is named because BAFU ships two more rows of this compound, to air, which reach one substance and then tie between its flows -- a different failure that this rule never sees."
+    },
+    {
+      "id": "0441-nothing-is-left-but-somebody-elses-rows",
+      "issue": 441,
+      "title": "What BAFU still fails to place is no longer anything this issue is about",
+      "subject": {"kind": "measure", "key": "merge.bafu-2026-v1.unmatched"},
+      "expect": {"at_most": 10},
+      "comment": "267 rows on a build of main, and 14 on the 2026-08-15 build of the material assignment: the 4 named above, which reach several substances, and 10 which reach several flows of one substance and belong to other issues -- two 1,1,1-trichloroethane, two hexafluoroethane and two tetrachloromethane rows to air, beryllium and thallium to air, and BAFU's `Fungicides, Unspecified` and `Pesticides, Unspecified` to agricultural soil, which are #76's catch-alls. A bound rather than a row claim, and a weak one on purpose: it cannot say the 4 landed correctly, which is what the three expectations above are for. It says only that nothing is left over, so a later change that placed the 4 by breaking something else would show here. 10 on the 2026-08-15 build of the tie-break, which is the four gone and nothing else moved."
+    }
+  ]
+}

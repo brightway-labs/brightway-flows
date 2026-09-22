@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "description": "1,1,1-trichloroethane is the degreasing solvent banned under the Montreal Protocol for eating ozone; 1,1,2-trichloroethane is a suspected carcinogen with no effect on ozone at all. They differ in which carbon one chlorine sits on. EF 3.1 ships five flows -- the five air compartments -- named `1,1,1-trichloroethane` that carry 79-00-5, which is 1,1,2's registry number, 1,1,2's synonyms and 1,1,2's toxicity factors; 1,1,2's remaining eight compartments are named correctly, and the two sets do not overlap. The real 1,1,1-trichloroethane is in EF twice, as `hcfc-140` (thirteen compartments) and `methyl chloroform` (four), and never under its own name. This project trusts the registry number, so the five mislabelled flows merge into published `1,1,2-trichloroethane` and the solvent is published from `hcfc-140` -- the right call on the evidence. The damage is downstream of it: ecoinvent's correspondence table maps by flow identifier, and the identifiers still point where EF's names sent them, so nine of ecoinvent's nineteen `1,1,1-Trichloroethane` rows -- every emission to air -- are published as 1,1,2-trichloroethane while its ten emissions to water are published correctly. One ecoinvent substance, split by compartment across two published substances, and the half that moves is the half that matters for an ozone-depleting solvent. See #121.\n\nSomething found beside it is deliberately not claimed here: seven of ecoinvent's own `1,1,2-Trichloroethane` air rows are sent to `Hydrocarbons, Chlorinated`, the unnamed catch-all, in the same compartments -- so in air the two isomers have swapped places and one has vanished into a bucket. That half belongs to the #76 family and is left to it.",
+  "expectations": [
+    {
+      "id": "0599-one-substance-not-two",
+      "issue": 599,
+      "title": "ecoinvent's `1,1,1-Trichloroethane` rows all reach one published substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "1,1,1-Trichloroethane"
+      },
+      "expect": {
+        "same_substance": true
+      },
+      "comment": "In the build of 20 August 2026 at 1764991 (merging ecoinvent 3.12 and 3.8) the nineteen rows reach two substances: the nine emissions to air reach 1,1,2-trichloroethane and the ten emissions to water reach the solvent itself. Every one of the nineteen carries 71-55-6, so this is one ecoinvent substance split by compartment, which is the shape of #45. Selected by name rather than by number because the number is what is right about these rows and a selector should name what will still be findable; the name is stable in every release this build merges -- 3.9.1 alone spells it `Ethane, 1,1,1-trichloro-, HCFC-140`, so a build merging that release would need the second spelling here."
+    },
+    {
+      "id": "0599-the-air-rows-reach-the-solvent",
+      "issue": 599,
+      "title": "ecoinvent's `1,1,1-Trichloroethane` rows are published as 1,1,1-trichloroethane",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "1,1,1-Trichloroethane"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "1,1,1-Trichloroethane"
+      },
+      "comment": "The half that says which of the two substances the split should collapse onto, and the one the fix is measured by. Nine rows fail it in the build above -- four from 3.12 and five from 3.8, all emissions to air -- because the prepared table sends them to the EF flows named `1,1,1-trichloroethane`, which are 1,1,2's. The correct target exists in every one of the five air compartments: `hcfc-140` is published in all thirteen, so nothing here is a coverage gap. The ten water rows already meet it. Stated as `matched` rather than `prepared` because what matters is that the row lands on the right substance, not which route took it there."
+    },
+    {
+      "id": "0599-the-carcinogen-carries-no-ozone-factor",
+      "issue": 599,
+      "title": "This list does not publish an ozone-depletion factor for 1,1,2-trichloroethane",
+      "subject": {
+        "kind": "factor",
+        "substance_cas": "79-00-5",
+        "category": "Ozone depletion",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "Recorded, not fixed, and the third thing #121 asks for. This list publishes an ozone-depletion factor of 0.14 on 1,1,2-trichloroethane -- ten rows in the build above, the five air compartments under the JRC's implementation and again under this list's -- for a substance that depletes no ozone. It is there because the five EF flows carrying the factor carry 79-00-5. Two things say the number is 1,1,1-trichloroethane's: every one of the other 24 substances EF gives an ozone-depletion factor is a genuine ozone depleter -- CFCs, halons, bromomethane, carbon tetrachloride -- and 1,1,2-trichloroethane is controlled by nothing and has no ODP anywhere. So EF appears to have assigned this one factor by the flow's name while assigning the toxicity factors by its registry number, which means its ozone-depletion method and its toxicity methods disagree about which chemical the flow is. The mirror fact is that no flow carrying 71-55-6 has an ozone-depletion factor at all, so the solvent is published without its signature effect; that cannot be written as a second expectation, because a selector matching nothing reports `unresolved` rather than `unmet` and would read as a mis-named subject rather than as the missing number it is. A characterisation factor sits on the flow and not on the mapping, so repointing ecoinvent's rows moves neither half: this needs a decision about EF's own data and is left for a curator's eye.\n\n**Rewritten by #126, keeping its id, because as first written it claimed the wrong thing.** The subject named a substance and a category and no implementation, so it counted all three -- and this list publishes three implementations of EF 3.1 side by side, two of which are transcriptions that carry no judgement of ours. Asking that *nobody* states an ozone-depletion factor for 1,1,2-trichloroethane is asking the JRC's transcription to stop saying what the JRC published, which is not something this project should ever do: a reader comparing this list against EF 3.1 has to be able to see the difference rather than have it quietly reconciled, and that is the stance `lcia.contradictions` already takes about biphenyl. The claim now names `brightway-flows`, which is the implementation that is ours and the only one the sentence was ever really about.\n\nSo the count moved 10 -> 5 rather than 10 -> 0, and the five that remain are the JRC's and are meant to remain. #126 moves the factor onto 1,1,1-trichloroethane in the consensus implementation only, where it is published in all five air compartments with `derivation: moved`; the mirror half this comment said could not be written as a second expectation now can be, and is, as `0615-the-solvent-carries-the-ozone-factor` -- because once the number exists the selector matches something and reports `unmet` rather than `unresolved`."
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{#
+  The scores section landing page: one card per compared release, and under
+  it the table the hand analysis drew for one activity, drawn for the
+  whole sample -- a row per category the vendor scored, how many datasets
+  agree, how many are within 2x, and the median of ours over theirs.
+
+  The categories are the vendor's, in the vendor's words, because the score
+  was computed under them: `ecotoxicity: freshwater, metals` is a category EF
+  3.0 has and EF 3.1 folded away, and it is on the table as unmatched rather
+  than absent. A release scored with the method it ships is labelled with it.
+#}
+{% extends "layout.html" %}
+{% set page_title = "Scores" %}
+{% set active_section = "scores" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Datasets scored two ways</h1>
+  <p class="page__lede">
+    A sample of a vendor's datasets, each scored by the vendor's own tooling
+    with the vendor's own factors, and again through the consensus flows with
+    <strong>this list's</strong> factors on the same inventory. Where the two
+    differ, the difference is one flow at a time: a flow that reached no
+    consensus flow, one we have no factor for, or a factor that differs.
+  </p>
+  {% if run %}
+  <p class="muted">
+    From <span class="mono">compare-scores</span> run
+    <span class="mono">{{ run.run_id[:8] }}</span>
+    {% if run.finished_at %}at {{ run.finished_at | timestamp }}{% endif %}
+    {% if run.build_run_id %}against build <span class="mono">{{ run.build_run_id }}</span>{% endif %}
+    {% if run.lcia_run_id %}and characterisation <span class="mono">{{ run.lcia_run_id[:8] }}</span>{% endif %}.
+  </p>
+  {% endif %}
+</header>
+
+{% if not releases %}
+<div class="notice">
+  <p>
+    The run compared no release: no artifact was found for any configured one.
+    {% if run and run.stats.releases_without_artifact %}
+    {{ run.stats.releases_without_artifact }} configured release(s) had no file.
+    {% endif %}
+  </p>
+</div>
+{% endif %}
+
+{% for release in releases %}
+<section class="section">
+  <h2>
+    {{ release.list_name }} {{ release.list_version }} {{ release.system_model }}
+    <span class="tag">{{ release.method_family }}</span>
+  </h2>
+  <div class="cards">
+    <div class="card">
+      <span class="card__label">datasets</span>
+      <span class="card__value">{{ release.unit_processes | thousands }}</span>
+      <span class="card__note">
+        <a href="{{ url_for('scores.datasets', release=release.key) }}">browse them</a>
+      </span>
+    </div>
+    <div class="card">
+      <span class="card__label">within 2% of the vendor</span>
+      <span class="card__value">{{ (release.stats.pairs_identical + release.stats['pairs_within-tolerance']) | thousands }}</span>
+      <span class="card__note">of {{ release.stats.pairs_compared | thousands }} dataset × category pairs</span>
+    </div>
+    <div class="card">
+      <span class="card__label">within 2×</span>
+      <span class="card__value">{{ release.stats.pairs_within_2x | thousands }}</span>
+      <span class="card__note">pairs, the two above included</span>
+    </div>
+    <div class="card{% if release.stats.their_categories_unmatched %} card--empty{% endif %}">
+      <span class="card__label">vendor categories with no row of ours</span>
+      <span class="card__value">{{ release.stats.their_categories_unmatched }}</span>
+      <span class="card__note">scored by the vendor, not compared</span>
+    </div>
+  </div>
+  <p class="muted">
+    Exported {{ release.created_at | timestamp }} with
+    {% for name, version in release.generator.items() %}{{ name }} {{ version }}{% if not loop.last %}, {% endif %}{% endfor %}.
+    {% if release.method_family != 'EF v3.1' %}
+    <strong>Scored with {{ release.method_family }}</strong>, the method this
+    release ships; this list's factors are EF 3.1, so part of every gap below is
+    the revision between the two.
+    {% endif %}
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Category</th>
+          <th scope="col" class="num">Datasets</th>
+          <th scope="col" class="num">Median ours ÷ theirs</th>
+          <th scope="col" class="num">Within 2%</th>
+          <th scope="col" class="num">≤ 2×</th>
+          <th scope="col" class="num">≤ 10×</th>
+          <th scope="col" class="num">Worse</th>
+          <th scope="col" class="num">Incomparable</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in release.categories %}
+        <tr>
+          <td>
+            {% if row.unmatched %}
+            {{ row.name }} <span class="tag tag--blocking">no category of ours</span>
+            {% else %}
+            <a href="{{ url_for('scores.category', release=release.key, category_key=row.key) }}">{{ row.name }}</a>
+            {% endif %}
+            <div class="muted">{{ row.unit }}</div>
+          </td>
+          <td class="num">{{ row.datasets | thousands }}</td>
+          <td class="num mono">{% if row.median_ratio is not none %}{{ '%.3f' | format(row.median_ratio) }}{% else %}<span class="muted">—</span>{% endif %}</td>
+          <td class="num">{{ row.agree | thousands }}</td>
+          <td class="num">{{ row.close | thousands }}</td>
+          <td class="num">{{ row.far | thousands }}</td>
+          <td class="num">{{ row.worse | thousands }}</td>
+          <td class="num">{{ row.incomparable | thousands }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

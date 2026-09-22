@@ -1,0 +1,143 @@
+{#
+  Every source flow the run resolved, filtered.
+
+  One page rather than the six `merge_review` had: prepared, algorithm, manual
+  additions and the three unmatched views are this with different arguments.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Merge outcomes" %}
+{% set active_section = "merge" %}
+{% set args = {'outcome': outcome, 'candidates': candidates,
+               'inconsistent': inconsistent, 'source_list': source_list, 'q': query} %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Outcomes</h1>
+  <p class="page__lede">
+    One row per source flow per list. <strong>Needs a decision</strong> is an
+    unmatched flow with candidate substances — usually a context or unit
+    mismatch. <strong>Needs a substance</strong> is one without: a genuinely
+    unknown compound, already enriched before matching, so it wants a ruling
+    rather than another pass.
+  </p>
+</header>
+
+<form class="filters" method="get" action="{{ url_for('merge.outcomes') }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Name, uuid, CAS…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('merge.outcomes') }}
+  </div>
+  <div class="filters__selects">
+    {{ t.select("candidates", "Has candidates", candidates,
+                [('yes', 'Yes'), ('no', 'No')]) }}
+    {{ t.select("inconsistent", "Stale decision", inconsistent,
+                [('yes', 'Yes'), ('no', 'No')]) }}
+    {{ t.select("source_list", "Source list", source_list, source_lists | zip_same) }}
+  </div>
+</form>
+
+{#
+  The outcome badge as a one-click filter. It was a dropdown of five values, and
+  the value a reader wants is the one already printed in the table's own
+  `Outcome` column — so the counts here are the same rows, under whatever else
+  is filtered.
+#}
+{{ t.badge_filter("Outcome", "outcome", outcome, badges, 'merge.outcomes', args,
+                  all_count=badge_total) }}
+
+{% if page.rows %}
+{{ t.pager(page, 'merge.outcomes', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Source flow</th>
+        <th scope="col">List</th>
+        <th scope="col">Context</th>
+        <th scope="col">Unit</th>
+        <th scope="col">CAS</th>
+        <th scope="col">Outcome</th>
+        <th scope="col">Basis</th>
+        <th scope="col">Target</th>
+        <th scope="col">Candidates</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      {% set candidates = candidate_summaries[loop.index0] %}
+      <tr>
+        <td>
+          <a href="{{ url_for('merge.outcome_detail', source_uuid=row.source_uuid) }}">{{ row.source_name or row.source_uuid }}</a>
+          <div class="muted mono">{{ row.source_uuid }}</div>
+        </td>
+        <td class="mono">{{ row.list_name }}-{{ row.list_version }}</td>
+        <td>{{ row.source_context | join(" → ") }}</td>
+        <td class="mono">{{ row.source_unit }}</td>
+        <td class="mono">{{ row.source_cas or "—" }}</td>
+        <td>
+          <span class="tag tag--{{ 'blocking' if row.outcome | string == 'unmatched' else 'ok' }}">{{ row.outcome }}</span>
+          {% if row.has_context_inconsistency %}
+          <span class="tag tag--review">stale decision</span>
+          {% endif %}
+          {% if row.reason %}<div class="muted">{{ row.reason }}</div>{% endif %}
+        </td>
+        <td>
+          {{ row.basis or "—" }}
+          {% if row.basis_value %}<div class="muted mono">{{ row.basis_value }}</div>{% endif %}
+        </td>
+        <td>
+          {% if row.target_elementary_flow_id %}
+          {{ t.flow_link(row.target_elementary_flow_id) }}
+          {% else %}<span class="muted">—</span>{% endif %}
+        </td>
+        {# What the row could have landed on. A reason on its own -- "tied
+           elementary candidates" -- names the shape of the problem and none of
+           its content: which substance, how many flows, and how they differ is
+           what decides whether this is a duplicate in the consensus list or a
+           question about the source row. #}
+        <td>
+          {% if candidates.objects %}
+          <div>
+            {% for object in candidates.objects %}
+            {{ t.substance_link(object.flow_object_id, object.name or object.flow_object_id) }}{{ "," if not loop.last }}
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% if candidates.flows %}
+          <div class="muted">
+            {{ candidates.flow_count | thousands }} flow{{ "" if candidates.flow_count == 1 else "s" }}
+            {%- if candidates.tied_count %}, {{ candidates.tied_count }} tied at {{ candidates.winning_score }}{% endif %}
+          </div>
+          <ul class="candidates">
+            {% for flow in candidates.flows %}
+            <li>
+              {% if flow.score is not none %}<span class="candidates__score">{{ flow.score }}</span>{% endif %}
+              <span>{{ flow.context | join(" → ") or flow.elementary_flow_id }}</span>
+              {% if flow.unit %}<span class="muted mono">{{ flow.unit }}</span>{% endif %}
+              {% if flow.tied_at_top %}<span class="tag tag--review">tied</span>{% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          {% if candidates.flow_count > candidates.flows | length %}
+          <a href="{{ url_for('merge.outcome_detail', source_uuid=row.source_uuid) }}">
+            {{ candidates.flow_count - (candidates.flows | length) }} more
+          </a>
+          {% endif %}
+          {% elif not candidates.objects %}
+          <span class="muted">—</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'merge.outcomes', args) }}
+{% else %}
+{{ t.nothing_matches() }}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,491 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Simplified non-deprecated flows, for downstream consumers, with a redirect for every identifier that was deprecated.",
+  "properties": {
+    "@context": {
+      "minProperties": 1,
+      "type": "object"
+    },
+    "concept_schemes": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "@id": {
+            "title": "Jsonld Id",
+            "type": "string"
+          },
+          "@type": {
+            "default": "skos:ConceptScheme",
+            "title": "Jsonld Type",
+            "type": "string"
+          },
+          "bibo:status": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Status",
+            "type": "object"
+          },
+          "dcterms:created": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Created"
+          },
+          "dcterms:creator": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Creator"
+          },
+          "owl:versionInfo": {
+            "default": "",
+            "title": "Version Info",
+            "type": "string"
+          },
+          "skos:prefLabel": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Pref Label",
+            "type": "object"
+          }
+        },
+        "required": [
+          "@id",
+          "@type",
+          "bibo:status",
+          "owl:versionInfo",
+          "skos:prefLabel"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "correspondences": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "@id": {
+            "title": "Jsonld Id",
+            "type": "string"
+          },
+          "@type": {
+            "default": "xkos:Correspondence",
+            "title": "Jsonld Type",
+            "type": "string"
+          },
+          "bibo:status": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Status",
+            "type": "object"
+          },
+          "brightway:excludedSourceConcept": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "@id": {
+                  "description": "The source list's own IRI for the flow, minted from that list's flow prefix and the vendor's identifier.",
+                  "type": "string"
+                },
+                "brightway:exclusionReason": {
+                  "description": "Why this list does not map the flow.",
+                  "type": "string"
+                },
+                "context": {
+                  "description": "The vendor's compartment path, joined with ' / '. Not a consensus context: nothing was harmonised here.",
+                  "type": "string"
+                },
+                "qudt:hasUnit": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "The flow's unit, as a minted unit IRI.",
+                  "type": "object"
+                },
+                "skos:prefLabel": {
+                  "description": "The vendor's spelling of the flow's name.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "@id",
+                "skos:prefLabel",
+                "brightway:exclusionReason"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "dcterms:created": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Created"
+          },
+          "dcterms:creator": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Creator"
+          },
+          "owl:versionInfo": {
+            "default": "",
+            "title": "Version Info",
+            "type": "string"
+          },
+          "skos:prefLabel": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Pref Label",
+            "type": "object"
+          },
+          "xkos:compares": {
+            "items": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "title": "Compares",
+            "type": "array"
+          },
+          "xkos:madeOf": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "@id": {
+                  "title": "Jsonld Id",
+                  "type": "string"
+                },
+                "@type": {
+                  "default": "xkos:ConceptAssociation",
+                  "title": "Jsonld Type",
+                  "type": "string"
+                },
+                "qudt:conversionMultiplier": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Conversion Multiplier"
+                },
+                "xkos:sourceConcept": {
+                  "additionalProperties": true,
+                  "title": "Source Concept",
+                  "type": "object"
+                },
+                "xkos:targetConcept": {
+                  "additionalProperties": true,
+                  "title": "Target Concept",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "@id",
+                "@type",
+                "xkos:sourceConcept",
+                "xkos:targetConcept"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "@id",
+          "@type",
+          "bibo:status",
+          "owl:versionInfo",
+          "skos:prefLabel",
+          "xkos:compares",
+          "xkos:madeOf"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "flows": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "@id": {
+            "default": "",
+            "title": "Jsonld Id",
+            "type": "string"
+          },
+          "@type": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Jsonld Type",
+            "type": "array"
+          },
+          "altLabel": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Altlabel",
+            "type": "array"
+          },
+          "cas_numbers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Cas Numbers",
+            "type": "array"
+          },
+          "context_iri": {
+            "title": "Context Iri",
+            "type": "string"
+          },
+          "definition": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Definition",
+            "type": "array"
+          },
+          "ec_numbers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Ec Numbers",
+            "type": "array"
+          },
+          "http://purl.obolibrary.org/obo/RO_0000087": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Roles"
+          },
+          "http://www.w3.org/2004/02/skos/core#inScheme": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "In Scheme",
+            "type": "object"
+          },
+          "https://vocab.brightway.one/terms/baseIntervention": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Parent Intervention Id"
+          },
+          "https://vocab.brightway.one/terms/baseSubstance": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Parent Flow Object Id"
+          },
+          "https://vocab.brightway.one/terms/originQualifier": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Origin Qualifier"
+          },
+          "identifier": {
+            "title": "Identifier",
+            "type": "string"
+          },
+          "prefLabel": {
+            "title": "Preflabel",
+            "type": "string"
+          },
+          "properties": {
+            "additionalProperties": true,
+            "title": "Properties",
+            "type": "object"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "title": "References",
+            "type": "array"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "unit_iri": {
+            "title": "Unit Iri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "@id",
+          "@type",
+          "altLabel",
+          "cas_numbers",
+          "context_iri",
+          "definition",
+          "ec_numbers",
+          "http://www.w3.org/2004/02/skos/core#inScheme",
+          "identifier",
+          "prefLabel",
+          "properties",
+          "references",
+          "source",
+          "unit",
+          "unit_iri"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "redirects": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "@id": {
+            "default": "",
+            "title": "Jsonld Id",
+            "type": "string"
+          },
+          "http://purl.org/dc/terms/isReplacedBy": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Replaced By"
+          },
+          "http://www.w3.org/2002/07/owl#deprecated": {
+            "default": true,
+            "title": "Deprecated",
+            "type": "boolean"
+          },
+          "https://vocab.brightway.one/terms/deprecationReason": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Deprecation Reason",
+            "type": "object"
+          },
+          "identifier": {
+            "title": "Identifier",
+            "type": "string"
+          },
+          "replaced_by_identifier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Replaced By Identifier"
+          }
+        },
+        "required": [
+          "@id",
+          "http://www.w3.org/2002/07/owl#deprecated",
+          "https://vocab.brightway.one/terms/deprecationReason",
+          "identifier"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 7,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "@context",
+    "schema_version",
+    "flows",
+    "redirects",
+    "concept_schemes",
+    "correspondences"
+  ],
+  "title": "harmonised-flows-simple.json.gz",
+  "type": "object"
+}

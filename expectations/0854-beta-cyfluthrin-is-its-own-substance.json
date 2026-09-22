@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "description": "Cyfluthrin is the commercial pyrethroid mixture of eight isomers; beta-cyfluthrin is the product enriched in the two most active diastereoisomeric pairs of the same set. Regulators and PPDB keep them as separate substances with separate registry numbers (68359-37-5 and 1820573-27-0; both state EC 269-855-7, so only the CAS can tell them apart). ecoinvent ships its rows under the name Beta-cyfluthrin but with the mixture's number, and its own 2.2-to-3.12 naming history retired the name Cyfluthrin for those uuids in favour of Beta-cyfluthrin -- so one number carried two vendors' different substances, and the merge folded ecoinvent's beta rows into the plain substance by CAS while AGRIBALYSE's number-less beta rows minted a second, registry-number-less copy beside it (the build of 1 September 2026, b0b8d76). #188 separates them: every ecoinvent release's fixes file writes the product's own number on the beta rows, the beta substance carries it, and both vendors' beta rows land together while every genuinely plain cyfluthrin row stays where it is. The pending flags drop when the shared build first merges agribalyse-3.2.",
+  "expectations": [
+    {
+      "id": "0854-ecoinvents-beta-rows-reach-their-own-substance",
+      "issue": 854,
+      "title": "ecoinvent's Beta-cyfluthrin rows land on a Beta-cyfluthrin flow, not on Cyfluthrin",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "dd786e61-d387-4dc4-8314-2a5f958e7168"
+      },
+      "expect": {
+        "target_name": "Beta-cyfluthrin"
+      },
+      "comment": "The agricultural-soil row, shipped by both merged releases (3.8 and 3.12) under the name Beta-cyfluthrin with the mixture's CAS. On the build of 1 September 2026 both releases' rows sit on the plain Cyfluthrin flow (target 08a91e70-3ddc-11dd-a03e-0050c2490048), because the stated number decided. With the product's own number in the release fixes files, the rows separate at the registry-number index itself.",
+      "pending": true
+    },
+    {
+      "id": "0854-the-beta-substance-carries-ppdbs-number",
+      "issue": 854,
+      "title": "The Beta-cyfluthrin substance carries the product's own registry number",
+      "subject": {
+        "kind": "substance",
+        "label": "Beta-cyfluthrin"
+      },
+      "expect": {
+        "exists": true,
+        "cas": "1820573-27-0"
+      },
+      "comment": "PPDB record 74 states 1820573-27-0 for beta-cyfluthrin (checksum verified). On the build of 1 September 2026 the substance exists -- AGRIBALYSE's seven number-less rows minted it -- but carries no registry number at all, which is what left it unfindable by number and unreviewable against PPDB. Once ecoinvent's corrected rows are members, the substance publishes the number they state.",
+      "pending": true
+    },
+    {
+      "id": "0854-agribalyses-beta-rows-join-the-same-substance",
+      "issue": 854,
+      "title": "AGRIBALYSE's Beta-cyfluthrin rows match the substance ecoinvent's rows made, rather than minting a copy",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "5b83e4ec-71aa-5d0d-b1ba-b3f275649009"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Beta-cyfluthrin"
+      },
+      "comment": "The agricultural-soil row, number-less as the vendor ships it. On the build of 1 September 2026 it minted (outcome created) a registry-number-less copy of the substance, because ecoinvent's beta rows were folded into Cyfluthrin and there was nothing to join. With the separation in place, ecoinvent merges first and this row reaches the same substance by its name -- the name route suffices, so AGRIBALYSE's rows need no fix of their own.",
+      "pending": true
+    },
+    {
+      "id": "0854-plain-cyfluthrin-rows-stay-together",
+      "issue": 854,
+      "title": "Every row that says plain Cyfluthrin stays on the Cyfluthrin substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "name": "Cyfluthrin"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_name": "Cyfluthrin"
+      },
+      "comment": "The negative half, met on the build of 1 September 2026 by design and held so the separation cannot widen: Stepwise's six rows (and BAFU's one, and AGRIBALYSE's own plain Cyfluthrin row 004acd53-3fd9-5281-9f03-00c6dea0a0b7) say the mixture's name and the mixture's number, and nothing about them is corrected. A build that moves them has read the beta correction too broadly.",
+      "pending": true
+    }
+  ]
+}

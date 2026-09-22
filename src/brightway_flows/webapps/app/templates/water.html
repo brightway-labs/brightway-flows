@@ -1,0 +1,371 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% import "partials/flow_object_views.html" as v %}
+{% set page_title = "Water" %}
+{% set active_section = "substances" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>The kinds of water</h1>
+  <p class="page__lede">
+    Lake water, cooling water, sea water and rainwater are all H₂O, all CAS
+    7732-18-5, and the only place that difference used to live was the source
+    list’s flow name — so the list had nothing to compare, and the differences
+    collapsed.
+  </p>
+</header>
+
+{{ v.views('water') }}
+
+<section class="section">
+  <div class="section__header"><h2>What a water flow says</h2></div>
+  <p class="section__note">
+    A water flow says four things. Until this taxonomy the list had somewhere
+    to put three.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">What a water flow says</th>
+          <th scope="col">For example</th>
+          <th scope="col">Where it lives</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Which molecule it is</td>
+          <td>H₂O, CAS 7732-18-5</td>
+          <td>the substance</td>
+        </tr>
+        <tr>
+          <td>Which way it crossed the boundary</td>
+          <td>withdrawal, or return</td>
+          <td>the context</td>
+        </tr>
+        <tr>
+          <td>Which body it came from, or went to</td>
+          <td>lake, river, ocean, aquifer</td>
+          <td>the context — and only for emissions, before this</td>
+        </tr>
+        <tr>
+          <td>What kind of water it is</td>
+          <td>sea water, groundwater, cooling water, brine</td>
+          <td>the <strong>material</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="section__note">
+    The last one is the new piece. Because the deduplication signs on every
+    semantic field of a flow, a difference held in <em>no</em> field is a
+    difference that disappears: EF 3.1’s <em>Water use</em> works as a pair — a
+    positive factor when water is withdrawn, a negative one when it is
+    returned — and when the two halves looked identical, one of them was merged
+    away and the negative half went with it. In the case audited that inflated
+    a water use result by roughly a factor of 434.
+  </p>
+  <p class="section__note">
+    The kind of water is not the same question as the water body, and the two
+    are not interchangeable. Water <em>taken from</em> a lake is lake water,
+    from a lake. Water <em>discharged to</em> a lake is plain water, to a lake.
+    For a withdrawal the two agree, which is why the withdrawal body can be
+    read off the kind; for a discharge they are two separate facts, and nothing
+    infers one from the other.
+  </p>
+  <div class="cards">
+    <div class="card">
+      <span class="card__label">Kinds of water</span>
+      <span class="card__value">{{ overview.kinds | thousands }}</span>
+      <span class="card__note">in the taxonomy, each tied to a published vocabulary</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Kinds carrying flows</span>
+      <span class="card__value">{{ overview.kinds_with_flows | thousands }}</span>
+      <span class="card__note">the rest are groupings, or unreached by this build</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Water flows</span>
+      <span class="card__value">{{ overview.total_flows | thousands }}</span>
+      <span class="card__note">published on one of these kinds</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Retired water flows</span>
+      <span class="card__value">{{ overview.deprecated_flows | thousands }}</span>
+      <span class="card__note">
+        the plainest measure of this: the exercise began with water flows being
+        merged into each other
+      </span>
+    </div>
+    {% for direction, count in overview.by_direction.items() %}
+    <div class="card">
+      <span class="card__label">{{ direction }}</span>
+      <span class="card__value">{{ count | thousands }}</span>
+      <span class="card__note">flows on this side of the boundary</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% if overview.unrecognised %}
+  <div class="notice notice--warn">
+    <p>
+      {{ overview.unrecognised | thousands }} flow objects in this build name a
+      kind of water this checkout’s taxonomy does not carry. The database was
+      written by a build whose taxonomy has since changed; they are counted
+      here rather than dropped, because a page showing fewer kinds would look
+      like a smaller taxonomy rather than an older build.
+    </p>
+  </div>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>The taxonomy</h2></div>
+  <p class="section__note">
+    {{ overview.kinds | thousands }} kinds, as a small hierarchy. The names are
+    not ours: each one is tied to a published environmental vocabulary, so that
+    <em>sea water</em> in this list means what <em>sea water</em> means
+    elsewhere and can be checked by anyone. Two authorities, split by what they
+    can actually type — <strong>ENVO</strong> for what the water physically is,
+    and <strong>AGROVOC</strong> for the accounting category no OBO ontology
+    carries. Where both publish the class, both are cited: cooling water is
+    named by each of them, which is corroboration rather than redundancy, and
+    it is the find that decided this design — EF’s <em>Water to Cooling</em> is
+    not a modelling quirk to tolerate inside a name but a published class with
+    a definition and a parent.
+  </p>
+  <p class="section__note">
+    A kind with no flow object mints nothing and never appears on an inventory
+    row: it exists so that the kinds under it have the parent the vocabulary
+    gives them. A kind with an object but no flow is one this build did not
+    reach — several are used by the Swiss BAFU list, so which of them are empty
+    depends on which sources went into the build.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Kind of water</th>
+          <th scope="col">Cites</th>
+          <th scope="col">Authority</th>
+          <th scope="col">As</th>
+          <th scope="col">Parent edge</th>
+          <th scope="col">Reached by</th>
+          <th scope="col" class="num">Withdrawals</th>
+          <th scope="col" class="num">Returns</th>
+          <th scope="col" class="num">CFs</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in overview.rows %}
+        <tr>
+          <td>
+            {# Indented by the length of the chain up to a root, so the
+               generated tree reads as one without giving up the table. #}
+            <span class="tree__indent" style="--depth: {{ row.depth }}"></span>
+            {% if row.flow_object_id %}
+            <a href="{{ url_for('substances.detail', flow_object_id=row.flow_object_id) }}">{{ row.label }}</a>
+            {% else %}
+            {{ row.label }}
+            <span class="tag tag--info">grouping only</span>
+            {% endif %}
+            {% if row.flow_object_id and not row.in_build %}
+            <span class="tag">no flows in this build</span>
+            {% endif %}
+            {% if row.deprecated_flows %}
+            <span class="tag tag--info">{{ row.deprecated_flows }} retired</span>
+            {% endif %}
+            <span class="mono muted term">{{ row.concept_id }}</span>
+          </td>
+          {# The published citations only. A minted anchor is the scheme naming
+             its own concept, and putting it in the "cites" column would make
+             the one kind nobody publishes look like the one kind best
+             attested. It is called out in the next column instead. #}
+          <td>
+            {% for anchor in row.published_anchors %}
+            <a class="mono" href="{{ anchor.iri }}" rel="noreferrer">{{ anchor.label }}</a>{% if not loop.last %}, {% endif %}
+            {% else %}
+            <span class="muted">nothing published</span>
+            {% endfor %}
+          </td>
+          <td>
+            {% for anchor in row.published_anchors %}{{ anchor.authority | upper }}{% if not loop.last %}, {% endif %}{% else %}<span class="tag tag--info">minted</span>{% endfor %}
+          </td>
+          <td class="mono muted">
+            {% for anchor in row.published_anchors %}{{ anchor.predicate }}{% if not loop.last %}, {% endif %}{% else %}—{% endfor %}
+          </td>
+          <td>
+            {% if row.is_root %}
+            <span class="muted">root</span>
+            {% else %}
+            <span {% if row.hierarchy_is_ours %}class="tag tag--info"{% else %}class="muted"{% endif %}>{{ row.broader_source }}</span>
+            {% if row.broader_via %}
+            <span class="muted">via {{ row.broader_via | join(", ") }}</span>
+            {% endif %}
+            {% endif %}
+          </td>
+          <td>{{ row.sources | join(", ") or "—" }}</td>
+          <td class="num">
+            {% if row.withdrawals %}
+            <a href="{{ url_for('water.index', kind=row.concept_id, direction='Withdrawal') }}">{{ row.withdrawals | thousands }}</a>
+            {% else %}<span class="muted">—</span>{% endif %}
+          </td>
+          <td class="num">
+            {% if row.returns %}
+            <a href="{{ url_for('water.index', kind=row.concept_id, direction='Return') }}">{{ row.returns | thousands }}</a>
+            {% else %}<span class="muted">—</span>{% endif %}
+          </td>
+          <td class="num">{{ row.lcia_factor_count | thousands }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>Where the taxonomy speaks for itself</h2></div>
+  <p class="section__note">
+    Most of what is above is what ENVO already states, checked automatically
+    against a stored copy of what the vocabularies actually publish rather than
+    taken on trust. {{ overview.exceptions | length }} of
+    {{ overview.kinds }} kinds state something of their own — an edge the
+    authority declines to assert, a citation that is a close match rather than
+    an equivalence, or an identifier nobody else publishes. Each says which,
+    and why, so that none of it passes as somebody else’s.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Kind of water</th>
+          <th scope="col">What this scheme states for itself</th>
+          <th scope="col">Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in overview.exceptions %}
+        <tr>
+          <td>{{ row.label }}</td>
+          <td>
+            <ul class="plain">
+              {% if row.hierarchy_is_ours %}
+              <li>that it sits under <strong>{{ row.parent_label }}</strong></li>
+              {% endif %}
+              {% for anchor in row.published_anchors if not anchor.is_exact %}
+              <li>
+                that it only <em>overlaps</em> {{ anchor.authority | upper }}’s
+                <strong>{{ anchor.label }}</strong>, as
+                <span class="mono">{{ anchor.predicate }}</span>
+              </li>
+              {% endfor %}
+              {% if row.is_minted %}
+              <li>its identifier, because no authority carries the concept</li>
+              {% endif %}
+            </ul>
+          </td>
+          <td>
+            {# The reason the taxonomy records, rather than one restated here:
+               two of these are `ours` for entirely different reasons, and a
+               single explanation for the group would be wrong about one. #}
+            {% if row.broader_reason %}
+            <p>{{ row.broader_reason }}</p>
+            {% endif %}
+            {% if row.comment %}
+            <p class="muted">{{ row.comment }}</p>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="section__note">
+    Three smaller decisions, recorded so they are not re-litigated.
+    <strong>Brine is the one kind carrying no CAS number</strong>: EF 3.1 gives
+    <em>Water, salt, sole</em> water’s 7732-18-5, and that is treated as an
+    error and dropped, because brine is a mixture rather than the molecule.
+    <strong>Green water is deliberately not filed under rainwater</strong>:
+    physically it is rain that infiltrated the soil, but it exists as a separate
+    flow for water-footprint accounting rather than physical reasons, and
+    treating it as a kind of rain would blur that — so it sits outside the tree
+    and cites AGROVOC rather than ENVO. And <strong>water vapour is its own
+    branch</strong>, because ENVO treats it as a gas rather than a form of
+    liquid water; the unit does not tell the two apart, since vapour is filed in
+    both kg and m³.
+  </p>
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>The flows</h2></div>
+  <p class="section__note">
+    Every flow published on one of these kinds. The filters are read together:
+    <em>Cooling water</em> with <em>Return</em> is the return half of the
+    cooling water pair, not everything that is either. A withdrawal and a return
+    of the same kind are the two halves EF characterises with opposite signs —
+    seeing both on one row is the whole point of recording the kind.
+  </p>
+
+  <form class="filters" method="get" action="{{ url_for('water.index') }}">
+    <div class="filters__selects">
+      {{ t.select('kind', 'Kind of water', filters['kind'], overview.kind_options()) }}
+      {{ t.select('direction', 'Direction', filters['direction'], overview.direction_options()) }}
+      {{ t.select('body', 'Water body', filters['body'], overview.body_options()) }}
+      {{ t.reset('water.index') }}
+    </div>
+  </form>
+
+  {{ t.filter_chips(active_filters, 'water.index', filters) }}
+
+  {% if overview.flows %}
+  <p class="section__note">
+    {{ overview.flows | length | thousands }} of
+    {{ overview.total_flows | thousands }} flows.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Flow</th>
+          <th scope="col">Kind of water</th>
+          <th scope="col">Direction</th>
+          <th scope="col">Water body</th>
+          <th scope="col">Context</th>
+          <th scope="col">Unit</th>
+          <th scope="col">Source</th>
+          <th scope="col" class="num">CFs</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for flow in overview.flows %}
+        <tr>
+          <td>
+            {{ t.flow_link(flow.uuid, flow.name) }}
+            {% if flow.is_deprecated %}
+            <span class="tag tag--info">retired</span>
+            {% endif %}
+          </td>
+          <td>
+            <a href="{{ url_for('water.index', kind=flow.concept_id) }}">{{ flow.kind }}</a>
+          </td>
+          <td>
+            <a href="{{ url_for('water.index', direction=flow.direction) }}">{{ flow.direction }}</a>
+          </td>
+          <td>
+            {% if flow.water_body %}
+            <a href="{{ url_for('water.index', body=flow.water_body) }}">{{ flow.water_body }}</a>
+            {% else %}<span class="muted">—</span>{% endif %}
+          </td>
+          <td>{{ flow.context }}</td>
+          <td>{{ flow.unit }}</td>
+          <td>{{ flow.source }}</td>
+          <td class="num">{{ flow.lcia_factor_count | thousands }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  {{ t.nothing_matches("No published water flow is all of those.") }}
+  {% endif %}
+</section>
+{% endblock %}

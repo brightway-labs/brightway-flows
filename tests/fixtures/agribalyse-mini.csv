@@ -1,0 +1,301 @@
+{SimaPro 9.6.0.1}
+{processes}
+{Date: 08/11/2024}
+{Time: 17:56:59}
+{Project: AGRIBALYSE - unit}
+{CSV Format version: 9.0.0}
+{CSV separator: Semicolon}
+{Decimal separator: ,}
+{Date separator: /}
+{Short date format: dd/MM/yyyy}
+{Export platform IDs: No}
+{Skip empty fields: No}
+{Convert expressions to constants: No}
+{Selection: Selection (2)}
+{Related objects (system descriptions, substances, units, etc.): Yes}
+{Include sub product stages and processes: No}
+{Skip unused parameters: Yes}
+
+Process
+
+Category type
+material
+
+Process identifier
+AGRIBALU000000000000001
+
+Type
+Unit process
+
+Process name
+Test wheat {FR} U
+
+Status
+Finished
+
+Time period
+Unspecified
+
+Geography
+Unspecified
+
+Technology
+Unspecified
+
+Representativeness
+Unspecified
+
+Multiple output allocation
+Unspecified
+
+Substitution allocation
+Unspecified
+
+Cut off rules
+Unspecified
+
+Capital goods
+Unspecified
+
+Boundary with nature
+Unspecified
+
+Infrastructure
+No
+
+Date
+04/12/2019
+
+Record
+
+
+Generator
+
+
+External documents
+
+
+Literature references
+
+
+Collection method
+
+
+Data treatment
+
+
+Verification
+
+
+Comment
+AGRIBALYSE v3.2 fixture, hand-cut.
+
+Allocation rules
+
+
+System description
+AGRIBALYSE;
+
+Products
+Test wheat {FR} U;kg;1,0;100;not defined;Cereals;
+
+Avoided products
+
+Resources
+Water, river, FR;in water;m3;0,001;Undefined;0;0;0;
+Occupation, annual crop;land;m2a;2,0;Undefined;0;0;0;
+Transformation, from annual crop;land;m2;0,1;Undefined;0;0;0;
+
+Materials/fuels
+
+Electricity/heat
+
+Emissions to air
+Ammonia;;kg;0,01;Undefined;0;0;0;
+Cesium-137;low. pop.;Bq;7,1833674E-5;Undefined;0;0;0;
+
+Emissions to water
+Nitrate;river;kg;0,05;Undefined;0;0;0;
+
+Emissions to soil
+Cypermethrin;agricultural;kg;0,001;Undefined;0;0;0;
+
+Final waste flows
+Waste, test;;kg;1,0;Undefined;0;0;0;
+
+Non material emissions
+
+Social issues
+
+Economic issues
+
+Waste to treatment
+
+Input parameters
+
+Calculated parameters
+
+End
+
+Process
+
+Category type
+material
+
+Process identifier
+AGRIBALU000000000000002
+
+Type
+Unit process
+
+Process name
+Test barley {FR} U
+
+Status
+Finished
+
+Time period
+Unspecified
+
+Geography
+Unspecified
+
+Technology
+Unspecified
+
+Representativeness
+Unspecified
+
+Multiple output allocation
+Unspecified
+
+Substitution allocation
+Unspecified
+
+Cut off rules
+Unspecified
+
+Capital goods
+Unspecified
+
+Boundary with nature
+Unspecified
+
+Infrastructure
+No
+
+Date
+04/12/2019
+
+Record
+
+
+Generator
+
+
+External documents
+
+
+Literature references
+
+
+Collection method
+
+
+Data treatment
+
+
+Verification
+
+
+Comment
+Second process, repeating two exchanges so the collapse has something to collapse.
+
+Allocation rules
+
+
+System description
+AGRIBALYSE;
+
+Products
+Test barley {FR} U;kg;1,0;100;not defined;Cereals;
+
+Avoided products
+
+Resources
+
+Materials/fuels
+
+Electricity/heat
+
+Emissions to air
+Ammonia;;kg;0,02;Undefined;0;0;0;
+Cesium-137;low. pop.;Bq;1,0E-4;Undefined;0;0;0;
+
+Emissions to water
+
+Emissions to soil
+
+Final waste flows
+
+Non material emissions
+
+Social issues
+
+Economic issues
+
+Waste to treatment
+
+Input parameters
+
+Calculated parameters
+
+End
+
+Quantities
+Mass;Yes
+Volume;Yes
+Radioactivity;Yes
+Area;Yes
+Land use;Yes
+
+End
+
+Units
+kg;Mass;1;kg
+m3;Volume;1;m3
+Bq;Radioactivity;1;Bq
+kBq;Radioactivity;1000;Bq
+m2;Area;1;m2
+m2a;Land use;1;m2a
+
+End
+
+Raw materials
+Water, river, FR;m3;007732-18-5;
+Occupation, annual crop;m2a;;
+Transformation, from annual crop;m2;;
+
+End
+
+Airborne emissions
+Ammonia;kg;007664-41-7;"Formula: NH3
+Synonyms: azane; ammonia gas"
+Cesium-137;kBq;010045-97-3;
+
+End
+
+Waterborne emissions
+Nitrate;kg;014797-55-8;Formula: NO3
+
+End
+
+Emissions to soil
+Cypermethrin;kg;052315-07-8;
+
+End
+
+Final waste flows
+Waste, test;kg;;
+
+End

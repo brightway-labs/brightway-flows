@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "description": "425 ecoinvent 3.8 elementary exchanges the merge matched and the published list did not carry, taking out most of three whole compartments: 322 of the 335 rows in `water / ground-`, 45 of 48 in `soil / industrial`, 44 of 45 in `soil / forestry`. On the 2026-08-19 build (run 40482427d770458fa4c43265d26db685) the `ecoinvent-3.8` correspondence held 3,999 associations against the 4,424 exchanges the merge read, and every one of the 425 is recorded in `merge_outcomes` as `prepared`, on the right substance and in its own compartment. So this was never 425 matching failures; it was one writer losing them. Each resolved its prepared target through `source-context-target`, the branch that moves a row onto a flow of the same substance in the compartment the row itself named. That branch took its target from `elementary_by_object`, which indexes the rows the pass loaded, while the pass publishes deep copies of them -- so the source reference and the concept association were appended to a record nothing reads. The rows that survived the same branch had targets created during the same pass, where the index entry and the published copy are one object. `record_algorithmic_match` never had the bug: it re-resolves the selected id through `by_elem_id` before writing. See #115, and #321 for the same cause costing 2 rows of ecoinvent 3.12.",
+  "expectations": [
+    {
+      "id": "0587-4-methyl-2-pentanol-in-groundwater-reaches-the-published-list",
+      "issue": 587,
+      "title": "The ecoinvent 3.8 `4-Methyl-2-pentanol` emission to groundwater is published with a mapping a consumer can follow",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.8",
+        "context": [
+          "water",
+          "ground-"
+        ],
+        "name": "4-Methyl-2-pentanol"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_context_display": "Environmental \u2192 Water \u2192 Unconfined aquifer"
+      },
+      "comment": "The row #115 is written around: ecoinvent 3.8 flow 70c436a2-c304-4405-9230-dcfbb7b11dde, `water / ground-`, kg, CAS 108-11-2. On the 2026-08-19 build it was matched -- `prepared`, resolution `source-context-target`, onto flow ed88816d68a0bd106bbd02f59c735d43e7c4125b, `4-methylpentan-2-ol` in `Environmental -> Water -> Unconfined aquifer` -- and `published` was false. The same flow carries the ecoinvent 3.12 association for the very same source uuid, which is what makes the loss legible: one substance, two releases, and only one of them reached the list. Updated with #141: the `prepared` outcome came from the published table, which reached this row only through a permitted coarsening -- industrial or groundwater onto the nearest compartment EF has. The tables and the coarsenings are retired, and the row now lands in the compartment its own list named, on a flow of the same substance -- #84's rule, applied to the last rows the tables were still coarsening. The mapping a consumer follows is the algorithm's, recorded like any other."
+    },
+    {
+      "id": "0587-ecoinvent-38-groundwater-rows-reach-the-published-list",
+      "issue": 587,
+      "title": "The ecoinvent 3.8 groundwater emissions are not dropped from the published list as a compartment",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.8",
+        "context": [
+          "water",
+          "ground-"
+        ],
+        "published": false
+      },
+      "expect": {
+        "row_count": 0
+      },
+      "comment": "What made #115 structural rather than 425 separate accidents: the losses fell along compartments. `water / ground-` is the largest, 322 of its 335 rows missing on the 2026-08-19 build, so any consumer importing ecoinvent 3.8 had to drop or fail most of the groundwater inventory. Phrased as a count over the compartment because the claim is about the compartment surviving, not about any one substance in it."
+    },
+    {
+      "id": "0587-every-ecoinvent-38-row-the-merge-placed-reaches-the-list",
+      "issue": 587,
+      "title": "No ecoinvent 3.8 exchange the merge placed is left out of the published list",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.8",
+        "published": false
+      },
+      "expect": {
+        "row_count": 0
+      },
+      "comment": "The whole of the regression in one number: 425 on the 2026-08-19 build, 0 before it and 0 after. The previous published build mapped all 4,424, so this is the check that would have caught the regression when it was introduced, and the one that catches it coming back. Note the denominator is 4,424 and not the 4,421 of ecoinvent 3.8's cutoff `ElementaryExchanges.xml`: three exchanges ship only in the apos and consequential system models and are added deliberately, which is #25 and #100, and is why #115's `social / unspecified` rows are not a defect."
+    }
+  ]
+}

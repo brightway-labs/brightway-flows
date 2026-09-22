@@ -1,0 +1,96 @@
+{
+  "schema_version": 2,
+  "description": "The ecoinvent source flows this project has looked at and decided are **not** pesticides, with the reasoning for each. Twelve rows, and they decide nothing the merge acts on: a row naming no target flow object is dropped when the file is read, so this file no longer places any row. It is kept because the twelve are the negative control for the role assertions in `curated-chebi-roles.json` -- `tests` asserts that none of them carries an agrochemical role, which is what stops a widened role rule quietly typing a battery electrolyte as an insecticide.\n\nUntil #76 the same file also carried thirty *positive* mappings, sending named pesticides -- Beflubutamid, Chlorimuron, Sulfluramid and twenty-seven others -- onto `Herbicides, Unspecified` and its three siblings. That was one of the two mechanisms that published a named substance under the name of a category, and it is the half this project owned; the other half is the prepared correspondence table, answered by the decline rows in `ecoinvent-match-overrides.json`. Both were retired together, because retiring one alone would have left the same substance published specifically in the contexts one mechanism covered and collapsed in the contexts the other did. The thirty substances now reach flows of their own through the merge's addition path, and the pesticide class each belongs to is published as a `has role` assertion on the substance. Researched 2026-03-21; the positive mappings removed 2026-08-18.",
+  "flow_object_ids": {
+    "fungicides_unspecified": "fo-08d9dd2d1d8a87d5",
+    "herbicides_unspecified": "fo-601ee65225568e0a",
+    "insecticides_unspecified": "fo-700f8fbcf27ee535",
+    "pesticides_unspecified": "fo-2792da6d627a40e6"
+  },
+  "mappings": [
+    {
+      "source_name": "Astatine",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Radioactive halogen element; no pesticide use."
+    },
+    {
+      "source_name": "Butatriene",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Industrial cumulated diene; no pesticide use."
+    },
+    {
+      "source_name": "Calcium II",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Calcium ion; essential nutrient, not a pesticide."
+    },
+    {
+      "source_name": "Cupric chloride dihydrate",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Industrial chemical and laboratory reagent. While copper compounds can have fungicidal use, cupric chloride dihydrate is not a registered pesticide active ingredient."
+    },
+    {
+      "source_name": "Cyclopropene",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Industrial chemical/monomer; no pesticide use."
+    },
+    {
+      "source_name": "Diisopropyl sulfate",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Alkylating agent used in organic synthesis; not a pesticide."
+    },
+    {
+      "source_name": "Ferrocyanide",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Iron hexacyanide coordination compound; industrial and food uses (anti-caking agent), not a pesticide."
+    },
+    {
+      "source_name": "Lithium hexafluorophosphate",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Battery electrolyte salt; no pesticide use."
+    },
+    {
+      "source_name": "Phosphorus pentafluoride",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Industrial Lewis acid gas; no pesticide use."
+    },
+    {
+      "source_name": "Sodium hexafluorophosphate",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Industrial salt; no pesticide use."
+    },
+    {
+      "source_name": "Thionyl chloride",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Industrial chlorinating reagent; not a pesticide."
+    },
+    {
+      "source_name": "Vinylacetylene",
+      "pesticide_type": "not_pesticide",
+      "flow_object_id": null,
+      "flow_object_label": null,
+      "notes": "Industrial monomer; no pesticide use."
+    }
+  ]
+}

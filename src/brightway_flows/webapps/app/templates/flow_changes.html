@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% set page_title = "Changes" %}
+{% set active_section = "flows" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ subject.name if subject else uuid }}</h1>
+  <p class="page__lede">
+    Everything that changed this flow.
+    <a href="{{ url_for('flows.detail', uuid=uuid) }}">Back to the flow</a>
+  </p>
+  <p class="mono muted">{{ uuid }}</p>
+</header>
+
+{% include "partials/history.html" %}
+{% endblock %}

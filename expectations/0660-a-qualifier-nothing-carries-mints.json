@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent's `Carbon dioxide, non-fossil, resource correction` carries CAS 124-38-9 and a name this project's vocabulary reads as `biogenic_resource_correction`. Seven flow objects carry that registry number and not one of them carried that qualifier, so the narrowing in `merge.matching` found nothing — and then ignored the qualifier and let the label branch match unqualified `Carbon Dioxide`, which is the substance the qualifier exists to distinguish the row from. An empty narrowing is now read as evidence rather than as an absence: the row's own name has ruled out every candidate the number found, so the row is reported `no-flow-object-candidate` and `merge.creations` mints the substance. Measured on a full build against merge base 09b1c37: **2 rows of 16,953 moved**, both of them this flow, and nothing else in any list changed. See #133, and #139 for why the same defect matters for carbon into a soil or biomass stock.",
+  "expectations": [
+    {
+      "id": "0660-the-resource-correction-has-its-own-substance",
+      "issue": 660,
+      "title": "ecoinvent's resource correction no longer reaches unqualified carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name_contains": "Resource Correction"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-525d7ddc2fa0004e"
+      },
+      "comment": "Two rows, one in ecoinvent 3.8 and one in 3.12, both on source uuid `419de9f0-ee00-4e95-9556-c8f06b17beec`. Before this change both were `algorithm` on `cas+label`, landing on `fo-82a29244dccbaefc`, unqualified `Carbon Dioxide`. The flow object id is stable rather than incidental: it is `sha1` of the grouping key, and for a qualified substance that key is the qualifier and the registry number, so it survives a rebuild as long as the row is grouped the same way. Stated as `same_substance` too, because the two releases reaching *different* new substances would be a different bug wearing this fix's clothes."
+    },
+    {
+      "id": "0660-the-substance-is-minted-once",
+      "issue": 660,
+      "title": "The resource correction is one substance with one flow, not a second carbon dioxide",
+      "subject": {"kind": "substance", "id": "fo-525d7ddc2fa0004e"},
+      "expect": {"exists": true, "count": 1, "flow_count": 1},
+      "comment": "`Resource → Air`, the compartment ecoinvent files it in. One flow and not two: 3.12 is merged first and mints it, then 3.8's identical row finds it on `cas+qualifier` — which is the rule being self-limiting. It fires once for a qualifier nothing carries, and from then on the ordinary narrowing does the work. If this ever reads 2, the two releases minted separately and the qualifier index is not being rebuilt between merges."
+    },
+    {
+      "id": "0660-unqualified-carbon-dioxide-keeps-only-the-rows-that-state-no-origin",
+      "issue": 660,
+      "title": "No ecoinvent row is published as unqualified carbon dioxide",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "name_contains": "Carbon Dioxide"},
+      "expect": {"not_outcome": "unmatched"},
+      "comment": "The guard on the other side. Every ecoinvent row naming carbon dioxide still reaches something — the change must not turn a wrong match into no match at all, which is the failure mode of reading an empty narrowing as a refusal. After it, the only rows left on unqualified `Carbon Dioxide` are BAFU's five, and #139 §17 moves those to `(fossil)` for reasons of its own."
+    }
+  ]
+}

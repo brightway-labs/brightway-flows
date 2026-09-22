@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "description": "GreenDelta writes 25 of their flows under a spelling for an ion no published label of ours matches -- `Copper ion` where this list publishes `Copper, Ion`, `Cadmium II` where it publishes `Cadmium(2+)` -- and states no registry number for any of them, so #165's rule reaches them by neither of its routes. 107 factors, and not one of them is about a substance this list is missing.\n\n**Their own package says which substance each name means.** Each of these names appears in their file once per compartment, nine to thirteen times, and most of those copies carry an ecoinvent uuid that already resolves -- to `Copper, Ion` seven times out of twelve, to `Cadmium(2+)` ten times out of twelve, and never to a second substance of ours. `data/lcia-substance-decisions.json` carries that reading into the compartments where their identifier does not resolve, one row per flow of theirs, each recording the count it rests on.\n\n**Seven of the 25 are declined, and that is a decision rather than a gap.** They are metals emitted to a lake, and `Environmental -> Water -> Lake` publishes 42 flows, all BAFU's, naming a dissolved metal for its element: `Cadmium`, with no `Cadmium(2+)` beside it. This list keeps the two apart in all four water contexts where both exist. Declining costs no number -- every value those rows state is stated again by their own `fresh water`, `ground water` or `unspecified` row, and those reach the ionic flow -- and the finding that reports each one carries the reasoning from the file.\n\nMeasured on the build of 2026-08-25 (`20260825T1354430622920000`) characterised 2026-08-29: 18 more flows reached, 69 more factors published, and the consensus implementation unmoved. The consensus count is re-measured for #349 on the full build of 2026-08-29 (`20260829T1158418340740000`), where it is 323,890. Every claim below fails on #165's branch, where the table does not exist.",
+  "expectations": [
+    {
+      "id": "0789-the-table-reaches-eighteen-flows",
+      "issue": 789,
+      "title": "18 flows no number and no name reaches are found by a curated decision",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_matched_on_curated_decision"
+      },
+      "expect": {
+        "at_least": 18
+      },
+      "comment": "Its own basis beside `registry-number`, `registry-number-and-name` and `name`, because \"a curator read the publisher's package and said so\" is a different strength of claim from \"the number agreed\", and a reader deciding whether to trust a factor has to be able to tell them apart. The other three are unchanged at 289, 2 and 16: the table adds a route and takes nothing from the ones that already worked."
+    },
+    {
+      "id": "0789-seven-rows-are-declined-on-purpose",
+      "issue": 789,
+      "title": "The nine declined rows reach nothing, and the build says it was decided",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_source_flows_declined"
+      },
+      "expect": {
+        "at_least": 9,
+        "at_most": 9
+      },
+      "comment": "An equality, because this is the count of a decision and not of a shortfall. Growing means something new was refused and nobody wrote it down here; shrinking means one of the nine found a flow, which for the seven would be `Water -> Lake` gaining an ionic metal and is a reason to re-read the decision rather than to let it lapse quietly.\n\nEach of the nine gets exactly one `flow-not-reached` finding carrying `declined_because` -- the row reached nothing, which is one thing that happened.\n\nSeven of the nine are this issue's lake rows. The other two are #350's: `Platinum` and `Uranium` under `Resource / unspecified`, declined because both numbers are already published on `Resource -> Ground` from the copy of theirs that arrived with an identifier, and a compartment that names no place gives no reason to prefer this copy. The bound counts declines rather than lake rows, so it moves whenever another list's row is refused on the record, and 9 is what the four-list build of 2026-08-29 (`20260829T1631159082840000`) states."
+    },
+    {
+      "id": "0789-the-factors-those-flows-carry",
+      "issue": 789,
+      "title": "GreenDelta's published factors rise to 23,577",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_factors_published"
+      },
+      "expect": {
+        "at_least": 23577
+      },
+      "comment": "23,508 before, of the 26,179 their file states. The 69 added are the 18 decided rows' own factors and nothing else. The 38 on the seven declined rows stay unpublished, and the rest of the 2,602 remaining are #166's 1,711 in the three resource compartments this list files as a context, the regionalised `Water, DK` rows whose place is in their name, and the ties and unit crossings #165 reports.\n\n`at_least`, because #166 should raise it."
+    },
+    {
+      "id": "0789-eighteen-more-flows-are-characterised",
+      "issue": 789,
+      "title": "GreenDelta characterises 1,456 of this list's flows",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_flows_characterised"
+      },
+      "expect": {
+        "at_least": 1456
+      },
+      "comment": "1,438 before. Eighteen rows, eighteen flows: no two of the 25 name one flow of ours in one compartment, which is what makes each of them a decision about a row rather than a rule about a name."
+    },
+    {
+      "id": "0789-it-still-decides-nothing",
+      "issue": 789,
+      "title": "Reading GreenDelta's ionic names changes no factor this list publishes",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_factors_published"
+      },
+      "expect": {
+        "at_most": 327064
+      },
+      "comment": "The bound #157 and #165 both state, restated here for the same reason: this change adds 69 numbers from a publisher whose implementation is comparison and not evidence, and `decides: false` on GreenDelta's row in `data/lcia-impact-categories.json` is what keeps them out of the consensus.\n\nAn upper bound, per #349: 323,890 on the build of 2026-08-29, and a rise is what would mean one of the 69 had become ours. Moved to 323,898 with the AGRIBALYSE stack (#188): giving Beta-cyfluthrin the product's own registry number took ecoinvent's rows off the consensus `Cyfluthrin` flows, and the ecoinvent Centre's factors followed its flows -- 64 arrive on the Beta-cyfluthrin substance, 40 leave with the vacated ecoinvent-compartment Cyfluthrin copies, pair-identical amounts, measured on the stack build of d98a075 (1 September 2026). That is +24 against the 323,874 the #178/#826 retirements left, none of it a comparison implementation reaching the consensus -- the movement is one deciding implementation's numbers following its own renamed substance, which is the accounting this guard exists to force. (This file's 323,890 had also gone quietly stale: an upper bound tolerates a fall, so the #178/#826 retirements that made the count 323,874 never forced an edit here.) Moved again on 2026-09-01 when the context convention in `data/context-carry-rules.json` began carrying 1,482 more factors into the contexts nobody characterised -- a river taking surface water's number, silvicultural soil taking non-agricultural soil's -- on top of the 323,898 the cyfluthrin split left: 325,380, the two movements measured on different builds and added, until the next full build records the count. A carried number is this list's own convention applied to a number it already published, not a third publisher's number becoming ours, which is still what this bound is about.\n\nRecorded at 327,064 on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), which is the full build the previous sentence was waiting for. The convention's carry came to 1,866 factors over the four-list baseline's 1,491 (3,357 `carried`), not the 1,482 measured on a branch, because AGRIBALYSE's merge added flows in contexts the convention carries into; `sole` moved by 24 the other way. `adopted` stayed at 1,334, which is the number this bound is really watching: nothing a third publisher stated became ours."
+    },
+    {
+      "id": "0789-the-aluminium-resource-row-agrees",
+      "issue": 789,
+      "title": "GreenDelta's `Aluminium III` resource factor agrees with the JRC's to the digit",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Aluminium",
+        "context_display": "Resource → Ground",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "1.09e-09"
+      },
+      "comment": "The row whose name and compartment disagree: they call it `Aluminium III` and file it under `Resource/in ground`, and aluminium in the ground is the element rather than a dissolved ion. The number is what settles it. 1.09e-09 is exactly what the JRC and the ecoinvent Centre both state for this flow, and what the consensus already publishes as `agreed`; their twelve other flows of this name are all emissions and all reach `Aluminium(3+)`, which is not published in a resource compartment.\n\nOne factor, and it is here because it is the one row in the table decided by a number rather than by a count of their own resolutions. Before this change it was dropped, so a third implementation agreeing was invisible."
+    },
+    {
+      "id": "0789-arsenic-keeps-its-two-substances-apart",
+      "issue": 789,
+      "title": "`Arsenic V` reaches arsenate and `Arsenic ion` reaches the unspeciated ion",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Arsenic(5+)",
+        "context_display": "Environmental → Ground → Industrial",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "2506.9500453"
+      },
+      "comment": "Their file ships `Arsenic V` and `Arsenic ion` as two flows in this one compartment, so they mean two substances, and this list publishes both -- `Arsenic(5+)` and `Arsenic, Ion` -- in it. 2506.95 is the arsenate row's number; the unspeciated row states 1725.896653 in the same compartment and category and reaches `Arsenic, Ion`.\n\nThe claim is that the table does not collapse them. `Arsenic V` is the one name in the 25 that resolves nowhere in their own package, so nothing of theirs settles it and a looser rule -- anything that read `Arsenic ion` as arsenic in some oxidation state -- would have taken both rows to one flow and lost a number."
+    }
+  ]
+}

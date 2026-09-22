@@ -1,0 +1,197 @@
+{#
+  Search results.  `plans/public-site.md` §3, from the Search, Search-Exact
+  and Search-Mobile boards.
+
+  The All view shows the first four of each group and links to the rest; a
+  `type=` shows that group alone, paged.  A group this checkout cannot answer
+  -- no database, no `docs/` -- is not drawn at all, and neither is its filter
+  link, where a group that found nothing is listed with 0.
+
+  A registry number with an exact match gets the card, and the card takes the
+  place of the Flow objects group in the All view, as on the Search-Exact
+  board: it lists the same flow objects.
+
+  Every name and snippet goes through `highlight`, which escapes before it
+  marks: `search_query` is whatever was typed into the address bar.
+#}
+{% extends "layout.html" %}
+{% from "partials/table.html" import pager %}
+{% set page_title = ("Search: " ~ search_query) if search_query else "Search" %}
+{% set active_section = none %}
+
+{% macro quoted() -%}
+{% if identifier %}<span class="mono">{{ search_query }}</span>{% else %}“{{ search_query }}”{% endif %}
+{%- endmacro %}
+
+{% macro flows_label(n) -%}
+{{ n | thousands }} elementary flow{{ "" if n == 1 else "s" }}
+{%- endmacro %}
+
+{% macro doc_href(slug) -%}
+{{ url_for('docs.page') if slug == 'index' else url_for('docs.page', page=slug) }}
+{%- endmacro %}
+
+{% macro group_header(id, title, href, link_text) %}
+<div class="search-group__header">
+  <h2 class="search-group__title" id="{{ id }}">{{ title }}</h2>
+  {% if href %}<a class="search-group__all" href="{{ href }}">{{ link_text }}</a>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro object_rows(rows) %}
+<ol class="search-group__list">
+  {% for row in rows %}
+  <li class="search-result search-result--object">
+    <a class="search-result__name" href="{{ url_for('substances.detail', flow_object_id=row.flow_object_id) }}">{{ row.name | highlight(search_query) if row.name else "(no name)" }}</a>
+    <span class="search-result__meta">{{ row.type_label }}</span>
+    <span class="search-result__count">{{ flows_label(row.linked_flows) }}</span>
+  </li>
+  {% endfor %}
+</ol>
+{% endmacro %}
+
+{% macro flow_rows(rows) %}
+<ol class="search-group__list">
+  {% for row in rows %}
+  <li class="search-result search-result--flow">
+    <a class="search-result__name" href="{{ url_for('flows.detail', uuid=row.uuid) }}">{{ row.name | highlight(search_query) if row.name else "(no name)" }}</a>
+    <span class="search-result__context">{{ row.context_display }}</span>
+    <span class="search-result__unit mono">{{ row.unit }}</span>
+  </li>
+  {% endfor %}
+</ol>
+{% endmacro %}
+
+{% macro doc_rows(rows) %}
+<ol class="search-docs">
+  {% for hit in rows %}
+  <li class="search-result search-result--doc">
+    {% if hit.group %}<span class="search-result__group">{{ hit.group }}</span>{% endif %}
+    <a class="search-result__title" href="{{ doc_href(hit.slug) }}">{{ ("Where to start" if hit.slug == "index" else hit.title) | highlight(search_query) }}</a>
+    {% if hit.snippet %}<p class="search-result__snippet">{{ hit.snippet | highlight(search_query) }}</p>{% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% endmacro %}
+
+{% macro exact_rows(rows) %}
+{% for row in rows %}
+<li class="exact__item">
+  <a class="exact__name" href="{{ url_for('substances.detail', flow_object_id=row.flow_object_id) }}">{{ row.name or "(no name)" }}</a>
+  <span class="search-result__count">{{ flows_label(row.linked_flows) }}</span>
+</li>
+{% endfor %}
+{% endmacro %}
+
+{% block content %}
+<div class="search">
+  <div class="search__main">
+    <header class="search__header">
+      {% if not search_query %}
+      <h1 class="search__title">Search</h1>
+      {% elif found %}
+      <h1 class="search__title">Results for {{ quoted() }}</h1>
+      {% else %}
+      <h1 class="search__title">No results for {{ quoted() }}</h1>
+      {% endif %}
+
+      <form class="search__form" role="search" action="/search" method="get">
+        <label class="visually-hidden" for="search-q">Search flows and docs</label>
+        <input class="search__input" id="search-q" name="q" type="search" value="{{ search_query }}">
+        {% if kind %}<input type="hidden" name="type" value="{{ kind }}">{% endif %}
+        <button class="search__submit" type="submit">Search</button>
+      </form>
+
+      {% if found %}
+      <nav class="search-types" aria-label="Result type">
+        <a class="search-types__type" href="{{ url_for('search.index', q=search_query) }}"{% if not kind %} aria-current="page"{% endif %}>All</a>
+        {% for key, label in (("objects", "Flow objects"), ("flows", "Elementary flows"), ("docs", "Documentation")) if key in totals %}
+        {% if totals[key] %}
+        <a class="search-types__type" href="{{ url_for('search.index', q=search_query, type=key) }}"{% if kind == key %} aria-current="page"{% endif %}>
+          {{ label }} <span class="search-types__count">{{ totals[key] | thousands }}</span></a>
+        {% else %}
+        <span class="search-types__type" aria-disabled="true">
+          {{ label }} <span class="search-types__count">0</span></span>
+        {% endif %}
+        {% endfor %}
+      </nav>
+      {% endif %}
+    </header>
+
+    {% if exact and not kind %}
+    {% set n = exact.objects | length %}
+    <section class="exact" aria-labelledby="exact-heading">
+      <div class="exact__header">
+        <h2 class="exact__heading" id="exact-heading">
+          <span class="exact__badge">Exact match</span>
+          {{ exact.label }} <span class="mono">{{ exact.identifier }}</span>
+        </h2>
+        <p class="exact__note">Recorded on {{ n | thousands }} flow object{{ "" if n == 1 else "s" }}.
+          {%- if n > 1 %} <a href="/docs/deciding/registry-numbers">Why one number reaches several flow objects</a>{% endif %}</p>
+      </div>
+      <ol class="exact__list">
+        {{ exact_rows(exact.objects[:exact_preview]) }}
+      </ol>
+      {% if n > exact_preview %}
+      {# A <details>, not a link: the rest are already on the page, and this
+         opens them with scripts blocked. #}
+      <details class="exact__more">
+        <summary>Show the other {{ (n - exact_preview) | thousands }}</summary>
+        <ol class="exact__list" start="{{ exact_preview + 1 }}">
+          {{ exact_rows(exact.objects[exact_preview:]) }}
+        </ol>
+      </details>
+      {% endif %}
+    </section>
+    {% endif %}
+
+    {% if objects is not none and objects.total and (kind == "objects" or (not kind and not exact)) %}
+    <section class="search-group" aria-labelledby="results-objects">
+      {# The link is left off for an exact match: the list page searches names,
+         and would not find what an InChIKey found. #}
+      {{ group_header("results-objects", "Flow objects",
+                      none if exact else url_for('substances.index', q=list_query),
+                      "All " ~ (objects.total | thousands) ~ " in Flow objects →") }}
+      {{ object_rows(objects.rows if kind else objects.rows[:group_preview]) }}
+      {% if kind %}{{ pager(objects, "search.index", {"q": search_query, "type": kind}) }}{% endif %}
+    </section>
+    {% endif %}
+
+    {% if flows is not none and flows.total and kind in ("", "flows") %}
+    <section class="search-group" aria-labelledby="results-flows">
+      {{ group_header("results-flows", "Elementary flows",
+                      url_for('flows.index', q=list_query),
+                      "All " ~ (flows.total | thousands) ~ " in Elementary flows →") }}
+      {{ flow_rows(flows.rows if kind else flows.rows[:group_preview]) }}
+      {% if kind %}{{ pager(flows, "search.index", {"q": search_query, "type": kind}) }}{% endif %}
+    </section>
+    {% endif %}
+
+    {% if docs is not none and docs.total and kind in ("", "docs") %}
+    <section class="search-group" aria-labelledby="results-docs">
+      {{ group_header("results-docs", "Documentation",
+                      none if kind else url_for('search.index', q=search_query, type='docs'),
+                      "All " ~ (docs.total | thousands) ~ (" page →" if docs.total == 1 else " pages →")) }}
+      {{ doc_rows(docs.rows if kind else docs.rows[:group_preview]) }}
+      {% if kind %}{{ pager(docs, "search.index", {"q": search_query, "type": kind}) }}{% endif %}
+    </section>
+    {% endif %}
+  </div>
+
+  <aside class="search__aside">
+    <section class="search-help search-help--sunken" aria-labelledby="help-identifier">
+      <h2 id="help-identifier">Searching by identifier</h2>
+      <p>A flow UUID opens its flow directly. A CAS number or InChIKey lists its exact matches first, because one registry number can belong to several flow objects.</p>
+      <p class="search-help__examples mono"><a href="/search?q=124-38-9">124-38-9</a><br>CURLTUGMZLYLDI-UHFFFAOYSA-N</p>
+    </section>
+    {% if search_query %}
+    <section class="search-help" aria-labelledby="help-report">
+      <h2 id="help-report">Not what you expected?</h2>
+      <p>If a flow from your source list is missing or matched to the wrong substance, tell us.</p>
+      <a href="{{ repository_url }}/issues/new?template=wrong-match.yml">Report a missing or wrong flow</a>
+      <a href="/docs/using/matching-your-own-list">Match a whole list of your own</a>
+    </section>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{#
+  A database with no merge run.
+
+  Not an error: a transform without a source list is a complete build, and this
+  is what it looks like from here.
+#}
+{% extends "layout.html" %}
+{% set page_title = "Merge" %}
+{% set active_section = "merge" %}
+
+{% block content %}
+<div class="empty">
+  <h1>No merge run</h1>
+  <p>
+    This database records a transform but no merge, which is what a build
+    without a source list produces.
+  </p>
+  <p>Merge one in:</p>
+  <pre><code>uv run brightway-flows build --source ecoinvent-3.12</code></pre>
+  <p class="muted">
+    A source list needs its flows downloaded first — see
+    <code>download-ecoinvent-flows</code> — and an ecoinvent licence.
+  </p>
+</div>
+{% endblock %}

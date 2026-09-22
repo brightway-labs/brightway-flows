@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "description": "#122 added a check that finds where the ecoinvent → EF 3.1 correspondence table gives two different answers about one substance, and left eighteen substances on the list. #125 is the curation half: six of the eighteen can be settled without deciding anything new, four by repointing the row at a flow EF ships in every compartment concerned and two by declining it because EF ships nothing right. This file states what each one should reach.\n\nEvery target below is chosen on the substance's identity -- its registry number, and what the EF flow's own name says it is -- and on nothing else. What each choice costs or saves in characterisation factors is a separate question and is not an argument for or against any of them; two of these move a row from a flow with six factors to a flow with two, and that is the right answer anyway because the flow with six is a different chemical's.\n\nMeasured on the unbounded build of 20 August 2026 at `8be2336`, merging ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026 v1, and against the shipped tables for 3.8, 3.9.1, 3.10.1 and 3.11/3.12 as of #324. The half of #125 this file cannot reach is the table's own self-contradiction, which is not a fact about a build; that is `tests/test_correspondence_self_contradiction.py`.",
+  "expectations": [
+    {
+      "id": "0611-nitrogen-gas-is-not-a-nutrient-measure",
+      "issue": 611,
+      "title": "ecoinvent's nitrogen gas is published as dinitrogen, not as the nutrient load that excludes it",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Nitrogen"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_name": "Dinitrogen"
+      },
+      "comment": "Nitrogen gas is N₂, the unreactive gas that is four-fifths of the air, registry number 7727-37-9. EF 3.1's `nitrogen, total (excluding N2)` is not a substance at all; it is a nutrient-load measure, the sum of nitrogen in all its reactive forms, and its own name says in the clearest possible terms that N₂ is the one thing it excludes.\n\nThe table sends ecoinvent's N₂ there in nine of its twelve flows -- all four soil compartments and all five water ones -- and to `dinitrogen`, which carries 7727-37-9, in the other three. Nothing subtle is needed to see which is right: the target's own name rules the source out.\n\n`same_substance` as well as `target_name`, because the defect is a substance split by compartment and the two claims fail differently. A change that repointed the soil rows and not the water ones would satisfy neither; one that repointed them onto some third flow called `Dinitrogen` would satisfy the second and not the first.\n\n**This drops four characterisation factors and that is correct.** `Nitrogen, Total (excluding N2)` carries one factor -- freshwater eutrophication -- in each of the four water compartments these rows reach, and `dinitrogen` carries none anywhere. A eutrophication factor is a statement about nutrient nitrogen, and N₂ is not nutrient nitrogen; publishing one against it was the defect, not the coverage."
+    },
+    {
+      "id": "0611-tetrachlorvinphos-reaches-its-own-registry-number",
+      "issue": 611,
+      "title": "ecoinvent's tetrachlorvinphos releases are published as tetrachlorvinphos rather than under the trade name EF files it a second time under",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Tetrachlorvinphos"
+      },
+      "expect": {
+        "target_name": "Tetrachlorvinphos"
+      },
+      "comment": "EF 3.1 ships this one insecticide twice: as `rabon` under 961-11-5 and as `tetrachlorvinphos` under 22248-79-9, in thirteen compartments each, with identical synonym lists. That is #64's defect, EF filing one substance under two numbering systems, and it is not this change's to fix.\n\nWhat is this change's is which of the two ecoinvent's rows reach. **ecoinvent names all seven of its flows `Rabon`** -- in 3.8, 3.9.1, 3.10.1, 3.11 and 3.12 alike -- and registers every one of them 22248-79-9, which is tetrachlorvinphos's number and not rabon's. This list already reads the number rather than the name and publishes the substance as `Tetrachlorvinphos`; the correspondence table reads the name and sends six of the seven to EF's *other* copy. So the published output disagrees with itself: it calls the substance tetrachlorvinphos and points it at rabon.\n\n`0602-tetrachlorvinphos-is-one-substance` already claims the rows agree with each other. This claims which one they agree on, which is the half that needs the registry number to settle and the half `same_substance` cannot see.\n\n**This drops four characterisation factors on five rows.** EF's `rabon` flows carry six each and its `tetrachlorvinphos` flows carry two. The numbers are not a reason to prefer either target -- 22248-79-9 is -- and the loss is EF publishing more about one of its two copies than about the other, which is #64."
+    },
+    {
+      "id": "0611-glufosinate-is-not-its-ammonium-salt",
+      "issue": 611,
+      "title": "ecoinvent's glufosinate releases are published as glufosinate rather than as its ammonium salt",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Glufosinate"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_name": "Glufosinate"
+      },
+      "comment": "Glufosinate is 51276-47-2. Its ammonium salt is 77182-82-2, a different chemical. EF 3.1 ships the salt in all thirteen compartments and the herbicide itself in exactly one -- agricultural soil -- checked over all 94,062 flows of the extracted input of 20 August 2026. So the table reaches for the salt in six of ecoinvent's seven compartments, which is a reasonable thing for a mapping table to do about a coverage gap and a bad thing for this list to publish as an identification.\n\nThere is nothing to repoint at, so the six rows are declined and the substance is minted as itself. A decline is not free -- it hands the row to algorithmic name matching, and whatever names the source row carries then decide -- so it was checked: ecoinvent's `Glufosinate` carries no synonyms at all in any release on disk, which leaves its registry number to decide. The precedent is `Trifloxystrobin`, declined for #76 and reaching one flow object across all eight of its compartments today, five of them on `basis=cas`.\n\n`same_substance` is the claim that the decline worked rather than merely happened: the agricultural-soil row already reaches EF's `Glufosinate`, and the six declined ones have to arrive at that same substance rather than at a second one minted beside it.\n\n**This clears eight of the build's thirteen factor collisions.** ecoinvent's `Glufosinate` rows for `soil / unspecified` and `soil / forestry` land on `Glufosinate Ammonium Salt` today alongside the salt's own rows and state numbers 640× to 7,068× apart, so both statements are suppressed and neither compartment publishes an ecotoxicity or a non-cancer toxicity factor from the ecoinvent Centre. Separating the two substances is what lets each keep its own number."
+    },
+    {
+      "id": "0611-quizalofop-p-is-not-the-ethyl-ester",
+      "issue": 611,
+      "title": "ecoinvent's quizalofop-P releases are published as quizalofop-P rather than as its ethyl ester",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Quizalofop-P"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_name": "Quizalofop-P"
+      },
+      "comment": "The same shape as glufosinate and the same answer. Quizalofop-P is 94051-08-8; quizalofop-P-ethyl is 100646-51-3, the ethyl ester, a different chemical that EF ships in all thirteen compartments under its systematic name. EF ships the acid itself in one compartment only, agricultural soil, so three of ecoinvent's four rows reach the ester.\n\nDeclined rather than repointed, for the same reason: there is no flow of the right substance in those compartments to point at. Checked for the synonym trap as well -- ecoinvent's `Quizalofop-P` carries two synonyms, both full systematic names, neither a bare word that could collide with an unrelated flow. That check is not ceremonial: #324's own second commit had to add it after `Gypsum` reached the `Sulfate` flow object on a single-word synonym."
+    },
+    {
+      "id": "0611-2-4-d-is-the-acid-and-not-its-sodium-salt",
+      "issue": 611,
+      "title": "Every release of ecoinvent's 2,4-D is published as the herbicide acid, not as its sodium salt",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "2,4-D"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_name": "(2,4-dichlorophenoxy)acetic Acid"
+      },
+      "comment": "**A control, and deliberately one this build cannot fail.** 2,4-D is the herbicide acid, 94-75-7; `sodium 2,4-dichlorophenoxyacetate` is 2702-72-9, its sodium salt. Three of ecoinvent's 2,4-D flows are sent to the salt -- `water / unspecified` and `soil / forestry` in the 3.9.1 table, those two and `water / surface water` in the 3.10.1 one. **Neither the 3.8 table nor the 3.11/3.12 table carries those rows**, so the standard build pair, which merges ecoinvent 3.12 and 3.8, already publishes all ten of its 2,4-D rows as the acid and would go on doing so with no override written at all.\n\nThat is why this is a control rather than a pending claim: an expectation that passes before the fix is testing nothing, and this one does pass before it. The half of the defect that is real is a fact about two shipped correspondence tables rather than about a build, and it is checked where such facts belong -- `tests/test_correspondence_self_contradiction.py`, which reads every table this project loads and reports 2,4-D settled once the override rows are applied.\n\nWhat this entry is for is the other direction: a later change that repointed 2,4-D generally, or a future release that started shipping the 3.9.1 rows again, would break it here. It is the salt-for-acid shape of #119, and it is the fourth of that family; #324 settled the other three."
+    }
+  ]
+}

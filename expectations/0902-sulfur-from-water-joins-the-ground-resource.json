@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "description": "AGRIBALYSE takes sulfur from `Resources / in water` in 24 exchanges whose every amount is zero -- 23 literal zeros and one `0,327*0`, in amino-acid fermentation datasets and one sulfuric-acid process -- while taking it from `Resources / in ground` 2,182 times with real amounts. EF 3.1 publishes `Sulfur` as a ground resource with a factor; the list has no from-water sulfur flow, so on the build of 1 September 2026 (run c5445e95) the water row minted a second `Sulfur` in `Resource → Water → Unknown` with no factor, one of the 15 items on the substance-in-two-places queue. The fix re-files the row to `Resources / in ground` in `agribalyse-3.2-manual-fixes.json`: the same element from the same crust, the water subcompartment a SimaPro bookkeeping slot rather than a claim about the sea, and every use zero so no inventory result moves. See #368 and plans in agribalyse-land-and-sulfur-contexts.md §2.",
+  "expectations": [
+    {
+      "id": "0902-the-water-sulfur-row-reaches-the-ground-resource",
+      "issue": 902,
+      "title": "AGRIBALYSE's sulfur-from-water row reaches the Sulfur ground resource EF publishes",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "359eb641-e485-56e1-9fbb-77a040545d51"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_name": "Sulfur",
+        "target_context_display": "Resource → Ground",
+        "target_characterised": true
+      },
+      "pending": true,
+      "comment": "On the build of 1 September 2026 the row matched the Sulfur substance by its number and then minted a new flow in `Resource → Water → Unknown` because no water flow existed. Re-filed, it lands on the ground flow with EF's factor."
+    },
+    {
+      "id": "0902-sulfur-is-published-in-one-place",
+      "issue": 902,
+      "title": "Sulfur is published as a resource in one context, not two",
+      "subject": {
+        "kind": "flow",
+        "name": "Sulfur",
+        "context_display": "Resource → Water → Unknown"
+      },
+      "expect": {
+        "exists": false
+      },
+      "pending": true,
+      "comment": "The minted water flow of the build of 1 September 2026, gone once the one row that produced it is re-filed."
+    }
+  ]
+}

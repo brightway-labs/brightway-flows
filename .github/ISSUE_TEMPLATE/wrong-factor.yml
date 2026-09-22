@@ -1,0 +1,130 @@
+name: A characterisation factor looks wrong
+description: A number is on a substance it was not computed for, two implementations of one method disagree, or a flow that should be characterised is not.
+labels: ["lcia-factors"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Read this paragraph before filling the form, because it is the most common reason
+        one of these is closed.** This list publishes what implementers state. A factor is
+        not overruled because it looks wrong — it is recorded, compared against the other
+        implementations and against the underlying model, and where they contradict each
+        other the disagreement is **published as a question** rather than quietly resolved.
+        So "this number seems too large" is not by itself actionable, and neither is "these
+        two implementations differ": the list already says they do.
+
+        What is actionable is a number that **cannot be about this substance** — because
+        the model the method says it implements gives it something else, because it was
+        computed for a relative, or because the rule that produced it read a field it
+        should not have. See [A characterisation factor that does not belong to the
+        substance it is
+        on](https://github.com/brightway-labs/brightway-flows/blob/main/docs/findings/factors.md).
+
+        **Write the title so it means something to somebody who has not read the issue.**
+        Name the substance, the category and the size of the gap.
+
+  - type: dropdown
+    id: factor-problem
+    attributes:
+      label: What is wrong
+      options:
+        - The number contradicts the model the method says it implements
+        - The number was computed for a different substance
+        - The number belongs to the substance but not to this compartment
+        - Two implementations read different rows for one substance
+        - A flow that should be characterised carries no factor
+    validations:
+      required: true
+
+  - type: input
+    id: published-flow
+    attributes:
+      label: The flow on the website
+      description: Its UUID, or the address of its page.
+    validations:
+      required: true
+
+  - type: input
+    id: category
+    attributes:
+      label: The impact category and method
+      placeholder: Human toxicity, non-cancer — EF 3.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: numbers
+    attributes:
+      label: The numbers
+      description: >-
+        One line per implementation, with the compartment. If you are comparing against the
+        underlying model, give its number and say which publication you read it from — the
+        comparison is only trustworthy when both sides count the same thing, and for the
+        two human-health categories they do.
+      value: |
+        compartment:
+        EF 3.1 (JRC):
+        ecoinvent Centre:
+        GreenDelta:
+        this list:
+        the underlying model:
+    validations:
+      required: true
+
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: Why the number cannot be this substance's
+      description: >-
+        A difference is not automatically a defect. EF 3.1 replaced USEtox's metal factors
+        with ones derived from EU data and documents every change; a gap in one compartment
+        and not another is two models routing an emission differently. What counts is a
+        gap that no such explanation covers — every compartment disagreeing, or a rule that
+        demonstrably read the wrong field.
+      placeholder: >-
+        The factor is chlorine's crustal number scaled by the mineral's chlorine content —
+        2.71e-05 × 0.383 = 1.04e-05 — and the rule that composes a factor from a formula
+        does not read the compartment, so it fired on a salt taken from the sea.
+    validations:
+      required: true
+
+  - type: input
+    id: claim
+    attributes:
+      label: One sentence that should be true of the output
+      description: >-
+        Note that "nobody states this factor" is almost never the right claim: a
+        transcription of what the JRC published is meant to go on saying what the JRC
+        published. The claim is usually about **this list's own implementation**.
+      placeholder: This list publishes no minerals-and-metals factor for carnallite taken from water
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: A proposed ruling, if you have one
+      description: >-
+        **Optional.** A factor is declined or replaced in
+        `src/brightway_flows/data/lcia-factor-rulings.json`; a factor recorded as
+        belonging to a different substance goes in `lcia-misattributed-factors.json`.
+        Declining withholds this list's own number and erases nobody else's.
+      render: json
+
+  - type: input
+    id: build
+    attributes:
+      label: Which build you were looking at
+      description: The version or revision at the foot of the page. Leave it blank if you are unsure.
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **What happens next.** A maintainer approves a CI run — runs are not automatic, so
+        there may be a wait. It collects every implementation's number for this substance
+        and category, and the underlying model's where this list records one, and grades
+        the claim above against the reference build. The result is a workflow run with an
+        artifact attached. Nothing is written to the repository until a pull request is
+        merged.

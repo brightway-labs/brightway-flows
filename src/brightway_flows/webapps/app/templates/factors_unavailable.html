@@ -1,0 +1,27 @@
+{#
+  The database is there and `characterise` has not run against it.
+
+  A page rather than three zeros: "nobody has asked yet" is a different
+  statement from "characterised by nobody", and a section that showed empty
+  tables would be making the second one.
+#}
+{% extends "layout.html" %}
+{% set page_title = "No factors yet" %}
+{% set active_section = "factors" %}
+
+{% block content %}
+<div class="empty">
+  <h1>No factors yet</h1>
+  <p>
+    This build has flows but no characterisation. The factors are a separate
+    pass over what the build wrote, so that iterating on a rule about them costs
+    a minute rather than an hour:
+  </p>
+  <pre><code>uv run brightway-flows characterise</code></pre>
+  <p class="muted">
+    It reads EF 3.1's factors off the flows the build published, and the
+    ecoinvent Centre's from the workbook <code>fetch-lcia ecoinvent-3.12</code>
+    downloads — so fetch that first if you have not.
+  </p>
+</div>
+{% endblock %}

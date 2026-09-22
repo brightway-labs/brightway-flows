@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "description": "The opt-in recorded-by-name tier of the lookup used to key a recorded decision on the source's literal spelling of its compartment, so a caller writing `Raw / in air` could not reach a decision BAFU recorded under `resources / in air` about the same place -- the tier answered only a caller who happened to spell a compartment exactly as some merged list had. #357: the key is now the name and the resolved consensus context, read from the build's own record of each outcome row's resolution.\n\nMost of what a name-level count calls a collision dissolves under that key: `Carbon dioxide` reaches eight flows by name and one per place, and `Oxygen` as a resource from air is one decision three lists agree about. On the build of 30 August 2026 (20260830T1046047189150000), 15,756 distinct name-and-place keys hold exactly one recorded flow and 43 hold two. The 43 are genuine disagreements and decline rather than being arbitrated; see the sibling file for #359, which is about them.",
+  "expectations": [
+    {
+      "id": "0862-resolved-keys-mostly-hold-one-flow",
+      "issue": 862,
+      "title": "Thousands of recorded name-and-place keys hold exactly one flow",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.recorded_name.context_keys"
+      },
+      "expect": {
+        "at_least": 15000
+      },
+      "comment": "15,756 on the 30 August 2026 build. Before #357 these decisions existed but were keyed on each source's spelling, so a caller's own compartment reached almost none of them."
+    },
+    {
+      "id": "0862-genuine-disagreements-stay-rare",
+      "issue": 862,
+      "title": "The keys two lists disagree about are a fraction of a percent of the index",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.recorded_name.conflicted_context_keys",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 100
+      },
+      "comment": "43 of 15,799 keys on the 30 August 2026 build -- 0.3%. The bound is loose on purpose: a new merged list adds vocabulary and may add disagreements, and that is information rather than a defect; what the claim rules out is the collision count of a name-only key, where `carbon dioxide` alone contributed seven."
+    }
+  ]
+}

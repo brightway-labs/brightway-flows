@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "description": "AGRIBALYSE 3.2 ships 1,035 water rows outside the air compartments, and which kind of water each one means -- river, well, cooling, sea, rain, or just water -- is written in the flow name, where no field matching reads can see it. On the first build to merge the list (1 September 2026, `b0b8d76`), 1,019 of them matched nothing (`multiple-flow-object-candidates`: every kind of water shares CAS 7732-18-5), two minted a `Water, Rain` substance beside the taxonomy's rainwater, and the few that matched did so by label luck. #352 gives every row its material in `water-flow-materials.json` -- the same curation BAFU's 290 water rows got -- and two name-prefix context rules say that a row whose name begins `Water`, filed among the bare heading's ores or the in-ground compartment's boreholes, names the water medium the vendor's filing slip does not.\n\nMeasured offline against that same build with the table and rules in place: 1,033 of the 1,035 reach their material's flow, and the two `Water, rain` emissions remain contradictions that mint on the rainwater concept rather than on the vendor's spelling.\n\nMarked pending until a shared build merges agribalyse-3.2: these claims are about that list's rows, and a build that has not merged the list cannot grade them. Drop the flag in the change that records the first shared build made from a commit containing both #355 and this fix.",
+  "expectations": [
+    {
+      "id": "0850-the-busiest-water-row-reaches-river-water",
+      "issue": 850,
+      "title": "AGRIBALYSE's `Water, river, FR` reaches the published River water intake by its curated material",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "ac7ae4f6-eb08-5fe5-84bb-e499bfec6032"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "material",
+        "target_name": "River water",
+        "target_uuid": "805a7346-1664-4483-afe3-4b224be5e361"
+      },
+      "pending": true,
+      "comment": "The issue's first worked example: 2,401 of AGRIBALYSE's 20,440 processes exchange it. On the build of 1 September 2026 it was `multiple-flow-object-candidates` -- twelve water substances share its registry number and nothing on the row chose between them. The material column is that choice, and the geography in the name never mattered: the table is keyed on the row's own identifier."
+    },
+    {
+      "id": "0850-the-well-row-reaches-groundwater",
+      "issue": 850,
+      "title": "AGRIBALYSE's `Water, well, FR` reaches the published Groundwater flow by its curated material",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "e836af7b-b021-5962-9012-9f409a282db0"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "material",
+        "target_name": "Groundwater",
+        "target_uuid": "4f462198-40cd-4184-8733-86648a20dc3f"
+      },
+      "pending": true,
+      "comment": "The issue's second worked example, 2,259 processes. Same shape as the river row: the name says well, the taxonomy says a well draws groundwater, and BAFU's identical `Water, well` reaches the same flow the same way."
+    },
+    {
+      "id": "0850-a-bare-heading-intake-is-not-a-ground-resource",
+      "issue": 850,
+      "title": "`Water, well` under the bare `Resources` heading reaches Groundwater, not a ground resource",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "bb4a32fc-31bf-59e2-93b0-bf9e26c745da"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "material",
+        "target_name": "Groundwater",
+        "target_uuid": "4f462198-40cd-4184-8733-86648a20dc3f"
+      },
+      "pending": true,
+      "comment": "The bare heading's 70 water rows are read as ground resources by the compartment ruling, and a river intake filed in the ground contradicts every flow its material can reach -- `no-candidates-same-dimension-media` on all of them, measured with the table alone in place. The `Water` name-prefix rule says the medium; this row is the claim that the rule and the material together take a bare-heading intake to water rather than rock."
+    },
+    {
+      "id": "0850-no-flow-under-the-vendors-rain-spelling",
+      "issue": 850,
+      "title": "No published flow carries AGRIBALYSE's `Water, Rain` spelling",
+      "subject": {
+        "kind": "flow",
+        "name": "Water, Rain"
+      },
+      "expect": {
+        "count": 0
+      },
+      "pending": true,
+      "comment": "The build of 1 September 2026 minted `Water, Rain` twice -- emissions to river and to groundwater -- beside the taxonomy's own rainwater concept. With the material curated those two rows state rainwater, and whatever the merge does with an emission of a resource-side material (the contradiction mints on the concept, or a curator refines it later), the vendor's spelling standing as a published substance name is what has to stop -- the same claim 0849 makes for the land duplicates."
+    }
+  ]
+}

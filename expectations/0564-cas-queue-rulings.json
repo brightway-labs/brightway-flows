@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "description": "Four rulings taken off the review app's blocking queues. Three are registry numbers on EF 3.1 rows -- borax filed under a superseded number, formate filed under none at all, and D-lactic acid filed under the name of the racemate -- and the fourth refuses a rename that would publish a run-together spelling the project has already ruled against. The three number rulings are manual corrections in `ef-3.1-manual-fixes.json`; the fourth is a row in `preferred-label-decisions.json`. None of them changes a rule, so no row that is not named here can move. See #110, and #106 for the other half of EF's borax filing.",
+  "expectations": [
+    {
+      "id": "0564-borax-carries-the-current-registry-number",
+      "issue": 564,
+      "title": "Borax is published under the registry number that is still in use",
+      "subject": {
+        "kind": "flow",
+        "uuid": "08a91e70-3ddc-11dd-97eb-0050c2490048"
+      },
+      "expect": {
+        "substance_cas": "1303-96-4"
+      },
+      "comment": "The one EF 3.1 borax flow, in `Resource → Ground`. Before this change it carried 12447-40-4, which Common Chemistry indexes as `Borax (B4Na2O7.10H2O)` and which has been superseded; 1303-96-4 is the number in use, and the one ChEBI holds for both `borax` (CHEBI:86222) and `disodium tetraborate decahydrate` (CHEBI:131366). Named by flow uuid rather than by substance, because the substance is what the correction changes and a selector reading the corrected number would pass before the fix as vacuously as after it."
+    },
+    {
+      "id": "0564-the-superseded-borax-number-names-nothing",
+      "issue": 564,
+      "title": "No substance is published under borax's superseded registry number",
+      "subject": {
+        "kind": "substance",
+        "cas": "12447-40-4"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "The negative half, and the one that says the correction reached everything carrying the number. #106 already took 12447-40-4 off the six `Borate` rows, which were carrying borax's number for the ion; the borax row itself was the last holder, so once it moves to 1303-96-4 the number should be absent from the published list entirely. Before this change one substance carries it."
+    },
+    {
+      "id": "0564-formate-is-the-formate-anion",
+      "issue": 564,
+      "title": "The `Formate` rows say which substance they are",
+      "subject": {
+        "kind": "substance",
+        "cas": "71-47-6"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1,
+        "label": "Formate",
+        "flow_type": "MolecularAnion"
+      },
+      "comment": "EF 3.1 ships three rows named `Formate` -- ocean, long-term water and unspecified water -- with no registry number and no EC number, and the substance behind them published no classifications of any kind. ChEBI names 71-47-6 `formate` (CHEBI:15740), the anion a water release reports; the queue's only other candidate, `formate ester` (CHEBI:52343), is a class of compounds and carries no number.\n\nThe claim is the identity, which is what this issue was about: one substance under that number, called `Formate`, published as the anion rather than as something the typing rules could not place. `flow_count: 3` was here too until #345 removed it. Three was true of the build it was written on -- ecoinvent 3.12 and 3.8 reached EF's three rows rather than adding their own -- and it is a population rather than a property: the substance now has six flows, because ecoinvent rows land in surface water and an unconfined aquifer and BAFU's land in a river. None of that says anything about whether formate is the formate anion, and a claim that fails when a source row lands in a new context reports a defect where there is none."
+    },
+    {
+      "id": "0564-d-lactic-acid-is-named-for-its-stereochemistry",
+      "issue": 564,
+      "title": "The rows carrying 10326-41-7 are published as D-lactic acid",
+      "subject": {
+        "kind": "substance",
+        "cas": "10326-41-7"
+      },
+      "expect": {
+        "count": 1,
+        "label": "D-Lactic Acid",
+        "flow_count": 13
+      },
+      "comment": "Published as `2-hydroxypropanoic Acid` before this change, over 13 flows. Common Chemistry indexes 10326-41-7 as `D-Lactic acid`, and EF 3.1 already names the other two members of the family for their stereochemistry -- `lactic acid` (50-21-5, the racemate) and `l-(+)-lactic acid` (79-33-4) -- so this row was the only one of the three under a parent term. The claim is the title-cased form because `normalize_name_case` title-cases `acid` and leaves `D-Lactic` alone, having an upper-case letter past the first character; that is also how `L-(+)-lactic Acid` and `Lactic Acid` are already published."
+    },
+    {
+      "id": "0564-the-racemate-keeps-its-own-number-and-its-own-flows",
+      "issue": 564,
+      "title": "The racemate's registry number is not applied to the D rows",
+      "subject": {
+        "kind": "substance",
+        "cas": "50-21-5"
+      },
+      "expect": {
+        "count": 1,
+        "label": "Lactic Acid",
+        "flow_count": 15
+      },
+      "comment": "The half that says the queue's own proposal was refused. `cas-ambiguous` offered 50-21-5 for the `2-hydroxypropanoic acid` rows, because that name matches ChEBI's `rac-lactic acid` (CHEBI:28358) and `2-hydroxypropanoic acid` (CHEBI:78320) and both carry the racemate's number. Taking it would have put 13 D-lactic rows onto the mixture. Stated as a count and a flow count rather than as an absence, because those are what would move if it had been taken: one substance would become two holders of the number, or the 14 flows would become 27. Measured at 14 live flows on the 18 August 2026 build -- 15 flows carry the substance and one of the surface-water pair is deprecated, and `flow_count` counts only the live ones. 15 from the retirement build (#141): ecoinvent's lactic-acid emission to groundwater gained its unconfined-aquifer flow when the tables stopped rerouting it, one more context of the same substance."
+    },
+    {
+      "id": "0564-the-run-together-spelling-is-refused",
+      "issue": 564,
+      "title": "The tetrachlorobenzoyl chloride keeps the space in its name",
+      "subject": {
+        "kind": "substance",
+        "cas": "42221-52-3"
+      },
+      "expect": {
+        "count": 1,
+        "label": "2,3,4,5-tetrachlorobenzoyl Chloride"
+      },
+      "comment": "EF 3.1 files this substance twice, 13 rows spelled `2,3,4,5-tetrachlorobenzoyl chloride` under EC 609-997-2 and 13 spelled `2,3,4,5-tetrachlorobenzoylchloride` under EC 406-760-3, both carrying 42221-52-3 -- the two-numbering-systems filing of #64. `multi_source_consensus` votes on the names the sources supply and the run-together spelling wins the count, which is what put the pair in the `undecided-label-replacement` queue. It is refused: Common Chemistry names the number `2,3,4,5-Tetrachlorobenzoyl chloride`, and #313 already ruled this pair the other way for the same reason it ruled on `Terephthaloyldichloride`. The published label keeps the capital `Chloride` the name caser gives it, which is what the flows already read; this expectation is that nothing renames them, not that the casing changes. Unlike the five above it, this one is **met before the change as well as after** -- a refusal is the claim that the output does not move, so there is no build in which it fails. What it guards is the future: it fails the day something approves the run-together spelling, whether by a ruling, by a new source list voting for it, or by the gate's default changing. The ruling itself is tested in `tests/test_preferred_label_decisions.py`, where the gate can be asked directly whether it refuses the pair."
+    }
+  ]
+}

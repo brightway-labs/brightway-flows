@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% set page_title = "Changes" %}
+{% set active_section = "substances" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ subject.name if subject else flow_object_id }}</h1>
+  <p class="page__lede">
+    Everything that changed this substance, across every flow that resolves to
+    it.
+    <a href="{{ url_for('substances.detail', flow_object_id=flow_object_id) }}">Back to the substance</a>
+  </p>
+  <p class="mono muted">{{ flow_object_id }}</p>
+</header>
+
+{% include "partials/history.html" %}
+{% endblock %}

@@ -1,0 +1,368 @@
+[
+    {
+      "dimension": "Economic",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/econ"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-indr-indu",
+      "media": "Air",
+      "indoor": "Industrial"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-indr-nepe",
+      "media": "Air",
+      "indoor": "Near-person"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-indr-resi",
+      "media": "Air",
+      "indoor": "Residential"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-indr-unkn",
+      "media": "Air",
+      "indoor": "Unknown"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "media": "Air",
+      "strata": "Unknown"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-aicrhe",
+      "media": "Air",
+      "strata": "Aircraft cruise height"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ru10pesq",
+      "media": "Air",
+      "strata": "Ground level",
+      "population_density": "Rural (<1000 people/square mile)"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-unkn",
+      "media": "Air",
+      "strata": "Ground level",
+      "population_density": "Unknown"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "media": "Air",
+      "strata": "Ground level",
+      "population_density": "Urban (>1000 people/square mile)"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-hist15me",
+      "media": "Air",
+      "strata": "High stack, >150 meters",
+      "population_density": "Unknown",
+      "comment": "Keeps the bare IRI rather than taking an `-unkn` suffix like the other Unknown population densities. This context predates the population density values added for high stack, and 7,346 published flows already carry this IRI; `to_list()` drops `Unknown`, so the string expression is unchanged and no flow needs remapping."
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-hist15me-ru10pesq",
+      "media": "Air",
+      "strata": "High stack, >150 meters",
+      "population_density": "Rural (<1000 people/square mile)"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-hist15me-ur10pesq",
+      "media": "Air",
+      "strata": "High stack, >150 meters",
+      "population_density": "Urban (>1000 people/square mile)"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "media": "Air",
+      "strata": "Long-term"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lost25me-ru10pesq",
+      "media": "Air",
+      "strata": "Low stack, <25 meters",
+      "population_density": "Rural (<1000 people/square mile)"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lost25me-unkn",
+      "media": "Air",
+      "strata": "Low stack, <25 meters",
+      "population_density": "Unknown"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lost25me-ur10pesq",
+      "media": "Air",
+      "strata": "Low stack, <25 meters",
+      "population_density": "Urban (>1000 people/square mile)"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "media": "Air",
+      "strata": "Medium stack, <150 meters",
+      "population_density": "Rural (<1000 people/square mile)"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-unkn",
+      "media": "Air",
+      "strata": "Medium stack, <150 meters",
+      "population_density": "Unknown"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ur10pesq",
+      "media": "Air",
+      "strata": "Medium stack, <150 meters",
+      "population_density": "Urban (>1000 people/square mile)"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-biot",
+      "media": "Biotic"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+      "media": "Ground",
+      "geography": "Agricultural"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-bala",
+      "media": "Ground",
+      "geography": "Barren land"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-comm",
+      "media": "Ground",
+      "geography": "Commercial"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-fore",
+      "media": "Ground",
+      "geography": "Forest"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-gras",
+      "media": "Ground",
+      "geography": "Grassland"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-indu",
+      "media": "Ground",
+      "geography": "Industrial"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+      "media": "Ground",
+      "geography": "Non-agricultural",
+      "deprecated": true,
+      "comment": "Deprecated on arrival: not a land cover class, but EF 3.1's complement of `Emissions to agricultural soil`. Present only so EF's `Emissions to non-agricultural soil` stops collapsing onto envi-grou-unkn together with `Emissions to soil, unspecified`, which discards one of the two CF sets. Do not map new sources onto it: prefer a real land cover class, or Unknown."
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-resi",
+      "media": "Ground",
+      "geography": "Residential"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-shru",
+      "media": "Ground",
+      "geography": "Shrubland"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-silv",
+      "media": "Ground",
+      "geography": "Silvicultural"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-snanic",
+      "media": "Ground",
+      "geography": "Snow and Ice"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-unkn",
+      "media": "Ground",
+      "geography": "Unknown"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-wetl",
+      "media": "Ground",
+      "geography": "Wetland"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-othe",
+      "media": "Other"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-prod",
+      "media": "Product"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-sewatr",
+      "media": "Water",
+      "water_body": "Secondary water treatment"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-wawatrpl",
+      "media": "Water",
+      "water_body": "Waste-water treatment plant"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+      "media": "Water",
+      "water_body": "Ocean"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-coaqwifo",
+      "media": "Water",
+      "water_body": "Confined aquifer with fossil groundwater"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "media": "Water",
+      "water_body": "Lake"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-rive",
+      "media": "Water",
+      "water_body": "River"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+      "media": "Water",
+      "water_body": "Surface water"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unaq",
+      "media": "Water",
+      "water_body": "Unconfined aquifer"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unkn",
+      "media": "Water",
+      "water_body": "Unknown"
+    },
+    {
+      "dimension": "Environmental",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lote",
+      "media": "Water",
+      "water_body": "Long-term"
+    },
+    {
+      "dimension": "Impact Assessment Score",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/imassc"
+    },
+    {
+      "dimension": "Inventory Indicator",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/inin"
+    },
+    {
+      "dimension": "Land Use",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-occu",
+      "land_use": "Occupation"
+    },
+    {
+      "dimension": "Land Use",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-tran",
+      "land_use": "Transformation"
+    },
+    {
+      "dimension": "Resource",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-air",
+      "media": "Air"
+    },
+    {
+      "dimension": "Resource",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-biot",
+      "media": "Biotic"
+    },
+    {
+      "dimension": "Resource",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "media": "Ground"
+    },
+    {
+      "dimension": "Resource",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate",
+      "media": "Water",
+      "water_body": "Unknown",
+      "comment": "Keeps the bare IRI rather than taking an `-unkn` suffix like the other Unknown water bodies. `water_body` became required on `Resource` + `Water` when the withdrawal-side bodies were added; `to_list()` drops `Unknown`, so the string expression is unchanged and no flow needs remapping. The same move as envi-air-hist15me."
+    },
+    {
+      "dimension": "Resource",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-suwa",
+      "media": "Water",
+      "water_body": "Surface water"
+    },
+    {
+      "dimension": "Resource",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-lake",
+      "media": "Water",
+      "water_body": "Lake"
+    },
+    {
+      "dimension": "Resource",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-rive",
+      "media": "Water",
+      "water_body": "River"
+    },
+    {
+      "dimension": "Resource",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-ocea",
+      "media": "Water",
+      "water_body": "Ocean"
+    },
+    {
+      "dimension": "Resource",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-unaq",
+      "media": "Water",
+      "water_body": "Unconfined aquifer"
+    },
+    {
+      "dimension": "Resource",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-coaqwifo",
+      "media": "Water",
+      "water_body": "Confined aquifer with fossil groundwater"
+    },
+    {
+      "dimension": "Social",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/soci"
+    }
+  ]

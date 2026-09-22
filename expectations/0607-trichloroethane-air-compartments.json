@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "description": "1,1,2-trichloroethane is a named chemical with a registry number, 79-00-5, and EF 3.1 publishes it in all thirteen compartments. Nine of ecoinvent's ten emissions of it are published as something else: seven as `Hydrocarbons, Chlorinated`, which is not a substance but a bucket meaning \"some chlorinated hydrocarbon, we are not saying which\", and two more on the right substance in the wrong compartment -- ecoinvent's `air / unspecified` published as an emission to **indoor air**, which is a room. Only the emission to water is right. See #124.\n\n`0602-trichloroethane-reaches-itself` already claims the substance half, so this file claims what that one cannot see: the compartment, and whether the flow a row reaches carries a factor at all. The seven bucket rows are scored at nothing -- `Hydrocarbons, Chlorinated` carries zero characterisation factors in every air compartment, while the substance's own flow in the same compartment carries seven.\n\nMeasured on the unbounded build of 20 August 2026 at `8be2336`, merging ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026 v1.",
+  "expectations": [
+    {
+      "id": "0607-the-rural-air-row-reaches-the-substance",
+      "issue": 607,
+      "title": "ecoinvent's 1,1,2-trichloroethane released to rural air from a medium stack is published as 1,1,2-trichloroethane",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "b4d5edf7-0584-4e43-8ee7-f78511443b0d"
+      },
+      "expect": {
+        "target_uuid": "fe0acd60-3ddc-11dd-a325-0050c2490048",
+        "target_characterised": true
+      },
+      "comment": "The worked example of #124, named by uuid because the claim is about this one flow rather than about the substance. ecoinvent ships `1,1,2-Trichloroethane` b4d5edf7 in `air / non-urban air or from high stacks`, kg, 79-00-5, in every release on disk from 3.8 to 3.12. The correspondence table sends it to `Hydrocarbons, Chlorinated` 98d946e7 in `Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)`, which carries no characterisation factor in any impact category.\n\nThe target claimed here is EF 3.1's own flow for the substance in that same compartment, which carries seven -- freshwater ecotoxicity, human toxicity cancer and non-cancer each in two spellings, and ozone depletion. It is named by uuid rather than by name because the name is what #121 had to correct: EF ships this flow *called* `1,1,1-trichloroethane` while giving it 79-00-5, and `ef-3.1-manual-fixes.json` renames it to the name its registry number says it has. A claim written on the name would be asking a question about that rename rather than about where this row lands."
+    },
+    {
+      "id": "0607-air-unspecified-is-not-indoor-air",
+      "issue": 607,
+      "title": "ecoinvent's 1,1,2-trichloroethane released to air in general is not published as an emission inside a room",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "b32061b1-8d24-4663-b10d-0a1c705f2937"
+      },
+      "expect": {
+        "target_context_display": "Environmental → Air → Unknown",
+        "context_inconsistency": false
+      },
+      "comment": "The other mistake in #124, and a different one: this row reaches the right substance and the wrong place. ecoinvent's `air / unspecified` is air in general; the correspondence table sends it to EF 3.1's `Emissions to air, indoor`, which is a room. An emission to a room and an emission to the open air are not the same fact and the two carry different factors -- six against seven.\n\nThe build already knows. Both rows carrying this uuid, from ecoinvent 3.12 and 3.8, are flagged `has_context_inconsistency` and have been for as long as the flag has existed; nothing acts on it. So the claim is written on the flag as well as on the context, because a change that moved the row without clearing the flag would have moved it for some other reason.\n\nEF's flow in `Environmental → Air → Unknown` exists, carries 79-00-5 and carries seven factors, so this costs no coverage."
+    },
+    {
+      "id": "0607-every-1-1-2-trichloroethane-release-is-characterised",
+      "issue": 607,
+      "title": "No release of 1,1,2-trichloroethane is published on a flow that scores nothing",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "1,1,2-Trichloroethane"
+      },
+      "expect": {
+        "target_characterised": true
+      },
+      "comment": "The claim about the set, and the one that says what the defect costs. Seven of the ten rows land on `Hydrocarbons, Chlorinated`, which carries zero factors in every air compartment, so an inventory emitting this substance to air contributes nothing to any impact category -- not a wrong number, no number.\n\n`target_characterised` rather than a factor count, because the counts differ legitimately between compartments: EF gives the substance seven factors in four of the five air compartments and one in `Environmental → Air → Long-term`, which is the ordinary shape of a long-term compartment and not something to claim against. What is not legitimate is a named substance with a registry number reaching a flow that carries none at all.\n\nThis is stated on the ecoinvent rows only. BAFU ships no 1,1,2-trichloroethane row, and naming the list keeps the claim answerable if it ever does."
+    }
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "description": "A pesticide's common name belongs to one specific chemical. EF 3.1 gives five substances' ordinary names to chemical relatives -- the sodium salt instead of the acid, the chloride salt instead of the ion, the fifty-fifty mixture instead of the pure active half, anhydrite instead of gypsum -- and ships the substance the name actually means somewhere else, under a systematic name nobody looks up.\n\n| EF 3.1 name | number EF gives it | which chemical that is | where the named substance really is in EF |\n|---|---|---|---|\n| `paraquat` | 1910-42-5 | paraquat dichloride, the salt | `1,1'-dimethyl-4,4'-bipyridinium`, 4685-14-7, 13 flows |\n| `MCPA` | 3653-48-3 | MCPA-sodium, the sodium salt | `2-methyl-4-chlorophenoxyacetic acid`, 94-74-6, 13 flows |\n| `mecoprop-p` | 7085-19-0 | mecoprop, the fifty-fifty mixture | `(R)-2-(4-chloro-2-methylphenoxy)propionic acid`, 16484-77-8, 13 flows |\n| `flupyrsulfuron-methyl` | 144740-54-5 | the sodium salt | nowhere -- no EF flow holds 144740-53-4 |\n| `gypsum` | 7778-18-9 | anhydrous calcium sulfate | nowhere -- no EF flow holds 13397-24-5 |\n\nEverything that maps onto EF 3.1 maps by name, so the mislabelling propagates. Measured on the build of 20 August 2026 at commit 3874978, merging ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026-v1:\n\n- **Paraquat.** Two published substances are called `Paraquat`, and ecoinvent's single paraquat (4685-14-7) is split between them -- two of its seven 3.12 rows on the flow carrying its own number and five on the salt's. In five compartments ecoinvent's `Paraquat` and its separate `Paraquat dichloride` flow arrive on one consensus flow, so two substances 38 per cent apart in mass are added together.\n- **MCPA.** ecoinvent's MCPA acid (94-74-6) reaches the flow carrying its own number in four compartments and the sodium salt's flow in the other four, where ecoinvent's own `MCPA-sodium` rows already are.\n- **Mecoprop-P.** ecoinvent's mecoprop-P (16484-77-8) reaches the flow carrying its own number in two compartments and the mixture's flow in six.\n- **Flupyrsulfuron-methyl.** All seven of ecoinvent 3.12's parent rows (144740-53-4) land on the sodium salt's flows, on top of ecoinvent's own sodium rows. The list already publishes the salt under the right name, `Flupyrsulfuron-methyl sodium`, which is what makes this the clearest demonstration that renaming alone does not fix the routing.\n- **Gypsum.** ecoinvent's `Gypsum` (13397-24-5) is published as `Calcium sulfate`, while BAFU's `Gypsum` -- the same registry number -- finds nothing to match and mints a substance of its own. One mineral, two lists, two published substances.\n\nThe fix is in two halves and needs both. `ef-3.1-manual-fixes.json` corrects the five names, keeping the registry numbers, which are the half that is right; `ecoinvent-match-overrides.json` then sends ecoinvent's parent-substance rows to the EF flow whose registry number matches -- which for paraquat, MCPA and mecoprop-P exists in every compartment and which the correspondence table itself already uses in some of them -- and declines the two that have nowhere right to go, so the merge mints a consensus flow instead.\n\nThe claims below are written about registry numbers rather than names, because the names are what the change moves. #319 is the reason that is normally the wrong choice; here the number is the stable thing and the name is the subject of the fix.\n\nThere is no claim here about characterisation. Where a row belongs is decided on the substance, the compartment and the unit, and what it costs in factors is a later question decided separately.",
+  "expectations": [
+    {
+      "id": "0597-one-substance-is-published-as-paraquat",
+      "issue": 597,
+      "title": "One substance in this list is called `Paraquat`, and it is the herbicide",
+      "subject": {
+        "kind": "substance",
+        "label": "Paraquat"
+      },
+      "expect": {
+        "count": 1,
+        "cas": "4685-14-7"
+      },
+      "comment": "Two substances were published under this name on the build of 20 August 2026 at commit 3874978: 4685-14-7, which is paraquat, and 1910-42-5, which is paraquat dichloride and took the name from EF 3.1's flow. The dichloride is a real substance ecoinvent ships and it keeps its own flows; what it stops carrying is the bare name."
+    },
+    {
+      "id": "0597-ecoinvent-paraquat-reaches-the-herbicide",
+      "issue": 597,
+      "title": "Every ecoinvent row for paraquat reaches a flow carrying paraquat's own registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "cas": "4685-14-7"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_cas": "4685-14-7"
+      },
+      "comment": "Nine rows across ecoinvent 3.12 and 3.8. On the build of 20 August 2026 at commit 3874978 five of them reached EF 3.1's `paraquat` flow, which carries 1910-42-5 and is the chloride salt -- a different chemical, 38 per cent heavier for the same amount of active herbicide. `same_substance` rather than `same_target`, because the nine rows are in seven compartments and reaching seven flows is correct; reaching two substances is not."
+    },
+    {
+      "id": "0597-the-dichloride-keeps-its-own-rows",
+      "issue": 597,
+      "title": "ecoinvent's paraquat dichloride rows still reach the dichloride",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "cas": "1910-42-5"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_cas": "1910-42-5"
+      },
+      "comment": "A guard rather than a claim about the fix: these seven rows were already correctly placed, and the correction moves the parent onto its own flows rather than moving the salt off them. It is what says the change did not simply swap one collision for another."
+    },
+    {
+      "id": "0597-mcpa-acid-reaches-the-acid",
+      "issue": 597,
+      "title": "Every ecoinvent row for MCPA reaches a flow carrying MCPA's own registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "cas": "94-74-6"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_cas": "94-74-6"
+      },
+      "comment": "Twelve rows across ecoinvent 3.12 and 3.8. On the build of 20 August 2026 at commit 3874978 four of the 3.12 rows -- unspecified air, unspecified soil, forestry soil and unspecified water -- reached EF 3.1's `MCPA` flow, which carries 3653-48-3 and is the sodium salt. The correspondence table already reaches the acid's own flow in the other four compartments, so this makes it agree with itself."
+    },
+    {
+      "id": "0597-the-sodium-salt-is-published-as-the-salt",
+      "issue": 597,
+      "title": "The substance registered 3653-48-3 is published as MCPA-sodium",
+      "subject": {
+        "kind": "substance",
+        "cas": "3653-48-3"
+      },
+      "expect": {
+        "count": 1,
+        "label": "MCPA-sodium"
+      },
+      "comment": "Published as `MCPA` on the build of 20 August 2026 at commit 3874978, taking the name from EF 3.1's flow. Every one of the forty-odd synonyms EF ships on that flow is a sodium-salt name, `MCPA-sodium` among them, and ecoinvent calls its own 3653-48-3 flow `MCPA-sodium` too."
+    },
+    {
+      "id": "0597-mecoprop-p-reaches-the-active-enantiomer",
+      "issue": 597,
+      "title": "Every ecoinvent row for mecoprop-P reaches a flow carrying mecoprop-P's own registry number",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "cas": "16484-77-8"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_cas": "16484-77-8"
+      },
+      "comment": "Eight rows across ecoinvent 3.12 and 3.8. On the build of 20 August 2026 at commit 3874978 six of them reached EF 3.1's `mecoprop-p` flow, which carries 7085-19-0 -- the fifty-fifty mixture of both mirror images, of which only half kills weeds and which is therefore applied at twice the dose."
+    },
+    {
+      "id": "0597-the-mixture-is-published-as-mecoprop",
+      "issue": 597,
+      "title": "The substance registered 93-65-2 is published as Mecoprop, not as Mecoprop-P",
+      "subject": {
+        "kind": "substance",
+        "cas": "93-65-2"
+      },
+      "expect": {
+        "count": 1,
+        "label": "Mecoprop"
+      },
+      "comment": "Published as `Mecoprop-p` on the build of 20 August 2026 at commit 3874978. EF 3.1's own synonyms for the flow say what it is -- `mecoprop`, `mecoprop(iso)`, `mcpp`, `(rs)-2-(4-chloro-o-tolyloxy)propionic acid` -- and the `(rs)-` prefix is how a chemist writes the racemic mixture that mecoprop-P is half of.\n\nRewritten, keeping its id, when the registry number on that flow was corrected as well. This claim named the substance by 7085-19-0, which is the number EF 3.1 ships and a superseded filing; the number in current use is 93-65-2, and #319 is the reason a check naming the old one would quietly stop asking anything rather than fail. The claim itself is unchanged: the substance the mixture's registration names is published as `Mecoprop`."
+    },
+    {
+      "id": "0597-the-flupyrsulfuron-parent-is-its-own-substance",
+      "issue": 597,
+      "title": "ecoinvent's flupyrsulfuron-methyl is published as itself and not added to the sodium salt",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "cas": "144740-53-4"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_cas": "144740-53-4"
+      },
+      "comment": "Seven rows in ecoinvent 3.12, all of which landed on EF 3.1's 144740-54-5 flows on the build of 20 August 2026 at commit 3874978 -- on top of ecoinvent's own `Flupyrsulfuron-methyl sodium` rows, so seven consensus flows each carried two substances. No EF 3.1 flow carries 144740-53-4, checked over all 94,062 flows of the extracted input of 20 August 2026, so the published mapping is declined and the merge mints a flow for the parent. No `outcome` is claimed: whether the parent is minted or found is a question about what EF ships, and the claim worth making is that it is not the salt."
+    },
+    {
+      "id": "0597-the-flupyrsulfuron-salt-keeps-its-flows",
+      "issue": 597,
+      "title": "Every row for flupyrsulfuron-methyl sodium still reaches the sodium salt",
+      "subject": {
+        "kind": "source_row",
+        "cas": "144740-54-5"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_cas": "144740-54-5"
+      },
+      "comment": "Not restricted to one list: ecoinvent 3.11 and 3.12 ship the salt as `Flupyrsulfuron-methyl sodium`, ecoinvent 3.8 and 3.9.1 register the *parent's* code as the salt, and BAFU ships a row of its own. The 3.8 row is the one this change touches -- its published mapping is declined along with the parent's, because one ecoinvent code carries the two substances in different releases and their names are identical, so nothing but the registry number can tell them apart. Declining changes its route and not its destination: 144740-54-5 is on exactly one EF 3.1 flow in agricultural soil, which is the flow the table named, and BAFU's row reaches it that way already."
+    },
+    {
+      "id": "0597-gypsum-is-one-substance-across-both-lists",
+      "issue": 597,
+      "title": "Gypsum is one published substance, whichever list the row came from",
+      "subject": {
+        "kind": "source_row",
+        "cas": "13397-24-5"
+      },
+      "expect": {
+        "same_substance": true,
+        "target_cas": "13397-24-5"
+      },
+      "comment": "Three rows on the build of 20 August 2026 at commit 3874978 -- ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026-v1 -- reaching two substances. ecoinvent's two were sent by the correspondence table to EF 3.1's `gypsum` flow, which carries 7778-18-9 and is anhydrite, the same salt with the water driven off; BAFU's found nothing and minted a substance of its own. Gypsum's own number is on no EF 3.1 flow, so ecoinvent's rows are declined and the three arrive together at one minted flow. The decline needs a second correction to work, found by building it: ecoinvent ships `Gypsum` with the words of `Calcium sulfate dihydrate` as separate synonyms, so a declined row reached the `Sulfate` flow object on a label match. Those fragments are taken off in each release's `*-manual-fixes.json`."
+    },
+    {
+      "id": "0597-anhydrite-keeps-its-own-registry-number",
+      "issue": 597,
+      "title": "The anhydrous calcium sulfate rows keep the substance registered 7778-18-9",
+      "subject": {
+        "kind": "source_row",
+        "cas": "7778-18-9"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_cas": "7778-18-9"
+      },
+      "comment": "The other half of the gypsum correction, and the guard on it. ecoinvent's resource flow for that number is called `Anhydrite`, and this list publishes it as `Calcium sulfate`; it belongs on EF 3.1's flow for the number, and taking gypsum off that flow must leave it where it is."
+    },
+    {
+      "id": "0597-the-superseded-mecoprop-number-names-nothing",
+      "issue": 597,
+      "title": "No substance is published under mecoprop's superseded registry number",
+      "subject": {
+        "kind": "substance",
+        "cas": "7085-19-0"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "The pair to the claim above, and the same shape as #110's borax pair. EF 3.1 files mecoprop under 7085-19-0; Common Chemistry, asked for that number, returns a record whose own registry number is 93-65-2, and ChEBI files the molecule under 93-65-2 too. ecoinvent and BAFU both already use the current number. Once EF's flow is corrected, nothing in the published list should carry the old one -- and this is the check that says so, because a correction that reached only some of the thirteen flows would leave a second substance behind under the superseded number and no other claim here would notice."
+    },
+    {
+      "id": "0597-mecoprop-rows-reach-it-on-the-number",
+      "issue": 597,
+      "title": "The mecoprop rows reach the substance on the registry number, not on the name",
+      "subject": {
+        "kind": "source_row",
+        "cas": "93-65-2"
+      },
+      "expect": {
+        "outcome": "matched",
+        "same_substance": true,
+        "target_cas": "93-65-2"
+      },
+      "comment": "Nine rows -- eight of ecoinvent's across 3.12 and 3.8, and BAFU's one -- all carrying 93-65-2, which no EF 3.1 flow carried. On the build of 20 August 2026 at commit 3874978 they minted a substance of their own, so the list published mecoprop twice: once minted and once mislabelled as `Mecoprop-p`. Correcting EF's *name* alone merged them, but on `basis=label` -- a match on the evidence of last resort, made across a registry-number disagreement, which is not a basis this project wants a merge to rest on. Correcting the number as well is what lets the two lists agree on the number instead, and this claim is what would fail if that reverted to a name match."
+    },
+    {
+      "id": "0597-anhydrite-is-one-substance-across-both-lists",
+      "issue": 597,
+      "title": "Both lists' anhydrite rows reach one published substance",
+      "subject": {
+        "kind": "source_row",
+        "cas": "7778-18-9"
+      },
+      "expect": {
+        "row_count": 3,
+        "outcome": "matched",
+        "same_substance": true,
+        "target_cas": "7778-18-9"
+      },
+      "comment": "The other mineral of the pair, and the half of `one mineral, two lists, two published substances` that the EF corrections could not reach. BAFU ships its `Anhydrite` row with no registry number of any kind, so it matched nothing and minted a substance of its own, while ecoinvent's anhydrite -- which does carry 7778-18-9 -- sat on EF 3.1's resource flow published as `Calcium Sulfate`. Nothing is wrong with EF here and nothing is wrong with the mapping; the BAFU row simply does not say what it is, and `bafu-2026-v1-manual-fixes.json` now says it.\n\n`row_count` is the claim that does the work, and it is here because the first version of this expectation did not. That version named the *substance* carrying 7778-18-9 and asked for one of them, which was true before the fix as well: the substance BAFU minted carried no number, so the selector never saw it and the check passed while the defect was in front of it. Measured on the pair of 20 August 2026, 6079386 against 7044326, it was met on both sides. Keyed on the rows instead, the selector finds one row before the fix and two after, because acquiring the number is exactly what the fix does. Rewritten keeping its id, so the baseline keeps its history for this question (#319).\n\nThree rows on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`): AGRIBALYSE's `Anhydrite` (14798-04-0) reaches the same substance by its name, the third list to do so (#190 group C). Still one substance."
+    },
+    {
+      "id": "0597-gypsum-and-anhydrite-stay-two-minerals",
+      "issue": 597,
+      "title": "Gypsum and anhydrite are published as two substances, not collapsed into one",
+      "subject": {
+        "kind": "substance",
+        "cas": "13397-24-5"
+      },
+      "expect": {
+        "count": 1,
+        "flow_count": 1
+      },
+      "comment": "The half that says the join above stops where it should. Gypsum is calcium sulfate with two waters bound into it, 13397-24-5, 172.172 g/mol against anhydrite's 136.141 -- two minerals, quarried and traded separately, and a tonne of one is not a tonne of the other. Collapsing them onto EF 3.1's single resource-from-ground flow would take a conversion factor of 0.7907, which `ecoinvent-match-overrides.json` can express and which the titanium rows use for exactly that shape -- an ore mass restated as an elemental mass. It is not used here: that flow carries no characterisation factor, so the conversion would restate a reported gypsum tonnage as a smaller anhydrite one and buy no published number in exchange. One flow, because the three source rows that reach it are all resources in ground."
+    }
+  ]
+}

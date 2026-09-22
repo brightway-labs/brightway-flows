@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "description": "Stepwise 2006 characterises zinc emitted to water at 133.39 kg C2H3Cl-eq per kg for non-cancer human toxicity, on the substance `Zinc`. Every ecoinvent zinc emission lands on `Zinc(2+)`, the ion, which Stepwise's export never names; nobody states anything for it, so it is never asked about and scores nothing (#197). The same holds for 23 ions of 16 elements. The census counts these blanks beside the element under `identity-blank` on the coverage page, and a signed `ion-of` entry in the Stepwise adoptions file publishes the element's number on the ion, context for context, as `adopted`; the convention for blank contexts then carries it into the ion's own river, lake and forestry-soil flows. Chromium is the publisher's own business -- Stepwise names its two states itself -- and stays as it is.",
+  "expectations": [
+    {
+      "id": "0922-the-census-counts-the-ion-blanks",
+      "issue": 922,
+      "title": "The coverage page counts how many pairs each Stepwise ion leaves blank beside its element",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.stepwise-2006_identity_blank_substances",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 1
+      },
+      "comment": "Measured on the build of 2026-09-02 (run 20260902T0601348875460000, commit 944b274): 25 ion substances leave 634 (flow, category) pairs blank while their element is published in the same context, 610 of them over 23 ions Stepwise never names and 24 over the two chromium states and `Chromium IV`, which Stepwise does. After the adoptions the chromium rows remain, counted rather than filled: the publisher characterised chromium's states itself and gave the trivalent ion no ecotoxicity number, and that is its decision."
+    },
+    {
+      "id": "0922-zinc-ion-to-water-scores-what-zinc-scores",
+      "issue": 922,
+      "title": "The zinc ion emitted to water scores what zinc emitted to water scores under Stepwise",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Zinc(2+)",
+        "context_display": "Environmental → Water → Unknown",
+        "category": "Human toxicity, non-carc.",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "133.3923433",
+        "derivation": "adopted"
+      },
+      "comment": "The issue's own example. Stepwise states 133.3923433 for `Zinc` to water; the signed entry says the ion takes zinc's number in the three toxicity categories zinc is characterised in; the factor names the zinc flow it took the number from."
+    },
+    {
+      "id": "0922-and-the-convention-carries-it-to-the-river",
+      "issue": 922,
+      "title": "The zinc ion emitted to a river takes the water number the ion now carries",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Zinc(2+)",
+        "context_display": "Environmental → Water → River",
+        "category": "Human toxicity, non-carc.",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "133.3923433",
+        "derivation": "carried"
+      },
+      "comment": "The adoption runs before the convention, so the ion's own river flow -- which AGRIBALYSE emits to and `Zinc` has no flow in -- takes its number from the ion's adopted water row by the river rule, the way zinc's river flow takes zinc's. One route per decision: the substance crossing is signed, the context crossing is the convention."
+    },
+    {
+      "id": "0922-chromium-three-stays-the-publishers",
+      "issue": 922,
+      "title": "Trivalent chromium emitted to water stays uncharacterised for aquatic ecotoxicity, as Stepwise left it",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Chromium(3+)",
+        "context_display": "Environmental → Water → Unknown",
+        "category": "Ecotoxicity, aquatic",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Stepwise names `Chromium III` itself and characterises it for the two human-toxicity categories only, while giving `Chromium` and `Chromium VI` ecotoxicity numbers. A substance the method's own publisher characterised is that publisher's business in every category: no adoption is written for it, and the pass would refuse one."
+    },
+    {
+      "id": "0922-nothing-is-published-that-the-file-does-not-sign",
+      "issue": 922,
+      "title": "Every Stepwise factor that crossed from an element to its ion is a signed adoption",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.stepwise-2006_consensus_adopted",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 280,
+        "at_most": 400
+      },
+      "comment": "299 on the 2026-09-02 build: the 23 entries copy the element's stated number onto the ion in the contexts Stepwise stated -- unspecified air, unspecified and agricultural soil, unspecified water, the aquifer and long-term water -- and the convention then carries those into the ion's other 338 contexts as `carried`, so the 610 blank pairs are answered by 299 adoptions and the rules that already fill the element's. The bound leaves room for a release adding an ion flow and would notice a rule publishing crossings without a signature."
+    },
+    {
+      "id": "0922-what-is-left-is-chromium",
+      "issue": 922,
+      "title": "The only Stepwise ions left blank beside their element are chromium's: the two states the publisher named itself, and the generic chromium ion",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.stepwise-2006_identity_blanks",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 49
+      },
+      "comment": "634 before the entries were signed, 24 after: `Chromium(3+)`'s 20 ecotoxicity pairs and `Chromium IV`'s 4, which stay blank because Stepwise characterised chromium's states itself. A new ion flow of another element would raise this, which is the point: it is the next signature to write. 49 since #198: AGRIBALYSE's thirteen `Chromium, ion` rows, the element's number taken off them, mint `Chromium, Ion`, a chromium ion of unstated charge, and it leaves 26 pairs blank beside chromium for the same reason the two states do: Stepwise characterised chromium by state, and an ion that states no charge can take neither state's number without picking one, which is the reinterpretation plan §3a refuses. `Chromium(3+)`'s pairs went 20 to 19 because the silvicultural-soil `Chromium` flow, minted for one 3.12 row that now reaches the ion, is gone, so that donor pair no longer exists. Still chromium and nothing else, which is the claim; the next ion of another element to appear here raises it, and is the next signature to write."
+    }
+  ]
+}

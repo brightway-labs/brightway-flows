@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "description": "A kilogram of crude oil is 42.3 MJ in ecoinvent 3.8 and 43.4 MJ from 3.9 onwards. ecoinvent revised the number following Meili et al. (2021) and rebuilt its oil and gas datasets on it, so the two releases were built on two different heating values. Natural gas moved at the same release, from 34.5 MJ per cubic metre to 36.0 per standard cubic metre.\n\nThis list held one number per substance and used it for every release it merged, because `ecoinvent-match-overrides.json` states one row per flow and a row reached every release by the argument that a uuid names the same flow in all of them. That argument is about identity, and it holds for *where a flow maps*. It does not hold for *how many megajoules a kilogram of it is*: a heating value is a quantity somebody measured, and a measurement has a vintage. So a 3.8 inventory was converted with a value that release never used, and its oil chains came out 2.6% high, its gas chains 4.3%.\n\nThe factor now carries a release scope of its own -- `conversion_checked_against` for the releases it was checked against, `conversion_by_release` for the ones that take another number -- while the row, and so the target, stays single. A release named in neither is refused rather than handed the default, the same discipline `_refuse_unchecked_renumbering` already applies to a substance's identity.\n\nEvery value is read from that release's own `LCIA Implementation` workbook, `energy resources: non-renewable`, where the characterisation factor on a kilogram flow under an indicator defined per megajoule is the energy content: 3.8, 3.9.1, 3.10.1, 3.11 and 3.12. Of the seven carriers the workbooks state, only crude oil, natural gas and mine off-gas moved; the coals, peat and uranium are the same number in all five.\n\nBAFU's crude oil changes with it, in the other direction and for the same reason. It carried ecoinvent's 43.4 on a rule that one target takes one conversion whichever list the kilogram came from. BAFU's own archive says otherwise: `Cement ZN, D, at plant [CH]` carries both `Oil, crude` and `Energy, from oil` and implies 43.1 MJ/kg. A conversion is a statement about a pair, so BAFU's pair takes BAFU's own evidence.\n\nSee #162.",
+  "expectations": [
+    {
+      "id": "0777-ecoinvent-38-converts-oil-by-its-own-heating-value",
+      "issue": 777,
+      "title": "ecoinvent 3.8's crude oil converts at the 42.3 MJ/kg that release was built on",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.8",
+        "uuid": "88d06db9-59a1-4719-9174-afeb1fa4026a"
+      },
+      "expect": {
+        "conversion_factor": 42.3
+      },
+      "comment": "42.3 MJ/kg is what `LCIA Implementation v3.8.xlsx` states for `Oil, crude, in ground` under `energy resources: non-renewable`, in EF v3.0, EF v3.0 EN15804 and EF v3.0 no LT alike. The row published 43.4 before this change -- 3.9's number, applied to a release that predates it -- which is the 2.6% the issue measured."
+    },
+    {
+      "id": "0777-ecoinvent-312-keeps-the-revised-heating-value",
+      "issue": 777,
+      "title": "ecoinvent 3.12's crude oil still converts at 43.4 MJ/kg",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "uuid": "88d06db9-59a1-4719-9174-afeb1fa4026a"
+      },
+      "expect": {
+        "conversion_factor": 43.4
+      },
+      "comment": "The other half of the claim, and the half that must not move. A release scope is only worth having if it leaves the releases it was right about alone: 43.4 is what 3.9.1, 3.10.1, 3.11 and 3.12 all state, so four of the five releases publish exactly what they published before."
+    },
+    {
+      "id": "0777-ecoinvent-38-converts-gas-per-cubic-metre",
+      "issue": 777,
+      "title": "ecoinvent 3.8's natural gas converts at 34.5 MJ per cubic metre",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.8",
+        "uuid": "7c337428-fb1b-45c7-bbb2-2ee4d29e17ba"
+      },
+      "expect": {
+        "conversion_factor": 34.5
+      },
+      "comment": "The second of the two rows that move, and the one whose old comment stated the defect without seeing it: it said ecoinvent respelled this flow's unit from `m3` to `sm3` at 3.9 \"without restating any amount\", and the amount was restated in that very release. The unit spelling had been standing in for the release. 3.8 ships the flow in cubic metres and states 34.5 per cubic metre; 3.9.1 onwards ship standard cubic metres and state 36.0."
+    },
+    {
+      "id": "0777-bafu-oil-takes-bafus-own-number",
+      "issue": 777,
+      "title": "BAFU's crude oil converts at the 43.1 MJ/kg its own archive implies",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "version": "2026-v1",
+        "uuid": "e48b3dc1-e9e7-54c1-aafb-3332dbd06a3e"
+      },
+      "expect": {
+        "conversion_factor": 43.1
+      },
+      "comment": "The list-scoped half of the same argument. `Cement ZN, D, at plant [CH]` is the one dataset in the 11,947 of the release that usably carries both this flow and `Energy, from oil`; the other, `Burnt shale, at plant [DE]`, implies 602 MJ/kg and is a defect in that dataset. So the check rests on one dataset, and 43.1 sits between the IPCC default of 42.3 and ecoinvent's 43.4.\n\nThis row carried 43.4 on the rule that one target takes one conversion whichever list the kilogram came from. That rule was written for the case where two lists offer a target the same unit pair and one of them has no number of its own, which is every other conversion in BAFU's file. It is not a reason to prefer another list's measurement over this list's own."
+    },
+    {
+      "id": "0777-the-coals-do-not-move",
+      "issue": 777,
+      "title": "Hard coal converts at 18.01 MJ/kg in ecoinvent 3.8 as in every later release",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.8",
+        "uuid": "b6d0042d-0ef8-49ed-9162-a07ff1ccf750"
+      },
+      "expect": {
+        "conversion_factor": 18.01
+      },
+      "comment": "The control. Giving a factor a release scope must not make every factor release-specific: the coals, peat and uranium cite the openLCA lower-heating-value table in every implementation report and are the same number in all five workbooks, so they state all five releases under `conversion_checked_against` and one factor. If this one ever moves, the scoping has been applied where no revision happened."
+    }
+  ]
+}

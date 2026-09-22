@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "description": "Every source row named carbon dioxide, in all three lists, pinned to the substance it reaches. 55 rows in eleven vendor-name groups: 41 from ecoinvent 3.8 and 3.12, 14 from BAFU. The per-issue files beside this one carry the reasoning for the rows that moved; this one exists so that no row can move again without a test saying so — including the 37 that never moved, which no other expectation mentions and which are therefore the ones most able to drift unnoticed.\n\n**All 55 are covered.** They were not always: the file claimed the whole set while stopping two uuids short of the `from soil or biomass stock` group, leaving six rows named by nothing (#337). Those four uuids are pinned below, and the count in this paragraph is now a measurement rather than an intention.\n\nRows are selected by **source uuid** wherever a name would be ambiguous, which is most of them. The merge records a place-stripped name for several ecoinvent rows — `Carbon dioxide, in air`, `to soil or biomass stock` and `from soil or biomass stock` all record as `Carbon dioxide` — so a name selector silently conflates three different targets. Three expectations written during this work passed on the wrong rows for exactly that reason before being rewritten. Five subjects do select by name, and deliberately: `Carbon Dioxide, Fossil`, `Carbon Dioxide, Non-fossil`, BAFU's fossil and biogenic rows, and BAFU's `Land Transformation` group all carry their qualifier in the name the merge recorded, so the name is the whole claim and a uuid would narrow it to one row of several.\n\nMost ecoinvent uuids are shipped by both releases and so cover two rows. Two do not: `5188df39` (air / indoor) and `6d89125e` (air / lower stratosphere + upper troposphere) are 3.8 only, and their `row_count` of 1 is the claim that 3.12 dropped them. A BAFU uuid covers one row.\n\nMeasured on a full build of 3d7961c from a clean tree, then `characterise`. Covers #257, #258, #132, #332, #133, #134, #135, #136, #139 and #337.",
+  "expectations": [
+    {
+      "id": "0669-every-row-ecoinvent-fossil-carbon-dioxide",
+      "issue": 669,
+      "title": "ecoinvent's fossil carbon dioxide reaches fossil carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Carbon Dioxide, Fossil"
+      },
+      "expect": {
+        "row_count": 10,
+        "same_substance": true,
+        "target_substance_id": "fo-130030e87e592b4c"
+      },
+      "comment": "Five air compartments in each release. The group nothing in this work touched, and the reason it is pinned: it is the control. If a change to the qualifier vocabulary or the matching rule ever moves fossil carbon dioxide, every other claim in this family is suspect too."
+    },
+    {
+      "id": "0669-every-row-ecoinvent-non-fossil-carbon-dioxide",
+      "issue": 669,
+      "title": "ecoinvent's non-fossil carbon dioxide reaches biogenic carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Carbon Dioxide, Non-fossil"
+      },
+      "expect": {
+        "row_count": 9,
+        "same_substance": true,
+        "target_substance_id": "fo-c830feb8dfc643a1"
+      },
+      "comment": "The synonym decision, tested. `non-fossil` and `biogenic` are one word to this list, so ecoinvent's nine air rows meet EF's `carbon dioxide (biogenic)` and the factors EF states for it. An exact-name selector, so it cannot also catch `Carbon Dioxide, Non-fossil, Resource Correction`."
+    },
+    {
+      "id": "0669-every-row-ecoinvent-carbon-dioxide-in-air",
+      "issue": 669,
+      "title": "ecoinvent's atmospheric uptake reaches biogenic carbon dioxide from air",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "cc6a1abb-b123-4ca6-8f16-38209df609be"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-c830feb8dfc643a1",
+        "target_context_display": "Resource → Air"
+      },
+      "comment": "#257 settled this leg: EF's neutral biogenic uptake, characterised 0, which is also what ecoinvent's own implementation states. It arrives by the prepared correspondence and is the row BAFU's three `in air` rows are now aligned with. Compartment claimed as well as substance, because half of #135 was a compartment."
+    },
+    {
+      "id": "0669-every-row-agricultural-soil-capture",
+      "issue": 669,
+      "title": "Carbon into an agricultural soil pool is its own substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "259cf8d6-6ea8-4ccf-84b7-23c930a5b2b3"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-7edfcc35f0a40da5"
+      },
+      "comment": "The compartment EF does have a biogenic soil flow for, which is what made #258's mapping look right. What could not be carried across is the meaning: EF's biogenic carbon is neutral in both directions and this row is a removal."
+    },
+    {
+      "id": "0669-every-row-silvicultural-soil-capture",
+      "issue": 669,
+      "title": "The same in forestry soil",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "8ae4d8bb-3e4b-4825-8325-94696d7a64fd"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-7edfcc35f0a40da5"
+      },
+      "comment": "A compartment EF 3.1 has none of, so before this the row sat on a flow *this project minted* under biogenic carbon dioxide — the wrong substance was one the list had invented rather than one EF ships."
+    },
+    {
+      "id": "0669-every-row-industrial-soil-capture",
+      "issue": 669,
+      "title": "The same in industrial soil",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "60d424f7-d5a9-4549-9540-da06684bc3bb"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-7edfcc35f0a40da5"
+      },
+      "comment": "The other minted compartment. Named separately from the three beside it because all four have to move together or the substance is half-built, and a claim covering the group would pass while one of them regressed."
+    },
+    {
+      "id": "0669-every-row-unspecified-soil-capture",
+      "issue": 669,
+      "title": "The same in unspecified soil",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "375bc95e-6596-4aa1-9716-80ff51b9da77"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-7edfcc35f0a40da5"
+      },
+      "comment": "The fourth and last, and the compartment 116 of the 269 emitting datasets use."
+    },
+    {
+      "id": "0669-every-row-stock-release-urban-air",
+      "issue": 669,
+      "title": "Carbon released from a stock is land-use-change carbon",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "e8787b5e-d927-446d-81a9-f56977bbfeb4"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-c39139738b531191"
+      },
+      "comment": "The release leg, which this work deliberately did **not** move. EF has a flow that means what it means, both implementations state +1 for it, and the list publishes `agreed`. If this ever reaches the sequestration substance, the asymmetry §12 argues for has been flattened by somebody who thought the two legs were a pair."
+    },
+    {
+      "id": "0669-every-row-stock-release-unspecified-air",
+      "issue": 669,
+      "title": "The release leg in air, unspecified",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "e4e9febc-07c1-403d-8d3a-6707bb4d96e6"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-c39139738b531191"
+      },
+      "comment": "A second release row, in the compartment most of them use. All six release uuids are pinned: the first version of this file pinned two and said so in this comment, which was a reasonable economy until the paragraph above claimed the file covered every row (#337)."
+    },
+    {
+      "id": "0669-every-row-stock-release-non-urban-air",
+      "issue": 669,
+      "title": "The release leg in non-urban air",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "78eb1859-abd9-44c6-9ce3-f3b5b33d619c"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-c39139738b531191"
+      },
+      "comment": "The third release compartment, shipped by both releases. Same target and same route as the two above; pinned because a group is only guarded by naming all of it."
+    },
+    {
+      "id": "0669-every-row-stock-release-long-term-air",
+      "issue": 669,
+      "title": "The release leg in long-term air",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "e1c597cc-14cb-4ebb-af07-7a93a5b77d34"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-c39139738b531191"
+      },
+      "comment": "`low population density, long-term` is the compartment whose factors the coverage report skips, so this row reaches a substance and carries no published factor. That is the expected shape, and pinning it here stops a future reading of the skip as a matching failure."
+    },
+    {
+      "id": "0669-every-row-stock-release-indoor-air-38-only",
+      "issue": 669,
+      "title": "The release leg indoors, which only 3.8 ships",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "5188df39-2bb8-4826-b469-fa9f86bacc09"
+      },
+      "expect": {
+        "row_count": 1,
+        "same_substance": true,
+        "target_substance_id": "fo-c39139738b531191"
+      },
+      "comment": "One row, not two: ecoinvent 3.8 ships this uuid and 3.12 does not. The `row_count` is the claim — a 2 here would mean 3.12 reintroduced an indoor release flow, which is a fact about the vendor worth being told about rather than absorbing."
+    },
+    {
+      "id": "0669-every-row-stock-release-stratosphere-38-only",
+      "issue": 669,
+      "title": "The release leg in the stratosphere, which only 3.8 ships",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "6d89125e-e9b7-4d7e-a1fc-ada45dbd8815"
+      },
+      "expect": {
+        "row_count": 1,
+        "same_substance": true,
+        "target_substance_id": "fo-c39139738b531191"
+      },
+      "comment": "The second 3.8-only release row, and the last of the 55. Same reasoning as the indoor row above."
+    },
+    {
+      "id": "0669-every-row-resource-correction",
+      "issue": 660,
+      "title": "The resource correction is a substance of its own",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "419de9f0-ee00-4e95-9556-c8f06b17beec"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-525d7ddc2fa0004e"
+      },
+      "comment": "ecoinvent's allocation counterweight, and the row that found the rule in #133: its qualifier was detected, no flow object carried it, and the label branch then matched the very substance the qualifier exists to distinguish it from."
+    },
+    {
+      "id": "0669-every-row-bafu-fossil-carbon-dioxide",
+      "issue": 669,
+      "title": "BAFU's fossil carbon dioxide reaches fossil carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Carbon dioxide, fossil"
+      },
+      "expect": {
+        "row_count": 4,
+        "same_substance": true,
+        "target_substance_id": "fo-130030e87e592b4c"
+      },
+      "comment": "The second control group, and untouched by this work. All four carry 124-38-9 and the word `fossil`, so they match on `cas+qualifier` — which is what the rows missing a registry number could not do."
+    },
+    {
+      "id": "0669-every-row-bafu-biogenic-carbon-dioxide",
+      "issue": 661,
+      "title": "BAFU's three biogenic rows reach one substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Carbon dioxide, biogenic"
+      },
+      "expect": {
+        "row_count": 3,
+        "same_substance": true,
+        "target_substance_id": "fo-c830feb8dfc643a1"
+      },
+      "comment": "Two matched already; the `low. pop.` row carried no registry number and minted a second biogenic carbon dioxide. `same_substance` is the claim that matters — three rows of one substance reaching one substance."
+    },
+    {
+      "id": "0669-every-row-bafu-in-air-with-a-number",
+      "issue": 662,
+      "title": "BAFU's carbon dioxide in air reaches biogenic uptake from air",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "94b15b96-c2b5-5dfc-acb4-0cec3414d037"
+      },
+      "expect": {
+        "row_count": 1,
+        "target_substance_id": "fo-c830feb8dfc643a1",
+        "target_context_display": "Resource → Air"
+      },
+      "comment": "`resources / in air`, the one of the three whose compartment always agreed with its own flow name. It reached unqualified carbon dioxide before, because its number finds carbon dioxide and nothing in `in air` is a qualifier."
+    },
+    {
+      "id": "0669-every-row-bafu-in-air-filed-as-biotic",
+      "issue": 662,
+      "title": "The row BAFU filed as a biotic resource is corrected to air",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "38e9ff00-8bf9-5a6f-aee4-1033bf899e94"
+      },
+      "expect": {
+        "row_count": 1,
+        "target_substance_id": "fo-c830feb8dfc643a1",
+        "target_context_display": "Resource → Air"
+      },
+      "comment": "The compartment is claimed here as loudly as the substance, because getting the substance right and the compartment wrong was the state this row passed through: it reached `Carbon Dioxide (biogenic)` in `Resource → Biotic`, which says the carbon was taken from the biosphere when it is taken from the atmosphere and merely ends up in biomass. A manual fix keyed on the name *and* the compartment corrects BAFU's own contradiction with its own flow name."
+    },
+    {
+      "id": "0669-every-row-bafu-in-air-filed-as-unspecified",
+      "issue": 662,
+      "title": "The row BAFU filed as an unspecified resource is corrected to air",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "513f1d03-fdd8-5906-9eee-00ef20a0dea8"
+      },
+      "expect": {
+        "row_count": 1,
+        "target_substance_id": "fo-c830feb8dfc643a1",
+        "target_context_display": "Resource → Air"
+      },
+      "comment": "The worst-reading of the three: `resources / unspecified` maps to `Resource → Ground`, so carbon dioxide whose own name says *in air* was published as a resource taken from the ground. If this expectation ever reports `Resource → Ground` again, the manual fix has stopped matching — most likely because BAFU renamed the flow, which is exactly when somebody should look."
+    },
+    {
+      "id": "0669-every-row-bafu-land-transformation",
+      "issue": 663,
+      "title": "BAFU's land-transformation carbon dioxide picks up EF's +1",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name_contains": "Land Transformation"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-c39139738b531191"
+      },
+      "comment": "The only rows in this family whose score changed. Both landed on unqualified carbon dioxide, which this list characterises nowhere, so a BAFU inventory that cleared land scored zero for it. The fix is a rule — `land transformation` read as a land-use-change qualifier — plus the registry number one of them was missing."
+    },
+    {
+      "id": "0669-every-row-bafu-unqualified-low-pop",
+      "issue": 669,
+      "title": "BAFU's unqualified carbon dioxide is published as fossil",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "2c3a4703-fb4e-5333-b38d-ed5c4e05f304"
+      },
+      "expect": {
+        "row_count": 1,
+        "target_substance_id": "fo-130030e87e592b4c"
+      },
+      "comment": "Where real mass sits behind BAFU's unqualified flow it is provably fossil, and their own published EF 3.1 result puts it in `Climate change (fossil)` at CF 1 — so an uncharacterised substance would break their quicklime-with-CCS dataset by a factor of four. See #139 §17."
+    },
+    {
+      "id": "0669-every-row-bafu-unqualified-unspecified",
+      "issue": 669,
+      "title": "The same for the row carrying thirteen of the fourteen exchanges",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "8658d26b-02b4-5e39-b010-15ed7c1eb2ed"
+      },
+      "expect": {
+        "row_count": 1,
+        "target_substance_id": "fo-130030e87e592b4c"
+      },
+      "comment": "Air / unspecified, and the bulk of the population. Curated one row at a time, so claimed one row at a time: a single claim covering both would pass while one of them regressed."
+    },
+    {
+      "id": "0669-every-row-nothing-reaches-unqualified-carbon-dioxide",
+      "issue": 669,
+      "title": "No source row in any list is published as carbon dioxide of unstated origin",
+      "subject": {
+        "kind": "substance",
+        "id": "fo-82a29244dccbaefc"
+      },
+      "expect": {
+        "exists": true,
+        "flow_count": 7
+      },
+      "comment": "The claim the other eighteen add up to. Seven flows, all EF's own — three soil and four water — and none of the three this project once minted for source rows. The substance survives because EF ships it; what it stops being is a bucket this list fills. A flow_count of 8 means a row has fallen back into it.\n\nUnmet on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`): nine flows. AGRIBALYSE's two plain `Carbon dioxide` rows and its `Carbon dioxide, peat oxidation` row reach the origin-less substance and mint two air flows on it, one of them the very identifier #175 retired. That is #194; pending until it is ruled.",
+      "pending": true
+    },
+    {
+      "id": "0669-every-row-the-sequestration-substance-is-named",
+      "issue": 669,
+      "title": "Carbon into a land pool is published under its consensus name",
+      "subject": {
+        "kind": "substance",
+        "id": "fo-7edfcc35f0a40da5"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1,
+        "flow_count": 4,
+        "label": "Carbon Dioxide (sequestration from land management)",
+        "alt_label": "Carbon Dioxide, To Soil Or Biomass Stock"
+      },
+      "comment": "Both halves of the rename in one claim: the consensus name published, and ecoinvent's own spelling kept findable beside it. The label matters more than it looks — this name contains no phrase any qualifier pattern matches, which is why applying it during layering rather than after it destroyed the substance outright. If this reads `Carbon Dioxide, To Soil Or Biomass Stock` the rename has gone stale; if the substance is missing entirely, the rename has reached the flows again."
+    },
+    {
+      "id": "0669-every-row-the-resource-correction-is-named",
+      "issue": 660,
+      "title": "The resource correction is published under its consensus name",
+      "subject": {
+        "kind": "substance",
+        "id": "fo-525d7ddc2fa0004e"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1,
+        "flow_count": 1,
+        "label": "Carbon Dioxide (biogenic, resource correction)",
+        "alt_label": "Carbon Dioxide, Non-fossil, Resource Correction"
+      },
+      "comment": "One flow, `Resource → Air`, and the substance's shape on this list rather than ecoinvent's: substance, then origin in parentheses, which puts it beside `Carbon Dioxide (biogenic)` and `(biogenic-100yr)`, the two it is an accounting variant of."
+    }
+  ]
+}

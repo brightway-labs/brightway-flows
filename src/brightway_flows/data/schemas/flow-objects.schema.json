@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "description": "Canonical substance identities, shared across contexts.",
+  "properties": {
+    "flow_objects": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "@type": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Types"
+          },
+          "altLabel": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Altlabel",
+            "type": "array"
+          },
+          "classifications": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Classifications",
+            "type": "object"
+          },
+          "created_from": {
+            "additionalProperties": true,
+            "title": "Created From",
+            "type": "object"
+          },
+          "flow_object_id": {
+            "title": "Flow Object Id",
+            "type": "string"
+          },
+          "http://purl.obolibrary.org/obo/RO_0000087": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Roles"
+          },
+          "http://www.w3.org/2004/02/skos/core#definition": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Skos Definition"
+          },
+          "origin_qualifier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Origin Qualifier"
+          },
+          "parent_flow_object_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Parent Flow Object Id"
+          },
+          "parent_intervention_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Parent Intervention Id"
+          },
+          "prefLabel": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Preflabel",
+            "type": "array"
+          },
+          "properties": {
+            "additionalProperties": true,
+            "title": "Properties",
+            "type": "object"
+          },
+          "references": {
+            "items": {},
+            "title": "References",
+            "type": "array"
+          }
+        },
+        "required": [
+          "altLabel",
+          "classifications",
+          "created_from",
+          "flow_object_id",
+          "origin_qualifier",
+          "parent_flow_object_id",
+          "parent_intervention_id",
+          "prefLabel",
+          "properties",
+          "references"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 7,
+      "type": "integer"
+    },
+    "stats": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "flow_objects"
+  ],
+  "title": "flow-objects.json",
+  "type": "object"
+}

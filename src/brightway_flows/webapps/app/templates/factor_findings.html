@@ -1,0 +1,364 @@
+{#
+  One kind of finding, mirroring a `/checks` page: what `characterise` found and
+  did not silently resolve.
+
+  None of these is a factor this list changed. Where two numbers cannot both be
+  published, neither is — the disagreement is evidence about the matching, and
+  averaging it away would destroy the evidence.
+
+  **Four kinds, three tables.** One table of `detail` sentences made every one of
+  them unreadable: a collision named its rows by uuid, and a declined number
+  buried the two numbers and the ratio between them in prose. Which table a kind
+  gets is declared beside the kind in `queries/factors.py`, not decided here.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = definition.title %}
+{% set active_section = "factors" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ definition.title }}</h1>
+  <p class="page__lede">{{ definition.finds }}</p>
+  <p class="muted mono">{{ definition.kind }}</p>
+</header>
+
+{#
+  A collision is one of two things, and only the first is the event this check
+  exists for. One publisher row stating several numbers under one category and
+  one place is a publisher distinguishing its rows by something this list did not
+  read — a location, most often — and those factors are *expected* to differ.
+  Listing them beside a real collision says a defect is two hundred defects.
+#}
+{% if sources %}
+<div class="chips">
+  <span class="muted">Collision</span>
+  {% for slug, label, count in sources %}
+  <a class="chip {% if (source or sources[0][0]) == slug %}chip--active{% endif %}"
+     href="{{ url_for('factors.findings', kind=definition.kind, source=slug, q=query) }}">
+    <span class="chip__label">{{ label }}</span>
+    <span class="chip__value">{{ count | thousands }}</span>
+  </a>
+  {% endfor %}
+</div>
+{% if source == 'one' %}
+<div class="notice">
+  <p>
+    Not a disagreement. Each of these is one source row stating several numbers
+    for one category and one place, so this list has nothing to tell them apart
+    with — the publisher does, by a location or another key this build did not
+    read. The factors are expected to differ.
+  </p>
+</div>
+{% endif %}
+{% endif %}
+
+{#
+  How the list came to have two numbers to choose between, said once above the
+  table rather than left for a reader to infer from a column of pairs.
+#}
+{% if definition.layout == 'declined' %}
+<div class="notice">
+  <div class="notice__title">Where the two numbers come from</div>
+  <p>
+    A publisher files one substance twice in one compartment, under two names.
+    EF 3.1 ships <code>(Z)-HFC-1336</code> and
+    <code>(2z)-1,1,1,4,4,4-hexafluorobut-2-ene</code> as separate rows in the
+    same air compartment; every field this pipeline compares matches, so it
+    holds them to be one flow, keeps one and deprecates the other. Both rows
+    carried a characterisation factor, and the two factors did not agree.
+  </p>
+  <p>
+    <strong>Nothing here was changed by this list.</strong> The number kept is
+    the more precise of the two where they are one number written twice, and the
+    survivor's otherwise; the other is recorded rather than dropped, which is
+    what this page shows. Which of them is <em>right</em> is a question about
+    EF 3.1 —
+    <a href="https://github.com/brightway-labs/brightway-flows/issues/64"
+       rel="noreferrer">issue #64</a> asks it, and lists the eight substances
+    where the gap is too large to be rounding.
+  </p>
+</div>
+{% endif %}
+
+{#
+  Inline rather than `t.search_form`, which builds its action from the endpoint
+  alone: this route takes a `kind`, and the macro cannot supply one.
+#}
+<form class="filters" method="get"
+      action="{{ url_for('factors.findings', kind=definition.kind) }}">
+  <input type="hidden" name="source" value="{{ source }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Flow or detail…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('factors.findings', {'kind': definition.kind}) }}
+  </div>
+</form>
+
+{% if page.rows %}
+{{ t.pager(page, 'factors.findings', dict(args, kind=definition.kind)) }}
+<div class="table-scroll">
+  <table>
+
+    {% if definition.layout == 'collision' %}
+    {#
+      What the numbers are and where each came from. The flow is named, measured
+      and placed in a compartment, because `03b56eb6-…` is not a substance; the
+      place is stated because a collision is between rows that share one, which
+      is the explanation a reader reaches for first and can now rule out.
+    #}
+    <thead>
+      <tr>
+        <th scope="col">{{ t.sort_header('Flow', 'flow', sort, 'factors.findings', dict(args, kind=definition.kind)) }}</th>
+        <th scope="col">Category</th>
+        <th scope="col">Place</th>
+        <th scope="col">Implementation</th>
+        <th scope="col">The numbers, and the rows they came from</th>
+        <th scope="col" class="num">{{ t.sort_header('Apart', 'ratio', sort, 'factors.findings', dict(args, kind=definition.kind)) }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          {% if row.elementary_flow_uuid %}
+          {{ t.flow_link(row.elementary_flow_uuid, row.flow_name or row.elementary_flow_uuid) }}
+          <div class="muted">
+            {{ row.context_display or "—" }}{% if row.unit %} · per {{ row.unit }}{% endif %}
+          </div>
+          {% else %}<span class="muted">—</span>{% endif %}
+        </td>
+        <td>{{ row.category or "—" }}</td>
+        <td class="mono">{{ row.geography or "—" }}</td>
+        <td class="muted">{{ row.implemented_by }}</td>
+        <td>
+          {#
+            The first few and a count. A row whose numbers are one publisher row
+            distinguished by a key this build did not read holds 213 of them, and
+            213 numbers in a cell is not evidence, it is a wall.
+          #}
+          <ul class="sources">
+            {% for candidate in row.colliding[:6] %}
+            <li class="sources__row">
+              <span class="sources__label">
+                {% if candidate.source_flow_name %}{{ candidate.source_flow_name }}
+                {% if candidate.source_context %}
+                <span class="muted">{{ candidate.source_context }}</span>
+                {% endif %}
+                {% elif candidate.source_flow_uuid %}
+                <span class="mono">{{ candidate.source_flow_uuid }}</span>
+                {% else %}
+                <span class="muted">stated on this flow directly</span>
+                {% endif %}
+              </span>
+              <span class="sources__value mono">
+                {{ candidate.amount | amount }}{% if candidate.source_unit %}
+                <span class="muted">per {{ candidate.source_unit }}</span>{% endif %}
+              </span>
+            </li>
+            {% endfor %}
+            {% if row.colliding | length > 6 %}
+            <li class="sources__row">
+              <span class="sources__label muted">
+                and {{ (row.colliding | length) - 6 }} more
+              </span>
+            </li>
+            {% endif %}
+          </ul>
+        </td>
+        <td class="num">{{ row.ratio | ratio }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+    {% elif definition.layout == 'declined' %}
+    {#
+      The two numbers side by side and the ratio between them, rather than a
+      sentence a reader has to parse three of to compare two. Sortable by the
+      published factor and by the ratio: "what did this cost the biggest number"
+      and "where were the two furthest apart" are the two questions asked here.
+
+      *Settled from* is the third: two numbers means two rows, and until it was
+      shown the page said a number had been declined without saying where either
+      came from — so a reader could see that a choice had been made and not how
+      the list came to have a choice to make.
+    #}
+    <thead>
+      <tr>
+        <th scope="col">{{ t.sort_header('Flow', 'flow', sort, 'factors.findings', dict(args, kind=definition.kind)) }}</th>
+        <th scope="col">Category</th>
+        <th scope="col" class="num">{{ t.sort_header('Published', 'factor', sort, 'factors.findings', dict(args, kind=definition.kind)) }}</th>
+        <th scope="col" class="num">Declined</th>
+        <th scope="col" class="num">{{ t.sort_header('Apart', 'ratio', sort, 'factors.findings', dict(args, kind=definition.kind)) }}</th>
+        <th scope="col">Settled from</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          {% if row.elementary_flow_uuid %}
+          {{ t.flow_link(row.elementary_flow_uuid, row.flow_name or row.elementary_flow_uuid) }}
+          <div class="muted">
+            {{ row.context_display or "—" }}{% if row.unit %} · per {{ row.unit }}{% endif %}
+          </div>
+          {% else %}<span class="muted">—</span>{% endif %}
+          <div class="muted">{{ row.implemented_by }}</div>
+        </td>
+        <td>{{ row.category or "—" }}</td>
+        <td class="num mono">{{ row.published | amount }}</td>
+        <td class="num mono muted">{{ row.declined | amount }}</td>
+        <td class="num">{{ row.ratio | ratio }}</td>
+        <td>
+          {#
+            The rows the flow was settled from, under the names their list
+            shipped them as. Those names are the finding: `(Z)-HFC-1336` and
+            `(2z)-1,1,1,4,4,4-hexafluorobut-2-ene` are one substance filed
+            twice by EF 3.1, in one compartment, with factors that do not
+            agree. The published label is the same on every row by the time the
+            layering has run, so it would say one row several times.
+          #}
+          {% for merged in row.merged %}
+          <div class="sources__row">
+            <span class="sources__label">
+              {{ t.flow_link(merged.uuid, merged.name or merged.uuid) }}
+              {% if merged.survivor %}
+              <span class="tag tag--ok">kept</span>
+              {% else %}
+              <span class="tag tag--info">deprecated onto it</span>
+              {% endif %}
+              {% if merged.declined_here %}
+              <span class="tag tag--blocking">published the declined number</span>
+              {% endif %}
+              {% for list_name, shipped in merged.shipped_as %}
+              <div class="muted">{{ list_name or "—" }} shipped it as
+                <em>{{ shipped }}</em></div>
+              {% else %}
+              <div class="muted">no source row recorded</div>
+              {% endfor %}
+            </span>
+            <span class="sources__value muted">
+              {{ merged.factors | thousands }} factors
+            </span>
+          </div>
+          {% else %}
+          <span class="muted">
+            this build records no other row on this flow
+          </span>
+          {% endfor %}
+          <div class="muted">
+            settled by <span class="mono">{{ row.settled_by or "—" }}</span>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+    {% elif definition.layout == 'unreached' %}
+    {#
+      The row that did *not* become a consensus flow, so nothing else on this
+      site can name it: the name, the compartment and the unit come from the
+      finding itself, and the factors with them — "4 factors" is a count, and
+      `ecotoxicity: freshwater, 0.0050755` is what a reader can weigh.
+
+      *Carried by* is the other half of the question. Nothing at all is a
+      question for the merge; a consensus flow that carries the row and none of
+      its factors is a different fault in a different place.
+    #}
+    <thead>
+      <tr>
+        <th scope="col">Source flow</th>
+        <th scope="col">Implementation</th>
+        <th scope="col">What it states</th>
+        <th scope="col">Carried by</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          {{ row.source_flow_name or row.source_flow_uuid }}
+          <div class="muted">
+            {{ row.source_context or "—" }}{% if row.source_unit %} · per {{ row.source_unit }}{% endif %}
+          </div>
+          <div class="muted mono">{{ row.source_flow_uuid }}</div>
+        </td>
+        <td class="muted">{{ row.implemented_by }}</td>
+        <td>
+          {% if row.stated %}
+          <ul class="sources">
+            {% for stated in row.stated %}
+            <li class="sources__row">
+              <span class="sources__label">
+                {{ stated.category }}
+                {%- if stated.geography %}
+                <span class="mono muted">{{ stated.geography }}</span>{% endif %}
+              </span>
+              <span class="sources__value mono">{{ stated.amount | amount }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          {{ row.detail }}
+          {% endif %}
+        </td>
+        <td>
+          {% if row.carried_by %}
+          {{ t.flow_link(row.carried_by.elementary_flow_uuid,
+                         row.carried_by.flow_name or row.carried_by.elementary_flow_uuid) }}
+          <div class="muted">
+            {{ row.carried_by.context_display or "—" }} ·
+            {% if row.carried_by.factors %}
+            already carries {{ row.carried_by.factors | thousands }} factors
+            {% else %}carries none{% endif %}
+          </div>
+          {% else %}
+          <span class="muted">no consensus flow carries this row</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+    {% else %}
+    <thead>
+      <tr>
+        <th scope="col">{{ t.sort_header('Flow', 'flow', sort, 'factors.findings', dict(args, kind=definition.kind)) }}</th>
+        <th scope="col">Implementation</th>
+        <th scope="col">What was found</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          {% if row.elementary_flow_uuid %}
+          {{ t.flow_link(row.elementary_flow_uuid, row.flow_name or row.elementary_flow_uuid) }}
+          {% if row.context_display %}
+          <div class="muted">{{ row.context_display }}</div>
+          {% endif %}
+          {% else %}
+          <span class="muted">—</span>
+          {% endif %}
+        </td>
+        <td class="muted">{{ row.implemented_by }}</td>
+        <td>
+          {{ row.detail }}
+          {% if row.ratio %}
+          <div class="muted">{{ row.ratio | ratio }} apart</div>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    {% endif %}
+
+  </table>
+</div>
+{{ t.pager(page, 'factors.findings', dict(args, kind=definition.kind)) }}
+{% else %}
+{{ t.nothing_matches("Nothing of this kind in this run.") }}
+{% endif %}
+{% endblock %}

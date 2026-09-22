@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Duplicate contexts" %}
+{% set active_section = "checks" %}
+{% set args = {'q': query} %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Duplicate contexts</h1>
+  <p class="page__lede">
+    One substance, one context, one flow. More than one means two source rows
+    were mapped onto the same place and neither was deprecated. Duplicates that
+    have already been deprecated are excluded — those were found and dealt with.
+  </p>
+</header>
+
+{{ t.search_form('checks.duplicate_contexts', query, "Substance or context…") }}
+
+{% if page.rows %}
+{{ t.pager(page, 'checks.duplicate_contexts', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Substance</th>
+        <th scope="col">Context</th>
+        <th scope="col" class="num">Flows</th>
+        <th scope="col">Which</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>{{ t.substance_link(row.flow_object_id, row.name or row.flow_object_id) }}</td>
+        <td>{{ row.context_display }}</td>
+        <td class="num"><span class="tag tag--blocking">{{ row.count }}</span></td>
+        <td>
+          {% for flow in row.flows %}
+          <div>
+            {{ t.flow_link(flow.uuid) }}
+            <span class="muted">{{ flow.source }}</span>
+            <span class="muted mono">{{ flow.unit }}</span>
+          </div>
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'checks.duplicate_contexts', args) }}
+{% else %}
+{{ t.nothing_matches("The invariant holds: no substance has two flows in one context.") }}
+{% endif %}
+{% endblock %}

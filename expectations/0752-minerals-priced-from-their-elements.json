@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "description": "The JRC prices the elements in the crust under `Resource use, minerals and metals` and lists sodium chloride, gypsum, potassium chloride and the rest in EF 3.1's flow list without a factor. ecoinvent's implementation (v3.12 report, Table 20) prices such a mineral as the JRC's element factors weighted by the mineral's mass shares, and for 23 minerals the arithmetic on the formula reproduces ecoinvent's number to better than 0.2% (spodumene 0.8%, steatite 1.2%). Those 23 are approved as a population in `lcia-catch-all-factor-approvals.json`, each entry recording the number it was made about; feldspar and olivine, whose numbers the formula does not reproduce, and the eight rocks with no formula stay on the queue. The score comparison found the gap: over 500 ecoinvent 3.12 datasets, minerals-and-metals was the one category where 14 datasets sat outside 2x, every one of them gypsum or sodium chloride this list gave no factor.",
+  "expectations": [
+    {
+      "id": "0752-gypsum-carries-its-sulfur",
+      "issue": 752,
+      "title": "Gypsum from the ground carries this list's `Resource use, minerals and metals` factor, and it is ecoinvent's sulfur arithmetic",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Gypsum",
+        "context_display": "Resource → Ground",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "3.59E-05",
+        "derivation": "adopted"
+      },
+      "comment": "Gypsum is 18.6% sulfur by mass and the JRC prices sulfur at 1.93e-4 kg Sb-eq/kg; calcium carries nothing. 0.186 x 1.93e-4 = 3.594e-5, which is the number ecoinvent states. `approved` rather than `restated`, because no other flow of the category carries the number and the reason is on the record in the approvals file."
+    },
+    {
+      "id": "0752-sodium-chloride-carries-its-chlorine",
+      "issue": 752,
+      "title": "Sodium chloride from the ground carries this list's `Resource use, minerals and metals` factor",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sodium Chloride",
+        "context_display": "Resource → Ground",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "1.65E-05",
+        "derivation": "adopted"
+      },
+      "comment": "60.7% chlorine at 2.71e-5 plus 39.3% sodium at 5.5e-8 is 1.646e-5. The flow half of chlor-alkali electrolysis's score and nine-tenths of polyether polyols' under this category."
+    },
+    {
+      "id": "0752-granite-is-still-a-question",
+      "issue": 752,
+      "title": "Granite from the ground carries no `Resource use, minerals and metals` factor of this list's",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Granite",
+        "context_display": "Resource → Ground",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "A rock, not a mineral: it has no formula, and ecoinvent's 1.65e-9 comes from an average composition only its report states. The approval is bounded to what the formula reproduces, so granite stays on the queue with basalt, bentonite, perlite, pumice, laterite, vermiculite, diatomite, feldspar and olivine."
+    },
+    {
+      "id": "0752-the-approvals-were-applied",
+      "issue": 752,
+      "title": "At least 899 factors are published as `adopted`",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_adopted",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 899
+      },
+      "comment": "876 pesticide factors on the 25 August 2026 build and 23 minerals, one factor each, with this. A floor: the count says the entries were read and applied, and a pesticide gaining a context should not fail a claim about the minerals. Renamed from `approved` on 2026-09-01, when the approvals file became `lcia-factor-adoptions.json` and gained the ions, the conjugate pairs and the land classes: 1,334 on that build, of which these 23 and the 62 pesticides are the 899."
+    },
+    {
+      "id": "0752-the-proposed-queue-shrank",
+      "issue": 752,
+      "title": "At most 20 proposed-factor questions are still open",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_proposed-factor_items_open",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 20
+      },
+      "comment": "37 open on the 25 August 2026 build; 23 minerals approved leaves 14 -- ten minerals and rocks the formula cannot vouch for, sulfuryl difluoride, peat, coal-mine off-gas and one more. A ceiling, so that a new question ecoinvent's next release asks is noticed rather than absorbed. Sixteen rather than fourteen from 2026-09-01: retiring the digit-matching twin rule (#156) put fenoxycarb's two rows back on the queue, where they belong until #130 fixes the twin in the merge. Every other former twin is a signed entry.\n\nTwenty on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`): the sulfuryl difluoride, peat and coal-mine off-gas questions are ruled and off the open count, and eight arrived with it -- Beta-cyfluthrin's four categories, with the ecoinvent Centre's eight numbers proposed on the substance #188 gave it, and Kresoxim-methyl's four. The ten minerals and fenoxycarb's two are as before. Raised so that the next new question is still noticed, not absorbed."
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 names 118 refrigerants, blowing agents and fire suppressants by their industry part number -- `HFC-134a`, `CFC-12`, `Halon-1301`, counted on the 2026-08-17 build at commit 87a5918 -- and this project has already decided that a part number is a worse published name than the chemistry. The rename never happened for any of them, because the rule that proposes a better name asks Common Chemistry and ChEBI the same question and only acts when both answer. ChEBI is a database of biologically interesting molecules and has never heard of an industrial refrigerant, so for this whole family the second opinion is simply absent.\n\nThe answer taken here is not to trust one database where the other is silent. It is to write down, substance by substance, the renames a curator is confident of, in `ef-3.1-manual-fixes.json`, and leave the rest alone. Seventy substances are named for their chemistry as a result; the other forty-eight keep the part number, because for them there is no chemical name available that is both unambiguous and better.\n\nEvery renamed substance keeps the part number as an alternative label, so an inventory written against EF 3.1 still finds the flow by the name it was written with. That half matters as much as the rename and is claimed here separately, because it is the half that used to be lost.",
+  "expectations": [
+    {
+      "id": "0521-hfc-134a-is-named-for-its-chemistry",
+      "issue": 521,
+      "title": "The refrigerant EF 3.1 calls `HFC-134a` is published as 1,1,1,2-Tetrafluoroethane",
+      "subject": {
+        "kind": "substance",
+        "cas": "811-97-2"
+      },
+      "expect": {
+        "label": "1,1,1,2-Tetrafluoroethane"
+      },
+      "comment": "Measured on the 2026-08-17 build at commit 87a5918: published as `HFC-134a` over 13 flows carrying 78 characterisation factors between them, the most heavily characterised member of the family. Common Chemistry names 811-97-2 `1,1,1,2-Tetrafluoroethane` and ecoinvent 3.12 reaches these flows under that same name, so two independent sources agree on it."
+    },
+    {
+      "id": "0521-hfc-134a-stays-findable",
+      "issue": 521,
+      "title": "`HFC-134a` is still a name that finds the substance",
+      "subject": {
+        "kind": "substance",
+        "cas": "811-97-2"
+      },
+      "expect": {
+        "alt_label": "HFC-134a"
+      },
+      "comment": "The rename deletes the only string an inventory written against EF 3.1 knows the substance by unless the old name is kept beside the new one. On the 2026-08-17 build this substance publishes no alternative label at all."
+    },
+    {
+      "id": "0521-hfc-23-is-trifluoromethane",
+      "issue": 521,
+      "title": "The substance published as `Hfc-23` is named Trifluoromethane",
+      "subject": {
+        "kind": "substance",
+        "cas": "75-46-7"
+      },
+      "expect": {
+        "label": "Trifluoromethane",
+        "alt_label": "HFC-23"
+      },
+      "comment": "This is the substance the issue opens with, and the one where Common Chemistry and ChEBI disagree in style rather than in substance: Common Chemistry says `Trifluoromethane` and ChEBI says `fluoroform`. ecoinvent 3.12 reaches this flow as `Trifluoromethane`, which is what settles it -- the repo rule is that where two curated sources differ only in style, the name other contributing lists use is the published one. The rename also disposes of the mis-capitalisation the issue reports: EF 3.1 ships this substance's name as both `HFC-23` and `hfc-23`, the lowercase spelling won, and the name caser title-cased it to `Hfc-23`."
+    },
+    {
+      "id": "0521-halon-2311-is-halothane",
+      "issue": 521,
+      "title": "`Halon-2311` is published as Halothane, without the racemate prefix",
+      "subject": {
+        "kind": "substance",
+        "cas": "151-67-7"
+      },
+      "expect": {
+        "label": "Halothane",
+        "alt_label": "Halon-2311"
+      },
+      "comment": "The one substance in the family where the two databases give the same name with a stereo prefix on one side: Common Chemistry writes `(±)-Halothane` and ChEBI writes `halothane`. Ruled on individually rather than by a general rule about stereo prefixes, because halothane is manufactured, sold and emitted only as the racemate, so the prefix states something no reader of an inventory has to be told; a general rule would have to hold for substances where the prefix is the whole distinction."
+    },
+    {
+      "id": "0521-halon-1001-is-bromomethane",
+      "issue": 521,
+      "title": "The fumigant EF 3.1 ships as both `Halon-1001` and `Methyl bromide` is published once, as Bromomethane",
+      "subject": {
+        "kind": "substance",
+        "cas": "74-83-9"
+      },
+      "expect": {
+        "label": "Bromomethane",
+        "alt_label": "Halon-1001"
+      },
+      "comment": "EF 3.1 ships CAS 74-83-9 under three spellings -- `Halon-1001`, `halon-1001` and `Methyl bromide` -- one live in each context and the other deprecated, so nothing is being merged here. Common Chemistry says `Methyl bromide` and ChEBI says `bromomethane`; ecoinvent 3.12 reaches these flows as `Bromomethane`, which decides it. 27 flows and 121 characterisation factors, the largest count in the family."
+    },
+    {
+      "id": "0521-methyl-bromide-stays-findable",
+      "issue": 521,
+      "title": "`Methyl bromide` still finds the fumigant it names",
+      "subject": {
+        "kind": "substance",
+        "cas": "74-83-9"
+      },
+      "expect": {
+        "alt_label": "Methyl bromide"
+      },
+      "comment": "Both of EF 3.1's own names for 74-83-9 are real names for it, and the rename replaces both. `Methyl bromide` is what the fumigation trade calls it and what Common Chemistry publishes, so losing it would be worse than losing the halon number."
+    },
+    {
+      "id": "0521-cfc-113-keeps-its-designation",
+      "issue": 521,
+      "title": "`CFC-113` keeps its part number, because the chemical name available is less specific than it is",
+      "subject": {
+        "kind": "substance",
+        "cas": "26523-64-8"
+      },
+      "expect": {
+        "label": "CFC-113"
+      },
+      "comment": "The counterweight to the renames above, and the reason this is a whitelist rather than a rule. EF 3.1 gives CFC-113 registry number 26523-64-8, which is trichlorotrifluoroethane with no isomer stated, and Common Chemistry's name for it is `Trichlorotrifluoroethane`. C2Cl3F3 has two isomers and the designation says which one is meant while the name does not, so renaming would publish less than the list already knows. Six substances are held back for that reason and this is one of them: four where the registry number names an unspecified isomer, and two where the part number names a mixture and the name names one of its components."
+    },
+    {
+      "id": "0521-shared-registry-numbers-block-a-rename",
+      "issue": 521,
+      "title": "Four ether designations that share one registry number keep their own names",
+      "subject": {
+        "kind": "substance",
+        "label": "HFE-356mec3"
+      },
+      "expect": {
+        "exists": true,
+        "cas": "382-34-3"
+      },
+      "comment": "EF 3.1 carries `HFE-356mec3`, `HFE-356pcc3`, `HFE-356pcf2` and `HFE-356pcf3` -- four distinct isomeric ethers -- all on registry number 382-34-3, and Common Chemistry has one name for that number. Renaming would publish four substances under one name, which is worse than four part numbers. Ten of the 118 are held back for this reason, across four registry numbers, and the shared number is itself a defect worth its own issue rather than something a rename should paper over."
+    }
+  ]
+}

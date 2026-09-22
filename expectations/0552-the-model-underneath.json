@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1's toxicity categories are USEtox 2.1 -- the JRC's report says so and lists the adjustments made on top of it -- and for four substances the two are more than a hundredfold apart in every compartment. Biphenyl is the worked example: EF 3.1 characterises it at 0.19957 CTUh for a kilogram emitted to urban air, which is two hundred cases of disease per tonne and ranks it third of the 3,380 substances EF characterises there, above mercury; USEtox 2.1 gives 0.00000014. What this list does about it is publish nothing under its own name for those pairs, and go on publishing EF's number under the JRC's. The claims below are that split: the transcription still says what EF says, the consensus implementation says nothing, and the question is on a curator's queue rather than in a comment. The fourth claim is the boundary -- only human toxicity is compared, because for freshwater ecotoxicity the workbook and EF do not state one quantity and a ratio between them measures the two models rather than the substance (`contradictions.COMPARABLE_CATEGORIES`). Measured on the build of 2026-08-20, characterised 2026-08-21 (run 4cc787d34f4e42e98d1819d1c67280ea): 4 substances, 8 (substance, category) pairs once each category's organic half is counted with it, and 110 of the JRC's factors. See #107.",
+  "expectations": [
+    {
+      "id": "0552-biphenyl-in-urban-air-is-not-characterised-by-this-list",
+      "issue": 552,
+      "title": "EF 3.1 characterises biphenyl for non-cancer human toxicity and this list does not",
+      "subject": {
+        "kind": "flow",
+        "name": "Biphenyl",
+        "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq"
+      },
+      "expect": {
+        "exists": true,
+        "jrc_factors": 6,
+        "consensus_factors": 5
+      },
+      "comment": "EF 3.1 flow 4d9a8790-3ddd-11dd-9bd3-0050c2490048, `Biphenyl, emission to urban air close to ground`, CAS 92-52-4. The JRC states six factors on it: 0.19957 CTUh for `Human toxicity, non-cancer` and the same number again for the organic half of that category, 6.0049 CTUe twice for freshwater ecotoxicity, and a stated zero twice for cancer. The consensus implementation publishes four of the six. The two it does not are the two USEtox 2.1 contradicts, and the six factors of that pair -- one per compartment the model states a number for -- are one `contradicted-factor` question rather than a number nobody looked at. `jrc_factors` staying at 6 is half the claim and the more important half: this is a change to what *this list* says, and EF 3.1 still says 0.19957 under the JRC's name. If a curator rules `publish`, `consensus_factors` goes back to 6 and this expectation is rewritten -- that is what the queue is for, and #84's expectation was rewritten the same way. If it fails at 3 rather than 4, the ecoinvent Centre's implementation has come to disagree about one of the other four and that is a `contested-factor` question, not this one. Five on 2026-09-01, not four, and the fifth is not one of the two withheld: it is Stepwise 2006's `Human toxicity, non-carc.`, carried into urban air from Stepwise's unspecified air by `data/context-carry-rules.json`. EF 3.1's two non-cancer factors are still withheld, and `jrc_factors` is still 6."
+    },
+    {
+      "id": "0552-the-widest-ecotoxicity-gap-is-published-anyway",
+      "issue": 552,
+      "title": "An ecotoxicity gap, however wide, is not a reason to withhold a factor",
+      "subject": {
+        "kind": "flow",
+        "name": "Dodecyl Methacrylate",
+        "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa"
+      },
+      "expect": {
+        "exists": true,
+        "jrc_factors": 4,
+        "consensus_factors": 4
+      },
+      "comment": "EF 3.1 flow 2266d9d0-3109-4045-95e3-c9348698bcf3, CAS 142-90-5, an emission to fresh water. EF 3.1 gives 110,460 CTUe and the workbook 0.53 -- the widest ecotoxicity gap in the evidence file, and this list publishes EF's number. Four factors, and all four published: `Ecotoxicity, freshwater` and its organic half, and non-cancer human toxicity and its organic half, which the workbook does not contradict. The claim is the boundary, and it is stated on the widest case on purpose: a gap in this category is not evidence that EF's number is wrong, because the workbook's ecotoxicity sheet is LC-Impact's ecosystem-quality result in potentially disappeared fraction of species and EF's CTUe is a potentially affected fraction. Withholding this factor would be a decision made on a scale mismatch. If it fails at 2, the ecotoxicity rows are being compared again, and every other claim here is about the four rows that survive that."
+    },
+    {
+      "id": "0552-every-contradicted-pair-reaches-the-queue",
+      "issue": 552,
+      "title": "All eight questions are asked, not just the one with an expectation",
+      "subject": {
+        "kind": "measure",
+        "key": "queue.contradicted-factor"
+      },
+      "expect": {
+        "at_least": 8
+      },
+      "comment": "Four substances -- biphenyl, o-phenylphenol, benfluralin and the 2,4/2,6-toluenediisocyanate mixture -- each in the category the evidence names and in the organic half of it, which is 8 questions grouped by (substance, category), the unit a curator decides in. A lower bound rather than an exact count, because a registry number two flow objects carry would ask the question about both, and that is #34's state of affairs rather than a failure of this one. What the bound catches is the evidence file loading and reaching nothing, which is what a curated file quietly not applying looks like."
+    },
+    {
+      "id": "0552-the-withholding-is-110-factors",
+      "issue": 552,
+      "title": "The questions cover every context of those substances, not only the six compared",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_contradicted-factor_factors"
+      },
+      "expect": {
+        "at_least": 110
+      },
+      "comment": "The comparison is over six compartments, and EF publishes these substances in up to thirteen contexts -- the six, plus unspecified air, water and soil, indoor air, aircraft cruise height and the two long-term contexts where it states zero. All of them are withheld, because the number that is orders of magnitude out is the substance's and the other contexts are derived from the same parameters: withholding the six and publishing indoor air, where EF gives biphenyl 17.194 CTUh, would leave the worst number in the list published. 110 on the 2026-08-21 characterisation, which is fewer than 4 x 13 x 2 because EF does not characterise all four substances in every context. A lower bound because EF states 180 located factors on four toxicity categories, and a substance with one would carry more rows than contexts."
+    }
+  ]
+}

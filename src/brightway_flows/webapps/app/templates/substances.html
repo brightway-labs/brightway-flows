@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% import "partials/flow_object_views.html" as v %}
+{% set page_title = "Flow objects" %}
+{% set active_section = "substances" %}
+{% set args = {'q': query, 'name_only': '1' if name_only else '', 'type': flow_type, 'qualifier': origin_qualifier, 'origin': origin_source, 'sort': sort} %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Flow objects</h1>
+  <p class="page__lede">
+    A chemical identity, independent of context and source. Every flow resolves
+    to one of these.
+  </p>
+</header>
+
+{{ v.views('all') }}
+
+<form class="filters" method="get" action="{{ url_for('substances.index') }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Name, identifier, CAS…" data-search>
+    <label class="checkbox">
+      <input type="checkbox" name="name_only" value="1"
+             {% if name_only %}checked{% endif %}> Name only
+    </label>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('substances.index') }}
+  </div>
+  <div class="filters__selects">
+    {{ t.select("type", "Type", flow_type, type_options) }}
+    {#
+      "Origin" is the source list that minted the object, which is what the
+      word means to a reader: where this substance came from.  The field
+      underneath used to have the label, and it answers a different question --
+      which *form* of a substance this is, biogenic against fossil -- so it is
+      now called what it is (#31's vocabulary, and the record's own
+      `origin_qualifier`).
+    #}
+    {{ t.select("origin", "Origin", origin_source, origin_options) }}
+    {{ t.select("qualifier", "Qualifier", origin_qualifier, qualifier_options) }}
+  </div>
+</form>
+
+
+{#
+  Said out loud, because a list that opens on page 812 with no explanation looks
+  like a bug. The link is the way back to the top, and everything else on the
+  page -- a search, a filter, a sort -- lands on page 1 as it always did.
+#}
+{% if landed_at_random and page.number > 1 %}
+<div class="notice">
+  <p>
+    Opened at page {{ page.number }} of {{ page.pages }}, chosen at random, so
+    that browsing this list is not always browsing the letter A.
+    <a href="{{ url_for('substances.index', page=1) }}">Start at the beginning</a>.
+  </p>
+</div>
+{% endif %}
+
+{% if page.rows %}
+{{ t.pager(page, 'substances.index', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">{{ t.sort_header("Name", "name", sort, 'substances.index', args) }}</th>
+        <th scope="col">{{ t.sort_header("Identifier", "id", sort, 'substances.index', args) }}</th>
+        <th scope="col">{{ t.sort_header("Type", "type", sort, 'substances.index', args) }}</th>
+        <th scope="col">{{ t.sort_header("Origin", "origin", sort, 'substances.index', args) }}</th>
+        <th scope="col" class="num">{{ t.sort_header("Flows", "flows", sort, 'substances.index', args) }}</th>
+        <th scope="col" class="num">{{ t.sort_header("Changes", "changes", sort, 'substances.index', args) }}</th>
+        <th scope="col">CAS</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          <a href="{{ url_for('substances.detail', flow_object_id=row.flow_object_id) }}">{{ row.name or "(no name)" }}</a>
+          {# 14 of 7,728 substances carry one, so a tag rather than a column. #}
+          {% if row.origin_qualifier %}
+          <span class="tag">{{ row.origin_qualifier }}</span>
+          {% endif %}
+        </td>
+        <td class="mono muted">{{ row.flow_object_id }}</td>
+        <td>{{ row.type_label or "—" }}</td>
+        {# An em dash where no list minted it: the five the pipeline created
+           itself have no source list, and naming one would be a claim. #}
+        <td>{{ row.origin_source or "—" }}</td>
+        <td class="num">{{ row.linked_flows | thousands }}</td>
+        <td class="num">{{ row.change_count | thousands }}</td>
+        <td class="mono">{{ row.cas_numbers | join(", ") or "—" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'substances.index', args) }}
+{% else %}
+{{ t.nothing_matches() }}
+{% endif %}
+{% endblock %}

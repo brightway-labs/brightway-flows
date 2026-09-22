@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "description": "This list published `Tin(2+)` and `Tin, ion` side by side. They are stannous and stannic tin -- `Sn+2` and `Sn+4`, charges 2 and 4, both stated on the objects themselves -- and a reader could not tell that from the names.\n\n`X, ion` is not a source list's name. It is ours, and it means \"I could not work out the charge\": `flow_layers.ions` reads the charge out of the **label**, so EF's `arsenic (v)` and ecoinvent's `Potassium(1+)` come out named for their charge and EF's `tin, ion` falls back. The charge then arrives anyway -- `transformers.enrich_references` reads it off PubChem against the registry number, 22537-50-4 being tin(4+) -- and transformers run after the flow layers, so by then the name is written and nothing revisits it. See #128.\n\nMeasured on the unbounded build of 21 August 2026 at `a00386e`.",
+  "expectations": [
+    {
+      "id": "0627-stannic-tin-is-named-for-its-charge",
+      "issue": 627,
+      "title": "The tin(4+) cation is published as Tin(4+), not as `Tin, ion`",
+      "subject": {
+        "kind": "substance",
+        "label": "Tin(4+)"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "AtomCation"
+      },
+      "comment": "The worked example. `Tin(4+)` did not exist before this change and `Tin, ion` did -- carrying `Sn+4`, an `elemental_charge` of 4, and already correctly typed `AtomCation`, so everything needed to name it was on the object and only the name was stale.\n\nThe substance beside it, `Tin(2+)`, is Sn+2 and is a different ion. Publishing one of them named for its charge and the other not is what made #127's survey hard to read: the pair looked like the duplicate-minting defect that issue is about, and is not."
+    },
+    {
+      "id": "0627-an-unstated-charge-keeps-the-fallback-name",
+      "issue": 627,
+      "title": "BAFU's `Iron, ion` is still published under the name that says its charge is unknown",
+      "subject": {
+        "kind": "substance",
+        "label": "Iron, Ion"
+      },
+      "expect": {
+        "exists": true
+      },
+      "comment": "**The half that stops this guessing, and it is the reason the rule asks for a *stated* charge rather than deriving one.** BAFU's `Iron, ion` carries no charge, no formula and no registry number. Iron II and iron III are different substances with different registry numbers and different characterisation factors, and the row does not say which is meant -- so `X, ion` is the correct name for it, and the fallback is doing its job rather than failing at it.\n\n`Arsenic, Ion` is the same shape: arsenic is III or V and the row does not say. Both are left exactly as they were.\n\nStated as an expectation because a later change that \"finished\" #128 by naming these for whichever charge is commoner would be inventing a fact the source list did not state, and would look from the statistics like more of the issue being fixed."
+    },
+    {
+      "id": "0627-nothing-is-renamed-without-a-ruling",
+      "issue": 627,
+      "title": "No ion rename happens that a curator has not approved",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.ion_pref_label_from_stated_charge.undecided"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "#16's lesson, applied to a new writer of a published `prefLabel`. The pass proposes rather than asserts: a rename it makes is one `preferred-label-decisions.json` approves, and one nobody has ruled on leaves the object named as it was and asks a curator instead.\n\nThis claims that no such question is open, which is true because the rulings ship with the change -- sodium and lithium approved at 1, tin approved at 4, each recording the charge and the registry number it came from. Titanium's approval at 4 shipped here too but never applied (the pass cannot see its charge; only ChEBI writes `elemental_charge` and ChEBI has no entry for 22541-75-9), and #143 reversed it to a rejection under the disambiguation rule -- see 0698-titanium-ion-keeps-its-name. A new `X, ion` appearing in a later release raises this above nought and is a question rather than a silent change, which is the whole point of the gate."
+    }
+  ]
+}

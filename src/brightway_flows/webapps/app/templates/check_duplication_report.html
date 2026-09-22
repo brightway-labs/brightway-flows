@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Duplication report" %}
+{% set active_section = "checks" %}
+{% set args = {'q': query} %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Duplication report</h1>
+  <p class="page__lede">
+    A substance colliding with itself: the same CAS listed twice, the same
+    alternative label twice, or a CAS number sitting where a name should be.
+    All three are signals that two substances were merged into one.
+  </p>
+</header>
+
+{{ t.search_form('checks.duplication_report', query, "Substance…") }}
+
+{% if page.rows %}
+{{ t.pager(page, 'checks.duplication_report', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Substance</th>
+        <th scope="col">Duplicate CAS</th>
+        <th scope="col">Duplicate labels</th>
+        <th scope="col">CAS used as a label</th>
+        <th scope="col" class="num">Issues</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>{{ t.substance_link(row.flow_object_id, row.name or row.flow_object_id) }}</td>
+        <td class="mono">{{ row.duplicate_cas | join(", ") or "—" }}</td>
+        <td>{{ row.duplicate_alt_labels | join(", ") or "—" }}</td>
+        <td class="mono">{{ row.cas_in_alt_labels | join(", ") or "—" }}</td>
+        <td class="num">{{ row.total }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'checks.duplication_report', args) }}
+{% else %}
+{{ t.nothing_matches("No substance duplicates its own identifiers or labels.") }}
+{% endif %}
+{% endblock %}

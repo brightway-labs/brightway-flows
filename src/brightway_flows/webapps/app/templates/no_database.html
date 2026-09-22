@@ -1,0 +1,29 @@
+{#
+  The one empty state.
+
+  The applications this replaces each carry a per-route `exists=False` branch
+  and a template to go with it, so "no data" renders a different way on every
+  page and several of them say nothing at all about how to fix it.  This says
+  where it looked and what to run.
+#}
+{% extends "layout.html" %}
+{% set page_title = "No database" %}
+{% set active_section = "overview" %}
+
+{% block content %}
+<div class="empty">
+  <h1>No database yet</h1>
+  <p>
+    This application reads one file, and it is not there:
+  </p>
+  <pre><code>{{ db_path }}</code></pre>
+  <p>Build it:</p>
+  <pre><code>uv run brightway-flows build</code></pre>
+  <p class="muted">
+    A full build takes hours and needs the reference caches downloaded first.
+    For a quick look, bound it and point the tools at a scratch directory:
+  </p>
+  <pre><code>BRIGHTWAY_FLOWS_DATA_DIR=/tmp/bwf-test \
+  uv run brightway-flows build --max-flows 500</code></pre>
+</div>
+{% endblock %}

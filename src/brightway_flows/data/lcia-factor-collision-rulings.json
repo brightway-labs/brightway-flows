@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "method": "stepwise-2006",
+  "description": "Curated answers where two source rows of one implementation reach one consensus flow and state numbers too far apart to be one number written twice. `lcia.collisions.settle` publishes nothing for such a pair, because a gap that wide is usually evidence that the matching put two substances on one flow -- a question for the merge. Where the matching is right and the publisher simply scored two spellings of one thing differently, this file says whose number the consensus takes, and why. Keyed on the substance, the category slug and the compartment, so the ruling survives a renumbering of the flow; `ruled_about` records what every colliding row stated when it was written, and a row stating something else is a new question. The finding the collision would have raised is still written, with the ruling on it. Read by `brightway_flows.lcia.collision_rulings` for the one method this file names.",
+  "rulings": [
+    {
+      "flow_object_id": "fo-777f2e757f3ff45a",
+      "substance": "Particles (unspecified size)",
+      "category_slug": "respiratory-inorganics",
+      "category": "Respiratory inorganics",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "context": "Environmental → Air → Unknown",
+      "publish_source_flow_uuid": "091b4543-a1fd-57c4-a373-c451dbc9ae0c",
+      "ruled_about": {
+        "091b4543-a1fd-57c4-a373-c451dbc9ae0c": 0.157142857,
+        "b36a7cfe-f045-5aa3-9eee-fbc276a2770d": 0.535714286
+      },
+      "comment": "Stepwise 2006 ships `Particulates` at 0.157142857 kg PM2.5-eq and `Particulates, unspecified` at 0.535714286 -- exactly its PM10 number -- and #153 reads both as the size-unstated total, because neither states a cut and a stated `unspecified` is the absence of a statement. The 0.536 is Stepwise deciding that `unspecified` means PM10, which is a guess about what an inventory meant; the consensus reads a row that stated no cut as stating no cut, and the total-suspended-particulate figure on the plain row is the honest number for that. Ruled by the project owner on 2 September 2026 (plans/particle-family.md section 6.3), with the second half of the same ruling in particle-size-carry-rules.json: `Particles (> PM10)` takes this number by the size-window convention, since the total is its only broader window. On the build of 944b274 the collision published nothing and both Stepwise rows scored zero."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "description": "Radioactivity is published in kilobecquerels throughout this list: every radionuclide flow EF 3.1 ships is kBq, and so is every one the ecoinvent merges add. BAFU writes its radionuclides in becquerels and kilobecquerels both, and many of its rows arrive once in each spelling; the flows those pairs minted stated whichever spelling the merge read first, which was the becquerel every time. `published-units.json` now states the convention, and every mint states the published unit for the row's quantity kind whatever the row arrived in. See #142, and #78 for the water half of the same argument.",
+  "expectations": [
+    {
+      "id": "0697-iodine-131-to-a-river-is-kilobecquerels",
+      "issue": 697,
+      "title": "Iodine-131 discharged to a river is published in kilobecquerels, like the substance's thirteen other flows",
+      "subject": {"kind": "flow", "name": "Iodine-131", "context_display": "Environmental → Water → River"},
+      "expect": {"count": 1, "unit": "kBq"},
+      "comment": "The flow the issue was noticed on. In the 2026-08-24 build of cbbf5c0 it stated Bq: BAFU ships Iodine-131 to a river twice, in Bq and in kBq, the Bq row came first in the vendor file, and the flow minted for a context the substance did not cover took the first row's unit unexamined. Its thirteen siblings -- EF 3.1's twelve and one ecoinvent addition -- all state kBq."
+    },
+    {
+      "id": "0697-both-iodine-rows-reach-the-kilobecquerel-flow",
+      "issue": 697,
+      "title": "Both spellings of BAFU's Iodine-131 river discharge land on that one kilobecquerel flow",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Iodine-131", "context": ["emissions to water", "river"]},
+      "expect": {"row_count": 2, "same_target": true, "target_unit": "kBq"},
+      "comment": "The pair stays a pair: rebasing the flow's stated unit must not split the two rows onto two flows, which would be the duplicate the fix exists to prevent. The becquerel row is now the one flagged as measured in something other than the flow it landed on, where before it was the kilobecquerel row -- one flag either way, on the row that disagrees with what is published."
+    },
+    {
+      "id": "0697-the-aggregate-created-to-air-is-kilobecquerels",
+      "issue": 697,
+      "title": "The radioactive aggregate BAFU emits from a medium stack is published in kilobecquerels too",
+      "subject": {"kind": "flow", "name": "Radioactive Species, Unspecified", "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)"},
+      "expect": {"count": 1, "unit": "kBq"},
+      "comment": "Named separately because it is the one flow minted by the other path: its substance did not exist either, so the pair went through the created-flow unit decision, where the becquerel won as the reference unit of the activity scale. Both mints have to state the published unit, and an expectation that only named the river flow would stay met if this path regressed."
+    },
+    {
+      "id": "0697-no-flow-is-published-in-becquerels",
+      "issue": 697,
+      "title": "No flow in the published list states the becquerel",
+      "subject": {"kind": "flow", "unit": "Bq"},
+      "expect": {"count": 0},
+      "comment": "The systematic form of the three above: a number of flows stated Bq in the 2026-08-24 build of cbbf5c0 -- radionuclides to rivers and lakes, to an aquifer, to the ocean, one aggregate to air -- and none carried a characterisation factor, so no published number moves with the unit. The claim is about the becquerel rather than about activity in general, because kBq is what the list publishes activity in and a Bq flow is always a row's spelling that leaked through a mint."
+    }
+  ]
+}

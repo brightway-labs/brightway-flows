@@ -1,0 +1,390 @@
+{
+  "schema_version": 1,
+  "comment": "Curated decisions on replacing a flow's preferred label. Two stages replace a label that is already published -- consensus_match, which derives a better name for a substance from Common Chemistry and ChEBI, and the element pass in pipeline/element_labels.py, which writes an element's own name over the flows that resolve to it -- and this file gates both. Those rules are usually right, but they are not right often enough to publish unreviewed, because a wrong preferred label names a different substance and nothing downstream can tell. So a rule proposes and this file decides. A ruling here is final either way; where there is none the fallback depends on the proposing rule (DEFAULT_APPROVED_RULES in domain/preferred_label_decisions.py, which documents the audit that split them). A ruling is keyed on the pair of names, not on the stage that proposed it: the question is whether the replacement is a name this substance actually has, and that has the same answer whoever asks. Rulings are direction-specific: approving A -> B says nothing about B -> A. Keys are matched case- and whitespace-insensitively, which is why the two spellings of HCFC-140 need only one entry. See issues #219, #220 and #16.",
+  "decisions": [
+    {
+      "current": "Acryolonitrile",
+      "replacement": "Acrylonitrile",
+      "decision": "approve",
+      "notes": "Corrects a misspelling of the source name."
+    },
+    {
+      "current": "Sulphuric Acid",
+      "replacement": "Sulfuric acid",
+      "decision": "approve",
+      "notes": "British to IUPAC spelling; same substance."
+    },
+    {
+      "current": "Systhane",
+      "replacement": "Myclobutanil",
+      "decision": "approve",
+      "notes": "Trade name resolved to the substance name."
+    },
+    {
+      "current": "Benzyl Ethanoate",
+      "replacement": "Benzyl acetate",
+      "decision": "approve",
+      "notes": "Common name preferred over the systematic one; same substance."
+    },
+    {
+      "current": "N-butanal",
+      "replacement": "Butanal",
+      "decision": "approve",
+      "notes": "Butanal is unambiguous; the n- prefix adds nothing."
+    },
+    {
+      "current": "N-butane",
+      "replacement": "Butane",
+      "decision": "approve",
+      "notes": "As for butanal."
+    },
+    {
+      "current": "N-butyl-acetate",
+      "replacement": "Butyl acetate",
+      "decision": "approve",
+      "notes": "As for butanal."
+    },
+    {
+      "current": "Maleic Hydrazide Acid",
+      "replacement": "Maleic hydrazide",
+      "decision": "approve",
+      "notes": "Maleic hydrazide is not an acid; the source name is wrong."
+    },
+    {
+      "current": "Carbon Disulphide",
+      "replacement": "Carbon disulfide",
+      "decision": "approve",
+      "notes": "British to IUPAC spelling, and sentence case. Keyed on the label the rule presents; the published label this replaced was 'Carbon Disulfide'."
+    },
+    {
+      "current": "Bis-chloroisopropyl Ether",
+      "replacement": "Bis(2-chloro-1-methylethyl) ether",
+      "decision": "approve",
+      "notes": "Resolves a trivial name to the systematic one. Keyed on the label the rule presents; the published label this replaced was 'bis(2-Chloro-1-methylethyl) ether'."
+    },
+    {
+      "current": "Trimethylphosphate",
+      "replacement": "Trimethyl phosphate",
+      "decision": "approve",
+      "notes": "Spacing only. Keyed in the direction the rule presents: Common Chemistry and ChEBI give 'Trimethyl phosphate', and 'Trimethylphosphate' is the EF 3.1 name. #220 recorded this pair backwards, off a published run-to-run diff."
+    },
+    {
+      "current": "Tris(2-chloroethyl)phosphate",
+      "replacement": "Tris(2-chloroethyl) phosphate",
+      "decision": "approve",
+      "notes": "Spacing only. Keyed in the direction the rule presents, as for trimethyl phosphate. #220 recorded this pair backwards."
+    },
+    {
+      "current": "3-Methylpentane",
+      "replacement": "Methyl Pentane",
+      "decision": "reject",
+      "notes": "Drops the locant. Methylpentane names two substances; 3-methylpentane names one. Precautionary: no rule proposes this. The observed direction is the reverse -- '3-Methylpentane' was cc_chebi_agreement's own output, and 'Methyl Pentane' is the raw EF 3.1 name that resurfaced when the call-site guard skipped the rename."
+    },
+    {
+      "current": "Xylene (all isomers)",
+      "replacement": "Xylene",
+      "decision": "reject",
+      "notes": "Drops the scope. The flow covers all three isomers, which the bare name does not say."
+    },
+    {
+      "current": "Ethylbenzene",
+      "replacement": "Ethyl Benzene",
+      "decision": "reject",
+      "notes": "Ethylbenzene is the correct spelling; the replacement splits and capitalises it. Precautionary: no rule proposes this. The observed direction is the reverse -- and the guard treated the two as equal, because normalize() strips whitespace."
+    },
+    {
+      "current": "1,1,1-Trichloroethane",
+      "replacement": "HCFC-140",
+      "decision": "reject",
+      "notes": "An industry designation is a worse preferred label than the systematic name. One entry covers both observed spellings, HCFC-140 and Hcfc-140, because matching ignores case. Precautionary: no rule proposes this. The observed direction is the reverse, as for 3-Methylpentane."
+    },
+    {
+      "current": "Carboxylic Acids, Di-, C4-6",
+      "replacement": "Pentanedioic acid",
+      "decision": "reject",
+      "notes": "Drops the scope. C4-6 names a range of dicarboxylic acids; pentanedioic acid is the C5 one. Same error as Xylene (all isomers) -> Xylene. The replacement comes from the PubChem rule, and is not a name Common Chemistry or ChEBI give for CAS 68603-87-2."
+    },
+    {
+      "current": "beta-1,2,3,4,5,6-hexachlorocyclohexane",
+      "replacement": "β-hexachlorocyclohexane",
+      "decision": "approve",
+      "notes": "Common Chemistry and ChEBI agree after stereo normalisation; hexa- on a six-carbon ring leaves one arrangement, so the enumeration is redundant and the stereo prefix is kept. The motivating case for the CC/ChEBI agreement rule; see tests/test_cas_consensus_naming.py."
+    },
+    {
+      "current": "PFC-1114",
+      "replacement": "Tetrafluoroethylene",
+      "decision": "approve",
+      "notes": "An industry designation is a worse preferred label than the systematic name, as for HCFC-140. `PFC-1114` and EF 3.1's own `tetrafluoroethylene` flow are the same substance entered twice -- EF characterises the pair identically across all 26 shared (method, context) pairs -- so #19 gives the designation CAS 116-14-3 and the two share a flow object. That makes this rename reachable where it was not before. Common Chemistry's name for 116-14-3 is `Tetrafluoroethylene`, which is also the label the twin already carries, so approving it keeps one name over the merged object instead of letting the designation win by arriving first."
+    },
+    {
+      "current": "Tetrafluoroethylene",
+      "replacement": "PFC-1114",
+      "decision": "reject",
+      "notes": "An industry designation is a worse preferred label than the systematic name, as for HCFC-140. The reverse of the pair above, ruled on because rulings are direction-specific and either label could be in place when the rule fires on the merged object. Precautionary: no rule proposes this."
+    },
+    {
+      "current": "PFC-51-14",
+      "replacement": "Perfluorohexane",
+      "decision": "approve",
+      "notes": "An industry designation is a worse preferred label than the systematic name, as for HCFC-140. `PFC-51-14` carries EF 3.1's own synonym `perfluorohexane, C6F14`, which is what identified it in #19, and it shares a flow object with EF's `perfluorohexane` flow once both carry CAS 355-42-0. Common Chemistry's name for that CAS is `Perfluorohexane`. Note this is a trivial name rather than a systematic one; it is preferred here because it is what the source list itself calls the substance and what the twin flow already publishes."
+    },
+    {
+      "current": "Perfluorohexane",
+      "replacement": "PFC-51-14",
+      "decision": "reject",
+      "notes": "An industry designation is a worse preferred label than the systematic name, as for HCFC-140. The reverse of the pair above, for the same reason. Precautionary: no rule proposes this."
+    },
+    {
+      "current": "HFO-1234yf",
+      "replacement": "2,3,3,3-Tetrafluoropropene",
+      "decision": "approve",
+      "notes": "An industry designation is a worse preferred label than the systematic name, as for HCFC-140. #19 gives this flow CAS 754-12-1, which merges it with EF 3.1's `polyhaloalkene` flow -- the same substance entered twice, characterised identically across all 26 shared (method, context) pairs -- so a rename becomes reachable. Common Chemistry's name for 754-12-1 is `2,3,3,3-Tetrafluoropropene`. The designation is spelt `HFC-1234yf` in EF and corrected to `HFO-1234yf` in `ef-3.1-manual-fixes.json`; the ruling is on the corrected spelling because that is what the flow carries by the time any rule sees it."
+    },
+    {
+      "current": "Polyhaloalkene",
+      "replacement": "2,3,3,3-Tetrafluoropropene",
+      "decision": "approve",
+      "notes": "`Polyhaloalkene` names a class of compound, not a substance, and EF 3.1 publishes it as the name of one -- its own synonyms are `hfo-1234yf` and two Opteon trade names, so the flow is 2,3,3,3-tetrafluoropropene. This is a scope-narrowing rename and therefore the direction #224 warns about in reverse: the replacement is *more* specific than the label it replaces, and correctly so, because the flow was never the broader thing. Approving it matters because this label would otherwise be a candidate for the merged object shared with `HFO-1234yf`."
+    },
+    {
+      "current": "2,3,3,3-Tetrafluoropropene",
+      "replacement": "HFO-1234yf",
+      "decision": "reject",
+      "notes": "An industry designation is a worse preferred label than the systematic name, as for HCFC-140. The reverse of the pair above, ruled on because rulings are direction-specific and any of three labels could be in place when the rule fires on the merged object. Precautionary: no rule proposes this."
+    },
+    {
+      "current": "2,3,3,3-Tetrafluoropropene",
+      "replacement": "Polyhaloalkene",
+      "decision": "reject",
+      "notes": "Replacing a substance's name with the name of a class it belongs to loses the identity, which is the specificity loss #224 describes and the case `Xylene (all isomers)` -> `Xylene` motivated this file with. Precautionary: no rule proposes this."
+    },
+    {
+      "current": "Methylene Chloride",
+      "replacement": "Dichloromethane",
+      "decision": "approve",
+      "notes": "Common name to registry name for one substance, CH2Cl2 / 75-09-2. Ruled explicitly because the merge in #35 makes the pair reachable and the layering would otherwise settle it by length: on merging the two flow objects the unqualified prefLabel rule keeps the longer name, which is `Methylene Chloride`. CAS Common Chemistry, ChEBI (CHEBI:15767) and the EC inventory (200-838-9) all give `dichloromethane` as the name and `methylene chloride` as a synonym, so the common name belongs in altLabel."
+    },
+    {
+      "current": "Methyl Chloroform",
+      "replacement": "1,1,1-Trichloroethane",
+      "decision": "approve",
+      "notes": "The same ruling for 71-55-6, reachable for the same reason (#35). Common Chemistry names 71-55-6 `1,1,1-Trichloroethane` with `Methylchloroform` among its synonyms, and ChEBI (CHEBI:36015) agrees. Note the existing `1,1,1-Trichloroethane -> HCFC-140` rejection below: this list prefers the systematic name over both the trade name and the ASHRAE designation for this substance, and these two rulings say so in both directions."
+    },
+    {
+      "current": "2,3,4,5-tetrachlorobenzoylchloride",
+      "replacement": "2,3,4,5-tetrachlorobenzoyl chloride",
+      "decision": "approve",
+      "notes": "Common Chemistry names 42221-52-3 `2,3,4,5-Tetrachlorobenzoyl chloride`, which is the replacement exactly. The current name is the same string with the last space closed up, which is a typesetting artifact of the EF row rather than a name anybody uses. The same flow object already holds a deprecated flow under the spaced spelling in each of the 13 contexts, so this converges the live flow onto the name the retired one already had."
+    },
+    {
+      "current": "Bis(chloromethyl)ether",
+      "replacement": "bis(chloromethyl) ether",
+      "decision": "approve",
+      "notes": "`Bis(chloromethyl) ether` is a Common Chemistry synonym for 542-88-1 (CC's own primary name is `Chloromethyl ether`). Restores the space between the substituent and the parent, which is how the class name is written; the substance is unchanged, C2H4Cl2O either way."
+    },
+    {
+      "current": "Cfc-10",
+      "replacement": "Carbon tetrachloride",
+      "decision": "approve",
+      "notes": "Common Chemistry names 56-23-5 `Carbon tetrachloride`, CCl4. `CFC-10` is an industry designation for the same compound and belongs in altLabel, which is where the rename puts it. Note that EF 3.1 also ships a separate live flow already called `Carbon tetrachloride` in five of these contexts, carrying the same characterisation factors rounded to fewer digits; after this rename the two read alike. That duplication is real and is filed as #105 -- it is not something a name should be doing the work of hiding."
+    },
+    {
+      "current": "Copper (i) Chloride",
+      "replacement": "copper(I) chloride",
+      "decision": "approve",
+      "notes": "`Copper(I) chloride` is a Common Chemistry synonym for 7758-89-6, CuCl. The current spelling puts the oxidation state in lower case inside a space-separated bracket, which the name caser produced; a Roman numeral in a chemical name is not a word and does not take title case."
+    },
+    {
+      "current": "Copper (ii) Sulfate",
+      "replacement": "copper(II) sulfate",
+      "decision": "approve",
+      "notes": "The same repair for 7758-98-7, CuSO4, whose Common Chemistry entry lists `Copper(2+) sulfate (1:1)` and `Cupric sulfate`. `copper(II) sulfate` is the IUPAC-style name for the same salt and is what ChEBI carries."
+    },
+    {
+      "current": "Dihexylphthalate",
+      "replacement": "Dihexyl phthalate",
+      "decision": "approve",
+      "notes": "Common Chemistry names 84-75-3 `Dihexyl phthalate`, C20H30O4, which is the replacement exactly. The current name is the same words run together."
+    },
+    {
+      "current": "Disodium Hydrogen Phosphate",
+      "replacement": "disodium hydrogenphosphate",
+      "decision": "approve",
+      "notes": "`Disodium hydrogen phosphate` is a Common Chemistry synonym for 7558-79-4 and `disodium hydrogenphosphate` is ChEBI's spelling of the same name. One salt, Na2HPO4; the two differ only in whether `hydrogen` is joined to `phosphate`."
+    },
+    {
+      "current": "Hexamethylene Diamine",
+      "replacement": "Hexamethylenediamine",
+      "decision": "approve",
+      "notes": "Common Chemistry names 124-09-4 `Hexamethylenediamine`, C6H16N2, as one word. The current name has a space the name caser then title-cased into a second word."
+    },
+    {
+      "current": "Methyl Acrylonitrile",
+      "replacement": "Methylacrylonitrile",
+      "decision": "approve",
+      "notes": "126-98-7 is `Methacrylonitrile` to Common Chemistry, with `α-Methylacrylonitrile` among its synonyms. Closing the space is the smaller of the two available corrections and keeps the EF name recognisable; the substance is C4H5N either way."
+    },
+    {
+      "current": "Poly[oxy(methyl-1,2-ethanediyl)], Α-butyl-ω-hydroxy-",
+      "replacement": "Poly[oxy(methyl-1,2-ethanediyl)],α-butyl-ω-hydroxy-",
+      "decision": "approve",
+      "notes": "Neither string is Common Chemistry's spelling, which for 9003-13-8 is `Poly[oxy(methyl-1,2-ethanediyl)], α-butyl-ω-hydroxy-` -- space after the comma, lower-case alpha. Approved because the two errors are not equivalent: the current name carries a capital Greek Alpha, which the name caser produced and which is not a locant at all, while the replacement differs from the source spelling only by a space. The audit flags this pair as `replacement_not_a_name_for_this_cas` for that whitespace, not for an identity claim."
+    },
+    {
+      "current": "Potassium Hydrogen Carbonate",
+      "replacement": "potassium hydrogencarbonate",
+      "decision": "approve",
+      "notes": "`Potassium bicarbonate` is Common Chemistry's name for 298-14-6, KHCO3, with `Potassium acid carbonate` among its synonyms; `potassium hydrogencarbonate` is ChEBI's. One salt under two conventional spellings."
+    },
+    {
+      "current": "Potassiumtetrafluoroaluminate",
+      "replacement": "Potassium tetrafluoroaluminate",
+      "decision": "approve",
+      "notes": "`Potassium tetrafluoroaluminate` is a Common Chemistry synonym for 14484-69-6, KAlF4. The current name is the same two words run together."
+    },
+    {
+      "current": "Sodium Dihydrogen Phosphate",
+      "replacement": "sodium dihydrogenphosphate",
+      "decision": "approve",
+      "notes": "7558-80-7 is `Monosodium phosphate` to Common Chemistry, NaH2PO4, with `Dihydrogen sodium phosphate` among its synonyms; ChEBI writes `sodium dihydrogenphosphate`. The counterpart of the disodium ruling above and settled the same way."
+    },
+    {
+      "current": "Sodium Hydrogen Carbonate",
+      "replacement": "sodium hydrogencarbonate",
+      "decision": "approve",
+      "notes": "`Sodium hydrogen carbonate` is a Common Chemistry synonym for 144-55-8, NaHCO3, and `sodium hydrogencarbonate` is ChEBI's spelling. The counterpart of the potassium ruling above."
+    },
+    {
+      "current": "Terephthaloyldichloride",
+      "replacement": "Terephthaloyl dichloride",
+      "decision": "approve",
+      "notes": "`Terephthaloyl dichloride` is a Common Chemistry synonym for 100-20-9, C8H4Cl2O2. The current name is the same two words run together."
+    },
+    {
+      "current": "Tetramethyl Ammonium Hydroxide",
+      "replacement": "Tetramethylammonium hydroxide",
+      "decision": "approve",
+      "notes": "Common Chemistry names 75-59-2 `Tetramethylammonium hydroxide`, which is the replacement exactly. `Tetramethylammonium` is one cation and one word; the space the current name carries came from the source row."
+    },
+    {
+      "current": "Tris(2,3-dibromopropyl)phosphate",
+      "replacement": "tris(2,3-dibromopropyl) phosphate",
+      "decision": "approve",
+      "notes": "`Tris(2,3-dibromopropyl) phosphate` is a Common Chemistry synonym for 126-72-7, C9H15Br6O4P. Restores the space before `phosphate`. Note that CC's own primary name for this record reads `Tris`, which is a truncation in that record and not a name for this substance -- the synonym is what is being taken here."
+    },
+    {
+      "current": "Ethoxycarbonylmethylethyl Phthalate",
+      "replacement": "Ethoxycarbonylmethyl ethyl phthalate",
+      "decision": "approve",
+      "notes": "84-72-0 is a mixed diester of phthalic acid, and the two ester groups have to be readable as two: `Ethoxycarbonylmethyl` and `ethyl`. The current name joins them into one word, which reads as a single substituent that does not exist. Common Chemistry's own name for the substance is `Ethyl phthalyl ethyl glycolate`; the replacement is the phthalate-ester form of the same name."
+    },
+    {
+      "current": "O,o,o-triethylphosphorothioate",
+      "replacement": "O,O,O-triethyl phosphorothioate",
+      "decision": "approve",
+      "notes": "`O,O,O-Triethyl phosphorothioate` is a Common Chemistry synonym for 126-68-1, C6H15O3PS. The current name lower-cased two of the three `O` locants, which are element symbols marking where the ethyl groups attach and are not case-free."
+    },
+    {
+      "current": "HFC-1141",
+      "replacement": "Fluoroethylene",
+      "decision": "approve",
+      "notes": "Common Chemistry names 75-02-5 `Fluoroethylene`, C2H3F, also known as vinyl fluoride. `HFC-1141` is a refrigerant designation and belongs in altLabel. The same reasoning as the existing `PFC-1114` -> `Tetrafluoroethylene` approval above."
+    },
+    {
+      "current": "2,6-dime-n,n'-dinitrosopiperazine",
+      "replacement": "2,6-Dimethyl-1,4-dinitrosopiperazine",
+      "decision": "approve",
+      "notes": "Common Chemistry names 55380-34-2 `2,6-Dimethyl-1,4-dinitrosopiperazine`, which is the replacement exactly. The current name is an abbreviated source string -- `dime` for `dimethyl`, and `n,n'` for ring positions that are actually 1 and 4 -- and is not a name for anything as written."
+    },
+    {
+      "current": "Hydrogen Carbonate",
+      "replacement": "hydrogencarbonate",
+      "decision": "approve",
+      "notes": "71-52-3 is the bicarbonate ion, HCO3-. Common Chemistry names it `Bicarbonate` with `Hydrogen carbonate` among its synonyms; `hydrogencarbonate` is ChEBI's spelling, and is the one the salts ruled on above now use, so this keeps the ion and its salts consistent."
+    },
+    {
+      "current": "Iodine, 0.03% In Water",
+      "replacement": "Iodine",
+      "decision": "approve",
+      "notes": "Common Chemistry names 7553-56-2 `Iodine`, I2. Ruled with the grain of the other lists rather than on the names alone: this flow merges EF 3.1's `Iodine, 0.03% in water` with ecoinvent 3.12's `Iodine` and ecoinvent 3.8's `Iodine, In Water`, so the replacement is the name the most recent contributing release already gives this flow. The concentration the current name states is not part of the substance's identity, and the `Resource -> Water` context carries the part that matters. The one flow already named `Iodine` in that context is deprecated, so nothing live is made ambiguous. Contrast the `Carbon, Organic, In Soil Or Biomass Stock` rejection below, where no contributing list calls the flow `Carbon` and the qualifier names the stock rather than a concentration."
+    },
+    {
+      "current": "Carbon, Organic, In Soil Or Biomass Stock",
+      "replacement": "Carbon",
+      "decision": "reject",
+      "notes": "The archetypal specificity loss this file exists for. The flow is a `Resource -> Ground` accounting of organic carbon held in soil and biomass, and `Carbon` names the element. Its own flow object already holds five flows called `Carbon` for carbon emitted to ground, so the rename would leave the stock indistinguishable from the emissions sharing its substance. Both rules propose this -- `multi_source_consensus` and the element pass -- and this one ruling refuses both, which is what keying on the pair rather than the stage buys."
+    },
+    {
+      "current": "HC Blue No. 1",
+      "replacement": "HC Blue No.1",
+      "decision": "reject",
+      "notes": "The current name is right and the replacement is the same name with a space deleted. Common Chemistry's record for 2784-94-3 lists `HC Blue No. 1` -- spaced, exactly as published today -- among its synonyms, while `HC Blue No.1` appears in no source. All 13 flows carry the spaced spelling from EF 3.1, so rejecting keeps every one of them where it is."
+    },
+    {
+      "current": "Glycerol Octanoate Decanoate",
+      "replacement": "Decanoic acid, ester with 1,2,3-propanetriol octanoate",
+      "decision": "reject",
+      "notes": "Both names are Common Chemistry's for 65381-09-1 -- the record is `Glyceryl caprylate caprate` and lists `Decanoic acid, ester with 1,2,3-propanetriol octanoate` as a synonym -- so this is a readability choice, not an identity question. The source name is kept: twelve of the thirteen EF 3.1 flows are called `Glycerol octanoate decanoate` and it says what the substance is in three words. The systematic name stays reachable as an altLabel, which the Common Chemistry synonym pass adds independently of this ruling. The thirteenth flow, which EF ships under the systematic name, is renamed to match by an entry in `ef-3.1-manual-fixes.json`."
+    },
+    {
+      "current": "Fluorescein sodium",
+      "replacement": "Disodium 2-(3-oxo-6-oxidoxanthen-9-yl)benzoate",
+      "decision": "reject",
+      "notes": "Both names are the disodium salt of fluorescein, 518-47-8, so nothing about identity is at stake and this is a readability choice -- the same shape as `Glycerol Octanoate Decanoate`. `Fluorescein sodium` is Common Chemistry's own name for the number and is what the pharmacopoeias use; the systematic form is fourteen syllables and stays reachable as an altLabel, which the Common Chemistry synonym pass adds regardless of this ruling. This is the pair #313 left undecided, in its earlier form `Fluorescein` -> the systematic name: undecided was right then, because the current name was the free acid's and rejecting would have recorded that `Fluorescein` names a salt. #312 answered that at source instead, in `ef-3.1-manual-fixes.json`, by correcting all thirteen EF 3.1 rows to `Fluorescein sodium` -- so the pair a curator now sees is this one, and it can be refused without asserting anything untrue."
+    },
+    {
+      "current": "2,3,4,5-tetrachlorobenzoyl chloride",
+      "replacement": "2,3,4,5-tetrachlorobenzoylchloride",
+      "decision": "reject",
+      "notes": "The reverse of the ruling above, and refused for the reason that one was approved: Common Chemistry names 42221-52-3 `2,3,4,5-Tetrachlorobenzoyl chloride`, and the run-together spelling is the same string with the last space closed up. EF 3.1 files this substance twice, thirteen rows spelled with the space under EC 609-997-2 and thirteen without it under EC 406-760-3, which is the one-substance-two-numbering-systems filing of #64. `multi_source_consensus` votes on the names the sources supply, so the duplicate filing gives the closed-up spelling the majority and it is proposed as the better name. A vote among one publisher's own two typesettings is not evidence about which is the name. Refused rather than left undecided so that the pair is settled on the record and the queue is empty again; without it the two directions would sit in this file with one approved and one open. #110, and #313 for the approval it mirrors."
+    },
+    {
+      "current": "Water",
+      "replacement": "Water vapour",
+      "decision": "approve",
+      "notes": "Five EF flows named `Water` sit in air compartments, and which substance they are was already ruled: water-flow-materials.json assigns every one of them to the water_vapour concept, `match: close`, read off the compartment -- water released to air is vapour for any purpose this list serves, and none of the five carries a characterisation factor under either implementation, so nothing numeric turns on it. This ruling makes the name follow the grouping the curation chose. The rename collides deliberately: `Water` is the liquid-water substance's own name, so the substance-label pass held these five flows on the substance-label-conflict queue rather than rename them silently (#7, #116). Approving publishes them as `Water vapour` and withholds `Water` as their synonym, because a name that answers for two substances is published for neither (#113). An inventory holding EF's uuids still resolves through elementary_flow_sources. (#116)"
+    },
+    {
+      "current": "Sodium, ion",
+      "replacement": "Sodium(1+)",
+      "decision": "approve",
+      "notes": "The object states an elemental charge of 1 and its name did not say so. `flow_layers.ions` names an ion from its label, and EF 3.1 ships this flow as `sodium, ion` with no numeral in it, so the module fell back to `X, ion` -- its way of saying it could not work out the charge. The charge then arrived from PubChem against 17341-25-2, in a transformer, which runs after the flow layers; by then the name was written. Approved because the rename asserts nothing the object does not already state about itself. (#128)"
+    },
+    {
+      "current": "Lithium, ion",
+      "replacement": "Lithium(1+)",
+      "decision": "approve",
+      "notes": "The object states an elemental charge of 1 and its name did not say so. `flow_layers.ions` names an ion from its label, and EF 3.1 ships this flow as `lithium, ion` with no numeral in it, so the module fell back to `X, ion` -- its way of saying it could not work out the charge. The charge then arrived from PubChem against 17341-24-1, in a transformer, which runs after the flow layers; by then the name was written. Approved because the rename asserts nothing the object does not already state about itself. (#128)"
+    },
+    {
+      "current": "Tin, ion",
+      "replacement": "Tin(4+)",
+      "decision": "approve",
+      "notes": "The object states an elemental charge of 4 and its name did not say so. `flow_layers.ions` names an ion from its label, and EF 3.1 ships this flow as `tin, ion` with no numeral in it, so the module fell back to `X, ion` -- its way of saying it could not work out the charge. The charge then arrived from PubChem against 22537-50-4, in a transformer, which runs after the flow layers; by then the name was written. Approved because the rename asserts nothing the object does not already state about itself. (#128) Tin is the one that costs something today: this list already publishes `Tin(2+)`, so before this rename it showed stannous and stannic tin side by side and named the charge of only one of them."
+    },
+    {
+      "current": "Titanium, ion",
+      "replacement": "Titanium(4+)",
+      "decision": "reject",
+      "notes": "Rejected under the disambiguation rule of #143, reversing #128's approval -- which was recorded but never applied: the ion pass reads the charge from `elemental_charge`, which only ChEBI enrichment writes, and ChEBI has no entry for 22541-75-9, so the ruling sat inert across every build while PubChem wrote the same charge into the formula, SMILES and InChI. A fallback ion name is corrected to its charge only where the correction disambiguates: where the element has exactly one ionic form (`Sodium(1+)`, `Lithium(1+)`), or where the generic name sits beside a published charged sibling a reader could confuse it with (`Tin, ion` beside `Tin(2+)`, the confusion #127 surveyed and #128 fixed). Titanium has neither: the list publishes no other titanium ion, the name is the one EF ships (modulo case) and ecoinvent writes, and ecoinvent's twenty-six charge-withheld `Titanium ion` rows reach the object by exactly this label (`basis: label`). The stated CAS stays on the record as EF's assertion of which ion its flow means, and the Ti+4 payload enriched from it stands -- a readable generic name beside a specific number is the documented shape of the base list (`Butanol` beside 71-36-3, evidence.md), not a defect. See 'When a label follows the number' in docs/concepts/evidence.md. (#143)"
+    },
+    {
+      "current": "Halon-2301",
+      "replacement": "2-bromo-1,1,1-trifluoroethane",
+      "decision": "approve",
+      "notes": "An industry designation is a worse preferred label than the systematic name, as for HCFC-140. EF 3.1 ships `Halon-2301` with no identifier of any kind; #19 gives it CAS 421-06-7, read off its GWP100 of 177 against IPCC AR6 Table 7.SM.7's `Halon-2301` row, CH2BrCF3 -- and halon numbering reads 2301 as two carbons, three fluorines, no chlorine, one bromine, which is that molecule exactly. That number merges the designation's five flows with EF 3.1's own `2-bromo-1,1,1-trifluoroethane` flows, carried under EC 207-001-7 -- the same substance entered twice -- so the rename becomes reachable and `multi_source_consensus` proposes it. Approved on the MPI Mainz UV/Vis Spectral Atlas, which files its CF3CH2Br absorption cross-sections under `Halon-2301` (https://www.uv-vis-spectral-atlas-mainz.org/uvvis/cross_sections/Halogeno-alkanes+radicals/Halons(C,H,F,Cl,Br)/CF3CH2Br(Halon-2301).spc), an independent statement that the designation and the chemical name are one substance. As for PFC-1114, approving keeps one name over the merged object -- the name EF's identified twin already publishes -- instead of letting the designation win by arriving first."
+    },
+    {
+      "current": "2-bromo-1,1,1-trifluoroethane",
+      "replacement": "Halon-2301",
+      "decision": "reject",
+      "notes": "An industry designation is a worse preferred label than the systematic name, as for HCFC-140. The reverse of the pair above, ruled on because rulings are direction-specific and either label could be in place when a rule fires on the merged object. Precautionary: no rule proposes this."
+    },
+    {
+      "current": "Pentylene",
+      "replacement": "Pentene",
+      "decision": "reject",
+      "notes": "Both names are Common Chemistry's for 25377-72-4 -- the record is `Pentene` and lists `Pentylene`, `n-Pentene`, `Amylene` and `n-Amylene` as synonyms -- so nothing about identity is at stake and this is a readability choice, the same shape as `Fluorescein sodium`. It is refused because `Pentene` cannot be told apart from the substances beside it: this list publishes `1-pentene` (109-67-1), `2-pentene`, `Cis-2-pentene` and `Trans-2-pentene`, and the mixture is the one substance in that family a reader has no other way to name. The rename rule's own containment heuristic said as much on the 2026-08-25 build, where the object still carried EF's name and the proposal `1-pentene` -> `Pentene` was queued as `blocked_name_update`, reason `name containment suggests broader/narrower class`. Correcting EF 3.1's name in `ef-3.1-manual-fixes.json` unblocks that heuristic, since `pentene` is not inside `pentylene`, which is why the pair now needs a ruling rather than a block. `Pentene` stays reachable as an alternative label, which the Common Chemistry synonym pass adds regardless of this ruling. (#157)"
+    }
+  ]
+}

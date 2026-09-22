@@ -1,0 +1,133 @@
+{#
+  One page of documentation, in the application's own layout.
+
+  The markdown is rendered per request by `documentation.py`, which says why it
+  is not the built mkdocs site. `| safe` is deliberate and narrow: the input is
+  the repository's own `docs/` tree, written by the same people who write the
+  templates, and markdown that cannot emit HTML would render half the
+  documentation wrong. Nothing a reader supplies reaches this.
+
+  `plans/public-site.md` §3, "Docs frame".  The sidebar is every `mkdocs.yml`
+  group as a `<details>`, open only for the group holding this page; a
+  top-level entry -- "Home" and "What we have found" -- is a plain link,
+  never wrapped in one.  The sidebar sits after the article in the markup, not
+  before it, so the mobile "Contents" bar can point at it with a plain anchor
+  before `app.js` runs; `.docs__nav { order: 1 }` puts it back on the left at
+  desktop widths.  "Last updated" and "Edit this page" are not built yet --
+  both need the repository to be public (`plans/public-site.md` §7) -- so only
+  "Report a problem with this page" is on the meta line below the article.
+#}
+{% extends "layout.html" %}
+{% set page_title = page.title %}
+{% set active_section = "docs" %}
+
+{# Only the documentation carries mermaid fences, and only if this page has one
+   is three and a half megabytes worth fetching.  `defer` so neither script
+   holds up the prose, and in this order because the second one calls the
+   first. #}
+{% block scripts %}
+{% if page.has_diagrams %}
+<script defer src="{{ url_for('static', filename='mermaid.min.js') }}"></script>
+<script defer src="{{ url_for('static', filename='docs-mermaid.js') }}"></script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{# No script: a link to the sidebar rendered after the article.  With
+   `app.js`: the link is swapped for a button that opens the same sidebar as
+   a drawer -- `initDocsToc` in `app.js`. #}
+<div class="docs__mobile-bar">
+  <a class="docs__mobile-bar-control" href="#docs-nav" data-docs-toc-link>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h7"/></svg>
+    <span>Contents{% if group %} <span class="docs__mobile-bar-group">&middot; {{ group.title }}</span>{% endif %}</span>
+  </a>
+  <button class="docs__mobile-bar-control" type="button" aria-expanded="false" aria-controls="docs-nav" data-docs-toc-toggle hidden>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h7"/></svg>
+    <span>Contents{% if group %} <span class="docs__mobile-bar-group">&middot; {{ group.title }}</span>{% endif %}</span>
+  </button>
+</div>
+
+<div class="docs">
+  <article class="docs__page">
+    <p class="docs__breadcrumb">
+      <a href="{{ url_for('docs.page') }}">Docs</a>{% if group %} / {{ group.title }}{% endif %}
+    </p>
+
+    {% if page.contents %}
+    {# Closed by default: the contents are worth having on a page of five
+       hundred lines and are in the way on one of thirty.  Below 1200px only --
+       `.docs__toc` carries the same links as a sticky column above it. #}
+    <details class="docs__contents">
+      <summary>On this page</summary>
+      {{ page.contents | safe }}
+    </details>
+    {% endif %}
+    {{ page.html | safe }}
+
+    {# The page's own path fills the form's `page` field; a bare `?title=` put
+       the path where a title belongs and left every other field empty. #}
+    <div class="docs__page-meta">
+      <a href="{{ repository_url }}/issues/new?template=docs.yml&amp;page={{ ('docs/' + page.slug + '.md') | urlencode }}">Report a problem with this page</a>
+    </div>
+
+    {% if previous_page or next_page %}
+    <div class="docs__pager">
+      {% if previous_page %}
+      <a class="docs__pager-link docs__pager-link--prev" href="{{ url_for('docs.page') if previous_page.slug == 'index' else url_for('docs.page', page=previous_page.slug) }}">
+        <span class="docs__pager-label">Previous</span>
+        <span class="docs__pager-title">&larr; {{ "Where to start" if previous_page.slug == "index" else previous_page.title }}</span>
+      </a>
+      {% endif %}
+      {% if next_page %}
+      <a class="docs__pager-link docs__pager-link--next" href="{{ url_for('docs.page') if next_page.slug == 'index' else url_for('docs.page', page=next_page.slug) }}">
+        <span class="docs__pager-label">Next</span>
+        <span class="docs__pager-title">{{ "Where to start" if next_page.slug == "index" else next_page.title }} &rarr;</span>
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </article>
+
+  <nav class="docs__nav" id="docs-nav" aria-label="Documentation">
+    {% for section in sections %}
+    {% if section.title %}
+    {% set is_current = group and section.title == group.title %}
+    <details class="docs__group"{% if is_current %} open{% endif %}>
+      <summary class="docs__summary">
+        {{ section.title }}
+        <span class="docs__summary-meta">{% if is_current %}&#8964;{% else %}&rsaquo;{% endif %}</span>
+      </summary>
+      <ul class="docs__list">
+        {% for link in section.pages %}
+        <li>
+          <a href="{{ url_for('docs.page') if link.slug == 'index' else url_for('docs.page', page=link.slug) }}"
+             {% if link.slug == page.slug %}aria-current="page"{% endif %}>{{ link.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </details>
+    {% else %}
+    <ul class="docs__list docs__list--top">
+      {% for link in section.pages %}
+      <li>
+        <a href="{{ url_for('docs.page') if link.slug == 'index' else url_for('docs.page', page=link.slug) }}"
+           {% if link.slug == page.slug %}aria-current="page"{% endif %}>{{ "Where to start" if link.slug == "index" else link.title }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endfor %}
+  </nav>
+
+  {% if page.contents %}
+  {# 1200px and wider only -- `.docs__contents` above carries the same links
+     narrower than that.  Not built: highlighting the current section while
+     scrolling (`plans/public-site.md` §3). #}
+  <nav class="docs__toc" aria-labelledby="docs-toc-heading">
+    <h2 class="docs__toc-heading" id="docs-toc-heading">On this page</h2>
+    {{ page.contents | safe }}
+    <a class="docs__toc-top" href="#main">Back to top &uarr;</a>
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}

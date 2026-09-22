@@ -1,0 +1,77 @@
+name: Read another source list
+description: Ask for a flow list, method file or correspondence table this project does not yet read.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every list this project reads adds a witness: a substance two lists disagree about
+        is a question, and a substance three lists agree about is close to settled. Several
+        of the errors on [What we have
+        found](https://github.com/brightway-labs/brightway-flows/blob/main/docs/findings/index.md)
+        were visible only because a second list had the same substance right.
+
+        What makes a list worth adding is not its size. It is whether its rows carry
+        something the lists already here do not — a registry number where others have none,
+        a compartment vocabulary of its own, a method implemented independently.
+
+  - type: input
+    id: list-name
+    attributes:
+      label: The list
+      description: Its name, its publisher, and the release you have in mind.
+      placeholder: Agribalyse 3.2 — ADEME
+    validations:
+      required: true
+
+  - type: input
+    id: where
+    attributes:
+      label: Where it can be got
+      description: A URL if it is public. If it is behind a licence or a login, say so here rather than attaching it.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: licence
+    attributes:
+      label: How it is licensed
+      options:
+        - Public, and freely redistributable
+        - Public, but with terms on redistribution
+        - Licensed — a user needs their own copy or account
+        - I do not know
+    validations:
+      required: true
+
+  - type: textarea
+    id: shape
+    attributes:
+      label: What a row looks like
+      description: >-
+        Paste two or three rows, headers included. What matters is which of these it
+        carries: a stable identifier, a registry number, a compartment, a unit, synonyms,
+        and whether it ships characterisation factors or only flows.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: What it would add
+      description: >-
+        Which substances or compartments it covers that the current lists do not, or where
+        it would act as an independent witness to something currently resting on one list.
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **What happens next.** Adding a list is an integration, a context mapping and a
+        merge pass, not a configuration change, so this is a request rather than a patch —
+        but a well-described list with a clear licence is most of the work of deciding to
+        do it.

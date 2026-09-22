@@ -1,0 +1,147 @@
+{SimaPro 9.6.0.1}
+{methods}
+{Date: 11/27/2024}
+{Time: 1:28:54 PM}
+{Project: test}
+{CSV Format version: 9.0.0}
+{CSV separator: Semicolon}
+{Decimal separator: .}
+{Date separator: /}
+{Short date format: M/d/yyyy}
+{Export platform IDs: No}
+{Selection: Selection (1)}
+{Related objects (system descriptions, substances, units, etc.): Yes}
+{Include sub product stages and processes: No}
+{Skip unused parameters: No}
+
+Method
+
+Name
+Stepwise_2006_IPCC2021_CorrectedNatureOccupation
+
+Version
+1;09
+
+Comment
+Test fixture method.
+
+Category
+European
+
+Use Damage Assessment
+No
+
+Use Normalization
+No
+
+Use Weighting
+No
+
+Use Addition
+No
+
+Weighting unit
+EUR2003
+
+Impact category
+Human toxicity, carcinogens;kg C2H3Cl-eq
+
+Substances
+Air;(unspecified);1-Butanol;000071-36-3;2.5;kg
+Water;groundwater;1-Butanol;000071-36-3;0.001;kg
+Water;groundwater, long-term;1-Butanol;000071-36-3;3.16E-7;kg
+Soil;agricultural;1-Butanol;000071-36-3;1.25;kg
+Air;(unspecified);Zinc;007440-66-6;0;g
+
+End
+
+Impact category
+Nature occupation;PDF*m2a
+
+Substances
+Raw;(unspecified);Occupation, arable;;1.05;m2a
+Raw;(unspecified);Occupation, accelerated denaturalisation, primary forest to managed forest;;0.1;m2a
+
+End
+
+Impact category
+Mineral extraction;MJ surplus
+
+Substances
+Raw;(unspecified);Copper;007440-50-8;12.5;kg
+Raw;(unspecified);Carbon dioxide, in air;000124-38-9;0.5;ton
+Raw;(unspecified);Wood, hard, standing;;0.25;m3
+
+End
+
+Impact category
+Global warming, fossil;kg CO2-eq
+
+Substances
+Air;(unspecified);Methane;000074-82-8;29.8;kg
+Air;(unspecified);Methane, as CO2e (GWP aggr timing);;1;kg
+Air;(unspecified);Carbon dioxide, as CO2e (GWP aggr timing);;1;kg
+Raw;(unspecified);Carbon dioxide in air, as CO2e (GWP aggr timing);;-1;kg
+
+End
+
+Impact category
+Injuries, road or work;QALY
+
+Substances
+Social;(unspecified);Injuries, fatal;;43;p
+Economic;(unspecified);Wages;;1;EUR2003
+
+End
+
+Quantities
+Mass;Yes
+
+End
+
+Units
+kg;Mass;1;kg
+
+End
+
+Raw materials
+Carbon dioxide in air, as CO2e (GWP aggr timing);ton;;
+Carbon dioxide, in air;kg;000124-38-9;Formula: CO2
+Copper;kg;007440-50-8;Formula: Cu
+Occupation, accelerated denaturalisation, primary forest to managed forest;ha a;;
+Occupation, arable;m2a;;Formula: CORINE 21
+Wood, hard, standing;m3;;
+
+End
+
+Airborne emissions
+1-Butanol;kg;000071-36-3;Formula: C4H10O
+Carbon dioxide, as CO2e (GWP aggr timing);ton;;
+Methane;kg;000074-82-8;Formula: CH4
+Methane, as CO2e (GWP aggr timing);kg;;
+Zinc;kg;007440-66-6;"Formula: Zn
+Synonyms: Zinc metal; Blue powder
+
+Higher heating value (HHV): 0 MJ/kg"
+
+End
+
+Waterborne emissions
+1-Butanol;kg;000071-36-3;Formula: C4H10O
+
+End
+
+Emissions to soil
+1-Butanol;kg;000071-36-3;Formula: C4H10O
+
+End
+
+Social issues
+Injuries, fatal;p;;
+
+End
+
+Economic issues
+Wages;EUR2003;;
+
+End

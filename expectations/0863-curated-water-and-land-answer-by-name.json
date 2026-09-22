@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "description": "Which kind of water a row is, and which land class, are curated one vendor row at a time in water-flow-materials.json and land-flow-classes.json, keyed on the vendor's row identifier. A caller asking through the lookup has no identifier, so until #358 those rows came back as twelve kinds of water or nothing at all -- while every row of both tables also records the vendor's spelling. The lookup now consults both tables under the row's prepared name, declining any name the tables read two ways that the caller's compartment cannot split, and a value the caller states themselves still wins.\n\nMeasured by replaying every recorded row of the build through the lookup, which is what the lookup.* measures are. On the build of 30 August 2026 (20260830T1046047189150000, merge 0cd2b4cd0385426eb9c898a7494e6e0f) the land rows went from 93 answered and 332 declined to all 425 answered, and the water rows from 201 answered and 125 declined to 309 answered and 17 declined -- the 17 being names like `Water, unspecified natural origin` asked in a compartment that does not say whether the water came from the ground or the surface, which is a decline the tables themselves would make. Nothing moved to a wrong flow: the other_flow counts for both buckets were zero before and must stay zero, because the join may add ways for a row to match and must never move one.",
+  "expectations": [
+    {
+      "id": "0863-every-recorded-land-row-answers-by-name",
+      "issue": 863,
+      "title": "Every land row the build classified is answered by the lookup without a uuid, except the six classes only a build can mint",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.land_class.declined",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 6
+      },
+      "comment": "332 of 425 declined before the name join; no two of the land table's 1,316 rows disagree about a name, so the name alone answers all of them. A new list whose land rows are not yet in land-flow-classes.json will push this back up, and that is the signal #174 already established: the rows need curating, not the join loosening.\n\nSix on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), and not the signal the sentence above describes: the six are AGRIBALYSE rows whose curated class is one the list had never published -- `Permanent cropland, fruit` and `, vine`, `Sea`, and the transformations from fruit and vine cropland and from a rail embankment -- so the build minted the flow and the read-only lookup, which mints nothing, declines. They are curated, not waiting to be. The bound is the count of minted classes; a seventh means a new class or an uncurated row, and either is worth a look."
+    },
+    {
+      "id": "0863-no-land-row-moves-to-another-flow",
+      "issue": 863,
+      "title": "No land row the build classified is placed on a different flow by the lookup",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.land_class.other_flow",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "The join may add ways for a row to match and must never move one."
+    },
+    {
+      "id": "0863-most-recorded-water-rows-answer-by-name",
+      "issue": 863,
+      "title": "The water rows the build typed by material are answered by the lookup without a uuid",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.material.same_flow"
+      },
+      "expect": {
+        "at_least": 300
+      },
+      "comment": "309 of 326 on the 30 August 2026 build, from 201 before the name join. The residue is rows like `Water, unspecified natural origin` asked in a compartment that does not say which kind, where the table disagrees with itself and declining is the table's own rule."
+    },
+    {
+      "id": "0863-no-water-row-moves-to-another-flow",
+      "issue": 863,
+      "title": "No water row the build typed by material is placed on a different flow by the lookup",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.material.other_flow",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "Zero before the join and zero after it."
+    }
+  ]
+}

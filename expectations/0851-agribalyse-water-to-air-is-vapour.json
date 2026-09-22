@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "description": "AGRIBALYSE 3.2 evaporates water in eleven rows -- nine spellings of `Water` released to air and two `Water (evapotranspiration)` rows -- about 111,000 exchange rows, 2,278 processes for the busiest alone. The consensus list, following EF 3.1, says water released to air is the Water vapour substance, published in air in both m3 and kg. On the first build to merge the list (1 September 2026, `b0b8d76`) none of the eleven reached it: the first `Water` row in each air compartment minted a plain-Water air flow beside the vapour the list already publishes, the sibling rows matched those fresh mints -- four of them crossing m3 to kg silently on top -- and the two evapotranspiration rows minted their own substance. #353 classifies all eleven rows as water vapour in `water-flow-materials.json` (the same air rule that reads every other list's airborne water), and one match override sends the busiest row to EF's own `Water` m3 vapour flow, because EF publishes two m3 vapour flows in unspecified air and a choice between two flows of one substance in one place is not a material question -- ecoinvent's identical rows reach the same flow through their correspondence table.\n\nMeasured offline against that same build with the table in place: ten of the eleven reach a Water vapour flow in their exact compartment and unit by `material`; the eleventh is the override's, decided at merge time.\n\nMarked pending until a shared build merges agribalyse-3.2: these claims are about that list's rows, and a build that has not merged the list cannot grade them. Drop the flag in the change that records the first shared build made from a commit containing both #355 and this fix.",
+  "expectations": [
+    {
+      "id": "0851-the-busiest-evaporation-reaches-the-vapour-ecoinvent-reaches",
+      "issue": 851,
+      "title": "AGRIBALYSE's `Water/m3` to unspecified air lands on EF's m3 Water vapour flow, the one ecoinvent's identical rows reach",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "ba3524e6-0d54-52a5-828f-8ad0267f1683"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_name": "Water vapour",
+        "target_uuid": "0342f5e5-b53e-4cec-9e67-fb197f24fff0"
+      },
+      "pending": true,
+      "comment": "The issue's worked example, 2,278 processes. On the build of 1 September 2026 it matched a plain-Water air flow the list itself had just minted, kg against the row's m3, with the crossing recorded but the substance wrong. The material ties between EF's two m3 vapour flows in this one compartment (`Water` and `Water (evapotranspiration)`, a published duplication inside EF), so the override states what ecoinvent's correspondence table states for the identical row: the `Water` one."
+    },
+    {
+      "id": "0851-a-kilogram-of-evaporated-water-is-vapour-by-material",
+      "issue": 851,
+      "title": "AGRIBALYSE's kg `Water` to unspecified air reaches Water vapour by its curated material",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "6ed103e1-aa33-56e7-93e3-29eca1854827"
+      },
+      "expect": {
+        "row_count": 1,
+        "basis": "material",
+        "target_name": "Water vapour",
+        "target_uuid": "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+      },
+      "pending": true,
+      "comment": "The kg twin of the busiest row, and the shape the other eight rows share: one vapour flow per compartment and unit, so the material answers alone. Before the fix this row minted the plain-Water air flow its m3 twin then matched."
+    },
+    {
+      "id": "0851-no-plain-water-flow-in-unspecified-air",
+      "issue": 851,
+      "title": "No published flow is named `Water` in unspecified air",
+      "subject": {
+        "kind": "flow",
+        "name": "Water",
+        "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn"
+      },
+      "expect": {
+        "count": 0
+      },
+      "pending": true,
+      "comment": "The build of 1 September 2026 minted plain-Water air flows in five compartments and matched the sibling rows onto them -- publishing, in EF's terms, another substance's story beside the vapour that tells it. With the eleven rows saying vapour, no row is left to mint these; unspecified air is the guard because it is where the busiest row and the label-luck matches were."
+    },
+    {
+      "id": "0851-no-flow-under-the-vendors-evapotranspiration-spelling",
+      "issue": 851,
+      "title": "No published flow carries AGRIBALYSE's `Water (evapotranspiration)` spelling",
+      "subject": {
+        "kind": "flow",
+        "name": "Water (evapotranspiration)"
+      },
+      "expect": {
+        "count": 0
+      },
+      "pending": true,
+      "comment": "The two evapotranspiration rows minted their own substance on the build of 1 September 2026. EF ships a row under the same spelling and publishes it as Water vapour; with the material curated, AGRIBALYSE's rows land there too and the vendor's process word never becomes a published substance name -- the same claim 0850 makes for `Water, Rain`."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "description": "Liquid water is published in cubic metres throughout this list -- every one of the eleven flows carrying EF 3.1's `Water use` factors, and every water resource ecoinvent ships. BAFU measures sixteen of its water rows by mass, and nine water rows ended up landing on a flow stating the other unit: a kilogram row on a cubic-metre flow, or a cubic-metre row on a kilogram flow BAFU's own kilogram rows had minted. Stating the density and carrying the rows in cubic metres settles both directions. The one crossing left runs the other way -- BAFU states the volume of sea water and EF 3.1 states its mass -- and is accepted with the factor ecoinvent's identical row already carries. See #78, and #89 for the compartment half of the same work.",
+  "expectations": [
+    {
+      "id": "0409-bafu-water-to-a-river-reaches-the-river",
+      "issue": 409,
+      "title": "The kilogram of water BAFU discharges to a river reaches the river, like its 53 siblings",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Water", "context": ["emissions to water", "river"]},
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Water",
+        "target_context_display": "Environmental → Water → River",
+        "target_unit": "m3",
+        "row_count": 54,
+        "same_target": true
+      },
+      "comment": "The row this change started from. BAFU ships 53 regionalised cubic-metre rows and one unregionalised kilogram row into this compartment; the kilogram row could not reach the flow the other 53 reach, because the only water flow in `Environmental → Water → River` is EF 3.1's in cubic metres, so it went up to water of no stated body instead. Carried in cubic metres it lands beside its siblings, and all 54 reach one flow. Stated as `same_target` as well as by name, because the failure it replaces was 53 rows agreeing and one not."
+    },
+    {
+      "id": "0409-bafu-liquid-water-does-not-cross-a-unit",
+      "issue": 409,
+      "title": "No BAFU water row lands on a flow measured in another unit, except the one that runs the other way",
+      "subject": {"kind": "measure", "key": "merge.bafu-2026-v1.unit_mismatch"},
+      "expect": {"at_most": 171},
+      "comment": "179 on the build before this change, of which 9 were water. Eight of the nine are BAFU measuring by mass what the list measures by volume, and are converted at 1000 kg/m3. The ninth is sea water and is not a defect of BAFU's: EF 3.1 accounts sea water by mass, BAFU and ecoinvent both by volume, and ecoinvent's identical row is already accepted with the factor stated -- so this one is accepted the same way and stays in the count. A bound rather than a row claim, because the 170 rows this does not touch are radionuclides in Bq against kBq, which is #78's other half and another change's work."
+    },
+    {
+      "id": "0409-bafu-waste-water-is-published-in-cubic-metres",
+      "issue": 409,
+      "title": "The kinds of water only BAFU reports are published in cubic metres too",
+      "subject": {"kind": "flow", "name": "Waste water"},
+      "expect": {"unit": "m3"},
+      "comment": "Waste water, contaminated water and surface water have no counterpart in EF 3.1 or ecoinvent, so nothing outside BAFU forces a measure on them and BAFU wrote two of waste water's three rows by mass. A flow's unit should not be an accident of which vendor row happened to mint it -- the argument #67 accepted for standing wood. Waste water is named here because it is the one of the three with more than one flow, so a change that converted only the first would still fail."
+    }
+  ]
+}

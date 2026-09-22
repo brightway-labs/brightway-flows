@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent's granite carries a herbicide's registry number, twice over. The resource flow (`Granite, in ground`, uuid a4375a18-…) ships CAS 219714-96-2 — penoxsulam, sold under the trade name 'Granite' — in 3.8 through 3.10.1; ecoinvent removed it in 3.11. From 3.11 ecoinvent also ships seven *emission* flows named `Granite` that really are the herbicide: right number, trade-name label. With eight same-named rows in one list, whole-list enrichment carried the number onto the rock — on the 2026-08-22 build the resource row is recorded as `Penoxsulam` 219714-96-2 although 3.12 ships it with no number, and the review queue asked a curator to approve granite's resource factor with a herbicide named as its source. #140, first case, as corrected there on 2026-08-22. The fix is manual fixes in all five release files: strip the number from the rock where the vendor shipped it, rename the seven emission rows to the substance where the vendor labels them by trade name.",
+  "expectations": [
+    {
+      "id": "0670-granite-resource-row-is-not-a-herbicide",
+      "issue": 670,
+      "title": "ecoinvent's granite resource row is recorded as granite, not as penoxsulam",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "a4375a18-172c-4f82-90b7-bca972f75548",
+        "name": "Penoxsulam"
+      },
+      "expect": {"row_count": 0},
+      "comment": "Before the fix both merged releases' rows of this uuid are recorded `Penoxsulam` with CAS 219714-96-2. The selector asks for rows of the rock's uuid under the herbicide's name; the claim is that there are none."
+    },
+    {
+      "id": "0670-granite-resource-row-reaches-granite",
+      "issue": 670,
+      "title": "The granite resource row still lands on granite, in both merged releases",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "a4375a18-172c-4f82-90b7-bca972f75548"
+      },
+      "expect": {"outcome": "prepared", "target_name": "Granite", "row_count": 2},
+      "comment": "The correspondence table's target was right all along; only the row's recorded identity was wrong. This pins that the CAS strip moves the label without moving the landing."
+    },
+    {
+      "id": "0670-the-trade-name-emissions-are-penoxsulam",
+      "issue": 670,
+      "title": "The seven trade-name emission rows are recorded as penoxsulam and land together on it",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "name": "Penoxsulam"
+      },
+      "expect": {"outcome": "matched", "target_name": "Penoxsulam", "row_count": 7, "same_substance": true},
+      "comment": "3.12 ships the herbicide's emissions as `Granite` with penoxsulam's CAS; the manual fix renames them to the substance before matching. Exactly seven, all on the Penoxsulam object — the count is the guard against the rename catching the CAS-less rock."
+    }
+  ]
+}

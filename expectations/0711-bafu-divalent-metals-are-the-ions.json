@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "description": "BAFU ships five rows named for a metal in its +2 oxidation state -- `Cadmium II`, `Zinc II`, `Mercury II`, `Lead II`, `Nickel II`, one each, all emissions to air in populated areas -- and writes the **metal's** registry number beside every one of them: 7440-43-9 is cadmium the element, not the cadmium(2+) ion. ecoinvent 3.12 ships the same five names, fourteen rows each, under the ions' own numbers, and those rows reach `Cadmium(2+)` and its four siblings. A registry number outranks a name here, deliberately, so BAFU's five reached the elements: one name, two substances, decided by which list wrote the row. And BAFU ships plain `Cadmium` under 7440-43-9 in the very same compartment, so read as the metal `Cadmium II` was a second BAFU name for one BAFU substance.\n\nThe name is the half that is right -- BAFU's own `Chromium III` carries the trivalent ion's number and lands correctly -- so each of the five is given the ion's number, read off the substance ecoinvent's rows already reach. This replaces a stated number rather than filling a blank, which is the shape EF's `vanadium (v)` correction uses (#49) and a stronger claim than #127's; the fix records what the vendor wrote as `original_value`. See #146.\n\nMeasured on the build of 2026-08-24 at `cf9b7ae`, the branch point: every one of the five `is-the-ion` claims below fails there (`target_name` is the element, `target_cas` the elemental number), and both leave-alone claims hold.",
+  "expectations": [
+    {
+      "id": "0711-bafu-cadmium-ii-is-the-ion",
+      "issue": 711,
+      "title": "BAFU's Cadmium II reaches cadmium(2+) by its corrected number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "16d4462f-5886-5a99-8895-6155ecbecdd7"
+      },
+      "expect": {
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_name": "Cadmium(2+)",
+        "target_cas": "22537-48-0"
+      },
+      "comment": "The worked example. Before: `algorithm` on `basis: cas` too -- but on 7440-43-9, landing on `Cadmium`, the same flow BAFU's plain `Cadmium` row in this compartment reaches. `basis: cas` is claimed so that a later change reaching the ion by reading the roman numeral off the name would fail here: the number is corrected, the name is not interpreted.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Cadmium II` in BAFU's own file either way."
+    },
+    {
+      "id": "0711-bafu-zinc-ii-is-the-ion",
+      "issue": 711,
+      "title": "BAFU's Zinc II reaches zinc(2+) by its corrected number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "2dfdcb86-5a4f-5237-aaa6-97f2c69f4643"
+      },
+      "expect": {
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_name": "Zinc(2+)",
+        "target_cas": "23713-49-7"
+      },
+      "comment": "Same shape: 7440-66-6 is zinc the metal, and ecoinvent's fourteen `Zinc II` rows carry 23713-49-7.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Zinc II` in BAFU's own file either way."
+    },
+    {
+      "id": "0711-bafu-mercury-ii-is-the-ion",
+      "issue": 711,
+      "title": "BAFU's Mercury II reaches mercury(2+) by its corrected number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "6b0a96cf-7098-54e5-8bdf-e1103ff6a036"
+      },
+      "expect": {
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_name": "Mercury(2+)",
+        "target_cas": "14302-87-5"
+      },
+      "comment": "Same shape: 7439-97-6 is mercury the metal, and ecoinvent's fourteen `Mercury II` rows carry 14302-87-5. Mercury is the one of the five where the metal and the ion are least alike in the environment -- elemental mercury is a vapour that travels, the ion is what deposits -- so publishing the ion's emission as the metal's was the most consequential of the five.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Mercury II` in BAFU's own file either way."
+    },
+    {
+      "id": "0711-bafu-lead-ii-is-the-ion",
+      "issue": 711,
+      "title": "BAFU's Lead II reaches lead(2+) by its corrected number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "b260c8cd-aa45-5553-af18-1c891986c193"
+      },
+      "expect": {
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_name": "Lead(2+)",
+        "target_cas": "14280-50-3"
+      },
+      "comment": "Same shape: 7439-92-1 is lead the metal, and ecoinvent's fourteen `Lead II` rows carry 14280-50-3.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Lead II` in BAFU's own file either way."
+    },
+    {
+      "id": "0711-bafu-nickel-ii-is-the-ion",
+      "issue": 711,
+      "title": "BAFU's Nickel II reaches nickel(2+) by its corrected number",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "ff3f7506-284b-5d5f-8203-dacd7907210e"
+      },
+      "expect": {
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_name": "Nickel(2+)",
+        "target_cas": "14701-22-5"
+      },
+      "comment": "Same shape: 7440-02-0 is nickel the metal, and ecoinvent's fourteen `Nickel II` rows carry 14701-22-5.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Nickel II` in BAFU's own file either way."
+    },
+    {
+      "id": "0711-bafu-plain-cadmium-stays-the-metal",
+      "issue": 711,
+      "title": "BAFU's plain Cadmium rows still reach the element",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Cadmium",
+        "cas": "7440-43-9"
+      },
+      "expect": {
+        "row_count": 15,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "7440-43-9",
+        "same_substance": true
+      },
+      "comment": "The leave-alone half. BAFU ships fifteen rows named plain `Cadmium`; thirteen carry 7440-43-9, one of them in the same air compartment as `Cadmium II`, and they mean the element -- nothing in the name states a charge, and the number agrees. The fix is keyed on the exact name `Cadmium II`, so these cannot move; this claim is what says so if the key is ever loosened. The other four metals' plain rows are the same shape and are covered by the build comparison rather than repeated here.\n\nThe selector carries the number because the other two plain `Cadmium` rows -- air/unspecified and water/unspecified -- ship 22537-48-0, the ion's number, and land on `Cadmium(2+)`: the same vendor inconsistency as #146 in the opposite direction, a bare name beside an ion's number. They are left where the number puts them, which is the documented rule, and are not this issue's to decide; the first draft of this claim swept them in and failed on the before side for that reason, which is how they were found.\n\n**#168 decided them, and the count moves from 13 to 15.** Those two rows do not ship 22537-48-0 instead of the element's number -- they ship both, and the merge read the first. BAFU's own processes write 7440-43-9 for cadmium to unspecified air in 222 exchanges against four that write the ion's number, and 133 against three in unspecified water, so the pair is a vendor inconsistency between processes rather than a statement about the flow. Two `cas_numbers` fixes keep the element's number, both rows join the thirteen, and every other claim here -- the outcome, the basis, the target and one substance across them -- holds unchanged. The id is kept through the rewrite so the baseline keeps its history for this question."
+    },
+    {
+      "id": "0711-ecoinvent-cadmium-ii-is-unchanged",
+      "issue": 711,
+      "title": "ecoinvent's Cadmium II rows keep reaching cadmium(2+) on their own number",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "name": "Cadmium II"
+      },
+      "expect": {
+        "row_count": 14,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_cas": "22537-48-0",
+        "same_substance": true
+      },
+      "comment": "The rows this fix brings BAFU into line with, and the reason the number 22537-48-0 is the right one: it is what the other vendor already writes and what the list already publishes. A BAFU fix cannot touch an ecoinvent row, so this holds before and after; it is here because the whole point of #146 is that the same name now means the same substance from both lists, and that is a statement about both."
+    }
+  ]
+}

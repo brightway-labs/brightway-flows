@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "description": "GreenDelta states a water use factor for water emitted to water per kilogram -- 0.00698 for France -- and this list publishes that flow per cubic metre. A kilogram of water is a thousandth of a cubic metre, and the build already held that number: BAFU's own kilogram water rows were merged onto the same flows carrying 0.001 m3/kg. The factor pass never looked there. It compared the two unit names, reported a unit crossing and published nothing, 213 times.\n\n**A conversion is a statement about a pair, and the pair is what is keyed.** `matching.recorded_conversions` indexes every multiplier the merge wrote by `(flow, source unit, target unit)`, and a row uses one only where the flow is the same flow and both units are the same units. A kilogram of standing wood is 0.00204 cubic metres and a kilogram of water is 0.001; neither flow is the other. Where one flow carries two values for one pair -- natural gas at 34.5 and 36.0 MJ per cubic metre -- the pair is left out and the rows keep the crossing they had.\n\n**It is a fallback and never an override.** A row that arrives with its own identifier carries the merge's answer for that row, which is unchanged. This is for the rows reached by a name or by a curated decision, which have none.\n\nMeasured by running `characterise` twice over the build of 2026-08-29 (`20260829T1149`): 213 factors converted over 5 flows, 211 more published, and `Water` in Environmental → Water → Unknown gains GreenDelta's 209 country factors. Three crossings remain and should: `Water` emitted to a river and `Waste water`, whose flows carry no kilogram conversion of their own, and `Gas, mine, off-gas, process, coal mining`, whose pair has two answers.\n\n**What the 209 show is a disagreement, not an agreement.** GreenDelta states +6.98 for France where the JRC states -6.98, and so for all 209: their package drops the sign on the water-return half of EF's water use pair. `difference_incomparable` rises from 12 to 221 because of it. That is the comparison working -- a difference that was invisible while the factors were being dropped over a unit spelling.",
+  "expectations": [
+    {
+      "id": "0804-the-conversions-are-reused",
+      "issue": 804,
+      "title": "Five flows are published on a conversion the build already recorded",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_conversions_reused"
+      },
+      "expect": {
+        "at_least": 5
+      },
+      "comment": "Counted separately from the factors, because \"the build had this number\" is a different claim from \"this row carried it\", and a reader deciding whether to trust a converted factor needs to know which one it was."
+    },
+    {
+      "id": "0804-the-factors-they-carry",
+      "issue": 804,
+      "title": "213 factors are converted rather than dropped",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_factors_converted_by_a_recorded_conversion"
+      },
+      "expect": {
+        "at_least": 213
+      },
+      "comment": "209 on `Water` emitted to water, one on `Water` emitted to ground water, and three on the `Water, process` rows this change also decides. The published total rises by 211 rather than 213: two of the process rows state a number the list already publishes from another row of theirs, and `lcia.collisions` keeps it once."
+    },
+    {
+      "id": "0804-three-crossings-remain",
+      "issue": 804,
+      "title": "The crossings this build cannot answer are still reported",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_unit-crossing"
+      },
+      "expect": {
+        "at_least": 3,
+        "at_most": 3
+      },
+      "comment": "An equality, because the fix must not work by silencing the guard. Five before. What is left is `Water` emitted to a river and `Waste water`, whose flows carry no kilogram conversion of their own even though sibling flows in the same water body do, and `Gas, mine, off-gas, process, coal mining`, stated per cubic metre against a flow published per megajoule where two values are on record for that pair.\n\nGrowing means a route stopped finding a conversion it used to have; shrinking means one of those three was answered somewhere, which is a reason to re-read this file rather than to let it lapse."
+    },
+    {
+      "id": "0804-water-emitted-to-water-carries-their-numbers",
+      "issue": 804,
+      "title": "GreenDelta characterises `Water` emitted to water in 209 countries",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Water",
+        "context_display": "Environmental → Water → Unknown",
+        "category": "Water use",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "count": 209
+      },
+      "comment": "The flow the whole issue is about. Before this change GreenDelta published nothing on it, because their factor is stated per kilogram; the JRC's 209 and the consensus's were there alone.\n\nThe magnitudes are the JRC's exactly -- 23.1 for Albania, 6.98 for France -- and the signs are not: theirs are positive where the JRC's are negative, on all 209."
+    },
+    {
+      "id": "0804-the-sign-disagreement-is-visible",
+      "issue": 804,
+      "title": "GreenDelta's 209 water factors are comparable with the JRC's",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.difference_incomparable"
+      },
+      "expect": {
+        "at_most": 12
+      },
+      "comment": "**Rewritten by #172, keeping its id so the baseline keeps this question's history.**\n\nIt read `at_least: 221`, and said that 209 water factors were reported as incomparable with the JRC's -- 12 before #170 and 221 after, because publishing GreenDelta's country factors on `Water` in `Environmental → Water → Unknown` made a sign disagreement visible that had been hidden while the numbers were being dropped over a unit spelling. That was right about the build and wrong about what to want.\n\nEF 3.1's water use is a pair: positive when water is withdrawn, negative when it is returned. Which half a factor is, is not stated on the factor -- it is the direction of the flow it characterises, which GreenDelta's own package states in the flow's category path. So the sign is read off the package where the package is read, rather than reported as a disagreement, and all 209 now agree with the JRC's to the digit (#172). A ratio between two negative numbers is a ratio.\n\nThe bound is turned around accordingly. `incomparable` goes back to the 12 it was before #170, and what this claims now is that publishing 211 more of GreenDelta's factors added no incomparable pair at all. Growing past 12 means either that another implementation's rows have arrived or that the sign rule has stopped reaching some of these, and both are reasons to re-read this file."
+    },
+    {
+      "id": "0804-it-still-decides-nothing",
+      "issue": 804,
+      "title": "Converting GreenDelta's factors changes no factor this list publishes",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_factors_published"
+      },
+      "expect": {
+        "at_least": 323898,
+        "at_most": 327064
+      },
+      "comment": "The equality #157, #165, #347 and #166 all state. It matters more here than in any of them: 209 of the arriving numbers contradict the JRC's sign, and `lcia.categories.DECIDING_IMPLEMENTATIONS` is the whole of what keeps them out of the consensus.\n\n**323,890 became 323,874 with #178 and #179, and GreenDelta had nothing to do with it.** Sixteen `restated` factors went with the flows that carried them: EF's four categories for epoxiconazole, copied onto the two twin flows of the duplicate `Epoxiconazole` substance that ecoinvent's two synonym-less rows had minted (#179), and EF's four for the hydrocarbons bucket, copied onto the two twin flows of the duplicate `Hydrocarbons, Unspecified` that ecoinvent's two table-less rows had minted (#178). Both fixes send those rows to EF's own flows, the twins stop being minted, and the sixteen restatements go with them; the sixteen factors on EF's flows that they restated move from `sole` to `agreed`, because ecoinvent's implementation now pairs with them. Measured on the build of 2026-08-30 at ed019c6 against the four-list build of the branch point 54b0f9d. Re-pinned rather than turned into a floor because the claim is still an equality: converting GreenDelta's factors adds nothing. Moved to 323,898 with the AGRIBALYSE stack (#188): giving Beta-cyfluthrin the product's own registry number took ecoinvent's rows off the consensus `Cyfluthrin` flows, and the ecoinvent Centre's factors followed its flows -- 64 arrive on the Beta-cyfluthrin substance, 40 leave with the vacated ecoinvent-compartment Cyfluthrin copies, pair-identical amounts, measured on the stack build of d98a075 (1 September 2026). That is +24 against the 323,874 the #178/#826 retirements left, none of it a comparison implementation reaching the consensus -- the movement is one deciding implementation's numbers following its own renamed substance, which is the accounting this guard exists to force. Moved again on 2026-09-01 when the context convention in `data/context-carry-rules.json` began carrying 1,482 more factors into the contexts nobody characterised -- a river taking surface water's number, silvicultural soil taking non-agricultural soil's -- on top of the 323,898 the cyfluthrin split left: 325,380, the two movements measured on different builds and added, until the next full build records the count. A carried number is this list's own convention applied to a number it already published, not a third publisher's number becoming ours, which is still what this bound is about.\n\nRecorded at 327,064 on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), which is the full build the previous sentence was waiting for. The convention's carry came to 1,866 factors over the four-list baseline's 1,491 (3,357 `carried`), not the 1,482 measured on a branch, because AGRIBALYSE's merge added flows in contexts the convention carries into; `sole` moved by 24 the other way. `adopted` stayed at 1,334, which is the number this bound is really watching: nothing a third publisher stated became ours."
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "description": "A list SimaPro shaped keys its flows on names alone, so a substance measured two ways has to say which way in the name. BAFU does: ten of its names carry the unit, over eighteen rows -- `Water/m3`, `Wood, unspecified, standing/kg`, and eight more. This list carries the unit as its own field, so the copy in the name says the same thing twice, and being a copy is also why those rows matched nothing: no flow object anywhere answers to a name with a unit stuck on the end. The measure is taken back out, ten rows by the general rule and eight by hand -- by hand where the name and the unit field disagree about what was measured, and where a fix has already changed the unit out from under the rule. See #67.\n\nWhat this file records is the naming half, which is the half #67 asked about, and all of it holds on the build of 15 August 2026 (run `20260815T2000`, head `5f77d7b`). It is written down because nothing else stops it drifting: the ten names are placed by a rule in `simapro_names.py`, by `bafu-2026-v1-manual-fixes.json` and by the merge together, and a change to any of them could put a unit back into a published name with no test saying so.\n\nThe half this file deliberately does not claim is #67's `do not merge the mass and volume rows into one flow`. The project now reads that the other way round: two rows of one substance in one compartment are one flow, because a flow's identity is its substance and its context and the unit is not in it. The last two claims say so outright, for standing wood and for process water, so that the reading is checkable rather than only argued in a comment.",
+  "expectations": [
+    {
+      "id": "0384-no-bafu-row-carries-a-cubic-metre-in-its-name",
+      "issue": 384,
+      "title": "No BAFU row reaches the merge with `/m3` still on the end of its name",
+      "subject": {"kind": "source_row", "list": "bafu", "name_contains": "/m3"},
+      "expect": {"row_count": 0},
+      "comment": "Nine of BAFU's ten suffixed names end in `/m3`, over fourteen rows, and this is the claim that they all lost it. Written as an absence over the whole list rather than as fourteen claims about fourteen rows, because the thing that must stay true is about the list: a release adding an eleventh suffixed name should fail here, and naming today's fourteen would let it through. `name_contains` reads `merge_outcomes.source_name`, which is the name the row had when the merge decided it -- so this passes only if the suffix came off before matching, which is where it has to come off to be worth anything."
+    },
+    {
+      "id": "0384-no-bafu-row-carries-a-kilogram-in-its-name",
+      "issue": 384,
+      "title": "No BAFU row reaches the merge with `/kg` still on the end of its name",
+      "subject": {"kind": "source_row", "list": "bafu", "name_contains": "/kg"},
+      "expect": {"row_count": 0},
+      "comment": "The other four rows, and a harder case than `/m3`: every one of them had its unit rewritten to cubic metres first -- standing wood at 0.00204 m3/kg and process water at 0.001 -- which left the name ending in a unit that was no longer the row's own, so the general rule correctly declined all four and `bafu-2026-v1-manual-fixes.json` renames them by hand. This claim is what says the hand renames still cover every row the conversions touch."
+    },
+    {
+      "id": "0384-water-in-cubic-metres-reaches-water-vapour",
+      "issue": 384,
+      "title": "`Water/m3`, one exchange in one dataset, reaches the water vapour flow measured the same way",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "b91aeaac-ea45-5be4-bd44-1ab82d3a61e7"},
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Water vapour",
+        "target_unit": "m3"
+      },
+      "comment": "The row #67 leads with, and the one where taking the suffix off has a consequence worth checking. BAFU reports it in `emissions to air / low. pop.`, where its other water rows are kilograms -- 131 exchanges of them -- so stripping the name put a single cubic-metre row into a compartment otherwise measured by mass. It is placed rather than refused because giving BAFU's water rows a material (#86) reads water in an air compartment as vapour, and the list publishes that compartment twice, once in kilograms and once in cubic metres. `target_unit` is the claim that matters: it lands on the flow stating its own measure, so no unit is guessed and nothing is converted."
+    },
+    {
+      "id": "0384-natural-gas-in-normal-cubic-metres-is-placed",
+      "issue": 384,
+      "title": "The gas row whose name and unit field disagree is placed on the unit field's reading",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "99bbee18-e1d0-5600-82df-d0bfa91394c7"},
+      "expect": {"outcome": "placed", "target_name": "Natural Gas"},
+      "comment": "`Gas, natural/m3` measured in `Nm3`. The general rule declines this one and is right to: the name says a cubic metre and the field says a normal cubic metre, which is gas at a stated temperature and pressure rather than a volume, and which of them was meant is a curator's question rather than a pattern's. It is answered in the manual fixes, which believe the unit field -- the name being the field this list does not keep the measure in. This claim is what stops the rule being widened to swallow the case it should refuse: if a later change makes the pattern strip an `Nm3` row, the fix's rename stops firing and the row goes somewhere else."
+    },
+    {
+      "id": "0384-standing-wood-is-one-flow-in-cubic-metres",
+      "issue": 384,
+      "title": "The three rows of standing timber are one flow, in cubic metres, however BAFU measured them",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Wood, Unspecified, Standing"},
+      "expect": {"row_count": 3, "same_target": true, "target_unit": "m3"},
+      "comment": "BAFU ships standing timber three times -- `/kg` in `resources / land` and in `resources / unspecified`, `/m3` in `resources / biotic`. The archive settles it: across the 11,947 datasets of the 2026 v1 release the volume rows are used in 134 and the two mass rows in one each, and no dataset carries both. One quantity written two ways, so one flow, and the mass rows are converted at 0.49 oven-dry tonnes per cubic metre with the factor stated on their mappings. This is the shape #67 called the thing to watch and it is deliberately the outcome here."
+    },
+    {
+      "id": "0384-the-mass-and-volume-spellings-of-process-water-are-one-flow",
+      "issue": 384,
+      "title": "The mass and volume spellings of process water in one compartment are one flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Water, Process, Unspecified Natural Origin",
+        "context": ["resources", "land"]
+      },
+      "expect": {"row_count": 2, "same_target": true, "target_unit": "m3"},
+      "comment": "The pair #67 said must stay apart, claimed here as one flow. They always were one: a flow's identity is its substance and its context, `(flow_object_id, context_iri)` is unique, and the unit is not in it -- so the suffix was keeping two names apart above a single flow rather than keeping two flows apart. Measured over the release, 64 datasets use each spelling in this compartment and 63 use both, and the mass is a fixed 6.58e-05 to 6.65e-05 of what the volume implies at 1000 kg/m3 -- a ratio that tight across 63 datasets is two numbers generated from one, not two measurements, and reading them as one flow costs a consumer 66 parts per million. The `resources / unspecified` pair of the same name is not claimed here: there the ratio scatters from 1.6e-05 to 3.89 across 57 datasets, so what BAFU means by the two is genuinely unsettled, and it is a question about that list rather than about a name."
+    }
+  ]
+}

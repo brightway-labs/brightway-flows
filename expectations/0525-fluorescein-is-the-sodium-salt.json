@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "Thirteen flows were published under a name that is not the substance's. The substance is fluorescein's disodium salt -- a different chemical from fluorescein, with a different registry number, a different formula and a different structural fingerprint -- and EF 3.1 names twelve of the thirteen `Fluorescein` or `fluorescein`, which is the free acid. EF's own fields say the salt three times over: all thirteen rows carry CAS 518-47-8 and EC 208-253-0, both the salt's, and all thirteen carry the comment `Flow name and second synonym interchanged with each other`, which is EF saying the name field holds a synonym that was swapped in. The thirteenth row, the emission to agricultural soil, is already named `disodium 2-(3-oxo-6-oxidoxanthen-9-yl)benzoate`. So the wrong field was the source's name, and #312 corrects it there rather than ruling on a label. See #312.",
+  "expectations": [
+    {
+      "id": "0525-sodium-fluorescein-named-as-a-salt",
+      "issue": 525,
+      "title": "The substance carrying fluorescein's sodium-salt registry number is published under a name that says it is the salt",
+      "subject": {"kind": "substance", "cas": "518-47-8"},
+      "expect": {"label": "Fluorescein sodium"},
+      "comment": "Published as `Disodium 2-(3-oxo-6-oxidoxanthen-9-yl)benzoate` on the 2026-08-16 build -- correct about the chemistry, unreadable, and reached by accident rather than by decision, since the flow object takes its label from whichever member name sorts first and `Disodium` sorts before `Fluorescein`. `Fluorescein sodium` is what Common Chemistry holds for 518-47-8, alongside `Sodium fluorescein` and `Fluorescein, disodium salt`, and is what the pharmacopoeias call the substance. Written as a claim about the substance rather than about a flow because the correction is one statement about one registry number, applied in `ef-3.1-manual-fixes.json` to all thirteen contexts at once. When this was first written it was pending on which of two repairs #312 needed; the repair is the name, because EF ships two identifiers for the salt and a comment saying the name was swapped, and nothing but the name says acid."
+    },
+    {
+      "id": "0525-the-salt-is-still-one-substance-in-thirteen-contexts",
+      "issue": 525,
+      "title": "Correcting the name leaves the thirteen flows on one substance, still carrying the salt's registry number",
+      "subject": {"kind": "substance", "cas": "518-47-8"},
+      "expect": {"count": 1, "flow_count": 13, "cas": "518-47-8"},
+      "comment": "Held before the correction as well as after, and written down because renaming at source is the repair that could break it. The thirteen EF 3.1 rows arrived under three spellings and were fused into one flow object by the registry number they share; rewriting the name is meant to change nothing about that grouping. A fix that split them -- by reaching only the twelve, or by renaming to a string a second object already owned -- would show up here as two substances or as fewer than thirteen flows, and nowhere else."
+    },
+    {
+      "id": "0525-the-free-acids-name-is-not-published-for-the-salt",
+      "issue": 525,
+      "title": "No published flow is called `Fluorescein`, which is the free acid",
+      "subject": {"kind": "flow", "name": "Fluorescein", "include_deprecated": true},
+      "expect": {"count": 0},
+      "comment": "The name is the defect, so its absence is the check. `Fluorescein` names CAS 2321-07-5, C20H12O5, InChIKey GNBHRKFJIUUOQI-UHFFFAOYSA-N, 332 g/mol; the substance behind these flows is 518-47-8, C20H12Na2O5, MOUPEUAUBSXMLI-UHFFFAOYSA-N, 378 g/mol. It also holds after the correction for a second reason worth stating: the replaced name is deliberately not retained as an alternative label, because `retain_original_as_synonym` asserts the replaced string is a name the substance genuinely has and every fluorescein name Common Chemistry holds for 518-47-8 qualifies the word. Deprecated flows are included so that the claim cannot be satisfied by the name surviving on a retired row."
+    }
+  ]
+}

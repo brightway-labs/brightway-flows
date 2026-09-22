@@ -1,0 +1,598 @@
+{
+  "fixes": [
+    {
+      "uuid": "0a68e3c1-dc59-515a-af32-c6ecb00b864a",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "in ground"
+      ],
+      "comment": "AGRIBALYSE files `Carbon, organic, in soil or biomass stock` (kg) in `Resources / land`, a compartment that otherwise holds only land occupation and transformation rows told apart by name -- and whose name-prefix rules therefore refuse a name that is neither (#52's guard, which this row trips: the merge aborts on it). The row is not land: it is the carbon stock the land holds, a mass of carbon, and both lists that ship the same name file it as a ground resource -- BAFU in `resources / in ground` and ecoinvent in `natural resource / in ground`, kilograms in both. Re-filed to `Resources / in ground` to say the same thing in this list's own compartment spelling. AGRIBALYSE also ships the same name in its bare `Resources /` heading (f2590e38-fbee-53d4-b8a2-f27c391bf73f), which the compartment rule already reads as a ground resource, so after this fix the two rows agree. (#351, found by the five-list build aborting on this row.)"
+    },
+    {
+      "uuid": "9aef3b90-11aa-53d6-b21d-a28d7ce798d2",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "in water"
+      ],
+      "comment": "`Water, cooling, salt, ocean` (kg) filed in `Resources / land` -- a water intake in the land compartment, one of the four rows issue #352 records as misfiled. The land compartment's name-prefix rules rightly refuse it (it is neither an occupation nor a transformation), and under the partition policy that refusal aborts the merge. Re-filed to `Resources / in water`, where AGRIBALYSE puts every other water intake, including its other cooling-water rows. Which *kind* of water it then reaches is the water taxonomy's question (#352); this fix only puts the row in the compartment that question is asked in."
+    },
+    {
+      "uuid": "a6435a7a-2537-5f10-8532-ce65a53582d7",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "in water"
+      ],
+      "comment": "`Water, river` (m3) filed in `Resources / land`. The same story as the ocean cooling row above: a water intake in the land compartment, refused by the land name-prefix rules, aborting the merge under partition. AGRIBALYSE's 2,401-process `Water, river, FR` sibling sits in `Resources / in water`; this row joins it there. (#352's misfiled four.)"
+    },
+    {
+      "uuid": "bfbeed53-285d-5024-a73a-2aeec74e5d34",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "in water"
+      ],
+      "comment": "`Water, river, GB` (m3) filed in `Resources / land`. The regionalised sibling of the row above, misfiled the same way and re-filed for the same reason. The trailing `GB` is the geography splitter's business, not this fix's. (#352's misfiled four.)"
+    },
+    {
+      "uuid": "b8a66e15-d200-5ed4-a07a-593f42cf25a1",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "land"
+      ],
+      "comment": "`Occupation, annual crop` (m2a) filed in `Resources / biotic` -- the mirror image of the four rows above: a land occupation in a compartment that holds living resources. Its class is already in `land-flow-classes.json` with the other 200 land rows, but a class places a row on a Land Use flow, and a row whose compartment reads Resource -> Biotic contradicts that place, so the merge minted a fresh factor-less `Cropland` copy in the biotic compartment instead of reaching the published occupation flow (b88d3b6d) its class names. Re-filed to `Resources / land`, where AGRIBALYSE puts its other 178 occupation and transformation rows and where the name-prefix rules read the class out of the name. (#351; found by the first five-list build, where this was the one land row of 201 that still minted.)"
+    },
+    {
+      "match": {
+        "name": "Nitrogen, organic bound"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7727-37-9",
+      "comment": "7727-37-9 is dinitrogen -- N2, the inert gas that is 78% of the air. `Nitrogen, organic bound` is not a compound: it is the nitrogen locked inside the organic matter of a discharge, reported as a mass of nitrogen, and no registry number can name it. AGRIBALYSE writes the gas's number on all five of its organic-bound rows -- water unspecified, groundwater, groundwater long-term, ocean and river -- the same habit EF 3.1, every ecoinvent version, BAFU and Stepwise shipped and every one of their fixes files corrects, because the merge only needs one list still asserting the identity to fuse a nutrient load with the gas (#26, #57). Removed rather than corrected, exactly as in the sibling files: there is nothing to correct it to, and with it gone the rows group by name onto the flow object the other lists' organic-bound rows share. Matched on name rather than uuid for the reason the sibling files give: the habit is per substance, not per compartment."
+    },
+    {
+      "match": {
+        "name": "Nitrogen, atmospheric"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Nitrogen, atmospheric"
+      ],
+      "comment": "The spelling the vendor ships, kept before the rename below takes it off the name -- the same pattern bafu-2026-v1-manual-fixes.json uses for its unit-suffixed water row. What it buys is a match rather than a published label: the merge reads a row's synonyms when it looks for a flow, and `bootstrap_labels` then purges them, so nothing added here reaches the published record. Replaces the field rather than appending: the rows ship no synonyms. Two rows, both air."
+    },
+    {
+      "match": {
+        "name": "Nitrogen, atmospheric"
+      },
+      "field": "name",
+      "new_value": "Nitrogen",
+      "comment": "AGRIBALYSE splits nitrogen gas across two spellings: `Nitrogen, atmospheric` on its two air rows and `Nitrogen` on its six soil and water rows, all eight carrying the gas's 7727-37-9. Every other merged list settles on one name for the number once its fixes are applied -- EF 3.1 says `dinitrogen`, ecoinvent, BAFU and Stepwise say `Nitrogen` -- and one name per number is the invariant test_manual_fixes.py holds every list to, because a registry number claimed by two names is the contested-identity question #34 exists to avoid. Renamed to `Nitrogen`, the spelling AGRIBALYSE's own underlying inventories (ecoinvent's) use for the gas; the vendor's spelling survives as a synonym via the fix above."
+    },
+    {
+      "match": {
+        "name": "COD (Chemical Oxygen Demand)"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Chemical Oxygen Demand"
+      ],
+      "comment": "AGRIBALYSE writes the abbreviation first and the full name in parentheses; ecoinvent and BAFU write the same abbreviation with a comma -- `COD, Chemical Oxygen Demand` -- and their rows reach the published `Chemical Oxygen Demand` flows because they carry the full name as a synonym the merge can read. This list's export ships no synonyms, so the same synonym is written here. Without it the first five-list build minted a `COD (Chemical Oxygen Demand)` flow beside the published one in every compartment the row appears in, none of them carrying a factor. The synonym is a matching aid only: the merge reads it and `bootstrap_labels` purges it before publication. Replaces the field rather than appending -- the rows ship no synonyms. (#187.) Five rows across the water subcompartments, river included -- the published flow exists in every one of them."
+    },
+    {
+      "match": {
+        "name": "COD (Chemical Oxygen Demand), FR"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Chemical Oxygen Demand"
+      ],
+      "comment": "The same abbreviation with a country code after it, one row in unspecified water. The first five-list build published `COD (Chemical Oxygen Demand), FR` as a flow name, country code and all. The synonym gives the merge the substance; where the geography should go is #352's question and does not need answering to stop the mint. (#187.)"
+    },
+    {
+      "match": {
+        "name": "BOD5 (Biological Oxygen Demand)"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Biological Oxygen Demand"
+      ],
+      "comment": "AGRIBALYSE writes the abbreviation first and the full name in parentheses; ecoinvent and BAFU write the same abbreviation with a comma -- `BOD5, Biological Oxygen Demand` -- and their rows reach the published `Biological Oxygen Demand` flows because they carry the full name as a synonym the merge can read. This list's export ships no synonyms, so the same synonym is written here. Without it the first five-list build minted a `BOD5 (Biological Oxygen Demand)` flow beside the published one in every compartment the row appears in, none of them carrying a factor. The synonym is a matching aid only: the merge reads it and `bootstrap_labels` purges it before publication. Replaces the field rather than appending -- the rows ship no synonyms. (#187.) Five rows across the water subcompartments, river included."
+    },
+    {
+      "match": {
+        "name": "BOD5 (Biological Oxygen Demand), FR"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Biological Oxygen Demand"
+      ],
+      "comment": "The abbreviation with a country code, one row in unspecified water; the build published the country code in the flow name. The synonym names the substance; the geography is #352's question. (#187.)"
+    },
+    {
+      "match": {
+        "name": "BOD5 (Biological Oxygen Demand), CN"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Biological Oxygen Demand"
+      ],
+      "comment": "As the FR row above: one row, unspecified water, the country code published in the minted flow's name until this synonym lets the row reach the substance every other list reaches. (#187.)"
+    },
+    {
+      "match": {
+        "name": "AOX, Adsorbable Organic Halogen"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Adsorbable Organic Halogen Compounds"
+      ],
+      "comment": "AGRIBALYSE's spelling of the halogen family sits between ecoinvent's two (`AOX, Adsorbable Organic Halides`, `AOX, Adsorbable Organic Halogen As Cl`) and BAFU's, all of which reach the published `Adsorbable Organic Halogen Compounds` -- ecoinvent through its correspondence table, BAFU because the flow object carries its spelling as a label. This list has neither vehicle, so the full published name is written as a synonym. Without it the first five-list build minted an `AOX, Adsorbable Organic Halogen` flow in five compartments, with no factors, beside a substance that carries four per compartment. (#187.)"
+    },
+    {
+      "match": {
+        "name": "Silicon tetrafluoride"
+      },
+      "field": "cas_numbers",
+      "new_value": [
+        "7783-61-1"
+      ],
+      "comment": "The substance's own registry number, which the vendor left off. ecoinvent and BAFU ship the same English spelling `Silicon Tetrafluoride` *with* 7783-61-1, and their rows reach the published `Silicium Tetrafluoride` flows by that number -- the label is EF 3.1's spelling and no list matches it by name. Two rows, both air. Without the number the first five-list build minted a `Silicon Tetrafluoride` substance beside EF's. Whether the published label should read `Silicon Tetrafluoride` rather than EF's `Silicium` is a preferred-label question this fix leaves alone. (#187.)"
+    },
+    {
+      "match": {
+        "name": "Clay, bentonite"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Bentonite"
+      ],
+      "comment": "EF 3.1 publishes `Bentonite` as a ground resource in exactly the compartment both rows resolve to; AGRIBALYSE names the same mineral family-first, `Clay, bentonite`, with no registry number on either side. The published name as a synonym lets the merge read the row the way it reads BAFU's plain `Clay` rows. Two rows -- the bare `Resources` heading and `Resources / in ground` -- which the first five-list build published as a duplicate `Clay, Bentonite` substance. (#187.)"
+    },
+    {
+      "match": {
+        "name": "Hydrocarbons, unspecified"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Hydrocarbons (unspecified)"
+      ],
+      "comment": "Issue #187 set this family aside as possibly absent from the published list, and that turned out wrong: EF 3.1 publishes `Hydrocarbons (unspecified)` -- parentheses, not a comma -- in every compartment these seven rows use, carrying factors, and ecoinvent's and BAFU's rows with this list's exact comma spelling reach it through their correspondence tables. The punctuation is the whole gap, and the first five-list build minted a factor-less `Hydrocarbons, Unspecified` substance beside it in seven compartments. The published spelling as a synonym closes it. (#187.)"
+    },
+    {
+      "match": {
+        "name": "Vanadium (V)",
+        "cas_numbers": "15121-26-3"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "15121-26-3"
+      ],
+      "new_value": [
+        "22537-31-1"
+      ],
+      "comment": "15121-26-3 is vanadium(2+), the divalent ion; the row is pentavalent vanadium, and 22537-31-1 is its number. The wrong number is EF 3.1's own: EF gives every one of its thirteen `vanadium (v)` flows 15121-26-3, `ef-3.1-manual-fixes.json` corrects it (#49), and AGRIBALYSE -- whose flow list is SimaPro's copy of EF 3.1's -- ships the uncorrected number on all twelve of its `Vanadium (V)` rows. A stated registry number outranks a name, so on the first five-list build (1 September 2026, b0b8d76) enrichment followed the number to ChEBI's V(2+), the merge renamed the minted substance `Vanadium(2+)`, and AGRIBALYSE's pentavalent vanadium was published as the divalent ion in eleven compartments -- the very defect #49 removed from EF. Corrected to the number the published `Vanadium(5+)` carries, so the rows reach it on `basis=cas`. Pinned to rows carrying the wrong number; AGRIBALYSE's elemental `Vanadium` rows carry 7440-62-2 and are untouched. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Lithium (I)",
+        "cas_numbers": "7439-93-2"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "7439-93-2"
+      ],
+      "new_value": [
+        "17341-24-1"
+      ],
+      "comment": "7439-93-2 is the element lithium; the row is lithium(1+), and 17341-24-1 is its number. Six rows, in air, soil and water. AGRIBALYSE writes the element's number on a name that states a charge, the copy-of-EF habit `Vanadium (V)` above shows, and a stated registry number outranks a name: on the build of 2 September 2026 (b445ff6) the rows reached bare Lithium, 7439-93-2, while ecoinvent's `Lithium I` rows under 17341-24-1 reached `Lithium(1+)`. One substance, two published flows, decided by which number each vendor typed. The name is the vendor's statement of what the flow is, and this row's formula field says `Li+`, so the number is corrected to the ion's and the rows join ecoinvent's. Matched on the name and the number together so that a row already carrying the right number, or any other, is left alone. AGRIBALYSE's bare `Lithium` rows keep the element's number. (#198)"
+    },
+    {
+      "match": {
+        "name": "Potassium (I)",
+        "cas_numbers": "7440-09-7"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "7440-09-7"
+      ],
+      "new_value": [
+        "24203-36-9"
+      ],
+      "comment": "7440-09-7 is the element potassium; the row is potassium(1+), and 24203-36-9 is its number. Twelve rows, in air, soil and water. AGRIBALYSE writes the element's number on a name that states a charge, the copy-of-EF habit `Vanadium (V)` above shows, and a stated registry number outranks a name: on the build of 2 September 2026 (b445ff6) the rows reached bare Potassium, 7440-09-7, while ecoinvent's `Potassium I` rows under 24203-36-9 reached `Potassium(1+)`. One substance, two published flows, decided by which number each vendor typed. The name is the vendor's statement of what the flow is, and this row's formula field says `K+`, so the number is corrected to the ion's and the rows join ecoinvent's. Matched on the name and the number together so that a row already carrying the right number, or any other, is left alone. AGRIBALYSE's bare `Potassium` rows keep the element's number. (#198)"
+    },
+    {
+      "match": {
+        "name": "Antimony, ion",
+        "cas_numbers": "7440-36-0"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7440-36-0",
+      "comment": "7440-36-0 is the registry number for antimony the element, and the row is an ion of it with the charge deliberately unstated: `Antimony, ion`, 11 rows. A generic ion name is its own substance and no number can name it, which is why ecoinvent deleted the element's number from its own `Antimony ion` rows between 3.8 and 3.9.1 (plans/retire-prepared-correspondence.md §3a) and why picking a charge for one would be a reinterpretation. AGRIBALYSE, whose flow list is SimaPro's copy of EF 3.1's, kept the element's number, and a stated number outranks a name: on the build of 2 September 2026 (b445ff6) the rows reached bare `Antimony`. With the number off, the name reaches `Antimony, Ion`, the numberless substance ecoinvent's `Antimony ion` rows minted (#141). AGRIBALYSE's bare `Antimony` rows keep the element's number. (#198)"
+    },
+    {
+      "match": {
+        "name": "Chromium, ion",
+        "cas_numbers": "7440-47-3"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7440-47-3",
+      "comment": "7440-47-3 is the registry number for chromium the element, and the row is an ion of it with the charge deliberately unstated: `Chromium, ion`, 13 rows. A generic ion name is its own substance and no number can name it, which is why ecoinvent deleted the element's number from its own `Chromium ion` rows between 3.8 and 3.9.1 (plans/retire-prepared-correspondence.md §3a) and why picking a charge for one would be a reinterpretation. AGRIBALYSE, whose flow list is SimaPro's copy of EF 3.1's, kept the element's number, and a stated number outranks a name: on the build of 2 September 2026 (b445ff6) the rows reached bare `Chromium`. With the number off, the name reaches nothing yet: no list publishes a generic chromium ion, so the rows mint `Chromium, Ion` beside `Chromium(3+)` and `Chromium(6+)`, numberless like its five siblings. AGRIBALYSE's bare `Chromium` rows keep the element's number. (#198)"
+    },
+    {
+      "match": {
+        "name": "Copper, ion",
+        "cas_numbers": "7440-50-8"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7440-50-8",
+      "comment": "7440-50-8 is the registry number for copper the element, and the row is an ion of it with the charge deliberately unstated: `Copper, ion`, 15 rows. A generic ion name is its own substance and no number can name it, which is why ecoinvent deleted the element's number from its own `Copper ion` rows between 3.8 and 3.9.1 (plans/retire-prepared-correspondence.md §3a) and why picking a charge for one would be a reinterpretation. AGRIBALYSE, whose flow list is SimaPro's copy of EF 3.1's, kept the element's number, and a stated number outranks a name: on the build of 2 September 2026 (b445ff6) the rows reached bare `Copper`. With the number off, the name reaches `Copper, Ion`, the numberless substance ecoinvent's `Copper ion` rows minted (#141), which BAFU's `Copper Ion` rows reach too. AGRIBALYSE's bare `Copper` rows keep the element's number. (#198)"
+    },
+    {
+      "match": {
+        "name": "Iron, ion",
+        "cas_numbers": "7439-89-6"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7439-89-6",
+      "comment": "7439-89-6 is the registry number for iron the element, and the row is an ion of it with the charge deliberately unstated: `Iron, ion`, 12 rows. A generic ion name is its own substance and no number can name it, which is why ecoinvent deleted the element's number from its own `Iron ion` rows between 3.8 and 3.9.1 (plans/retire-prepared-correspondence.md §3a) and why picking a charge for one would be a reinterpretation. AGRIBALYSE, whose flow list is SimaPro's copy of EF 3.1's, kept the element's number, and a stated number outranks a name: on the build of 2 September 2026 (b445ff6) the rows reached bare `Iron`. With the number off, the name reaches `Iron, Ion`, the numberless substance ecoinvent's `Iron ion` rows minted (#141), which BAFU's `Iron, Ion` row reaches too. AGRIBALYSE's bare `Iron` rows keep the element's number. (#198)"
+    },
+    {
+      "match": {
+        "name": "Tin, ion",
+        "cas_numbers": "7440-31-5"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7440-31-5",
+      "comment": "7440-31-5 is the registry number for tin the element, and the row is an ion of it with the charge deliberately unstated: `Tin, ion`, 12 rows. A generic ion name is its own substance and no number can name it, which is why ecoinvent deleted the element's number from its own `Tin ion` rows between 3.8 and 3.9.1 (plans/retire-prepared-correspondence.md §3a) and why picking a charge for one would be a reinterpretation. AGRIBALYSE, whose flow list is SimaPro's copy of EF 3.1's, kept the element's number, and a stated number outranks a name: on the build of 2 September 2026 (b445ff6) the rows reached bare `Tin`. With the number off, the name reaches `Tin, Ion`, the numberless substance ecoinvent's `Tin ion` rows minted (#141). AGRIBALYSE's bare `Tin` rows keep the element's number. (#198)"
+    },
+    {
+      "match": {
+        "name": "Titanium, ion",
+        "cas_numbers": "7440-32-6"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7440-32-6",
+      "comment": "7440-32-6 is the registry number for titanium the element, and the row is an ion of it with the charge deliberately unstated: `Titanium, ion`, 12 rows. A generic ion name is its own substance and no number can name it, which is why ecoinvent deleted the element's number from its own `Titanium ion` rows between 3.8 and 3.9.1 (plans/retire-prepared-correspondence.md §3a) and why picking a charge for one would be a reinterpretation. AGRIBALYSE, whose flow list is SimaPro's copy of EF 3.1's, kept the element's number, and a stated number outranks a name: on the build of 2 September 2026 (b445ff6) the rows reached bare `Titanium`. With the number off, the name reaches `Titanium, ion`, EF 3.1's own generic titanium ion, which ecoinvent's `Titanium ion` rows reach. AGRIBALYSE's bare `Titanium` rows keep the element's number. (#198)"
+    },
+    {
+      "match": {
+        "name": "Arsenic (V)",
+        "cas_numbers": "61805-96-7"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "61805-96-7"
+      ],
+      "new_value": [
+        "17428-41-0"
+      ],
+      "comment": "61805-96-7 resolves in none of the registries this project consults -- not in the Common Chemistry cache, not at PubChem -- and no other merged list writes it. Pentavalent arsenic's number is 17428-41-0: EF 3.1 gives it to every `arsenic (v)` flow, BAFU gives it to its `Arsenic (V)` row, and the published `Arsenic(5+)` carries it. With the unknown number the four rows -- air, ocean, groundwater and industrial soil -- minted an `Arsenic (V)` substance beside `Arsenic(5+)` on the first five-list build (1 September 2026, b0b8d76): the name did hit the published label, but a name hit on a substance whose number disagrees with the row's is refused, deliberately, and here the disagreement was a number nobody can resolve. Corrected to the number the siblings carry; the rows reach `Arsenic(5+)` on `basis=cas`. Pinned to rows carrying 61805-96-7. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Chromium (IV)"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "15723-28-1"
+      ],
+      "comment": "ecoinvent 3.8 ships one `Chromium IV` row -- the same compartment as this one, urban air -- and writes 15723-28-1 on it; that row is the published `Chromium IV` substance, and it is the only one. AGRIBALYSE spells the same name with the oxidation state in parentheses, which is not a spelling the published substance answers to, and ships no number, so on the first five-list build (1 September 2026, b0b8d76) the row minted a second `Chromium (IV)` beside the first. The number ecoinvent writes on the identical row lets this one reach the same substance on `basis=cas`. Whether tetravalent chromium is a substance any inventory means is a question about ecoinvent's row and the substance it made, not about this one. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Benzovindiflupyr"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "1072957-71-1"
+      ],
+      "comment": "The fungicide's own registry number, which AGRIBALYSE leaves off. The published substance is EF 3.1's, labelled with the systematic name (`N-[9-(dichloromethylidene)-...]-1-methyl-1h-pyrazole-4-carboxamide`) and carrying 1072957-71-1, with `Benzovindiflupyr` among its synonyms from the Common Chemistry record; ecoinvent's thirteen rows of this name reach it through curated targets. A synonym hit on a substance that carries a registry number is refused when the row carries none (that refusal is what keeps `Granite` off Penoxsulam), so on the first five-list build (1 September 2026, b0b8d76) the four rows -- agricultural and forestry soil, groundwater, unspecified water -- minted a factor-less `Benzovindiflupyr` beside a substance characterised in every one of those compartments. With the number written the rows reach it on `basis=cas`. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Zeta-cypermethrin"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "52315-07-8"
+      ],
+      "comment": "Zeta-cypermethrin is an isomer-enriched grade of cypermethrin and has no registry number of its own: ecoinvent 3.8 and 3.12 ship nine `Zeta-cypermethrin` rows and write cypermethrin's 52315-07-8 on every one, and those rows reach the published `Cypermethrin`, which carries `Zeta-cypermethrin` as a synonym on their account. AGRIBALYSE ships the name bare, the synonym hit is refused because `Cypermethrin` carries a number and the row does not, and the first five-list build (1 September 2026, b0b8d76) minted a factor-less `Zeta-cypermethrin` beside a pyrethroid characterised in both compartments the rows use. The number the sibling rows carry lets these two reach the same substance on `basis=cas`. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Bicarbonate, ion"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "71-52-3"
+      ],
+      "comment": "Hydrogencarbonate, HCO3-. ecoinvent 3.8 ships this exact spelling, `Bicarbonate, ion`, with 71-52-3 and reaches the published `hydrogencarbonate` by it; ecoinvent 3.12 spells it `Bicarbonate` with the same number. AGRIBALYSE ships the name without the number. The published substance holds `bicarbonate ion` as a synonym, so the SimaPro ion rule reads the row correctly -- but a synonym hit on a numbered substance from an unnumbered row is refused, and the first five-list build (1 September 2026, b0b8d76) minted a second `Bicarbonate, Ion` in ocean water beside the substance that already has an ocean flow. One row. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Phosphorus oxychloride"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "10025-87-3"
+      ],
+      "comment": "POCl3. ecoinvent 3.8 and 3.12 ship `Phosphorus oxychloride` with 10025-87-3 and reach EF's `Phosphoric Trichloride` by it -- EF's spelling of the same molecule, which no list matches by name. AGRIBALYSE ships the name bare; the published substance carries the vendor's spelling as a synonym, the synonym hit is refused against the row's missing number, and the first five-list build (1 September 2026, b0b8d76) minted a second substance in unspecified water beside one characterised there. One row. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Steatite"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "14378-12-2"
+      ],
+      "comment": "Soapstone. ecoinvent 3.12 ships `Steatite` with 14378-12-2 and reaches the published `Steatite, In Ground` by it. AGRIBALYSE ships the name without the number, in the same compartment (`Resources / in ground`); the published substance answers to the bare name only as a synonym, which is refused against a numbered substance, so the first five-list build (1 September 2026, b0b8d76) minted a second steatite resource beside the first. One row. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Dioxins (TEQ)"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "1746-01-6"
+      ],
+      "comment": "A toxic-equivalent quantity of dioxins is, by definition, a mass of 2,3,7,8-tetrachlorodibenzo-p-dioxin: every congener is weighted by its toxicity relative to TCDD and the sum is reported as kilograms of TCDD. ecoinvent says the same thing in its name, `Dioxins, measured as 2,3,7,8-tetrachlorodibenzo-p-dioxin`, writes TCDD's 1746-01-6 on the row, and reaches the published `2,3,7,8-tetrachlorodibenzo-p-dioxin` by it -- the flow every dioxin characterisation factor is stated against. AGRIBALYSE abbreviates the same measurement to `Dioxins (TEQ)` and ships no number, so the first five-list build (1 September 2026, b0b8d76) minted a factor-less `Dioxins (TEQ)` in air beside the one dioxin flow that carries factors. One row, air. The water row spelled `Dioxins (unspec.)` is not given the number: an unspecified dioxin load is not stated as TEQ, and whether it should be read as one is left on #190. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Cobalt, Co 5.0E-2%, in mixed ore"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "7440-48-4"
+      ],
+      "comment": "An ecoinvent 2 resource name: the element, its grade in the ore, and where it sits. ecoinvent 3.8 ships the same name with `, in ground` appended and writes the element's 7440-48-4 on it, and that row reaches the published `Cobalt` resource by the number -- the grade in the name is a property of the deposit, not a different substance, and every ecoinvent release since files the extraction under the element. AGRIBALYSE keeps the ecoinvent 2 spelling without the number, so on the first five-list build (1 September 2026, b0b8d76) the row minted a `Cobalt, Co 5.0E-2%, In Mixed Ore` resource beside `Cobalt`. Eight rows share the habit, one per metal; each is given the number the ecoinvent 3.8 row of the same name carries. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Copper, Cu 6.8E-1%, in mixed ore"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "7440-50-8"
+      ],
+      "comment": "As for the cobalt row: ecoinvent 3.8's `Copper, Cu 6.8E-1%, in mixed ore, in ground` carries 7440-50-8 and reaches `Copper`. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Gold, Au 1.0E-7%, in mixed ore"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "7440-57-5"
+      ],
+      "comment": "As for the cobalt row: ecoinvent 3.8's `Gold, Au 1.0E-7%, in mixed ore, in ground` carries 7440-57-5 and reaches `Gold`. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Nickel, Ni 2.5E+0%, in mixed ore"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "7440-02-0"
+      ],
+      "comment": "As for the cobalt row: ecoinvent 3.8's `Nickel, Ni 2.5E+0%, in mixed ore, in ground` carries 7440-02-0 and reaches `Nickel`. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Palladium, Pd 1.6E-6%, in mixed ore"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "7440-05-3"
+      ],
+      "comment": "As for the cobalt row: ecoinvent's `Palladium, Pd 1.6E-6%, in mixed ore, in ground` reaches `Palladium` by the element's 7440-05-3, which BAFU's palladium resource rows carry too. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Platinum, Pt 4.7E-7%, in mixed ore"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "7440-06-4"
+      ],
+      "comment": "As for the cobalt row: ecoinvent 3.8's `Platinum, Pt 4.7E-7%, in mixed ore, in ground` carries 7440-06-4 and reaches `Platinum`. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Rhodium, Rh 1.6E-7%, in mixed ore"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "7440-16-6"
+      ],
+      "comment": "As for the cobalt row: ecoinvent 3.8's `Rhodium, Rh 1.6E-7%, in mixed ore, in ground` carries 7440-16-6 and reaches `Rhodium`, as do BAFU's two graded rhodium-in-ore rows. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Silver, Ag 1.8E-6%, in mixed ore"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "7440-22-4"
+      ],
+      "comment": "As for the cobalt row: ecoinvent 3.8's `Silver, Ag 1.8E-6%, in mixed ore, in ground` carries 7440-22-4 and reaches `Silver`. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Palladium-234m"
+      },
+      "field": "name",
+      "original_value": "Palladium-234m",
+      "new_value": "Protactinium-234m",
+      "comment": "EF 3.1's own typo, inherited: palladium has no isotope anywhere near mass 234, and the nuclide an inventory reports under this name is protactinium-234m, the short-lived isomer in the uranium-238 decay chain -- `Pa` expanded to the wrong element. `ef-3.1-manual-fixes.json` corrects EF's twelve rows the same way, and EF's own general comment on them admits the identifiers were withdrawn because they did not fit the name. AGRIBALYSE ships one row, kBq to soil, and on the first five-list build (1 September 2026, b0b8d76) it minted a `Palladium-234m` substance beside the published `Protactinium-234m`. With the name corrected the row reaches that substance on its label. The vendor's spelling is not kept as a synonym, for the reason EF's fix gives: it is not a name the nuclide has, only a corruption of one. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Metals (unspecified)"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Metals, unspecified"
+      ],
+      "comment": "BAFU ships `Metals, unspecified` to air and that row made the published `Metals, Unspecified` substance -- no registry number, no factors, one flow. AGRIBALYSE ships the same bucket to water with parentheses where BAFU has a comma, and on the first five-list build (1 September 2026, b0b8d76) the punctuation minted a second bucket. The published spelling as a synonym lets the merge read the row as BAFU's; the substance carries no number, so the synonym is accepted. Being in water rather than air, the row adds a water flow to the existing substance rather than reaching BAFU's air flow, which is right. One row. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Discarded fish, demersal"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Discarded fish, demersal, to ocean"
+      ],
+      "comment": "ecoinvent 3.8 and 3.12 ship `Discarded fish, demersal, to ocean` -- bycatch returned dead to the sea, counted as a mass to ocean water -- and that row made the published substance, with no registry number and no factors. AGRIBALYSE ships the same flow in the same compartment without the trailing `, to ocean`, which is the compartment restated in the name, and on the first five-list build (1 September 2026, b0b8d76) the three words minted a second substance. The published spelling as a synonym closes it. One row. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Discarded fish, pelagic"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Discarded fish, pelagic, to ocean"
+      ],
+      "comment": "As for the demersal row: ecoinvent's `Discarded fish, pelagic, to ocean` is the published substance, and AGRIBALYSE's row is the same flow with the compartment left off the name. One row. (#190.)"
+    },
+    {
+      "match": {
+        "name": "Anhydrite",
+        "cas_numbers": "14798-04-0"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "Calcium sulfate"
+      ],
+      "comment": "Anhydrite is the mineral form of anhydrous calcium sulfate, and the list publishes it as `Calcium Sulfate` (7778-18-9) with a ground-resource flow. ecoinvent 3.8 ships `Anhydrite, in ground` with the mineral's own 14798-04-0 -- the number AGRIBALYSE writes too -- and reaches `Calcium Sulfate` on its label, because the ecoinvent row carries the compound's name among its synonyms and a published name outranks a number the index does not know. AGRIBALYSE's row carries the number and no synonyms, so its bare name hit only the substance's synonym `Anhydrite`, which the merge refuses against a numbered substance the row's own number disagrees with, and the first five-list build (1 September 2026, b0b8d76) minted a second calcium sulfate resource. The compound's name as a synonym gives the row ecoinvent's route. Pinned to the mineral's number. One row. (#190.)"
+    },
+    {
+      "uuid": "fc379dc0-4b59-5cc3-b454-3538dd8f9f60",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "biotic"
+      ],
+      "comment": "AGRIBALYSE ships `Peat` (kg) twice: under the bare `Resources /` heading and under `Resources / biotic`. The bare heading's flat rule reads a ground resource, but the row is the same kilogram of peat as its biotic twin, and the ruling on what an agricultural database's kilogram of peat is -- the growing medium, `Peat, Horticulture`, a biotic resource (#354, following #160's fuel-versus-growing-medium distinction) -- fixes the compartment with it. Re-filed to `Resources / biotic` so both rows say the same thing and the curated target can answer without a compartment contradiction. (#354.)"
+    },
+    {
+      "uuid": "4e658766-68ab-567e-ba85-3d01c0a0ca45",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "biotic"
+      ],
+      "comment": "AGRIBALYSE ships `Energy, From Wood` (MJ) under the bare `Resources /` heading and under `Resources / biotic`. Wood energy is a biotic resource -- the published `Wood` energy flow is `Resource -> Biotic`, and the row's own twin says so -- but the bare heading's flat rule reads a ground resource, and the first five-list build (1 September 2026, b0b8d76) minted an `Energy, From Wood` flow in a ground context from exactly this row. Re-filed to the compartment the twin states. (#354.)"
+    },
+    {
+      "uuid": "de4b6754-0d2e-587e-8b5b-5ee5a039698f",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "biotic"
+      ],
+      "comment": "As for `Energy, From Wood`: AGRIBALYSE ships `Energy, Gross Calorific Value, In Biomass` (MJ) under the bare heading and under `Resources / biotic`, the bare row minted a ground-context copy on the first five-list build, and biomass energy is biotic -- ecoinvent and BAFU file the identical name as a biotic resource and it reaches the published `Biomass` flow there. Re-filed to match the twin. (#354.)"
+    },
+    {
+      "uuid": "9fabfb2e-de94-5532-bf2f-6024b445a9ad",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "in ground"
+      ],
+      "comment": "AGRIBALYSE ships `Energy, From Peat` (MJ) three times: bare, `in ground`, and `biotic`. The first two land on the published fuel `Peat` (MJ, `Resource -> Ground`); the biotic copy minted a biotic duplicate of the same fuel flow on the first five-list build. Peat burned for energy is the ground resource -- the baseline files fuel `Peat` in the ground and keeps `Peat, Horticulture` for the biotic growing medium (#160, #354) -- and a resource filed in the wrong subcompartment is a data error, not a statement. Re-filed to `Resources / in ground` with its siblings. (#354.)"
+    },
+    {
+      "uuid": "359eb641-e485-56e1-9fbb-77a040545d51",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "in ground"
+      ],
+      "comment": "`Sulfur` (kg) filed in `Resources / in water` -- the same element from the same crust as the sulfur AGRIBALYSE takes from `Resources / in ground` 2,182 times, and which EF 3.1 publishes as a ground resource with a factor. The water subcompartment is a SimaPro bookkeeping slot, not a claim that this sulfur was dissolved in the sea: counted in the vendor CSV, every one of the row's 24 uses is zero -- 23 literal `0`s and one `0,327*0`, in amino-acid fermentation datasets (lysine, threonine, tryptophan, valine, isoleucine, leucine, arginine) and one sulfuric-acid process -- so no inventory result moves either way. On the build of 1 September 2026 (run c5445e95) the row minted a second, factor-less `Sulfur` in `Resource → Water → Unknown`, one of the 15 items on the substance-in-two-places queue. Re-filed rather than excluded: the substance is one this list publishes, and a zero-valued line in a fermentation dataset is not a concept to refuse. (#368.)"
+    },
+    {
+      "uuid": "c5af798d-f5b6-53b5-a551-545bb4c36a95",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "in air"
+      ],
+      "comment": "`Carbon dioxide, in air` (kg) filed under the bare `Resources` heading, which the compartment rule reads as a ground resource -- so on the build of 1 September 2026 crop carbon uptake was published as a mineral resource, `Carbon Dioxide (biogenic)` in `Resource → Ground`. AGRIBALYSE ships the same row a second time under `Resources / in air`, and that copy lands where EF 3.1 publishes the substance, `Resource → Air`. The bare copy carries real mass -- 23 uses, every one non-zero, 235,299 kg in `Agave tequilana, at farm {MX}` and 19,036 kg in `Banana, at farm {CI}` -- so of the seven twice-shipped rows #369 collects, this is the one that changes a result. Re-filed to the compartment its own qualified twin uses, the treatment `Peat` and `Energy, from wood` already got in this file. (#369.)"
+    },
+    {
+      "uuid": "bac7fc5d-dd32-5837-b62b-a4dcb72a14c1",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "in air"
+      ],
+      "comment": "`Air` (kg) under the bare `Resources` heading, published as a ground resource on the build of 1 September 2026 while the vendor's own `Resources / in air` copy landed on EF's `Air` in `Resource → Air`. 34 uses, 18 non-zero. Re-filed to the qualified twin's compartment. (#369.)"
+    },
+    {
+      "uuid": "39b6549b-bf36-5ccf-84fe-b96ca3a96dce",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "in air"
+      ],
+      "comment": "`Oxygen` (kg) under the bare `Resources` heading, the same shape as the `Air` row above: the qualified `Resources / in air` twin lands on EF's `Oxygen` in `Resource → Air`, the bare copy was published as a ground resource. Re-filed. (#369.)"
+    },
+    {
+      "uuid": "c8e821e3-5907-5ca0-96d1-d6a4670233eb",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "biotic"
+      ],
+      "comment": "`Wood, unspecified, standing` (m3) under the bare `Resources` heading, published as a ground resource on the build of 1 September 2026. Standing wood is a living resource: ecoinvent, BAFU and Stepwise put it in `Resource → Biotic`, and so does AGRIBALYSE's own `Resources / biotic` copy of this exact row. Re-filed beside its twin. (#369.)"
+    },
+    {
+      "uuid": "bee24501-d997-503a-9eb2-28e5d84ddedb",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "biotic"
+      ],
+      "comment": "`Wood, soft, standing` (m3) filed in `Resources / in ground` -- standing timber as a mineral. The vendor's own `Resources / biotic` copy lands beside ecoinvent's, BAFU's and Stepwise's rows in `Resource → Biotic`; this copy joins it. (#369.)"
+    },
+    {
+      "uuid": "98acbe41-6e69-5cb0-8f60-559aad3fb946",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "biotic"
+      ],
+      "comment": "`Fish, demersal, in ocean` (kg) filed in `Resources / in water`, published as a water resource on the build of 1 September 2026. Ruled biotic (project owner, 2026-09-01): a fishery is a living resource, and this is not a disagreement between vendors -- AGRIBALYSE ships the fish twice and its own `Resources / biotic` copy already lands beside ecoinvent's in `Resource → Biotic`. The amounts are trace (3 uses at 1e-29 kg), so this is tidiness where the carbon dioxide row above is substance. (#369.)"
+    },
+    {
+      "uuid": "77d55a91-e42c-50f1-8cac-3e2d9ad20c7d",
+      "field": "context",
+      "new_value": [
+        "Resources",
+        "biotic"
+      ],
+      "comment": "`Fish, pelagic, in ocean` (kg), the pelagic sibling of the row above: filed in `Resources / in water`, ruled biotic for the same reason, 4 uses at 1e-19 kg. (#369.)"
+    }
+  ]
+}

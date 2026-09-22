@@ -1,0 +1,106 @@
+site_name: Brightway Flows
+site_description: A consensus elementary flow list for industrial ecology — one substance identity, one context vocabulary, traceable links to every source list
+repo_name: brightway-flows
+
+theme:
+  name: material
+  palette:
+    primary: orange
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  # `mermaid` is a custom fence rather than a plain code block so that Material
+  # renders the diagram instead of printing its source.  GitHub renders the same
+  # fence natively, so a diagram reads correctly in both places.
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Home: index.md
+  - Concepts:
+      - Why this exists: concepts/why.md
+      - Flow objects and elementary flows: concepts/two-layers.md
+      - Flow contexts: concepts/contexts.md
+      - Characterisation factors: concepts/factors.md
+      - Glossary: concepts/glossary.md
+  - How a flow is decided:
+      - Overview: deciding/index.md
+      - Sources, and how far each is trusted: deciding/sources.md
+      - When a name and a number disagree: deciding/identity.md
+      - When one number reaches several substances: deciding/registry-numbers.md
+      - When two sources draw it differently: deciding/structures.md
+      - Salts, and half an atom: deciding/salts.md
+      - Names that belong to something else: deciding/synonyms.md
+      - Finding the substance for a row: deciding/merging.md
+      - Finding the flow, or making one: deciding/placing.md
+      - When the evidence is not enough: deciding/unresolved.md
+      - Checking any of it: deciding/provenance.md
+  - How a factor is decided:
+      - Overview: deciding-factors/index.md
+      - Who states a number, and whose counts: deciding-factors/implementations.md
+      - When the model underneath says something else: deciding-factors/model.md
+      - When two implementations disagree: deciding-factors/disagreement.md
+      - When only one transcription speaks: deciding-factors/one-voice.md
+      - When nobody characterised the flow: deciding-factors/blanks.md
+      - Checking any of it: deciding-factors/checking.md
+  - What we have found:
+      - Overview: findings/index.md
+      - A name and a number name different chemicals: findings/names-and-numbers.md
+      - A named substance mapped onto a catch-all: findings/catch-alls.md
+      - A class published as one of its members: findings/class-as-member.md
+      - The identifier stayed and the substance changed: findings/identifier-reuse.md
+      - A relative's common name: findings/relatives.md
+      - Two rows, one name, one compartment: findings/duplicate-rows.md
+      - The name is a part number: findings/part-numbers.md
+      - A nuclide named as something else: findings/nuclides.md
+      - The compartment names two situations: findings/compartments.md
+      - Units and the conditions of measurement: findings/units.md
+      - A number that is not this substance's: findings/registry-numbers.md
+      - A factor that is not this substance's: findings/factors.md
+      - Flows that are not substances at all: findings/not-substances.md
+  - What was changed in each source:
+      - Overview: changes/index.md
+      - EF 3.1: changes/ef-3.1.md
+      - ecoinvent 3.8: changes/ecoinvent-3.8.md
+      - ecoinvent 3.9.1: changes/ecoinvent-3.9.1.md
+      - ecoinvent 3.10.1: changes/ecoinvent-3.10.1.md
+      - ecoinvent 3.11: changes/ecoinvent-3.11.md
+      - ecoinvent 3.12: changes/ecoinvent-3.12.md
+      - BAFU 2026 v1: changes/bafu-2026-v1.md
+      - Stepwise 2006: changes/stepwise-2006.md
+      - AGRIBALYSE 3.2: changes/agribalyse-3.2.md
+  - Using the data:
+      - Which output do I need?: using/outputs.md
+      - Recipes: using/recipes.md
+      - Matching your own list: using/matching-your-own-list.md
+      - Scoring a dataset two ways: using/scores.md
+  - Operating the pipeline:
+      - Installation: operating/install.md
+      - Running a transform: operating/running.md
+      - Choosing sources: operating/sources.md
+      - Assessing a build: operating/assessing.md
+      - The review application: operating/review-app.md
+      - Deployment: operating/deployment.md
+  - Reference:
+      - Harmonisation steps: reference/harmonisation-steps.md
+      - File schemas: reference/schemas.md
+      - JSON-LD and the context: reference/jsonld.md
+      - Semantic types: reference/semantic-types.md
+      - Known limitations: reference/limitations.md
+      - Architecture (developers): reference/architecture.md
+      - Conventions (developers): reference/conventions.md
+      - Data model (developers): reference/data-model.md

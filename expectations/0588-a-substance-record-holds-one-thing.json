@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "description": "Four substance records each held two different things, and one substance was published under a class name (#116). The carbon released to soil and air shared a record with the carbon held in soil and biomass stocks; rhenium ore shared a record with the dissolved rhenium ion; EF's 100-year biogenic CO2 accounting flow shared a record with plain biogenic CO2 -- which had let the duplicate pass deprecate EF's own plain uptake flow into the accounting variant, so ecoinvent's ordinary uptake row followed the redirect into 100-year semantics; five flows EF names `Water` sat on `Water vapour` under the vendor's word while the curated material file had already said they are vapour; and the refrigerant HFO-1234yf was published as `Polyhaloalkene`, the family it belongs to. Each had a mechanism waiting: the carbon and rhenium splits are `separate` rulings in contested-cas-decisions.json, the CO2 variant is an origin qualifier like the delayed-emission corrections beside it, the water names are an approve ruling in preferred-label-decisions.json, the rename is a manual fix with the class word kept off the synonyms by the chemical_classes list, and one ecoinvent row that had reached the stock only through the now-withdrawn registry number gets the match override its own vendor's mapping implies. Measured against a full build of main at 96ccee9 and a full build of this branch, 19 August 2026 -- EF 3.1 base, ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026 v1 merged. Substance identifiers named below are the minted, content-derived ids of those builds; a change to the id derivation moves them and the comment records where they came from.",
+  "expectations": [
+    {
+      "id": "0588-the-carbon-stock-is-its-own-substance",
+      "issue": 588,
+      "title": "EF's stock flow sits on the stock substance, not on the element",
+      "subject": {
+        "kind": "flow",
+        "uuid": "26f9293f-8c18-4f3b-a334-e57a8ecda895"
+      },
+      "expect": {
+        "substance_id": "fo-fc2c653f33e7e4a7",
+        "context_display": "Resource → Ground"
+      },
+      "comment": "EF's `Carbon, organic, in soil or biomass stock` flow, named by uuid because the claim is about which substance it sits on. On the before build it sat on elemental `Carbon` (fo-fad0ab6e5c415c5e) and was published under the element's name -- and a first draft of this expectation claimed only that a stock-labelled substance exists, which the before build met through a record BAFU's row had minted on its own, one substance away from EF's flow: the claim was testing nothing, which is why it now names the flow and the substance id. fo-fc2c653f33e7e4a7 is the id the `separate` ruling mints from the name and the contested number."
+    },
+    {
+      "id": "0588-elemental-carbon-keeps-its-releases",
+      "issue": 588,
+      "title": "Elemental carbon keeps its seven release flows and loses the stock",
+      "subject": {
+        "kind": "substance",
+        "label": "Carbon",
+        "cas": "7440-44-0"
+      },
+      "expect": {
+        "count": 1,
+        "flow_count": 7
+      },
+      "comment": "8 flows on the before build, the eighth being the stock. The seven releases -- EF's five, BAFU's two additions -- are untouched: the ruling separates names, and every release row is named plain `Carbon`.\n\n**Seven became six with #180.** One of the seven was not EF's and not BAFU's: `Carbon` in `Ground → Silvicultural` was minted by ecoinvent's `Carbon` row in forestry soil, which had landed on this substance by its number while its siblings the vendor's table covered went to `Elemental Carbon`. #180 sends that row, and the two beside it in agricultural and industrial soil, to elemental carbon with the other four, so the Silvicultural flow is no longer minted here and the element keeps six: EF's four soil flows and BAFU's two additions. The id is kept because the question -- does the element keep its releases and lose the stock -- is the same one. The `cas` selector is deliberate beside the label: after the split two records carry 7440-44-0, and this pins the one still answering to the element's name. The count also guards the Increase override below -- without it the ruling alone sent ecoinvent's Increase row here, and the element was back to eight flows with a soil-carbon ledger entry minted as `Carbon` taken out of the ground.\n\nUnmet on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`): eight flows. One extra is a `Carbon` release to unspecified water from AGRIBALYSE, a genuine release. The other is the stock again -- AGRIBALYSE's three `Carbon, organic, in soil or biomass stock` rows fell to the element the way ecoinvent's Increase row once did and minted a `Carbon` ground resource. That is #195; pending until its curated targets land, when this reads seven.\n\n**The flag comes off here.** #195's three curated targets are what this was pending on, and they are in the same change as this line: with them the stock rows reach EF 3.1's `Carbon, Organic, In Soil Or Biomass Stock`, nothing mints a `Carbon` resource in the ground, and the element keeps seven -- EF's four soil flows, BAFU's two additions, and AGRIBALYSE's genuine `Carbon` release to unspecified water."
+    },
+    {
+      "id": "0588-ecoinvents-stock-rows-reach-the-stock",
+      "issue": 588,
+      "title": "ecoinvent's stock ledger rows reach the stock substance, under its own name",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name_contains": "In Soil Or Biomass Stock"
+      },
+      "expect": {
+        "not_outcome": "unmatched",
+        "row_count": 3,
+        "same_substance": true,
+        "target_name": "Carbon, Organic, In Soil Or Biomass Stock"
+      },
+      "comment": "Three rows: 3.12's Decrease, which the vendor's own correspondence table sends to EF's stock flow; 3.8's direction-less row, prepared likewise; and 3.12's Increase, which is absent from the vendor's table and had reached the stock only through the shared registry number -- the very evidence the `separate` ruling withdraws. It carries the match override stating what the Decrease mapping implies. On the before build all three reached EF's flow but the wrong substance, and the flow published as `Carbon`."
+    },
+    {
+      "id": "0588-bafus-stock-row-joins-them",
+      "issue": 588,
+      "title": "BAFU's stock row reaches the same flow instead of minting a twin",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Carbon, Organic, In Soil Or Biomass Stock"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "26f9293f-8c18-4f3b-a334-e57a8ecda895"
+      },
+      "comment": "On the before build this row minted a flow and a substance of its own -- the element object answering to the name `Carbon` gave its name index nothing to hit -- so BAFU's ledger and ecoinvent's landed on two different substances. With the stock separated under its own name, the row matches EF's flow on the label."
+    },
+    {
+      "id": "0588-rhenium-the-metal-is-its-own-substance",
+      "issue": 588,
+      "title": "The rhenium taken out of the ground is the metal, not the ion",
+      "subject": {
+        "kind": "substance",
+        "label": "Rhenium"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1,
+        "flow_count": 1
+      },
+      "comment": "On the before build no substance named `Rhenium` exists: the one resource flow -- ecoinvent's `Rhenium, In Crude Ore, In Ground`, BAFU's `Rhenium` -- sat on `Rhenium(2+)` and was published under the ion's name. No second registry number exists to force the split the way #49's did for vanadium, because CAS has no entry for the cation; the `separate` ruling supplies what the number cannot."
+    },
+    {
+      "id": "0588-the-ion-keeps-its-thirteen",
+      "issue": 588,
+      "title": "The rhenium ion keeps its thirteen emission flows",
+      "subject": {
+        "kind": "substance",
+        "label": "Rhenium(2+)"
+      },
+      "expect": {
+        "count": 1,
+        "flow_count": 13
+      },
+      "comment": "14 on the before build, the fourteenth being the resource flow. The thirteen are EF's `rhenium(2+)` emission rows and stay together: the ruling separates the two names and moves nothing else."
+    },
+    {
+      "id": "0588-the-100yr-accounting-flow-is-its-own-substance",
+      "issue": 588,
+      "title": "The 100-year biogenic CO2 accounting flow is a substance of its own",
+      "subject": {
+        "kind": "substance",
+        "label": "Carbon Dioxide (biogenic-100yr)"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1,
+        "flow_count": 1
+      },
+      "comment": "An accounting variant, like the two delayed-emission correction substances beside it, and until the `biogenic_100yr` qualifier existed the bare word `biogenic` inside its name matched first and fused it with ordinary biogenic CO2. The fusion cost more than a name: EF ships a plain biogenic uptake flow in the same compartment, and once the two shared a substance the duplicate pass could not tell them apart and deprecated the plain one into the accounting variant."
+    },
+    {
+      "id": "0588-plain-biogenic-co2-loses-the-variant",
+      "issue": 588,
+      "title": "EF's own plain biogenic uptake flow is alive again",
+      "subject": {
+        "kind": "flow",
+        "uuid": "da174fac-e567-42d3-99b5-a688913dc88e",
+        "include_deprecated": true
+      },
+      "expect": {
+        "deprecated": false,
+        "substance_id": "fo-c830feb8dfc643a1"
+      },
+      "comment": "EF 3.1's `Carbon Dioxide (biogenic)` in Resource → Air. On the before build it was deprecated: it and the 100yr variant sat on one substance in one context with one unit, which is everything the duplicate pass reads, so the pair collapsed and the accounting variant survived. With the variant on its own substance there is no pair, and the plain uptake flow EF published is published again. The substance count on the biogenic record is 16 flows on both builds and deliberately not claimed: what changed is which uptake flow is the live one, not how many rows the record holds."
+    },
+    {
+      "id": "0588-ecoinvents-uptake-keeps-its-own-mapping",
+      "issue": 588,
+      "title": "ecoinvent's CO2-from-air uptake row still follows ecoinvent's own correspondence",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Carbon dioxide",
+        "context": [
+          "natural resource",
+          "in air"
+        ]
+      },
+      "expect": {
+        "outcome": "prepared",
+        "row_count": 2,
+        "target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e"
+      },
+      "comment": "ecoinvent's correspondence table has said `da174fac` -- EF's plain biogenic uptake -- all along; the merge records it in `prepared_target_elementary_flow_id` on both builds. On the before build that flow was deprecated into the 100yr variant, so the resolution reads `redirected-from-deprecated-target` and the row landed on `b3136069` carrying 100-year semantics nothing in ecoinvent's data states. With the variant split off, the resolution is `direct-active-target`: the vendor's mapping lands where the vendor wrote it. Claimed by uuid because both flows publish under their substances' names and a name claim could not tell them apart. Both versions, hence `row_count: 2`."
+    },
+    {
+      "id": "0588-the-water-ruling-empties-the-queue",
+      "issue": 588,
+      "title": "The one substance-label conflict is ruled, and the queue is empty",
+      "subject": {
+        "kind": "measure",
+        "key": "queue.substance-label-conflict"
+      },
+      "expect": {
+        "equals": 0
+      },
+      "comment": "1 on the before build: `Water` → `Water vapour`, five EF flows in air compartments whose grouping water-flow-materials.json had already curated as vapour, held unrenamed because `Water` is the liquid-water substance's own name. The approve ruling in preferred-label-decisions.json settles it: the flows publish as `Water vapour` and `Water` is withheld as their synonym (#113). A first draft claimed a count of flows named `Water vapour`, which the flow selector answers from the substance label and therefore met before the ruling existed; the queue length is the claim that actually moves. None of the five flows carries a characterisation factor, so nothing numeric moves with the name."
+    },
+    {
+      "id": "0588-no-label-conflict-remains",
+      "issue": 588,
+      "title": "No flow is left disagreeing with its substance about the name",
+      "subject": {
+        "kind": "measure",
+        "key": "flows.label_disagrees_with_substance"
+      },
+      "expect": {
+        "equals": 0
+      },
+      "comment": "5 on the before build -- the five water flows, the one conflict the queue held. With the ruling written the queue is empty and every published flow carries its substance's name. Zero is claimed exactly, not bounded: the next conflict should fail this expectation and be ruled or split, not absorbed."
+    },
+    {
+      "id": "0588-the-refrigerant-is-named-for-the-member-not-the-family",
+      "issue": 588,
+      "title": "CAS 754-12-1 is published under Common Chemistry's name, not the family word",
+      "subject": {
+        "kind": "substance",
+        "cas": "754-12-1"
+      },
+      "expect": {
+        "count": 1,
+        "label": "2,3,3,3-Tetrafluoropropene",
+        "flow_count": 13
+      },
+      "comment": "Published as `Polyhaloalkene` on the before build -- a family of chemicals, any alkene with more than one halogen, worn as the name of one member because EF ships the refrigerant under both `polyhaloalkene` and `HFO-1234yf` and the longer string won the name contest. The renamed value is Common Chemistry's own name for 754-12-1 (#104, the Zytron precedent #320). One substance, thirteen flows, before and after: the rename must not split it or merge it with anything."
+    }
+  ]
+}

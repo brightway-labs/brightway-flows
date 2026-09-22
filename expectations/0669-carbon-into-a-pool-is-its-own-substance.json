@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent's `Carbon dioxide, to soil or biomass stock` records carbon entering a long-lived land carbon pool. EF 3.1 has no flow that means that — JRC130796 Table 3 is three origins by two directions, and a removal can only be expressed there as a resource from air — so #258's mapping put it on EF's `carbon dioxide (biogenic)` soil flows, where a credit sat against a substance the method states to be neutral. The four rows are now declined in `ecoinvent-match-overrides.json`, reach the merge as flows the table never mentioned, detect as `sequestration_from_land_management`, and mint a substance of their own. Measured on a full build against merge base 09b1c37: 8 rows moved, 2 flow objects and 3 elementary flows added in total across this change and #133's, and nothing else in any list moved. The published label is still ecoinvent's own spelling; renaming it to `Carbon Dioxide (sequestration from land management)` is a later step. See #139 for the evidence and #333 for the plan.",
+  "expectations": [
+    {
+      "id": "0669-agricultural-soil-capture-leaves-biogenic",
+      "issue": 669,
+      "title": "Carbon into an agricultural soil pool is not published as biogenic carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "259cf8d6-6ea8-4ccf-84b7-23c930a5b2b3"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-7edfcc35f0a40da5"
+      },
+      "comment": "One uuid, shipped by both ecoinvent 3.8 and 3.12, so two rows. This is the compartment EF does have a biogenic soil flow for, which is what made #258's mapping look right: the qualifier could be carried across. What could not be carried across is the meaning — EF's biogenic carbon is neutral in both directions, and this row is a removal. `same_substance` because the two releases reaching different substances would be a different bug wearing this fix's clothes."
+    },
+    {
+      "id": "0669-silvicultural-soil-capture-leaves-biogenic",
+      "issue": 669,
+      "title": "The same holds in the compartments EF cannot express",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "uuid": "8ae4d8bb-3e4b-4825-8325-94696d7a64fd"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_substance_id": "fo-7edfcc35f0a40da5"
+      },
+      "comment": "Forestry soil, which EF 3.1 has no compartment for at all. Stated separately from the agricultural row because the two used to fail differently: this one landed on a flow *this project minted* under biogenic carbon dioxide, so the wrong substance was one the list had invented rather than one EF ships. Both minted flows — silvicultural and industrial — are gone from the build now, because nothing else was on them."
+    },
+    {
+      "id": "0669-the-pool-substance-covers-four-compartments",
+      "issue": 669,
+      "title": "Carbon into a land pool is one substance in the four compartments ecoinvent uses",
+      "subject": {"kind": "substance", "id": "fo-7edfcc35f0a40da5"},
+      "expect": {"exists": true, "count": 1, "flow_count": 4},
+      "comment": "Agricultural, silvicultural, industrial and unspecified ground — the four ecoinvent files this flow in, and no more. Four rather than eight: one flow per compartment, with 3.8's and 3.12's rows both on it. The substance id is `sha1` of the grouping key, which for a qualified substance is the qualifier and the registry number, so it survives a rebuild for as long as the row is grouped the same way."
+    },
+    {
+      "id": "0669-ef-keeps-its-own-biogenic-soil-flow",
+      "issue": 669,
+      "title": "EF's biogenic carbon dioxide in agricultural soil is untouched",
+      "subject": {"kind": "flow", "uuid": "041f5cfe-6556-11dd-ad8b-0800200c9a66"},
+      "expect": {"substance_id": "fo-c830feb8dfc643a1", "consensus_factors": 0},
+      "comment": "The guard, and the thing a decline must not do. Withdrawing a correspondence row moves the *source rows*, not the target: EF 3.1 ships this flow, it stays on `Carbon Dioxide (biogenic)`, and it goes on carrying no factor because no EF method characterises any of EF's nine carbon dioxide soil flows. If this ever reports a factor, ecoinvent's −1 has found its way back onto the substance EF states to be neutral, which is the whole thing being prevented."
+    }
+  ]
+}

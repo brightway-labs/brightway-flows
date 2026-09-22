@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Isotope gaps" %}
+{% set active_section = "checks" %}
+{% set args = {'q': query, 'source': source} %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Isotope gaps</h1>
+  <p class="page__lede">
+    A flow measured in becquerels that does not say which isotope it is. An
+    activity has to be an activity <em>of</em> something; without the isotope
+    the flow cannot be converted, characterised or compared.
+  </p>
+  <p class="page__lede muted">
+    <strong>Why</strong> says which kind of gap it is.
+    <code>label_is_not_a_nuclide_name</code> is an aggregate or an element and
+    is the expected outcome; <code>no_nuclide_at_that_mass_number</code> means
+    the element name is wrong and a correction can be written;
+    <code>no_row_for_isomeric_state</code> and the check names are a
+    disagreement this project will not resolve by guessing.
+  </p>
+</header>
+
+<form class="filters" method="get" action="{{ url_for('checks.isotope_gaps') }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Name or uuid…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('checks.isotope_gaps') }}
+  </div>
+  <div class="filters__selects">
+    {{ t.select("source", "Source", source, sources | zip_same) }}
+  </div>
+</form>
+
+{% if page.rows %}
+{{ t.pager(page, 'checks.isotope_gaps', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Flow</th>
+        <th scope="col">Substance</th>
+        <th scope="col">Why</th>
+        <th scope="col">Source</th>
+        <th scope="col">Context</th>
+        <th scope="col">Unit</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          {{ t.flow_link(row.uuid, row.name or row.uuid) }}
+          <div class="muted mono">{{ row.uuid }}</div>
+        </td>
+        <td>
+          {% if row.flow_object_id %}{{ t.substance_link(row.flow_object_id) }}
+          {% else %}<span class="muted">—</span>{% endif %}
+        </td>
+        <td>
+          {% if row.reason %}<span class="mono">{{ row.reason }}</span>
+          {% else %}<span class="muted">—</span>{% endif %}
+          {% if row.claimed_nuclide %}
+          <div class="muted mono">claimed {{ row.claimed_nuclide }}</div>
+          {% endif %}
+        </td>
+        <td>{{ row.source }}</td>
+        <td>{{ row.context_display }}</td>
+        <td class="mono">{{ row.unit }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'checks.isotope_gaps', args) }}
+{% else %}
+{{ t.nothing_matches("Every becquerel flow names its isotope.") }}
+{% endif %}
+{% endblock %}

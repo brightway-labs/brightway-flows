@@ -1,0 +1,442 @@
+{#
+  The three factor queues: where two implementations of one method disagree,
+  where only one of them characterises a flow at all, and where the model the
+  method is derived from states something more than a hundredfold away.
+
+  Neither fits the shared `queue.html`, and for the same reason the collision
+  queue does not: the item is a question about a substance across several flows,
+  and answering it takes more than the two numbers. A ruling here is a statement
+  about somebody else's science, so the page carries what it was made on --
+  where each flow came from, what this pipeline did to it, and every number
+  anybody states about it, including the ones a collapse already declined.
+
+  One section per question; one row per flow the question covers.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = definition.title %}
+{% set active_section = "queue" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>{{ definition.title }}</h1>
+  <p class="page__lede">{{ definition.question }}</p>
+  <p class="muted mono">{{ definition.name }}</p>
+</header>
+
+<form class="filters" method="get"
+      action="{{ url_for('queue.detail', name=definition.name) }}">
+  {# The severity is held by the chips below; searching must not drop it. #}
+  <input type="hidden" name="severity" value="{{ severity }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Substance, category or identifier…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('queue.detail', {'name': definition.name}) }}
+  </div>
+</form>
+
+{#
+  The severity badge as a one-click filter.
+
+  The dropdown could already do this and nobody used it: a curator opens a queue
+  to find the blocking rows, and "blocking" is a word on the rows rather than a
+  word in a menu. The counts are of this queue under this search.
+#}
+{{ t.badge_filter("Severity", "severity", severity, badges,
+                  'queue.detail', dict(args, name=definition.name),
+                  all_count=badge_total) }}
+
+{% if page.rows %}
+{{ t.pager(page, 'queue.detail', dict(args, name=definition.name)) }}
+
+{% for question in page.rows %}
+{% set item = question.item %}
+<section class="section">
+  <div class="section__header">
+    <h2>{{ item.payload.substance or item.flow_object_id }}</h2>
+    {% if item.payload.ruling %}
+    <span class="tag tag--review">ruled {{ item.payload.ruling.decision }}</span>
+    {% endif %}
+  </div>
+
+  {#
+    A ruled question is not work, and the answer goes above the evidence rather
+    than below it: a curator scrolling the queue should be able to tell in one
+    line that this one is settled, and read why without opening
+    `data/lcia-factor-rulings.json`.
+  #}
+  {% if item.payload.ruling %}
+  <div class="notice">
+    <p>
+      <strong>Ruled {{ item.payload.ruling.decision }}.</strong>
+      {#
+        The number, only where there is one number: a ruling covers every context
+        the question was asked in, and those state different factors -- vanadium's
+        five compartments carry five. Quoting the first would read as the ruling
+        having published one number everywhere. The per-row numbers are in the
+        table below, and the `Ruled` column says which of them this list took.
+      #}
+      {% if item.payload.ruling.decision == 'decline' %}
+      This list publishes nothing for it, deliberately.
+      {% elif item.payload.factor_count == 1 %}
+      This list publishes
+      <span class="mono">{{ item.payload.ruling.published | amount }}</span>,
+      from {{ item.payload.ruling.implemented_by }}, as
+      <span class="mono">derivation: ruled</span>.
+      {% else %}
+      This list publishes {{ item.payload.ruling.implemented_by }}'s number for
+      each of the {{ item.payload.factor_count }} factors, as
+      <span class="mono">derivation: ruled</span>.
+      {% endif %}
+      {% if item.payload.ruled_count < item.payload.factor_count %}
+      <em>{{ item.payload.ruled_count }} of {{ item.payload.factor_count }}
+      factors</em> — the rest state numbers the ruling was not written about, and
+      are still a question.
+      {% endif %}
+    </p>
+    {% for paragraph in item.payload.ruling.comment.split("\n\n") %}
+    <p>{{ paragraph }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <dl class="facts">
+    <dt>Impact category</dt>
+    <dd>{{ item.payload.category }}</dd>
+    <dt>Substance</dt>
+    {#
+      Labelled with the substance's name: `fo-f3aa2fc7eef6751a` is the address,
+      not the answer, and a curator weighing a number needs to know what it is a
+      number about without following the link.  The identifier stays, small,
+      because it is what a ruling in `lcia-factor-rulings.json` is keyed on.
+    #}
+    <dd>
+      {{ t.substance_link(item.flow_object_id, item.payload.substance or item.flow_object_id) }}
+      {% if item.payload.substance %}
+      <span class="muted mono">{{ item.flow_object_id }}</span>
+      {% endif %}
+    </dd>
+    {#
+      The unit, because a factor is per unit of the flow and the same substance
+      is not always measured the same way -- a resource in cubic metres beside an
+      emission in kilograms is exactly what a reader must not scroll past.
+    #}
+    {% if question.units %}
+    <dt>Unit</dt>
+    <dd class="mono">{{ question.units | join(", ") }}</dd>
+    {% endif %}
+    <dt>Asked about</dt>
+    <dd>
+      {{ item.payload.factor_count }} factor(s) in
+      {{ item.payload.contexts | length }} context(s)
+    </dd>
+    {% if item.payload.worst_ratio %}
+    <dt>Widest disagreement</dt>
+    {# Grouped, because these run from 397.4 to 10,861,793 and an unpunctuated
+       seven-digit number is one a reader has to count digits on. #}
+    <dd class="mono">{{ "{:,.1f}".format(item.payload.worst_ratio) }}×</dd>
+    {% endif %}
+    {% if item.payload.contradicts %}
+    <dt>Contradicted by</dt>
+    <dd>
+      {{ item.payload.contradicts.model }}
+      <span class="muted">
+        — {{ item.payload.contradicts.read_from | join(", ") }}
+      </span>
+    </dd>
+    {% endif %}
+    {% if definition.name == 'proposed-factor' %}
+    <dt>Same number everywhere</dt>
+    <dd>
+      {% if item.payload.one_value_everywhere %}
+      <span class="tag tag--review">yes — one number in every context</span>
+      {% else %}
+      <span class="tag tag--blocking">no — {{ item.payload.stated_values | length }} different numbers</span>
+      {% endif %}
+    </dd>
+    {#
+      Whether the number being proposed is already published against something
+      else.  A proposed factor is a number this list does not publish for this
+      substance; finding it published for a *different* one says where it came
+      from.  The common case is a catch-all: an implementation that mapped a
+      named pesticide onto `Insecticides, unspecified` states the bucket's
+      number for it, and the match is what makes that visible (#76).
+    #}
+    <dt>Also published elsewhere</dt>
+    <dd>
+      {% if question.elsewhere %}
+      {#
+        The substance goes in the tag rather than only in the list below it:
+        almost every question in this queue matches something, so "yes" alone
+        says nothing, and *what* it matches is the whole of the information.
+      #}
+      <span class="tag tag--blocking">
+        yes — {{ question.elsewhere_amounts | length }} of
+        {{ item.payload.stated_values | length }} number(s), published for
+        {{ question.elsewhere_substances | first }}{% if question.elsewhere_substances | length > 1 %}
+        and {{ question.elsewhere_substances | length - 1 }} other
+        substance(s){% endif %}
+      </span>
+      <ul class="list">
+        {% for row in question.elsewhere %}
+        <li>
+          <span class="mono">{{ row.amount | amount }}</span>
+          is published for
+          {{ t.substance_link(row.flow_object_id, row.substance or row.flow_object_id) }}
+          <span class="muted">
+            — {{ row.category }}, {{ row.context_display or "no context" }}{% if row.derivation %},
+            <span class="mono">{{ row.derivation }}</span>{% endif %}
+          </span>
+        </li>
+        {% endfor %}
+        {% if question.elsewhere_total > question.elsewhere | length %}
+        <li class="muted">
+          … and {{ question.elsewhere_total - question.elsewhere | length }} more
+        </li>
+        {% endif %}
+      </ul>
+      {% else %}
+      <span class="tag tag--review">
+        no — none of these numbers is published against any other flow
+      </span>
+      {% endif %}
+    </dd>
+    {% endif %}
+    <dt>Item key</dt>
+    <dd class="mono">{{ item.item_key }}</dd>
+  </dl>
+
+  {#
+    The numbers, per flow. This is the question itself: what each implementation
+    says about this substance in this context, and where it applies.
+  #}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        {#
+          A column per implementation that speaks about this question, taken from
+          the rows: a question about three of them is the same question, and a
+          header naming two could not show it.
+        #}
+        <tr>
+          <th scope="col">Flow</th>
+          <th scope="col">Context</th>
+          <th scope="col">Place</th>
+          {% for implementation in item.payload.implementations %}
+          <th scope="col" class="num">{{ implementation }}</th>
+          {% endfor %}
+          {% if definition.name == 'contested-factor' %}
+          <th scope="col" class="num">Ratio</th>
+          {% endif %}
+          <th scope="col">Ruled</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for flow in question.flows %}
+        <tr>
+          <td>{{ t.flow_link(flow.elementary_flow_uuid) }}</td>
+          <td>{{ flow.context_display or "—" }}</td>
+          <td class="mono">{{ flow.geography or "—" }}</td>
+          {% set amounts = flow.stated | stated_amounts %}
+          {% for implementation in item.payload.implementations %}
+          <td class="num mono">
+            {%- if implementation in amounts %}{{ amounts[implementation] | amount }}
+            {%- else %}<span class="muted">—</span>{% endif %}
+          </td>
+          {% endfor %}
+          {% if definition.name == 'contested-factor' %}
+          <td class="num mono">{{ "%.1f"|format(flow.ratio) if flow.ratio else "—" }}</td>
+          {% endif %}
+          <td>
+            {% if flow.ruled %}{{ flow.ruled.decision }}
+            {% else %}<span class="tag tag--blocking">open</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {#
+    What the model underneath says. Only the contradicted queue has this, and it
+    is the question itself there: a curator is being asked to weigh a third
+    party's model against the method's own publisher, and a row that said only
+    "contradicted" would be asking them to take our word for it. Both numbers,
+    per compartment, and the files the model's were read out of.
+  #}
+  {% if item.payload.contradicts %}
+  <h3>What {{ item.payload.contradicts.model }} states</h3>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Emitted to</th>
+          <th scope="col" class="num">EF 3.1</th>
+          <th scope="col" class="num">{{ item.payload.contradicts.model }}</th>
+          <th scope="col" class="num">Apart</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in item.payload.contradicts.compared %}
+        <tr>
+          <td>{{ row.compartment }}</td>
+          <td class="num mono">{{ row.published_amount | amount }}</td>
+          <td class="num mono">{{ row.model_amount | amount }}</td>
+          <td class="num mono">{{ "{:,.0f}".format(row.ratio) }}×</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if item.payload.contradicts.comment %}
+  {% for paragraph in item.payload.contradicts.comment.split("\n\n") %}
+  <p>{{ paragraph }}</p>
+  {% endfor %}
+  {% endif %}
+  {% endif %}
+
+  {#
+    Where the flows came from. A factor is about a flow, and a flow is a
+    substance a source list named in a compartment -- so a ruling about the
+    number is a ruling about whatever those lists meant.
+  #}
+  {% if question.sources %}
+  <h3>Where these flows came from</h3>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Flow</th>
+          <th scope="col">Source list</th>
+          <th scope="col">Shipped as</th>
+          <th scope="col">In</th>
+          <th scope="col">Unit</th>
+          <th scope="col">Placed by</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for uuid, rows in question.sources.items() %}
+        {% for row in rows %}
+        <tr>
+          <td>{{ t.flow_link(uuid) }}</td>
+          <td>{{ row.list_name }} {{ row.list_version }}</td>
+          <td>{{ row.source_flow_name or "—" }}</td>
+          <td>{{ row.original_context or "—" }}</td>
+          <td class="mono">{{ row.unit or "—" }}</td>
+          <td>
+            {{ row.merge_basis or "—" }}
+            {% if row.mapping_file %}
+            <div class="muted mono">{{ row.mapping_file }}</div>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  {#
+    What this pipeline did to the substance. A name it rewrote or a structure it
+    resolved is how two source rows came to be one flow, and that is exactly
+    what a 7,068x disagreement is evidence about.
+  #}
+  {% if question.changes %}
+  <h3>What the pipeline did to this substance</h3>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Transformer</th>
+          <th scope="col">Field</th>
+          <th scope="col">Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for change in question.changes %}
+        <tr>
+          <td class="mono">{{ change.transformer }}</td>
+          <td class="mono">{{ change.field_name }}</td>
+          <td>{{ change.comment or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">
+    The first {{ question.changes | length }} changes recorded against this
+    substance; the whole record is on its
+    {{ t.substance_link(item.flow_object_id, "substance page") }}.
+  </p>
+  {% endif %}
+
+  {#
+    Every number anybody states about these flows in this category, including
+    the implementations that are not in dispute -- because what the consensus
+    implementation already publishes for a neighbouring context is evidence too.
+  #}
+  {% if question.factors %}
+  <h3>Every number stated about these flows</h3>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        {#
+          The flow is named by its compartment rather than by its uuid -- every
+          row here is the same substance, so the compartment is the only thing
+          that tells one from another -- and the compartment the source lists
+          shipped it in is beside it, because that is what a number was computed
+          for and this list's context is a translation of it.
+        #}
+        <tr>
+          <th scope="col">Flow</th>
+          <th scope="col">Shipped in</th>
+          <th scope="col">Implementation</th>
+          <th scope="col">Place</th>
+          <th scope="col" class="num">Factor</th>
+          <th scope="col">Derivation</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for uuid, rows in question.factors.items() %}
+        {% set shipped = question.original_contexts(uuid) %}
+        {% for row in rows %}
+        <tr>
+          <td>{{ t.flow_link(uuid, question.label_for(uuid)) }}</td>
+          <td>
+            {% if shipped %}
+            {% for context in shipped %}
+            <div>{{ context }}</div>
+            {% endfor %}
+            {% else %}—{% endif %}
+          </td>
+          <td>{{ row.implemented_by }}</td>
+          <td class="mono">{{ row.geography or "—" }}</td>
+          <td class="num mono">{{ row.amount }}</td>
+          <td>{{ row.derivation or "—" }}</td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  {% if question.declined %}
+  <h3>Numbers already declined on the way here</h3>
+  <ul class="list">
+    {% for row in question.declined %}
+    <li>{{ row.detail }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+{% endfor %}
+
+{{ t.pager(page, 'queue.detail', dict(args, name=definition.name)) }}
+{% else %}
+{{ t.nothing_matches("Nothing in this queue: the two implementations agree wherever both of them speak.") }}
+{% endif %}
+{% endblock %}

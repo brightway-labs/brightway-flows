@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 files helium as a renewable element resource taken from air, beside dinitrogen, oxygen, argon, Argon-40, neon, krypton, xenon and radon. Eight of those nine are recovered from air by cryogenic separation and helium is not: at 5.2 ppm it is far too dilute to be worth recovering, and commercial helium comes from natural gas deposits where it reaches a few per cent. `Renewable` is wrong in the same direction -- atmospheric helium escapes to space, and what is in the crust arrives from the alpha decay of uranium and thorium over geological time.\n\nThat matters here because ecoinvent 3.12 says so in its own data: its flow is `Helium, in natural gas`, in `natural resource / in ground`. The two compartments contradict each other, so the merge could not put ecoinvent's row on EF's flow and minted a second one instead. The published list then held one substance as a resource in two places, which is what `substance-in-two-places` reports and what these expectations are about.\n\nNothing is recharacterised: neither flow carries a characterisation factor in either implementation of EF 3.1, and no method this project publishes scores a helium resource at all. What changes is which flow an inventory reaches.",
+  "expectations": [
+    {
+      "id": "0576-helium-is-a-resource-in-the-ground",
+      "issue": 576,
+      "title": "The helium a process extracts is taken from the ground",
+      "subject": {
+        "kind": "flow",
+        "uuid": "fe0acd60-3ddc-11dd-a657-0050c2490048"
+      },
+      "expect": {
+        "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou"
+      },
+      "comment": "EF 3.1's own resource flow for helium, named by uuid because the fix is about where it is filed and not about what it is called. Measured on the build of 18 August 2026 at commit ad6b20e: `Resource \u2192 Air`."
+    },
+    {
+      "id": "0576-ecoinvents-helium-reaches-it",
+      "issue": 576,
+      "title": "ecoinvent's helium from natural gas reaches that flow rather than making another",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Helium, in natural gas"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "fe0acd60-3ddc-11dd-a657-0050c2490048"
+      },
+      "comment": "The half that says the fix worked rather than that a field was edited. On the same build this row is an `algorithm` addition onto `d427fb6372b3fd76b91cc0cd25b8b875a30dada6`, a flow the merge minted because the compartment EF had filed helium under contradicted the one ecoinvent ships it in. With both in `Resource \u2192 Ground` there is a flow for it to reach."
+    },
+    {
+      "id": "0576-helium-is-published-in-one-place",
+      "issue": 576,
+      "title": "Helium is a resource in one place, not two",
+      "subject": {
+        "kind": "substance",
+        "cas": "7440-59-7"
+      },
+      "expect": {
+        "count": 1,
+        "flow_count": 13
+      },
+      "comment": "Stated about the substance rather than about either flow, because the defect is that one substance answered two ways about where it is taken from. On the build of 18 August 2026 at commit ad6b20e helium has 14 live flows: twelve emission flows, EF's resource flow in `Resource \u2192 Air`, and the one the merge minted in `Resource \u2192 Ground` because it could not put ecoinvent's row on EF's. With one resource flow instead of two there are 13.\n\nThe twelve emission flows are untouched and are the reason this claims a number rather than a place: where a substance is released is a fact about the process and an ordinary thing to have several of, which is why `merge/places.py` sets the release contexts aside. `count: 1` is a guard that held before the change and has to go on holding -- the substance must not be split in two by being moved."
+    },
+    {
+      "id": "0576-one-fewer-substance-in-two-places",
+      "issue": 576,
+      "title": "One fewer substance is published as a resource in two contradictory places",
+      "subject": {
+        "kind": "measure",
+        "key": "queue.substance-in-two-places"
+      },
+      "expect": {
+        "at_most": 10
+      },
+      "comment": "2 on the build of 18 August 2026 (helium and green water); 1 once helium was answered. The bound was first loosened to 10 with a comment crediting #141's retirement for the jump -- and review on #336 showed that story was false: the measure already read 10 on main with the tables fully live, so the growth belongs to the consolidation work of 19-20 August (#116/#593), which widened what the check sees, not to the retirement, which moved this measure by nothing. Helium stays answered and is not among the ten. The ten are not all benign either: BAFU's basalt and biomass placements are curation questions, but `Groundwater in 2 places` is #89, a live defect this bound now tolerates rather than tracks. The bound holds the line at ten while those entries get their own dispositions; it is a ceiling on new splits, not a blessing of the standing ones."
+    }
+  ]
+}

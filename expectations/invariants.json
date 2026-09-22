@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "description": "Things that should be true of any build, belonging to no one issue. They hold today; they are written down because each has been false at some point and nothing but a passing test suite stood between that and a published export. Unlike the issue files, nothing here is `pending`: an invariant that is not true is a regression, and `assess --strict` should fail on it.",
+  "expectations": [
+    {
+      "id": "invariant-deprecations-have-somewhere-to-go",
+      "title": "Every deprecated flow names the flow that replaces it",
+      "subject": {"kind": "measure", "key": "flows.deprecated_without_replacement"},
+      "expect": {"at_most": 0},
+      "comment": "A deprecation is a redirect. One without a target removes a flow from the list and tells its consumer nothing, which is worse for them than leaving the duplicate in place. 0 of 169 deprecations in the 2026-08-14 build."
+    },
+    {
+      "id": "invariant-every-flow-has-a-substance",
+      "title": "Every elementary flow resolves to a substance",
+      "subject": {"kind": "measure", "key": "flows.without_substance"},
+      "expect": {"at_most": 0},
+      "comment": "The two-layer model is the whole design: a flow is a substance in a context, and a flow with no substance has no identity to link to any other list. 0 of 95,193 in the 2026-08-14 build."
+    },
+    {
+      "id": "invariant-uranium-in-land-is-a-resource-not-a-land-use",
+      "issue": 425,
+      "title": "A row filing uranium under a land compartment still reaches the uranium resource",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Uranium",
+        "context": ["resources", "land"]
+      },
+      "expect": {"outcome": "matched", "target_name": "Uranium", "target_characterised": true},
+      "comment": "BAFU files uranium under `resources / land`, which reads as a use of land rather than as something taken from the ground. It lands on the `Uranium` flow in `Resource → Ground` through the prepared table. Held so that a change to how land compartments are read cannot quietly send it back to being a land use, which is what #83 was about."
+    }
+  ]
+}

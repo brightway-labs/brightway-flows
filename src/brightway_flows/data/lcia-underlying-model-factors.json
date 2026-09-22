@@ -1,0 +1,1788 @@
+{
+  "schema_version": 1,
+  "method": "ef",
+  "description": "What USEtox 2.1 states for the substances EF 3.1's three toxicity categories are derived from, where the two are more than a hundredfold apart in every compartment. Measurement, not decision: every row states two numbers and no verdict, and what makes a row a question is a rule in `brightway_flows.lcia.contradictions`, applied to what the build in front of it states rather than to `reference_amount` here. A re-transcription that brings the two together publishes the substance again with nobody editing this file.\n\nThe JRC's report says EF 3.1's `Human toxicity, cancer`, `Human toxicity, non-cancer` and `Ecotoxicity, freshwater` are USEtox 2.1, and describes the adjustments made on top of it. The LC-Impact result workbooks are a second copy of the same model: they run it and publish the answer as damage rather than as a midpoint, and over the substances where the two agree the ratio between them is exactly 11.5, 2.7 and 0.0175906 -- which is what `divisor` converts, and is measured rather than assumed. 3,101 of the 3,104 substances in those files are characterised by this list, so this is a comparison over nearly the whole file; after the conversion, 56% of the cancer factors and 33% of the non-cancer ones are identical to within 1%.\n\n38 substance-and-category pairs are not. Every one of them disagrees by more than 100x in all six compartments both models state a number for -- the narrowest is aniline at 105x, the widest sodium chloroacetate at 10,861,793x -- and 24 are too high, 13 too low and one both. The example the issue leads with is biphenyl, which EF 3.1 characterises at 0.19957 CTUh for a kilogram emitted to urban air: two hundred cases of disease per tonne, third of the 3,380 substances EF characterises there, above mercury. USEtox 2.1 gives 0.00000014.\n\n**Only the four human-toxicity rows are asked about.** The other 34 are freshwater ecotoxicity, and the two publications do not state one quantity there: the workbook's ecotoxicity sheet is LC-Impact's own ecosystem-quality result in potentially disappeared fraction of species, published beside marine and terrestrial numbers EF does not characterise at all, and EF's CTUe is a potentially affected fraction. 0.0175906 is a constant fitted between two models rather than a conversion within one, and it shows: over the substances not in dispute, 55.3% of the cancer factors and 32.5% of the non-cancer ones land within 1% of the model against 20.0% of the freshwater ecotoxicity ones, whose middle half spans 0.45x to 1.06x where cancer's spans 0.9996x to 1.043x (measured 2026-08-21 over 14,921 ecotoxicity and 6,312 human-toxicity comparisons on the build of 2026-08-20). The rows stay here because they were measured and are somebody else's published numbers; which of them a build compares is `brightway_flows.lcia.contradictions.COMPARABLE_CATEGORIES`.\n\nTwo populations are deliberately absent. The 27 metals, which disagree completely and by design -- the JRC report says EF replaced USEtox's metal factors with ones derived from EU data sources and tabulates each change, copper falling by 100% and silver rising by 813%. And any substance that disagrees in one compartment and not another: that is the two models routing an emission differently, most visibly for air, and no fate difference explains a gap in all six at once.\n\n`model_amount` is rounded to six significant figures, which is more than the comparison needs and more than either publication states. `reference_amount` is EF 3.1's own number, verbatim, as this list transcribes it -- all 228 of them matched the build of 2026-08-17 exactly. See #107.",
+  "model": {
+    "name": "USEtox 2.1",
+    "read_from": [
+      "USEtox2.1_LC-Impact_v2_results_HUMANTOX_20190326.xlsx",
+      "USEtox2.1_LC-Impact_v2_results_ECOTOX_20190326.xlsx"
+    ],
+    "sheet": "all impacts, long-term",
+    "block": "Global average continent (default)",
+    "measured_on": "2026-08-17",
+    "damage_to_midpoint": {
+      "human-toxicity-cancer": {
+        "divisor": 11.5,
+        "damage_unit": "DALY/kg",
+        "midpoint_unit": "CTUh"
+      },
+      "human-toxicity-non-cancer": {
+        "divisor": 2.7,
+        "damage_unit": "DALY/kg",
+        "midpoint_unit": "CTUh"
+      },
+      "ecotoxicity-freshwater": {
+        "divisor": 0.0175906,
+        "damage_unit": "PDF.m3.day/kg",
+        "midpoint_unit": "CTUe"
+      }
+    }
+  },
+  "substances": [
+    {
+      "cas_number": "68515-51-5",
+      "substance": "1,2-Benzenedicarboxylic Acid, di-C6-10-alkyl Esters",
+      "model_substance": "1,2-Benzenedicarboxylic acid, di-C6-10-alkyl esters",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 20.5647,
+          "reference_amount": 0.051417
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 11.6943,
+          "reference_amount": 0.021919
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 1725.94,
+          "reference_amount": 4.7547
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.100358,
+          "reference_amount": 1.8662e-06
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 0.271485,
+          "reference_amount": 9.7876e-05
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 0.271468,
+          "reference_amount": 9.7876e-05
+        }
+      ]
+    },
+    {
+      "cas_number": "71662-46-9",
+      "substance": "1,2-Benzenedicarboxylic Acid, di-C8-10-alkyl Esters",
+      "model_substance": "1,2-Benzenedicarboxylic acid, di-C8-10-alkyl esters",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 0.137836,
+          "reference_amount": 0.00052199
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 0.0353952,
+          "reference_amount": 0.00019882
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 17.1075,
+          "reference_amount": 0.033905
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.000150237,
+          "reference_amount": 1.5165e-10
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 0.000666878,
+          "reference_amount": 1.2061e-06
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 0.000666878,
+          "reference_amount": 1.2061e-06
+        }
+      ]
+    },
+    {
+      "cas_number": "592-41-6",
+      "substance": "1-hexene",
+      "model_substance": "1-HEXENE",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 0.000682651,
+          "reference_amount": 0.22133
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 7.83981e-05,
+          "reference_amount": 0.018938
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 98.9247,
+          "reference_amount": 28758.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 4.75959e-06,
+          "reference_amount": 0.0018172
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 0.0548284,
+          "reference_amount": 13.732
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 0.0548284,
+          "reference_amount": 13.732
+        }
+      ]
+    },
+    {
+      "cas_number": "5567-15-7",
+      "substance": "2,2'-[(3,3'-dichloro[1,1'-biphenyl]-4,4'-diyl)bis(azo)]bis[N-(4-chloro-2,5-dimethoxyphenyl)-3-oxobutyramide]",
+      "model_substance": "Butanamide,2,2'-((3,3'-DiCL(1,1'-BiPH)-4,4'-diyl)bis(azo)bis(N-4-CL-2,5-DiMeOPH)-3-oxo",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 241.025,
+          "reference_amount": 1.4372
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 148.637,
+          "reference_amount": 0.89268
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 4715.17,
+          "reference_amount": 43.204
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 7.19594e-15,
+          "reference_amount": 4.815e-20
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 81.8219,
+          "reference_amount": 0.020372
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 81.8219,
+          "reference_amount": 0.020372
+        }
+      ]
+    },
+    {
+      "cas_number": "109-09-1",
+      "substance": "2-chloropyridine",
+      "model_substance": "2-CHLOROPYRIDINE",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 7.91082,
+          "reference_amount": 4631.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 7.8854,
+          "reference_amount": 4596.5
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 78.6081,
+          "reference_amount": 98847.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.40555,
+          "reference_amount": 711.5
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 8.19736,
+          "reference_amount": 21832.0
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 8.19791,
+          "reference_amount": 21832.0
+        }
+      ]
+    },
+    {
+      "cas_number": "505-32-8",
+      "substance": "3,7,11,15-tetramethylhexadec-1-en-3-ol",
+      "model_substance": "Isophytol",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 0.0217788,
+          "reference_amount": 25.306
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 0.000893999,
+          "reference_amount": 7.0843
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 4.38957,
+          "reference_amount": 35330.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 2.98703e-05,
+          "reference_amount": 0.13905
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 0.000412902,
+          "reference_amount": 14.79
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 0.000412902,
+          "reference_amount": 14.753
+        }
+      ]
+    },
+    {
+      "cas_number": "93762-80-2",
+      "substance": "Alkenes, C15-18",
+      "model_substance": "Alkenes, C15-18",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 0.00107616,
+          "reference_amount": 0.81715
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 1.23057e-06,
+          "reference_amount": 0.0065511
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 9.3192,
+          "reference_amount": 29245.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 1.93075e-08,
+          "reference_amount": 0.00040358
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 0.000186741,
+          "reference_amount": 2.713
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 0.000186741,
+          "reference_amount": 2.713
+        }
+      ],
+      "comment": "One of three rows where the substance is a range of chain lengths rather than one molecule -- `Alkenes, C15-18` and the two phthalate ester ranges, `di-C6-10-alkyl` and `di-C8-10-alkyl` -- so the two models may not be characterising quite the same mixture. Kept in the file because a 20,903x gap is not what representing a mixture differently costs, but named here because these three are the rows most likely to have an innocent explanation."
+    },
+    {
+      "cas_number": "26787-78-0",
+      "substance": "Amoxicillin",
+      "model_substance": "AMOXICILLIN",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 2087680.0,
+          "reference_amount": 5999.5
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 1417280.0,
+          "reference_amount": 3700.7
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 35231400.0,
+          "reference_amount": 182190.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 2.44563e-11,
+          "reference_amount": 5.1231e-14
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 35555.6,
+          "reference_amount": 5.3672
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 1024.47,
+          "reference_amount": 3.3161
+        }
+      ]
+    },
+    {
+      "cas_number": "62-53-3",
+      "substance": "Aniline",
+      "model_substance": "aniline",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 13.6388,
+          "reference_amount": 0.12947
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 4.06253,
+          "reference_amount": 0.031919
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 2106.14,
+          "reference_amount": 18.449
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.0156978,
+          "reference_amount": 3.4569e-07
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 21.7741,
+          "reference_amount": 0.0085072
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 6.08727,
+          "reference_amount": 0.0030297
+        }
+      ]
+    },
+    {
+      "cas_number": "83055-99-6",
+      "substance": "Bensulfuron-methyl",
+      "model_substance": "BENSULFURON-METHYL (PH7)",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 164.297,
+          "reference_amount": 122970.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 62.5336,
+          "reference_amount": 104010.0
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 1506.67,
+          "reference_amount": 1712400.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 1.09255e-11,
+          "reference_amount": 1.0652e-06
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 43.7053,
+          "reference_amount": 110010.0
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 43.7053,
+          "reference_amount": 110020.0
+        }
+      ]
+    },
+    {
+      "cas_number": "112-36-7",
+      "substance": "Bis(2-ethoxyethyl) Ether",
+      "model_substance": "BIS (2-ETHOXY ETHYL)  ETHER",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 1.10737,
+          "reference_amount": 480.83
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 0.929432,
+          "reference_amount": 464.06
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 9.42599,
+          "reference_amount": 6062.5
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.000166006,
+          "reference_amount": 0.65453
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 2.69671,
+          "reference_amount": 2494.6
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 2.69672,
+          "reference_amount": 2494.6
+        }
+      ]
+    },
+    {
+      "cas_number": "3687-46-5",
+      "substance": "Decyl Oleate",
+      "model_substance": "9-Octadecenoic acid (Z)-, decyl ester",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 0.00127808,
+          "reference_amount": 1.1911
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 0.00160087,
+          "reference_amount": 0.73385
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 0.00298091,
+          "reference_amount": 36.276
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 1.99843e-08,
+          "reference_amount": 0.00071278
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 5.55748e-07,
+          "reference_amount": 0.0013209
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 5.55744e-07,
+          "reference_amount": 0.0013207
+        }
+      ]
+    },
+    {
+      "cas_number": "95-92-1",
+      "substance": "Diethyl Oxalate",
+      "model_substance": "ETHYL OXALATE",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 11.1522,
+          "reference_amount": 19465.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 10.9861,
+          "reference_amount": 18796.0
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 132.588,
+          "reference_amount": 374790.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.0387379,
+          "reference_amount": 193.44
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 32.1187,
+          "reference_amount": 107430.0
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 32.1187,
+          "reference_amount": 107430.0
+        }
+      ]
+    },
+    {
+      "cas_number": "83164-33-4",
+      "substance": "Diflufenican",
+      "model_substance": "DIFLUFENICAN",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 337.638,
+          "reference_amount": 348010.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 246.005,
+          "reference_amount": 216240.0
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 5660.35,
+          "reference_amount": 10156000.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 1.04404,
+          "reference_amount": 649.44
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 85.3968,
+          "reference_amount": 44818.0
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 85.3975,
+          "reference_amount": 44866.0
+        }
+      ]
+    },
+    {
+      "cas_number": "110-33-8",
+      "substance": "Dihexyl Adipate",
+      "model_substance": "DIHEXYL ADIPATE",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 54.9454,
+          "reference_amount": 13430.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 16.0352,
+          "reference_amount": 6679.6
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 727.896,
+          "reference_amount": 526690.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.000476285,
+          "reference_amount": 0.34995
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 0.0360756,
+          "reference_amount": 511.42
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 0.0360756,
+          "reference_amount": 511.33
+        }
+      ]
+    },
+    {
+      "cas_number": "753-73-1",
+      "substance": "Dimethyltin Dichloride",
+      "model_substance": "DIMETHYLTIN DICHLORIDE",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 687423.0,
+          "reference_amount": 2406.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 681151.0,
+          "reference_amount": 2383.9
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 5803980.0,
+          "reference_amount": 9973.6
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 4241.59,
+          "reference_amount": 1.1474
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 1938820.0,
+          "reference_amount": 3848.7
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 1938820.0,
+          "reference_amount": 3848.7
+        }
+      ]
+    },
+    {
+      "cas_number": "2274-67-1",
+      "substance": "Dimethylvinphos",
+      "model_substance": "PHOSPHORIC ACID,2-CHLORO-(2,4-DICHLOROPHENYL)VIN",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 1553.76,
+          "reference_amount": 790760.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 426.769,
+          "reference_amount": 417820.0
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 13757.0,
+          "reference_amount": 30338000.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.0656521,
+          "reference_amount": 59.198
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 318.416,
+          "reference_amount": 700720.0
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 318.416,
+          "reference_amount": 700720.0
+        }
+      ]
+    },
+    {
+      "cas_number": "142-90-5",
+      "substance": "Dodecyl Methacrylate",
+      "model_substance": "DODECYL 2-METHYL-2-PROPENOATE",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 0.000296964,
+          "reference_amount": 21.467
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 1.47251e-05,
+          "reference_amount": 3.5094
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 0.526612,
+          "reference_amount": 110460.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 7.67399e-07,
+          "reference_amount": 0.20149
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 3.02729e-05,
+          "reference_amount": 31.084
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 3.02729e-05,
+          "reference_amount": 31.082
+        }
+      ],
+      "comment": "The widest ecotoxicity case: EF 3.1 gives 110,460 CTUe for an emission to fresh water where USEtox 2.1 gives 0.53. A monomer used in lubricant additives and coatings."
+    },
+    {
+      "cas_number": "93106-60-6",
+      "substance": "Enrofloxacin",
+      "model_substance": "Enrofloxacin",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 3937190.0,
+          "reference_amount": 9618.6
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 3970900.0,
+          "reference_amount": 9415.6
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 11242800.0,
+          "reference_amount": 45981.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 1.31418e-05,
+          "reference_amount": 2.212e-08
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 3706390.0,
+          "reference_amount": 15159.0
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 3305210.0,
+          "reference_amount": 13518.0
+        }
+      ]
+    },
+    {
+      "cas_number": "80844-07-1",
+      "substance": "Etofenprox",
+      "model_substance": "ETOFENPROX",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 8.40579,
+          "reference_amount": 22059.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 1.22258,
+          "reference_amount": 2683.5
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 1404.88,
+          "reference_amount": 3987000.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.104778,
+          "reference_amount": 180.7
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 0.0267479,
+          "reference_amount": 104.09
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 0.0267479,
+          "reference_amount": 104.09
+        }
+      ]
+    },
+    {
+      "cas_number": "5827-05-4",
+      "substance": "IPSP",
+      "model_substance": "APHIDAN",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 983011.0,
+          "reference_amount": 205.5
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 362889.0,
+          "reference_amount": 119.52
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 8238340.0,
+          "reference_amount": 9769.2
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 12.2908,
+          "reference_amount": 0.0039487
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 1537090.0,
+          "reference_amount": 1820.3
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 1537090.0,
+          "reference_amount": 1820.3
+        }
+      ]
+    },
+    {
+      "cas_number": "15245-44-0",
+      "substance": "Lead 2,4,6-trinitro-m-phenylene Dioxide",
+      "model_substance": "1,3-Benzenediol, 2,4,6-trinitro-, lead(2+) salt (1:1)",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 25.5823,
+          "reference_amount": 16574.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 17.6241,
+          "reference_amount": 11512.0
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 81.5317,
+          "reference_amount": 335840.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 6.99801e-14,
+          "reference_amount": 3.2804e-09
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 17.5064,
+          "reference_amount": 3936.4
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 17.5064,
+          "reference_amount": 3936.4
+        }
+      ]
+    },
+    {
+      "cas_number": "39515-51-0",
+      "substance": "M-phenoxybenzaldehyde",
+      "model_substance": "3-PHENOXYBENZALDEHYDE",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 201.83,
+          "reference_amount": 73443.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 113.465,
+          "reference_amount": 61855.0
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 10638.5,
+          "reference_amount": 2503600.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.314218,
+          "reference_amount": 414.34
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 281.073,
+          "reference_amount": 579080.0
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 281.074,
+          "reference_amount": 579070.0
+        }
+      ]
+    },
+    {
+      "cas_number": "300-76-5",
+      "substance": "Naled",
+      "model_substance": "NALED",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 2500.9,
+          "reference_amount": 453530.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 2392.3,
+          "reference_amount": 410800.0
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 203943.0,
+          "reference_amount": 64728000.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 313.022,
+          "reference_amount": 48146.0
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 365.73,
+          "reference_amount": 102830.0
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 365.732,
+          "reference_amount": 102830.0
+        }
+      ]
+    },
+    {
+      "cas_number": "98-92-0",
+      "substance": "Nicotinamide",
+      "model_substance": "NICOTINAMIDE",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 121436.0,
+          "reference_amount": 1.4534
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 89613.4,
+          "reference_amount": 1.3892
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 383777.0,
+          "reference_amount": 8.735
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.0251779,
+          "reference_amount": 1.5273e-07
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 90994.2,
+          "reference_amount": 2.1623
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 90334.0,
+          "reference_amount": 1.8542
+        }
+      ],
+      "comment": "One of thirteen rows where EF 3.1 is *below* USEtox 2.1 rather than above it, and the second widest of them at 164,852x. Nicotinamide is vitamin B3, so neither number is going to dominate an assessment -- it is here because the direction of the disagreement is evidence about its cause. Twenty-four rows are too high, thirteen too low and one is both, which is not the shape a single lost or duplicated column would make."
+    },
+    {
+      "cas_number": "95-53-4",
+      "substance": "O-toluidine",
+      "model_substance": "o-Toluidine",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 10.898,
+          "reference_amount": 0.093255
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 4.05223,
+          "reference_amount": 0.02056
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 2262.01,
+          "reference_amount": 14.643
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.0146703,
+          "reference_amount": 1.65e-07
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 93.2202,
+          "reference_amount": 0.0046749
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 65.7288,
+          "reference_amount": 0.0025452
+        }
+      ]
+    },
+    {
+      "cas_number": "112-92-5",
+      "substance": "Octadecan-1-ol",
+      "model_substance": "1-OCTADECANOL",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 0.00537533,
+          "reference_amount": 11.307
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 0.000484765,
+          "reference_amount": 0.93882
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 0.953406,
+          "reference_amount": 3126.5
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 7.99033e-06,
+          "reference_amount": 0.017926
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 4.15905e-05,
+          "reference_amount": 0.18692
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 4.15905e-05,
+          "reference_amount": 0.18692
+        }
+      ]
+    },
+    {
+      "cas_number": "111-65-9",
+      "substance": "Octane",
+      "model_substance": "n-octane",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 12.3668,
+          "reference_amount": 0.0039645
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 0.539771,
+          "reference_amount": 0.00041197
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 1026920.0,
+          "reference_amount": 1427.7
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.0296362,
+          "reference_amount": 2.236e-05
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 43.3048,
+          "reference_amount": 0.29176
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 43.3048,
+          "reference_amount": 0.2917
+        }
+      ]
+    },
+    {
+      "cas_number": "6683-19-8",
+      "substance": "Pentaerythritol Tetrakis(3-(3,5-di-tert-butyl-4-hydroxyphenyl)propionate)",
+      "model_substance": "pentaerythritol tetrakis(3-(3,5-di-tert-butyl-4-hydroxyphenyl)propionate)",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 4.45785,
+          "reference_amount": 0.00015803
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 4.76735,
+          "reference_amount": 1.874e-05
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 0.00025263,
+          "reference_amount": 0.027859
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 8.13748e-14,
+          "reference_amount": 1.1541e-10
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 1.07797e-07,
+          "reference_amount": 1.1888e-05
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 1.07797e-07,
+          "reference_amount": 1.1888e-05
+        }
+      ],
+      "comment": "The one row that disagrees in both directions: EF 3.1 is 28,000x below USEtox 2.1 for the two air compartments and 110x to 1,418x above it for water and soil. Every other row in the file is one-sided. Kept because a disagreement in all six compartments is what this file is about and the direction is not the test, but flagged because a fate model that sends an air emission somewhere else entirely is the one explanation that would fit half of this row."
+    },
+    {
+      "cas_number": "86209-51-0",
+      "substance": "Primisulfuron-methyl",
+      "model_substance": "PRIMISULFURON-METHYL",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 167532.0,
+          "reference_amount": 100.59
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 49432.7,
+          "reference_amount": 46.136
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 642129.0,
+          "reference_amount": 4717.9
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 3.13105e-07,
+          "reference_amount": 2.9269e-10
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 58620.1,
+          "reference_amount": 430.7
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 58620.1,
+          "reference_amount": 430.7
+        }
+      ]
+    },
+    {
+      "cas_number": "123343-16-8",
+      "substance": "Pyrithiobac-sodium",
+      "model_substance": "Pyrithiobac-sodium salt",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 6169.1,
+          "reference_amount": 12573000.0
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 6310.99,
+          "reference_amount": 12435000.0
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 12663.1,
+          "reference_amount": 47859000.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 7.02644e-10,
+          "reference_amount": 1.2182e-06
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 4649.61,
+          "reference_amount": 17573000.0
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 4649.61,
+          "reference_amount": 17573000.0
+        }
+      ]
+    },
+    {
+      "cas_number": "3926-62-3",
+      "substance": "Sodium Chloroacetate",
+      "model_substance": "CHLOROACETIC ACID, SODIUM SALT",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 15.473,
+          "reference_amount": 3116.1
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 15.0985,
+          "reference_amount": 2975.6
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 46.6398,
+          "reference_amount": 17301.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 1.34545e-10,
+          "reference_amount": 0.0014614
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 15.7355,
+          "reference_amount": 3630.9
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 15.7355,
+          "reference_amount": 3630.9
+        }
+      ]
+    },
+    {
+      "cas_number": "76-03-9",
+      "substance": "Trichloroacetic Acid",
+      "model_substance": "TRICHLOROACETIC ACID",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 35.004,
+          "reference_amount": 4379.2
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 23.4228,
+          "reference_amount": 4348.3
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 111.764,
+          "reference_amount": 15326.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 1.4472e-08,
+          "reference_amount": 2.1202e-06
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 23.1973,
+          "reference_amount": 5924.6
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 23.1973,
+          "reference_amount": 5924.6
+        }
+      ]
+    },
+    {
+      "cas_number": "28629-66-5",
+      "substance": "Zinc bis(O,O-diisooctyl) Bis(dithiophosphate)",
+      "model_substance": "Zinc, bis(O,O-diisooctyl phosphorodithioato-S,S')-",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "unit": "CTUe",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 0.596937,
+          "reference_amount": 384.6
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 0.00438977,
+          "reference_amount": 60.172
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 157.741,
+          "reference_amount": 31478.0
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.000100169,
+          "reference_amount": 0.12263
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 0.0140118,
+          "reference_amount": 55.073
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 0.0140118,
+          "reference_amount": 55.074
+        }
+      ]
+    },
+    {
+      "cas_number": "26471-62-5",
+      "substance": "2,4/2,6-toluenediisocyanate (mixture)",
+      "model_substance": "2,4/2,6-TOLUENEDIISOCYANATE",
+      "category_slug": "human-toxicity-non-cancer",
+      "category": "Human toxicity, non-cancer",
+      "unit": "CTUh",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 0.00245039,
+          "reference_amount": 1.1968e-05
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 0.000481299,
+          "reference_amount": 8.9003e-07
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 0.00286573,
+          "reference_amount": 7.9645e-07
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 0.000233084,
+          "reference_amount": 2.025e-07
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 0.00254512,
+          "reference_amount": 1.8001e-07
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 0.000130039,
+          "reference_amount": 1.7343e-07
+        }
+      ]
+    },
+    {
+      "cas_number": "1861-40-1",
+      "substance": "Benfluralin",
+      "model_substance": "Benefin",
+      "category_slug": "human-toxicity-non-cancer",
+      "category": "Human toxicity, non-cancer",
+      "unit": "CTUh",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 7.6925e-08,
+          "reference_amount": 0.00042566
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 3.86145e-08,
+          "reference_amount": 1.9483e-05
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 1.18335e-07,
+          "reference_amount": 2.9346e-05
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 2.85808e-08,
+          "reference_amount": 8.4916e-06
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 4.99152e-08,
+          "reference_amount": 6.6447e-06
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 4.04646e-09,
+          "reference_amount": 1.7436e-06
+        }
+      ]
+    },
+    {
+      "cas_number": "92-52-4",
+      "substance": "Biphenyl",
+      "model_substance": "biphenyl",
+      "category_slug": "human-toxicity-non-cancer",
+      "category": "Human toxicity, non-cancer",
+      "unit": "CTUh",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 1.44463e-07,
+          "reference_amount": 0.19957
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 2.4822e-08,
+          "reference_amount": 0.014939
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 2.51061e-07,
+          "reference_amount": 0.0044065
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 1.7085e-08,
+          "reference_amount": 0.00015794
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 9.30296e-09,
+          "reference_amount": 0.00089871
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 1.46125e-09,
+          "reference_amount": 0.0008987
+        }
+      ],
+      "comment": "The worked example of #107, and the one a consumer meets first. Ranked against every substance EF 3.1 characterises for non-cancer human toxicity in urban air -- 3,380 of them -- biphenyl comes third, above mercury and just below brodifacoum, a rodenticide lethal in milligrams. Biphenyl is an ordinary industrial chemical: two benzene rings, used to make dyes and plastics and as a fungicide on citrus. EF 3.1 says a kilogram emitted to city air causes 0.2 cases of disease and 17 cases if it is emitted indoors; USEtox 2.1, which the JRC report says these factors come from, says a millionth of that."
+    },
+    {
+      "cas_number": "90-43-7",
+      "substance": "O-phenylphenol",
+      "model_substance": "2-Phenylphenol",
+      "category_slug": "human-toxicity-non-cancer",
+      "category": "Human toxicity, non-cancer",
+      "unit": "CTUh",
+      "stated": [
+        {
+          "compartment": "emission to urban air close to ground",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+          "model_amount": 1.42247e-07,
+          "reference_amount": 0.024141
+        },
+        {
+          "compartment": "emission to non-urban air or from high stacks",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+          "model_amount": 7.89046e-08,
+          "reference_amount": 0.00065267
+        },
+        {
+          "compartment": "emission to fresh water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+          "model_amount": 2.03201e-07,
+          "reference_amount": 3.5647e-05
+        },
+        {
+          "compartment": "emission to sea water",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+          "model_amount": 2.17013e-09,
+          "reference_amount": 1.0297e-06
+        },
+        {
+          "compartment": "emission to agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+          "model_amount": 5.80483e-09,
+          "reference_amount": 6.0013e-06
+        },
+        {
+          "compartment": "emission to non-agricultural soil",
+          "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+          "model_amount": 7.99646e-10,
+          "reference_amount": 6.0001e-06
+        }
+      ],
+      "comment": "Biphenyl with a hydroxyl group added, and the second-worst case in the list. Two closely related substances both anomalous, and by comparable amounts, is unlikely to be coincidence: whatever went wrong with biphenyl looks to have gone wrong here as well."
+    }
+  ]
+}

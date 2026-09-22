@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent retired hundreds of names after 2.2 -- `Sulfate, ion` became `Sulfate`, `Laterite, in ground` became `Laterite` -- and a row still carrying the old spelling matched nothing, so the build minted a duplicate of a flow it already publishes. The vendor's own 2.2 -> 3.12 correspondence is read mechanically into `data/ecoinvent-historical-names.json`, and the merge now tries the newest release's name once everything the row itself shipped has failed, under its own basis, `historical-name`. See #338.",
+  "expectations": [
+    {
+      "id": "0693-sulfate-ion-is-sulfate",
+      "issue": 693,
+      "title": "ecoinvent 3.8's `Sulfate, ion` lands on the Sulfate this list already publishes, on the vendor's own crosswalk",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "name": "Sulfate, ion"},
+      "expect": {"outcome": "matched", "basis": "historical-name", "target_name": "Sulfate"},
+      "comment": "Two rows, b8c794de (water/ground-) and f3e5bff4 (water/unspecified), both kg under 2.2's CAS 14996-02-2 -- a number newer releases corrected to 14808-79-8, so no registry number can carry them. On the base build of main@5891830 both were `created` and minted the duplicate `Sulfate, Ion` object beside `Sulfate`. `basis` is the claim that matters: `historical-name` means the vendor's crosswalk answered, after every shipped name and number had failed."
+    },
+    {
+      "id": "0693-sulfate-ion-mints-no-duplicate",
+      "issue": 693,
+      "title": "No ecoinvent 3.8 row named `Sulfate, ion` mints a substance of its own",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "name": "Sulfate, ion"},
+      "expect": {"not_outcome": "created"},
+      "comment": "The defect stated the other way around: the duplicate `Sulfate, Ion` object existed only because these rows minted it."
+    },
+    {
+      "id": "0693-laterite-in-ground-is-laterite",
+      "issue": 693,
+      "title": "ecoinvent 3.8's `Laterite, in ground` lands on the Laterite that 3.12 already brought in",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "name": "Laterite, in ground"},
+      "expect": {"outcome": "matched", "basis": "historical-name", "target_name": "Laterite"},
+      "comment": "One row, 86fb18d4 (natural resource/in ground), kg, no CAS at all -- a name is the only evidence it has, and the name is a spelling every release since 2.2 has retired. On the base build of main@5891830 it was `created` and minted `Laterite, In Ground` beside 3.12's `Laterite`."
+    }
+  ]
+}

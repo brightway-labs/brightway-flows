@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 ships two hydrofluoroethers twice in each of four air compartments, once under the chemical name and once under the industry designation, with the same registry number on both. Nothing separates the copies, so the pairs stood as collisions, and a standing collision is exactly what a source row cannot be placed onto: Stepwise 2006's `Ether, 1,1,1-trifluoromethyl methyl-, HFE-143a` and `Ether, nonafluorobutane ethyl-, HFE569sf2 (HFE-7200)` were both refused with `tied-elementary-candidates` and published nowhere. On the shared five-list build of 3 September 2026 (d1df4ed) they are the only two unmatched rows in 28,490.\n\nEight rulings in `elementary-flow-collision-decisions.json` settle the pairs. For trifluoromethoxymethane the survivor is EF's `HFE-143a`, the row that holds Climate change 616.0 where the named row holds nothing -- the ordinary reason in that file. For 1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane both rows hold 60.7, so the factor decides nothing and the carbon tetrachloride reason applies (#105): `HFE-569sf2` survives because it carries the number's twelve synonyms, EF's ILCD note and eleven contexts across air, soil and water, against a bare row with four air contexts and nothing else. No ruling loses a factor (#185).",
+  "expectations": [
+    {
+      "id": "0837-the-hfe-143a-row-is-placed",
+      "issue": 837,
+      "title": "Stepwise's `Ether, 1,1,1-trifluoromethyl methyl-, HFE-143a` reaches a flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "uuid": "15698965-2df8-51a6-99e9-fd55fac02d5d"
+      },
+      "expect": {
+        "row_count": 1,
+        "not_outcome": "unmatched",
+        "target_uuid": "9308ce4c-e251-11e6-bf01-fe55135034f3",
+        "target_context_display": "Environmental → Air → Unknown",
+        "target_characterised": true
+      },
+      "comment": "On the shared build of 3 September 2026 (d1df4ed) this row was `unmatched`, reason `tied-elementary-candidates`, on no flow at all, and Stepwise's own climate-change factor for it was lost. `not_outcome` rather than an outcome: what has to stop is the refusal, and nothing here should care whether the row then arrives by its number or by a name -- the collision was the whole of the obstacle. The target is named because reaching the *other* copy would satisfy a claim phrased only about being placed, and `target_characterised` is why the ruling picked this survivor: 616.0 under Climate change and Climate change-Fossil, where the retired row holds nothing."
+    },
+    {
+      "id": "0837-the-hfe-7200-row-is-placed",
+      "issue": 837,
+      "title": "Stepwise's `Ether, nonafluorobutane ethyl-, HFE569sf2 (HFE-7200)` reaches a flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "uuid": "d79e7ba9-302d-5e88-8d4b-ab6d4cb2b140"
+      },
+      "expect": {
+        "row_count": 1,
+        "not_outcome": "unmatched",
+        "target_uuid": "b0681715-c852-4456-ab78-c88e68502c7a",
+        "target_context_display": "Environmental → Air → Unknown",
+        "target_characterised": true
+      },
+      "comment": "The same refusal on the same build, and the harder of the two rulings: both copies carry 163702-05-4 and both carry 60.7, so this claim is the one that would still hold if the survivor had been chosen the other way round. It is written naming the survivor for that reason. What actually decided is on the ruling -- the synonyms, EF's note, and the eight contexts EF gives `HFE-569sf2` outside air -- and one of those synonyms, `Ether, nonafluorobutane ethyl-`, is the head of this row's own name."
+    },
+    {
+      "id": "0837-one-methyl-trifluoromethyl-ether-in-unspecified-air",
+      "issue": 837,
+      "title": "Trifluoromethoxymethane is published once in unspecified air",
+      "subject": {
+        "kind": "flow",
+        "name": "Methyl Trifluoromethyl Ether",
+        "context_display": "Environmental → Air → Unknown"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "Two live flows on the shared build of 3 September 2026 (d1df4ed): EF's `Methyl trifluoromethyl ether` and EF's `HFE-143a`, one substance under a chemical name and an industry code. The substance's published name is the chemical one either way, so this claim says nothing about which row survived -- that is the source-row claim above, and the two are written separately on purpose."
+    },
+    {
+      "id": "0837-one-methyl-trifluoromethyl-ether-in-urban-ground-level",
+      "issue": 837,
+      "title": "Trifluoromethoxymethane is published once in urban air at ground level",
+      "subject": {
+        "kind": "flow",
+        "name": "Methyl Trifluoromethyl Ether",
+        "context_display": "Environmental → Air → Ground level → Urban (>1000 people/square mile)"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "The same pair in the second of its four compartments. No source row is refused here, and the claim is written anyway: a ruling keyed on one context settles one context, and the four are four decisions."
+    },
+    {
+      "id": "0837-one-methyl-trifluoromethyl-ether-in-rural-medium-stack",
+      "issue": 837,
+      "title": "Trifluoromethoxymethane is published once in non-urban air",
+      "subject": {
+        "kind": "flow",
+        "name": "Methyl Trifluoromethyl Ether",
+        "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "The third compartment. This is the one EF calls `Emissions to non-urban air or from high stacks`, and the one seven earlier rulings were keyed on by the wrong half of that name (#106): a ruling written from `envi-air-hist15me` matches no collision and applies to nothing. These eight are keyed on the context the build assigns."
+    },
+    {
+      "id": "0837-one-methyl-trifluoromethyl-ether-in-long-term-air",
+      "issue": 837,
+      "title": "Trifluoromethoxymethane is published once in long-term air",
+      "subject": {
+        "kind": "flow",
+        "name": "Methyl Trifluoromethyl Ether",
+        "context_display": "Environmental → Air → Long-term"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "The fourth. `HFE-143a`'s fifth air row, in the lower stratosphere, has no copy to collide with and is not ruled on; the named row's seven soil and water rows have none either, and all of them stay."
+    },
+    {
+      "id": "0837-one-hfe-569sf2-in-unspecified-air",
+      "issue": 837,
+      "title": "The nonafluorobutyl ethyl ether is published once in unspecified air",
+      "subject": {
+        "kind": "flow",
+        "name": "HFE-569sf2",
+        "context_display": "Environmental → Air → Unknown"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "Two live flows on the shared build of 3 September 2026 (d1df4ed), `HFE-569sf2` and `n-HFE-7200`, both carrying 163702-05-4 and both carrying 60.7."
+    },
+    {
+      "id": "0837-one-hfe-569sf2-in-urban-ground-level",
+      "issue": 837,
+      "title": "The nonafluorobutyl ethyl ether is published once in urban air at ground level",
+      "subject": {
+        "kind": "flow",
+        "name": "HFE-569sf2",
+        "context_display": "Environmental → Air → Ground level → Urban (>1000 people/square mile)"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "The second of this pair's four compartments."
+    },
+    {
+      "id": "0837-one-hfe-569sf2-in-rural-medium-stack",
+      "issue": 837,
+      "title": "The nonafluorobutyl ethyl ether is published once in non-urban air",
+      "subject": {
+        "kind": "flow",
+        "name": "HFE-569sf2",
+        "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "The third."
+    },
+    {
+      "id": "0837-one-hfe-569sf2-in-long-term-air",
+      "issue": 837,
+      "title": "The nonafluorobutyl ethyl ether is published once in long-term air",
+      "subject": {
+        "kind": "flow",
+        "name": "HFE-569sf2",
+        "context_display": "Environmental → Air → Long-term"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "The fourth. Neither of this pair reaches the lower stratosphere, so unlike the ether above there is no fifth air row on either side."
+    },
+    {
+      "id": "0837-the-separate-hfe-7200-rows-are-left-alone",
+      "issue": 837,
+      "title": "EF's `HFE-7200` and `i-HFE-7200` are still two flows",
+      "subject": {
+        "kind": "flow",
+        "name": "HFE-7200",
+        "context_display": "Environmental → Air → Unknown"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "The control. EF ships a third and a fourth row in this family -- `HFE-7200`, carrying 163702-06-5 and no factor, and `i-HFE-7200`, carrying a factor and no number -- and they are a different substance: PubChem's CID 205999 is 163702-06-5, ethyl perfluoroisobutyl ether, the branched isomer. They are not on one flow object here and nothing in this change touches them, which is what this claim pins; whether EF put the isomer's number on the row it means as the mixture is #19's question."
+    }
+  ]
+}

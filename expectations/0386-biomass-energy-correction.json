@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "description": "#294 settled what a BAFU resource correction is: not a thing of its own, but an amount of a resource written with the opposite sign, which only works if the correction and the extraction it credits land on the same flow. Nine of the ten corrections do. The tenth is the energy in biomass, and it is the only one BAFU files under two compartments -- `resources / biotic` and `resources / unspecified`.\n\nThe two do not meet. `biotic` reaches EF 3.1's own `biomass` flow in `Resource → Biotic`, which ecoinvent 3.8, ecoinvent 3.12 and BAFU's own biotic rows all share. `unspecified` maps wholesale to `Resource → Ground`, and because biomass had no ground flow the merge minted one -- `cd1ac761…`, reached by nothing but BAFU and carrying no characterisation factor. So one accounting entry is published in two places, and the credit that lands in the ground has no extraction beside it to cancel.\n\n`unspecified` is not a statement that the energy came out of the ground; it is the absence of a statement, and the mapping file has flagged it for review since it was written. The energy in a tree is a biotic resource wherever BAFU filed the row, which is exactly what #83 already ruled for the standing timber and the process water in the same compartment. Measured on the release itself: the correction appears 21 times under `unspecified` and 51 times under `biotic`, every one of the 72 negative, and none of the 21 datasets carries any other biomass row -- so the credit is against an extraction charged in some other dataset, on the biotic flow.\n\nWhat this file does not claim: BAFU also files the *resource* -- `Energy, gross calorific value, in biomass` itself -- in three compartments, 394 exchanges under `biotic`, 19 under `unspecified` and 7 under `in air`. Those two strays are #89's, they are a different question from an accounting entry, and the ground flow stays published for as long as they do."
+  ,
+  "expectations": [
+    {
+      "id": "0386-biomass-energy-correction-in-the-unspecified-compartment",
+      "issue": 386,
+      "title": "The biomass energy correction BAFU files under no compartment at all reaches the biomass resource, not the ground",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "d7a1eef3-0c63-51ff-bb0c-30a617e4ade9"},
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Biomass",
+        "target_uuid": "fe0acd60-3ddc-11dd-a6fd-0050c2490048",
+        "target_context_display": "Resource → Biotic",
+        "target_unit": "MJ"
+      },
+      "comment": "`Energy, gross calorific value, in biomass, resource correction` in `resources / unspecified`, 21 exchanges, all of them negative. On the build of 805e72f it reached `cd1ac761…`, a `Biomass` flow in `Resource → Ground` that exists only because this row and its plain sibling minted it. The flow named here is EF 3.1's own, `fe0acd60-3ddc-11dd-a6fd-0050c2490048`, which is where the same correction goes from `resources / biotic`. The target is named by uuid because that is what a correction has to agree with -- reaching a flow that merely happens to be called `Biomass` would satisfy a claim written on the name alone."
+    },
+    {
+      "id": "0386-both-biomass-energy-corrections-reach-one-flow",
+      "issue": 386,
+      "title": "Both of BAFU's rows for the biomass energy correction reach one flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Energy, Gross Calorific Value, In Biomass, Resource Correction"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_target": true,
+        "same_substance": true,
+        "target_uuid": "fe0acd60-3ddc-11dd-a6fd-0050c2490048",
+        "target_context_display": "Resource → Biotic"
+      },
+      "comment": "The claim the issue was reopened for, stated over the pair rather than one row at a time: a correction that is published in two places is not a correction. Both rows already agreed on the substance -- `fo-e0dbc6aec0ed87bd` -- so it was never the matching that split them, only the context each compartment resolved to. `same_substance` is claimed alongside `same_target` because they are different questions and only the second one was ever in doubt here."
+    },
+    {
+      "id": "0386-the-aluminium-correction-is-undisturbed",
+      "issue": 386,
+      "title": "The aluminium correction BAFU also files in two compartments still reaches one flow in the ground",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Aluminium, Resource Correction"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_target": true,
+        "target_name": "Aluminium",
+        "target_uuid": "fe0acd60-3ddc-11dd-ab5f-0050c2490048",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "The control, and it holds before this change as well as after -- which is the point of it. Aluminium is the other correction BAFU writes into both `resources / in ground` and `resources / unspecified`, and it has never been split, because aluminium's ground flow already existed for the `unspecified` row to reach. A rule that moved rows out of `resources / unspecified` on anything broader than this one flow would move this one wrongly, and would be taking metal out of a tree."
+    }
+  ]
+}

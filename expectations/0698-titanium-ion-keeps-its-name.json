@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 ships `titanium, ion` with CAS 22541-75-9, whose PubChem record says `Ti+4` -- a generic name beside a specific number, which is the documented shape of the base list (`butanol` beside 71-36-3) and not a defect. #128 approved renaming the substance `Titanium(4+)`, but the approval never applied: the ion pass reads the charge from `elemental_charge`, which only ChEBI writes, and ChEBI has no entry for this number, so the ruling sat inert while every build published the fallback name. #143 asked whether to finish the rename or withdraw it, and the answer is a general rule rather than a titanium decision: a fallback ion name is corrected to its charge only where the correction **disambiguates** -- an element with exactly one ionic form (`Sodium(1+)`, `Lithium(1+)`), or a generic name beside a published charged sibling (`Tin, ion` beside `Tin(2+)`, #127). Titanium has neither. The list publishes no other titanium ion, and ecoinvent's twenty-six charge-withheld `Titanium ion` rows reach the object by exactly this label, so the rename would assert a specificity no reader needs and unseat the label the rows land by. The approval is now a rejection, with the reasoning on the row; the rule is written out in 'When a label follows the number' in docs/concepts/evidence.md.\n\nMeasured on the unbounded build of 2026-08-24 (merge run `e257016a`), where both claims already hold: the change is a ruling flip nothing currently reads, recorded so that the day something does read it -- ChEBI gaining the entry, or the charge fallback of #326 reaching the naming pass -- the rename stays refused instead of firing on a stale approval.",
+  "expectations": [
+    {
+      "id": "0698-the-generic-name-stands",
+      "issue": 698,
+      "title": "EF's charge-unstated titanium is still published under the generic-ion name",
+      "subject": {
+        "kind": "substance",
+        "label": "Titanium, ion"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "AtomCation"
+      },
+      "comment": "The name says what EF wrote and what ecoinvent's rows match on; the type says what the number brought in. Both at once is the point: identity follows the number (`Ti+4`, typed `AtomCation` by #326's formula fallback) while the label follows the source's readable name, and neither statement is allowed to overwrite the other. A build where this substance vanishes or is renamed has either applied the rejected rename or moved the ecoinvent rows, and both are decisions #143 closed."
+    },
+    {
+      "id": "0698-the-rejected-rename-does-not-fire",
+      "issue": 698,
+      "title": "No substance named Titanium(4+) appears",
+      "subject": {
+        "kind": "substance",
+        "label": "Titanium(4+)"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "The half that catches the accident #143 warned about. The approval sat unapplied only because the ion pass cannot see this object's charge -- `elemental_charge` is ChEBI's property and ChEBI has no entry for 22541-75-9. A later enrichment or a wider `_stated_charge` would make the charge visible, and with the old approval still on file the rename would have fired silently. With the rejection on file the pass refuses it and files nothing, and this claim is the visible check that it stayed refused. If titanium(4+) ever deserves its own substance -- a source list shipping a stated-charge titanium row -- that is a new decision against this claim, not a label question."
+    }
+  ]
+}

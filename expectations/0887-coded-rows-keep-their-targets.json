@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "description": "The invariant the geography-split work (#192, plans/simapro-row-preparation.md) is judged on: a row whose name carries a place must keep reaching the flow it reaches today once the place is read off at load. One representative row per route a coded row lands by -- registry number, water material, land class, base-label match -- each selected by uuid because the recorded name is exactly what the change changes, and each claiming the target and the basis, so a split that moved a row would fail here and a split that only renamed would not. Plus the guard row: Particulates, SPM is code-shaped and is not a place, and stays whatever the whitelist gains. Every claim holds on the build of 1 September 2026 (run c5445e95) and must go on holding through every phase.",
+  "expectations": [
+    {
+      "id": "0887-a-coded-row-that-matches-by-number-keeps-its-substance",
+      "issue": 887,
+      "title": "AGRIBALYSE's Phosphorus, CN reaches Phosphorus by its number, code or no code on the name",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "e93bccb5-9aa2-5043-85cf-a25fda79aab3"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "cas",
+        "target_name": "Phosphorus",
+        "target_context_display": "Environmental → Water → Unknown"
+      },
+      "comment": "The number places it today with the code still on the name, and will go on placing it when the name arrives split. Selected by uuid: the recorded name is the one thing the split changes."
+    },
+    {
+      "id": "0887-a-coded-water-row-keeps-its-material",
+      "issue": 887,
+      "title": "AGRIBALYSE's Water, AE keeps reaching ocean water by its material",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "7e05cdce-ff0b-5fb9-8a49-f09ebcf89744"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "material",
+        "target_name": "Water",
+        "target_context_display": "Environmental → Water → Ocean"
+      },
+      "comment": "The material table is keyed on the uuid, so the split cannot move it -- which is precisely what this claim is here to prove."
+    },
+    {
+      "id": "0887-a-custom-coded-water-row-keeps-its-material",
+      "issue": 887,
+      "title": "AGRIBALYSE's Water, RME -- a custom geography, not an ISO code -- keeps its material route",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "fec2a618-2f54-59ca-8d95-16baaaafe2c7"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "material",
+        "target_name": "Water",
+        "target_context_display": "Environmental → Water → River"
+      },
+      "comment": "RME is the vendor's own Middle East grouping, glossed on the row. Phase 2 admits it beside RER and RAF; before and after, the row lands by its material."
+    },
+    {
+      "id": "0887-a-coded-land-row-keeps-its-class",
+      "issue": 887,
+      "title": "AGRIBALYSE's Occupation, annual crop, TH keeps reaching Cropland by its land class",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "982ea06a-86eb-5e3b-a968-eb64853e0084"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "land_class",
+        "target_name": "Cropland"
+      },
+      "comment": "The class table is keyed on the uuid; #363 whitelisted this base for the lookup and the class placed the row regardless, which is half of how #192 was found."
+    },
+    {
+      "id": "0887-the-country-coded-air-row-keeps-its-substance",
+      "issue": 887,
+      "title": "AGRIBALYSE's Nitrogen oxides, CN reaches Nitrogen Oxides on a label, before and after the split",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "a18f23c0-3232-5851-a83c-72ad09694bac"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "algorithm",
+        "basis": "label",
+        "target_name": "Nitrogen Oxides",
+        "target_characterised": true
+      },
+      "comment": "Today the label is the synonym #364 wrote; after phase 2 it is the split base name itself, and the synonym is deleted. `basis: label` is the same either way, deliberately: the claim survives the mechanism swap and fails only if the row stops reaching the substance."
+    },
+    {
+      "id": "0887-suspended-particulate-matter-is-not-a-place",
+      "issue": 887,
+      "title": "Particulates, SPM stays exactly as the vendor wrote it, code-shaped tail and all",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "dd29ed82-8b31-533d-b6ea-03f38454873d"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "matched",
+        "target_name": "Particles (unspecified size)",
+        "basis": "particulate_size_class"
+      },
+      "comment": "SPM parses as a code and is suspended particulate matter -- even a valid ISO alpha-3, for Saint-Pierre-et-Miquelon. What this claim pins is that no widened whitelist ever reads a place off it. Rewritten on 2 September 2026, keeping the id, when #196 settled the row: it is read as the size-unstated total by the curated size table, which is a reading of the whole name and could not be made of a name the splitter had shortened."
+    }
+  ]
+}

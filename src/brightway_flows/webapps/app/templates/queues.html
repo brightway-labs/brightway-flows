@@ -1,0 +1,69 @@
+{#
+  The queue index, in sections rather than as one grid.
+
+  Fourteen cards in a row asked a curator to know from the titles that
+  `Ambiguous CAS` and `Two implementations, two numbers` are not the same kind
+  of work. They are not, and they do not even come from the same run: the flow
+  queues are written by a build, the factor queues by `characterise` over a
+  build that has already finished. Sections say so.
+#}
+{% extends "layout.html" %}
+{% set page_title = "Queue" %}
+{% set active_section = "queue" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Decision queues</h1>
+  <p class="page__lede">
+    Where the pipeline declined to decide. A work queue, not a browser — and
+    declining is a normal outcome, not a failure.
+  </p>
+</header>
+
+{% for group, queues in sections %}
+<section class="section">
+  <div class="section__header">
+    <h2>{{ group.title }}</h2>
+    <span class="muted">
+      {{ queues | sum(attribute='total') | thousands }} open
+    </span>
+  </div>
+  <p class="page__lede muted">{{ group.lede }}</p>
+  <div class="cards">
+    {% for queue in queues %}
+    <a class="card card--link" href="{{ url_for('queue.detail', name=queue.definition.name) }}">
+      <span class="card__label">{{ queue.definition.title }}</span>
+      <span class="card__value">
+        {% if not queue.available %}<span class="muted">n/a</span>
+        {% else %}{{ queue.total | thousands }}{% endif %}
+      </span>
+      {% if queue.blocking %}
+      <span class="card__note">
+        <span class="tag tag--blocking">{{ queue.blocking | thousands }} blocking</span>
+      </span>
+      {% elif queue.available and not queue.total %}
+      <span class="card__note"><span class="tag tag--ok">clear</span></span>
+      {% endif %}
+      <span class="card__note muted mono">{{ queue.definition.name }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+
+<section class="section">
+  <div class="section__header"><h2>What the severities mean</h2></div>
+  <dl class="facts">
+    <dt><span class="tag tag--blocking">blocking</span></dt>
+    <dd>The pipeline could not act, and will not until someone rules.</dd>
+    <dt><span class="tag tag--review">review</span></dt>
+    <dd>The pipeline acted and wants the result checked.</dd>
+    <dt><span class="tag tag--info">info</span></dt>
+    <dd>Recorded for a reader; nothing changed.</dd>
+  </dl>
+  <p class="muted">
+    Not a judgement about data quality — about whether the pipeline already
+    acted. A queue sorts blocking first.
+  </p>
+</section>
+{% endblock %}

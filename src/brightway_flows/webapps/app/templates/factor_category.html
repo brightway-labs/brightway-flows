@@ -1,0 +1,179 @@
+{#
+  One impact category, opened.
+
+  The index can only say how many factors a category holds; this is the list.
+  One row per (flow, place) and a column per implementation, taken from the
+  category's own rows rather than written here -- the same shape the difference
+  report uses, and for the same reason.
+
+  Sorted by the largest number anybody states, descending, because the question
+  this page is opened with is "what does this category weigh heavily", and the
+  answer to that is not alphabetical.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = detail.name %}
+{% set active_section = "factors" %}
+
+{% block content %}
+<header class="page__header">
+  <p class="muted">
+    <a href="{{ url_for('factors.index') }}">Characterisation factors</a>
+    → {{ detail.label }}
+  </p>
+  <h1>{{ detail.name }}</h1>
+  {% if detail.indicator %}
+  <p class="page__lede">{{ detail.indicator }}</p>
+  {% endif %}
+  <dl class="facts">
+    <dt>Method</dt><dd>{{ detail.label }}</dd>
+    <dt>Reference unit</dt><dd class="mono">{{ detail.unit or "—" }}</dd>
+    <dt>Protects</dt><dd>{{ detail.area_of_protection or "—" }}</dd>
+  </dl>
+  {% if detail.description %}
+  <p class="muted">{{ detail.description }}</p>
+  {% endif %}
+</header>
+
+{#
+  What each implementation says under this category alone. Ours first, and an
+  implementation with nothing here still gets a card: "states no factor for this
+  category" is an answer, and leaving it out would read as if it had never been
+  loaded.
+#}
+<div class="cards">
+  {% for name in detail.implementations %}
+  {% set count = detail.count(name) %}
+  <div class="card{% if not count.factors %} card--empty{% endif %}">
+    <span class="card__label">{{ name }}</span>
+    <span class="card__value">{{ count.factors | thousands }}</span>
+    <span class="card__note">
+      {% if count.factors %}
+      factors over {{ count.flows | thousands }} flows,
+      {{ count.non_zero | thousands }} of them non-zero
+      {% else %}
+      states nothing under this category
+      {% endif %}
+    </span>
+  </div>
+  {% endfor %}
+</div>
+
+{#
+  Beside the cards, because this is the question they raise: two implementations
+  of one category, and what a reader wants next is the rows where they do not
+  agree.
+#}
+<p class="muted">
+  <a href="{{ url_for('factors.category_differences', method=detail.method_slug,
+                      version=detail.version, slug=detail.slug) }}">
+    Compare two of these implementations</a> — only the rows where they state
+  different numbers.
+</p>
+
+<section class="section">
+  <div class="section__header">
+    <h2>Factors</h2>
+    <span class="muted">{{ page.total | thousands }}</span>
+  </div>
+  <p class="page__lede">
+    One row per flow and place. <em>Published as</em> is what this list did with
+    the row: <span class="mono">agreed</span> where more than one implementation
+    stated the same number, <span class="mono">sole</span> where only one spoke,
+    and nothing at all where the disagreement went to a
+    <a href="{{ url_for('queue.index') }}">queue</a> instead.
+  </p>
+
+  {#
+    The order is a control of its own rather than a sortable column header,
+    because what it sorts on is not any one column: `largest number` is the
+    biggest magnitude *anybody* states for the row. Hanging it off the consensus
+    header would claim it sorts on that implementation, and the rows this page is
+    most often opened for are the ones that implementation says nothing about.
+  #}
+  <div class="chips">
+    <span class="muted">Order</span>
+    {% for key, label in (('-amount', 'Largest number stated'),
+                          ('flow', 'Flow name')) %}
+    <a class="chip {% if (sort or '-amount') == key %}chip--active{% endif %}"
+       href="{{ url_for('factors.category', method=detail.method_slug,
+                        version=detail.version, slug=detail.slug,
+                        q=query, sort=key) }}">
+      <span class="chip__label">{{ label }}</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <form class="filters" method="get"
+        action="{{ url_for('factors.category', method=detail.method_slug,
+                           version=detail.version, slug=detail.slug) }}">
+    <div class="filters__search">
+      <label class="visually-hidden" for="q">Search</label>
+      <input id="q" name="q" type="search" value="{{ query }}"
+             placeholder="Flow, compartment or identifier…" data-search>
+      <button class="button" type="submit">Search</button>
+      {{ t.reset('factors.category', {'method': detail.method_slug,
+                                      'version': detail.version,
+                                      'slug': detail.slug}) }}
+    </div>
+  </form>
+
+  {% if page.rows %}
+  {{ t.pager(page, 'factors.category', args) }}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Flow</th>
+          <th scope="col">Place</th>
+          {#
+            A column per implementation of this category, from the data. Ours is
+            first because it is the one that is always there.
+          #}
+          {% for name in detail.implementations %}
+          <th scope="col" class="num">{{ name }}</th>
+          {% endfor %}
+          <th scope="col">Published as</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in page.rows %}
+        <tr>
+          <td>
+            {{ t.flow_link(row.elementary_flow_uuid, row.flow_name or row.elementary_flow_uuid) }}
+            {% if row.context_display %}
+            <div class="muted">{{ row.context_display }}</div>
+            {% endif %}
+          </td>
+          <td class="mono">{{ row.geography or "—" }}</td>
+          {% for name in detail.implementations %}
+          <td class="num mono">
+            {%- if name in row.amounts %}{{ row.amounts[name] | amount }}
+            {%- else %}<span class="muted">—</span>{% endif %}
+          </td>
+          {% endfor %}
+          <td>
+            {% if row.derivation %}{{ row.derivation }}
+            {% elif row.disputed %}<span class="tag tag--blocking">not published</span>
+            {% else %}<span class="muted">—</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {{ t.pager(page, 'factors.category', args) }}
+  {% else %}
+  {{ t.nothing_matches("No factor under this category matches this filter.") }}
+  {% endif %}
+</section>
+
+<p class="muted">
+  <a href="{{ url_for('factors.category_differences', method=detail.method_slug,
+                      version=detail.version, slug=detail.slug) }}">
+    Where two of these implementations differ</a>, only the rows they state
+  different numbers for — or
+  <a href="{{ url_for('factors.differences', q=detail.slug) }}">this category in
+    the whole-method difference report</a>.
+</p>
+{% endblock %}

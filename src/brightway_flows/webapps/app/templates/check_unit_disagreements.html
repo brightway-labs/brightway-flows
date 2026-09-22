@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Unit disagreements" %}
+{% set active_section = "checks" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Unit disagreements</h1>
+  <p class="page__lede">
+    A source row measured in something other than the flow it landed on. Two
+    situations reach this, and the <em>Kind</em> column says which. A
+    <strong>matched</strong> row disagrees with a flow the list already had —
+    sometimes deliberately, which is what
+    <code>unit-change-allowlist.json</code> records. A <strong>created</strong>
+    row is one of a group that made a new flow between them and did not agree on
+    its unit; the flow states one, and the rest are here.
+  </p>
+  <p class="page__lede">
+    Only <span class="tag tag--blocking">needs a decision</span> is asking for
+    anything. The rest have an answer: a curated one, or the reference unit the
+    unit table names for that quantity kind. The most recent merge run only.
+  </p>
+</header>
+
+{{ t.search_form('checks.unit_disagreements', query, "Flow, unit or list…") }}
+
+{#
+  The badge as a filter. Sorting the undecided rows to the top made them
+  findable on the first page and nowhere else: on page 3 of 143 a reader is
+  reading rows that are already settled and cannot tell how many are left.
+#}
+{{ t.badge_filter("Settled by", "badge", badge, badges,
+                  'checks.unit_disagreements', args, all_count=badge_total) }}
+
+{% if page.rows %}
+{{ t.pager(page, 'checks.unit_disagreements', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Source row</th>
+        <th scope="col">Source list</th>
+        <th scope="col">Kind</th>
+        <th scope="col">Row says</th>
+        <th scope="col">Flow says</th>
+        <th scope="col">Settled by</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td>
+          {{ row.source_name or row.source_uuid }}
+          <div class="muted mono">{{ row.source_uuid }}</div>
+        </td>
+        <td class="muted">{{ row.source_list }}</td>
+        <td>{{ row.kind }}</td>
+        <td class="mono">{{ row.source_unit or "—" }}</td>
+        <td>
+          {% if row.target_uuid %}
+          {{ t.flow_link(row.target_uuid, row.target_name or row.target_uuid) }}
+          {% endif %}
+          <span class="mono">{{ row.target_unit or "—" }}</span>
+          {% if row.offered_units %}
+          <div class="muted">rows offered {{ row.offered_units | join(", ") }}</div>
+          {% endif %}
+        </td>
+        <td>
+          {% if row.needs_a_decision %}
+          <span class="tag tag--blocking">needs a decision</span>
+          {% elif row.decided_by %}
+          {{ row.decided_by }}
+          {% else %}
+          <span class="muted">—</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'checks.unit_disagreements', args) }}
+{% else %}
+{{ t.nothing_matches("Every source row is measured in the unit of the flow it landed on.") }}
+{% endif %}
+{% endblock %}

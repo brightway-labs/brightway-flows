@@ -1,0 +1,28 @@
+{#
+  The database is there and `compare-scores` has not run against it.
+
+  A page rather than a table of zeros: "nobody has asked yet" is a different
+  statement from "the two sides agree", and a section that showed an empty
+  table would be making the second one.
+#}
+{% extends "layout.html" %}
+{% set page_title = "No scores yet" %}
+{% set active_section = "scores" %}
+
+{% block content %}
+<div class="empty">
+  <h1>No score comparison yet</h1>
+  <p>
+    This build has flows, and perhaps factors, but nothing has been scored
+    against a vendor's own numbers. The comparison is a separate pass after
+    <code>characterise</code>:
+  </p>
+  <pre><code>uv run brightway-flows compare-scores</code></pre>
+  <p class="muted">
+    It reads the files <code>tools/export_unit_process_scores.py</code> writes
+    under brightway — a sample of a release's datasets, each with its inventory,
+    the vendor's factors and the vendor's scores — so export those first if you
+    have not. <code>score-comparison-config</code> says which releases and where.
+  </p>
+</div>
+{% endblock %}

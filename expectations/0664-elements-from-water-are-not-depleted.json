@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "description": "Bromine, iodine, chlorine, magnesium and sodium chloride are each published as two resource flows, one in `Resource → Ground` and one in `Resource → Water`, and only the ground flow carries EF 3.1's `Resource use, minerals and metals` factor. #137 asked whether that is a defect -- one substance filed in two places, with the factor stuck on the one no inventory uses -- or a distinction. It is a distinction, and this file records it as deliberate.\n\nThe factor is CML's abiotic depletion potential on *ultimate reserves*, which is defined on the continental crust: an element's crustal concentration times the mass of the crust (Guinee et al. 2002; van Oers et al. 2002; van Oers, Guinee and Heijungs 2020, the revision EF 3.1 uses). The ocean is not part of that reserve, and the same authors say so -- the elements won mostly from sea water, sodium, chlorine, magnesium and bromine, are the ones the model fits worst. EF 3.1 minted `Non-renewable element resources from water` as its own compartment precisely so the model could decline to characterise it. Both independent implementations read it that way: in the 21 August 2026 build of `20ad511` the JRC states 0.00439 for bromine from ground and nothing from water, and ecoinvent's own `EF v3.1` in `LCIA Implementation 3.12.xlsx` gives `Magnesium, in ground` 2.02e-09 and every `in water` element flow nothing.\n\nThe worry that a brine pumped from an aquifer would then be characterised as nothing is an inventory question, and ecoinvent has answered it: `Lithium, 0.15% in brine, in ground` is filed in ground. `In water` in ecoinvent means the sea, which is where bromine, iodine and magnesium production actually draws from. A row for an aquifer brine belongs on the ground flow; the water flow does not acquire a crustal factor to cover for it.\n\nSodium chloride is the odd one and is claimed separately: EF 3.1 gives it no factor in either compartment, and the 1.65e-05 on the ground flow is the ecoinvent Centre's own addition.\n\nWriting the claim on the whole compartment turned up one flow that fails it: `Carnallite` from water, which the ecoinvent Centre alone characterises at 1.0375e-05 -- chlorine's crustal factor scaled by carnallite's chlorine content -- while giving chlorine from the same compartment nothing. That is #148, which declines it. The compartment-wide claim is written about this list's own implementation, because a transcription of what the ecoinvent Centre published stays published under their name whatever this list decides.",
+  "expectations": [
+    {
+      "id": "0664-bromine-from-water-carries-no-depletion-factor",
+      "issue": 664,
+      "title": "Bromine taken from water carries no `Resource use, minerals and metals` factor, under any implementation",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Bromine",
+        "context_display": "Resource → Water → Unknown",
+        "category": "Resource use, minerals and metals"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "The issue's worked example. EF 3.1's `bromine` from `Non-renewable element resources from water`, where BAFU 2026 v1, ecoinvent 3.12 and both of ecoinvent 3.8's bromine rows land. Ultimate-reserve depletion is a crustal indicator and bromine dissolved in the sea is not in the reserve, so a zero here is the method's answer and not a gap in the transcription. Claimed for every implementation at once, because a factor that appeared under any one of them -- a restatement copying the ground flow's 0.00439 across, say -- would be the defect this file says is not one."
+    },
+    {
+      "id": "0664-bromine-from-ground-keeps-its-depletion-factor",
+      "issue": 664,
+      "title": "Bromine taken from the ground still carries the JRC's 4.39E-03",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Bromine",
+        "context_display": "Resource → Ground",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "4.39E-03"
+      },
+      "comment": "The other half of the pair, so that a change which resolved the split by dropping the factor from both flows would fail rather than pass. Quoted as EF 3.1's workbook prints it."
+    },
+    {
+      "id": "0664-elements-from-water-carry-no-depletion-factor",
+      "issue": 664,
+      "title": "Iodine, chlorine and magnesium taken from water carry no `Resource use, minerals and metals` factor of this list's either",
+      "subject": {
+        "kind": "factor",
+        "context_display": "Resource → Water → Unknown",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "The same claim for the whole compartment: no flow in `Resource → Water → Unknown` carries a minerals-and-metals factor this list states as its own. In the 21 August 2026 build that compartment holds EF 3.1's iodine (0.025 from ground, nothing here), chlorine (2.71e-05 from ground), magnesium (2.02e-09 from ground) and sodium chloride, and the water flows of each are where BAFU and ecoinvent's `in water` rows land. Written on the compartment rather than the four names so that a fifth element EF files the same way is covered when it arrives. Scoped to this list's implementation rather than to anyone's, because the compartment holds one flow the ecoinvent Centre does characterise -- `Carnallite`, at 1.0375e-05 -- and #148 declines that number rather than erasing their statement of it. Their row stays under their name; the claim is that nothing in this compartment is restated as ours."
+    },
+    {
+      "id": "0664-sodium-chloride-from-ground-is-ecoinvents-number",
+      "issue": 664,
+      "title": "The depletion factor on sodium chloride from the ground is the ecoinvent Centre's and not the JRC's",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sodium Chloride",
+        "context_display": "Resource → Ground",
+        "category": "Resource use, minerals and metals",
+        "implemented_by": "European Commission — JRC"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "EF 3.1 lists `sodium chloride` in both compartments and characterises neither; the 1.646069874734259e-05 the build carries on the ground flow is the ecoinvent Centre's own extension of the method in `LCIA Implementation 3.12.xlsx`. Recorded so that the issue's table -- which read the ground flow's factor as EF's -- is corrected in data: a JRC factor appearing here would mean EF had started characterising rock salt, which is a change worth noticing."
+    }
+  ]
+}

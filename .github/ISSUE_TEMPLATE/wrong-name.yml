@@ -1,0 +1,125 @@
+name: A substance is published under the wrong name
+description: The preferred label is wrong, misspelled or misleading, or an alternative label asserts an identity the substance does not have.
+labels: ["names"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when the substance is **right and its name is not**: a part number
+        where a chemical name exists, a common name sitting on a salt or a hydrate, a
+        truncated element name, a label that names something broader than the flow, or a
+        synonym that would make a search return the wrong substance.
+
+        If the *chemical* is wrong rather than the name, use [a flow is not that
+        chemical](https://github.com/brightway-labs/brightway-flows/issues/new?template=wrong-identity.yml).
+
+        Two things here are decided rather than obvious, and it is worth knowing which way
+        before you write:
+
+        - **Where two curated sources give one substance two names that differ only in
+          style** — systematic against common, `Trifluoromethane` against `fluoroform` —
+          the published label is the name the other contributing lists use.
+        - **A replaced name is not always kept as a synonym.** `Silver-110` is kept,
+          because it is the name both vendor lists ship and the only string a consumer
+          could search for. The 1,1,1 spelling on the trichloroethane flows is not, because
+          it is another molecule's name and a synonym is searched and matched on.
+
+        **Write the title so it means something to somebody who has not read the issue.**
+        Name the substance and the count.
+
+  - type: input
+    id: published-flow
+    attributes:
+      label: The flow or substance on the website
+      description: Its UUID, or the address of its page.
+    validations:
+      required: true
+
+  - type: input
+    id: published-name
+    attributes:
+      label: The name it is published under today
+      placeholder: Carbon Dioxide (land Use Change)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: name-problem
+    attributes:
+      label: What is wrong with it
+      options:
+        - It is a trade designation or part number, and a chemical name exists
+        - It is a common name belonging to a relative — the acid, the ion, the anhydrous form
+        - It is misspelled, truncated, or wrongly capitalised
+        - It names something broader or narrower than the flow
+        - It is an alternative label that asserts an identity this substance does not have
+        - Two different substances are published under this one name
+    validations:
+      required: true
+
+  - type: input
+    id: expected-value
+    attributes:
+      label: What it should be called
+      description: >-
+        And, if you are asking for a synonym to be removed, say which one and why a search
+        for it should not return this substance.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: What says so
+      description: >-
+        For a style disagreement, the useful evidence is **which name the other contributing
+        lists use** — that is the rule, and it is not a question a string can be asked. For
+        anything else, name the registry entry or the source list that spells it the way
+        you are asking for.
+      placeholder: >-
+        ecoinvent, BAFU and AGRIBALYSE all ship this substance as `Fluoroform`; EF 3.1 is
+        the only list using the systematic name.
+    validations:
+      required: true
+
+  - type: input
+    id: claim
+    attributes:
+      label: One sentence that should be true of the output
+      placeholder: The substance EF 3.1 ships as `Trifluoromethane` is published as `Fluoroform`
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: A proposed ruling, if you have one
+      description: >-
+        **Optional.** A preferred label is ruled in
+        `src/brightway_flows/data/preferred-label-decisions.json`, and a synonym is kept
+        or dropped through `src/brightway_flows/data/altlabel-keep-list.json`.
+      render: json
+      placeholder: |
+        {
+          "flow_object_id": "fo-…",
+          "label": "Fluoroform",
+          "comment": "…"
+        }
+
+  - type: input
+    id: build
+    attributes:
+      label: Which build you were looking at
+      description: The version or revision at the foot of the page. Leave it blank if you are unsure.
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **What happens next.** A maintainer approves a CI run — runs are not automatic, so
+        there may be a wait. It measures this claim against the reference build and, if you
+        proposed a ruling, builds the list with it applied and diffs it against that
+        reference, which is how a rename that quietly moves other substances gets caught.
+        The result is a workflow run with an artifact attached. Nothing is written to the
+        repository until a pull request is merged.

@@ -1,0 +1,550 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One release of the Brightway flows list, projected onto what a migration compares: the published fields of every substance and flow, the redirects, the characterisation factors by their triple, and the source rows that align one build's identifiers with another's. Written by release-snapshot; read by release-migrations.",
+  "properties": {
+    "characterization_factors": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "title": "Amount",
+            "type": "number"
+          },
+          "category": {
+            "default": "",
+            "title": "Category",
+            "type": "string"
+          },
+          "elementary_flow_uuid": {
+            "title": "Elementary Flow Uuid",
+            "type": "string"
+          },
+          "geography": {
+            "title": "Geography",
+            "type": "string"
+          },
+          "impact_category_id": {
+            "title": "Impact Category Id",
+            "type": "string"
+          },
+          "implemented_by": {
+            "default": "",
+            "title": "Implemented By",
+            "type": "string"
+          },
+          "method": {
+            "default": "",
+            "title": "Method",
+            "type": "string"
+          }
+        },
+        "required": [
+          "amount",
+          "category",
+          "elementary_flow_uuid",
+          "geography",
+          "impact_category_id",
+          "implemented_by",
+          "method"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "elementary_flows": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "@id": {
+            "default": "",
+            "title": "Jsonld Id",
+            "type": "string"
+          },
+          "@type": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Jsonld Type",
+            "type": "array"
+          },
+          "altLabel": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Altlabel",
+            "type": "array"
+          },
+          "cas_numbers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Cas Numbers",
+            "type": "array"
+          },
+          "context_iri": {
+            "title": "Context Iri",
+            "type": "string"
+          },
+          "definition": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Definition",
+            "type": "array"
+          },
+          "deprecation_reason": {
+            "default": "",
+            "title": "Deprecation Reason",
+            "type": "string"
+          },
+          "ec_numbers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Ec Numbers",
+            "type": "array"
+          },
+          "flow_object_id": {
+            "default": "",
+            "title": "Flow Object Id",
+            "type": "string"
+          },
+          "http://purl.obolibrary.org/obo/RO_0000087": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Roles"
+          },
+          "http://www.w3.org/2004/02/skos/core#inScheme": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "In Scheme",
+            "type": "object"
+          },
+          "https://vocab.brightway.one/terms/baseIntervention": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Parent Intervention Id"
+          },
+          "https://vocab.brightway.one/terms/baseSubstance": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Parent Flow Object Id"
+          },
+          "https://vocab.brightway.one/terms/originQualifier": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Origin Qualifier"
+          },
+          "identifier": {
+            "title": "Identifier",
+            "type": "string"
+          },
+          "is_deprecated": {
+            "default": false,
+            "title": "Is Deprecated",
+            "type": "boolean"
+          },
+          "prefLabel": {
+            "title": "Preflabel",
+            "type": "string"
+          },
+          "properties": {
+            "additionalProperties": true,
+            "title": "Properties",
+            "type": "object"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "title": "References",
+            "type": "array"
+          },
+          "replaced_by_identifier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Replaced By Identifier"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "unit_iri": {
+            "title": "Unit Iri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "@id",
+          "@type",
+          "altLabel",
+          "cas_numbers",
+          "context_iri",
+          "definition",
+          "deprecation_reason",
+          "ec_numbers",
+          "flow_object_id",
+          "http://www.w3.org/2004/02/skos/core#inScheme",
+          "identifier",
+          "is_deprecated",
+          "prefLabel",
+          "properties",
+          "references",
+          "source",
+          "unit",
+          "unit_iri"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "flow_objects": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "@type": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Types",
+            "type": "array"
+          },
+          "altLabel": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Altlabel",
+            "type": "array"
+          },
+          "classifications": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "title": "Classifications",
+            "type": "object"
+          },
+          "definition": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Definition",
+            "type": "array"
+          },
+          "flow_object_id": {
+            "title": "Flow Object Id",
+            "type": "string"
+          },
+          "http://purl.obolibrary.org/obo/RO_0000087": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Roles"
+          },
+          "origin_qualifier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Origin Qualifier"
+          },
+          "parent_flow_object_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Parent Flow Object Id"
+          },
+          "parent_intervention_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Parent Intervention Id"
+          },
+          "prefLabel": {
+            "default": "",
+            "title": "Preflabel",
+            "type": "string"
+          },
+          "properties": {
+            "additionalProperties": true,
+            "title": "Properties",
+            "type": "object"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "title": "References",
+            "type": "array"
+          }
+        },
+        "required": [
+          "@type",
+          "altLabel",
+          "classifications",
+          "definition",
+          "flow_object_id",
+          "prefLabel",
+          "properties",
+          "references"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "redirects": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "identifier": {
+            "title": "Identifier",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "replaced_by_identifier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Replaced By Identifier"
+          }
+        },
+        "required": [
+          "identifier",
+          "reason"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 1,
+      "type": "integer"
+    },
+    "source_rows": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "elementary_flow_uuid": {
+            "title": "Elementary Flow Uuid",
+            "type": "string"
+          },
+          "list_name": {
+            "title": "List Name",
+            "type": "string"
+          },
+          "list_version": {
+            "title": "List Version",
+            "type": "string"
+          },
+          "source_flow_uuid": {
+            "title": "Source Flow Uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "elementary_flow_uuid",
+          "list_name",
+          "list_version",
+          "source_flow_uuid"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "stamp": {
+      "additionalProperties": false,
+      "properties": {
+        "characterise_run_id": {
+          "default": "",
+          "title": "Characterise Run Id",
+          "type": "string"
+        },
+        "created": {
+          "default": "",
+          "title": "Created",
+          "type": "string"
+        },
+        "development": {
+          "title": "Development",
+          "type": "boolean"
+        },
+        "flow_schema_version": {
+          "default": 7,
+          "title": "Flow Schema Version",
+          "type": "integer"
+        },
+        "lcia_schema_version": {
+          "default": 2,
+          "title": "Lcia Schema Version",
+          "type": "integer"
+        },
+        "merge_finished_at": {
+          "default": "",
+          "title": "Merge Finished At",
+          "type": "string"
+        },
+        "merge_run_id": {
+          "default": "",
+          "title": "Merge Run Id",
+          "type": "string"
+        },
+        "merge_schema_version": {
+          "default": 2,
+          "title": "Merge Schema Version",
+          "type": "integer"
+        },
+        "merged_lists": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Merged Lists",
+          "type": "array"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "revision_dirty": {
+          "title": "Revision Dirty",
+          "type": "boolean"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "characterise_run_id",
+        "created",
+        "development",
+        "flow_schema_version",
+        "lcia_schema_version",
+        "merge_finished_at",
+        "merge_run_id",
+        "merge_schema_version",
+        "merged_lists",
+        "revision",
+        "revision_dirty",
+        "run_id",
+        "timestamp",
+        "version"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "stamp",
+    "flow_objects",
+    "elementary_flows",
+    "redirects",
+    "characterization_factors",
+    "source_rows"
+  ],
+  "title": "release-snapshot.json",
+  "type": "object"
+}

@@ -1,0 +1,107 @@
+{#
+  One dataset: every category both ways, and under the chosen one every flow
+  whose contribution the comparison kept -- the hand
+  analysis, for any dataset of the sample.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = detail.name %}
+{% set active_section = "scores" %}
+
+{% block content %}
+<header class="page__header">
+  <p class="muted"><a href="{{ url_for('scores.index') }}">Scores</a> ›
+    <a href="{{ url_for('scores.datasets', release=detail.release.key) }}">{{ detail.release.list_name }} {{ detail.release.list_version }} {{ detail.release.system_model }}</a></p>
+  <h1>{{ detail.name }} <span class="tag">{{ detail.geography }}</span></h1>
+  <p class="page__lede">
+    {{ detail.product_amount | amount }} {{ detail.product_unit }} of
+    <strong>{{ detail.reference_product }}</strong>; an inventory of
+    {{ detail.inventory_lines | thousands }} flows, of which
+    {{ detail.mapped_lines | thousands }} reached a consensus flow and
+    {{ detail.unmapped_lines | thousands }} did not.
+  </p>
+  <p class="muted mono">{{ detail.activity_uuid }} · brightway {{ detail.activity_code }}
+    {% for scheme, value in detail.classifications.items() %} · {{ scheme }}: {{ value }}{% endfor %}</p>
+</header>
+
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Category</th>
+        <th scope="col" class="num">Vendor</th>
+        <th scope="col" class="num">This list</th>
+        <th scope="col" class="num">Ours ÷ theirs</th>
+        <th scope="col">Band</th>
+        <th scope="col" class="num">Unmapped share</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for score in detail.scores %}
+      <tr{% if score.category_key == chosen %} class="row--active"{% endif %}>
+        <td>
+          <a href="{{ url_for('scores.dataset', release=detail.release.key, activity_code=detail.activity_code, category=score.category_key) }}">{{ score.category }}</a>
+          <div class="muted">{{ score.unit }}</div>
+        </td>
+        <td class="num mono">{{ score.their_score | amount }}</td>
+        <td class="num mono">{{ score.our_score | amount }}</td>
+        <td class="num mono">{% if score.signed_ratio is not none %}{{ '%.3f' | format(score.signed_ratio) }}{% else %}<span class="muted">—</span>{% endif %}</td>
+        <td>{{ score.band | replace('-', ' ') }}</td>
+        <td class="num mono">{{ '%.2f' | format(score.unmapped_share) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if chosen %}
+<section class="section">
+  <h2>{{ chosen_score.category }}: flow by flow</h2>
+  <p class="page__lede">
+    Every flow whose contribution the comparison kept — all that differ, and
+    the agreeing ones above a thousandth of the score — largest gap first.
+    Amounts are per {{ detail.product_amount | amount }} {{ detail.product_unit }};
+    where the consensus flow is measured in another unit, <em>×</em> is the
+    conversion the merge recorded and our factor is per that unit.
+  </p>
+  {% if contributions %}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Vendor flow</th>
+          <th scope="col">Consensus flow</th>
+          <th scope="col" class="num">Amount</th>
+          <th scope="col" class="num">×</th>
+          <th scope="col" class="num">Their factor</th>
+          <th scope="col" class="num">Our factor</th>
+          <th scope="col" class="num">Theirs</th>
+          <th scope="col" class="num">Ours</th>
+          <th scope="col" class="num">Gap</th>
+          <th scope="col">Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in contributions %}
+        <tr>
+          <td>{{ row.source_flow_name or row.source_flow_uuid }}<div class="muted mono">{{ row.source_flow_uuid }}</div></td>
+          <td>{% if row.elementary_flow_uuid %}{{ t.flow_link(row.elementary_flow_uuid, row.flow_name or row.elementary_flow_uuid) }}{% else %}<span class="muted">none</span>{% endif %}</td>
+          <td class="num mono">{{ row.amount | amount }}</td>
+          <td class="num mono">{% if row.multiplier %}{{ row.multiplier | amount }}{% else %}<span class="muted">—</span>{% endif %}</td>
+          <td class="num mono">{% if row.their_factor is not none %}{{ row.their_factor | amount }}{% else %}<span class="muted">—</span>{% endif %}</td>
+          <td class="num mono">{% if row.our_factor is not none %}{{ row.our_factor | amount }}{% else %}<span class="muted">—</span>{% endif %}</td>
+          <td class="num mono">{{ row.their_contribution | amount }}</td>
+          <td class="num mono">{{ row.our_contribution | amount }}</td>
+          <td class="num mono">{{ row.delta | amount }}</td>
+          <td>{{ row.reason | replace('-', ' ') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  {{ t.nothing_matches("Every flow of this dataset agrees under this category, and none is large enough to list.") }}
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

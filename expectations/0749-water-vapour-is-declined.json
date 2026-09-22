@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1's `Water use` can be implemented two ways and both are right on their own. The JRC counts consumption as water withdrawn minus water returned -- +42.95 m3 world-eq deprived on every withdrawal, -42.95 on every return to water, its 209 regional factors written on those flows -- and lists `Water` to air without characterising it. The ecoinvent Centre counts the same consumption as what evaporates: withdrawals and returns at zero and the 42.95 on `Water` to air. On a water-balanced dataset the two agree, because the vapour is the withdrawn water that was not returned. This list published both -- ecoinvent's air factor came in as `restated`, because 42.95 stands bit for bit on every withdrawal and that is what the identity twin looks for -- and so counted every consumed cubic metre twice: over 500 ecoinvent 3.12 datasets, water use was 2.00x ecoinvent's at the median. The ruling in `lcia-factor-rulings.json` declines the air factor and follows the JRC, whose convention is the one the regional factors are written in.",
+  "expectations": [
+    {
+      "id": "0749-water-vapour-carries-no-water-use-factor",
+      "issue": 749,
+      "title": "Water vapour to air carries no `Water use` factor of this list's",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Water vapour",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Water use",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Published as `restated` at 42.95 on the 25 August 2026 build (lcia_runs 8660106f), in this and four more air compartments. A ruling is consulted before a proposed row is held for restating, so a `decline` is what stops the twin from vouching for it."
+    },
+    {
+      "id": "0749-the-withdrawal-still-carries-it",
+      "issue": 749,
+      "title": "`Water` withdrawn still carries the JRC's `Water use` factors",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Water",
+        "context_display": "Resource → Water → Unknown",
+        "category": "Water use",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true
+      },
+      "comment": "The ruling takes one convention, not both away. The withdrawal keeps its 42.95 for no particular place and its 209 regional factors, the return to water keeps its -42.95, and the vapour alone is declined. Existence rather than the amount, because a factor subject selects every geography of the flow and 210 rows carry 210 numbers."
+    },
+    {
+      "id": "0749-the-ecoinvent-centre-still-says-so",
+      "issue": 749,
+      "title": "The ecoinvent Centre's 42.95 for water vapour is still published under their name",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Water vapour",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Water use",
+        "implemented_by": "ecoinvent Centre"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "42.95"
+      },
+      "comment": "A decline withholds this list's number and erases nobody's. Their reading of the method is valid; it is publishing it beside the JRC's that is not."
+    },
+    {
+      "id": "0749-the-proposed-question-is-answered",
+      "issue": 749,
+      "title": "At least four proposed-factor questions are answered by a ruling",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_proposed-factor_items_ruled",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 4
+      },
+      "comment": "Three before this ruling -- the pool credit's two (#139) and carnallite (#148) -- and four with it. Bounded below, as #148's is, because the count is the queue's."
+    }
+  ]
+}

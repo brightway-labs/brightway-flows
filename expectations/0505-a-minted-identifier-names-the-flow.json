@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "description": "A flow the merge mints is a substance in a compartment, and its identifier should say so. Until #102 it said which source row happened to reach that compartment first, so a vendor adding a row, a curated fix letting an existing row through, or a change in the order the lists are merged renamed a flow that had not changed -- and nothing deprecated the old name, so it simply stopped existing between two builds. Measured on the build of 805e72f (run 1e4499fb, merging ecoinvent 3.12, ecoinvent 3.8 and BAFU 2026-v1): all 2,561 minted flows were named after one of their own source rows, and 188 of them were reached by more than one row, so which row named them was arbitrary. See #102.",
+  "expectations": [
+    {
+      "id": "0505-river-water-names-the-flow",
+      "issue": 505,
+      "title": "The river water BAFU and ecoinvent share is published under an identifier made from the substance and the compartment",
+      "subject": {
+        "kind": "flow",
+        "uuid": "f213d8e4abd83830db89e3b9bf1ec0de3b5d00af"
+      },
+      "expect": {
+        "count": 1,
+        "unit": "m3",
+        "context_display": "Environmental → Water → River",
+        "substance_id": "fo-464532a8f956fd39"
+      },
+      "comment": "The flow the issue was written about. On the build of 805e72f it is published as 656bc4922facb93bd3c2a62794de1cd9c0cdde0b, which is sha1 of `algorithm-new-flow:e436857d-f6eb-5fbf-833f-e098f0c2ec5a:fo-464532a8f956fd39:.../envi-wate-rive` -- and e436857d is one BAFU row out of the 54 that reach this flow. It was a different identifier in the build before #78 let that row through, for no reason having to do with water in a river. f213d8e4 is sha1 of `consensus-minted-flow:fo-464532a8f956fd39:https://vocab.brightway.one/flow-contexts/envi-wate-rive`, which names only the substance and the compartment. Selected by identifier rather than by name because the identifier is what the claim is about."
+    },
+    {
+      "id": "0505-no-minted-identifier-is-a-source-row",
+      "issue": 505,
+      "title": "No minted flow is named after the source row that reached it first",
+      "subject": {
+        "kind": "measure",
+        "key": "flows.minted_identifier_not_from_the_flow"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "Counts minted flows whose identifier is not what the substance and the compartment produce. 2,561 of 2,561 on the build of 805e72f -- the whole population, since every one of them was named after a source row. Held as a measure because the claim is about all of them: a rule that fixed the water flow and left the other 2,560 naming rows would satisfy the check above and nothing else."
+    },
+    {
+      "id": "0505-retired-identifiers-still-resolve",
+      "issue": 505,
+      "title": "Every identifier the renumbering retires still resolves to the flow it names",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.flow_retirements.redirects_published"
+      },
+      "expect": {
+        "at_least": 2561
+      },
+      "comment": "Changing the scheme renumbers all 2,561 minted flows at once, and an identifier that disappears between two builds is the harm #102 is about, multiplied. `retired-minted-flow-ids.json` records what the build of 805e72f published, and the export carries one redirect per entry whose replacement this build publishes.\n\n**The bound is now the whole file, and pending**, which is #344. It used to be a floor that was lowered whenever a build failed it -- 2,561 to 2,537 to 2,525 -- and a floor is the wrong instrument here, because the number falls every time curation stops minting a flow. That is not decay in the list, it is the opposite: #117's cooling water was a filing slip, the row went where its seven siblings go, the minted ground flow correctly stopped being minted, and a published identifier went with it. Lowering the floor after each such fix records the loss as acceptable and hides that it is accumulating -- 104 unresolvable on 16 August, 114 a week later, 160 on 25 August. Asking for all 2,561 says what is actually wanted, and `pending` says the project knows it is not true yet.\n\nWhat a consumer holding one of the unresolvable identifiers should be given is a redirect onto the surviving substance's flow, which is the deprecation machinery's job and not the retirement file's -- its loader requires `replaced_by` to be the minted id of the recorded substance and context. Until that exists, every unresolvable retirement is itemised in the `retired-identifier-unresolved` queue rather than counted and dropped, which is what #344 changed.",
+      "pending": true
+    },
+    {
+      "id": "0746-no-unresolved-retirement-has-an-obvious-answer",
+      "issue": 746,
+      "title": "No retired identifier is left unresolved while its substance has exactly one flow to point at",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.flow_retirements.unresolved_with_one_surviving_flow",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "pending": true,
+      "comment": "The actionable subset of #344, and the one worth separating out. Of the 160 retirements this build cannot answer on 25 August 2026, 92 name a substance that is no longer published at all -- there is nothing to point them at, and nothing to decide until somebody says what a withdrawn identifier should return. Another 60 name a substance that survives in *several* contexts, up to 24 of them, while the retired identifier names the one context that is now empty; choosing among the rest is a decision about the substance rather than an arithmetic.\n\nThese 8 are the ones with no such difficulty: the substance is still published and has exactly one live flow, so there is one target and no choice to make. They are `Green water`, `Basalt` twice, `Biomass` twice, `Groundwater`, `Organic Carbon, Placed In Landfill` and `Waste Mass, Total, Placed In Landfill` -- every one of them a flow #89 stopped minting when it put nine substances in one place each. The redirect would cross a context boundary, `Resource → Ground` to `Resource → Water → Unconfined aquifer` for the groundwater one, which `pipeline/redirects.py` treats as `context-collapse`: a redirect a consumer may need to refuse rather than follow. That is what has to be decided before this can be met, and it is why the claim is `pending` rather than a fix."
+    }
+  ]
+}

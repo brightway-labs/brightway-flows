@@ -1,0 +1,368 @@
+{
+  "schema_version": 1,
+  "description": "Curated targets for AGRIBALYSE 3.2 flows. AGRIBALYSE declares no correspondence table, so every row here is appended rather than rewritten -- `apply_match_overrides` appends an override whose source flow the table has no row for, which for a list with no table at all is every row. Targets are EF 3.1 elementary flow ids, because that is what the flow objects these reach are keyed on. `comment` is mandatory: each row asserts something no published table says, and the assertion needs its reasoning attached.\n\nThree groups. The first is one row: the list's busiest evaporation row, sent to the one of EF's two duplicate vapour flows in unspecified air that ecoinvent's identical row reaches (#353). The second is three rows of one shape: a resource or an emission that ecoinvent ships under the same or a near name, that ecoinvent's own row reaches only by a curated target of its own, and that AGRIBALYSE -- whose flow list descends from ecoinvent 2's through SimaPro -- ships with neither a number nor a synonym the algorithm could read. The target is the flow ecoinvent's row reaches, so that two lists inheriting one ecoinvent 2 name reach one consensus flow (#190). See `brightway_flows.match_overrides`. The third group is the energy-and-peat family (#354): rows the list accounts in one quantity basis where the published flow keeps another, or names the baseline splits into fuel and growing medium. Two of them cross kilograms to megajoules with the factor the row's own name states; the crossings are accepted, with the numbers, in `unit-change-allowlist.json`. The thirteen water rows carrying a `conversion_factor` at a density state what their mapping crosses at (#352); every factor here is published on the mapping as `qudt:conversionMultiplier` and each crossing pair is accepted in `unit-change-allowlist.json`.",
+  "overrides": [
+    {
+      "source_uuid": "72d3f0b6-98a6-5f02-8138-c8264d382bea",
+      "source_name": "Gangue, bauxite",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6ff-0050c2490048",
+      "target_name": "Inert Rock",
+      "comment": "The waste rock that comes out of the ground with bauxite. ecoinvent 3.8 ships `Gangue, bauxite, in ground` and `Gangue, in ground`, and ecoinvent 3.12 ships `Gangue`; all three reach EF's `Inert Rock` ground resource by curated targets, because EF has no gangue flow and inert rock is what gangue is. AGRIBALYSE's row is ecoinvent 2's spelling with `, in ground` dropped, in kilograms in `Resources / in ground`, with no number and no synonym, and the first five-list build (1 September 2026, b0b8d76) minted a `Gangue, Bauxite` resource beside the flow ecoinvent's identical rows reach. One row. Same unit both sides, no conversion."
+    },
+    {
+      "source_uuid": "92ebfea0-c068-5a09-9cd0-f033cd0a1e21",
+      "source_name": "Kaolin ore",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aab8-0050c2490048",
+      "target_name": "Kaolin",
+      "comment": "China clay as it is dug. EF publishes `kaolin` (1332-58-7) as a ground resource in kilograms, and ecoinvent's `Kaolin` rows reach it by the number; ecoinvent 3.8's `Kaolinite, 24% in crude ore, in ground` -- the ore, stated with its grade -- reaches `Kaolinite` by a curated target, at parity, the grade in the name being a property of the deposit and not a conversion anybody applies. AGRIBALYSE's `Kaolin ore` is the same kind of row without the grade: an ore extraction in kilograms, in the same compartment as EF's flow, with no number and no synonym. On the first five-list build (1 September 2026, b0b8d76) it minted a `Kaolin Ore` resource beside `Kaolin`. Sent to `Kaolin` rather than `Kaolinite` because the vendor named the material, not the mineral, and EF's `kaolin` is the material. One row, no conversion, as for the kaolinite ore."
+    },
+    {
+      "source_uuid": "2966bf15-6506-56c3-ba6e-8cd8616eeafd",
+      "source_name": "Mineral oil",
+      "source_context": [
+        "Emissions to soil",
+        "agricultural"
+      ],
+      "target_uuid": "12b74f48-d8ba-4361-8fee-0740c4475136",
+      "target_name": "White Mineral Oil (petroleum)",
+      "comment": "ecoinvent 3.8 and 3.12 ship `Mineral oil` to agricultural soil with no registry number, and both reach EF's `White Mineral Oil (petroleum)` (8042-47-5) there by curated targets -- the flow that carries EF's four factors for a mineral oil spilled on farmland. AGRIBALYSE ships the same name in the same compartment and writes 8012-95-1 on it, the registry entry for paraffin oils, a second number for overlapping refinery cuts that no list publishes a substance under; the number fits nothing in the index, the name hits EF's substance only as a synonym, and a synonym is refused against a substance whose number disagrees with the row's, so the first five-list build (1 September 2026, b0b8d76) minted a factor-less `Mineral Oil` beside the characterised flow. The target is the flow ecoinvent's identical rows reach. Stated as a target rather than by rewriting the number: 8012-95-1 is a real registry number the vendor chose, and which of the two petroleum entries a spilled mineral oil is, is not a question this row's name can answer. One row, same unit, no conversion."
+    },
+    {
+      "source_uuid": "ba3524e6-0d54-52a5-828f-8ad0267f1683",
+      "source_name": "Water/m3",
+      "target_uuid": "0342f5e5-b53e-4cec-9e67-fb197f24fff0",
+      "target_name": "Water vapour",
+      "comment": "The list's busiest water-to-air row: a cubic metre of water evaporated to unspecified air, in 2,278 of the 20,440 processes. Its material is water vapour (#353, water-flow-materials.json), but the material alone cannot finish the job for this one compartment: EF 3.1 publishes two m3 vapour flows in unspecified air -- its `Water` row (0342f5e5) and its `Water (evapotranspiration)` row (4b772bba) -- and a choice between two flows of one substance in one place is not a material question. ecoinvent's identical bare `Water` m3 rows reach the first of the pair through its correspondence table in both merged releases, so this row follows them onto the same flow rather than splitting the same evaporation across EF's duplicate pair. Both sides are m3 in unspecified air; no conversion. The list's other water-to-air rows need no row here: their compartments hold one vapour flow per unit, so the material answers alone."
+    },
+    {
+      "source_uuid": "bbb5091d-e7a8-50da-bb55-ec6365216033",
+      "source_name": "Water, cooling, salt, ocean",
+      "source_context": [
+        "Resources",
+        "in water"
+      ],
+      "target_uuid": "21868f36-62ab-4e8e-98ed-7106228c17be",
+      "target_name": "Cooling water",
+      "source_unit": "kg",
+      "target_unit": "m3",
+      "conversion_factor": 0.000976,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "A kilogram of sea water for cooling, onto the cooling-water flow in cubic metres. The density is the sea's: 0.000976 m3/kg, the reciprocal (to three significant figures) of the 1025 kg/m3 the ecoinvent `Water, salt, ocean` allowlist entry records, kept identical so the two lists' ocean water crosses at one density. The cooling-water material follows the use, per the EF precedent water-flow-materials.json documents (#352). Recorded in unit-change-allowlist.json."
+    },
+    {
+      "source_uuid": "9aef3b90-11aa-53d6-b21d-a28d7ce798d2",
+      "source_name": "Water, cooling, salt, ocean",
+      "source_context": [
+        "Resources",
+        "in water"
+      ],
+      "target_uuid": "21868f36-62ab-4e8e-98ed-7106228c17be",
+      "target_name": "Cooling water",
+      "source_unit": "kg",
+      "target_unit": "m3",
+      "conversion_factor": 0.000976,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "A kilogram of sea water for cooling, onto the cooling-water flow in cubic metres. The density is the sea's: 0.000976 m3/kg, the reciprocal (to three significant figures) of the 1025 kg/m3 the ecoinvent `Water, salt, ocean` allowlist entry records, kept identical so the two lists' ocean water crosses at one density. The cooling-water material follows the use, per the EF precedent water-flow-materials.json documents (#352). Recorded in unit-change-allowlist.json. The vendor files this copy in `Resources / land`; agribalyse-3.2-manual-fixes.json re-files it here (#352's misfiled four)."
+    },
+    {
+      "source_uuid": "b0354aab-3d37-5f18-97be-a7cb803a016e",
+      "source_name": "Water, cooling, unspecified natural origin/kg",
+      "source_context": [
+        "Resources",
+        "in water"
+      ],
+      "target_uuid": "21868f36-62ab-4e8e-98ed-7106228c17be",
+      "target_name": "Cooling water",
+      "source_unit": "kg",
+      "target_unit": "m3",
+      "conversion_factor": 0.001,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "AGRIBALYSE inventories this intake in kilograms and the published flow its material reaches is in cubic metres; the crossing is a density and nothing else. 0.001 m3/kg is fresh water at the 1000 kg/m3 every hydrological convention uses, the reciprocal of the density the ecoinvent ocean-water pair records for the same kind of crossing. The material assignment is water-flow-materials.json's (#352); this row only states the number a consumer of the mapping would otherwise have to invent. Recorded in unit-change-allowlist.json as every quantity-kind crossing is."
+    },
+    {
+      "source_uuid": "c88650ff-2109-5535-92e9-5b3ca92f4315",
+      "source_name": "Water, cooling, well",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "21868f36-62ab-4e8e-98ed-7106228c17be",
+      "target_name": "Cooling water",
+      "source_unit": "kg",
+      "target_unit": "m3",
+      "conversion_factor": 0.001,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "AGRIBALYSE inventories this intake in kilograms and the published flow its material reaches is in cubic metres; the crossing is a density and nothing else. 0.001 m3/kg is fresh water at the 1000 kg/m3 every hydrological convention uses, the reciprocal of the density the ecoinvent ocean-water pair records for the same kind of crossing. The material assignment is water-flow-materials.json's (#352); this row only states the number a consumer of the mapping would otherwise have to invent. Recorded in unit-change-allowlist.json as every quantity-kind crossing is."
+    },
+    {
+      "source_uuid": "d48aed46-a1e1-5e4f-ae88-bf7c16a0a11b",
+      "source_name": "Water, process, drinking",
+      "source_context": [
+        "Resources",
+        "in water"
+      ],
+      "target_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "target_name": "Water",
+      "source_unit": "kg",
+      "target_unit": "m3",
+      "conversion_factor": 0.001,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "AGRIBALYSE inventories this intake in kilograms and the published flow its material reaches is in cubic metres; the crossing is a density and nothing else. 0.001 m3/kg is fresh water at the 1000 kg/m3 every hydrological convention uses, the reciprocal of the density the ecoinvent ocean-water pair records for the same kind of crossing. The material assignment is water-flow-materials.json's (#352); this row only states the number a consumer of the mapping would otherwise have to invent. Recorded in unit-change-allowlist.json as every quantity-kind crossing is."
+    },
+    {
+      "source_uuid": "6a4e5330-9eec-5b5d-8168-8104a8ac6a47",
+      "source_name": "Water, rain",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "2a240c57-b782-4745-943b-0602d7a953c4",
+      "target_name": "Rainwater",
+      "source_unit": "m3",
+      "target_unit": "kg",
+      "conversion_factor": 1000.0,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "The same density crossing as the kilogram intakes, the other way round: the row is in cubic metres and the published flow its material reaches is in kilograms, so the factor is 1000 kg/m3 of fresh water. The material assignment is water-flow-materials.json's (#352); this row states the number. Recorded in unit-change-allowlist.json."
+    },
+    {
+      "source_uuid": "fbc974be-79c5-58f5-bbb3-ac8334bed8b9",
+      "source_name": "Water, rain",
+      "source_context": [
+        "Resources",
+        "in water"
+      ],
+      "target_uuid": "2a240c57-b782-4745-943b-0602d7a953c4",
+      "target_name": "Rainwater",
+      "source_unit": "m3",
+      "target_unit": "kg",
+      "conversion_factor": 1000.0,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "The same density crossing as the kilogram intakes, the other way round: the row is in cubic metres and the published flow its material reaches is in kilograms, so the factor is 1000 kg/m3 of fresh water. The material assignment is water-flow-materials.json's (#352); this row states the number. Recorded in unit-change-allowlist.json."
+    },
+    {
+      "source_uuid": "100a6a8c-179e-5beb-a266-e35a0dc210b6",
+      "source_name": "Water, unspecified natural origin/kg",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "target_name": "Water",
+      "source_unit": "kg",
+      "target_unit": "m3",
+      "conversion_factor": 0.001,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "AGRIBALYSE inventories this intake in kilograms and the published flow its material reaches is in cubic metres; the crossing is a density and nothing else. 0.001 m3/kg is fresh water at the 1000 kg/m3 every hydrological convention uses, the reciprocal of the density the ecoinvent ocean-water pair records for the same kind of crossing. The material assignment is water-flow-materials.json's (#352); this row only states the number a consumer of the mapping would otherwise have to invent. Recorded in unit-change-allowlist.json as every quantity-kind crossing is."
+    },
+    {
+      "source_uuid": "cd0eb42b-f9bd-5b9f-b4d5-3d53be8fa9fb",
+      "source_name": "Water, unspecified natural origin/kg",
+      "source_context": [
+        "Resources",
+        "in water"
+      ],
+      "target_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+      "target_name": "Water",
+      "source_unit": "kg",
+      "target_unit": "m3",
+      "conversion_factor": 0.001,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "AGRIBALYSE inventories this intake in kilograms and the published flow its material reaches is in cubic metres; the crossing is a density and nothing else. 0.001 m3/kg is fresh water at the 1000 kg/m3 every hydrological convention uses, the reciprocal of the density the ecoinvent ocean-water pair records for the same kind of crossing. The material assignment is water-flow-materials.json's (#352); this row only states the number a consumer of the mapping would otherwise have to invent. Recorded in unit-change-allowlist.json as every quantity-kind crossing is."
+    },
+    {
+      "source_uuid": "fc379dc0-4b59-5cc3-b454-3538dd8f9f60",
+      "source_name": "Peat",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "126514fa-415f-454a-8425-aa5d54a1402b",
+      "target_name": "Peat, Horticulture",
+      "comment": "AGRIBALYSE's kilogram of peat, filed as a biotic resource after the re-file in `agribalyse-3.2-manual-fixes.json` (the vendor's bare `Resources /` heading; its twin row is biotic). The baseline keeps two peats, deliberately: fuel `Peat` as `Resource -> Ground` in megajoules, and `Peat, Horticulture` as `Resource -> Biotic` in kilograms (#160 declined characterising the horticultural one as fuel -- they are a growing medium and an energy carrier, not one substance in two units). An agricultural database's kilogram of peat in the biotic compartment is the growing medium; ruled on #354. On the first five-list build (1 September 2026, b0b8d76) this row crossed silently onto the fuel flow, kilograms onto megajoules, with `has_unit_mismatch` set -- the exact crossing the ruling refuses. Same unit and compartment as the target; no conversion."
+    },
+    {
+      "source_uuid": "d1e2ddc8-c24d-55ca-ae4a-78b5d99d8813",
+      "source_name": "Peat",
+      "source_context": [
+        "Resources",
+        "biotic"
+      ],
+      "target_uuid": "126514fa-415f-454a-8425-aa5d54a1402b",
+      "target_name": "Peat, Horticulture",
+      "comment": "AGRIBALYSE's kilogram of peat, filed as a biotic resource. The baseline keeps two peats, deliberately: fuel `Peat` as `Resource -> Ground` in megajoules, and `Peat, Horticulture` as `Resource -> Biotic` in kilograms (#160 declined characterising the horticultural one as fuel -- they are a growing medium and an energy carrier, not one substance in two units). An agricultural database's kilogram of peat in the biotic compartment is the growing medium; ruled on #354. On the first five-list build (1 September 2026, b0b8d76) this row crossed silently onto the fuel flow, kilograms onto megajoules, with `has_unit_mismatch` set -- the exact crossing the ruling refuses. Same unit and compartment as the target; no conversion."
+    },
+    {
+      "source_uuid": "68c994ed-f3ce-5be2-8478-0422ab6b679f",
+      "source_name": "Energy, from biomass",
+      "source_context": [
+        "Resources",
+        "biotic"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fd-0050c2490048",
+      "target_name": "Biomass",
+      "comment": "Biomass energy, in megajoules, in the biotic compartment -- the same statement as the published `Biomass` flow (MJ, `Resource -> Biotic`), which is where ecoinvent's unqualified `Energy, Gross Calorific Value, In Biomass` rows go by prepared match in both merged releases and BAFU's by label. The first five-list build (1 September 2026, b0b8d76) minted an `Energy, From Biomass` flow beside it. `From biomass` and `gross calorific value, in biomass` are one accounting concept written from two ends; the qualified `..., Primary Forest` flow stays separate, as it is for every list. Same unit both sides, no conversion."
+    },
+    {
+      "source_uuid": "3300104d-2e3f-5715-bf1b-43a64ecc5601",
+      "source_name": "Energy, from wood",
+      "source_context": [
+        "Resources",
+        "biotic"
+      ],
+      "target_uuid": "3e4d9eab-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Wood",
+      "comment": "Wood energy, in megajoules, in the biotic compartment. The published list keeps `Wood` as a biotic resource in megajoules -- EF 3.1's energy-content basis, the same treatment as `Uranium` (MJ) -- so the row's substance already exists in its exact compartment and unit; the first five-list build (1 September 2026, b0b8d76) minted an `Energy, From Wood` flow beside it. Sent to `Wood` rather than the coarser `Biomass` because the vendor named the carrier. Same unit both sides, no conversion."
+    },
+    {
+      "source_uuid": "4e658766-68ab-567e-ba85-3d01c0a0ca45",
+      "source_name": "Energy, from wood",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "3e4d9eab-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Wood",
+      "comment": "The bare-heading twin of the row above, re-filed to `Resources / biotic` in `agribalyse-3.2-manual-fixes.json`; same target for the same reason."
+    },
+    {
+      "source_uuid": "c4898890-5cdc-59a8-8632-4055832784ab",
+      "source_name": "Energy, gross calorific value, in biomass",
+      "source_context": [
+        "Resources",
+        "biotic"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fd-0050c2490048",
+      "target_name": "Biomass",
+      "comment": "The name ecoinvent and BAFU also ship: unqualified gross calorific value in biomass, megajoules, biotic. ecoinvent 3.8 and 3.12 both reach the published `Biomass` flow by prepared match and BAFU by label; AGRIBALYSE's row carries neither a number nor a synonym the algorithm reads, and the first five-list build (1 September 2026, b0b8d76) minted a duplicate beside the flow its siblings share. The target is the flow the identical rows reach. Same unit both sides, no conversion."
+    },
+    {
+      "source_uuid": "de4b6754-0d2e-587e-8b5b-5ee5a039698f",
+      "source_name": "Energy, gross calorific value, in biomass",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fd-0050c2490048",
+      "target_name": "Biomass",
+      "comment": "The bare-heading twin of the row above, re-filed to `Resources / biotic` in `agribalyse-3.2-manual-fixes.json`; same target for the same reason."
+    },
+    {
+      "source_uuid": "f65c0b45-7781-5ae0-aeb1-d329b21796dd",
+      "source_name": "Wood and wood waste, 9.5 MJ per kg",
+      "source_context": [
+        "Resources",
+        "biotic"
+      ],
+      "target_uuid": "3e4d9eab-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Wood",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 9.5,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "An ecoinvent 2 resource flow whose name states how much energy a kilogram stands for, the same shape as `Uranium, 451 GJ per kg` in `simapro-lineage-manual-fixes.json`, shipped by no other merged list. The published list keeps wood energy as `Wood` (MJ, `Resource -> Biotic`), so the row is rebased onto that basis with the factor its own name asserts: 9.5 MJ per kilogram of wood and wood waste. Per row and not a project default, because the name is the vendor's own statement of the quantity. Accepted as a crossing in `unit-change-allowlist.json`; the number is here. On the first five-list build (1 September 2026, b0b8d76) the row minted its own kilogram flow, factor in the name and all."
+    },
+    {
+      "source_uuid": "e6f6fcbd-c5ce-53c1-b5aa-d2fc52c10d98",
+      "source_name": "Uranium oxide, 332 GJ per kg, in ore",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 332000.0,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "The ore-grade sibling of `Uranium, 451 GJ per kg`: a kilogram of uranium oxide in ore, priced by the fission energy its name asserts -- 332 GJ, lower than the element rows' figures because a kilogram of ore-bound oxide holds less uranium. The published list keeps uranium as a resource in megajoules (`Resource -> Ground`, EF 3.1's basis), so the row is rebased at 332,000 MJ per kilogram, the vendor's own number, per the same reasoning as the lineage file's uranium entries. Stated as a target rather than by renaming: the row carries 1317-99-3, the oxide's registry entry, a true statement about a substance the list does not publish, and a rename would discard it while a synonym against a disagreeing number is refused anyway. Fission energy content, never a heating value (`unit-change-allowlist.json`). On the first five-list build (1 September 2026, b0b8d76) the row minted its own kilogram flow."
+    },
+    {
+      "source_uuid": "9f281494-cb58-5f23-a894-ba8b7839e534",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "Emissions to air"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-923d-0050c2490048",
+      "target_name": "Carbon Dioxide (fossil)",
+      "comment": "AGRIBALYSE's plain carbon dioxide row in unspecified air: no origin in the name, 124-38-9 and nothing else, 56 datasets and 46 of them non-zero. A SimaPro-lineage list ships a plain row beside the qualified ones -- this list also ships `Carbon dioxide, fossil` (2,207 datasets in unspecified air), `biogenic` (2,234) and `land transformation` (2,168), all of which reach EF 3.1's own flows -- and inventories reach for the plain row in the ordinary case. BAFU's two plain rows go to the fossil substance (#139) and Stepwise's goes there too (#175), on the evidence of Stepwise's own method, which scores its plain row under `Global warming, fossil` and nothing else. AGRIBALYSE is an export rather than a method and says nothing in its own words, so the datasets were read: the largest is `Glutamate {CN} U` at 1.9175 ton, the whole carbon dioxide of a Chinese monosodium glutamate plant taken from Yang et al. (2020), coal utilities and corn fermentation in one row with no biogenic row beside it -- fossil overstates the fossil share there, and is still the right single answer for the row. The rest are industrial carbon dioxide vented back: `Atlantic Herring, NEA, Pelagic Trawl, average, at landing {NL}` releases 1,610 kg commented \"CO2 as cooling agent\" against a purchased 1,610 kg of `Carbon dioxide, liquid {RER}` in the same dataset, and the `Average boat` datasets are \"CO2 extinguisher\" charges of 29.7, 29.4 and 19.6 kg. On the shared build of 3 September 2026 (d1df4ed) the row minted `Carbon Dioxide` in `Environmental -> Air -> Unknown` (`033b961d...`), the identifier #175 retired, and no method here states a climate-change factor on carbon dioxide of unstated origin, so those 46 datasets scored nothing. Same unit both sides, no conversion. (#194)"
+    },
+    {
+      "source_uuid": "5dab3ab7-6821-58ec-b4dd-f1e0366ff916",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "Emissions to air",
+        "low. pop."
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-9241-0050c2490048",
+      "target_name": "Carbon Dioxide (biogenic)",
+      "comment": "The same plain row in non-urban air, and it does not get the same answer as the unspecified one above, because its datasets are not the same datasets: 28 of them, 18 non-zero, and every non-zero one is biological decay. Seven are composts -- `Compost, of sludge and green waste (amendment) {RER}` at 29.6 kg, then biowaste at 0.84, biowaste and green waste at 0.55, green waste at 0.27 -- and the rest are straw retting, `Flaxseed, straw, ret, Normandie, at farm gate {FR}` at 18.109 kg, `Hemp, straw, ret, Champagne, at farm gate {FR}` at 14.7 and `Hemp, grain, Champagne, at farm gate {FR}` at 10.2. Nothing in the row is combustion or industrial gas. Carbon dioxide from composting and retting is the fast cycle, which is what EF's biogenic flow is for. Note what the target does and does not do: EF 3.1 states 0.0 on `Carbon Dioxide (biogenic)` for both Climate change and Climate change-Biogenic, so this publishes a stated zero where the row had no factor at all, which is a different thing for a reader auditing a result; Stepwise 2006 scores the same flow at 1.0 under `Global warming, non-fossil`, so under that method the 18 datasets do move. On the shared build of 3 September 2026 (d1df4ed) the row minted `Carbon Dioxide` in `Environmental -> Air -> Medium stack, <150 meters -> Rural` (`4cfc5922...`). Same unit both sides, no conversion. (#194)"
+    },
+    {
+      "source_uuid": "a4eeb06b-881f-53f1-a323-08ec0666d225",
+      "source_name": "Dinitrogen monoxide, peat oxidation",
+      "source_context": [
+        "Emissions to air"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-94c3-0050c2490048",
+      "target_name": "Nitrous Oxide",
+      "comment": "The third `peat oxidation` row, and the one the rule cannot finish. Reading `peat oxidation` as a land use change is right about this row too -- the nitrous oxide comes off the same drained peat as the carbon dioxide beside it, 13 datasets -- but EF 3.1 ships no nitrous oxide of land-use-change origin for the qualifier to reach, and there is no substance here for the row to be moved to. It belongs where it already was: EF 3.1's `Nitrous Oxide` in unspecified air, four factors, which is where the merge put it on the shared build of 3 September 2026 (d1df4ed) by `cas+label`.\n\nWithout this target the rule takes the row away from that flow. Measured on a full build of this branch (aebee6c) against the shared build: 10024-97-2 reaches two flow objects, `Nitrous Oxide` and `Correction Flow For Delayed Emission Of Nitrous Oxide (within First 100 Years)`, and on the before build the label branch separated them, because the row's own shipped name was an altLabel on `Nitrous Oxide` -- carried there by `carry_member_names` from this very row. Once the name carries a qualifier the row layers elsewhere, the altLabel is not carried, no label separates the two objects, and the row is refused as `multiple-flow-object-candidates`: correctly placed before, published nowhere after. The rule is right and the vocabulary is short a flow, so the row is stated rather than derived.\n\nSame unit both sides, no conversion. If EF ever ships a nitrous oxide of land-use-change origin this override is the thing to revisit, and `expectations/0914-the-peat-nitrous-oxide-row-is-not-taken-with-it` is where the reason is written down. (#194)"
+    },
+    {
+      "source_uuid": "f2590e38-fbee-53d4-b8a2-f27c391bf73f",
+      "source_name": "Carbon, organic, in soil or biomass stock",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "26f9293f-8c18-4f3b-a334-e57a8ecda895",
+      "target_name": "Carbon, Organic, In Soil Or Biomass Stock",
+      "comment": "AGRIBALYSE's own soil organic carbon bookkeeping, under the bare `Resources` heading with no sub-compartment: twelve datasets, from `Isoleucine S {FR} U` at 0.0659 kg down to `Glass, production, for recycled glass production {FR}` at 1.0e-07 kg. This row records both directions of the ledger, and the vendor states the convention on the row itself: \"In the case of carbon emission (positive value) the flux is from the soil and biomass; in cases of carbon storage (negative value), the flux is from the air.\" Both signs occur -- `Land use change, soil organic carbon changes for annual crops and temporary meadows {FR}` at +0.017 kg, the same for permanent meadows at -0.0110 kg, and the 4p1000 farming-practice dataset at -0.000882 kg -- and one source row admits one target, so direction has to be folded into the flow. That is what #116 did in sending ecoinvent's `increase` row to the stock flow beside `decrease`, and what #66 did for land. It is also the same flow as the `in ground` row above, spelled a second way by the exporter, and cannot be given a different answer: `Isoleucine S {FR} U` carries both, 0.0659 kg bare and 0.0017 kg in ground. No carbon leaves the inventory by going to a flow EF characterises at nothing, because every dataset that carries this row already ships the same carbon as CO2 on its own air row, at 44/12 of the stock amount: 0.0623 kg of `Carbon dioxide, land transformation` beside the +0.017, 0.0403 kg of `Carbon dioxide, to soil or biomass stock` beside the -0.0110. On the shared build of 3 September 2026 (d1df4ed) the row minted a `Carbon` resource in `Resource -> Ground` under elemental carbon, its number 7440-44-0 having been withdrawn as evidence by #116. Same unit both sides, no conversion. (#195)"
+    },
+    {
+      "source_uuid": "02ec599f-c6a1-50ac-86bc-ab213d8a9f83",
+      "source_name": "Carbon, organic, in soil or biomass stock",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "26f9293f-8c18-4f3b-a334-e57a8ecda895",
+      "target_name": "Carbon, Organic, In Soil Or Biomass Stock",
+      "comment": "AGRIBALYSE's largest row of this name: `Resources / in ground`, 2,307 datasets, 2,278 of them non-zero, the largest 31,640 kg in `Mine infrastructure, phosphate rock {GLO}`. It is ecoinvent's row carried through unchanged -- AGRIBALYSE 3.2's background is ecoinvent 3.9.1, and the name is ecoinvent 2's spelling of the soil organic carbon ledger. Every other list publishes that row on EF 3.1's stock flow: ecoinvent 3.8's row of exactly this name, ecoinvent 3.12's `decrease` and `increase` rows -- the second by the curated target #116 wrote -- BAFU 2026-v1's row of this name, and EF's own. Only AGRIBALYSE's was somewhere else. The reason it was is the number: the row carries 7440-44-0, the element's, as ecoinvent's and BAFU's rows do, and #116 ruled that the number groups nothing, the stock and elemental carbon being two substances that happen to share it. With the number withdrawn as evidence the row fell through to the tail of its name, `cas+designation`, and on the shared build of 3 September 2026 (d1df4ed) minted a `Carbon` resource in `Resource -> Ground` under elemental carbon: read off the published list, 2,278 datasets dig the element out of the ground. Same unit both sides, no conversion. The read-only lookup asks the name first and already puts the row on the stock flow, so this also closes the last divergence `tests/test_lookup_replay.py` reports. (#195)"
+    },
+    {
+      "source_uuid": "0a68e3c1-dc59-515a-af32-c6ecb00b864a",
+      "source_name": "Carbon, organic, in soil or biomass stock",
+      "source_context": [
+        "Resources",
+        "land"
+      ],
+      "target_uuid": "26f9293f-8c18-4f3b-a334-e57a8ecda895",
+      "target_name": "Carbon, Organic, In Soil Or Biomass Stock",
+      "comment": "The peat row: `Resources / land` as shipped, re-filed to `in ground` by #351's fix, and the only row of this name in that compartment -- `;land;` occurs exactly once in the 20,440-process vendor file, in `Peat degradation emissions on grassland, per kg CO2 {GLO} - Adapted from WFLDB` (`AGRIBALU000000003111048`), at 1*12/44 = 0.2727 kg, commented \"This is for resources assessment only.\" The dataset says the same thing in its own comment: \"Reference flow: 1 kg of CO2 emission from peat degradation ... Also contains the C loss from soil and the energy loss, for the resource assessment.\" It has four exchanges and no others, and three of them are one physical event counted from three sides: `Carbon dioxide, land transformation` at 1 kg in `low. pop.`, `Energy, from peat` at 34.9*12/44 = 9.518 MJ, and this row at 0.2727 kg -- which is exactly the carbon in that 1 kg of CO2, while the 9.518 MJ is that same carbon at the 34.9 MJ per kg C the vendor writes on the energy row. So the emission is already published, on EF 3.1's `Carbon Dioxide (land Use Change)`, which carries Climate change 1.0 and Climate change-Land use and land use change 1.0: on the shared build of 3 September 2026 (d1df4ed) the dataset reads 1.0585 kg CO2eq, 1.0000 of it from that row and 0.0585 from its N2O at 273. Sending this row to the CO2 flow as well, which is what #195 proposed for it, would publish the same carbon a second time and take the dataset to 1.3312 kg CO2eq, 25.8% more. The stock flow is where the row belongs, and it moves no number: EF 3.1 writes no characterisation factor at all on `Carbon, Organic, In Soil Or Biomass Stock`, so this target settles the row's identity and nothing else. On the same build the row minted a `Carbon` resource in `Resource -> Ground` under elemental carbon, its number 7440-44-0 having been withdrawn as evidence by #116. Same unit both sides, no conversion. (#195)"
+    }
+  ]
+}

@@ -1,0 +1,267 @@
+"""The transform has one input, and it is EF 3.1.
+
+There used to be four routes by which flows entered the transform: the base
+file, `--input`, a `transform-sources.json` naming files in the data directory,
+and auto-discovery of every `additional-flow-input-*.json` sitting there. A list
+that arrived by any of them *became* consensus flows without being matched
+against anything; a list that arrived as `--source` was matched but never
+enriched. Two mechanisms, one concept, and "source" meant both of them (#210).
+
+The merge now enriches each source list before matching it and creates a flow
+for a row that matches nothing, so an input route would only be a second way to
+spell `--source`. These are the tests that keep it gone: an exclusion list is
+not needed once there is nothing to exclude from, but a route that comes back
+by way of a copied example is exactly how it got here.
+"""
+
+import tempfile
+import unittest
+from dataclasses import replace
+from pathlib import Path
+from unittest import mock
+
+import orjson
+import typer.main
+
+from brightway_flows.application.cli import app
+from brightway_flows.pipeline import loading
+from brightway_flows.pipeline.loading import _load_transform_inputs
+from brightway_flows.sources import base_source_list
+
+_STEPWISE = "additional-flow-input-stepwise-2006.json"
+_GLAD = "additional-flow-input-glad-ilcd-ef31-to-simapro-10.2.json"
+
+_EF31_FLOW = {
+    "uuid": "u-1",
+    "name": "Carbon dioxide",
+    "context": ["Emissions", "Emissions to air"],
+    "unit": "kg",
+    "source": "EF 3.1",
+}
+_OTHER_FLOW = {
+    "uuid": "u-2",
+    "name": "Methane",
+    "context": ["Emissions", "Emissions to air"],
+    "unit": "kg",
+    "source": "stepwise-2006",
+}
+
+
+class TransformInputTestCase(unittest.TestCase):
+    def _data_dir(self, tmp: str) -> Path:
+        """A data directory holding the base file and a would-be input beside it."""
+        data_dir = Path(tmp)
+        (data_dir / "ef-31-flows.json").write_bytes(orjson.dumps([_EF31_FLOW]))
+        (data_dir / _STEPWISE).write_bytes(orjson.dumps([_OTHER_FLOW]))
+        return data_dir
+
+    @staticmethod
+    def _base_list_at(path: Path):
+        """The real base list, reading *path*.
+
+        Patching the manifest's own `flows_path` rather than a constant in
+        `loading`: which file the transform reads is now one line of the
+        manifest with `role: "base"` (#14).
+        """
+        return mock.patch.object(
+            loading, "base_source_list", lambda: replace(base_source_list(), flows_path=path)
+        )
+
+    def test_only_the_base_file_is_loaded(self):
+        """A file the transform used to discover is now just a file."""
+        with tempfile.TemporaryDirectory() as tmp:
+            data_dir = self._data_dir(tmp)
+            with self._base_list_at(data_dir / "ef-31-flows.json"):
+                flows, loaded = _load_transform_inputs()
+
+        self.assertEqual([f.uuid for f in flows], ["u-1"])
+        self.assertEqual([Path(p).name for p in loaded], ["ef-31-flows.json"])
+
+    def test_it_takes_no_arguments(self):
+        """The signature is the contract: nothing selects what is loaded."""
+        import inspect
+
+        self.assertEqual(
+            list(inspect.signature(_load_transform_inputs).parameters), []
+        )
+
+    def test_a_missing_base_file_says_how_to_produce_it(self):
+        """The base list is fetched by the one command that fetches any list.
+
+        This asserted `extract`, which was the base list's own command and its
+        manifest's `fetch_command` string. `extract` survives as an alias, but
+        the hint names the command a reader should learn (#15).
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = Path(tmp) / "ef-31-flows.json"
+            with self._base_list_at(missing):
+                with self.assertRaises(FileNotFoundError) as caught:
+                    _load_transform_inputs()
+        self.assertIn("fetch-source EF-3.1", str(caught.exception))
+
+    def test_the_discovery_and_config_machinery_is_gone(self):
+        """Named rather than derived: each was a route into the transform."""
+        for name in (
+            "load_sources_config",
+            "_discover_additional_input_paths",
+            "_is_merge_feedback_file",
+            "DISCOVERED_INPUT_GLOBS",
+            "NOT_FLOW_INPUT_FILENAMES",
+            "INCOMPLETE_SOURCE_INPUT_FILENAMES",
+            "OPTIONAL_SOURCE_INPUT_FILENAMES",
+        ):
+            with self.subTest(name):
+                self.assertFalse(hasattr(loading, name))
+
+
+class BaseListManualFixesTestCase(unittest.TestCase):
+    """The base list's manual fixes have to reach the transform.
+
+    They did not, for five months.  `apply_manual_fixes` ran inside `extract`
+    and nowhere else, so a fix only reached a build through `ef-31-flows.json`
+    -- a derived file that has to be regenerated by hand.  #231 removed a
+    shared EC number from the two jasmolins in August; the artifact in the data
+    directory was extracted in March, and every build in between read the
+    unfixed vendor data and reported nothing (#237).
+
+    Nothing caught it because every test of the fixes called
+    `apply_manual_fixes` directly.  That proves the fixes work, which was never
+    in doubt.  These tests go through the loader instead, which is where the
+    step was missing.
+    """
+
+    JASMOLIN_I = {
+        "uuid": "u-jas-1",
+        "name": "jasmolin i",
+        "cas_numbers": ["4466-14-2"],
+        "ec_numbers": ["232-319-8"],
+        "context": ["Emissions", "Emissions to air"],
+        "unit": "kg",
+        "source": "EF 3.1",
+    }
+
+    def _base_list(self, *, flows_path: Path, manual_fixes_path: Path | None):
+        return mock.patch.object(
+            loading,
+            "base_source_list",
+            lambda: replace(
+                base_source_list(),
+                flows_path=flows_path,
+                manual_fixes_path=manual_fixes_path,
+            ),
+        )
+
+    def _base_list_at(self, flows_path: Path):
+        """The real base list, fixes file and all, reading *flows_path*."""
+        return self._base_list(
+            flows_path=flows_path,
+            manual_fixes_path=base_source_list().manual_fixes_path,
+        )
+
+    def test_the_checked_in_ef31_fixes_reach_the_transform(self):
+        """The regression test for #237, written against the real fixes file.
+
+        A stale `ef-31-flows.json` still carrying the shared EC number is the
+        exact state the data directory was in, so that is what this loads.
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            flows_path = Path(tmp) / "ef-31-flows.json"
+            flows_path.write_bytes(orjson.dumps([self.JASMOLIN_I]))
+            with self._base_list_at(flows_path):
+                flows, _ = _load_transform_inputs()
+
+        self.assertEqual([f.uuid for f in flows], ["u-jas-1"])
+        self.assertEqual(
+            flows[0].ec_numbers,
+            [],
+            "232-319-8 names the pyrethrins mixture, not this constituent; "
+            "#231 removed it and the transform must not see it",
+        )
+
+    def test_a_list_with_no_fixes_file_is_loaded_unchanged(self):
+        """`manual_fixes` is optional, and absent is the normal state."""
+        with tempfile.TemporaryDirectory() as tmp:
+            flows_path = Path(tmp) / "ef-31-flows.json"
+            flows_path.write_bytes(orjson.dumps([self.JASMOLIN_I]))
+            with self._base_list(flows_path=flows_path, manual_fixes_path=None):
+                flows, _ = _load_transform_inputs()
+
+        self.assertEqual(flows[0].ec_numbers, ["232-319-8"])
+
+    def test_the_fixes_are_applied_before_the_rows_are_normalised(self):
+        """Order matters, because a fix names the source list's own fields.
+
+        `cas_number` singular is what a source list ships and what a fix is
+        written against; `cas_numbers` plural is what normalisation produces.
+        A fix applied after normalisation would find no `cas_number` to match
+        on, and `apply_manual_fixes` only warns about matching nothing -- so
+        getting this backwards would be quiet.
+        """
+        row = dict(_EF31_FLOW, cas_number="58-89-9")
+        with tempfile.TemporaryDirectory() as tmp:
+            fixes = Path(tmp) / "fixes.json"
+            fixes.write_bytes(orjson.dumps({
+                "schema_version": 1,
+                "fixes": [{
+                    "match": {"cas_number": "58-89-9"},
+                    "field": "cas_number",
+                    "new_value": "319-86-8",
+                    "comment": "delta- not gamma-lindane; singular, as shipped",
+                }],
+            }))
+            flows_path = Path(tmp) / "ef-31-flows.json"
+            flows_path.write_bytes(orjson.dumps([row]))
+            with self._base_list(flows_path=flows_path, manual_fixes_path=fixes):
+                flows, _ = _load_transform_inputs()
+
+        self.assertEqual(flows[0].cas_numbers, ["319-86-8"])
+
+
+class CommandSurfaceTestCase(unittest.TestCase):
+    def test_build_has_no_input_options(self):
+        params = {p.name for p in typer.main.get_command(app).commands["build"].params}
+        for name in ("input_paths", "sources_config", "discover_additional_inputs"):
+            with self.subTest(name):
+                self.assertNotIn(name, params)
+
+    def test_the_sources_config_generator_is_gone(self):
+        """It wrote a `transform-sources.json` listing ecoinvent biosphere files
+        as transform inputs -- so an ecoinvent version had two ways into a
+        build, as an input or as a `--source`, meaning different things."""
+        self.assertNotIn(
+            "generate-sources-config", set(typer.main.get_command(app).commands)
+        )
+
+
+class GladIsNotAFlowInputTestCase(unittest.TestCase):
+    """GLAD is a correspondence table that happened to be named like an input.
+
+    Its rows are `SourceFlowUUID` -> `TargetFlowUUID` with a match condition and
+    a conversion factor, and the `glad` pair source reads them as exactly that.
+    The `additional-flow-input-` prefix also put all 124,318 of
+    them through the flow parser on every build, where every one was discarded
+    for having no `uuid`. It has been renamed; a data directory holding the old
+    name must still resolve.
+    """
+
+    def test_the_correspondence_table_is_found_under_either_name(self):
+        """Renaming it must not require re-downloading it."""
+        from brightway_flows import filesystem
+
+        with tempfile.TemporaryDirectory() as tmp:
+            data_dir = Path(tmp)
+            current = data_dir / "glad-ilcd-ef31-to-simapro-10.2.json"
+            legacy = data_dir / _GLAD
+            with mock.patch.object(
+                filesystem, "GLAD_ILCD_TO_SIMAPRO_JSON_FILEPATH", current
+            ), mock.patch.object(
+                filesystem, "GLAD_ILCD_TO_SIMAPRO_JSON_LEGACY_FILEPATH", legacy
+            ):
+                legacy.write_text("[]")
+                self.assertEqual(filesystem.glad_ilcd_to_simapro_path(), legacy)
+                current.write_text("[]")
+                self.assertEqual(filesystem.glad_ilcd_to_simapro_path(), current)
+
+
+if __name__ == "__main__":
+    unittest.main()

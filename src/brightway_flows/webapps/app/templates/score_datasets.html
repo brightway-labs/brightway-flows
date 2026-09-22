@@ -1,0 +1,60 @@
+{#
+  The datasets of one release, to find the one a reader wants to open.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% set page_title = "Datasets" %}
+{% set active_section = "scores" %}
+
+{% block content %}
+<header class="page__header">
+  <p class="muted"><a href="{{ url_for('scores.index') }}">Scores</a> ›
+    {{ release.list_name }} {{ release.list_version }} {{ release.system_model }}</p>
+  <h1>{{ release.unit_processes | thousands }} datasets</h1>
+  <p class="page__lede">
+    The sample the comparison was run over: drawn by seed {{ release.stats.get('sample_seed', '') }}
+    from the whole database, plus the reference activities named in the settings.
+  </p>
+</header>
+
+<form class="filters" method="get" action="{{ url_for('scores.datasets', release=release.key) }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="Activity, product, geography or code…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('scores.datasets', {'release': release.key}) }}
+  </div>
+</form>
+
+{% if page.rows %}
+{{ t.pager(page, 'scores.datasets', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Activity</th>
+        <th scope="col">Reference product</th>
+        <th scope="col">Geography</th>
+        <th scope="col" class="num">Inventory lines</th>
+        <th scope="col" class="num">Unmapped</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.rows %}
+      <tr>
+        <td><a href="{{ url_for('scores.dataset', release=release.key, activity_code=row.activity_code) }}">{{ row.name }}</a></td>
+        <td>{{ row.reference_product }}</td>
+        <td class="mono">{{ row.geography }}</td>
+        <td class="num">{{ row.inventory_lines | thousands }}</td>
+        <td class="num">{{ row.unmapped_lines | thousands }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'scores.datasets', args) }}
+{% else %}
+{{ t.nothing_matches("No dataset matches.") }}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,166 @@
+{
+  "$defs": {
+    "DeltaKind": {
+      "description": "What the consumer does about it.",
+      "enum": [
+        "created",
+        "updated",
+        "replaced",
+        "deleted",
+        "unresolved"
+      ],
+      "title": "DeltaKind",
+      "type": "string"
+    },
+    "EntityKind": {
+      "description": "What a migration entry is about.",
+      "enum": [
+        "flow-object",
+        "elementary-flow",
+        "characterization-factor"
+      ],
+      "title": "EntityKind",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "The identifiers of the earlier release that release-migrations could not resolve against the later one -- a split, a unit change, a redirect the export tells a consumer to refuse -- each with its candidates and the reason. The worklist for release-migration-rulings.json.",
+  "properties": {
+    "counts": {
+      "type": "object"
+    },
+    "description": {
+      "type": "string"
+    },
+    "from_version": {
+      "type": "string"
+    },
+    "items": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "after": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "After"
+          },
+          "before": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Before"
+          },
+          "candidates": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Candidates",
+            "type": "array"
+          },
+          "changed_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Changed Fields",
+            "type": "array"
+          },
+          "comment": {
+            "default": "",
+            "title": "Comment",
+            "type": "string"
+          },
+          "conversion_factor": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Conversion Factor"
+          },
+          "entity": {
+            "$ref": "#/$defs/EntityKind"
+          },
+          "identifier": {
+            "title": "Identifier",
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/$defs/DeltaKind"
+          },
+          "reason": {
+            "default": "",
+            "title": "Reason",
+            "type": "string"
+          },
+          "replaced_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Replaced By"
+          }
+        },
+        "required": [
+          "candidates",
+          "changed_fields",
+          "comment",
+          "entity",
+          "identifier",
+          "kind",
+          "reason"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 1,
+      "type": "integer"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "target_id": {
+      "type": "string"
+    },
+    "to_version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "from_version",
+    "to_version",
+    "source_id",
+    "target_id",
+    "counts",
+    "items"
+  ],
+  "title": "release-migration-unresolved.json",
+  "type": "object"
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "description": "A sample of a vendor's datasets scored with the vendor's own factors and with this list's, on the same inventory. Where the two disagree the difference is one flow at a time, and the comparison names it. These bound how far apart the two sides are for ecoinvent 3.12 cutoff, where both sides score with EF 3.1 and every gap is ours or ecoinvent's to explain -- 3.8 APOS is scored with the EF 3.0 it ships, so its gaps are partly the method's and are not bounded here.",
+  "expectations": [
+    {
+      "id": "0726-almost-every-pair-within-2x",
+      "issue": 726,
+      "title": "Almost every (dataset, category) pair of ecoinvent 3.12 cutoff scores within 2x of ecoinvent's own number",
+      "subject": {"kind": "measure", "key": "scores.ecoinvent-3.12-cutoff.pairs_within_2x"},
+      "expect": {"at_least": 12300},
+      "comment": "12,247 of 12,500 pairs on the 2026-08-25 build (lcia_runs aa6e0cff), and 12,416 once water vapour's `Water use` factor was declined (0749-water-vapour-is-declined.json) on a re-characterisation of the same build. 22 categories agree within 2% on almost every dataset; what is outside 2x is 69 water-use pairs -- irrigation, wastewater treatment and run-of-river hydro, where the JRC's withdrawal-less-return and ecoinvent's evaporation read an unbalanced inventory differently -- and 14 minerals-and-metals pairs. A floor and not a target: a matching or factor change that dropped this by hundreds has broken something the flows, not the scores, would not have shown."
+    },
+    {
+      "id": "0726-every-pair-within-2x",
+      "issue": 726,
+      "title": "Every (dataset, category) pair of ecoinvent 3.12 cutoff scores within 2x of ecoinvent's own number",
+      "subject": {"kind": "measure", "key": "scores.ecoinvent-3.12-cutoff.pairs_within_2x"},
+      "expect": {"at_least": 12500},
+      "comment": "12,247 on the 2026-08-25 build, 12,416 with water vapour declined. The 84 outside are the two water conventions disagreeing on datasets whose water does not balance -- irrigation withdraws 0.92 m3 of river water and returns 0.07 to water and 0.0002 to air -- and a few minerals; whether the list should say anything about those is open, so this stays pending.",
+      "pending": true
+    },
+    {
+      "id": "0726-no-pair-a-hundred-times-out",
+      "issue": 726,
+      "title": "No dataset of ecoinvent 3.12 cutoff scores a hundred times away from ecoinvent's own number under any category",
+      "subject": {"kind": "measure", "key": "scores.ecoinvent-3.12-cutoff.pairs_over-100x", "value_when_absent": 0},
+      "expect": {"at_most": 0},
+      "comment": "3 on the 2026-08-25 build and 5 with water vapour declined -- the ruling removed the doubling and left the irrigation datasets, where 42.95 of ours stands against 0.01 of ecoinvent's because the withdrawn water goes to the crop and not to the air. The same water question, at its extreme.",
+      "pending": true
+    }
+  ]
+}

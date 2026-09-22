@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "description": "Which unit a created flow states, where two rows of one source list land on it in different units and `units.json` cannot choose between them. A decision names the row whose unit wins rather than naming the unit directly, so it can be checked against the vendor file: a uuid the list stopped shipping, or a row whose unit changed, is a decision that has outlived what it was written about. `comment` is mandatory -- these exist precisely where no rule could decide, so the reasoning is the whole of the decision. Nothing here converts anything, and no row's own unit is restated: each source row keeps the unit its list gave it, on its source ref and its concept association. Where one of the units *is* the reference unit for its quantity kind, or the kind has a published unit in `published-units.json`, no entry is needed and none should be written -- the tables have already decided. See `brightway_flows.merge.unit_changes` and issues #78 and #142.",
+  "decisions": [
+    {
+      "source": "bafu-2026-v1",
+      "source_uuid": "a444355b-4415-5025-8f38-9c43dcccf91e",
+      "source_name": "Heat, waste",
+      "source_unit": "MJ",
+      "comment": "BAFU ships `Heat, waste` in fourteen rows: thirteen in megajoules, across every compartment it reaches, and one in kilowatt-hours, in `emissions to air / unspecified`, where it also ships the megajoule row. So the kilowatt-hour row is the odd one out in BAFU's own data, and megajoules is what this flow means everywhere else in the list it comes from. The unit table cannot say this: the coherent unit for an energy is the joule, BAFU offers neither megajoules nor kilowatt-hours as a reference unit, and preferring one multiple of the joule over another would be a convention this project had invented. Megajoules is also what the consensus list already publishes energy in -- the fossil carriers ecoinvent maps onto EF 3.1 are all kg to MJ."
+    }
+  ]
+}

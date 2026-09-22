@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 publishes water vapour twice in unspecified air, in cubic metres: `Water` (0342f5e5-...) bare, and `Water (evapotranspiration)` (4b772bba-...) carrying EF's remark that it is `water vapour, but coming from growing renewables`. Same substance object, same context, same unit, no factor on either, and the collision queue reports the pair with `general_comment` as the only differing field. Every mapping that exists lands on the bare row -- ecoinvent's correspondence tables in both merged releases, and AGRIBALYSE's Water/m3 override (#353), which had to pick between the pair per row because nothing on a source row can prefer one spelling of the same thing over the other. #191 rules the pair one flow in `elementary-flow-collision-decisions.json`: the bare row survives, the evapotranspiration row is deprecated onto it with EF's remark kept in the ruling. These claims are false of every build before the ruling -- the 1 September 2026 shared build holds both rows live -- and true of the first build after it.",
+  "expectations": [
+    {
+      "id": "0885-one-cubic-metre-vapour-flow-in-unspecified-air",
+      "issue": 885,
+      "title": "Water vapour is published once in unspecified air in cubic metres, not twice",
+      "subject": {
+        "kind": "flow",
+        "name": "Water vapour",
+        "context_display": "Environmental → Air → Unknown",
+        "unit": "m3"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "Two live flows on every build up to 1 September 2026 (run c5445e95). The kilogram flow in the same context is a different unit and is deliberately outside this claim; selecting by name and context alone would count it and hide a change in the pair behind a change in the kilograms."
+    },
+    {
+      "id": "0885-the-surviving-flow-is-the-one-every-list-reaches",
+      "issue": 885,
+      "title": "The surviving cubic-metre flow is the one every correspondence and override names",
+      "subject": {
+        "kind": "flow",
+        "uuid": "0342f5e5-b53e-4cec-9e67-fb197f24fff0"
+      },
+      "expect": {
+        "exists": true,
+        "deprecated": false,
+        "unit": "m3",
+        "context_display": "Environmental → Air → Unknown"
+      },
+      "comment": "ecoinvent 3.8's and 3.12's bare `Water` m3 rows reach this flow through their correspondence tables, and AGRIBALYSE's `Water/m3` is sent here by its override (#353). A ruling that collapsed the pair the other way would strand all of them on a deprecated flow, which is what `tests/test_collision_rulings_ecoinvent.py` exists to make impossible."
+    },
+    {
+      "id": "0885-the-evapotranspiration-copy-redirects-to-the-survivor",
+      "issue": 885,
+      "title": "EF's evapotranspiration copy is deprecated onto the survivor rather than deleted",
+      "subject": {
+        "kind": "flow",
+        "uuid": "4b772bba-b5c1-4098-9c1d-3d9d8c74c7fa",
+        "include_deprecated": true
+      },
+      "expect": {
+        "exists": true,
+        "deprecated": true,
+        "replaced_by": "0342f5e5-b53e-4cec-9e67-fb197f24fff0"
+      },
+      "comment": "Deprecated, not removed: EF's identifier stays resolvable and redirects, so a consumer holding the evapotranspiration uuid finds the surviving flow, and EF's origin remark -- the one thing that ever told the pair apart -- survives on the ruling and on this row's deprecation comment. If a water model ever needs evapotranspirated vapour as its own flow, this row and #191 are where that discussion picks up."
+    }
+  ]
+}

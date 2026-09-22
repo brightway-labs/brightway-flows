@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 ships two peats. `peat` is a `Non-renewable energy resource from ground`, measured in megajoules, and carries the `Resource use, fossils` factor of 1.0: peat burned as a fuel, counted by its energy. `Peat, horticulture` is a `Renewable material resource from biosphere`, measured in kilograms, and carries nothing: peat dug and sold as a growing medium, counted by its mass. ecoinvent ships one peat flow, in kilograms, which #89 ruled is the second of the two -- and the ecoinvent Centre's implementation gives it 9.76 under `Resource use, fossils`, which is peat's net calorific value per kilogram. It is the only factor in that category, from any implementation, filed outside `Resource → Ground`; the other seven the ecoinvent Centre states and the six the JRC states are all non-renewable energy resources from the ground at 1.0 MJ per MJ. So the list declines it, on the record, in `lcia-factor-rulings.json`, and the ecoinvent Centre's statement of it stays published as theirs.",
+  "expectations": [
+    {
+      "id": "0772-horticultural-peat-carries-no-fossil-factor",
+      "issue": 772,
+      "title": "Horticultural peat carries no `Resource use, fossils` factor of this list's",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Peat, Horticulture",
+        "context_display": "Resource → Biotic",
+        "category": "Resource use, fossils",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "True by accident before the ruling and on purpose after it, as carnallite's was (#148): a factor only one implementation states sits on the proposed queue and is published by nobody until somebody answers. What the ruling changes is that the answer exists, so no later catch-all approval of ecoinvent's unmatched numbers -- the kind #155 made for minerals -- can adopt it without reading the reasoning first."
+    },
+    {
+      "id": "0772-fuel-peat-keeps-its-factor",
+      "issue": 772,
+      "title": "Peat taken from the ground as a fuel still carries `Resource use, fossils` at 1.0",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Peat",
+        "context_display": "Resource → Ground",
+        "category": "Resource use, fossils",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "1.0"
+      },
+      "comment": "The ruling is about which of the two peats ecoinvent's kilogram flow is, not about peat. EF's megajoule flow keeps the 1.0 the JRC states for it -- `sole`, because only the JRC states it -- and a decline that reached this flow would have taken fossil peat out of the category altogether."
+    },
+    {
+      "id": "0772-the-ecoinvent-centre-still-says-so",
+      "issue": 772,
+      "title": "The ecoinvent Centre's 9.76 for horticultural peat is still published under their name",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Peat, Horticulture",
+        "context_display": "Resource → Biotic",
+        "category": "Resource use, fossils",
+        "implemented_by": "ecoinvent Centre"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "9.76"
+      },
+      "comment": "A decline withholds this list's number and erases nobody's. Theirs is a reading of their own flow list, in which one peat row serves both the growing medium and the milled peat Irish power stations burn; what this list will not do is publish a fuel's calorific value on a flow EF calls a renewable material."
+    },
+    {
+      "id": "0772-the-proposed-question-is-answered",
+      "issue": 772,
+      "title": "At least seven proposed-factor questions are answered by a ruling",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_proposed-factor_items_ruled",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 7
+      },
+      "comment": "Six on the 25 August 2026 build (`lcia_runs` 23745df9), with twelve still open; this ruling makes seven. Bounded below, as #148's and #154's are, because the count is the queue's and an answer to some other question should not fail a claim about this one. The count is what says the ruling was read and applied rather than merely present in the file."
+    }
+  ]
+}

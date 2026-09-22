@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "description": "One CAS number can be claimed by several names in one source list, and keying identity on the number alone fuses substances the list's own characterisation factors keep apart. #34 recorded 41 such fusions in EF 3.1; the rulings in `data/contested-cas-decisions.json` separate the groups whose factors disagree. These expectations hold the result in place, because the failure is silent: nothing about a fused flow object looks wrong from the outside.",
+  "expectations": [
+    {
+      "id": "0260-hfe-356-not-fused",
+      "issue": 260,
+      "title": "CAS 382-34-3 carries four separate substances, not one",
+      "subject": {"kind": "substance", "cas": "382-34-3"},
+      "expect": {"count": 4},
+      "comment": "HFE-356mec3, HFE-356pcc3, HFE-356pcf2 and HFE-356pcf3 -- four hydrofluoroethers sharing a registry number, with four different global warming potentials. Four is the count in the 2026-08-14 build and the count the ruling intends: fewer means two of them have been fused again, more means one has been split by something other than the ruling."
+    },
+    {
+      "id": "0260-hfe-356-each-has-flows",
+      "issue": 260,
+      "title": "Each of the four is published with flows of its own",
+      "subject": {"kind": "substance", "cas": "382-34-3"},
+      "expect": {"flow_count": {"at_least": 1}},
+      "comment": "Separating the identities is only half the job; a substance nothing resolves to is separated out of the published list rather than into it."
+    }
+  ]
+}

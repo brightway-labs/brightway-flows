@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "description": "Which flow object a source flow belongs to, where the resolver's answer is wrong and no field on the flow can correct it.\n\nThree shapes. Two answer opposite questions about *membership*, and the third answers a question about the *name*. A `uuid_override` keeps a flow *apart* from the object a shared identifier would have merged it into: coal mine off-gas and natural gas are both mostly methane, and a chemical identity is not the whole of what a resource flow names. A `merge_group` puts flows *together* that nothing would have merged, which in practice means their names disagree -- had they agreed, the name axis would have grouped them and no group would be needed.\n\nBecause the names disagree, a merge group has to say which of them names the object. Without `preferred_label` that is settled by the length rule in `flow_layers/layering.py`, which prefers the longer string and is not a decision: on the four renewable energy pairs below it keeps `Energy, Potential (in Hydropower Reservoir), Converted` and then replaces `Energy, Geothermal, Converted` with `Primary Energy From Geothermics`, renaming the object ecoinvent and BAFU both reach. State the label as it is published, title-cased, since that is the spelling the members carry by the time the layering sees them; the comparison ignores case, and every member name that is not the stated label becomes an alternative label on the object, so a source's own spelling stays searchable.\n\nA merge group makes the flows one *substance*. It does not make them one *flow*: two flows of one substance in one context and one unit are a collision, and whether they are two flows or one is answered in `elementary-flow-collision-decisions.json`, which also names which of them survives. Both halves are needed for a duplicate to actually collapse, and they are deliberately separate -- the first says what a thing is, the second says how many rows of it a context holds.\n\nThe fifth member of the legacy block, `primary energy from waves` (`04202049-6556-11dd-ad8b-0800200c9a66`), is deliberately absent from both files. It is the only wave energy entry any list here has, so it has no partner to merge with and no name to lose; a rule written as \"drop the `primary energy from ...` family\" would have deleted it.\n\nA `name` renames an object whose members already agree — which is the case neither shape above can reach. A merge group may state a `preferred_label` because it exists to settle a disagreement between names; an object minted from one source list has no disagreement to settle, so the layering takes the vendor's spelling and there is nowhere to say that the consensus list calls it something else. `Carbon Dioxide, To Soil Or Biomass Stock` is the case that found this: a substance this project created, published under ecoinvent's name for it, with no field on any source flow able to correct that.\n\n`current_label` is required and is what the object is called without the row. A rename written against a name the vendor has since changed is a decision about something that no longer exists, so a row whose `current_label` does not match is skipped, counted in `object_names_stale`, and logged — never obeyed. That is the rule `lcia-factor-rulings.json` applies to a ruling whose numbers have moved, and it is here for the same reason. A malformed row raises instead, unlike the two membership shapes: a bad placement leaves a flow where the axes put it, which is recoverable, and a rename that silently does nothing is a rename a curator believes happened.",
+  "uuid_overrides": [
+    {
+      "source_uuid": "00fdc4bc-724b-4993-ad43-c70df533b092",
+      "flow_object_id": "fo-eb9073f83e17ec30",
+      "comment": "Gas, mine, off-gas, process, coal mining -- pinned to the object id it was minted with. That id is derived from CAS 8006-14-2, which this flow carried until #80 took it off: the number is natural gas's, and the two are different substances. The pin was written to force them apart while both held the number; the layering now separates them on its own, and what it does today is keep the published id stable rather than let it change under consumers who have mapped against it."
+    },
+    {
+      "source_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "flow_object_id": "fo-634eaeddc2496342",
+      "comment": "Natural gas, the in-ground energy resource -- pinned for the same reason as the coal-mine flow above, and originally with the same rationale: hold the two apart despite a shared registry number. They no longer share one. 8006-14-2 is stated on this flow and on nothing else (#80), so the separation no longer depends on this file, and the pin only holds the id steady."
+    }
+  ],
+  "merge_groups": [
+    {
+      "flow_object_id": "fo-c4f4bb8d95c22ef6",
+      "preferred_label": "Energy, Geothermal, Converted",
+      "source_uuids": [
+        "c0060563-96ea-4322-8305-61c39f2ad3cd",
+        "04202046-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "comment": "Geothermal energy taken from the ground, which EF 3.1 ships twice: as `Energy, geothermal, converted` and as `primary energy from geothermics`. Same EF category (Resources / Resources from ground / Renewable energy resources from ground), same unit, and neither row carries a CAS, a synonym, a general comment or a characterisation factor, so nothing on either flow says they are two things. The second name comes out of the legacy ILCD/ELCD block `04202046`-`0420204a`, all ending `-6556-11dd-ad8b-0800200c9a66`, the batch that also produced EF's `peat` and `uranium` rows: an inherited name kept beside the newer one, not a second concept. `converted` names the object because it is the name ecoinvent 3.8, ecoinvent 3.12 and BAFU all publish; the legacy name is held up by EF alone. The flow object id is the one the name already mints, so nothing that resolves by name moves. (#73)"
+    },
+    {
+      "flow_object_id": "fo-bc635179bc43bfc7",
+      "preferred_label": "Energy, Solar, Converted",
+      "source_uuids": [
+        "1c80d3da-b8c4-4275-a552-c96a709a11dd",
+        "04202048-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "comment": "`Energy, solar, converted` and `primary energy from solar energy`, both in Resources / Resources from air / Renewable energy resources from air, both MJ, both uncharacterised. Same argument as geothermics above. (#73)"
+    },
+    {
+      "flow_object_id": "fo-70259b1e9c786701",
+      "preferred_label": "Energy, Kinetic (in Wind), Converted",
+      "source_uuids": [
+        "0ab82f67-9e7e-417a-8de8-9801226a436f",
+        "0420204a-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "comment": "`Energy, kinetic (in wind), converted` and `primary energy from wind power`, in the same EF air category, both MJ, both uncharacterised. The label is stated even though the length rule would have reached it anyway, so that all four pairs are settled the same way and the answer does not depend on which name happens to be longer. (#73)"
+    },
+    {
+      "flow_object_id": "fo-98218e5a3fcea37f",
+      "preferred_label": "Energy, Potential (in Hydropower Reservoir), Converted",
+      "source_uuids": [
+        "e89f564c-7250-4fee-b759-dc8b42fe62bf",
+        "04202047-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "comment": "`Energy, potential (in hydropower reservoir), converted` and `primary energy from hydro power`, in the same EF water category, both MJ, both uncharacterised. (#73)"
+    }
+  ],
+  "examples": {
+    "uuid_override": {
+      "source_uuid": "<elementary-flow-uuid>",
+      "flow_object_id": "<flow-object-id>",
+      "comment": "Force this elementary flow onto a specific flow object id."
+    },
+    "merge_group": {
+      "flow_object_id": "<flow-object-id>",
+      "preferred_label": "<the name the object takes, as published>",
+      "source_uuids": [
+        "<elementary-flow-uuid-1>",
+        "<elementary-flow-uuid-2>"
+      ],
+      "comment": "Merge these elementary flows into one shared flow object."
+    }
+  },
+  "names": [
+    {
+      "flow_object_id": "fo-7edfcc35f0a40da5",
+      "current_label": "Carbon Dioxide, To Soil Or Biomass Stock",
+      "preferred_label": "Carbon Dioxide (sequestration from land management)",
+      "comment": "Carbon entering a long-lived land carbon pool. ecoinvent's own name states the direction and the destination and nothing about what the carbon is, so the substance was published as a vendor's flow name rather than as a consensus term.\n\n`land management` is the word the GHG Protocol and PACT both use for this against the same counterpart: GHGP pairs *land use change emissions* with *land management net biogenic CO2 emissions* and *land management CO2 removals*, and PACT names the fields `dLucGhgEmissions` and `landManagementGhgEmissions`. It is not coined here. And it is right even for the datasets ecoinvent calls `land use change`, because GHGP rules that case explicitly: removals following a conversion are land management removals of the subsequent land use.\n\n`sequestration from` because this substance holds one direction only. The release side stays on EF's `carbon dioxide (land use change)` in air, where both implementations state +1 and the list publishes `agreed`, so a bare `(land management)` would not say which half this is -- GHGP uses the modifier for a source and a sink alike. Saying it also stops the record reading as a negative factor on an unexplained emission: the compartment names the pool the carbon enters, the name says which way it went, and the sign says it is a credit.\n\nNot renamed to `(land use change)`, which would be wrong on the data: that substance carries six flows and one of them is EF's own `Resource → Air` removal at -1, so the word would sit on the one substance in this family that holds a credit of the method's own. See #139 sections 13 and 17."
+    },
+    {
+      "flow_object_id": "fo-525d7ddc2fa0004e",
+      "current_label": "Carbon Dioxide, Non-fossil, Resource Correction",
+      "preferred_label": "Carbon Dioxide (biogenic, resource correction)",
+      "comment": "ecoinvent's allocation counterweight for biogenic carbon uptake, and not an exchange with the environment at all. Their section 6.4.1.1 explains it: an allocated inventory is not carbon balanced, so using a negative factor for uptake would give unreliable scores for agricultural and wood products, and this flow \"corrects the difference of the distorted result to the amount before allocation\".\n\nRenamed onto this list's own shape -- substance, then origin in parentheses -- which puts it beside `Carbon Dioxide (biogenic)` and `Carbon Dioxide (biogenic-100yr)`, the two substances it is an accounting variant of. ecoinvent's word `resource correction` is kept rather than replaced, because it says what the row adjusts and no better term exists in any standard read for #139. `non-fossil` becomes `biogenic` for the same reason every other flow of theirs does: this list treats the two as one word, and EF, which uses both, uses them for one thing. (#133)"
+    },
+    {
+      "flow_object_id": "fo-5c42d374aca497d5",
+      "current_label": "Antimony Ion",
+      "preferred_label": "Antimony, Ion",
+      "comment": "One of the five generic-ion substances the retirement minted (#141, plan section 3a: a vendor row saying `ion` without a charge is its own substance). The mint took whichever vendor spelling arrived first and title-cased it, so five substances of one shape published under two -- `Antimony Ion` here, `Titanium, ion` on EF's own substance next door. This list's spelling for the shape is the one merge/species.py already matches under and the one `Thiocyanate, Ion` already publishes: element, comma, Ion. (`Sulfate, Ion` used to publish it too, until #338's historical-name crosswalk dissolved that duplicate into EF's own `Sulfate`.) The vendor spellings stay searchable as alternative labels."
+    },
+    {
+      "flow_object_id": "fo-697e126705df00f6",
+      "current_label": "Arsenic Ion",
+      "preferred_label": "Arsenic, Ion",
+      "comment": "One of the five generic-ion substances the retirement minted (#141, plan section 3a: a vendor row saying `ion` without a charge is its own substance). The mint took whichever vendor spelling arrived first and title-cased it, so five substances of one shape published under two -- `Arsenic Ion` here, `Titanium, ion` on EF's own substance next door. This list's spelling for the shape is the one merge/species.py already matches under and the one `Thiocyanate, Ion` already publishes: element, comma, Ion. (`Sulfate, Ion` used to publish it too, until #338's historical-name crosswalk dissolved that duplicate into EF's own `Sulfate`.) The vendor spellings stay searchable as alternative labels."
+    },
+    {
+      "flow_object_id": "fo-436304b385710fab",
+      "current_label": "Copper Ion",
+      "preferred_label": "Copper, Ion",
+      "comment": "One of the five generic-ion substances the retirement minted (#141, plan section 3a: a vendor row saying `ion` without a charge is its own substance). The mint took whichever vendor spelling arrived first and title-cased it, so five substances of one shape published under two -- `Copper Ion` here, `Titanium, ion` on EF's own substance next door. This list's spelling for the shape is the one merge/species.py already matches under and the one `Thiocyanate, Ion` already publishes: element, comma, Ion. (`Sulfate, Ion` used to publish it too, until #338's historical-name crosswalk dissolved that duplicate into EF's own `Sulfate`.) The vendor spellings stay searchable as alternative labels."
+    },
+    {
+      "flow_object_id": "fo-68a028e14ee2f8de",
+      "current_label": "Iron Ion",
+      "preferred_label": "Iron, Ion",
+      "comment": "One of the five generic-ion substances the retirement minted (#141, plan section 3a: a vendor row saying `ion` without a charge is its own substance). The mint took whichever vendor spelling arrived first and title-cased it, so five substances of one shape published under two -- `Iron Ion` here, `Titanium, ion` on EF's own substance next door. This list's spelling for the shape is the one merge/species.py already matches under and the one `Thiocyanate, Ion` already publishes: element, comma, Ion. (`Sulfate, Ion` used to publish it too, until #338's historical-name crosswalk dissolved that duplicate into EF's own `Sulfate`.) The vendor spellings stay searchable as alternative labels."
+    },
+    {
+      "flow_object_id": "fo-e5a848d167fbab09",
+      "current_label": "Tin Ion",
+      "preferred_label": "Tin, Ion",
+      "comment": "One of the five generic-ion substances the retirement minted (#141, plan section 3a: a vendor row saying `ion` without a charge is its own substance). The mint took whichever vendor spelling arrived first and title-cased it, so five substances of one shape published under two -- `Tin Ion` here, `Titanium, ion` on EF's own substance next door. This list's spelling for the shape is the one merge/species.py already matches under and the one `Thiocyanate, Ion` already publishes: element, comma, Ion. (`Sulfate, Ion` used to publish it too, until #338's historical-name crosswalk dissolved that duplicate into EF's own `Sulfate`.) The vendor spellings stay searchable as alternative labels."
+    },
+    {
+      "flow_object_id": "fo-4755007857e353ff",
+      "current_label": "Chlordane , Pur",
+      "preferred_label": "Chlordane, pure",
+      "comment": "CAS 57-74-9, the compound. The published name is not EF's coinage and says nothing anybody decided about the flow: it is the string ECHA displays for EC Inventory entry 200-349-0, copied into EF 3.1 with the stray space before the comma intact. Of 8,056 distinct EF 3.1 flow names exactly four put a space before a comma, and the other three are EC Inventory strings too. `pur` is French for pure, left untranslated in a list compiled in the early 1980s out of notifications in every Community language, and what it distinguishes is the right distinction to keep: 57-74-9 is chlordane the compound, as against 12789-03-6, technical chlordane as it was manufactured and sprayed. So the qualifier stays, in English and without the stray space. Renamed rather than left alone because the two substances published as `Chlordane , Pur` and `Chlordane`, and neither name told a reader which was which. (#167)"
+    },
+    {
+      "flow_object_id": "fo-8010c326e15ed772",
+      "current_label": "Chlordane",
+      "preferred_label": "Chlordane, technical",
+      "comment": "CAS 12789-03-6, the manufactured product: a mixture of something like a hundred related chlorinated compounds, of which the cis and trans forms of chlordane itself are the two that matter most. The list already types it as an imprecise mixture, and CAS Common Chemistry holds no substance record for the number at all, which is what a chemical registry does when a number names a product rather than a substance. `technical` is the word the manufacturers and the literature use for it. Bare `Chlordane` is demoted to an alternative label rather than dropped, so the plain name an ecoinvent or Stepwise inventory writes still finds this flow -- which is the one those inventories mean. (#167)"
+    },
+    {
+      "flow_object_id": "fo-6657f576b7053470",
+      "current_label": "(1α,2α,3aα,4β,7β,7aα)-1,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene",
+      "preferred_label": "Chlordane, cis-",
+      "comment": "CAS 5103-71-9, cis-chlordane, also called alpha-chlordane. It publishes under EF's IUPAC string because that name beat ecoinvent's `Cis-chlordane` on length, and its trans twin publishes under the same string with `2α` replaced by `2β` -- two names that differ in one Greek letter in the middle of ninety characters are not names a reader can tell apart. `Chlordane, cis-` is the spelling ecoinvent, SimaPro and Stepwise all use, and it is already an alternative label on this object; the IUPAC string stays searchable as one. (#167)"
+    },
+    {
+      "flow_object_id": "fo-897a4220c4de6a16",
+      "current_label": "(1α,2β,3aα,4β,7β,7aα)-1,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene",
+      "preferred_label": "Chlordane, trans-",
+      "comment": "CAS 5103-74-2, trans-chlordane, also called beta- or gamma-chlordane. Renamed off EF's IUPAC string for the reason its cis twin is, and it is this object that the name gamma-chlordane means: the four gamma labels it already carries stay, because Stepwise's `Chlordane, gamma-` rows are refused at ingestion rather than published as a substance of their own (stepwise-2006-additional-flows.json), so no other flow answers to the name. (#167)"
+    },
+    {
+      "flow_object_id": "fo-fb9b0585c57f953a",
+      "current_label": "Rhodium III",
+      "preferred_label": "Rhodium(3+)",
+      "comment": "Rhodium(3+), 16065-89-7: ecoinvent 3.12's `Rhodium III`, one row to air, and AGRIBALYSE's `Rhodium (III)`. A charge-stated ion the merge minted for ecoinvent 3.12 (#198), published under the vendor's spelling. This list spells a stated charge one way -- element, then the charge in parentheses -- which is the form `merge/species.py` matches every roman, numeric and parenthesised spelling under (plans/retire-prepared-correspondence.md §3a) and the form EF 3.1's own charged ions publish, `Zinc(2+)`, `Strontium(2+)`, `Lithium(1+)`, where the transform's Common Chemistry and ChEBI name agreement writes it. A minted object gets no such pass, so the spelling is stated here, the way the five generic ions above were (#141). The object id is seeded on the ion's registry number, so it is the same id whichever list mints first; the row is stale, and skipped, if a build mints it under another vendor spelling. The vendor's spelling stays searchable as an alternative label."
+    },
+    {
+      "flow_object_id": "fo-e60ddfdf2e995c72",
+      "current_label": "Palladium II",
+      "preferred_label": "Palladium(2+)",
+      "comment": "Palladium(2+), 16065-88-6: ecoinvent 3.12's `Palladium II`, six rows in air and water, ecoinvent 3.8's six rows of the same uuids, and AGRIBALYSE's `Palladium (II)`. A charge-stated ion the merge minted for ecoinvent 3.12 (#198), published under the vendor's spelling. This list spells a stated charge one way -- element, then the charge in parentheses -- which is the form `merge/species.py` matches every roman, numeric and parenthesised spelling under (plans/retire-prepared-correspondence.md §3a) and the form EF 3.1's own charged ions publish, `Zinc(2+)`, `Strontium(2+)`, `Lithium(1+)`, where the transform's Common Chemistry and ChEBI name agreement writes it. A minted object gets no such pass, so the spelling is stated here, the way the five generic ions above were (#141). The object id is seeded on the ion's registry number, so it is the same id whichever list mints first; the row is stale, and skipped, if a build mints it under another vendor spelling. The vendor's spelling stays searchable as an alternative label."
+    }
+  ]
+}

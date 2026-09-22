@@ -1,0 +1,157 @@
+name: A flow is in the wrong compartment, or the wrong unit
+description: The substance is right and the place or the unit is not — a release filed where it did not happen, or a quantity measured in something else.
+labels: ["compartments"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when the substance is **right and the other half of the flow is
+        wrong**: an emission filed in a compartment it did not happen in, a land
+        transformation filed as an occupation, a resource in kilograms of ore where the
+        list measures kilograms of metal, a volume of gas with no temperature and pressure
+        behind it.
+
+        Worth reading first, because both are documented decisions people report as bugs:
+
+        - [The compartment names two situations at
+          once](https://github.com/brightway-labs/brightway-flows/blob/main/docs/findings/compartments.md).
+          `non-urban air or from high stacks` is deliberately mapped to rural air with a
+          stack under 150 metres, because that is what the factors attached to it were
+          computed for. A release from a taller chimney is knowingly published as a shorter
+          one.
+        - [Units and the conditions of
+          measurement](https://github.com/brightway-labs/brightway-flows/blob/main/docs/findings/units.md).
+          A kilogram of ore and a kilogram of the metal in it are both `kg`, and nothing in
+          the unit says a conversion is needed.
+
+        **Write the title so it means something to somebody who has not read the issue.**
+        Name the flow, the compartment or unit, and the count.
+
+  - type: dropdown
+    id: which-half
+    attributes:
+      label: Which is wrong?
+      options:
+        - The compartment
+        - The unit
+        - Both
+    validations:
+      required: true
+
+  - type: input
+    id: published-flow
+    attributes:
+      label: The flow on the website
+      description: Its UUID, or the address of its page.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source-list
+    attributes:
+      label: Which source list the row is from
+      options:
+        - EF 3.1
+        - ecoinvent
+        - BAFU 2026 v1
+        - Stepwise 2006
+        - AGRIBALYSE 3.2
+        - GLAD's correspondence mapping
+        - GreenDelta's EF 3.1 implementation
+        - EXIOBASE
+        - A list of my own
+    validations:
+      required: true
+
+  - type: input
+    id: source-release
+    attributes:
+      label: Which release
+      placeholder: "3.12"
+    validations:
+      required: true
+
+  - type: textarea
+    id: source-row
+    attributes:
+      label: The row as the list ships it
+      description: >-
+        The compartment exactly as the list spells it, and the unit exactly as it ships it.
+        Both matter: a unit that changed between two releases of one list is itself a
+        finding.
+      value: |
+        uuid:
+        name:
+        CAS:
+        compartment:
+        unit:
+    validations:
+      required: true
+
+  - type: input
+    id: expected-value
+    attributes:
+      label: Where it should be filed, or what it should be measured in
+      placeholder: natural resource / land, as a transformation rather than an occupation
+    validations:
+      required: true
+
+  - type: textarea
+    id: conversion
+    attributes:
+      label: If the unit changes, what is the conversion?
+      description: >-
+        State the factor with **both units named**, and where it comes from. A conversion
+        between two masses is applied even when both units are `kg` — baddeleyite is ZrO₂,
+        of which zirconium is 91.224 / 123.22 = 0.740 by mass — and a conversion nobody
+        wrote down is how a kilogram of ore gets credited as a kilogram of metal.
+      placeholder: 1 m³ of liquid water = 1000 kg, the density
+
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: What says so
+      description: >-
+        The strongest evidence here is usually **what the factors attached to the
+        compartment were computed for**, or what the rest of the same list does: four rows
+        in kilograms beside a hundred and ten of the same four compartments in cubic metres
+        is a unit that was an accident rather than a decision.
+    validations:
+      required: true
+
+  - type: input
+    id: claim
+    attributes:
+      label: One sentence that should be true of the output
+      placeholder: ecoinvent's 122 land-transformation rows are published as transformations, not occupations
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: A proposed fix, if you have one
+      description: >-
+        **Optional.** A compartment is mapped in
+        `src/brightway_flows/data/context-manual-mapping.json`; a unit is decided in
+        `published-units.json` or, for a flow this project created,
+        `created-flow-unit-decisions.json`.
+      render: json
+
+  - type: input
+    id: build
+    attributes:
+      label: Which build you were looking at
+      description: The version or revision at the foot of the page. Leave it blank if you are unsure.
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **What happens next.** A maintainer approves a CI run — runs are not automatic, so
+        there may be a wait. A compartment rule and a unit decision both reach far more
+        rows than the one reported, so what the run is really for is the diff against the
+        reference build: every row that moved, not only yours. The result is a workflow run
+        with an artifact attached. Nothing is written to the repository until a pull
+        request is merged.

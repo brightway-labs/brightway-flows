@@ -1,0 +1,247 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% import "partials/flow_object_views.html" as v %}
+{% set page_title = "Particles" %}
+{% set active_section = "substances" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>The particle size windows</h1>
+  <p class="page__lede">
+    PM10, PM2.5, the coarse band between them and dust of no stated size are
+    one family of measurements cut at different sizes, spelled seventeen ways
+    by five lists. The window each row was cut at is a curated field now, so a
+    row lands on the window it states — and a row nobody has read stops the
+    merge rather than minting a substance.
+  </p>
+</header>
+
+{{ v.views('particles') }}
+
+<section class="section">
+  <div class="section__header"><h2>What a particle flow says</h2></div>
+  <p class="section__note">
+    A particle flow says how much, where it went, and <strong>which particles
+    were counted</strong>. The first two are the unit and the context. The
+    third is the window — a pair of aerodynamic-diameter bounds in micrometres
+    — and it is the identity: two spellings of one window are one thing, and
+    two windows are two things however alike they are spelled.
+  </p>
+  <div class="cards">
+    <div class="card">
+      <span class="card__label">Windows</span>
+      <span class="card__value">{{ overview.windows | thousands }}</span>
+      <span class="card__note">in the scheme, each with its bounds</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Windows carrying flows</span>
+      <span class="card__value">{{ overview.windows_with_flows | thousands }}</span>
+      <span class="card__note">reached by this build</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Particle flows</span>
+      <span class="card__value">{{ overview.total_flows | thousands }}</span>
+      <span class="card__note">published on one of these windows</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Curated readings</span>
+      <span class="card__value">{{ overview.readings | thousands }}</span>
+      <span class="card__note">vendor rows the size table reads, over every registered list</span>
+    </div>
+    <div class="card">
+      <span class="card__label">Carried factors</span>
+      <span class="card__value">{{ overview.carried_factors | thousands }}</span>
+      <span class="card__note">numbers one window took from a broader one, or a compartment from its neighbour</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>The scheme</h2></div>
+  <p class="section__note">
+    Seven windows, ours. No published vocabulary carries a particle size band,
+    so nothing here cites one; the bounds are what a reviewer checks, and a
+    window's parent is the smallest window whose bounds contain it. Every
+    window is always published under its <code>Particulates</code> spelling as
+    well as its <code>Particles (…)</code> name, so a search for the ecoinvent-2
+    form finds it whichever vendor's rows reached it.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Window</th>
+          <th scope="col">Bounds</th>
+          <th scope="col">The bound is read from</th>
+          <th scope="col">Also answers to</th>
+          <th scope="col">Flows</th>
+          <th scope="col">Rows landing here, by list</th>
+          <th scope="col">Lists</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in overview.rows %}
+        <tr>
+          <td style="padding-left: {{ 0.75 + row.depth * 1.25 }}rem">
+            <strong>{{ row.label }}</strong>
+            <div class="muted">{{ row.definition }}</div>
+          </td>
+          <td>{{ row.window_text }}</td>
+          <td class="muted">{{ row.definition_source }}</td>
+          <td>{% for label in row.alt_labels %}<code>{{ label }}</code>{% if not loop.last %}<br>{% endif %}{% endfor %}</td>
+          <td>
+            {% if row.in_build %}
+              {{ row.flows | thousands }}{% if row.deprecated_flows %} <span class="muted">(+{{ row.deprecated_flows }} retired)</span>{% endif %}
+            {% else %}
+              <span class="tag tag--info">not reached</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if row.rows_by_list %}
+            <ul class="plain">
+              {% for list_key, count in row.rows_by_list.items() | sort %}
+              <li>{{ list_key }}: {{ count | thousands }}</li>
+              {% endfor %}
+            </ul>
+            {% else %}—{% endif %}
+          </td>
+          <td>{{ row.sources | join(', ') if row.sources else '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if overview.by_source_category %}
+  <p class="section__note">
+    A second axis, which is not a size: {% for category, count in overview.by_source_category.items() | sort %}{{ count }} row{{ 's' if count != 1 }} read under <em>{{ category }}</em>{% if not loop.last %}, {% endif %}{% endfor %}. What emitted the particles is recorded and the row lands on the unqualified window, because the only method that distinguishes them gives all of them the same number.
+  </p>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>What each method says, and what this list carries</h2></div>
+  <p class="section__note">
+    Per window, the consensus implementation's factors in the particulate
+    categories: how many are published, how many of those were
+    <em>carried</em> rather than stated, and the number in unspecified air.
+    A window nobody characterises takes its nearest broader window's stated
+    number inside the compartment — the coarse band takes PM10's, the
+    ultrafine cut takes PM2.5's, the above-ten fraction takes the size-unstated
+    total's — and the compartment convention then spreads it into the outdoor
+    strata. Under EF 3.1 nothing characterises the total or anything above it,
+    so particles above ten micrometres stay blank there.
+  </p>
+  {% if overview.methods %}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Window</th>
+          <th scope="col">Method · category</th>
+          <th scope="col">Published</th>
+          <th scope="col">Carried</th>
+          <th scope="col">In unspecified air</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in overview.rows %}
+          {% for cell in row.factors %}
+          <tr>
+            <td>{% if loop.first %}<strong>{{ row.label }}</strong>{% endif %}</td>
+            <td>{{ cell.method }} · {{ cell.category }}</td>
+            <td>{{ cell.published | thousands }}</td>
+            <td>{{ cell.carried | thousands }}</td>
+            <td>{% if cell.in_unspecified_air is not none %}{{ cell.in_unspecified_air }} <span class="muted">({{ cell.derivation_in_unspecified_air }})</span>{% else %}—{% endif %}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td><strong>{{ row.label }}</strong></td>
+            <td colspan="4" class="muted">no consensus factor in a particulate category</td>
+          </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="section__note muted">This build has not been characterised, so there are no numbers to show.</p>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>Rows the merge would refuse</h2></div>
+  {% if overview.unread %}
+  <div class="notice notice--warn">
+    <p>
+      {{ overview.unread | length }} source row{{ 's' if overview.unread | length != 1 }} named as a
+      particle size cut that the curated size table has not read. A build that
+      meets one of these stops; this build was written by code that did not
+      yet refuse them, or the table has changed since.
+    </p>
+    <ul class="plain">
+      {% for source, name in overview.unread %}
+      <li>{{ source }}: <code>{{ name }}</code></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% else %}
+  <p class="section__note">
+    None. Every source row of this build named as a particle size cut has a
+    reading in the size table, which is what a finished build guarantees: a row
+    without one stops the merge rather than minting a substance.
+  </p>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>The flows</h2></div>
+  <p class="section__note">
+    Every flow published on one of these windows.
+  </p>
+
+  <form class="filters" method="get" action="{{ url_for('particles.index') }}">
+    <div class="filters__selects">
+      {{ t.select('window', 'Window', filters['window'], overview.window_options()) }}
+      {{ t.select('source', 'List', filters['source'], overview.source_options()) }}
+      {{ t.reset('particles.index') }}
+    </div>
+  </form>
+
+  {{ t.filter_chips(active_filters, 'particles.index', filters) }}
+
+  {% if overview.flows %}
+  <p class="section__note">
+    {{ overview.flows | length | thousands }} of
+    {{ overview.total_flows | thousands }} flows.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Flow</th>
+          <th scope="col">Window</th>
+          <th scope="col">Context</th>
+          <th scope="col">Unit</th>
+          <th scope="col">List</th>
+          <th scope="col">Factors</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for flow in overview.flows %}
+        <tr{% if flow.is_deprecated %} class="muted"{% endif %}>
+          <td><a href="{{ url_for('flows.detail', uuid=flow.uuid) }}">{{ flow.name }}</a>{% if flow.is_deprecated %} <span class="tag">retired</span>{% endif %}</td>
+          <td>{{ flow.window }}</td>
+          <td>{{ flow.context }}</td>
+          <td>{{ flow.unit }}</td>
+          <td>{{ flow.source }}</td>
+          <td>{{ flow.lcia_factor_count | thousands }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="section__note muted">No flow matches these filters.</p>
+  {% endif %}
+</section>
+{% endblock %}

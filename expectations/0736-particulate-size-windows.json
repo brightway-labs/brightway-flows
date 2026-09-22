@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "description": "BAFU reports airborne particles under seven names. Three are size bands the list already publishes and land on them. The one reporting PM10 itself -- every particle below ten micrometres, which is what air-quality regulation and most inventories report -- landed on nothing and was published as a substance of its own with no characterisation factors at all. Meanwhile BAFU's *coarse band* rows, 2.5 to 10 micrometres, reached `Particles (PM10)` on an alternative label: ecoinvent's spelling of the coarse fraction, left on that flow by the member-name pass after #37's override put those rows in its merge group. So the flow named PM10 was fed by rows that are not PM10, and the rows that are PM10 were stranded beside it.\n\nThe fix gives the size window a field. A window is a pair of aerodynamic-diameter bounds, and the pair is the identity: `Particulates, < 10 um` and `particles (PM10)` state one window and meet on one flow with no crosswalk row, while `Particulates, > 2.5 um, and < 10um` states a different one and cannot arrive at PM10 by resembling it. Measured on the build of 25 August 2026, run `20260825T0605411116990000`, revision `b03c940b`. See plans/particulate-taxonomy.md.",
+  "expectations": [
+    {
+      "id": "0736-bafu-pm10-reaches-pm10",
+      "issue": 736,
+      "title": "The BAFU row reporting PM10 lands on the flow this list publishes for PM10",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Particulates, < 10 um"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Particles (PM10)",
+        "basis": "particulate_size_class"
+      },
+      "comment": "On the 25 August build this row was `created`: it minted `Particulates, < 10 Um` as a substance of its own in `emissions to air / unspecified`, with one elementary flow, no characterisation factors and flow_type `unclassified`, beside `Particles (PM10)` which carries eleven factors. An inventory reporting its particulates as PM10 -- the form BAFU ships most of its own particulate rows in -- scored zero for them under every method in this list."
+    },
+    {
+      "id": "0736-bafu-pm10-is-characterised",
+      "issue": 736,
+      "title": "That row now reaches a flow that something can characterise",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Particulates, < 10 um"
+      },
+      "expect": {
+        "target_characterised": true
+      },
+      "comment": "The point of the whole exercise, stated separately from where the row lands: landing on the right flow is only worth something if that flow carries factors. `Particles (PM10)` in `Environmental -> Air -> Unknown` carries eleven."
+    },
+    {
+      "id": "0736-bafu-stationary-pm10-reaches-pm10",
+      "issue": 736,
+      "title": "PM10 from a stationary source is still PM10",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Particulates, < 10 um (stationary)"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Particles (PM10)"
+      },
+      "comment": "`(stationary)` says what emitted the particles, not how large they were, and no method in this list distinguishes it: Stepwise 2006 gives plain, mobile and stationary PM10 the same factor, 0.535714286 kg PM2.5-eq. The category is recorded on the curated row; it does not mint an identity. On the 25 August build this was a second substance of its own, also with no factors."
+    },
+    {
+      "id": "0736-bafu-coarse-band-does-not-reach-pm10",
+      "issue": 736,
+      "title": "BAFU's coarse-fraction rows no longer reach the flow named PM10",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Particulates, > 2.5 um, and < 10um"
+      },
+      "expect": {
+        "target_name": "Particles (PM2.5 - PM10)",
+        "basis": "particulate_size_class"
+      },
+      "comment": "Four rows, one per compartment. On the 25 August build all four matched `Particles (PM10)` with `basis` reading `label` and `basis_value` reading `Particulates, > 2.5 Um, And < 10um` -- ecoinvent's spelling, carried onto the target by `carry_member_names`. No override, no decision, no comment: a second vendor inherited #37's curated trade by spelling. Whether the coarse fraction should be pointed at PM10 for BAFU is a question somebody may answer yes to; it should be answered, and this is what makes answering it necessary."
+    },
+    {
+      "id": "0736-ef-pm10-keeps-its-identity",
+      "issue": 736,
+      "title": "The substance published as PM10 is the same substance it was before",
+      "subject": {
+        "kind": "substance",
+        "id": "fo-4619792929f057e6"
+      },
+      "expect": {
+        "label": "Particles (PM10)",
+        "count": 1
+      },
+      "comment": "Giving the window a field is not a reason for the flow objects EF 3.1 already publishes to change identity. Six of the seven size classes declare the `name:` basis they are minted from today, so every one of them keeps the identifier it had on the 25 August build. Stated as an expectation because an identifier that churns silently is exactly the kind of change nobody notices until a consumer's pin stops resolving."
+    },
+    {
+      "id": "0736-the-coarse-band-is-published-once",
+      "issue": 736,
+      "title": "The coarse fraction is one substance, not a second copy of PM10",
+      "subject": {
+        "kind": "substance",
+        "id": "fo-ae1315a262379c68"
+      },
+      "expect": {
+        "count": 1,
+        "label": "Particles (PM2.5 - PM10)"
+      },
+      "comment": "The flow BAFU's coarse rows now reach. EF 3.1 gives it no characterisation factor in any compartment, so those rows still score zero -- but that is EF's answer about the coarse fraction rather than a mapping that says the coarse fraction is PM10."
+    },
+    {
+      "id": "0736-the-size-unstated-total-is-one-substance",
+      "issue": 736,
+      "title": "The rows that state no particle size are one substance, not four",
+      "subject": {
+        "kind": "substance",
+        "label": "Particles (unspecified size)"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1
+      },
+      "comment": "BAFU ships `Particulates` and `Particulates, unspecified`, and Stepwise 2006 ships both again. On the 25 August build each name minted a substance of its own, each with one flow and no factors. A stated `unspecified` is the absence of a statement rather than a statement, which is the rule the land taxonomy applies to `arable land, unspecified use`.\n\nThe evidence argues and is recorded rather than hidden: Stepwise characterises `Particulates` at 0.157142857 and `Particulates, unspecified` at 0.535714286 kg PM2.5-eq, the second being exactly its PM10 factor. That is Stepwise choosing what factor to give a row that did not say, which is a characterisation choice rather than a statement about what the row is. When #2 lands, the two factors meet on one flow and the conflict belongs in lcia-factor-rulings.json where it is visible. See plans/particulate-taxonomy.md section 6."
+    },
+    {
+      "id": "0736-the-unsized-total-is-a-measurement-not-a-class-of-molecules",
+      "issue": 736,
+      "title": "The size-unstated total is published as a measurement, not as a class of molecules",
+      "subject": {
+        "kind": "substance",
+        "label": "Particles (unspecified size)"
+      },
+      "expect": {
+        "flow_type": "AggregateMeasurement"
+      },
+      "comment": "Found by building it. The six size bands EF 3.1 publishes are typed `brightway:AggregateMeasurement` because aggregate-measurements.json names them; the seventh class is new, was not named there, and carries no registry number, no formula and no structure -- so every chemistry rule fell through to rule 8, which reads the word `unspecified` in a label and answers `MoleculeGroupingClass`. Measured: on the first build of this branch the flow went out as a class of molecules, which is what the vendor rows `Particulates, Unspecified` and `Suspended Solids, Unspecified` were typed before that file existed.\n\nA mass of particles of unstated composition is not a class of molecules, and it is the same quantity as PM10 with the cut left unsaid. Naming it in the measurements entry is the fix; `tests/test_particulate_is_not_a_substance.py` is what stops the two files drifting apart again when an eighth window is added."
+    },
+    {
+      "id": "0736-both-unsized-names-reach-one-flow",
+      "issue": 736,
+      "title": "`Particulates` and `Particulates, unspecified` reach the same substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name_contains": "Particulates"
+      },
+      "expect": {
+        "substance_count": 5
+      },
+      "comment": "Seven BAFU names over 17 rows, reaching five substances: PM2.5, the coarse band, above-PM10, PM10 (which three names now reach -- `< 10 um`, `< 10 um (stationary)` and, through the size class, nothing else) and the size-unstated total (which two names reach). On the 25 August build the same selector reached seven substances, four of them minted by this import and carrying no factors between them."
+    },
+    {
+      "id": "0736-ecoinvent-coarse-band-decision-is-recorded",
+      "issue": 736,
+      "title": "ecoinvent's coarse-fraction rows reach the coarse band, like every other list's",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name_contains": "> 2.5 um"
+      },
+      "expect": {
+        "target_name": "Particles (PM2.5 - PM10)",
+        "basis": "particulate_size_class"
+      },
+      "comment": "#37's trade, retired. It sent ecoinvent's 2.5-10 um rows to EF's `particles (PM10)` so that a score computed from this list would match what existing tools report, at the cost of publishing a `skos:exactMatch` that said the coarse fraction is PM10, and it was kept explicit here as a per-list statement while the plan of #153 declined to re-decide it. Stage 3 of plans/particle-family.md (#196) retires it: since the size-window convention gives `Particles (PM2.5 - PM10)` PM10's number under EF, ecoinvent's rows score the same on the band they name as they did on PM10, and the false assertion goes. Five override rows, nine merged rows across 3.8 and 3.12, decided by the owner on 2 September 2026."
+    },
+    {
+      "id": "0736-the-coarse-fractions-name-belongs-to-the-coarse-fraction",
+      "issue": 736,
+      "title": "`Particulates, > 2.5 um, and < 10um` is a name for the coarse fraction, not for PM10",
+      "subject": {
+        "kind": "substance",
+        "label": "Particles (PM2.5 - PM10)"
+      },
+      "expect": {
+        "alt_label": "Particulates, > 2.5 um, and < 10um"
+      },
+      "comment": "On the 25 August build this name was an alternative label of `Particles (PM10)`, along with ecoinvent 3.9.1's respelling of it. Both arrived through two correct rules -- #37 puts ecoinvent's coarse rows in PM10's merge group deliberately, and `carry_member_names` keeps a member's name so a vendor's spelling stays searchable (#113) -- with one wrong outcome between them.\n\nThe cost was not the label. BAFU spells its coarse fraction the ecoinvent way, so four of its rows then matched PM10 *on that label*, taking a curated trade nobody chose for them.\n\nStated as where the name *is* rather than where it is not, for two reasons. A published name names exactly one substance, so the coarse flow holding it is the same fact as PM10 not holding it, and it is the fact a reader searching for the name cares about. And the rejection itself cannot be claimed from a counter: `carry_member_names` runs four times in a three-list build, the two middle passes reject one spelling each, and `run_stats` keeps only the last -- which is zero, because by then the names are already gone. `tests/test_particulate_synonyms.py` is where the rejection is checked."
+    },
+    {
+      "id": "0736-every-size-window-is-reached",
+      "issue": 736,
+      "title": "EF 3.1 reaches six of the seven size windows, and mints an object for each",
+      "subject": {
+        "kind": "measure",
+        "key": "stats.resolve_flow_layers.size_class_object_count"
+      },
+      "expect": {
+        "equals": 6
+      },
+      "comment": "Six and not seven, and the missing one is the point rather than a gap: EF 3.1 publishes a flow for every size band it characterises and none at all for particles whose size was not stated. The seventh window, `unsized`, exists because the SimaPro-lineage lists ship such rows -- BAFU's `Particulates` and `Particulates, unspecified` -- so it appears when one of them is merged, which `0736-the-size-unstated-total-is-one-substance` is the check for.\n\nThis measure is what makes the fix general rather than a patch. A window nothing lands on would be a concept minting a flow object for nobody, and it would show up here as a five. A list added later that brings a window the scheme has no class for is reported the other way, by tools/build_particulate_flow_classes.py, which exits non-zero on an unplaced row rather than filing it under a nearby name."
+    }
+  ]
+}

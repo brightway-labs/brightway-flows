@@ -1,0 +1,118 @@
+{#
+  The coverage summary: where one implementation characterises a substance in
+  one context and skips the context beside it.
+
+  A summary and never a list, which is a measured decision rather than a
+  presentational one. Asked as a list it is thousands of rows, and the largest
+  populations are substances with no global-warming potential -- absence is the
+  right answer there, and a list of them would read as a defect list whatever
+  the prose around it said.
+#}
+{% extends "layout.html" %}
+{% set page_title = "Coverage" %}
+{% set active_section = "factors" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Coverage across sibling contexts</h1>
+  <p class="page__lede">
+    A different question from the difference report, and asked of each
+    implementation on its own: it characterises this substance <em>here</em> —
+    does it characterise it in the context beside it?
+  </p>
+  <p class="page__lede">
+    <strong>Not a defect list.</strong> The largest populations below are
+    substances with no global-warming potential: absence is the right answer and
+    nobody should be asked to fill it in. What this is for is finding the
+    asymmetries worth a question — a pesticide characterised in one soil and not
+    the soil next to it.
+  </p>
+</header>
+
+<section class="section">
+  <div class="section__header"><h2>What was asked, and what was set aside</h2></div>
+  <dl class="facts">
+    <dt>In a long-term compartment</dt>
+    <dd>
+      {{ stats.get('coverage_skipped_long_term', 0) | thousands }}
+      <div class="muted">
+        Where absence is correct by construction: EF has no long-term
+        compartment, so neither implementation could state a factor for one.
+      </div>
+    </dd>
+    <dt>Not in the implementation's own flow list</dt>
+    <dd>
+      {{ stats.get('coverage_skipped_not_in_own_list', 0) | thousands }}
+      <div class="muted">
+        An implementation cannot skip a flow its own list has never had. This is
+        the two flow lists being different sizes, not anything either team did.
+      </div>
+    </dd>
+  </dl>
+</section>
+
+{% for (method, implementation), rows in coverage.items() %}
+<section class="section">
+  <div class="section__header">
+    <h2>{{ implementation }}</h2>
+    <span class="muted">
+      under {{ rows[0].method_label or method }} —
+      {{ stats.get(('coverage_' ~ method ~ '_' ~ implementation) | replace(' ', '_') | replace('-', '_') | replace('.', '_'), 0) | thousands }} flows
+    </span>
+  </div>
+  {% for dimension in ['compartment', 'category', 'blank', 'identity-blank'] %}
+  {% set group = rows | selectattr('dimension', 'equalto', dimension) | list %}
+  {% if group %}
+  {% if dimension == 'blank' %}
+  <h3>Blanks, by context</h3>
+  <p class="muted">
+    A different count from the two above, and asked of this list rather than of
+    a publisher: the flow exists here, the same substance is characterised in a
+    neighbouring context of the same class, and <em>no</em> deciding
+    implementation states anything for it. Nothing is published for a blank.
+    Which context, if any, a blank takes its number from is a convention written
+    from these counts, not a rule that reads them.
+  </p>
+  {% elif dimension == 'identity-blank' %}
+  <h3>Blanks, by substance</h3>
+  <p class="muted">
+    The same question asked across a substance rather than across a context: the
+    flow exists here, its element is characterised in the <em>same</em> context
+    and category, and no deciding implementation states anything for the ion.
+    Zinc emitted to water is characterised; zinc's ion emitted to water, where
+    every ecoinvent zinc emission lands, is not. Nothing is published for one of
+    these either. Whether an ion takes its element's number is a signed entry in
+    the adoptions file, substance by substance, never a rule that reads the
+    count.
+  </p>
+  {% else %}
+  <h3>By {{ dimension }}</h3>
+  {% endif %}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{{ {'blank': 'Context', 'identity-blank': 'Substance'}.get(dimension, dimension | capitalize) }}</th>
+          <th scope="col" class="num">{{ {'blank': 'Flows blank', 'identity-blank': 'Pairs blank'}.get(dimension, 'Flows skipped') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in group %}
+        <tr>
+          <td>{{ row.value }}</td>
+          <td class="num">{{ row.flows | thousands }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  {% endfor %}
+</section>
+{% else %}
+<div class="notice">
+  <p>Nothing to report: no implementation skips a context of a substance it
+  characterises.</p>
+</div>
+{% endfor %}
+{% endblock %}

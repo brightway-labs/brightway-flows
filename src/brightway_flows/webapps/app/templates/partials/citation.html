@@ -1,0 +1,12 @@
+{#
+  The release's citation as one line of text, for Download and the homepage.
+
+  One macro so the two pages cannot cite the same release two ways.  Every
+  undecided part -- year, version, DOI -- is a `placeholder` (§0's first
+  rule), so a reader copying it before the release exists copies the brackets
+  rather than something that looks real.
+#}
+{% from "partials/placeholder.html" import placeholder %}
+{% macro citation_text(publication) -%}
+Brightway Labs ({{ placeholder(publication.release_date[:4] if publication.release_date else none, "2026") }}). Brightway Flows {{ placeholder(publication.version, "v1.0.0") }} [Data set]. Zenodo. https://doi.org/{{ placeholder(publication.doi, "10.5281/zenodo.XXXXXXX") }}
+{%- endmacro %}

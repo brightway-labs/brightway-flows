@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "description": "There is one \"hydrocarbons, unspecified\" in the world -- a bucket for an emission somebody measured as hydrocarbons and did not speciate -- and EF 3.1 publishes it as `Hydrocarbons (unspecified)` in fourteen contexts, characterised in most of them. ecoinvent 3.12 ships the bucket on nine rows as `Hydrocarbons, unspecified`, with no registry number; seven are in ecoinvent's own correspondence table and reach EF's substance that way. The two the table omits -- air, unspecified and agricultural soil -- had only the name to match on, the name differs from EF's by a comma and a pair of brackets, and on the 2026-08-29 build of `54b0f9d` they minted a second substance, `Hydrocarbons, Unspecified`, with no factor. BAFU 2026 v1's five rows of the same name, in air and four water bodies, then joined the copy rather than the original: seven rows on a duplicate, which the issue -- written from ecoinvent's side -- counted as two.\n\nThe fix is seven curated targets: two in `ecoinvent-match-overrides.json` onto EF's flows in the rows' own contexts, five in `bafu-2026-v1-match-overrides.json` onto EF's air, water, sea-water and fresh-water flows. EF has no lake and no river, so the two BAFU rows there name EF's fresh-water flow for the substance it carries, and the merge -- which refuses to publish a lake as fresh water, since that is a different named water body rather than a vaguer one -- keeps each row's own water body and mints the bucket's flow there, as it does for every substance BAFU reports to a lake or a river (#84, #85).\n\nA synonym written onto EF's fourteen rows was tried first and does not work: measured on the build of 2026-08-30 at `53c2165`, no row moved, because `bootstrap_labels` deletes a base-list row's synonyms before the merge builds the label index. See #178.",
+  "expectations": [
+    {
+      "id": "0825-ecoinvent-air-unspecified-reaches-efs-bucket",
+      "issue": 825,
+      "title": "ecoinvent's Hydrocarbons, unspecified in air reaches EF's flow in air",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "uuid": "3fdc4e95-dc17-5f9f-9ddc-251ecd7c66c0"
+      },
+      "expect": {
+        "outcome": "prepared",
+        "target_uuid": "d86b9e8a-6555-11dd-ad8b-0800200c9a66",
+        "target_substance_id": "fo-55c13adbe216bb82"
+      },
+      "comment": "The first of the two rows the issue names. EF carries the bucket in `Emissions to air, unspecified` already -- `d86b9e8a` -- so this is an exact-context landing on a flow that exists. `outcome: prepared` because a curated target is what decides it, the same route as the seven rows the vendor's table covers. Rewritten from `algorithm` on `basis: label` once the synonym route was measured not to work; the id is kept because the question is the same."
+    },
+    {
+      "id": "0825-ecoinvent-agricultural-soil-reaches-efs-bucket",
+      "issue": 825,
+      "title": "ecoinvent's Hydrocarbons, unspecified in agricultural soil reaches EF's flow there",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "uuid": "614d5544-9edf-5b76-90e8-e9c7b98a8084"
+      },
+      "expect": {
+        "outcome": "prepared",
+        "target_uuid": "d86b9e73-6555-11dd-ad8b-0800200c9a66",
+        "target_substance_id": "fo-55c13adbe216bb82"
+      },
+      "comment": "The second. EF's `d86b9e73` is the bucket in `Emissions to agricultural soil`, again an exact context."
+    },
+    {
+      "id": "0825-every-ecoinvent-row-reaches-one-bucket",
+      "issue": 825,
+      "title": "All nine of ecoinvent 3.12's Hydrocarbons, unspecified rows reach one substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "name": "Hydrocarbons, unspecified"
+      },
+      "expect": {
+        "row_count": 9,
+        "same_substance": true,
+        "target_substance_id": "fo-55c13adbe216bb82"
+      },
+      "comment": "Seven by the vendor's table and two by curated rows, all on EF's substance. The seven held before and must go on holding: a curated row exists only for the two the table omits, and this is what says so."
+    },
+    {
+      "id": "0825-bafus-five-rows-follow",
+      "issue": 825,
+      "title": "BAFU's five Hydrocarbons, unspecified rows reach EF's substance too",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Hydrocarbons, unspecified"
+      },
+      "expect": {
+        "row_count": 5,
+        "same_substance": true,
+        "target_substance_id": "fo-55c13adbe216bb82"
+      },
+      "comment": "The rows the issue did not count. BAFU ships the bucket in air, unspecified and in four water bodies -- lake, river, ocean and unspecified -- and all five reached the minted copy on its label. The substance is claimed for the group and nothing about the route: three land on EF's flows as `prepared`, and the lake and river rows are recorded as `algorithm` because the merge minted the bucket's flow in their water body rather than publish them on EF's fresh water. A first draft claimed `prepared` for all five and failed on the build of 2026-08-30 at ed019c6 for that reason. The two minted rows are claimed on their own below."
+    },
+    {
+      "id": "0825-bafus-lake-row-keeps-its-lake",
+      "issue": 825,
+      "title": "BAFU's hydrocarbons to a lake are published to a lake, on EF's substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "21aa7a0c-606f-5d29-b960-a50c2f5bc0dd"
+      },
+      "expect": {
+        "target_substance_id": "fo-55c13adbe216bb82",
+        "target_context_display": "Environmental → Water → Lake"
+      },
+      "comment": "The curated row names EF's fresh-water flow, and the merge keeps the lake: fresh water is a different named water body, not a vaguer one, so publishing the row on it would say something BAFU denied (#85), and the bucket gets a lake flow the way every other substance BAFU reports to a lake does. Both halves are claimed -- the substance and the compartment -- because a curated row that coarsened the lake to fresh water would meet the group claim above and be wrong."
+    },
+    {
+      "id": "0825-bafus-river-row-keeps-its-river",
+      "issue": 825,
+      "title": "BAFU's hydrocarbons to a river are published to a river, on EF's substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "83944839-e21a-5c7d-92c0-70ee8dbc60a4"
+      },
+      "expect": {
+        "target_substance_id": "fo-55c13adbe216bb82",
+        "target_context_display": "Environmental → Water → River"
+      },
+      "comment": "The same for the river."
+    },
+    {
+      "id": "0825-the-minted-duplicate-is-gone",
+      "issue": 825,
+      "title": "There is no second hydrocarbons bucket",
+      "subject": {
+        "kind": "substance",
+        "label": "Hydrocarbons, Unspecified"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "The negative half. Stated as an absence because nothing renames the duplicate: it stops being created once no row is left to mint it."
+    }
+  ]
+}

@@ -1,0 +1,390 @@
+{
+  "schema_version": 1,
+  "description": "The environmental material a flow is made of: our own SKOS scheme, whose concepts carry skos:broader to each other and skos:exactMatch out to ENVO and AGROVOC. ENVO types the material -- what the stuff is -- and AGROVOC types the accounting category -- how a method counts it. `broader_source` says whether each edge is the authority's, the authority's through a class this scheme does not carry, or ours: publishing our additions indistinguishably from theirs is the one thing a scheme that maps out to a published ontology must not do. Every anchor is checked against material-anchor-snapshot.json, and the provenance is computed by tools/build_environmental_materials.py rather than typed. A concept earns a flow object when a source flow lands on it; an intermediate is carried only when it groups two or more concepts. A concept may state a `chemrof_type` where the chemistry rules cannot reach it -- curated, because carrying no CAS does not imply being a mixture. See plans/water-taxonomy.md.",
+  "concepts": [
+    {
+      "id": "water",
+      "label": "Water",
+      "broader": null,
+      "broader_source": "root",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_00002006",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_00002006",
+          "label": "liquid water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "cas:7732-18-5",
+      "flow_object_id": "fo-464532a8f956fd39",
+      "comment": "The scheme's first root, and the node an unqualified water flow lands on. Keeps the bare CAS basis, so it keeps the flow object id it already has and the largest object in the list does not churn."
+    },
+    {
+      "id": "fresh_water",
+      "label": "Fresh water",
+      "broader": "water",
+      "broader_source": "asserted",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_00002011",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_00002011",
+          "label": "fresh water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:fresh_water|cas:7732-18-5",
+      "flow_object_id": "fo-f49238c7355cdfe4",
+      "comment": "EF 3.1's `freshwater`. Says what the stuff is rather than where it came from -- fresh water can be surface water or groundwater -- which is why it takes no water body in the context."
+    },
+    {
+      "id": "rainwater",
+      "label": "Rainwater",
+      "broader": "fresh_water",
+      "broader_source": "asserted",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_01000600",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_01000600",
+          "label": "rainwater",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:rainwater|cas:7732-18-5",
+      "flow_object_id": "fo-35c89da53ceae55f",
+      "comment": "EF 3.1's `Water (rain water)`. Under fresh water because ENVO puts it there; an earlier draft of the plan flattened it onto the root, which would have been our own edge where the authority already had one."
+    },
+    {
+      "id": "surface_water",
+      "label": "Surface water",
+      "broader": "water",
+      "broader_source": "asserted",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_00002042",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_00002042",
+          "label": "surface water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:surface_water|cas:7732-18-5",
+      "flow_object_id": "fo-1948c971db346720",
+      "comment": "bafu's `Water, process, surface`, and the node that makes `Surface water` in the context enum mean *not narrowed to a lake or a river* rather than *including them*."
+    },
+    {
+      "id": "lake_water",
+      "label": "Lake water",
+      "broader": "surface_water",
+      "broader_source": "ours",
+      "broader_reason": "lake water is not under surface water in ENVO",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_04000007",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_04000007",
+          "label": "lake water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:lake_water|cas:7732-18-5",
+      "flow_object_id": "fo-e1e088d5abea4263",
+      "comment": "One of the two edges that are ours. ENVO puts lake water under liquid water and astronomical body part, with surface water as a sibling; the LCA reading needs the containment and the external vocabulary declines to arbitrate, so the scheme asserts it and says so."
+    },
+    {
+      "id": "river_water",
+      "label": "River water",
+      "broader": "surface_water",
+      "broader_source": "ours",
+      "broader_reason": "river water is not under surface water in ENVO",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_01000599",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_01000599",
+          "label": "river water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:river_water|cas:7732-18-5",
+      "flow_object_id": "fo-786b109b9d559425",
+      "comment": "The other edge that is ours. ENVO routes river water through stream water, which is a different claim from this one and equally not surface water."
+    },
+    {
+      "id": "groundwater",
+      "label": "Groundwater",
+      "broader": "water",
+      "broader_source": "shortened",
+      "broader_via": [
+        "underground water"
+      ],
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_01001004",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_01001004",
+          "label": "groundwater",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:groundwater|cas:7732-18-5",
+      "flow_object_id": "fo-ef8ea2a34f5aacda",
+      "comment": "EF 3.1's `ground water`, ecoinvent's `Water, well, in ground`. ENVO reaches it through `underground water`, which would group only this node and is recorded as a skipped step rather than carried."
+    },
+    {
+      "id": "fossil_groundwater",
+      "label": "Fossil groundwater",
+      "broader": "groundwater",
+      "broader_source": "ours",
+      "broader_reason": "bore hole water is not under groundwater in ENVO",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_00003097",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_00003097",
+          "label": "bore hole water",
+          "predicate": "skos:closeMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:fossil_groundwater|cas:7732-18-5",
+      "flow_object_id": "fo-21f05cfb8e0d26ee",
+      "comment": "ecoinvent's `natural resource / fossil well`, which EF 3.1 cannot hold: its water resources are classified `Renewable material resources from water`, and fossil groundwater is the one kind that is not renewable. `closeMatch`, not `exactMatch`, and the first in the scheme: ENVO's `bore hole water` names how the water is reached rather than that it is fossil, so the two overlap without being the same class, and saying `exactMatch` would assert an equivalence ENVO does not carry. The edge is ours for the same reason -- ENVO puts bore hole water under liquid water, not under groundwater."
+    },
+    {
+      "id": "saline_water",
+      "label": "Saline water",
+      "broader": "water",
+      "broader_source": "asserted",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_00002010",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_00002010",
+          "label": "saline water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": null,
+      "flow_object_id": null,
+      "comment": "The one concept with no flow object: nothing maps onto it, and it is here because it groups sea water and brine, which is the test for carrying an intermediate at all. A node earns an object when a source flow lands on it. Labelled all the same: sea water and brine publish it as their `skos:broader`, so it is read even though it is never landed on, and it was the one node in the scheme with nothing to display there (#273)."
+    },
+    {
+      "id": "sea_water",
+      "label": "Sea water",
+      "broader": "saline_water",
+      "broader_source": "asserted",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_00002149",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_00002149",
+          "label": "sea water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:sea_water|cas:7732-18-5",
+      "flow_object_id": "fo-4c8d5ea2fe574622",
+      "comment": "EF 3.1's `sea water` (kg), ecoinvent's `Water, salt, ocean` (m3). The one water pair in the corpus carrying a published conversion, 1025 kg/m3."
+    },
+    {
+      "id": "brine",
+      "label": "Brine",
+      "broader": "saline_water",
+      "broader_source": "shortened",
+      "broader_via": [
+        "hypersaline water"
+      ],
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_00003044",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_00003044",
+          "label": "brine",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": "ImpreciseChemicalMixture",
+      "cas_number": null,
+      "chebi": null,
+      "flow_object_basis": "material:brine",
+      "flow_object_id": "fo-7763a503b7741389",
+      "comment": "`Water, salt, sole` in both lists. The only node carrying no CAS: EF gives it 7732-18-5 and that is an error -- brine is a mixture, not the molecule. Reaches saline water through hypersaline water, which groups only this node."
+    },
+    {
+      "id": "cooling_water",
+      "label": "Cooling water",
+      "broader": "water",
+      "broader_source": "asserted",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_03600002",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_03600002",
+          "label": "cooling water",
+          "predicate": "skos:exactMatch"
+        },
+        {
+          "authority": "agrovoc",
+          "id": "c_b1215876",
+          "iri": "http://aims.fao.org/aos/agrovoc/c_b1215876",
+          "label": "cooling water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:cooling_water|cas:7732-18-5",
+      "flow_object_id": "fo-8c2d243d174ba13f",
+      "comment": "The find that decided the design: EF's `Water to Cooling` is not a modelling quirk to tolerate in a name but a published class with a definition and a parent. Both authorities carry it, which is evidence rather than redundancy."
+    },
+    {
+      "id": "turbine_water",
+      "label": "Turbine water",
+      "broader": "water",
+      "broader_source": "ours",
+      "broader_reason": "no published class",
+      "anchors": [
+        {
+          "authority": "brightway",
+          "id": "turbine_water",
+          "iri": "https://vocab.brightway.one/environmental-materials/turbine-water",
+          "label": "Turbine water",
+          "predicate": "minted"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:turbine_water|cas:7732-18-5",
+      "flow_object_id": "fo-10fd03fadeb5c8e5",
+      "comment": "The one node with no published class in either authority. Minted under vocab.brightway.one because blocking a published-score fix on an external release is not a trade worth making; an ENVO term request goes with it, and ours retires if ENVO adopts the term."
+    },
+    {
+      "id": "contaminated_water",
+      "label": "Contaminated water",
+      "broader": "water",
+      "broader_source": "asserted",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_00002186",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_00002186",
+          "label": "contaminated water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:contaminated_water|cas:7732-18-5",
+      "flow_object_id": "fo-1c343ce2613e08b9",
+      "comment": "bafu's `Chemically polluted water`. Carried as its own concept rather than folded into waste water because ENVO makes waste water the narrower of the two, and bafu ships flows for both."
+    },
+    {
+      "id": "waste_water",
+      "label": "Waste water",
+      "broader": "contaminated_water",
+      "broader_source": "asserted",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_00002001",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_00002001",
+          "label": "waste water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:waste_water|cas:7732-18-5",
+      "flow_object_id": "fo-2b365acb5bbf1d1b",
+      "comment": "bafu's `Waste water`. Under contaminated water because ENVO puts it there; an earlier draft flattened it onto the root, inventing an edge where the authority had one."
+    },
+    {
+      "id": "water_vapour",
+      "label": "Water vapour",
+      "broader": null,
+      "broader_source": "root",
+      "anchors": [
+        {
+          "authority": "envo",
+          "id": "ENVO_01000266",
+          "iri": "http://purl.obolibrary.org/obo/ENVO_01000266",
+          "label": "water vapour",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "absorbs": [
+        {
+          "id": "ENVO_01000268",
+          "label": "atmospheric water vapour",
+          "reason": "the context already says it"
+        }
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "material:water_vapour|cas:7732-18-5",
+      "flow_object_id": "fo-757b6ee59c695209",
+      "comment": "The scheme's second root, because ENVO branches vapour away from liquid water and one flow object cannot carry both sets of anchors. Absorbs `atmospheric water vapour`, a direct child: the `Air` media already says the vapour is in an atmosphere, so a node of our own would restate the context. Splitting this off stops no collapse the unit was not already stopping -- it buys a correct label."
+    },
+    {
+      "id": "green_water",
+      "label": "Green water",
+      "broader": null,
+      "broader_source": "root",
+      "anchors": [
+        {
+          "authority": "agrovoc",
+          "id": "c_5867fbf1",
+          "iri": "http://aims.fao.org/aos/agrovoc/c_5867fbf1",
+          "label": "green water",
+          "predicate": "skos:exactMatch"
+        }
+      ],
+      "related": [
+        "rainwater"
+      ],
+      "chemrof_type": null,
+      "cas_number": "7732-18-5",
+      "chebi": "CHEBI:15377",
+      "flow_object_basis": "qual:green_water|cas:7732-18-5",
+      "flow_object_id": "fo-600e1fead384b3a5",
+      "comment": "Outside the material tree on purpose. Green water is separate for accounting reasons, not physics: it is rainfall that infiltrated the soil, so `skos:broader rainwater` would be defensible and misleading. It stays a qualifier, keeps the basis that reproduces its published id, and anchors to AGROVOC because no OBO ontology carries the water-footprint sense."
+    }
+  ]
+}

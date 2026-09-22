@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent ships `Carbon` on seven emission rows, every one registered 7440-44-0, and means its measure of soot -- elemental carbon -- by all of them. Four of the seven were in ecoinvent's own correspondence table and were sent to EF's `Elemental carbon` by curated rows written under #141, which record that the target is deliberately not the substance the row's number names. The three soil rows the table never listed -- agricultural, forestry and industrial -- were matched on the number instead, and 7440-44-0 is also the number on EF 3.1's own `Carbon` rows in soil, so on the 2026-08-29 build of `54b0f9d` they landed there: one ecoinvent name, one number, two published substances, decided by which subcompartment the row was in. ecoinvent 3.8 ships the same seven under the same uuids with the same split.\n\nThe fix extends the curated target to the three rows in `ecoinvent-match-overrides.json`, signed the same way. EF publishes `Elemental carbon` in soil only as soil, unspecified, and a curated target onto a coarser flow of the same medium is a coarsening the merge accepts (`context_contradicts`: detail is lost and nothing false is said), so the three rows are published on EF's soil-unspecified flow. That is a compartment lost for a substance gained, and it is stated here rather than hidden: before, ecoinvent's forestry soot had a flow of its own in silvicultural soil, on the wrong substance. A curated ruling that mints the substance's flow in the row's own subcompartment when none exists there would put the compartment back, and is a question about the prepared path in general rather than about these rows.\n\nWhat is *not* decided here: whether EF's own `Carbon` (7440-44-0, four soil flows) and `Elemental carbon` (no number) are one substance, which is a question about EF, and where BAFU's five `Carbon` rows -- which land on EF's `Carbon` by their number -- belong, which follows from it. See #180.",
+  "expectations": [
+    {
+      "id": "0827-ecoinvent-312-carbon-is-one-substance",
+      "issue": 827,
+      "title": "ecoinvent 3.12's seven Carbon rows reach elemental carbon, all of them",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.12", "name": "Carbon"},
+      "expect": {"row_count": 7, "same_substance": true, "target_substance_id": "fo-4ed0770a2cce0c2f"},
+      "comment": "The claim that matters: seven rows of one name and one number reaching one substance. Before, four reached `Elemental Carbon` and three reached `Carbon`."
+    },
+    {
+      "id": "0827-the-agricultural-soil-row-takes-the-curated-target",
+      "issue": 827,
+      "title": "The agricultural-soil row lands by the curated target and not by its number",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.12", "uuid": "62859da4-f3c5-417b-a575-8b00d8d658b1"},
+      "expect": {"outcome": "prepared", "target_uuid": "9fe66e05-5e89-4245-acfc-bb035a982360", "target_substance_id": "fo-4ed0770a2cce0c2f", "target_context_display": "Environmental → Ground → Unknown"},
+      "comment": "One of the three, on its own. `outcome: prepared` is claimed because the number would put it on `Carbon` -- the curated row is what decides -- and the target is EF's soil-unspecified `Elemental carbon` flow, the only soil flow EF has for the substance. The context is claimed as it is published, `Ground → Unknown`, so that the coarsening is on the record: a first draft of this claim asked for `Ground → Agricultural` and failed on the build of 2026-08-30 at 53c2165, because the prepared path mints a flow in the row's own subcompartment only where the target's context contradicts the row's, and unspecified soil is a coarser soil, not a different one. If the prepared path is ever taught to keep the subcompartment, this claim is the one to turn around."
+    },
+    {
+      "id": "0827-ecoinvent-38-carbon-follows",
+      "issue": 827,
+      "title": "ecoinvent 3.8's Carbon rows reach elemental carbon too",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "name": "Carbon"},
+      "expect": {"row_count": 4, "same_substance": true, "target_substance_id": "fo-4ed0770a2cce0c2f"},
+      "comment": "3.8 names three of the seven `Elemental Carbon` outright, so four are recorded under `Carbon`: soil, unspecified, which the table covered, and the three soil rows this change adds. Same uuids, same decision, as the file's premise says."
+    },
+    {
+      "id": "0827-bafu-carbon-is-not-decided-here",
+      "issue": 827,
+      "title": "BAFU's five Carbon rows still land on EF's own Carbon by their number",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Carbon"},
+      "expect": {"row_count": 5, "same_substance": true, "target_substance_id": "fo-30e9695511cfde8c", "basis": "cas+label"},
+      "comment": "The leave-alone half, and an open question recorded as one. BAFU ships `Carbon` under 7440-44-0 in air and in three soil subcompartments and groundwater; a curated row in the ecoinvent file cannot reach a BAFU row, and this says so. Whether these belong with ecoinvent's on elemental carbon turns on whether EF's own `Carbon` and `Elemental carbon` are one substance, which this change does not decide."
+    }
+  ]
+}

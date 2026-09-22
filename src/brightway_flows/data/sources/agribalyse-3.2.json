@@ -1,0 +1,21 @@
+{
+  "list_name": "agribalyse",
+  "list_version": "3.2",
+  "role": "source",
+  "merge_priority": 400,
+  "simapro_origin": true,
+  "simapro": {
+    "geography_split": "load"
+  },
+  "adapter": "brightway_flows.integrations.agribalyse:fetch",
+  "flow_iri_prefix": "https://vocab.brightway.one/agribalyse/3.2/flow/",
+  "prepared_match_table": null,
+  "concept_associations": null,
+  "inputs": {
+    "flows": "agribalyse-3.2.json",
+    "manual_fixes": "agribalyse-3.2-manual-fixes.json",
+    "manual_additions": null,
+    "additional_flows": "agribalyse-3.2-additional-flows.json",
+    "match_overrides": "agribalyse-3.2-match-overrides.json"
+  }
+}

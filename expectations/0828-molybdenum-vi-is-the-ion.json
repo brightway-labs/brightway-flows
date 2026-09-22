@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent names its dissolved molybdenum `Molybdenum VI` on thirteen rows, writes the formula `Mo+6` and the synonyms `Molybdenum (+6)` and `Molybdenum ion` on them, and from 3.10.1 on registers every one as 7439-98-7 -- molybdenum the *metal*. Release 3.9.1 shipped the same thirteen uuids under the same name with the ion's own number, 16065-87-5, and every other metal ion in the release carries its ion's number. A stated number outranks a name, so on the 2026-08-29 build of `54b0f9d` all thirteen were published as `Molybdenum`, the element, while the one 3.8 row that 3.12 no longer carries -- `697e8ecf`, in the stratosphere -- is decided by 3.9.1's number and was published as `Molybdenum(6+)`. Fourteen rows of one vendor name, two substances, decided by which release last shipped the row.\n\nThe decision the issue asked for: the name is believed, as it was for EF's `vanadium (v)` (#49) and BAFU's `Cadmium II` (#146), and here the vendor's own earlier release says the same. The ion's number is written on the name in the 3.10.1, 3.11 and 3.12 fixes files; `tools/derive_ecoinvent_canonical_identities.py` now reads each release with its fixes applied, so `ecoinvent-canonical-identities.json` carries the ion's number as 3.12's identity and 3.8's plain `Molybdenum` rows under those uuids follow it at matching. EF 3.1 publishes `molybdenum (vi)` in all thirteen contexts, so every row lands on a flow that exists. See #181.",
+  "expectations": [
+    {
+      "id": "0828-ecoinvent-312-molybdenum-vi-is-the-ion",
+      "issue": 828,
+      "title": "ecoinvent 3.12's thirteen Molybdenum VI rows reach hexavalent molybdenum by the corrected number",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.12", "name": "Molybdenum VI"},
+      "expect": {"row_count": 13, "outcome": "algorithm", "basis": "cas", "target_cas": "16065-87-5", "target_substance_id": "fo-38bf6545e590d631", "same_substance": true},
+      "comment": "Before: `algorithm` on `basis: cas` too -- but on 7439-98-7, landing on `Molybdenum`. `basis: cas` is claimed so that a later change reaching the ion by reading the roman numeral off the name would fail here: the number is corrected, the name is not interpreted."
+    },
+    {
+      "id": "0828-ecoinvent-38-molybdenum-follows-its-canonical-identity",
+      "issue": 828,
+      "title": "ecoinvent 3.8's fourteen rows under these uuids reach the same ion",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "name": "Molybdenum VI"},
+      "expect": {"row_count": 14, "target_substance_id": "fo-38bf6545e590d631", "same_substance": true},
+      "comment": "3.8 names these rows plain `Molybdenum` under the metal's number; the canonical-identities file reads them as 3.12's `Molybdenum VI`, and the merge records them under that name. Fourteen rather than thirteen because 3.8 still ships the stratosphere row, which 3.9.1 decides and which already reached the ion. Before this change thirteen of the fourteen reached the element, which is the split the issue describes. The claim is that the derivation now reads the corrected number: an identity derived from the raw 3.12 file would put 7439-98-7 back at matching and send all thirteen to the element again."
+    },
+    {
+      "id": "0828-ecoinvents-molybdenum-resource-stays-the-metal",
+      "issue": 828,
+      "title": "ecoinvent's Molybdenum resource row still reaches the metal",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.12", "uuid": "e5a3dff5-72dc-5287-893c-597dd4a19566"},
+      "expect": {"outcome": "algorithm", "basis": "cas", "target_cas": "7439-98-7", "target_name": "Molybdenum"},
+      "comment": "The leave-alone half. `Molybdenum` in the ground, 7439-98-7, is the metal and means it; the fix is keyed on the exact name `Molybdenum VI`, so this row cannot move, and this claim is what says so if the key is ever loosened."
+    },
+    {
+      "id": "0828-bafus-molybdenum-stays-the-metal",
+      "issue": 828,
+      "title": "BAFU's fourteen Molybdenum rows still reach the metal",
+      "subject": {"kind": "source_row", "list": "bafu", "name": "Molybdenum"},
+      "expect": {"row_count": 14, "basis": "cas", "target_cas": "7439-98-7", "same_substance": true},
+      "comment": "BAFU names no molybdenum ion: its thirteen emission rows and one resource row are all plain `Molybdenum` under 7439-98-7, and a fix in an ecoinvent file cannot reach them. Here because BAFU's emissions and ecoinvent's now differ on purpose -- BAFU says the metal, ecoinvent says the ion -- and that is each vendor's own statement, not a defect."
+    }
+  ]
+}

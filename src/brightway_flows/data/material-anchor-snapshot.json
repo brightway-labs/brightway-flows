@@ -1,0 +1,368 @@
+{
+  "schema_version": 1,
+  "description": "What ENVO and AGROVOC say about every class the material taxonomy cites, resolved from the authorities by tools/resolve_material_anchors.py. A test compares the data files against this, so a mistyped accession -- which is a different published class that still resolves -- fails the suite offline. `parents` and `broader` are recorded because the taxonomy asserts edges the authorities do not, and the only way to keep that honest is to record what they actually say.",
+  "sources": {
+    "envo": "EBI OLS4, https://www.ebi.ac.uk/ols4/api",
+    "agrovoc": "AGROVOC Skosmos REST, https://agrovoc.fao.org/browse/rest/v1/agrovoc"
+  },
+  "envo": {
+    "ENVO_00002006": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00002006",
+      "curie": "ENVO:00002006",
+      "label": "liquid water",
+      "definition": "An environmental material primarily composed of dihydrogen oxide in its liquid form.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:01000815",
+          "label": "liquid environmental material"
+        }
+      ]
+    },
+    "ENVO_00002011": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00002011",
+      "curie": "ENVO:00002011",
+      "label": "fresh water",
+      "definition": "The lower bound of solute concentration required for water to be considered freshwater is variable, but is always less than that of seawater, and often cited as less than 1 gram of solutes per 1 litre of water.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002006",
+          "label": "liquid water"
+        }
+      ]
+    },
+    "ENVO_00002042": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00002042",
+      "curie": "ENVO:00002042",
+      "label": "surface water",
+      "definition": "Water that is found on the surface of an astronomical object.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002006",
+          "label": "liquid water"
+        }
+      ]
+    },
+    "ENVO_04000007": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_04000007",
+      "curie": "ENVO:04000007",
+      "label": "lake water",
+      "definition": "Water which is part of a lake.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002006",
+          "label": "liquid water"
+        },
+        {
+          "id": "ENVO:01000813",
+          "label": "astronomical body part"
+        }
+      ]
+    },
+    "ENVO_01000599": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_01000599",
+      "curie": "ENVO:01000599",
+      "label": "river water",
+      "definition": "",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:03605006",
+          "label": "stream water"
+        }
+      ]
+    },
+    "ENVO_01001004": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_01001004",
+      "curie": "ENVO:01001004",
+      "label": "groundwater",
+      "definition": "The definition of aquifer is quite permissive, referencing any water bearing rock or unconsolidated material.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00005792",
+          "label": "underground water"
+        }
+      ]
+    },
+    "ENVO_00003097": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00003097",
+      "curie": "ENVO:00003097",
+      "label": "bore hole water",
+      "definition": "",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002006",
+          "label": "liquid water"
+        }
+      ]
+    },
+    "ENVO_00002010": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00002010",
+      "curie": "ENVO:00002010",
+      "label": "saline water",
+      "definition": "The threshold salt concentration for classifying water as saline varies, but typically begins at about 1,000 to 3,000 parts salt per million parts water or 0.1\u20130.3% salt by weight.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002006",
+          "label": "liquid water"
+        }
+      ]
+    },
+    "ENVO_00002149": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00002149",
+      "curie": "ENVO:00002149",
+      "label": "sea water",
+      "definition": "This definition refers to water that is actually in a sea or ocean. This water may have a wide range of salinity levels.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002010",
+          "label": "saline water"
+        }
+      ]
+    },
+    "ENVO_00003044": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00003044",
+      "curie": "ENVO:00003044",
+      "label": "brine",
+      "definition": "It is used (now less popular than historically) to preserve vegetables, fish, and meat.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002012",
+          "label": "hypersaline water"
+        }
+      ]
+    },
+    "ENVO_01000600": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_01000600",
+      "curie": "ENVO:01000600",
+      "label": "rainwater",
+      "definition": "Rainwater is liquid water which has precipitated in the form of droplets through the condensation of atmospheric water vapour.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002011",
+          "label": "fresh water"
+        }
+      ]
+    },
+    "ENVO_03600002": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_03600002",
+      "curie": "ENVO:03600002",
+      "label": "cooling water",
+      "definition": "Cooling water is commonly used for cooling automobile internal combustion engines and power stations.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002006",
+          "label": "liquid water"
+        }
+      ]
+    },
+    "ENVO_00002001": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00002001",
+      "curie": "ENVO:00002001",
+      "label": "waste water",
+      "definition": "Water that has been adversely affected in quality by anthropogenic influence.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002186",
+          "label": "contaminated water"
+        },
+        {
+          "id": "ENVO:00002264",
+          "label": "waste material"
+        }
+      ]
+    },
+    "ENVO_00002186": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00002186",
+      "curie": "ENVO:00002186",
+      "label": "contaminated water",
+      "definition": "",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002006",
+          "label": "liquid water"
+        }
+      ]
+    },
+    "ENVO_01000266": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_01000266",
+      "curie": "ENVO:01000266",
+      "label": "water vapour",
+      "definition": "Perhaps a better relation between water vapour and water can be found in or added to RO?",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:01000797",
+          "label": "gaseous environmental material"
+        }
+      ]
+    },
+    "ENVO_01000268": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_01000268",
+      "curie": "ENVO:01000268",
+      "label": "atmospheric water vapour",
+      "definition": "Atmospheric water vapour is water vapour that is part of an atmosphere.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:01000266",
+          "label": "water vapour"
+        }
+      ]
+    },
+    "ENVO_00002012": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00002012",
+      "curie": "ENVO:00002012",
+      "label": "hypersaline water",
+      "definition": "The average salinity of sea water is assumed to be around 35,000 ppm, equivalent to 35 grams of salt per one liter (or kilogram) of water.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002010",
+          "label": "saline water"
+        }
+      ]
+    },
+    "ENVO_01000797": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_01000797",
+      "curie": "ENVO:01000797",
+      "label": "gaseous environmental material",
+      "definition": "A material entity which is composed of one or more chemical entities and has neither independent shape nor volume but tends to expand indefinitely.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:02000140",
+          "label": "fluid environmental material"
+        }
+      ]
+    },
+    "ENVO_00005792": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_00005792",
+      "curie": "ENVO:00005792",
+      "label": "underground water",
+      "definition": "This class references any water that's under a planetary surface. For water that is in an aquifer, see \"groundwater\" (ENVO:01001004). Previously, this class included both.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002006",
+          "label": "liquid water"
+        }
+      ]
+    },
+    "ENVO_03605006": {
+      "iri": "http://purl.obolibrary.org/obo/ENVO_03605006",
+      "curie": "ENVO:03605006",
+      "label": "stream water",
+      "definition": "Water which is part of a stream.",
+      "obsolete": false,
+      "parents": [
+        {
+          "id": "ENVO:00002006",
+          "label": "liquid water"
+        },
+        {
+          "id": "ENVO:01000813",
+          "label": "astronomical body part"
+        }
+      ]
+    }
+  },
+  "agrovoc": {
+    "c_5867fbf1": {
+      "iri": "http://aims.fao.org/aos/agrovoc/c_5867fbf1",
+      "curie": "agrovoc:c_5867fbf1",
+      "label": "green water",
+      "definition": "Green water is that fraction of rainfall that infiltrates into the soil and is available to plants. It includes soil water holding capacity and the continual replenishment of reserves by rainfall.",
+      "definition_source": "Ringersma J, Batjes NH, Dent DL, 2003. Green Water: definitions and data for assessment. Report 2003/2. ISRIC \u2013 World Soil Information, Wageningen. https://edepot.wur.nl/36619",
+      "scope_note": "Green water is typically taken up by plants as evapotranspiration. Do not use this concept if referring to water with an induced density of planktonic algae.",
+      "broader": [
+        "http://aims.fao.org/aos/agrovoc/c_8309"
+      ],
+      "related": [
+        "http://aims.fao.org/aos/agrovoc/c_2741",
+        "http://aims.fao.org/aos/agrovoc/c_ee8c8ad8"
+      ]
+    },
+    "c_b1215876": {
+      "iri": "http://aims.fao.org/aos/agrovoc/c_b1215876",
+      "curie": "agrovoc:c_b1215876",
+      "label": "cooling water",
+      "definition": "Water which is used to absorb and remove heat. Cooling water may be broken down into water used in the generation of electricity in power stations, and cooling water used in other industrial processes.",
+      "definition_source": "",
+      "scope_note": "",
+      "broader": [
+        "http://aims.fao.org/aos/agrovoc/c_8309"
+      ],
+      "related": [
+        "http://aims.fao.org/aos/agrovoc/c_17b251b2",
+        "http://aims.fao.org/aos/agrovoc/c_1854",
+        "http://aims.fao.org/aos/agrovoc/c_69afeecf",
+        "http://aims.fao.org/aos/agrovoc/c_96df5c3c"
+      ]
+    },
+    "c_6d63ccf3": {
+      "iri": "http://aims.fao.org/aos/agrovoc/c_6d63ccf3",
+      "curie": "agrovoc:c_6d63ccf3",
+      "label": "grey water",
+      "definition": "Wastewater from clothes, washing machines, showers, bathtubs, hand washing, lavatories and sinks. Domestic wastewater without fecal contamination, i.e., all streams except for the wastewater from toilets.",
+      "definition_source": "Adapted from NALT https://lod.nal.usda.gov/nalt/156845 and https://en.wikipedia.org/wiki/Greywater",
+      "scope_note": "",
+      "broader": [
+        "http://aims.fao.org/aos/agrovoc/c_8308"
+      ],
+      "related": []
+    },
+    "c_66d531bb": {
+      "iri": "http://aims.fao.org/aos/agrovoc/c_66d531bb",
+      "curie": "agrovoc:c_66d531bb",
+      "label": "water footprint",
+      "definition": "Indicator of the total volume of fresh water that is used directly or indirectly to produce a product.",
+      "definition_source": "Water for food security and nutrition, A report by the High Level Panel of Experts on Food Security and Nutrition of the Committee on World Food Security, FAO, 2015 (http://www.fao.org/3/a-av045e.pdf).",
+      "scope_note": "",
+      "broader": [
+        "http://aims.fao.org/aos/agrovoc/c_423ff1cb"
+      ],
+      "related": [
+        "http://aims.fao.org/aos/agrovoc/c_1312967232551",
+        "http://aims.fao.org/aos/agrovoc/c_16065"
+      ]
+    },
+    "c_8309": {
+      "iri": "http://aims.fao.org/aos/agrovoc/c_8309",
+      "curie": "agrovoc:c_8309",
+      "label": "water",
+      "definition": "",
+      "definition_source": "",
+      "scope_note": "",
+      "broader": [
+        "http://aims.fao.org/aos/agrovoc/c_330705"
+      ],
+      "related": [
+        "http://aims.fao.org/aos/agrovoc/c_0861ccd4",
+        "http://aims.fao.org/aos/agrovoc/c_0e6710c3",
+        "http://aims.fao.org/aos/agrovoc/c_1812dbe1",
+        "http://aims.fao.org/aos/agrovoc/c_2ba808c8",
+        "http://aims.fao.org/aos/agrovoc/c_30fbb94f",
+        "http://aims.fao.org/aos/agrovoc/c_46a166a5",
+        "http://aims.fao.org/aos/agrovoc/c_6617f39f",
+        "http://aims.fao.org/aos/agrovoc/c_9d82c8d0",
+        "http://aims.fao.org/aos/agrovoc/c_b5f4aba6",
+        "http://aims.fao.org/aos/agrovoc/c_ba46b8e6",
+        "http://aims.fao.org/aos/agrovoc/c_ef195799",
+        "http://aims.fao.org/aos/agrovoc/c_ef433a7e"
+      ]
+    }
+  }
+}

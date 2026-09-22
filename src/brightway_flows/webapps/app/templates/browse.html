@@ -1,0 +1,35 @@
+{#
+  Every section a reader can browse, in the Browse panel's two groups.
+
+  Reads no database: it is the page a checkout with nothing built still needs
+  to reach every other page from.
+#}
+{% extends "layout.html" %}
+{% set page_title = "Browse" %}
+{% set active_section = "browse" %}
+
+{% macro entries(sections) %}
+<ul class="browse-list">
+  {% for section in sections %}
+  <li class="browse-list__item">
+    <a class="browse-list__label" href="{{ section.href }}">{{ section.label }}</a>
+    <p class="browse-list__blurb">{{ section.blurb }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{% endmacro %}
+
+{% block content %}
+<div class="browse">
+  <h1>Browse</h1>
+  {{ entries(records) }}
+
+  <section class="browse__group" id="build" aria-labelledby="build-heading">
+    <div class="section__header">
+      <h2 id="build-heading">Build &amp; review</h2>
+      <span class="muted">Tools for curators</span>
+    </div>
+    {{ entries(tools) }}
+  </section>
+</div>
+{% endblock %}

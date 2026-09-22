@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "description": "Coal mine off-gas is the methane that desorbs from a seam as it is cut, captured and burned. EF 3.1 lists the flow and characterises it in no category: the JRC's `Resource use, fossils` rule -- \"the CF is equal to 1 for all fossil resources\", EUR 29600 §4.10 -- is applied to EF's `Non-renewable energy resources from ground`, whose six flows are all in megajoules, and EF files mine off-gas one bucket over among the `Non-renewable material resources from ground`, in standard cubic metres, where `Resource use, minerals and metals` prices crustal elements in kg Sb-eq and has nothing to price a methane flow from. A fossil fuel falls between two indicators. The ecoinvent Centre states 36 MJ/Sm³ for it, which is the JRC's rule times this flow's heating value, and a `publish` ruling in `lcia-factor-rulings.json` adopts it -- the same ground #155's minerals were approved on. Unlike horticultural peat (#160), where EF's filing is a decision, here it is a gap.",
+  "expectations": [
+    {
+      "id": "0774-coal-mine-off-gas-carries-a-fossil-factor",
+      "issue": 774,
+      "title": "Coal mine off-gas carries a `Resource use, fossils` factor of 36 per standard cubic metre",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Gas, Mine, Off-gas, Process, Coal Mining",
+        "context_display": "Resource → Ground",
+        "category": "Resource use, fossils",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "36.0"
+      },
+      "comment": "Published as `derivation: ruled` from the ecoinvent Centre's statement. The number is the JRC's own rule arithmetic: 1.0 MJ per MJ, times 36 MJ per standard cubic metre, which ecoinvent's implementation report (v3.12, Table 6) gives as this flow's lower heating value -- the same it gives natural gas."
+    },
+    {
+      "id": "0774-the-flow-keeps-its-unit",
+      "issue": 774,
+      "title": "Coal mine off-gas is still published in standard cubic metres",
+      "subject": {
+        "kind": "flow",
+        "name": "Gas, Mine, Off-gas, Process, Coal Mining",
+        "unit": "sm3"
+      },
+      "expect": {
+        "exists": true
+      },
+      "comment": "The ruling publishes a number on the flow as EF ships it rather than converting the flow to megajoules so that a 1.0 could reach it. Converting would restate a unit EF publishes and which the merge records deliberately (#141), and would say nothing the 36 does not."
+    },
+    {
+      "id": "0774-the-energy-carriers-are-untouched",
+      "issue": 774,
+      "title": "The six energy carriers EF characterises still carry 1.0 megajoule per megajoule",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Natural Gas",
+        "context_display": "Resource → Ground",
+        "category": "Resource use, fossils",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "1.0"
+      },
+      "comment": "Adopting a number for a seventh flow does not change the six the JRC states. Natural gas stands for the family here because it is the flow whose heating value mine off-gas shares, so a change that confused the two would show up on it."
+    },
+    {
+      "id": "0774-the-proposed-question-is-answered",
+      "issue": 774,
+      "title": "At least eight proposed-factor questions are answered by a ruling",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_consensus_proposed-factor_items_ruled",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 8
+      },
+      "comment": "Six on the 25 August 2026 build, seven with the peat decline (#160), eight with this. Bounded below, as the earlier ones are, because the count is the queue's and an answer to some other question should not fail a claim about this one."
+    }
+  ]
+}

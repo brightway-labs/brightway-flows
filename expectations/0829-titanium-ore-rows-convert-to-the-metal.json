@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent 3.8 ships three titanium-dioxide ore resources -- `TiO2, 54% in ilmenite, 18% in crude ore`, `TiO2, 54% in ilmenite, 2.6% in crude ore` and `TiO2, 95% in rutile, 0.40% in crude ore` -- and its own correspondence table sends all three to EF 3.1's elemental `titanium` in kilograms at parity, which credits an inventory with a kilogram of titanium for every kilogram of the oxide. Titanium is 0.599 of titanium dioxide by mass (47.867 / 79.866). BAFU 2026 v1 ships the same two ilmenite and rutile rows, and both are sent to titanium with that factor by curated rows in `bafu-2026-v1-match-overrides.json` (#141).\n\n#829 reported the three ecoinvent rows as landing without the conversion. Measured on the build of 2026-08-29 at `54b0f9d`, they do not: `ecoinvent-match-overrides.json` has carried the three uuids with `conversion_factor: 0.599` since the #118 ruling, `merge_outcomes.detail_json` records the factor on each of the three, and the published source reference carries it as `qudt:conversionMultiplier`. The issue was mistaken about the build it named. Nothing changes here; the claims are recorded so that the five rows -- three ecoinvent, two BAFU -- are held to the same number from now on, and so that #182 closes against evidence. See #182, #118, #162.",
+  "expectations": [
+    {
+      "id": "0829-ecoinvent-38-ilmenite-18-converts-at-0599",
+      "issue": 829,
+      "title": "ecoinvent 3.8's ilmenite ore at 18% in crude ore converts to titanium at 0.599 kg/kg",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "90a94ea5-bca4-483d-a591-2e886c0ff47f"},
+      "expect": {"outcome": "prepared", "target_name": "Titanium", "target_context_display": "Resource → Ground", "conversion_factor": 0.599},
+      "comment": "Held on the before side. 0.599 is titanium's share of titanium dioxide by mass, and it is the factor ecoinvent's own 3.8-to-3.12 transitive table states for this substitution; the curated row in `ecoinvent-match-overrides.json` carries it because the 3.8-to-3.9-to-EF chain the build takes states no factor."
+    },
+    {
+      "id": "0829-ecoinvent-38-ilmenite-26-converts-at-0599",
+      "issue": 829,
+      "title": "ecoinvent 3.8's ilmenite ore at 2.6% in crude ore converts to titanium at 0.599 kg/kg",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "78cd4852-e7b9-4301-adf7-51e730b0356a"},
+      "expect": {"outcome": "prepared", "target_name": "Titanium", "target_context_display": "Resource → Ground", "conversion_factor": 0.599},
+      "comment": "Held on the before side; the second of the three."
+    },
+    {
+      "id": "0829-ecoinvent-38-rutile-converts-at-0599",
+      "issue": 829,
+      "title": "ecoinvent 3.8's rutile ore converts to titanium at 0.599 kg/kg",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "ec0fa5ce-51b4-4792-a8e8-c4ee668eddc3"},
+      "expect": {"outcome": "prepared", "target_name": "Titanium", "target_context_display": "Resource → Ground", "conversion_factor": 0.599},
+      "comment": "Held on the before side; the third. Registered 1317-80-2, rutile, rather than 13463-67-7, titanium dioxide -- the mineral rather than the compound -- and the mass fraction is the same either way."
+    },
+    {
+      "id": "0829-bafus-two-ore-rows-take-the-same-number",
+      "issue": 829,
+      "title": "BAFU's two titanium ore rows convert by the same 0.599",
+      "subject": {"kind": "source_row", "list": "bafu", "name_contains": "TiO2"},
+      "expect": {"row_count": 2, "outcome": "prepared", "target_name": "Titanium", "conversion_factor": 0.599, "same_target": true},
+      "comment": "The comparison the issue drew, held from both sides: the same ore counted the same way whichever list it came from. One consensus flow, five source rows, one conversion."
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "description": "BAFU files four things under `resources / land` that are not land: uranium, a standing tree, and process water measured two ways. Uranium and the tree were placed some time ago, and uranium is held as an invariant because it is the one that could quietly go back to being a land use. The two waters were the pair still going nowhere -- and, by the build of 14 August, no longer because of the land compartment: both reached the matching step and were refused there, because twelve substances in the list carry water's registry number and nothing said which of them a row of process water is. Saying which kind of water it is settles them. See #83, and #86 for the tie they were caught in.\n\nBoth are named by uuid rather than by name. They were named by name until #78 carried BAFU's kilogram water in cubic metres, which renamed one of them and made the two indistinguishable by name and compartment -- and an expectation whose subject can be renamed out from under it reports `unresolved` and goes on testing nothing. The uuid is what BAFU's own identity is built on and is the one thing a rename cannot move.\n\n**The other catch-all compartment, added on 15 August.** `land` was never the only place BAFU files water that is not where the water is. `resources / unspecified` is the list's other catch-all -- 42 rows, mostly minerals, land classes and energy carriers -- and it maps wholesale to `Resource / Ground`, which is right for the minerals and wrong for the three rows of it that are water drawn from nature. Those three were reaching a `Water` flow in `Resource / Ground` that carries no characterisation factor at all, while the two land rows above and BAFU's 81 `resources / in water` rows reach EF 3.1's water withdrawal, which carries 209. Same defect, other compartment, and settled the same way: a per-flow row saying what the compartment could not.",
+  "expectations": [
+    {
+      "id": "0425-bafu-process-water-in-land-is-placed",
+      "issue": 425,
+      "title": "The process water BAFU files under a land compartment reaches the water resource",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "8b11be39-c8a8-5db2-8ec6-0adf69830e77"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "material",
+        "target_name": "Water",
+        "target_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+        "target_context_display": "Resource → Water → Unknown",
+        "target_unit": "m3"
+      },
+      "comment": "BAFU's `Water, process, unspecified natural origin/m3` in `resources / land`. Named as unspecified natural origin, so no kind of water is stated and the compartment supplies none either -- `land` says nothing about where water was drawn from. It lands on the parent concept, which is EF 3.1's `water` withdrawal from a body nobody stated. `basis` is the claim that matters: `material` means the curated assignment answered and no reading of a name or a number did. Reported `multiple-flow-object-candidates` and placed nowhere on the builds of 14 and 15 August."
+    },
+    {
+      "id": "0425-bafu-process-water-in-land-kilograms-is-placed",
+      "issue": 425,
+      "title": "The same row BAFU measured in kilograms reaches the same flow, in the same unit",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "10d2fcee-f4ee-513b-baa3-671353a34df6"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "material",
+        "target_name": "Water",
+        "target_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+        "target_unit": "m3",
+        "unit_mismatch": false
+      },
+      "comment": "The second of #83's two waters, which BAFU ships in kilograms. It reached the same flow as the row above as soon as the material was assigned, and reached it across a unit -- the flow is in cubic metres and no density was stated anywhere, so the merge flagged the crossing rather than inventing one. #78 states the density, 1000 kg/m3, in `bafu-2026-v1-manual-fixes.json`, so the row is now carried in cubic metres and `unit_mismatch` is the claim that says so. Both rows keep their own identifier and their own mapping back to BAFU; what they no longer keep is two units for one water."
+    },
+    {
+      "id": "0425-bafu-natural-origin-water-in-the-unspecified-compartment-is-placed",
+      "issue": 425,
+      "title": "The water BAFU files under no compartment at all reaches the water resource, not the ground",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "bd517b6b-af3f-5c85-a1d0-4828353ba2c2"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "material",
+        "target_name": "Water",
+        "target_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+        "target_context_display": "Resource → Water → Unknown",
+        "target_characterised": true
+      },
+      "comment": "`Water, unspecified natural origin/m3` in `resources / unspecified`. The name is BAFU's own name for water drawn from nature with no body stated, and 81 rows of this list carry it in `resources / in water`, where it reaches EF 3.1's water withdrawal. This row differs from those 81 in nothing but the compartment BAFU filed it in -- and `unspecified` is not a statement that the water came from the ground, it is the absence of a statement. On the build of 15 August it reached a `Water` flow in `Resource / Ground` instead, with no characterisation factor on it, so the same water was published twice and half of it scored nothing. `target_characterised` is claimed because that is the cost: the flow it should reach carries 209 factors and the one it did reach carries none."
+    },
+    {
+      "id": "0425-bafu-process-water-in-the-unspecified-compartment-is-placed",
+      "issue": 425,
+      "title": "Both spellings of process water in that compartment reach the same water resource",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "name": "Water, Process, Unspecified Natural Origin",
+        "context": [
+          "resources",
+          "unspecified"
+        ]
+      },
+      "expect": {
+        "row_count": 2,
+        "same_target": true,
+        "target_name": "Water",
+        "target_uuid": "419682fe-60fb-4b43-be89-bf2824b51104",
+        "target_unit": "m3"
+      },
+      "comment": "The other two rows of the three, and the same reasoning: process water drawn from nature is not a ground resource because the vendor left the compartment blank. Claimed over the pair rather than one at a time because they are the mass and volume spellings of one row and the point is that both arrive together, which is also what #67 now reads as correct. They and the row above are the only rows in `resources / unspecified` a fix touches: of the 42 rows filed there, 38 are minerals, energy carriers, land classes or standing timber and are already where they belong, and the fourth water row is `Water, well`, which is groundwater by name and by material and stays in `Resource / Ground` with its own `resources / in ground` sibling."
+    },
+    {
+      "id": "0425-bafu-well-water-stays-in-the-ground",
+      "issue": 425,
+      "title": "The well water in the same compartment is groundwater, and keeps its aquifer",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "c13a514d-6615-592c-b0d2-af333adec22b"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "material",
+        "target_name": "Groundwater",
+        "target_context_display": "Resource → Water → Unconfined aquifer"
+      },
+      "comment": "Rewritten by #89, keeping its id so the baseline keeps this question's history, and still doing the job it was written for.\n\nIt used to claim `Resource -> Ground`, as the control that stopped #83's rule widening into a rule about every water row in a catch-all compartment: `Water, well` sits in the same `resources / unspecified` compartment, is water by any reading of its name, and -- the part that was wrong -- \"belongs in the ground: a well draws groundwater\". The first clause is right and the second does not follow. Groundwater is not a resource taken from the *ground* in this vocabulary: `Resource -> Ground` holds the ores, minerals and fossil fuels, and water pumped out of an aquifer is `Resource -> Water -> Unconfined aquifer`, which is where EF 3.1 publishes it with 209 characterisation factors and where BAFU's own four `resources / in water` well rows already land. So this row minted a second `Groundwater` flow carrying no factor, and an inventory reaching it scored zero against every water-use method (#89).\n\nThe control it provides is unchanged and is why it is rewritten rather than deleted. A rule that moved every water row out of the ground indiscriminately would flatten this one to plain `Water` in `Resource -> Water -> Unknown`, losing the body the name states; claiming the aquifer, and `basis: material`, fails on exactly that. The material stays `groundwater` here because the evidence is the *name* -- unlike `Water, process, unspecified natural origin`, whose material #89 corrected to plain water because the only evidence for calling it groundwater was the compartment this change withdrew."
+    }
+  ]
+}

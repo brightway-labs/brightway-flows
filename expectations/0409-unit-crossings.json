@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "description": "A source row measured in one unit may match a consensus flow declared in another. Where the two are related by a constant -- Bq and kBq, m3 and sm3 -- the value has to be multiplied or the number published is wrong by that factor. The run flags these rows and converts none of them. See #78.",
+  "expectations": [
+    {
+      "id": "0409-no-unconverted-unit-crossing",
+      "issue": 409,
+      "title": "No source row lands on a flow measured in a different unit without being converted",
+      "subject": {
+        "kind": "measure",
+        "key": "merge.bafu-2026-v1.unit_mismatch"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "170 BAFU rows in the 2026-08-14 build. 103 measured in Bq match a kBq flow and 47 go the other way -- a factor of a thousand each -- 14 radionuclide rows match a kg flow, one m3 row matches sm3 and one kWh row matches MJ. Two ecoinvent 3.8 rows are flagged as well; they have their own expectation below so that fixing one list does not read as fixing both.",
+      "pending": true
+    },
+    {
+      "id": "0409-ecoinvent-38-no-unconverted-unit-crossing",
+      "issue": 409,
+      "title": "The same holds for ecoinvent 3.8",
+      "subject": {
+        "kind": "measure",
+        "key": "merge.ecoinvent-3.8.unit_mismatch"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "2 rows: Manganese-55 in groundwater, matching a kg flow while measured in kBq. Met on the build of 1 September 2026, and the pending flag was dropped with that recording."
+    }
+  ]
+}

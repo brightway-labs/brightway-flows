@@ -1,0 +1,197 @@
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% import "partials/flow_object_views.html" as v %}
+{% set page_title = "Agricultural chemicals" %}
+{% set active_section = "substances" %}
+{#
+  `_anchor` travels with every link this page emits -- the pager, the sort
+  headers, the reset -- so that paging and sorting a table three screens below
+  the fold does not send the reader back to the top of the prose above it.
+#}
+{% set args = {'q': query, 'role': role, 'origin': origin_source, 'sort': sort,
+               '_anchor': 'substances'} %}
+
+{% macro role_branch(nodes) %}
+<ul class="tree">
+  {% for node in nodes %}
+  <li class="tree__item">
+    <div class="tree__row">
+      {#
+        To the table, not to the top of the page. The class list is three
+        screens of definitions above the substances it filters, so selecting a
+        class re-rendered the page at the heading and left the reader to scroll
+        down and find out whether anything had happened.
+      #}
+      <a class="tree__name"
+         href="{{ url_for('agrochemicals.index', role=node.iri, _anchor='substances') }}">{{ node.label }}</a>
+      <span class="tree__count">{{ node.object_count | thousands }}</span>
+      <a class="mono muted term" href="{{ node.chebi_url }}" rel="noreferrer">{{ node.curie }}</a>
+    </div>
+    {% if node.definition %}<p class="tree__note">{{ node.definition | plain_text }}</p>{% endif %}
+    {% if node.children %}{{ role_branch(node.children) }}{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endmacro %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Agricultural chemicals</h1>
+  <p class="page__lede">
+    What a substance is <em>used for</em> — herbicide, fungicide, fertiliser —
+    published on the substance itself, so that a pesticide no longer has to be
+    replaced by a bucket called <em>Herbicides, Unspecified</em> to say what it
+    is.
+  </p>
+</header>
+
+{{ v.views('agrochemicals') }}
+
+<section class="section">
+  <div class="section__header"><h2>What the axis says</h2></div>
+  <p class="section__note">
+    A flow object says what a substance <strong>is</strong>: its formula, its
+    registry numbers, the class of chemical it belongs to. None of that says
+    what the substance is <strong>for</strong>, and a use class is most of what
+    an agricultural inventory is about. Until this axis existed the only way
+    the list could express “this is a herbicide” was to stop publishing the
+    substance and publish a group in its place — so identity was spent to carry
+    a classification, and seventy named pesticides had no record of their own.
+  </p>
+  <p class="section__note">
+    The statement is <code>has role</code>, the relation ChEBI’s own
+    distribution uses, pointing at classes ChEBI curates. Nothing here is
+    invented: the relation we assert and the relation we read are one relation,
+    and every class below is one ChEBI publishes, with ChEBI’s own definition.
+  </p>
+  <p class="section__note">
+    A substance bears <strong>many</strong> roles. Sulfluramid is an
+    insecticide and an acaricide; chlorfenapyr is both and a proinsecticide as
+    well. That is why this is a role and not a type, and why the counts below
+    do not add up to the total — an object under <em>herbicide</em> is counted
+    under <em>pesticide</em> too, because a row naming the narrow class
+    publishes the broad one alongside it. A published table that leaves out
+    what it entails answers wrongly.
+  </p>
+  <div class="cards">
+    <div class="card">
+      <span class="card__label">Substances with a use class</span>
+      <span class="card__value">{{ total | thousands }}</span>
+      <span class="card__note">bearing at least one of the classes below</span>
+    </div>
+    {% for source, count in evidence.items() %}
+    <div class="card">
+      <span class="card__label">{{ source }} assertions</span>
+      <span class="card__value">{{ count | thousands }}</span>
+      <span class="card__note">
+        {% if source == 'ChEBI' %}entailed from ChEBI’s own role edges{% else %}read from a published source and written down{% endif %}
+      </span>
+    </div>
+    {% endfor %}
+  </div>
+  <p class="section__note">
+    Both halves are here because ChEBI answers for about half of the substances
+    that matter and is silent for the rest — no role edge for the sulfonylurea
+    herbicides, for spinetoram, for sodium fluorosilicate, for kaolin. That is a
+    gap in ChEBI’s curation and not a claim that those substances have no use
+    class, so the gap is filled one substance at a time, each row quoting the
+    published record it was read from. Every substance’s own page says which
+    half each of its roles came from.
+  </p>
+</section>
+
+<section class="section">
+  <div class="section__header">
+    <h2>The classes</h2>
+    <span class="muted">{{ tree | length }} roots</span>
+  </div>
+  <p class="section__note">
+    A forest rather than a single tree, and deliberately so:
+    <em>plant growth regulator</em> hangs under neither <em>pesticide</em> nor
+    <em>agrochemical</em>, because ChEBI does not place it there and this
+    project publishes no edge an authority declines to assert. The count is
+    substances in this list, not flows. Select one to filter the table below.
+  </p>
+  {{ role_branch(tree) }}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>What this page leaves out</h2></div>
+  <p class="section__note">
+    ChEBI’s role tree is mostly biomedical — <em>metabolite</em>,
+    <em>inhibitor</em>, <em>drug</em> — and publishing all of it would bury the
+    classes that group something an inventory asks about. Only classes that do
+    are published, and a class that would look authoritative while being
+    incomplete is deliberately excluded: ChEBI gives <em>greenhouse gas</em> to
+    carbon dioxide, methane and sulfur hexafluoride and to no HFC or PFC in this
+    list, so grouping on it would return a greenhouse gas set missing the entire
+    fluorinated basket.
+  </p>
+  <p class="section__note">
+    Two more classes are published under a separate family, because they say
+    what happens to a substance after it is applied rather than what it was
+    applied for, and they are asserted of substances that were never
+    agricultural:
+    {% for iri, label in other_family %}<strong>{{ label }}</strong>{% if not loop.last %}, {% endif %}{% endfor %}.
+    They are on the substances that carry them, and every substance’s own page
+    lists them; they are not on this page because a list of agricultural
+    chemicals that included the dioxins would be answering a different
+    question.
+  </p>
+</section>
+
+<section class="section" id="substances">
+  <div class="section__header">
+    <h2>The substances</h2>
+    <span class="muted">{{ page.total | thousands }}</span>
+  </div>
+
+  {# The action carries the anchor too, so the dropdowns land where the class
+     links do rather than at the top of three screens of prose. #}
+  <form class="filters" method="get"
+        action="{{ url_for('agrochemicals.index', _anchor='substances') }}">
+    <div class="filters__search">
+      <label class="visually-hidden" for="q">Search</label>
+      <input id="q" name="q" type="search" value="{{ query }}"
+             placeholder="Name, identifier, CAS…" data-search>
+      <button class="button" type="submit">Search</button>
+      {{ t.reset('agrochemicals.index', {'_anchor': 'substances'}) }}
+    </div>
+    <div class="filters__selects">
+      {{ t.select("role", "Use class", role, role_options, blank="Any of the twelve") }}
+      {{ t.select("origin", "Origin", origin_source, origin_options) }}
+    </div>
+  </form>
+
+  {% if page.rows %}
+  {{ t.pager(page, 'agrochemicals.index', args) }}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{{ t.sort_header("Name", "name", sort, 'agrochemicals.index', args) }}</th>
+          <th scope="col">{{ t.sort_header("Identifier", "id", sort, 'agrochemicals.index', args) }}</th>
+          <th scope="col">{{ t.sort_header("Origin", "origin", sort, 'agrochemicals.index', args) }}</th>
+          <th scope="col" class="num">{{ t.sort_header("Flows", "flows", sort, 'agrochemicals.index', args) }}</th>
+          <th scope="col">CAS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in page.rows %}
+        <tr>
+          <td><a href="{{ url_for('substances.detail', flow_object_id=row.flow_object_id) }}">{{ row.name or "(no name)" }}</a></td>
+          <td class="mono muted">{{ row.flow_object_id }}</td>
+          <td>{{ row.origin_source or "—" }}</td>
+          <td class="num">{{ row.linked_flows | thousands }}</td>
+          <td class="mono">{{ row.cas_numbers | join(", ") or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {{ t.pager(page, 'agrochemicals.index', args) }}
+  {% else %}
+  {{ t.nothing_matches("No substance in this list bears that use class.") }}
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,327 @@
+{#
+  What the last build did, and what it is waiting on.
+
+  Ordered by what a curator came for: the call to action first, then the run
+  that produced these numbers, then the numbers, and the downloads beneath the
+  run they came out of.
+
+  No file paths. This page named the database and every input by absolute path,
+  which is a fact about one machine: a reader on flows.d-d-s.ch has no account
+  on it, cannot open any of them, and had no other way to take the list away.
+  What replaced the paths is the four files themselves, as downloads.
+#}
+{% extends "layout.html" %}
+{% set page_title = "Current run" %}
+{% set active_section = "overview" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Current run</h1>
+  <p class="page__lede">
+    One build, one database. Everything on this site is read from the run
+    described below, and the files it published are at the foot of this page.
+  </p>
+</header>
+
+{% if overview.run.is_bounded or overview.merge.bounded_lists %}
+{# Said before any count, because it changes what every count means. #}
+<div class="notice notice--warn">
+  <div class="notice__title">Bounded run</div>
+  {% if overview.run.is_bounded %}
+  <p>
+    This build processed only the first {{ overview.run.max_flows | thousands }}
+    input flows, so the counts below describe part of the list rather than the
+    list. A full build is the one to review.
+  </p>
+  {% endif %}
+  {% if overview.merge.bounded_lists %}
+  <p>
+    The merge was bounded too:
+    {% for name, version, read, available in overview.merge.bounded_lists %}
+    {{ name }} {{ version }} ({{ read | thousands }} of
+    {{ available | thousands }} rows){% if not loop.last %},{% endif %}
+    {% endfor %}.
+    Every matched, created and unmatched count below is a count over the rows
+    that were read.
+  </p>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if overview.needs_a_curator %}
+<div class="notice notice--action">
+  <div class="notice__title">Needs a curator</div>
+  <p>
+    {{ overview.blocking_total | thousands }} blocked
+    decision{{ "" if overview.blocking_total == 1 else "s" }} in the queues, and
+    {{ overview.merge.unmatched | thousands }} source
+    flow{{ "" if overview.merge.unmatched == 1 else "s" }} the merge could not
+    place.
+  </p>
+</div>
+{% elif overview.run.exists %}
+<div class="notice">
+  <div class="notice__title">Nothing waiting</div>
+  <p>No queue is blocked and every source flow was placed.</p>
+</div>
+{% endif %}
+
+<section class="section">
+  <div class="section__header"><h2>The run</h2></div>
+  {% if overview.run.exists %}
+  <dl class="facts">
+    <dt>Run</dt><dd><code>{{ overview.run.run_id }}</code></dd>
+    <dt>Finished</dt><dd>{{ overview.run.timestamp | timestamp }}</dd>
+    <dt>Flows processed</dt><dd class="mono">{{ overview.run.flow_count | thousands }}</dd>
+    <dt>Changes applied</dt><dd class="mono">{{ overview.run.change_count | thousands }}</dd>
+    <dt>Transformers</dt><dd class="mono">{{ overview.run.transformer_names | length }}</dd>
+    {# The file names, not the paths they were read from: which list went in is
+       a fact about the run, and where it sat on disk is not. #}
+    <dt>Inputs</dt>
+    <dd>
+      {% for name in overview.run.input_names %}
+      <div class="mono">{{ name }}</div>
+      {% else %}
+      <span class="muted">none recorded</span>
+      {% endfor %}
+    </dd>
+  </dl>
+  {% else %}
+  <p class="muted">
+    This database has no <code>pipeline_runs</code> row, so it cannot say what
+    produced it. Rebuild it to find out.
+  </p>
+  {% endif %}
+</section>
+
+{% if overview.stages %}
+<section class="section">
+  <div class="section__header">
+    <h2>What each stage did</h2>
+    <span class="muted">{{ overview.stages | length }} stages</span>
+  </div>
+  <p class="page__lede muted">
+    These are the numbers that say whether a run went well. Compare them
+    against the last run: a drop in the typed-object ratio is a regression in
+    the typing rules, and a non-zero <code>skipped_unknown_scheme</code> means
+    a source list is minting flow IRIs under a prefix nothing recognises.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Stage</th>
+          <th scope="col">Counted</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for stage in overview.stages %}
+        <tr>
+          <td class="mono">{{ stage.stage }}</td>
+          <td>
+            {% for key, value in stage.counts %}
+            <span class="stat">
+              <span class="stat__key">{{ key }}</span>
+              <span class="stat__value">{{ value | thousands }}</span>
+            </span>
+            {% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="section__header"><h2>What is in it</h2></div>
+  <div class="cards">
+    <a class="card card--link" href="{{ url_for('substances.index') }}">
+      <span class="card__label">Flow objects</span>
+      <span class="card__value">{{ overview.content.flow_objects | thousands }}</span>
+    </a>
+    <a class="card card--link" href="{{ url_for('flows.index') }}">
+      <span class="card__label">Elementary flows</span>
+      <span class="card__value">{{ overview.content.elementary_flows | thousands }}</span>
+    </a>
+    <a class="card card--link" href="{{ url_for('changes.index') }}">
+      <span class="card__label">Changes</span>
+      <span class="card__value">{{ overview.content.changes | thousands }}</span>
+      {# One edit, not one edit per affected flow: an edit to a substance lands
+         on every flow that shares it, and counting those separately said
+         1,407,835 where 273,384 things happened. #}
+      <span class="card__note">every transformer, one row per edit</span>
+    </a>
+    <div class="card">
+      <span class="card__label">PROV activities</span>
+      <span class="card__value">{{ overview.content.provenance_activities | thousands }}</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>Decision queues</h2></div>
+  {% if overview.queues %}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Queue</th>
+          <th scope="col" class="num">Blocking</th>
+          <th scope="col" class="num">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for queue in overview.queues %}
+        <tr>
+          <td>
+            <a href="{{ url_for('queue.detail', name=queue.name) }}">{{ queue.name | queue_label }}</a>
+            <div class="muted mono">{{ queue.name }}</div>
+          </td>
+          <td class="num">
+            {% if queue.blocking %}
+            <span class="tag tag--blocking">{{ queue.blocking | thousands }} blocking</span>
+            {% else %}
+            <span class="muted">—</span>
+            {% endif %}
+          </td>
+          <td class="num">{{ queue.total | thousands }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p><a class="button" href="{{ url_for('queue.index') }}">Every queue</a></p>
+  {% else %}
+  <p class="muted">No queue has anything in it.</p>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>Checks</h2></div>
+  <div class="cards">
+    <a class="card card--link" href="{{ url_for('checks.formula_mismatches') }}">
+      <span class="card__label">Formula mismatches</span>
+      <span class="card__value">{{ overview.checks.formula_mismatches | thousands }}</span>
+      <span class="card__note">flow object against a ChEBI record it cites</span>
+    </a>
+    <a class="card card--link" href="{{ url_for('queue.detail', name='elements') }}">
+      <span class="card__label">Elements not covered</span>
+      <span class="card__value">{{ overview.checks.uncovered_elements | thousands }}</span>
+      {% if overview.checks.total_elements %}
+      <span class="card__note">of {{ overview.checks.total_elements | thousands }}</span>
+      {% endif %}
+    </a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__header"><h2>The merge</h2></div>
+  {% if overview.merge.exists %}
+  <dl class="facts">
+    <dt>Run</dt><dd><code>{{ overview.merge.run_id }}</code></dd>
+    <dt>Started</dt><dd>{{ overview.merge.started_at | timestamp }}</dd>
+    <dt>Finished</dt><dd>{{ overview.merge.finished_at | timestamp }}</dd>
+    <dt>Source lists</dt>
+    <dd>
+      {% for name, version, rows in overview.merge.inputs %}
+      <div>{{ name }} {{ version }} <span class="muted mono">{{ rows | thousands }} rows</span></div>
+      {% else %}
+      <span class="muted">none recorded</span>
+      {% endfor %}
+    </dd>
+    <dt>Context rules</dt>
+    <dd><a href="{{ url_for('contexts.index') }}">How each source's compartments map</a></dd>
+    <dt>Conflicts</dt>
+    <dd class="mono">
+      {{ overview.merge.conflicts | thousands }}
+      {% if not overview.merge.conflicts %}<span class="muted">— no two lists disagree</span>{% endif %}
+    </dd>
+  </dl>
+
+  {% if overview.merge.outcomes %}
+  <div class="table-scroll" style="margin-top: 1rem;">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col" class="num">Source flows</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for outcome, total in overview.merge.outcomes | dictsort %}
+        <tr>
+          <td>{{ outcome | queue_label }}</td>
+          <td class="num">{{ total | thousands }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td class="muted">Total</td>
+          <td class="num">{{ overview.merge.total | thousands }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  {% else %}
+  <p class="muted">This database records no merge run.</p>
+  {% endif %}
+</section>
+
+<section class="section" id="downloads">
+  <div class="section__header">
+    <h2>Take it away</h2>
+    <span class="muted">{{ artifacts | selectattr("exists") | list | length }} of
+      {{ artifacts | length }} published</span>
+  </div>
+  <p class="page__lede muted">
+    What this run wrote, as files. The database is everything these pages read;
+    the three exports are the published list and its factors, and are what a
+    tool should consume.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">File</th>
+          <th scope="col">What it holds</th>
+          <th scope="col" class="num">Size</th>
+          <th scope="col">Written</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for artifact in artifacts %}
+        <tr>
+          <td>
+            {# Every file the build wrote is a link, the database included
+               (decision 8, #200). #}
+            {% if artifact.exists %}
+            <a href="{{ url_for('overview.download', key=artifact.key) }}">{{ artifact.title }}</a>
+            {% else %}
+            {{ artifact.title }}
+            {% endif %}
+            <div class="muted mono">{{ artifact.filename }}</div>
+          </td>
+          <td>{{ artifact.description }}</td>
+          <td class="num mono">
+            {% if artifact.exists %}{{ artifact.readable_size }}
+            {% else %}<span class="muted">—</span>{% endif %}
+          </td>
+          <td>
+            {#
+              An absence is shown as an absence. A build that has not been
+              characterised has no factor file, and a row that vanished would
+              say the run published three things rather than that one step has
+              not been run.
+            #}
+            {% if artifact.exists %}{{ artifact.modified | timestamp }}
+            {% else %}<span class="muted">this run did not write it</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

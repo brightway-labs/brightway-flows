@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "description": "Stage 1 of plans/particle-family.md (#196): every airborne-particle row of every list is read into one of the seven size windows, a row nobody has read stops the merge instead of minting a substance, and every window always publishes its `Particulates` spelling as an alternative label. Measured against the five-list build of 2 September 2026 (944b274), where Stepwise's `Particulates, < 10 um` and `(mobile)` and AGRIBALYSE's `Particulates, diesel soot` and `Particulates, SPM` were four substances of their own with no window and no factor, and PM10 carried the plain spelling of no vendor. Stage 2: a particle flow of one size window that nobody characterises takes its nearest broader window's stated number, inside the compartment, before the compartment convention runs (data/particle-size-carry-rules.json); and Stepwise's two numbers for particles of unstated size are ruled 0.157 (data/lcia-factor-collision-rulings.json), which the above-ten fraction then takes. Measured against the build of 944b274 (2 September 2026), where the coarse band and the unsized total carried no consensus factor under either method.",
+  "expectations": [
+    {
+      "id": "0921-stepwise-plain-pm10-reaches-pm10",
+      "issue": 921,
+      "title": "Stepwise's plain `Particulates, < 10 um` lands on the flow this list publishes for PM10",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "name": "Particulates, < 10 um"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Particles (PM10)",
+        "basis": "particulate_size_class"
+      },
+      "comment": "On the build of 944b274 this row minted `Particulates, < 10 Um`, a substance of its own beside `Particles (PM10)`, because the tool that writes particulate-flow-classes.json left Stepwise out of its sources while the list was unregistered and nobody put it back when #169 registered it. The reading existed all along; the row is in the table now, and the guard of this stage makes the omission a failing build rather than a silent substance."
+    },
+    {
+      "id": "0921-stepwise-mobile-pm10-reaches-pm10",
+      "issue": 921,
+      "title": "PM10 from a mobile source is still PM10",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "name": "Particulates, < 10 um (mobile)"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Particles (PM10)",
+        "basis": "particulate_size_class"
+      },
+      "comment": "The second Stepwise stray. The source category is recorded and the window is the identity; Stepwise gives plain, mobile and stationary PM10 the same 0.535714286 kg PM2.5-eq, which the collision rule reads as agreement once all three are on one flow."
+    },
+    {
+      "id": "0921-stepwise-pm10-spellings-are-one-substance",
+      "issue": 921,
+      "title": "Stepwise's three PM10 spellings reach one substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "name_contains": "< 10 um"
+      },
+      "expect": {
+        "row_count": 3,
+        "same_substance": true
+      },
+      "comment": "Plain, mobile and stationary. Three substances on the build of 944b274."
+    },
+    {
+      "id": "0921-stepwise-unsized-rows-are-one-substance",
+      "issue": 921,
+      "title": "Stepwise's `Particulates` and `Particulates, unspecified` reach the size-unstated total",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "name_contains": "Particulates"
+      },
+      "expect": {
+        "substance_count": 3
+      },
+      "comment": "Six rows, three windows: PM2.5, PM10 and the unsized total. The same claim #153 makes about BAFU's rows, now for the list whose factors made the unsized pair a question."
+    },
+    {
+      "id": "0921-diesel-soot-is-the-fine-band",
+      "issue": 921,
+      "title": "AGRIBALYSE's `Particulates, diesel soot` lands on PM0.2 - PM2.5",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Particulates, diesel soot"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Particles (PM0.2 - PM2.5)",
+        "basis": "particulate_size_class"
+      },
+      "comment": "The owner's ruling of 2 September 2026 (plans/particle-family.md section 4): diesel exhaust particles are fine particulate, almost entirely below 2.5 um and above the 0.2 um ultrafine cut. A substance of its own on the build of 944b274, left to #190 group J."
+    },
+    {
+      "id": "0921-spm-is-the-unsized-total",
+      "issue": 921,
+      "title": "AGRIBALYSE's `Particulates, SPM` lands on the size-unstated total",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Particulates, SPM"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Particles (unspecified size)",
+        "basis": "particulate_size_class"
+      },
+      "comment": "Suspended particulate matter is a sampling term that states no cut, so it is read with `Particulates` and `Particulates, unspecified`. The owner's ruling of 2 September 2026."
+    },
+    {
+      "id": "0921-no-particle-row-mints-a-substance",
+      "issue": 921,
+      "title": "No row of any list stating a particle size cut creates a substance",
+      "subject": {
+        "kind": "source_row",
+        "name_contains": " um"
+      },
+      "expect": {
+        "not_outcome": "created"
+      },
+      "comment": "The guard's claim, stated on the outcome rather than on the guard: a row the table has not read stops the build, so a build that finished read every one. Every row stating a cut spells it with ` um`; the two rows that state none -- BAFU's `Particulates` and `Particulates, unspecified` -- are the ones that mint the size-unstated total, which EF has no flow for, and are `created` by design, as #153's own claim on them says. Two `created` rows with a cut on the build of 944b274, Stepwise's PM10 strays."
+    },
+    {
+      "id": "0921-the-strays-are-gone",
+      "issue": 921,
+      "title": "The substance `Particulates, < 10 Um` is no longer published",
+      "subject": {
+        "kind": "substance",
+        "label": "Particulates, < 10 um"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Minted by Stepwise's plain row on every five-list build up to 944b274. Its identifier is retired, and resolves to nothing, because the substance did not move -- it was never a substance of ours."
+    },
+    {
+      "id": "0921-pm10-always-answers-to-the-plain-spelling",
+      "issue": 921,
+      "title": "`Particles (PM10)` publishes `Particulates, < 10 um` as an alternative label",
+      "subject": {
+        "kind": "substance",
+        "label": "Particles (PM10)"
+      },
+      "expect": {
+        "alt_label": "Particulates, < 10 um"
+      },
+      "comment": "On the build of 944b274 PM10 carried only `Particulates, < 10 um (stationary)`: the plain spelling was the name of Stepwise's stray substance, so the member-name pass refused it. Now stated by particulate-size-classes.json and written by the layering with its own provenance, so it is there whichever vendor's rows reached the window."
+    },
+    {
+      "id": "0921-the-coarse-band-always-answers-to-its-spelling",
+      "issue": 921,
+      "title": "`Particles (PM2.5 - PM10)` publishes `Particulates, > 2.5 um, and < 10um` as an alternative label",
+      "subject": {
+        "kind": "substance",
+        "label": "Particles (PM2.5 - PM10)"
+      },
+      "expect": {
+        "alt_label": "Particulates, > 2.5 um, and < 10um"
+      },
+      "comment": "Already true on the build of 944b274 through the member-name pass, and now a promise rather than a happenstance."
+    },
+    {
+      "id": "0921-above-pm10-always-answers-to-its-spelling",
+      "issue": 921,
+      "title": "`Particles (> PM10)` publishes `Particulates, > 10 um` as an alternative label",
+      "subject": {
+        "kind": "substance",
+        "label": "Particles (> PM10)"
+      },
+      "expect": {
+        "alt_label": "Particulates, > 10 um"
+      },
+      "comment": "On the build of 944b274 the window carried ecoinvent's `Particulate Matter, > 10 um` and AGRIBALYSE's `(process)` variant, and not the plain ecoinvent-2 spelling three lists ship."
+    },
+    {
+      "id": "0921-the-ultrafine-cut-answers-to-a-coined-spelling",
+      "issue": 921,
+      "title": "`Particles (PM0.2)` publishes `Particulates, < 0.2 um` as an alternative label",
+      "subject": {
+        "kind": "substance",
+        "label": "Particles (PM0.2)"
+      },
+      "expect": {
+        "alt_label": "Particulates, < 0.2 um"
+      },
+      "comment": "No vendor ships this spelling; it is coined on the ecoinvent-2 pattern because the rule is *always*, and a window that answered to no `Particulates` spelling would be the one a reader searching that way could not find."
+    },
+    {
+      "id": "0921-ef-coarse-band-takes-pm10-in-urban-air",
+      "issue": 921,
+      "title": "The coarse band in urban ground-level air is worth what PM10 is worth there, under EF 3.1",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Particles (PM2.5 - PM10)",
+        "context_display": "Environmental → Air → Ground level → Urban (>1000 people/square mile)",
+        "category": "EF-particulate Matter",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "5.48544e-05",
+        "derivation": "ruled"
+      },
+      "comment": "EF 3.1 states nothing for its own coarse-band flow in any compartment and 5.48544e-5 for PM10 here; the ecoinvent Centre and GreenDelta both give the coarse band that number, and until this rule ecoinvent's rows got it through #37's override while BAFU's and AGRIBALYSE's identical rows scored zero. The owner's ruling of 2 September 2026, with the limitations page's double-count concern recorded beside the rule. `carried` while #37's rows stood (stage 2); `ruled` since stage 3 retired them, because ecoinvent's coarse rows then land here and the ecoinvent Centre's transcription states the number itself -- a stated number outranks a carried one, so the same ruling is written on the proposed-factor queue in lcia-factor-rulings.json for the four compartments ecoinvent states."
+    },
+    {
+      "id": "0921-ef-coarse-band-takes-pm10-where-nobody-states-it",
+      "issue": 921,
+      "title": "The coarse band at a low rural stack is worth what PM10 is worth there, carried, under EF 3.1",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Particles (PM2.5 - PM10)",
+        "context_display": "Environmental → Air → Low stack, <25 meters → Rural (<1000 people/square mile)",
+        "category": "EF-particulate Matter",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "9.02255e-07",
+        "derivation": "carried"
+      },
+      "comment": "A compartment no ecoinvent row reaches, so no implementation speaks and the window convention carries PM10's number: 9.02255e-7, the JRC's PM10 figure for a low rural stack. Seven of the band's eleven air compartments are carried this way on the stage-3 build; the other four are ruled, the claim above."
+    },
+    {
+      "id": "0921-ef-coarse-band-takes-pm10-in-every-air-compartment",
+      "issue": 921,
+      "title": "Every EF air compartment that states PM10 gives the coarse band a number",
+      "subject": {
+        "kind": "flow",
+        "name": "Particles (PM2.5 - PM10)",
+        "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn"
+      },
+      "expect": {
+        "characterised": false
+      },
+      "comment": "`characterised` is `elementary_flows.lcia_factor_count` and keeps the JRC's meaning, so it stays false: the JRC still states nothing here, and what this list carries is its own convention. The count claim is on the factor rows; this one guards the reading."
+    },
+    {
+      "id": "0921-ef-above-pm10-stays-blank",
+      "issue": 921,
+      "title": "Particles above ten micrometres carry no number under EF 3.1",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Particles (> PM10)",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "EF-particulate Matter",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "No window above it is characterised in any EF implementation, so the rule leaves it blank, and that is every publisher's answer."
+    },
+    {
+      "id": "0921-stepwise-unsized-is-ruled-0157",
+      "issue": 921,
+      "title": "Stepwise's particles of unstated size are worth 0.157 kg PM2.5-eq, the plain row's number",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Particles (unspecified size)",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Respiratory inorganics",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "0.157142857"
+      },
+      "comment": "Two Stepwise rows collided here on the build of 944b274 -- `Particulates` at 0.157 and `Particulates, unspecified` at 0.536, its PM10 number -- and nothing was published. Ruled by the owner on 2 September 2026: a row that stated no cut is scored as no cut, which is the plain row's total-suspended-particulate figure. Published as the implementation's own row, `sole`, because the ruling settles which of the publisher's rows is transcribed; the finding records that a person chose."
+    },
+    {
+      "id": "0921-stepwise-above-pm10-takes-the-unsized-number",
+      "issue": 921,
+      "title": "Stepwise's particles above ten micrometres take the unsized total's number",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Particles (> PM10)",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Respiratory inorganics",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "0.157142857",
+        "derivation": "carried"
+      },
+      "comment": "The second half of the same ruling: the unsized total is the above-ten fraction's only broader window, and the convention carries it."
+    },
+    {
+      "id": "0921-stepwise-ultrafine-takes-pm2-5",
+      "issue": 921,
+      "title": "Stepwise's ultrafine cut takes the fine fraction's 1.0",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Particles (PM0.2)",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Respiratory inorganics",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "1",
+        "derivation": "carried"
+      },
+      "comment": "Stepwise ships no PM0.2 row; the window is EF's, and it takes PM2.5's number the way EF's own JRC scores it."
+    },
+    {
+      "id": "0921-stepwise-coarse-band-reaches-the-strata",
+      "issue": 921,
+      "title": "The coarse band's carried Stepwise number reaches rural stack air by the compartment convention",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Particles (PM2.5 - PM10)",
+        "context_display": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+        "category": "Respiratory inorganics",
+        "implemented_by": "brightway-flows"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "0.535714286",
+        "derivation": "carried"
+      },
+      "comment": "The window carry runs first, inside unspecified air; the compartment carry then treats the number as a donor because it was carried within a compartment and not along a chain of them. Without that order the compartment convention's own rule -- nothing from a carried factor -- would leave every stratum blank."
+    }
+  ]
+}

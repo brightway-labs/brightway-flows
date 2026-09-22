@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "description": "Carbon dioxide released to the air is worth counting as a greenhouse gas when the carbon came out of the ground, and not when it came out of a tree that grew last year and will grow again. So this list keeps them apart -- `Carbon dioxide (fossil)`, `Carbon dioxide (biogenic)`, `Carbon dioxide (land use change)` -- and holds a fourth substance, EF 3.1's carbon dioxide of unstated origin, which #139 emptied of source rows: it survives because EF ships it, and what it stops being is a bucket this list fills.\n\nStepwise 2006 ships four carbon dioxide rows into unspecified air, all four carrying 124-38-9. Three say which they are and reach the right flow. The fourth says nothing, carries the origin-less substance's exact name as well as its number, and on the four-list build of 2026-08-29 (`20260829T1158418340740000`) matched it on `cas+label` -- the strongest evidence the merge has. EF ships no air flow for that substance, so the merge added an eighth, `033b961dd01b53699d8830bf71d8d28beb794663` in `Environmental → Air → Unknown`, and the bucket was being filled again.\n\nStepwise says what the row means. Its own method characterises the bare row 1.0 under `Global warming, fossil` and under nothing else -- the same category and the same number as its explicit `Carbon dioxide, fossil` row, where its `Carbon dioxide, biogenic` row is characterised under `Global warming, non-fossil`. A method that ships a separate fossil row and still counts its plain row as fossil has resolved the catch-all in one direction. So the row is sent to `Carbon dioxide (fossil)` in `Environmental → Air → Unknown` -- the flow BAFU's own unqualified air row reaches -- by a row in `stepwise-2006-match-overrides.json`, where the argument is recorded for the next SimaPro-lineage list that ships the same row.",
+  "expectations": [
+    {
+      "id": "0811-the-plain-row-reaches-fossil-carbon-dioxide",
+      "issue": 811,
+      "title": "Stepwise's plain `Carbon dioxide` row is published as fossil carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "uuid": "81bef0b2-3ddf-541f-a485-26355997c376"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "prepared",
+        "target_substance_id": "fo-130030e87e592b4c",
+        "target_context_display": "Environmental → Air → Unknown"
+      },
+      "comment": "On the build of 2026-08-29 this row was `algorithm`, basis `cas+label`, on `fo-82a29244dccbaefc` -- the origin-less substance -- in the same context. The outcome is claimed as well as the substance: reaching fossil carbon dioxide by a name or a qualifier the matching happened to read would be the right answer arrived at by luck, and this is a decision. The context is claimed because a row that reached fossil carbon dioxide in some other compartment would be a different mapping."
+    },
+    {
+      "id": "0811-the-eighth-flow-is-gone",
+      "issue": 811,
+      "title": "The air flow minted under carbon dioxide of unstated origin is gone",
+      "subject": {
+        "kind": "flow",
+        "uuid": "033b961dd01b53699d8830bf71d8d28beb794663"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Published on the build of 2026-08-29 as `Carbon Dioxide` in `Environmental → Air → Unknown`, source `stepwise algorithm addition`, the eighth flow of a substance EF ships seven of. It exists in no build of `main` -- the shared build of 505ba28 merges three lists and not Stepwise -- so nothing is withdrawn. Named by uuid because what has to stop is that identifier being published.\n\nBack on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), minted this time by AGRIBALYSE's plain `Carbon dioxide` row in unspecified air, not Stepwise's -- the identifier is the flow's, whichever list adds it. Stepwise's row still reaches fossil carbon dioxide, which the other two claims here still say. That is #194; pending until it is ruled.",
+      "pending": true
+    },
+    {
+      "id": "0811-the-biogenic-row-is-not-taken-with-it",
+      "issue": 811,
+      "title": "Stepwise's `Carbon dioxide, biogenic` row still reaches biogenic carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "uuid": "68bdc0f3-b825-5c5f-aaa0-817d3994cfbe"
+      },
+      "expect": {
+        "row_count": 1,
+        "target_substance_id": "fo-c830feb8dfc643a1"
+      },
+      "comment": "The control, in the sense #139 uses the word: already true on the build of 2026-08-29 and pinned so that it stays true. Stepwise's four carbon dioxide rows into air share one registry number and differ only in a word, so a rule reading `Carbon dioxide` as a prefix rather than as a whole name would take this row with the plain one and publish biogenic carbon dioxide as fossil -- the opposite of what Stepwise's own method says about it, which is `Global warming, non-fossil` at 1.0. The fix here is a curated row naming one uuid, which cannot do that; the claim is written because the next answer to the same question might not be a curated row. The substance-level claim -- seven flows and no more under carbon dioxide of unstated origin -- is #139's own, in `0669-every-carbon-dioxide-row.json`, and it reads 8 on the build this fixes."
+    }
+  ]
+}
