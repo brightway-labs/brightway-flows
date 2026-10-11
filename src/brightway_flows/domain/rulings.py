@@ -350,6 +350,16 @@ RULINGS: tuple[CuratedFile, ...] = (
         named_by_manifest=True,
     ),
     CuratedFile(
+        "openlca-2.8.2-additional-flows.json",
+        "brightway_flows.additional_flows",
+        "GreenDelta's openLCA LCIA package ships every flow it has under "
+        "`flows/`, which the adapter reads whole, so this file adds nothing and "
+        "exists for its refusals: the 186 rows of the package's two `Waste` "
+        "compartments, refused as AGRIBALYSE's final waste is (#189) and each "
+        "published as an excluded source concept.",
+        named_by_manifest=True,
+    ),
+    CuratedFile(
         "correspondence-context-routing.json",
         "brightway_flows.correspondence_contexts",
         "This correspondence row may map to a coarser context than its source, "

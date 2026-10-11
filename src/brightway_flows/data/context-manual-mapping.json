@@ -2290,6 +2290,285 @@
       "comment": "One of their own; ecoinvent 3.12's places 9 of 9."
     },
     {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "comment": "5,048 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "comment": "3,676 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "comment": "3,806 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "comment": "3,469 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-aicrhe",
+      "comment": "3,624 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unkn",
+      "comment": "4,003 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "fresh water"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+      "comment": "650 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "surface water"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+      "comment": "529 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "ocean"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+      "comment": "3,324 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "river"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-rive",
+      "comment": "3,424 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "lake"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "comment": "1,303 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "ground water"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unaq",
+      "comment": "1,563 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "ground water, long-term"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lote",
+      "comment": "2,963 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "river, long-term"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lote",
+      "comment": "1,149 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "fossil-"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-coaqwifo",
+      "comment": "645 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to soil",
+        "agricultural"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+      "comment": "3,351 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to soil",
+        "industrial"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-indu",
+      "comment": "3,157 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to soil",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-unkn",
+      "comment": "3,285 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to soil",
+        "forestry"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-silv",
+      "comment": "2,874 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "in ground"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "720 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "biotic"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-biot",
+      "comment": "6 flows. The compartment GreenDelta's EF 3.1 package uses, from the same publisher, so the same answer as the `GreenDelta` row; that row's comment says why."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to air",
+        "indoor"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-indr-unkn",
+      "comment": "3,266 flows. BAFU's `emissions to air / indoor` places here, and the compartment says no more about the room than theirs does."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to air",
+        "stratosphere"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-aicrhe",
+      "comment": "2 flows. Nitrogen monoxide and dioxide. BAFU's and AGRIBALYSE's `stratosphere + troposphere` place here, as this package's own `lower stratosphere + upper troposphere` does."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to water",
+        "fresh water, long-term"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lote",
+      "comment": "562 flows. Long-term is the context, as it is for this package's `river, long-term` and `ground water, long-term`."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Emission to soil",
+        "urban, non industrial"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-unkn",
+      "comment": "1 flows. One flow, Lambda-cyhalothrin. ecoinvent 2's word; it says what the soil is not rather than whether it is residential or commercial, so the ground is left unstated rather than guessed."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "in water"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate",
+      "comment": "1,760 flows. Almost all `Water, ...` intakes, 1,744 of them; ecoinvent's, BAFU's and AGRIBALYSE's `in water` place here."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "in air"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-air",
+      "comment": "6 flows. ecoinvent's, BAFU's and AGRIBALYSE's `in air` place here."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "fossil well"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-coaqwifo",
+      "comment": "1 flows. One flow, `Water, fossil`. ecoinvent 3.12's `natural resource / fossil well` places here: fossil water is a confined aquifer."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "2,152 flows. A mixed compartment: 1,565 `Water, ...` intakes, 250 land rows and the ores and fuels. The name-prefix rules pick out the water and the land; what is left are ground resources, which is BAFU's ruling for its own `resources / unspecified`."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "700 flows. A mixed compartment: 667 land rows, which the name-prefix rules pick out, and 28 minerals (`Clay`, `Granite`, `Basalt`, ...) and two water intakes. What the prefixes leave are ground resources, so the compartment rule says that -- unlike ecoinvent's and BAFU's `land`, which hold land rows alone and default to occupation."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Immaterial emission",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-othe",
+      "comment": "6 flows. Six noise flows, in m, p*km and t*km. BAFU's `non material emissions / unspecified` places here."
+    },
+    {
       "source": "agribalyse-3.2",
       "source_context": [
         "Emissions to air"
@@ -2720,6 +2999,116 @@
       "context_iri": "https://vocab.brightway.one/flow-contexts/laus-occu",
       "comment": "41 of the compartment's 134 rows are land occupation with the class in the name -- `Occupation, arable`, `Occupation, traffic area, rail network` -- because SimaPro writes the land class where this list writes a compartment. Filing them under the compartment's own rule would put land occupation in the ground, which is #52. `select` rather than `partition` because the compartment is mixed: the other 93 rows are ordinary resources and the compartment rule is right about them. No `Transformation, ` rule, because Stepwise characterises no transformation flow -- its nature-occupation category is stated per square-metre-year of occupation only, and a rule for rows that do not exist would be a claim about a release nobody has read.",
       "unmatched": "select"
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "name_prefix": "Occupation, ",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-occu",
+      "unmatched": "select",
+      "comment": "84 of the compartment's rows. A row whose name begins `Occupation, ` is land occupation whichever compartment it is filed in -- BAFU's rule for its `resources / unspecified`. `select`, because the compartment is mixed."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "name_prefix": "Transformation, ",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-tran",
+      "unmatched": "select",
+      "comment": "166 of the compartment's rows; see the `Occupation, ` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "name_prefix": "Water",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate",
+      "unmatched": "select",
+      "comment": "1,565 of the compartment's rows are water intakes, `Water, unspecified natural origin, DE` and the like, filed beside the ores. AGRIBALYSE's rule for its bare `Resources`: the name says the medium, and the material, not the compartment, says which body."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "name_prefix": "Occupation, ",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-occu",
+      "unmatched": "select",
+      "comment": "160 rows; ecoinvent's and BAFU's rule for their `land` compartments."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "name_prefix": "Transformation, ",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-tran",
+      "unmatched": "select",
+      "comment": "507 rows; see the `Occupation, ` row. Without it every transformation would be filed as an occupation, which is #52."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "name_prefix": "Water",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate",
+      "unmatched": "select",
+      "comment": "Two water intakes filed under land."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "in ground"
+      ],
+      "name_prefix": "Water",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate",
+      "unmatched": "select",
+      "comment": "266 water intakes, `Water, unspecified natural origin, AT` and the like, filed beside the ores. See the `Resource / unspecified` row: the name says the medium. `select`, because the compartment's other rows are ground resources."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "in water"
+      ],
+      "name_prefix": "Occupation, ",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-occu",
+      "unmatched": "select",
+      "comment": "2 land rows filed among the in water resources. A row whose name begins `Occupation,` is land use whichever compartment it is in; see the `Resource / unspecified` rows. `select`, because the compartment's other rows are what its compartment rule is for."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "in water"
+      ],
+      "name_prefix": "Transformation, ",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-tran",
+      "unmatched": "select",
+      "comment": "2 land rows filed among the in water resources. A row whose name begins `Transformation,` is land use whichever compartment it is in; see the `Resource / unspecified` rows. `select`, because the compartment's other rows are what its compartment rule is for."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_context": [
+        "Resource",
+        "in ground"
+      ],
+      "name_prefix": "Transformation, ",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-tran",
+      "unmatched": "select",
+      "comment": "1 land row filed among the in ground resources. A row whose name begins `Transformation,` is land use whichever compartment it is in; see the `Resource / unspecified` rows. `select`, because the compartment's other rows are what its compartment rule is for."
     }
   ],
   "flow_specific_context_mappings": [

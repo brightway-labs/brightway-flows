@@ -1,0 +1,2198 @@
+{
+  "schema_version": 1,
+  "source_version": "2.8.2",
+  "description": "Nothing to add: the package ships every flow it has under `flows/`, which the adapter reads whole. What this file holds is the refusal of the package's two `Waste` compartments and its 13 black-carbon particle rows. The waste rows are extracted like every other compartment and refused here on the record, as AGRIBALYSE's final waste is (#189); the black-carbon rows carry climate factors no plain particle flow has, so they are kept out until black carbon is decided as a substance. `excluded_rows_are_in_the_fetch` is set because the fetch produces these rows on every run, and their removal at load is the ordinary path.",
+  "flows": [],
+  "excluded_rows_are_in_the_fetch": true,
+  "excluded": [
+    {
+      "uuid": "e7624ac8-f487-34ae-a84b-894bf0d4f6f0",
+      "name": "Aluminium waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "17bcc63b-dab7-30fa-b7a2-814eed9b65e0",
+      "name": "Asbestos",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "58e63779-4e4b-38ac-9778-a8a4eee6bd44",
+      "name": "Asphalt waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b9ade741-a130-3a0a-ac20-4d8cd65b42a0",
+      "name": "Bilge oil",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "71536daf-21f5-3805-8924-2f6030375cfc",
+      "name": "Bitumen waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "0a11decc-edde-3008-b5cc-1bc31fa53b5b",
+      "name": "Bulk waste, unspecified",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "88590747-b3f5-3c7c-9e4f-4a9df95ae715",
+      "name": "Calcium fluoride waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "c35d0460-c95c-3c78-af50-73209db1ba02",
+      "name": "Cardboard waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "f9dbaecd-94f3-3090-8353-ae5a2dbb2cbb",
+      "name": "Carton waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "c7d10688-2f91-3c94-9c3e-caf24379082c",
+      "name": "Catalyst waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "2b407271-960d-3e1d-9a2c-f88dbf5146ce",
+      "name": "Cathode iron ingots waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "af6786f8-f175-3009-9df7-3c0a8e47d304",
+      "name": "Cathode loss",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "525454d8-2703-3ebb-8a8a-0379c7d7fd31",
+      "name": "Chemical waste, inert",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "15e28a77-38c2-3e15-972a-43c8d47cba26",
+      "name": "Chemical waste, regulated",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "ddb4b7e8-5259-3f2c-baf5-2935e35578ee",
+      "name": "Chemical waste, unspecified",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "5feb5a5f-863f-3aec-84fb-b165fbc9d27f",
+      "name": "Chromium waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "ecafa64a-5267-3665-9176-f684dd0f50cb",
+      "name": "Coal ash",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "9f3f5ffd-ea86-3a23-a7ba-fc756ef6ad6d",
+      "name": "Coal tailings",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "5380cd8b-0ffe-3186-bf31-dae3c3139f30",
+      "name": "Construction waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "27846925-8f7a-35d7-83c4-a747d3092114",
+      "name": "Copper absorbent waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "355ab8ac-75b2-33fd-874a-cde0b99beb23",
+      "name": "Copper waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "8e7bab8a-e9f8-3d2f-a357-cff4368d9746",
+      "name": "Dross",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "ecc08fa0-5bb5-3362-b5be-fa5f917febb3",
+      "name": "Dross for recycling",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "8f611d9e-6933-3680-9cba-db4e5b8609e1",
+      "name": "Dust, break-out",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "a8d800f5-168b-386e-ae51-3a6095a0fe32",
+      "name": "Dust, unspecified",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "8f2a52e6-0cc0-3eb4-8d44-e19a35e1099e",
+      "name": "E-saving bulb plastic waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "e7e93c5d-3233-3eee-bc90-bb899a175459",
+      "name": "E-saving bulb waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "0893f735-5833-39d5-a9ca-894f0e308729",
+      "name": "Electronic waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "fb8ce04a-4b7c-3eb9-bd2c-6875e6a349c6",
+      "name": "Electrostatic filter dust",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "5a7c5e0a-3b84-340a-b1da-ed84b25be794",
+      "name": "Fluoride waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "356a46e6-4149-3c1e-9576-262aa3766f8e",
+      "name": "Fly ash",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "09c4e3c4-6d82-34bd-a30a-de08118bfa88",
+      "name": "Gas pipe waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b1e048da-18c3-3de4-b61b-3f7c42f51329",
+      "name": "Glass waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "836571de-63fb-3489-9a9f-a774d4e2e6fd",
+      "name": "Ion exchanger sludge",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "8b82f7ca-f06d-3eec-af58-3a0aac733330",
+      "name": "Iron waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "75157e0c-d779-383d-9dcb-a7cb2c6fb95a",
+      "name": "Light bulb waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "574e5159-07a6-336c-ac6d-caa17ee42264",
+      "name": "Limestone waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "1804c474-a1a0-39d1-9023-466eb03ac016",
+      "name": "Metal waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "1480daf8-68ae-30fb-aff4-c30a4288d4aa",
+      "name": "Mineral waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "060fdca6-140c-3dc2-9e7f-5abd64747893",
+      "name": "Mineral waste, from mining",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "7945607d-6e84-3dd2-8552-382eb1dd54ff",
+      "name": "Mineral wool waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "4c74db94-155d-3e9e-9107-f5d01cdafed4",
+      "name": "Oil separator sludge",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "1e1b97ad-dbdc-307e-ab22-3542c6bf96d8",
+      "name": "Oil waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b0b5cbd7-c413-3e53-be95-148b85e888f7",
+      "name": "Packaging waste, paper and board",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "37ffca01-23f4-3a89-b0af-1440f30f900a",
+      "name": "Packaging waste, plastic",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "ba3625aa-925f-3ff7-a951-ec0a50693324",
+      "name": "Packaging waste, steel",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "1dbea2ab-bdf6-33e4-8838-98b7cc8ea784",
+      "name": "Packaging waste, unspecified",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b009ad31-3e26-3c42-b6dc-de03219e97de",
+      "name": "Packaging waste, wood",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "587fad22-da2d-37ae-a41b-57b7e8467867",
+      "name": "Paint waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "32810ff0-f116-3c47-b97d-2a2b6f48865a",
+      "name": "Photovoltaic cell waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "17003425-e252-3140-a5f8-fba9d8344572",
+      "name": "Photovoltaic panel waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "94b4d35d-3b2f-304d-8e56-ca21703f7d87",
+      "name": "Photovoltaic production waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "4cdad7ec-147a-3a9b-9310-09970ea5c0b3",
+      "name": "Photovoltaic/EVA cell waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "efa81610-4900-304d-b9b1-77559434a776",
+      "name": "Plastic waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "ba92e76f-279c-3067-beb3-5fd2c87c0338",
+      "name": "Polyethylene waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "0d84c825-51c0-32a7-a961-3b993181042c",
+      "name": "Polystyrene waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "37bef155-1004-3d94-8fa8-59808613ba78",
+      "name": "Polyvinyl chloride waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "fcca7fcd-f93a-3b21-9c82-84c0208e01f6",
+      "name": "Printed circuitboards waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "bf81535b-d6fa-3ffa-b904-022838568417",
+      "name": "Process waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "4861943c-4812-3923-b95d-85a6f29c8a2f",
+      "name": "Production waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "add3e7b2-3ec6-3957-ad58-f9bfe45ce505",
+      "name": "Production waste, not inert",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "996ab6fd-1b29-38a5-91a8-93635d6111c8",
+      "name": "Propylene glycol waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "123ca625-2743-3fa5-8d00-90ed05c0f9c4",
+      "name": "Refinery sludge",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "9a92e377-59d5-3acb-adf7-bd95d3981c79",
+      "name": "Rejects",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "e5192c9d-6f7b-3cc6-aa30-0b65d53b8225",
+      "name": "Rejects, corrugated cardboard",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "cc5cf006-cc4a-3b55-8cf3-6f0866e18148",
+      "name": "Residues",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "f21f1a46-1f0d-3c42-a13e-d885149d6769",
+      "name": "Slags",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "e2ec0a8e-84af-3789-8c3e-68b31c7df8c0",
+      "name": "Slags and ashes",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "ff56c49f-ffed-3961-abf6-70bed22a10de",
+      "name": "Sludge",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "78c49707-31d5-3e22-8a37-5a444bc2a894",
+      "name": "Soot",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "d9de9bab-1532-397d-a757-70a625002467",
+      "name": "Steel waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "5d63573f-6bc5-3a8e-990e-1a768141e925",
+      "name": "Stones and rubble",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "1a760b1a-8912-3254-8ce9-4afcbfdcf11d",
+      "name": "Tin waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "c89091de-ea88-3854-bf33-9642d67d6a11",
+      "name": "Tinder from rolling drum",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "a3a6a9b8-066e-374d-a86e-49c478ce504b",
+      "name": "Waste in bioactive landfill",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "1b868bdd-c325-3eae-a78f-af922fa592e5",
+      "name": "Waste in incineration",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "91e62f7a-29ec-38d7-9b9c-43cc6d4039f1",
+      "name": "Waste in inert landfill",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b07d25ff-192d-3043-8769-7eca81efc998",
+      "name": "Waste to recycling",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "48bd18b7-4d61-3c64-a4bd-6f4f250e75a2",
+      "name": "Waste, final, inert",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "cbc726f6-857d-3a8e-b760-e59af06c618a",
+      "name": "Waste, from drilling, unspecified",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "2a6b34cd-08f2-3c6e-ae3f-342e957cfde0",
+      "name": "Waste, from incinerator",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "47b4e2be-4b3c-3f6d-be29-89482770e660",
+      "name": "Waste, industrial",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "5bc40db7-52f1-3d2e-8f21-be1abeea61bc",
+      "name": "Waste, inorganic",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "c96f4c02-e1d7-3a2d-940f-4873ee4c25ff",
+      "name": "Waste, solid",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "8e95647c-5a4b-38fe-81e8-792b99f35220",
+      "name": "Waste, toxic",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "4bccc060-cff1-358c-a729-aa34287117e0",
+      "name": "Waste, unspecified",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "905e5fa3-2f02-3d5e-9c78-654f1a332509",
+      "name": "Welding dust",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "22273ff5-a892-3b30-a806-ad97a47be6b1",
+      "name": "Wood ashes",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "2aafc8d4-b666-3e85-8a4b-c584a075c91c",
+      "name": "Wood waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b3e0e0b6-d96f-39f4-b05c-d733f9ab3c90",
+      "name": "Wood, sawdust",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "fc0de4cd-76dc-3ad2-805f-59d062b90a9f",
+      "name": "Zeolite waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "40cc4975-30b9-34f4-afca-b198b993b504",
+      "name": "Zinc waste",
+      "context": [
+        "Waste",
+        "ecopoints 97, CH"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "09db2a17-976e-333d-8d2a-43c940cf811d",
+      "name": "Aluminium waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "049dea16-329c-3047-9d0a-d4003dfeb2f0",
+      "name": "Asbestos",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "83b4c6ad-1c72-304d-9853-a7bd33de999f",
+      "name": "Asphalt waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "8fb7ee00-88e5-3e6a-96d3-3b9cc0425a76",
+      "name": "Bilge oil",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b32e0b2f-e4bd-388c-be37-ffe1e6ee20a8",
+      "name": "Bitumen waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "9c7d208b-f58c-3f7a-a3cf-0ddf7dfce612",
+      "name": "Bulk waste, unspecified",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "0d25b266-3dae-3c68-8511-1a90e02d35d5",
+      "name": "Calcium fluoride waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "db042614-328f-375b-beac-480ffb69db20",
+      "name": "Cardboard waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "0a542745-3ceb-3652-8c90-8f737abe2035",
+      "name": "Carton waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "9f527622-cc4a-3014-a59e-a0383c602b5d",
+      "name": "Catalyst waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "24fc98bf-347b-39ec-80c5-564f802caaa9",
+      "name": "Cathode iron ingots waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b05510e5-84d1-35d4-8e53-1e1bfefc0530",
+      "name": "Cathode loss",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "f25fdf2c-716f-3a3d-a3f8-86d94ab82d89",
+      "name": "Chemical waste, inert",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "36d26020-74dd-3bf9-9ef6-55da78d1e430",
+      "name": "Chemical waste, regulated",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "3811e08a-d742-32a5-b2a2-6508ef1417ff",
+      "name": "Chemical waste, unspecified",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "7ef05beb-fb4a-3360-a9de-7bfa68aecf24",
+      "name": "Chromium waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "3a16d0ae-4e4c-3dfe-9508-f1d5989c056c",
+      "name": "Coal ash",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "8dd293ea-e08c-3dcb-8add-7c0fc8e0e08f",
+      "name": "Coal tailings",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "1531f168-fb3e-3f1c-a86b-b77cf607b4da",
+      "name": "Construction waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "774fb860-455a-3b6f-8705-2a44fd028307",
+      "name": "Copper absorbent waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "a34be2b9-770d-322e-ae78-8025f6608514",
+      "name": "Copper waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "9ba18e08-6f4c-3fc6-89cd-a73275c4ebb0",
+      "name": "Dross",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "ed82d5c5-772e-38b9-b263-067771eb9ffd",
+      "name": "Dross for recycling",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "85f17f2f-e977-31c0-ba9f-59875c2c3659",
+      "name": "Dust, break-out",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "deae66ce-be55-34c8-a4bb-7753b1c9c663",
+      "name": "Dust, unspecified",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "5d61d46e-a5d0-3957-9c6d-1c7f83be6477",
+      "name": "E-saving bulb plastic waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "62390617-de1f-3250-8f4c-6d537447f82c",
+      "name": "E-saving bulb waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "fdb10687-f41f-3536-94bb-e01638d7ca60",
+      "name": "Electronic waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "d25c0f0d-e6ca-30e0-90c0-34dc5b76a50a",
+      "name": "Electrostatic filter dust",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "eaf4c236-c2a9-3f60-aae7-fd62a4b81d28",
+      "name": "Fluoride waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "999c67f3-8bf6-31d2-ad92-74c2287adc7f",
+      "name": "Fly ash",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "eeeb8cb4-6279-327d-a61f-f7007acdf604",
+      "name": "Gas pipe waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "92fccb3a-ad0c-35e3-b299-67bc7e65df19",
+      "name": "Glass waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "6cf12140-b640-3811-81ba-3d5058a4a43f",
+      "name": "Ion exchanger sludge",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "9bd354e4-d3c6-33aa-b494-f2524a0de8cc",
+      "name": "Iron waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "9817afb3-2fae-3a3e-b832-d1022a9cb8b0",
+      "name": "Light bulb waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "46cac109-62f2-3779-96e6-588752f12baf",
+      "name": "Limestone waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "19f60b63-b5d8-3689-835a-79ac8fd7f367",
+      "name": "Metal waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "3dd138a5-bd77-3ae5-baf5-1c53acabb4b8",
+      "name": "Mineral waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "a38ce396-868e-3795-a980-66ee3798a13a",
+      "name": "Mineral waste, from mining",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "abc65a45-5413-3d09-b40a-12c72cb4ed5d",
+      "name": "Mineral wool waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "f4a5dc3d-3db5-3964-83ef-06440d298df7",
+      "name": "Oil separator sludge",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "603b66f2-ef46-3411-a39e-1050292c863f",
+      "name": "Oil waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "5d740c43-ad82-30f6-a434-445b9766f277",
+      "name": "Packaging waste, paper and board",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "e3aefb80-8d8a-38fc-8ceb-07789268e9bb",
+      "name": "Packaging waste, plastic",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "937d37f5-8916-36a0-a111-e88a11a8ce60",
+      "name": "Packaging waste, steel",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "63976e1c-eb5a-3646-b881-86af7af3b437",
+      "name": "Packaging waste, unspecified",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "5e365dab-729a-3d43-b042-16ffd231d5ad",
+      "name": "Packaging waste, wood",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "24d1cd0b-c353-3414-8f55-747f53d036b1",
+      "name": "Paint waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "4649a2c3-02ac-396e-a21d-9cdb1fd432f5",
+      "name": "Photovoltaic cell waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "d1024ced-ff3d-3c63-85d9-7cb1eeb39215",
+      "name": "Photovoltaic panel waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "ec9cc2e9-8696-3c39-b8cd-b8d28b5763c7",
+      "name": "Photovoltaic production waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "a93a9979-abe0-3f78-b880-870976f7f99a",
+      "name": "Photovoltaic/EVA cell waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "419eda5b-e24d-3698-8d8a-ec9f79cacf0f",
+      "name": "Plastic waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "2dd8a3b2-24fc-3b3c-be21-4a8b186e0f3b",
+      "name": "Polyethylene waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "be59cf67-81c1-3eae-8d23-d5d1b2955c92",
+      "name": "Polystyrene waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "4c06dfa9-65ff-3a02-8c6f-6626425062b8",
+      "name": "Polyvinyl chloride waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "57803045-7938-3d40-b6fe-fd0355c1de86",
+      "name": "Printed circuitboards waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "bf57a5e8-3ead-3d2a-a4e2-a7df40703753",
+      "name": "Process waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "326277e2-2fe5-3a2e-9b0a-5cbce4ae3e52",
+      "name": "Production waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "3e34800b-0ec5-3158-a313-94cfa05bf88f",
+      "name": "Production waste, not inert",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "1eeebaae-87e5-327f-8851-5d78d99b09a2",
+      "name": "Propylene glycol waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "faef29a9-45bd-36c8-925f-31fd0237f7bc",
+      "name": "Refinery sludge",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b7634e1f-5e7e-3a16-8680-b3d410ecf303",
+      "name": "Rejects",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "7ee814d4-94fb-38ce-82ee-5b7d1032ded9",
+      "name": "Rejects, corrugated cardboard",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "2998ad55-eee9-36c4-9a07-4f5adb71de93",
+      "name": "Residues",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "ee68cb3c-70b2-3da4-8824-4ffd72135300",
+      "name": "Slags",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b417665b-91e7-3e73-88df-1bc8e4fe3266",
+      "name": "Slags and ashes",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "da99596a-950e-3a4d-9312-2d2d51e8c8c1",
+      "name": "Sludge",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "f840dcb2-a718-3158-a735-febece8784a9",
+      "name": "Soot",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "97917d2b-7f0c-350c-b58d-dac4b2d8078f",
+      "name": "Steel waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "6dabe51b-fde3-38af-8472-63f9cc6814e3",
+      "name": "Stones and rubble",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "088cf652-43f0-31fd-80d1-dc2c3fa5742d",
+      "name": "Tin waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "afdc158c-12e1-3882-a418-505be514acc2",
+      "name": "Tinder from rolling drum",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "708568f3-9861-3eab-a6d1-42b52d9e7482",
+      "name": "Waste in bioactive landfill",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "7c8c3fdc-60a4-3fdf-866f-ca6f306b225d",
+      "name": "Waste in incineration",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "543aa28a-8d26-382c-b9f2-7366032417f9",
+      "name": "Waste in inert landfill",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "2f3242cd-2f6b-38ae-9e23-f75559aa000a",
+      "name": "Waste to recycling",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "b2a42487-c684-3a29-b42f-1d2a2a3f3c7e",
+      "name": "Waste, final, inert",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "9652a85d-b07a-3ce2-bc54-41e0d85318ce",
+      "name": "Waste, from drilling, unspecified",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "fd265cb4-b88a-3aa8-9b63-c338f1894c31",
+      "name": "Waste, from incinerator",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "5d4e2a94-98a6-352c-bb33-54d7257bf2a6",
+      "name": "Waste, industrial",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "7c054e88-2b1f-3ee5-be3d-1b151f5a47ac",
+      "name": "Waste, inorganic",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "f344a40f-c2e6-4976-89d1-f76501e46d74",
+      "name": "Waste, landfilled",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "59866d0b-d253-3cb3-8ce6-e909fd91dede",
+      "name": "Waste, nuclear, unspecified/kg",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "7fbc72e9-6229-31f7-8d74-7b8e1cf2de03",
+      "name": "Waste, solid",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "1e9c49cf-4cb8-396e-bc7f-bd1f51cdb5a0",
+      "name": "Waste, toxic",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "4c304486-e1c4-3b8d-be23-5457da302c90",
+      "name": "Waste, unspecified",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "15264e41-3747-36df-8964-834c3e107736",
+      "name": "Welding dust",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "27465a84-9006-304c-99d5-b4d6ea3e6458",
+      "name": "Wood ashes",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "f99ba19c-1f18-3c01-8b48-5986ed108a77",
+      "name": "Wood waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "c81d4c75-f173-38c7-85e3-a1db8acd7def",
+      "name": "Wood, sawdust",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "8a7ad331-ede9-311d-b29b-086d51fd242e",
+      "name": "Zeolite waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "e491b4cd-0598-36ae-a6e0-4681e294460f",
+      "name": "Zinc waste",
+      "context": [
+        "Waste",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "A `Waste` row in GreenDelta's package is final waste leaving the product system -- an inventory figure that Ecological Scarcity 1997 scores, not an exchange with the environment -- and the consensus context vocabulary has no waste compartment for it. Refused as AGRIBALYSE's `Final waste flows` rows were; see #189 for that decision.",
+      "comment": "One of the 186 rows of the package's two `Waste` compartments (94 in `unspecified`, 92 in `ecopoints 97, CH`), refused together on 2026-10-11 by the decision to treat them as AGRIBALYSE's are. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "84afcd29-88fe-42e7-9fc8-6c07eff5461e",
+      "name": "Particulates, < 2.5 um, black carbon",
+      "context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "16ca9d1c-aac8-4d5e-a4ee-a1256933a1c6",
+      "name": "Particulates, < 2.5 um, black carbon",
+      "context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "3eebe485-931b-4e11-b5d5-ad6116e40562",
+      "name": "Particulates, < 2.5 um, black carbon",
+      "context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "a5246e8f-d7f0-4e4b-9e3f-64b0afe8a27a",
+      "name": "Particulates, < 2.5 um, black carbon",
+      "context": [
+        "Emission to air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "34489fd3-940b-472f-a741-7524745d464d",
+      "name": "Particulates, < 2.5 um, black carbon",
+      "context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "f1a6a1c8-d204-4cac-892c-c941ed44d3ae",
+      "name": "Particulates, > 10 um, black carbon",
+      "context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "36665edc-fbc1-457e-9b6d-68ab76566960",
+      "name": "Particulates, > 10 um, black carbon",
+      "context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "879bd0a8-26e3-4e8a-9db2-0a439c455e4f",
+      "name": "Particulates, > 10 um, black carbon",
+      "context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "7f7498e3-e3d9-4572-bc0f-a1b1d54705f0",
+      "name": "Particulates, > 10 um, black carbon",
+      "context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "c8e65413-c37b-488a-9dbc-9a7b491f0b28",
+      "name": "Particulates, > 2.5 um, and < 10um, black carbon",
+      "context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "10450108-1a0b-40d2-8368-cbd50b665093",
+      "name": "Particulates, > 2.5 um, and < 10um, black carbon",
+      "context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "243f99f7-e13d-4f08-b86c-63799dea793d",
+      "name": "Particulates, > 2.5 um, and < 10um, black carbon",
+      "context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "4378aa6f-185e-469e-8257-0d909e8d5003",
+      "name": "Particulates, > 2.5 um, and < 10um, black carbon",
+      "context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "Black carbon, a component of airborne particulate matter, sized by the window in its name. GreenDelta characterises these rows for particulate matter with the same factors as the plain particle flow of that window and compartment, and also gives them IPCC 2021 climate factors (GWP100 658.6 kg CO2-eq/kg) that no plain particle row carries. Read as the size window, the climate factor would land on every particle flow of that window; whether black carbon is a substance of its own is not decided yet, so the row is refused until it is.",
+      "comment": "One of the 13 black-carbon rows of the package (5 below 2.5 um, 4 between 2.5 and 10 um, 4 above 10 um), refused together on 2026-10-11. Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip`; the uuid is GreenDelta's own `@id`."
+    }
+  ]
+}

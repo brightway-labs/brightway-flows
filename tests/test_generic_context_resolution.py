@@ -65,10 +65,13 @@ PREFIX = "https://vocab.brightway.one/flow-contexts/"
 #: rows in the `Social` compartment ecoinvent's refusal had already emptied --
 #: so `social` has lost its rule twice, to two lists, for two reasons.  It was
 #: 242, 10 and 122 until #381 removed BAFU's rule for `resources /
-#: unspecified`, which names no medium and was written by no other list.
-RULE_COUNT = 241
-LIST_COUNT = 10
-COMPARTMENT_COUNT = 121
+#: unspecified`, which names no medium and was written by no other list, and
+#: the full openLCA LCIA package 2.8.2 was registered as a list: it repeats
+#: GreenDelta's 21 rules under its own name and writes 10 compartments
+#: GreenDelta's EF 3.1 package never used.
+RULE_COUNT = 272
+LIST_COUNT = 11
+COMPARTMENT_COUNT = 131
 
 #: Every consensus context, and every one of them printed differently.
 CONTEXT_COUNT = 61
@@ -124,7 +127,7 @@ class TheListsAgreeAboutTheirCompartmentsTestCase(_CachedLoaders, unittest.TestC
         "bafu-2026-v1": 25,
         "ecoinvent": 26,
         "ef 3.1": 37,
-        "greendelta": 21,
+        "greendelta": 31,
         "stepwise-2006-1.09": 10,
     }
 
@@ -165,7 +168,14 @@ class TheListsAgreeAboutTheirCompartmentsTestCase(_CachedLoaders, unittest.TestC
 
     @staticmethod
     def _vendor(source: str) -> str:
-        return "ecoinvent" if source.startswith("ecoinvent") else source
+        if source.startswith("ecoinvent"):
+            return "ecoinvent"
+        # GreenDelta's whole method package, merged as a list, writes the
+        # compartments of the EF 3.1 package it contains: one publisher's
+        # vocabulary, counted once as the ecoinvent releases are.
+        if source.startswith("openlca"):
+            return "greendelta"
+        return source
 
     def test_the_rules_still_come_from_several_lists(self):
         """Guards the tests below: one list cannot disagree with itself."""

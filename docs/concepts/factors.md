@@ -43,10 +43,18 @@ implementation of a method:
   workbook `fetch-lcia ecoinvent-3.12` downloads. These take two hops: the
   workbook names an ecoinvent flow, the merge says which consensus flow that
   became, and only then is there a factor about a flow of ours.
-- **`GreenDelta`** — 25,266 factors over 1,509 flows, read from the openLCA
-  method package `fetch-lcia bafu-2026-v1` downloads: `EF 3.1 Method (adapted)`
-  from *openLCA LCIA methods 2.8.0*, as BAFU's openLCA distribution ships it.
-  Their flows are found two ways. Most take the same two hops as ecoinvent's,
+- **`GreenDelta`** — `EF 3.1 Method (adapted)`, read by `fetch-lcia
+  bafu-2026-v1` out of GreenDelta's own method package, *openLCA LCIA Methods
+  2.8.2*: 183,654 factors over 33,045 of their flows. It used to be read from
+  the 2.8.0 copy inside BAFU's openLCA distribution, which held the same method
+  trimmed to 26,179 factors over 1,781 flows, and the counts in the rest of this
+  bullet are that copy's — 25,266 of its factors reached 1,509 flows of ours.
+  They have not yet been measured on a build that reads 2.8.2. The flows that
+  copy did not hold are mostly GreenDelta's own, and are reached through the
+  package's own flow list, [openLCA LCIA methods 2.8.2](../changes/openlca-2.8.2.md),
+  when a build merges it.
+
+  In the 2.8.0 copy, their flows were found two ways. Most take the same two hops as ecoinvent's,
   through whichever release has the flow: the package identifies flows by the
   **ecoinvent** UUID it was built against, declaring compatibility with
   ecoinvent 3.6 to 3.11, so 1,144 are reached through ecoinvent 3.12, 50 through

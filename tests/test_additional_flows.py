@@ -462,11 +462,11 @@ class EveryEcoinventIsComparedTestCase(unittest.TestCase):
         # The lists outside ecoinvent that carry a file carry no comparison
         # because there is nothing to compare: each is a single export, so its
         # `flows` list is empty by construction and the file exists for its
-        # `excluded` half -- Stepwise's nine rows (#167) and AGRIBALYSE's
-        # refused waste compartment (#189).
+        # `excluded` half -- Stepwise's nine rows (#167), and AGRIBALYSE's
+        # and openLCA's refused waste compartments (#189).
         self.assertEqual(
             declared - set(EXCHANGE_COUNTS),
-            {"stepwise-2006-1.09", "agribalyse-3.2"},
+            {"stepwise-2006-1.09", "agribalyse-3.2", "openlca-2.8.2"},
         )
 
     def test_each_manifest_names_its_own_file_and_it_is_on_disk(self):
@@ -607,7 +607,7 @@ class TheRegistryKnowsWhatIsRefusedTestCase(unittest.TestCase):
         refused = excluded_source_flows()
         self.assertEqual(
             set(refused),
-            {"ecoinvent-3.8", "stepwise-2006-1.09", "agribalyse-3.2"},
+            {"ecoinvent-3.8", "stepwise-2006-1.09", "agribalyse-3.2", "openlca-2.8.2"},
         )
         self.assertEqual(
             {record.uuid for record in refused["ecoinvent-3.8"]}, set(APOS_ONLY)
