@@ -67,6 +67,7 @@ from brightway_flows.merge.report import (
 )
 from brightway_flows.merge.rows import (
     match_source_rows,
+    shared_identifier_rows,
 )
 from brightway_flows.merge.store import (
     MergeRunInput,
@@ -176,9 +177,12 @@ def _enrich_against_consensus(
     # which is not marked.  Nothing is corrupted, nothing is lost; the routing is
     # simply wrong, and silently so.
     #
-    # Nothing produces a collision today: #212 removed the merge feedback file,
-    # which reused ecoinvent's uuids for consensus flows.  This makes a silent
-    # mis-route a loud failure if one returns.
+    # `merge_source_list` keeps rows that share a consensus flow's uuid out of
+    # this call -- GreenDelta's openLCA package ships 125 of EF 3.1's flows
+    # under EF's uuids -- and matches them by that uuid instead.  #212 removed
+    # the other way a collision arose, the merge feedback file, which reused
+    # ecoinvent's uuids for consensus flows.  This makes a silent mis-route a
+    # loud failure if a third appears.
     collisions = {f.uuid for f in consensus_flows} & {f.uuid for f in source_flows}
     if collisions:
         raise ValueError(
@@ -427,11 +431,28 @@ def merge_source_list(
             max_rows=max_rows,
             kept_by_uuid=kept_by_uuid,
         )
+    # A row carrying a consensus flow's own uuid is that flow by the vendor's
+    # statement, and goes onto it directly below.  Kept out of the enrichment,
+    # which addresses a change by uuid and would send changes meant for the
+    # consensus flow to the row.
+    consensus_ids = {flow.elementary_flow_id for flow in elementary}
+    shared_identifier_uuids = {
+        flow.uuid.strip() for flow in source_flows if flow.uuid.strip() in consensus_ids
+    }
+    if shared_identifier_uuids:
+        logger.info(
+            "source_rows_share_consensus_identifiers",
+            source=source.key,
+            count=len(shared_identifier_uuids),
+        )
     if transformers:
         with timings.stage("merge_enrich", detail=source.key):
             _enrich_against_consensus(
                 source=source,
-                source_flows=source_flows,
+                source_flows=[
+                    flow for flow in source_flows
+                    if flow.uuid.strip() not in shared_identifier_uuids
+                ],
                 transformers=transformers,
                 timings=timings,
             )
@@ -466,11 +487,12 @@ def merge_source_list(
         if flow.cas_numbers
     }
 
+    declared_table = load_prepared_match_table(source, registered_as=registered_as)
     with timings.stage("merge_match_rows", detail=source.key):
         match_source_rows(
             source_flows=source_flows,
-            replace_table=load_prepared_match_table(
-                source, registered_as=registered_as
+            replace_table=declared_table + shared_identifier_rows(
+                source_flows, consensus_ids=consensus_ids, declared=declared_table
             ),
             units_index=units_index,
             indexes=indexes,

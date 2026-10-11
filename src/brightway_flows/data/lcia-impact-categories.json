@@ -36,9 +36,9 @@
       "name": "GreenDelta",
       "role": "transcription",
       "decides": false,
-      "release": "openLCA LCIA methods 2.8.0 adapted",
+      "release": "openLCA LCIA Methods 2.8.2",
       "identifiers_from": "jrc",
-      "source": "the openLCA JSON-LD package shipped inside BAFU's 2026 v1 distribution",
+      "source": "GreenDelta's openLCA LCIA methods package, the JSON-LD archive the openlca-2.8.2 flow list is read from",
       "factors": {
         "from": "source-list",
         "list": "bafu-2026-v1",

@@ -1,0 +1,17 @@
+{
+  "list_name": "openlca",
+  "list_version": "2.8.2",
+  "role": "source",
+  "merge_priority": 500,
+  "adapter": "brightway_flows.integrations.openlca:fetch",
+  "flow_iri_prefix": "https://vocab.brightway.one/openlca/2.8.2/flow/",
+  "prepared_match_table": null,
+  "concept_associations": null,
+  "inputs": {
+    "flows": "openlca-2.8.2.json",
+    "manual_fixes": "openlca-2.8.2-manual-fixes.json",
+    "manual_additions": null,
+    "additional_flows": "openlca-2.8.2-additional-flows.json",
+    "match_overrides": null
+  }
+}

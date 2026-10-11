@@ -17,7 +17,7 @@ loaded today rather than what this module knows about:
 |---|---:|---|
 | ``European Commission — JRC`` | 25 | the 25 ILCD method files in ``EF-v3.1.zip`` |
 | ``ecoinvent Centre`` | 25 | ``LCIA Implementation 3.12.xlsx``, method ``EF v3.1`` |
-| ``GreenDelta`` | 25 | ``bafu-greendelta-lcia.zip``, ``EF 3.1 Method (adapted)`` |
+| ``GreenDelta`` | 25 | ``openLCA LCIA Methods 2.8.2 *.zip``, ``EF 3.1 Method (adapted)`` |
 | ``brightway-flows`` | 25 | ours, derived from the deciding two, each factor saying how |
 
 **Three of the four are transcriptions, and only two of those decide anything.**

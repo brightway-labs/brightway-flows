@@ -129,9 +129,9 @@ Your compartments are yours. You do not have to translate them.
 `["Emissions to air", "low. pop."]` is what a SimaPro export writes, and it is
 understood, because BAFU has already written down what those 25 compartments
 mean. So has ecoinvent for its 26, EF 3.1 for its 37, GreenDelta's openLCA
-method package for its 21, and Stepwise 2006 for its 10 — and AGRIBALYSE 3.2 for its 22,
+method package for its 31, and Stepwise 2006 for its 10 — and AGRIBALYSE 3.2 for its 22,
 eighteen of which are BAFU's spellings again, because both lists carry
-SimaPro's export vocabulary. Between them, 121
+SimaPro's export vocabulary. Between them, 131
 compartment names are recognised.
 
 Stepwise's ten are a SimaPro *method* file's vocabulary — `Air /

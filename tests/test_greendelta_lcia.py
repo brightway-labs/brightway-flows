@@ -2,18 +2,19 @@
 
 The third implementation of a method this list holds, and the second that is not
 the method's own publisher's.  Every number below is measured against
-`bafu-greendelta-lcia.zip` -- BAFU's openLCA distribution of `openLCA LCIA
-methods 2.8.0`, digest `c7c98b84…7e6f` -- and the point of asserting them in the
+`openLCA LCIA Methods 2.8.2 2026-07-01.zip` -- GreenDelta's full method package,
+digest `c4911953…6ef29` -- and the point of asserting them in the
 adapter rather than recording them once is that each is a fact about a package:
 
 * its 25 categories are addressed by the JRC's own ILCD method-file UUIDs, so a
   factor of theirs is filed under one of our categories by identity and not by a
   name nobody could derive (`Ecotoxicity freshwater (organics)`);
-* 26,179 factors over 1,781 flows, no ``(category, flow, location)`` stated
-  twice, so nothing silently wins;
+* 183,654 factors over 33,045 flows, no ``(category, flow, location)`` stated
+  twice with two numbers, so nothing silently wins -- 1,897 water-use rows are
+  repeated verbatim and read once;
 * every factor is stated per its flow's own reference unit, so no conversion is
   needed that the merge did not already record;
-* 20,332 of the rows carry a location, and every location the package ships has
+* 91,304 of the rows carry a location, and every location the package ships has
   a code -- which is the spelling `StatedFactor.geography` holds and what makes
   a regionalised row of theirs comparable with the JRC's.
 
@@ -35,8 +36,7 @@ import orjson
 from brightway_flows.domain.lcia.crosswalk import ef_method
 from brightway_flows.integrations.greendelta_lcia import (
     FACTORS_SCHEMA_VERSION,
-    GREENDELTA_LCIA_SHA256,
-    GREENDELTA_LCIA_URL,
+    IGNORED_CATEGORIES,
     GreenDeltaLciaError,
     _check_categories,
     _factors,
@@ -113,8 +113,11 @@ def _package(
         "@type": "ImpactMethod",
         "@id": "m-1",
         "name": GREENDELTA_METHOD_NAME,
-        "category": "openLCA LCIA Methods 2.8.0 adapted",
+        "category": "openLCA LCIA Methods 2.8.2",
         "version": "00.00.037",
+        "impactCategories": [
+            {"@type": "ImpactCategory", "@id": entry["@id"]} for entry in categories
+        ],
     }
     with zipfile.ZipFile(path, "w") as archive:
         archive.writestr("openlca.json", json.dumps({"schemaVersion": 5}))
@@ -161,7 +164,7 @@ class ReadingThePackageTestCase(unittest.TestCase):
             flows=kwargs.pop("flows", [self.flow]),
             **kwargs,
         )
-        return path, read_package(path)
+        return path, read_package(path, method_name=GREENDELTA_METHOD_NAME)
 
     def test_a_package_is_its_method_its_categories_and_its_flows(self):
         _path, package = self._read()
@@ -169,13 +172,42 @@ class ReadingThePackageTestCase(unittest.TestCase):
         self.assertEqual(len(package.categories), 1)
         self.assertEqual(sorted(package.flows), ["f-1"])
 
-    def test_two_methods_is_not_this_package(self):
-        """Picking the first would publish half an implementation under the
+    def test_the_named_method_is_read_out_of_many(self):
+        """The full package ships 45 methods; only the categories the named one
+        lists are its own."""
+        other_category = {**self.category, "@id": "not-ours", "impactFactors": []}
+        ours = {"@type": "ImpactMethod", "@id": "m-1", "name": GREENDELTA_METHOD_NAME,
+                "impactCategories": [{"@id": FIRST}]}
+        other = {"@type": "ImpactMethod", "@id": "m-2", "name": "ReCiPe 2016",
+                 "impactCategories": [{"@id": "not-ours"}]}
+        _path, package = self._read(
+            categories=[self.category, other_category], methods=[ours, other]
+        )
+        self.assertEqual(package.method_name, GREENDELTA_METHOD_NAME)
+        self.assertEqual([c["@id"] for c in package.categories], [FIRST])
+
+    def test_two_methods_of_one_name_is_not_this_package(self):
+        """Picking the first would publish one implementation under the
         other's name."""
-        second = {"@type": "ImpactMethod", "@id": "m-2", "name": "something else"}
         first = {"@type": "ImpactMethod", "@id": "m-1", "name": GREENDELTA_METHOD_NAME}
+        second = {**first, "@id": "m-2"}
         with self.assertRaises(GreenDeltaLciaError):
             self._read(methods=[first, second])
+
+    def test_no_method_of_the_name_is_not_this_package(self):
+        other = {"@type": "ImpactMethod", "@id": "m-2", "name": "something else"}
+        with self.assertRaises(GreenDeltaLciaError):
+            self._read(methods=[other])
+
+    def test_an_ignored_category_is_not_read(self):
+        """2.8.2's own water-use variant is not a category of EF 3.1."""
+        (ignored,) = IGNORED_CATEGORIES
+        variant = {**self.category, "@id": ignored, "name": "Water use (adapted spatialization)"}
+        method = {"@type": "ImpactMethod", "@id": "m-1", "name": GREENDELTA_METHOD_NAME,
+                  "impactCategories": [{"@id": FIRST}, {"@id": ignored}]}
+        path, package = self._read(categories=[self.category, variant], methods=[method])
+        self.assertEqual([c["@id"] for c in package.categories], [FIRST])
+        _check_categories(package, path=path)
 
     def test_a_factor_is_the_number_the_flow_and_the_category(self):
         path, package = self._read()
@@ -225,6 +257,17 @@ class ReadingThePackageTestCase(unittest.TestCase):
         path, package = self._read()
         with self.assertRaises(GreenDeltaLciaError):
             _factors(package, path=path)
+
+    def test_one_flow_stated_twice_with_one_number_is_read_once(self):
+        """2.8.2 repeats 1,897 water-use rows verbatim; a repeat is not a
+        second statement."""
+        self.category["impactFactors"] = [
+            _factor(self.flow, 1.5),
+            _factor(self.flow, 1.5),
+        ]
+        path, package = self._read()
+        factors, _described = _factors(package, path=path)
+        self.assertEqual([factor.amount for factor in factors], [1.5])
 
     def test_one_flow_stated_twice_in_a_category_stops_the_read(self):
         """Two numbers for one (category, flow, place) means one of them wins
@@ -309,12 +352,12 @@ class WhatTheFetchWritesTestCase(unittest.TestCase):
     def _fetch(self):
         import brightway_flows.integrations.greendelta_lcia as module
 
-        original = module.greendelta_lcia_zip_path
-        module.greendelta_lcia_zip_path = lambda: self.archive
+        original = module.openlca_lcia_zip_path
+        module.openlca_lcia_zip_path = lambda _version: self.archive
         try:
             return fetch(self.source)
         finally:
-            module.greendelta_lcia_zip_path = original
+            module.openlca_lcia_zip_path = original
 
     def test_it_writes_the_records_and_says_what_it_read(self):
         path = self._fetch()
@@ -345,9 +388,9 @@ class WhatTheFetchWritesTestCase(unittest.TestCase):
         with self.assertRaises(GreenDeltaLciaError):
             load_factors(self.factors_path)
 
-    def test_a_package_shipping_another_method_stops_the_fetch(self):
-        """The manifest declares which method is ingested; a package that ships
-        a different one is not the artifact it was declared for."""
+    def test_a_package_without_the_declared_method_stops_the_fetch(self):
+        """The manifest declares which method is ingested; a package that does
+        not ship it is not the artifact it was declared for."""
         source = SourceList(
             list_name="bafu",
             list_version="2026-v1",
@@ -378,12 +421,15 @@ class TheManifestDeclaresItTestCase(unittest.TestCase):
         )
 
     def test_it_is_resolved_through_ecoinvent_newest_first(self):
-        """Their package names flows by the ecoinvent UUID it was built against,
-        and a UUID ecoinvent has reused means the later release's substance."""
+        """Their package names many flows by the ecoinvent UUID it was built
+        against, and a UUID ecoinvent has reused means the later release's
+        substance.  Their own flows are reached through the package's own list,
+        tried last so that every flow the ecoinvent route reaches keeps its
+        target."""
         source = known_source_lists()["bafu-2026-v1"]
         self.assertEqual(
             source.lcia.resolve_through,
-            ("ecoinvent-3.12", "ecoinvent-3.8", "EF-3.1"),
+            ("ecoinvent-3.12", "ecoinvent-3.8", "EF-3.1", "openlca-2.8.2"),
         )
 
     def test_every_list_it_resolves_through_is_registered(self):
@@ -402,18 +448,23 @@ class TheManifestDeclaresItTestCase(unittest.TestCase):
             callable(load_adapter(source, dotted_path=source.lcia.adapter))
         )
 
-    def test_the_archive_is_named_and_pinned(self):
-        """BAFU hands the distribution over rather than publishing it, so this
-        project hosts the copy it read and states which bytes those are."""
-        self.assertTrue(GREENDELTA_LCIA_URL.startswith("https://"))
-        self.assertEqual(len(GREENDELTA_LCIA_SHA256), 64)
+    def test_the_archive_is_the_package_list_s(self):
+        """One archive, read by the flow list and by this; the two cannot be
+        two releases of the package."""
+        from brightway_flows.integrations.greendelta_lcia import PACKAGE_LIST
+
+        self.assertIn(PACKAGE_LIST, known_source_lists())
+        self.assertEqual(
+            known_source_lists()[PACKAGE_LIST].adapter,
+            "brightway_flows.integrations.openlca:fetch",
+        )
 
 
 class WhatAFetchWroteTestCase(unittest.TestCase):
     """The measured numbers, against a file a real fetch produced.
 
-    Skipped where nothing has fetched: `fetch-lcia bafu-2026-v1` downloads a
-    9.6 MB archive and no test may do that.
+    Skipped where nothing has fetched: `fetch-lcia bafu-2026-v1` reads a
+    167 MB archive placed by hand.
     """
 
     def setUp(self):
@@ -426,21 +477,22 @@ class WhatAFetchWroteTestCase(unittest.TestCase):
 
     def test_the_package_it_was_read_from(self):
         self.assertEqual(
-            self.payload["archive_sha256"], GREENDELTA_LCIA_SHA256
+            self.payload["archive"], "openLCA LCIA Methods 2.8.2 2026-07-01.zip"
         )
+        self.assertEqual(self.payload["package"], "openLCA LCIA Methods 2.8.2")
         self.assertEqual(self.method["method"], GREENDELTA_METHOD_NAME)
 
-    def test_twenty_six_thousand_factors_over_one_thousand_flows(self):
-        self.assertEqual(self.method["factor_count"], 26179)
-        self.assertEqual(self.method["flow_count"], 1781)
+    def test_a_hundred_and_eighty_thousand_factors_over_thirty_thousand_flows(self):
+        self.assertEqual(self.method["factor_count"], 183_654)
+        self.assertEqual(self.method["flow_count"], 33_045)
         self.assertEqual(len(self.method["categories"]), 25)
 
     def test_the_regionalised_rows(self):
-        """Land use and water use are stated per country, and that is most of
-        the file: 20,332 of 26,179."""
+        """Land use, water use, acidification, particulate matter and the
+        others are stated per place: 91,304 of 183,654 rows, over 429 codes."""
         placed = [row for row in self.method["factors"] if row["geography"]]
-        self.assertEqual(len(placed), 20332)
-        self.assertEqual(len({row["geography"] for row in placed}), 223)
+        self.assertEqual(len(placed), 91_304)
+        self.assertEqual(len({row["geography"] for row in placed}), 429)
 
     def test_every_category_is_addressed_by_the_jrc_s_uuid(self):
         known = ef_method().by_stated_identifier("jrc")
@@ -584,7 +636,7 @@ class ReadingWaterUseTestCase(unittest.TestCase):
             categories=[category],
             flows=[self.withdrawal, self.returned],
         )
-        package = read_package(path)
+        package = read_package(path, method_name=GREENDELTA_METHOD_NAME)
         _check_categories(package, path=path)
         factors, _described = _factors(package, path=path)
         return {factor.flow_uuid: factor.amount for factor in factors}

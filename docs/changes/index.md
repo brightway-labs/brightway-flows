@@ -24,6 +24,7 @@ not merged:
 | BAFU 2026 v1 | Merged third | [BAFU 2026 v1](bafu-2026-v1.md) |
 | Stepwise 2006 | Merged fourth | [Stepwise 2006](stepwise-2006.md) |
 | AGRIBALYSE 3.2 | Merged last; in every build since release 1.0.0 | [AGRIBALYSE 3.2](agribalyse-3.2.md) |
+| openLCA LCIA methods 2.8.2 | Curated, and available to merge; not part of the standard build | [openLCA LCIA methods 2.8.2](openlca-2.8.2.md) |
 
 ## The four kinds of change these pages show
 
