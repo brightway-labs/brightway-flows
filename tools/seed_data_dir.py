@@ -56,10 +56,10 @@ SHARED_PATTERNS: tuple[str, ...] = (
     # Vendor archives and workbooks.
     "EF-v3.1.zip",
     "BAFU-*_ecoSpold v1.zip",
-    # BAFU's openLCA distribution, holding GreenDelta's method package.  This
-    # one *is* downloadable -- the project hosts the copy it read -- but it is
-    # 9.6 MB and the same bytes on every branch, so a worktree links it.
-    "bafu-greendelta-lcia.zip",
+    # GreenDelta's full method package, under the name it ships with --
+    # 167 MB, and obtained from openLCA Nexus rather than from a stable URL.
+    # Both the `openlca` flow list and BAFU's GreenDelta EF 3.1 read it.
+    "openLCA LCIA Methods *.zip",
     "Stepwise2006_v1.09.csv",
     # AGRIBALYSE's SimaPro process export, under the name ADEME circulates it
     # as -- 507 MB, handed over rather than downloadable, like BAFU's archive.

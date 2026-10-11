@@ -79,7 +79,7 @@ consulted at all.
 The exclusivity is the fix, not a precaution, because these rows have nothing
 else worth reading:
 
-- **A particle size window.** Not one of the 233 rows in the size-class table
+- **A particle size window.** Not one of the 276 rows in the size-class table
   carries a registry number, so before this rung existed they fell through to
   their names — and the names are not theirs to trust. `Particles (PM10)`
   carries both of ecoinvent's coarse-fraction spellings as synonyms, so four of

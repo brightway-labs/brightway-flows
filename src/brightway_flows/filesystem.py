@@ -128,19 +128,28 @@ def agribalyse_csv_path(list_version: str) -> Path:
     return DATA_DIR / f"AGB{list_version.replace('.', '')}_final.CSV"
 
 
-def greendelta_lcia_zip_path() -> Path:
-    """GreenDelta's openLCA method package, under the name it is hosted as.
+def openlca_lcia_zip_path(list_version: str) -> Path:
+    """GreenDelta's openLCA LCIA method package *list_version*, as shipped.
 
-    One release rather than one per version, unlike BAFU's ecoSpold archive:
-    the package inside is ``openLCA LCIA methods 2.8.0``, which is a version of
-    GreenDelta's methods and not of BAFU's export, and the file that says which
-    one was read is the factors file the adapter writes -- it records the
-    package, its version and the archive's digest.
+    GreenDelta names the archive by version and release date --
+    ``openLCA LCIA Methods 2.8.2 2026-07-01.zip`` -- and the date is not part of
+    the manifest's version, so the file is found by its version and the date is
+    whatever it is.  Two archives of one version is a question for a person
+    rather than a pick, and so is none.
 
-    A function rather than a constant so it reads like its ecoSpold sibling
-    above, and so a test can patch ``DATA_DIR`` and be answered.
+    :raises FileNotFoundError: if there is not exactly one archive of
+        *list_version* in the data directory.
     """
-    return DATA_DIR / "bafu-greendelta-lcia.zip"
+    pattern = f"openLCA LCIA Methods {list_version} *.zip"
+    found = sorted(DATA_DIR.glob(pattern))
+    if len(found) != 1:
+        raise FileNotFoundError(
+            f"Expected one archive matching {pattern!r} in {DATA_DIR}, found "
+            f"{[path.name for path in found] or 'none'}. GreenDelta's package is "
+            f"not downloadable from a stable URL: obtain it from openLCA Nexus "
+            f"and place it there under the name it ships with."
+        )
+    return found[0]
 
 
 ELEMENTARY_FLOWS_FILEPATH = DATA_DIR / "elementary-flows.json"

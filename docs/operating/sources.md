@@ -28,7 +28,8 @@ EF 3.1, and until now nothing defended it but whoever typed the command.
 The second vendor has arrived, so this is now doing something: BAFU 2026-v1
 declares `merge_priority: 200` against ecoinvent's 100, and a build naming both
 merges ecoinvent first whichever order the flags were typed in. Stepwise 2006
-is third at 300, and AGRIBALYSE 3.2 fourth at 400. A run that reorders its lists says so with
+is third at 300, AGRIBALYSE 3.2 fourth at 400, and GreenDelta's openLCA
+LCIA methods 2.8.2 fifth at 500. A run that reorders its lists says so with
 `source_order_set_by_manifests`.
 
 ## One concept, not two

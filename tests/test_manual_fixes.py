@@ -637,8 +637,17 @@ class OrganicBoundNitrogenIsNotNitrogenGasTestCase(unittest.TestCase):
     #: cannot quietly lose these rows and make the checks below vacuous, and a
     #: literal that only fits ecoinvent's compartment list makes registering
     #: any other list look like a regression.
-    ROWS_PER_LIST = {"bafu-2026-v1": 4}
+    #: GreenDelta's openLCA package has eleven, one per water compartment it
+    #: uses.
+    ROWS_PER_LIST = {"bafu-2026-v1": 4, "openlca-2.8.2": 11}
     DEFAULT_ROWS = 5
+
+    #: Names besides the gas that a list still writes 7727-37-9 on, pinned so a
+    #: new one arrives here.  GreenDelta's `Nitrogen, NO` is nitrogen emitted
+    #: to water in Norway -- its description says `NO = Norway` -- a nutrient
+    #: load with the country written into the name, like the openLCA land rows
+    #: that are not yet read; it goes when the place is split off the name.
+    ALSO_CLAIMING = {"openlca-2.8.2": {"nitrogen, no"}}
 
     @classmethod
     def setUpClass(cls):
@@ -715,7 +724,9 @@ class OrganicBoundNitrogenIsNotNitrogenGasTestCase(unittest.TestCase):
                 if self.GAS in (f.get("cas_numbers") or [])
             }
             with self.subTest(source=key):
-                self.assertEqual(len(claiming), 1, claiming)
+                self.assertEqual(
+                    len(claiming - self.ALSO_CLAIMING.get(key, set())), 1, claiming
+                )
 
 
 class WasteHeatIsNotSomethingYouExtractTestCase(unittest.TestCase):
@@ -768,6 +779,9 @@ class WasteHeatIsNotSomethingYouExtractTestCase(unittest.TestCase):
         # right side of the system boundary -- AGRIBALYSE ships no resource-side
         # stray for the BAFU half of this case to apply to.
         "agribalyse-3.2": 13,
+        # `Heat, waste` in eighteen emission compartments and no resource-side
+        # stray.
+        "openlca-2.8.2": 18,
     }
 
     @classmethod

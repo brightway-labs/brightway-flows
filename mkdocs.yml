@@ -83,6 +83,7 @@ nav:
       - BAFU 2026 v1: changes/bafu-2026-v1.md
       - Stepwise 2006: changes/stepwise-2006.md
       - AGRIBALYSE 3.2: changes/agribalyse-3.2.md
+      - openLCA LCIA methods 2.8.2: changes/openlca-2.8.2.md
   - Using the data:
       - Which output do I need?: using/outputs.md
       - Recipes: using/recipes.md
