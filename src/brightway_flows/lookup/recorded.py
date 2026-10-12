@@ -63,6 +63,7 @@ every answer it produced.
 from __future__ import annotations
 
 import sqlite3
+import math
 
 from dataclasses import dataclass
 from functools import cached_property, lru_cache
@@ -110,6 +111,8 @@ class RecordedDecision:
     list_version: str
     source_flow_uuid: str = ""
     source_flow_name: str = ""
+    source_unit: str = ""
+    unit_conversion_factor: float | None = None
 
     @property
     def list_key(self) -> str:
@@ -132,6 +135,7 @@ class RecordedNameAnswer:
     decision: RecordedDecision
     arbitrated_by: str = ""
     alternatives: tuple[str, ...] = ()
+    requires_identifier_for_quantity: bool = False
 
 
 def _collapsed(text: str) -> str:
@@ -265,14 +269,35 @@ class RecordedDecisions:
         try:
             rows = connection.execute(
                 "SELECT list_name, list_version, source_flow_uuid, "
-                "elementary_flow_uuid, source_flow_name "
+                "elementary_flow_uuid, source_flow_name, "
+                "json_extract(source_metadata_json, '$.unit'), "
+                "json_extract(source_metadata_json, '$.\"qudt:conversionMultiplier\"'), "
+                "json_type(source_metadata_json, '$.\"qudt:conversionMultiplier\"') "
                 "FROM elementary_flow_sources "
                 "WHERE source_flow_uuid IS NOT NULL AND source_flow_uuid != '' "
                 "ORDER BY id"
             ).fetchall()
         finally:
             connection.close()
-        for list_name, list_version, source_uuid, flow_uuid, source_name in rows:
+        for (
+            list_name,
+            list_version,
+            source_uuid,
+            flow_uuid,
+            source_name,
+            source_unit,
+            multiplier,
+            multiplier_type,
+        ) in rows:
+            if multiplier is not None and (
+                multiplier_type not in ("integer", "real")
+                or not isinstance(multiplier, (int, float))
+                or not math.isfinite(multiplier)
+                or multiplier <= 0
+            ):
+                raise ValueError(
+                    f"Invalid recorded quantity conversion for {list_name}-{list_version}/{source_uuid}"
+                )
             key = (f"{list_name}-{list_version}", str(source_uuid).strip())
             index.setdefault(key, []).append(
                 RecordedDecision(
@@ -281,9 +306,13 @@ class RecordedDecisions:
                     list_version=str(list_version or ""),
                     source_flow_uuid=str(source_uuid or ""),
                     source_flow_name=str(source_name or ""),
+                    source_unit=str(source_unit or ""),
+                    unit_conversion_factor=multiplier,
                 )
             )
-        logger.info("lookup_recorded_identifier_index", links=len(rows), keys=len(index))
+        logger.info(
+            "lookup_recorded_identifier_index", links=len(rows), keys=len(index)
+        )
         return {key: tuple(values) for key, values in index.items()}
 
     @cached_property
@@ -317,9 +346,9 @@ class RecordedDecisions:
         means the build itself resolved no place, which re-deriving cannot
         improve on and remaking the build will not change, so it is re-derived
         without being counted.
-        Decisions are deduplicated by ``(list, flow)``, so one list recording
-        the same answer in five spellings of a compartment is one voice, not
-        five.
+        Decisions retain distinct quantity bases even where their identities
+        agree. Otherwise a mass-composition factor could disappear behind a
+        second source row measured in the same unit.
         """
         from brightway_flows.lookup.query import (
             FlowQuery,
@@ -327,7 +356,7 @@ class RecordedDecisions:
             resolve_context,
         )
 
-        index: dict[tuple[str, str], dict[tuple[str, str], RecordedDecision]] = {}
+        index: dict[tuple[str, str], dict[tuple, RecordedDecision]] = {}
         connection = self._connect()
         try:
             placeholders = ", ".join("?" for _ in _MATCHED_OUTCOMES)
@@ -349,7 +378,15 @@ class RecordedDecisions:
         # compartments between them, so the resolution is remembered per
         # (list, compartment) rather than re-derived per row.
         resolutions: dict[tuple[str, tuple[str, ...]], ResolvedContext] = {}
-        for name, context_json, target, list_name, list_version, source_uuid, iri in rows:
+        for (
+            name,
+            context_json,
+            target,
+            list_name,
+            list_version,
+            source_uuid,
+            iri,
+        ) in rows:
             key = normalize_mapping_text(str(name or ""))
             if not key:
                 continue
@@ -360,6 +397,12 @@ class RecordedDecisions:
                 source_flow_uuid=str(source_uuid or ""),
                 source_flow_name=str(name or ""),
             )
+            links = self.for_identifier(decision.list_key, decision.source_flow_uuid)
+            linked = [
+                d for d in links if d.elementary_flow_id == decision.elementary_flow_id
+            ]
+            if len(linked) == 1:
+                decision = linked[0]
             # NULL from json_extract means the key is absent -- a record from
             # before #361 -- and only that is counted; "" means the field was
             # written and the build resolved nothing.
@@ -382,11 +425,13 @@ class RecordedDecisions:
                 cache_key = (decision.list_key, parts)
                 context = resolutions.get(cache_key)
                 if context is None:
-                    context = resolve_context(FlowQuery(
-                        name=str(name or ""),
-                        context=list(parts),
-                        source_label=_registered_source_label(decision.list_key),
-                    ))
+                    context = resolve_context(
+                        FlowQuery(
+                            name=str(name or ""),
+                            context=list(parts),
+                            source_label=_registered_source_label(decision.list_key),
+                        )
+                    )
                     resolutions[cache_key] = context
                 iri = context.context_iri
                 dimension = context.dimension
@@ -396,9 +441,15 @@ class RecordedDecisions:
             if iri:
                 rungs.append(iri)
             for rung in rungs:
-                index.setdefault((key, rung), {})[
-                    (decision.list_key, decision.elementary_flow_id)
-                ] = decision
+                for quantity_decision in linked or [decision]:
+                    index.setdefault((key, rung), {})[
+                        (
+                            quantity_decision.list_key,
+                            quantity_decision.elementary_flow_id,
+                            quantity_decision.source_unit,
+                            quantity_decision.unit_conversion_factor,
+                        )
+                    ] = quantity_decision
         built = {
             rung_key: tuple(decisions.values()) for rung_key, decisions in index.items()
         }
@@ -527,13 +578,22 @@ class RecordedDecisions:
             else []
         )
         if len(targets) == 1:
-            return RecordedNameAnswer(decision=named[0] if named else decisions[0])
+            relevant = named or decisions
+            return RecordedNameAnswer(
+                decision=relevant[0],
+                requires_identifier_for_quantity=any(
+                    d.unit_conversion_factor is not None for d in relevant
+                ),
+            )
         named_targets = {d.elementary_flow_id for d in named}
         if len(named_targets) == 1:
             return RecordedNameAnswer(
                 decision=named[0],
                 arbitrated_by=named[0].list_key,
                 alternatives=tuple(t for t in targets if t not in named_targets),
+                requires_identifier_for_quantity=any(
+                    d.unit_conversion_factor is not None for d in named
+                ),
             )
         return None
 

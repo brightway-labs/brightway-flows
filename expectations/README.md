@@ -119,6 +119,7 @@ that names it is not asking anything any more.
 | `target_deprecated` | whether it landed on a flow the build deprecates |
 | `target_substance_id` | the substance behind the flow |
 | `unit_mismatch`, `context_inconsistency` | the two flags the merge raises on a row |
+| `lookup_conversion_factor` | the complete original-source amount to target-unit ratio returned by public lookup of the exact source row; written as a string, with significant figures, like `amount` below |
 
 **About the set of rows a selector matched** — these are about the group, not
 about each member:

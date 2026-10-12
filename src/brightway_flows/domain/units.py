@@ -240,8 +240,8 @@ def unit_table_factor(source_unit: str, target_unit: str) -> float | None:
     two-hop row left, but the branch stays because it is what makes the next one
     safe.
     """
-    source_row = unit_row_for(source_unit)
-    target_row = unit_row_for(target_unit)
+    source_row = _quantity_unit_row(source_unit)
+    target_row = _quantity_unit_row(target_unit)
     if source_row is None or target_row is None:
         return None
     if source_row.get("quantity_kind_iri") != target_row.get("quantity_kind_iri"):
@@ -255,6 +255,37 @@ def unit_table_factor(source_unit: str, target_unit: str) -> float | None:
     if not isinstance(target_multiplier, (int, float)) or not target_multiplier:
         return None
     return float(source_multiplier) / float(target_multiplier)
+
+
+def _quantity_unit_row(unit: str) -> dict[str, Any] | None:
+    """Recognise quantity symbols without changing the case of an SI prefix.
+
+    The legacy spelling resolver is case-insensitive. That must not make a
+    caller's mJ into MJ when reporting a numerical conversion. Labels such as
+    'megajoule' remain case-insensitive; symbols and explicit aliases do not.
+    Unknown scales stay unknown until the vocabulary defines them.
+    """
+    row = unit_row_for(unit)
+    if row is None:
+        return None
+    token = unit.strip().replace("·", ".").replace("*", ".").replace(" ", "")
+    notation = str(row["notation"]).replace(" ", "")
+    # units.json publishes kwh; kWh is the usual SI spelling. Nm3 and EUR
+    # vintages have explicit aliases historically stored in lowercase.
+    aliases = {
+        **UNIT_ALIASES,
+        "kWh": "kwh",
+        "Nm3": "sm3",
+        "EUR2003": "EUR",
+        "EUR2005": "EUR",
+    }
+    if token == notation or aliases.get(token) == row["notation"]:
+        return row
+    if _normalize_unit_token(str(row.get("label") or "")) == _normalize_unit_token(
+        unit
+    ):
+        return row
+    return None
 
 
 def states_more_than_the_unit_table(

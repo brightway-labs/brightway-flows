@@ -50,6 +50,7 @@ from brightway_flows.domain.particulate_size import (
     size_class as particulate_size_class,
 )
 from brightway_flows.domain.flow_object import stable_flow_object_id
+from brightway_flows.domain.units import unit_table_factor
 from brightway_flows.flow_layers.land_hierarchy import land_object_id
 from brightway_flows.filesystem import CONSENSUS_DB_FILEPATH
 from brightway_flows.domain.particulate_size import UnreadParticleRowError
@@ -164,11 +165,13 @@ class FlowMatch:
     #: Which SimaPro habits preparation undid, in the order it undid them:
     #: `unit-suffix`, `geography`, `lineage-fix`.
     preparation_steps: tuple[str, ...] = ()
-    #: The unit matching was given where the lineage's corrections rebased the
-    #: caller's -- `MJ` for a row sent as `Uranium, 451 GJ per kg` in kg -- and
-    #: how many of it one of the caller's unit is.  Empty and None for every
-    #: other row, which is almost all of them.
+    #: The unit matching was given where lineage corrections rebased the
+    #: caller's unit: `MJ` for `Uranium, 451 GJ per kg` sent in kg.
+    #: Empty where preparation did not rebase it.
     prepared_unit: str = ""
+    #: Multiply the caller's original amount by this to express it in `unit`.
+    #: Includes preparation, ordinary unit scales and exact recorded source
+    #: conversions. None means unknown or inapplicable; it never means 1.
     unit_conversion_factor: float | None = None
     #: Set when the row matched too much: every substance it could have been.
     candidates: tuple[CandidateFlowObject, ...] = ()
@@ -308,7 +311,8 @@ class FlowMatcher:
         # The two SimaPro splits first, before anything reads the name -- tier
         # one included, because a decision this build recorded is recorded
         # against the name the build matched, which is the prepared one.
-        prepared = [prepare_query(query) for query in queries]
+        original = list(queries)
+        prepared = [prepare_query(query) for query in original]
         rows = [item.query for item in prepared]
         # Tier one's second half is keyed on the *resolved* context (#357): a
         # recorded decision about `["resources", "in air"]` and a caller
@@ -331,8 +335,8 @@ class FlowMatcher:
         ]
         if all(answer is not None for answer in recorded):
             return [
-                _reporting_preparation(answer, item)
-                for item, answer in zip(prepared, recorded)
+                _reporting_preparation(answer, item, query)
+                for item, answer, query in zip(prepared, recorded, original)
                 if answer is not None
             ]
         if contexts is None:
@@ -353,8 +357,11 @@ class FlowMatcher:
                 if answer is not None
                 else self._match_one(item.query, flow=flow, context=context),
                 item,
+                query,
             )
-            for item, flow, context, answer in zip(prepared, flows, contexts, recorded)
+            for item, flow, context, answer, query in zip(
+                prepared, flows, contexts, recorded, original
+            )
         ]
 
     # ── tier one ─────────────────────────────────────────────────────────────
@@ -399,6 +406,8 @@ class FlowMatcher:
                     extra["arbitrated_by_source_label"] = answer.arbitrated_by
                 if answer.alternatives:
                     extra["recorded_alternatives"] = list(answer.alternatives)
+                if answer.requires_identifier_for_quantity:
+                    extra["recorded_conversion_requires_identifier"] = True
                 return self._from_recorded(
                     query, answer.decision, tier=TIER_RECORDED_BY_NAME, extra=extra
                 )
@@ -444,6 +453,8 @@ class FlowMatcher:
                 "recorded_list": decision.list_key,
                 "recorded_source_uuid": decision.source_flow_uuid,
                 "recorded_source_name": decision.source_flow_name,
+                "recorded_source_unit": decision.source_unit,
+                "recorded_conversion_factor": decision.unit_conversion_factor,
                 **dict(extra or {}),
             },
             tier=tier,
@@ -635,7 +646,6 @@ class FlowMatcher:
             context=context,
             indexes=indexes,
         )
-
 
     # ── the substance ────────────────────────────────────────────────────────
 
@@ -889,25 +899,85 @@ class FlowMatcher:
         return published
 
 
-def _reporting_preparation(answer: FlowMatch, item: PreparedQuery) -> FlowMatch:
-    """*answer*, saying what preparation did to the name that earned it.
+def _reporting_preparation(
+    answer: FlowMatch, item: PreparedQuery, original: FlowQuery
+) -> FlowMatch:
+    """Report preparation and the complete original-amount → answer-unit ratio.
 
-    Applied to every answer in one place rather than inside each tier, because
-    every tier reads the prepared name and so every tier owes the caller the
-    same sentence about it.  A row nothing was taken out of is returned
-    untouched, which is almost all of them.
+    An exact source reference already records the full source-to-target pair;
+    applying lineage preparation as well would count the same correction twice.
+    A name-based identity is insufficient evidence for a source-specific mass
+    composition or density factor, even when both units happen to be kg.
     """
-    if not item.preparation.steps:
-        return answer
     conversion = item.unit_conversion or {}
+    factor = None
+    basis = "unresolved"
+    steps = []
+    if answer.matched:
+        recorded_factor = answer.selector_details.get("recorded_conversion_factor")
+        if answer.tier == TIER_RECORDED and recorded_factor is not None:
+            scale = unit_table_factor(
+                original.unit,
+                str(answer.selector_details.get("recorded_source_unit") or ""),
+            )
+            if scale is not None:
+                factor = scale * float(recorded_factor)
+                basis = "recorded-source-conversion"
+                source_unit = str(answer.selector_details["recorded_source_unit"])
+                steps = [
+                    {
+                        "source_unit": original.unit,
+                        "target_unit": source_unit,
+                        "factor": scale,
+                        "basis": "unit-table",
+                    },
+                    {
+                        "source_unit": source_unit,
+                        "target_unit": answer.unit,
+                        "factor": recorded_factor,
+                        "basis": "recorded-source-conversion",
+                    },
+                ]
+        elif answer.selector_details.get("recorded_conversion_requires_identifier"):
+            basis = "source-identifier-required"
+        else:
+            if conversion:
+                steps.append(
+                    {
+                        "source_unit": original.unit,
+                        "target_unit": item.query.unit,
+                        "factor": conversion["factor"],
+                        "basis": "lineage-preparation",
+                    }
+                )
+            scale = unit_table_factor(item.query.unit, answer.unit)
+            if scale is not None:
+                factor = scale * float(conversion.get("factor", 1))
+                basis = "preparation-and-unit-table" if conversion else "unit-table"
+                steps.append(
+                    {
+                        "source_unit": item.query.unit,
+                        "target_unit": answer.unit,
+                        "factor": scale,
+                        "basis": "unit-table",
+                    }
+                )
     return replace(
         answer,
-        prepared_name=item.preparation.name,
+        prepared_name=item.preparation.name if item.preparation.steps else "",
         preparation_steps=item.preparation.steps,
         prepared_unit=str(conversion.get("target_unit") or ""),
-        unit_conversion_factor=(
-            float(conversion["factor"]) if conversion.get("factor") is not None else None
-        ),
+        unit_conversion_factor=factor,
+        selector_details={
+            **answer.selector_details,
+            "quantity_conversion": {
+                "source_unit": original.unit,
+                "target_unit": answer.unit,
+                "basis": basis,
+                "factor": factor,
+                "steps": steps,
+            },
+        },
     )
 
 

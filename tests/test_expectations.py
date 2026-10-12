@@ -100,7 +100,7 @@ class ExpectationFilesTestCase(unittest.TestCase):
                 # Read from `elementary_flow_sources` rather than from
                 # `merge_outcomes`: whether the decision reached the list, and
                 # the factor the merge wrote for the row's pair.
-                "published", "conversion_factor",
+                "published", "conversion_factor", "lookup_conversion_factor",
             },
             "flow": {
                 "uuid", "name", "unit", "context_iri", "context_display",
