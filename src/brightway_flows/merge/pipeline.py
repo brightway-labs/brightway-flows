@@ -45,6 +45,10 @@ from brightway_flows.merge.matching import (
     build_merge_accumulator,
     build_merge_indexes,
 )
+from brightway_flows.merge.duplicate_rows import (
+    duplicates_reaching_their_valid_row,
+    mark_deprecated_mappings,
+)
 from brightway_flows.merge.land_groupings import (
     load_land_flow_groupings,
     unrecorded_land_groupings,
@@ -541,10 +545,42 @@ def merge_source_list(
         accumulator=accumulator,
     )
 
+    # A row the list ships twice is one flow, so its two copies have to have
+    # landed together; checked before the fold check below, which would
+    # otherwise read the pair as two land classes folded into one.  The
+    # duplicate's mapping is marked deprecated onto the row kept.
+    landed: dict[str, str] = {
+        row.source_uuid: row.target_elementary_flow_id
+        for row in [*accumulator.prepared_matches, *accumulator.algorithm_matches]
+    }
+    landed.update(
+        (row.source_uuid, row.new_elementary_flow_id)
+        for row in [*manual_additions, *created_flows]
+    )
+    duplicates = duplicates_reaching_their_valid_row(
+        landed, list_name=source.list_name, source_label=source.key
+    )
+    if duplicates:
+        marked = mark_deprecated_mappings(
+            accumulator.merged_elementary,
+            duplicates,
+            flow_iri_prefix=source.flow_iri_prefix,
+        )
+        logger.info(
+            "duplicate_source_rows_deprecated",
+            source=source.key,
+            ruled=len(duplicates),
+            mappings_marked=marked,
+        )
+
     # Over both kinds of match, because a fold is a fold whether a curator's
     # table made it or the selector did.
     _refuse_unrecorded_land_groupings(
-        [*accumulator.prepared_matches, *accumulator.algorithm_matches],
+        [
+            match
+            for match in [*accumulator.prepared_matches, *accumulator.algorithm_matches]
+            if match.source_uuid not in duplicates
+        ],
         list_name=source.list_name,
     )
     _refuse_invalid_contexts(accumulator.merged_elementary)

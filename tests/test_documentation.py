@@ -900,6 +900,27 @@ class OpenLcaRefusalCountsTestCase(unittest.TestCase):
             self.text,
         )
 
+    def test_the_duplicate_land_counts(self):
+        rows = [
+            r for r in json.loads(
+                (PACKAGE_DATA_DIR / "source-row-duplicates.json").read_text()
+            )["duplicates"]
+            if r["list_name"] == "openlca"
+        ]
+        names = {r["duplicate_name"] for r in rows}
+        groups: dict[str, list] = {}
+        for r in rows:
+            groups.setdefault(r["valid_uuid"], [tuple(r["valid_context"])]).append(
+                tuple(r["duplicate_context"])
+            )
+        pairs = sum(
+            1 for members in groups.values()
+            if sorted(members) == [("Resource", "land"), ("Resource", "unspecified")]
+        )
+        self.assertIn(f"{len(names)} land-use names are in the package", self.text)
+        self.assertIn(f"and so for {pairs} of them", self.text)
+        self.assertIn(f"The other copy, {len(rows)} rows in all,", self.text)
+
     def test_the_particle_count(self):
         self.assertIn(
             f"{len(self.particles)} of the package's particle rows are read", self.text
