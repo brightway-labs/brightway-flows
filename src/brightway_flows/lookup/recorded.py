@@ -337,9 +337,7 @@ class RecordedDecisions:
                     unit_conversion_factor=multiplier,
                 )
             )
-        logger.info(
-            "lookup_recorded_identifier_index", links=len(rows), keys=len(index)
-        )
+        logger.info("lookup_recorded_identifier_index", links=len(rows), keys=len(index))
         return {key: tuple(values) for key, values in index.items()}
 
     @cached_property
@@ -405,15 +403,7 @@ class RecordedDecisions:
         # compartments between them, so the resolution is remembered per
         # (list, compartment) rather than re-derived per row.
         resolutions: dict[tuple[str, tuple[str, ...]], ResolvedContext] = {}
-        for (
-            name,
-            context_json,
-            target,
-            list_name,
-            list_version,
-            source_uuid,
-            iri,
-        ) in rows:
+        for name, context_json, target, list_name, list_version, source_uuid, iri in rows:
             key = normalize_mapping_text(str(name or ""))
             if not key:
                 continue
@@ -452,13 +442,11 @@ class RecordedDecisions:
                 cache_key = (decision.list_key, parts)
                 context = resolutions.get(cache_key)
                 if context is None:
-                    context = resolve_context(
-                        FlowQuery(
-                            name=str(name or ""),
-                            context=list(parts),
-                            source_label=_registered_source_label(decision.list_key),
-                        )
-                    )
+                    context = resolve_context(FlowQuery(
+                        name=str(name or ""),
+                        context=list(parts),
+                        source_label=_registered_source_label(decision.list_key),
+                    ))
                     resolutions[cache_key] = context
                 iri = context.context_iri
                 dimension = context.dimension

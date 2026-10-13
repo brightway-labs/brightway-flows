@@ -648,6 +648,7 @@ class FlowMatcher:
             indexes=indexes,
         )
 
+
     # ── the substance ────────────────────────────────────────────────────────
 
     def _with_curated_names(
