@@ -866,12 +866,27 @@ class OpenLcaRefusalCountsTestCase(unittest.TestCase):
         self.assertIn(f"GreenDelta ships {len(black_carbon)} rows of black carbon", self.text)
         self.assertIn(f"so the {len(black_carbon)} rows are refused", self.text)
 
-    def test_the_country_specific_land_count(self):
-        country = [
-            row for row in self.excluded
-            if row["reason"].startswith("A land-use row with a place")
+    def test_the_location_specific_counts(self):
+        land = [r for r in self.excluded if r["reason"].startswith("A land-use row")]
+        located = [
+            r for r in self.excluded if r["reason"].startswith("A location-specific row")
         ]
-        self.assertIn(f"{len(country)} land rows write a place into the name", self.text)
+        water = [r for r in located if r["name"].lower().startswith("water")]
+        rest = [r for r in located if not r["name"].lower().startswith("water")]
+        air = [r for r in rest if r["context"][0] == "Emission to air"]
+        to_water = [r for r in rest if r["context"][0] == "Emission to water"]
+        self.assertEqual(len(rest), len(air) + len(to_water))
+        self.assertIn(
+            f"{len(land) + len(located):,} rows write a place into the name", self.text
+        )
+        self.assertIn(f"- {len(water):,} water rows:", self.text)
+        self.assertIn(f"- {len(air):,} emissions to air:", self.text)
+        self.assertIn(f"- {len(to_water):,} emissions to water:", self.text)
+        self.assertIn(f"- {len(land):,} land rows:", self.text)
+        places = {
+            re.search(r"\(`([^`]+)`", r["reason"]).group(1) for r in land + located
+        }
+        self.assertIn(f"They cover {len(places)} places", self.text)
 
     def test_the_particle_count(self):
         self.assertIn(
