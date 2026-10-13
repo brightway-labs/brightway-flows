@@ -65,6 +65,7 @@ from __future__ import annotations
 import sqlite3
 import math
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from functools import cached_property, lru_cache
 from pathlib import Path
@@ -77,6 +78,7 @@ from brightway_flows.context_mapping import (
     consensus_context_strings,
     normalize_mapping_text,
 )
+from brightway_flows.domain.units import unit_row_for
 from brightway_flows.merge.store import Outcome
 
 logger = structlog.get_logger(__name__)
@@ -136,6 +138,31 @@ class RecordedNameAnswer:
     arbitrated_by: str = ""
     alternatives: tuple[str, ...] = ()
     requires_identifier_for_quantity: bool = False
+
+
+def _a_multiplier_could_apply(
+    decisions: Sequence[RecordedDecision], unit: str
+) -> bool:
+    """Whether a recorded multiplier among *decisions* could convert *unit*.
+
+    BAFU records `Water` in kg at 0.001 m3 per kg, and also in m3.  A caller
+    sending `Water` in m3 by name is 1:1 onto the m3 flow whichever row they
+    meant, because a multiplier per kilogram cannot apply to cubic metres.  A
+    caller sending kilograms might be either row -- or a composition such as
+    titanium dioxide's 0.599 kg titanium per kg -- so only the identifier says.
+    A unit `units.json` does not know is the second case: nothing rules the
+    multiplier out.
+    """
+    caller = unit_row_for(unit) if unit.strip() else None
+    for decision in decisions:
+        if decision.unit_conversion_factor is None:
+            continue
+        stated = unit_row_for(decision.source_unit)
+        if caller is None or stated is None:
+            return True
+        if caller.get("quantity_kind_iri") == stated.get("quantity_kind_iri"):
+            return True
+    return False
 
 
 def _collapsed(text: str) -> str:
@@ -536,6 +563,7 @@ class RecordedDecisions:
         context_iri: str = "",
         dimension: str = "",
         source_label: str = "",
+        unit: str = "",
     ) -> RecordedNameAnswer | None:
         """What was recorded for this name where the caller says their row is.
 
@@ -558,6 +586,11 @@ class RecordedDecisions:
         *source_label*, where it names one of the agreeing lists, picks whose
         decision reports the answer, so the attribution is the caller's own
         list rather than whichever row a merge happened to write first.
+
+        *unit* is the caller's, and decides whether a recorded multiplier
+        stands between their amount and the answer: one stated per a unit of
+        the caller's quantity kind might be theirs to apply, so the answer asks
+        for the row's identifier; one stated per another kind cannot be.
         """
         key = normalize_mapping_text(name)
         if not key:
@@ -581,8 +614,8 @@ class RecordedDecisions:
             relevant = named or decisions
             return RecordedNameAnswer(
                 decision=relevant[0],
-                requires_identifier_for_quantity=any(
-                    d.unit_conversion_factor is not None for d in relevant
+                requires_identifier_for_quantity=_a_multiplier_could_apply(
+                    relevant, unit
                 ),
             )
         named_targets = {d.elementary_flow_id for d in named}
@@ -591,8 +624,8 @@ class RecordedDecisions:
                 decision=named[0],
                 arbitrated_by=named[0].list_key,
                 alternatives=tuple(t for t in targets if t not in named_targets),
-                requires_identifier_for_quantity=any(
-                    d.unit_conversion_factor is not None for d in named
+                requires_identifier_for_quantity=_a_multiplier_could_apply(
+                    named, unit
                 ),
             )
         return None

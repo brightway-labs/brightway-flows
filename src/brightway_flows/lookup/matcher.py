@@ -399,6 +399,7 @@ class FlowMatcher:
                 context_iri=context.context_iri,
                 dimension=context.dimension,
                 source_label=query.source_label,
+                unit=query.unit,
             )
             if answer is not None:
                 extra: dict[str, Any] = {}

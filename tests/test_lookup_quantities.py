@@ -221,6 +221,29 @@ def test_source_specific_composition_requires_an_exact_row(tmp_path):
     )
 
 
+def test_a_multiplier_for_another_quantity_kind_does_not_withhold_the_unit_table(
+    tmp_path,
+):
+    # BAFU's `Water` in kg carries kg -> m3 at 0.001; the same name sent in m3
+    # lands on the same m3 flow and is 1:1, which the multiplier cannot touch.
+    db = quantity_build(tmp_path, source="kg", target="m3", factor=0.001)
+    matcher = FlowMatcher.from_results(db, recorded_by_name=True)
+    in_volume = matcher.match(
+        FlowQuery(name="Quantity fixture", unit="m3", context_iri=AIR)
+    )
+    assert in_volume.matched and in_volume.tier == "recorded-by-name"
+    assert in_volume.unit_conversion_factor == pytest.approx(1.0)
+    assert in_volume.selector_details["quantity_conversion"]["basis"] == "unit-table"
+    in_mass = matcher.match(
+        FlowQuery(name="Quantity fixture", unit="kg", context_iri=AIR)
+    )
+    assert in_mass.unit_conversion_factor is None
+    assert (
+        in_mass.selector_details["quantity_conversion"]["basis"]
+        == "source-identifier-required"
+    )
+
+
 def test_name_index_does_not_lose_a_composition_factor_behind_same_target(tmp_path):
     db = quantity_build(tmp_path, source="kg", target="kg", factor=0.599)
     with sqlite3.connect(db) as conn:
