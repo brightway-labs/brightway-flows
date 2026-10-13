@@ -398,6 +398,11 @@ class PublishedArtifactTestCase(unittest.TestCase):
                 target = source.get(SKOS_EXACT_MATCH_CURIE)
                 if not isinstance(target, dict):
                     continue
+                if source.get("owl:deprecated") is True:
+                    # A row ruled a copy of another row of its list
+                    # (`source-row-duplicates.json`): the two are one flow, so
+                    # the equivalence their exact matches entail is true.
+                    continue
                 exact_sources.setdefault(str(target.get("@id")), set()).add(
                     str(source.get("@id"))
                 )
