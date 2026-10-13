@@ -84,6 +84,7 @@ from brightway_flows.domain.vocabulary import (
     DCTERMS_CREATED_CURIE,
     DCTERMS_CREATOR_CURIE,
     MintedNamespace,
+    OWL_DEPRECATED_CURIE,
     OWL_VERSION_INFO_CURIE,
     QUDT_CONVERSION_MULTIPLIER_CURIE,
     QUDT_HAS_UNIT_CURIE,
@@ -487,7 +488,10 @@ def build_correspondences(
                     else None
                 ),
             ))
-            cardinality.observe(scheme.slug, source_iri, target_iri)
+            # A row ruled a duplicate of another row of its list is the same
+            # flow, so it does not make the valid row's mapping one of two.
+            if source.get(OWL_DEPRECATED_CURIE) is not True:
+                cardinality.observe(scheme.slug, source_iri, target_iri)
             counts[f"associations_{scheme.slug}"] += 1
 
     # The strength, settled with every mapping of every list in hand.  The
@@ -500,8 +504,12 @@ def build_correspondences(
         scheme, iri, source_iri, target_iri, source, multiplier, basis, stated_by
     ) in collected:
         current = match_property_key(source)
-        published = cardinality.published_match_for(
-            current, scheme.slug, source_iri, target_iri
+        published = (
+            current
+            if source.get(OWL_DEPRECATED_CURIE) is True
+            else cardinality.published_match_for(
+                current, scheme.slug, source_iri, target_iri
+            )
         )
         if rewrite_source_concept(source, published):
             counts[f"weakened_{scheme.slug}"] += 1

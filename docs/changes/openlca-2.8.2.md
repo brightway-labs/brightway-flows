@@ -134,9 +134,27 @@ and writes the element's registry number on many of them
 
 ## Rows merged into one flow
 
-None recorded yet. The package ships 504 pairs of flows with the same name,
+**Land-use rows shipped twice.** 160 land-use names are in the package more
+than once with the same unit: `Occupation, annual crop` in `Resource / land`
+and again in `Resource / unspecified`, and so for 154 of them. Each copy is the
+same land class, and both map to the same flow. The row in `Resource / land` is
+kept as the valid one. The other copy, 164 rows in all, still maps but is
+published deprecated, pointing at the valid row (`source-row-duplicates.json`).
+Two names needed a different tie-break:
+
+- `Occupation, sea and ocean` has no `Resource / land` copy, so the
+  `Resource / in water` row is kept over `Resource / unspecified`.
+- `Occupation, inland waterbody, unspecified` is in `Resource / land` twice,
+  with one factor each. The row kept is the one whose identifier ecoinvent 3.12
+  also ships.
+
+A deprecated copy does not weaken the valid row's match: two copies of one flow
+are not two flows sharing one.
+
+Beyond land use, the package ships 504 pairs of flows with the same name,
 compartment and unit — usually GreenDelta's own flow beside ecoinvent's copy of
-it, and in 85 of them only one of the two has an EF 3.1 factor.
+it, and in 85 of them only one of the two has an EF 3.1 factor. None of
+those is ruled on yet.
 
 ## Registry numbers corrected
 
