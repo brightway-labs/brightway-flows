@@ -215,7 +215,9 @@ class FetchedListTestCase(unittest.TestCase):
             unruled, [("Waste", "ecopoints 97, CH"), ("Waste", "unspecified")]
         )
 
-    def test_the_refused_rows_are_the_waste_compartments_and_black_carbon(self):
+    def test_the_refused_rows_are_waste_black_carbon_and_country_land(self):
+        import re
+
         from brightway_flows.additional_flows import load_excluded_source_flows
 
         refused = {
@@ -226,13 +228,24 @@ class FetchedListTestCase(unittest.TestCase):
         }
         waste = {row["uuid"] for row in self.rows if row["context"][0] == "Waste"}
         # Black carbon carries climate factors no plain particle flow has, and
-        # is kept out until it is decided as a substance.
+        # is kept out until it is decided as a substance (#384).
         black_carbon = {
             row["uuid"] for row in self.rows if "black carbon" in row["name"].lower()
         }
-        self.assertEqual((len(waste), len(black_carbon)), (186, 13))
-        self.assertEqual(refused, waste | black_carbon)
-        self.assertEqual(len(self.source.load_flows()), 61_211 - 199)
+        # Land rows with a place written into the name are left out by
+        # decision; each has an unregionalised row of the same name that is kept.
+        place = re.compile(r", [A-Z]{2}(?: \([A-Za-z ]+\)| (?:east|west) coast)?$")
+        country_land = {
+            row["uuid"]
+            for row in self.rows
+            if row["name"].lower().startswith(("occupation", "transformation"))
+            and place.search(row["name"])
+        }
+        self.assertEqual(
+            (len(waste), len(black_carbon), len(country_land)), (186, 13, 433)
+        )
+        self.assertEqual(refused, waste | black_carbon | country_land)
+        self.assertEqual(len(self.source.load_flows()), 61_211 - 632)
 
     def test_shares_125_uuids_with_ef_3_1(self):
         # GreenDelta ships these EF 3.1 flows under EF's own uuids, renamed in
