@@ -245,12 +245,23 @@ class FetchedListTestCase(unittest.TestCase):
             uuid for uuid, record in refused.items()
             if record.reason.startswith("A location-specific row")
         }
+        # Water rows with no material yet, refused until #389 decides them.
+        pending_water = {
+            uuid for uuid, record in refused.items()
+            if record.reason.startswith("A water row with no material")
+        }
         self.assertEqual(
-            (len(waste), len(black_carbon), len(country_land), len(located)),
-            (186, 13, 433, 5_773),
+            (
+                len(waste), len(black_carbon), len(country_land), len(located),
+                len(pending_water),
+            ),
+            (186, 13, 433, 5_773, 123),
         )
-        self.assertEqual(set(refused), waste | black_carbon | country_land | located)
-        self.assertEqual(len(self.source.load_flows()), 61_211 - 6_405)
+        self.assertEqual(
+            set(refused),
+            waste | black_carbon | country_land | located | pending_water,
+        )
+        self.assertEqual(len(self.source.load_flows()), 61_211 - 6_528)
 
     def test_no_kept_row_names_a_place_the_package_locates(self):
         """`Nitrogen, NO` is nitrogen emitted in Norway (`NO = Norway`)."""
