@@ -77,13 +77,27 @@ All but one spelling are ecoinvent's, BAFU's or Stepwise's, and are read as
 those lists' are. The new spelling is `Particulates, > 0.2 um, and < 2.5 um`,
 read as EF 3.1's `Particles (PM0.2 - PM2.5)`.
 
-## Country-specific land rows refused
+## Location-specific rows refused
 
-433 land rows write a place into the name: `Transformation, from forest,
-extensive, GA`, `Occupation, permanent crop, BR`, `Transformation, from forest,
-extensive, US west coast`. They cover 79 countries and regions. Every one has
-an unregionalised row of the same name, which is kept. The country-specific
-rows are refused and published as excluded with the reason.
+6,206 rows write a place into the name. Every one is refused and published as
+excluded with the reason. They cover 372 places, from countries (`ES`, `NO`)
+to regions (`RoW`, `UCTE`, `IAI Area, Africa`):
+
+- 4,690 water rows: `Water, river, CH`, `Water, RoW`,
+  `Water, cooling, unspecified natural origin, IAI Area, Africa`;
+- 949 emissions to air: `Nitrogen oxides, ES`, `Ammonia, FR`,
+  `Sulfur dioxide, AT`;
+- 134 emissions to water: `Nitrate, DE`, `Phosphorus, DK`, and `Nitrogen, NO`,
+  which is nitrogen emitted in Norway (GreenDelta's description says
+  `NO = Norway`);
+- 433 land rows: `Transformation, from forest, extensive, GA`,
+  `Occupation, permanent crop, BR`.
+
+The unregionalised row is kept: `Water, river`, `Nitrogen oxides`,
+`Transformation, from forest, extensive`. The location-specific rows carry
+factors their unregionalised row does not always agree with. Ecological
+Scarcity 2013, for one, gives `Nitrogen, NO` a factor (57,000) and plain
+`Nitrogen` none. These are left out with the rows.
 
 ## Not yet merged
 
@@ -124,7 +138,3 @@ it, and in 85 of them only one of the two has an EF 3.1 factor.
 |---|---|---|---|
 | Nitrogen, organic bound | water: all eleven the package uses | 7727-37-9 | that is N₂, the gas that is most of the air; organically bound nitrogen is a measurement over many compounds and no CAS number names it. The gas's two synonyms, `dinitrogen` and `molecular nitrogen`, come off the same rows. Left on, the rows would fuse with nitrogen gas ([#57](https://github.com/brightway-labs/brightway-flows/issues/57)) |
 
-One row keeps the gas's number and should not: `Nitrogen, NO` in unspecified
-water is nitrogen emitted in Norway (GreenDelta's description says
-`NO = Norway`), the same nutrient load with the country written into its name.
-It is left until the place is split off the name, as for the land rows above.
