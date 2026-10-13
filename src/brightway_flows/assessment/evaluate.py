@@ -251,39 +251,7 @@ def _resolve(
 ) -> list[dict[str, Any]]:
     match expectation.kind:
         case "source_row":
-            rows = _resolve_source_rows(connection, expectation.selector)
-            if "lookup_conversion_factor" in expectation.claims and rows:
-                from brightway_flows.lookup import (
-                    FlowMatcher,
-                    FlowQuery,
-                    TIER_RECORDED,
-                    UnusableBuildError,
-                )
-
-                database = Path(
-                    connection.execute("PRAGMA database_list").fetchone()[2]
-                )
-                try:
-                    matcher = FlowMatcher.from_results(database)
-                except UnusableBuildError as exc:
-                    raise _Unanswerable(str(exc)) from exc
-                answers = matcher.match_many(
-                    FlowQuery(
-                        name=row["source_name"],
-                        unit=row["source_unit"],
-                        list_key=f"{row['list_name']}-{row['list_version']}",
-                        identifier=row["source_uuid"],
-                    )
-                    for row in rows
-                )
-                for row, answer in zip(rows, answers):
-                    row["lookup_conversion_factor"] = (
-                        answer.unit_conversion_factor
-                        if answer.tier == TIER_RECORDED
-                        and answer.elementary_flow_id == row["target_uuid"]
-                        else None
-                    )
-            return rows
+            return _resolve_source_rows(connection, expectation.selector)
         case "flow":
             return _resolve_flows(connection, expectation.selector)
         case "substance":
@@ -404,7 +372,7 @@ def _resolve_source_rows(
         else ""
     )
     rows = connection.execute(
-        f"SELECT mo.list_name, mo.list_version, mo.source_uuid, mo.source_name, mo.source_context_json, mo.source_unit, "
+        f"SELECT mo.source_uuid, mo.source_name, mo.source_context_json, mo.source_unit, "
         f"mo.source_cas, mo.outcome, mo.reason, mo.basis, mo.basis_value, "
         f"mo.matching_method, mo.target_elementary_flow_id, mo.flow_object_id, "
         f"mo.has_unit_mismatch, mo.has_context_inconsistency, mo.detail_json, "
@@ -417,8 +385,6 @@ def _resolve_source_rows(
 
     return [
         {
-            "list_name": row["list_name"],
-            "list_version": row["list_version"],
             "source_uuid": row["source_uuid"],
             "source_name": row["source_name"] or "",
             "source_context": _load(row["source_context_json"], []),

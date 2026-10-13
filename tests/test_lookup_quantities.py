@@ -269,26 +269,6 @@ def test_name_index_does_not_lose_a_composition_factor_behind_same_target(tmp_pa
     assert result.unit_conversion_factor is None
 
 
-def test_assessment_checks_the_public_lookup_conversion(tmp_path):
-    from brightway_flows.assessment.evaluate import _evaluate, Status
-    from brightway_flows.assessment.expectations import Expectation
-
-    db = quantity_build(tmp_path)
-    with sqlite3.connect(db) as conn:
-        conn.row_factory = sqlite3.Row
-        expectation = Expectation(
-            id="quantity-fixture",
-            issue=382,
-            title="Bq amounts reach kBq with the correct scale",
-            kind="source_row",
-            selector={"list": "quantity-fixture", "version": "1"},
-            claims={"lookup_conversion_factor": "0.001"},
-        )
-        result = _evaluate(conn, expectation, {})
-        assert result.status == Status.MET
-        assert result.matched_rows == 1
-
-
 @pytest.mark.parametrize("factor", [0, -1, True, "0.5"])
 def test_invalid_recorded_conversion_is_refused(tmp_path, factor):
     db = quantity_build(tmp_path, factor=factor)

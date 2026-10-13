@@ -114,9 +114,6 @@ class TheArrowRunsOneWayTestCase(unittest.TestCase):
         # lookup reproduces, graded against every build by `assess` rather than
         # measured once and quoted in a pull request nobody re-reads.
         "assessment/measures.py",
-        # Source-row expectations check the public lookup's complete quantity
-        # conversion, including unit scales absent from correspondence JSON.
-        "assessment/evaluate.py",
     }
 
     def test_only_the_declared_dependents_import_the_lookup(self):

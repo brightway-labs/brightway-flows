@@ -158,8 +158,6 @@ SUBJECT_CLAIMS: dict[str, frozenset[str]] = {
         # revised the value at 3.9 and rebuilt its oil datasets on it. A claim
         # phrased about the flow could not tell the two apart.
         "conversion_factor",
-        # Complete source quantity ratio returned by public exact-row lookup.
-        "lookup_conversion_factor",
         "row_count", "same_target", "distinct_targets", "target_count",
         "same_substance", "distinct_substances", "substance_count",
     }),
@@ -243,7 +241,7 @@ SUBJECT_CLAIMS: dict[str, frozenset[str]] = {
 #: they do: chromium(6+) is 12274.013470217462 under the JRC and
 #: 12274.01347021746 under the ecoinvent Centre, one published number rendered
 #: twice.  At the three significant figures the table states, that is one number.
-AMOUNT_CLAIMS = frozenset({"amount", "lookup_conversion_factor"})
+AMOUNT_CLAIMS = frozenset({"amount"})
 
 #: `outcome` names a column value; these two name a set of them, because the
 #: interesting question is usually "did it land on a flow that already existed"
