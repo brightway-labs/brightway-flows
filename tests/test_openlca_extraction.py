@@ -215,13 +215,13 @@ class FetchedListTestCase(unittest.TestCase):
             unruled, [("Waste", "ecopoints 97, CH"), ("Waste", "unspecified")]
         )
 
-    def test_the_refused_rows_are_waste_black_carbon_and_country_land(self):
+    def test_the_refused_rows_are_waste_black_carbon_and_located_rows(self):
         import re
 
         from brightway_flows.additional_flows import load_excluded_source_flows
 
         refused = {
-            record.uuid
+            record.uuid: record
             for record in load_excluded_source_flows(
                 self.source.additional_flows_path, source=self.source.source_label
             )
@@ -232,8 +232,8 @@ class FetchedListTestCase(unittest.TestCase):
         black_carbon = {
             row["uuid"] for row in self.rows if "black carbon" in row["name"].lower()
         }
-        # Land rows with a place written into the name are left out by
-        # decision; each has an unregionalised row of the same name that is kept.
+        # Rows with a place written into the name are left out by decision:
+        # land first, then water and emissions such as `Nitrogen, NO`.
         place = re.compile(r", [A-Z]{2}(?: \([A-Za-z ]+\)| (?:east|west) coast)?$")
         country_land = {
             row["uuid"]
@@ -241,11 +241,25 @@ class FetchedListTestCase(unittest.TestCase):
             if row["name"].lower().startswith(("occupation", "transformation"))
             and place.search(row["name"])
         }
+        located = {
+            uuid for uuid, record in refused.items()
+            if record.reason.startswith("A location-specific row")
+        }
         self.assertEqual(
-            (len(waste), len(black_carbon), len(country_land)), (186, 13, 433)
+            (len(waste), len(black_carbon), len(country_land), len(located)),
+            (186, 13, 433, 5_773),
         )
-        self.assertEqual(refused, waste | black_carbon | country_land)
-        self.assertEqual(len(self.source.load_flows()), 61_211 - 632)
+        self.assertEqual(set(refused), waste | black_carbon | country_land | located)
+        self.assertEqual(len(self.source.load_flows()), 61_211 - 6_405)
+
+    def test_no_kept_row_names_a_place_the_package_locates(self):
+        """`Nitrogen, NO` is nitrogen emitted in Norway (`NO = Norway`)."""
+        kept = {row.uuid: row for row in self.source.load_flows()}
+        self.assertNotIn("61b223ec-f39f-3b41-b54d-f36e4d1c35c3", kept)
+        names = {row.provided.name or "" for row in kept.values()}
+        for name in ("Water, river, CH", "Nitrogen oxides, ES", "Water, RoW"):
+            with self.subTest(name=name):
+                self.assertNotIn(name, names)
 
     def test_shares_125_uuids_with_ef_3_1(self):
         # GreenDelta ships these EF 3.1 flows under EF's own uuids, renamed in

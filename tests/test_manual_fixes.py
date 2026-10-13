@@ -21,6 +21,8 @@ from pathlib import Path
 import orjson
 from structlog.testing import capture_logs
 
+from brightway_flows.additional_flows import load_excluded_source_flows
+
 from brightway_flows.context_mapping import (
     context_iri_by_source_context,
     flow_context_iri,
@@ -721,13 +723,6 @@ class OrganicBoundNitrogenIsNotNitrogenGasTestCase(unittest.TestCase):
     ROWS_PER_LIST = {"bafu-2026-v1": 4, "openlca-2.8.2": 11}
     DEFAULT_ROWS = 5
 
-    #: Names besides the gas that a list still writes 7727-37-9 on, pinned so a
-    #: new one arrives here.  GreenDelta's `Nitrogen, NO` is nitrogen emitted
-    #: to water in Norway -- its description says `NO = Norway` -- a nutrient
-    #: load with the country written into the name, like the openLCA land rows
-    #: that are not yet read; it goes when the place is split off the name.
-    ALSO_CLAIMING = {"openlca-2.8.2": {"nitrogen, no"}}
-
     @classmethod
     def setUpClass(cls):
         sources = {base_source_list().key: base_source_list(), **known_source_lists()}
@@ -737,6 +732,16 @@ class OrganicBoundNitrogenIsNotNitrogenGasTestCase(unittest.TestCase):
         cls.fixed = {}
         for key, source in sources.items():
             flows = orjson.loads(source.flows_path.read_bytes())
+            # A row the list refuses is not in it -- GreenDelta's `Nitrogen,
+            # NO`, nitrogen emitted in Norway, among them.
+            if source.additional_flows_path is not None:
+                refused = {
+                    record.uuid
+                    for record in load_excluded_source_flows(
+                        source.additional_flows_path, source=source.source_label
+                    )
+                }
+                flows = [row for row in flows if row["uuid"] not in refused]
             if source.manual_fixes_path is not None:
                 apply_manual_fixes(flows, source.manual_fixes_path, label=key)
             cls.fixed[key] = [
@@ -803,9 +808,7 @@ class OrganicBoundNitrogenIsNotNitrogenGasTestCase(unittest.TestCase):
                 if self.GAS in (f.get("cas_numbers") or [])
             }
             with self.subTest(source=key):
-                self.assertEqual(
-                    len(claiming - self.ALSO_CLAIMING.get(key, set())), 1, claiming
-                )
+                self.assertEqual(len(claiming), 1, claiming)
 
 
 class WasteHeatIsNotSomethingYouExtractTestCase(unittest.TestCase):
