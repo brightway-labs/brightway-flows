@@ -317,8 +317,10 @@ def context_iri_for_any_source_context(
     Two of the four are ``select`` compartments -- BAFU's ``resources / in
     ground`` and ``resources / unspecified`` hold land rows among ordinary
     resources -- so a name that matches no prefix there falls through to the
-    compartment, which is what those rules mean.  The other two are
-    ``partition``, and a name that matches nothing in them has no answer.
+    compartment, which is what those rules mean.  ``resources / unspecified``
+    has no compartment rule (#381), so there the fall-through answers
+    ``None``.  The other two are ``partition``, and a name that matches
+    nothing in them has no answer.
 
     Returns ``None`` when nothing places the compartment, which the caller
     reports as an unresolved context rather than guessing: the IRI is what the
@@ -594,12 +596,15 @@ _NAME_RULE_FIELDS = ("source", "source_context", "name_prefix", "context_iri", "
 #: compartment rule can only be right about one of occupation and
 #: transformation, so falling through to it would file the other silently.
 #:
-#: ``select`` -- the rules pick some flows *out* of a compartment the
-#: compartment rule can still decide for the rest.  BAFU's
+#: ``select`` -- the rules pick some flows *out* of a compartment, and the
+#: rest fall through to whatever else places them.  BAFU's
 #: ``resources / unspecified`` holds 26 land rows and 16 ordinary resources, and
 #: ``resources / in ground`` holds 3 land rows among 161; under ``partition``
 #: every one of those 177 non-land rows would raise.  The compartment is mixed,
-#: so the rules have to be an override rather than a partition.
+#: so the rules have to be an override rather than a partition.  In ``in
+#: ground`` the compartment rule decides the rest; ``unspecified`` names no
+#: medium and has no compartment rule, so its 16 are each placed by a
+#: flow-specific rule or a manual fix (#381).
 #:
 #: Per compartment rather than per row -- it describes the compartment's rules
 #: as a set -- so :func:`name_prefix_context_rules` requires the rows of one

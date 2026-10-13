@@ -57,10 +57,12 @@ class RoutingTestCase(unittest.TestCase):
                     )
 
     def test_an_ordinary_resource_in_a_mixed_compartment_is_left_alone(self):
-        """The 177 rows the compartment rule already decides correctly.
+        """The 177 rows the name rules have nothing to say about.
 
         Under `partition` every one of these would raise, which is why the
-        policy exists rather than the rules simply being added.
+        policy exists rather than the rules simply being added.  In `in
+        ground` the compartment rule decides them; in `unspecified` a rule
+        naming each row does (#381).
         """
         for compartment in MIXED:
             for name in ("Uranium", "Energy, from oil", "Barite", "Iridium"):
@@ -69,11 +71,17 @@ class RoutingTestCase(unittest.TestCase):
                         name_prefix_context_iri(BAFU, name, compartment)
                     )
 
-    def test_the_mixed_compartments_still_send_their_other_rows_to_ground(self):
+    def test_in_ground_still_sends_its_other_rows_to_ground(self):
         mapping = context_iri_by_source_context(BAFU)
-        for compartment in MIXED:
-            with self.subTest(compartment=compartment):
-                self.assertEqual(mapping[tuple(compartment)], GROUND)
+        self.assertEqual(mapping[("resources", "in ground")], GROUND)
+
+    def test_unspecified_sends_its_other_rows_nowhere(self):
+        """`resources / unspecified` names no medium, and BAFU's rows there
+        are each placed by their name or a rule of their own (#381).  A row
+        nothing names falls through to no context rather than to ground."""
+        self.assertNotIn(
+            ("resources", "unspecified"), context_iri_by_source_context(BAFU)
+        )
 
 
 class PolicyTestCase(unittest.TestCase):

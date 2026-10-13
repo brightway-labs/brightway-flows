@@ -305,7 +305,7 @@
         "target_substance_id": "fo-c830feb8dfc643a1",
         "target_context_display": "Resource → Air"
       },
-      "comment": "The worst-reading of the three: `resources / unspecified` maps to `Resource → Ground`, so carbon dioxide whose own name says *in air* was published as a resource taken from the ground. If this expectation ever reports `Resource → Ground` again, the manual fix has stopped matching — most likely because BAFU renamed the flow, which is exactly when somebody should look."
+      "comment": "The worst-reading of the three: `resources / unspecified` mapped to `Resource → Ground` until #381, so carbon dioxide whose own name says *in air* was published as a resource taken from the ground. If this expectation ever reports `Resource → Ground` again, the manual fix has stopped matching — most likely because BAFU renamed the flow, which is exactly when somebody should look."
     },
     {
       "id": "0669-every-row-bafu-land-transformation",

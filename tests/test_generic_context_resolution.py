@@ -63,10 +63,12 @@ PREFIX = "https://vocab.brightway.one/flow-contexts/"
 #: package wrote 21 more, every one of them new here (#165).  It was 221, 9 and
 #: 119 until #173 refused Stepwise's three injury counts, which were the only
 #: rows in the `Social` compartment ecoinvent's refusal had already emptied --
-#: so `social` has lost its rule twice, to two lists, for two reasons.
-RULE_COUNT = 242
+#: so `social` has lost its rule twice, to two lists, for two reasons.  It was
+#: 242, 10 and 122 until #381 removed BAFU's rule for `resources /
+#: unspecified`, which names no medium and was written by no other list.
+RULE_COUNT = 241
 LIST_COUNT = 10
-COMPARTMENT_COUNT = 122
+COMPARTMENT_COUNT = 121
 
 #: Every consensus context, and every one of them printed differently.
 CONTEXT_COUNT = 61
@@ -119,7 +121,7 @@ class TheListsAgreeAboutTheirCompartmentsTestCase(_CachedLoaders, unittest.TestC
     #: an outside list would be understood.
     BY_VENDOR = {
         "agribalyse-3.2": 22,
-        "bafu-2026-v1": 26,
+        "bafu-2026-v1": 25,
         "ecoinvent": 26,
         "ef 3.1": 37,
         "greendelta": 21,
@@ -291,12 +293,14 @@ class ACompartmentIsNotAlwaysEnoughTestCase(_CachedLoaders, unittest.TestCase):
 
     #: The compartments some list has ruled its flows' names have to decide,
     #: and what the compartment-only index says about each.  Every one of them
-    #: is a wrong answer for half the rows in it.
+    #: is a wrong answer for half the rows in it.  BAFU's `resources /
+    #: unspecified` is the fourth, and has no compartment rule at all (#381):
+    #: the index says nothing about it, which is the answer it should give.
     NAME_DECIDED = {
         ("natural resource", "land"): PREFIX + "laus-occu",
         ("resources", "land"): PREFIX + "laus-occu",
         ("resources", "in ground"): PREFIX + "reso-grou",
-        ("resources", "unspecified"): PREFIX + "reso-grou",
+        ("resources", "unspecified"): None,
     }
 
     def test_the_compartment_only_index_answers_them_anyway(self):
@@ -345,8 +349,23 @@ class ACompartmentIsNotAlwaysEnoughTestCase(_CachedLoaders, unittest.TestCase):
             PREFIX + "laus-occu",
         )
 
+    def test_a_select_compartment_with_no_rule_of_its_own_resolves_nothing(self):
+        """BAFU's `resources / unspecified` holds 26 land rows among 42, and
+        no medium for the rest (#381). The name rules still pick out the land;
+        anything else is unresolved here and left to the SimaPro rules, which
+        read it as the dimension and no medium."""
+        self.assertIsNone(
+            context_iri_for_any_source_context(["resources", "unspecified"], "Oxygen")
+        )
+        self.assertEqual(
+            context_iri_for_any_source_context(
+                ["resources", "unspecified"], "Occupation, forest, intensive"
+            ),
+            PREFIX + "laus-occu",
+        )
+
     def test_an_ordinary_compartment_is_unaffected(self):
-        """A SimaPro export's own spelling, which is what BAFU's 26 rules are."""
+        """A SimaPro export's own spelling, which is what BAFU's 25 rules are."""
         self.assertEqual(
             context_iri_for_any_source_context(
                 ["emissions to air", "low. pop."], "Benzene"

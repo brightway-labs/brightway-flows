@@ -34,6 +34,7 @@ from brightway_flows.integrations.bafu import (
     _flow_uuid,
     extract_elementary_flows,
 )
+from brightway_flows.manual_fixes import apply_manual_fixes
 from brightway_flows.pipeline.loading import _normalize_input_flow_record
 from brightway_flows.simapro_names import split_geography_suffix
 from brightway_flows.sources import known_source_lists
@@ -447,12 +448,16 @@ class FetchedFlowsTestCase(unittest.TestCase):
             "a name still carries a place the splitter would read",
         )
 
-    def test_every_compartment_has_a_context_rule(self):
-        """26 rules, 26 compartments, and the merge stops on a row it cannot place."""
+    def test_every_compartment_but_one_has_a_context_rule(self):
+        """25 rules for 26 compartments, and the merge stops on a row it cannot
+        place.  The one without a rule is `resources / unspecified`, which says
+        *a resource* and no medium; its rows are placed one by one, which
+        `test_every_flow_resolves_a_context_the_way_the_transform_does` checks
+        (#381)."""
         rules = context_iri_by_source_context("bafu-2026-v1")
-        self.assertEqual(len(rules), 26)
+        self.assertEqual(len(rules), 25)
         used = {normalize_context_key(f["context"]) for f in self.flows}
-        self.assertEqual(used - set(rules), set())
+        self.assertEqual(used - set(rules), {("resources", "unspecified")})
 
     def test_no_rule_is_dead(self):
         """A rule matching nothing is a rule nobody will notice going stale."""
@@ -484,10 +489,15 @@ class FetchedFlowsTestCase(unittest.TestCase):
         filing an undecidable name under the compartment's rule (#52). The
         earlier test here asserted every compartment has a rule and passed
         throughout, because that question is a different one. This asks the
-        question the transform asks, of every row.
+        question the transform asks, of every row -- with BAFU's manual fixes
+        applied, because the transform sees the rows after them: `Carbon
+        dioxide, in air` is placed by the fix moving it out of `resources /
+        unspecified`, which has no rule (#381).
         """
+        rows = [dict(flow) for flow in self.flows]
+        apply_manual_fixes(rows, BAFU_2026.manual_fixes_path, quiet=True)
         unplaced = []
-        for flow in self.flows:
+        for flow in rows:
             context = flow["context"]
             iri = flow_context_iri("bafu-2026-v1", flow["uuid"], context)
             if not iri:

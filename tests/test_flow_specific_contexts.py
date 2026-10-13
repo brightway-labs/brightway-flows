@@ -644,10 +644,11 @@ class BafuCatchAllCompartmentTestCase(unittest.TestCase):
     """BAFU's two catch-all compartments, and the water filed in them.
 
     `resources / land` and `resources / unspecified` are where BAFU puts a row
-    it has not classified.  Each maps wholesale to one context -- land use and
-    ground resources -- which is right for the rows that fill them and wrong for
-    the water, because neither compartment says anything about where water was
-    drawn from.  `unspecified` least of all: it is the absence of a statement,
+    it has not classified.  Each mapped wholesale to one context -- land use and
+    ground resources -- which was right for most of the rows that fill them and
+    wrong for the water, because neither compartment says anything about where
+    water was drawn from.  `unspecified` maps to nothing now (#381); see
+    `BafuUnspecifiedGroundRowsTestCase`.  `unspecified` least of all: it is the absence of a statement,
     not a statement that the water came out of the ground.
 
     `Water, well` sits in the same compartment and used to be the test that
@@ -734,6 +735,79 @@ class BafuCatchAllCompartmentTestCase(unittest.TestCase):
                 "bd517b6b-af3f-5c85-a1d0-4828353ba2c2",
                 ["resources", "in water"],
             )
+
+
+class BafuUnspecifiedGroundRowsTestCase(unittest.TestCase):
+    """The eight rows BAFU files in `resources / unspecified` that come out of
+    the ground, each placed there by a rule of its own (#381).
+
+    The compartment used to map onto `Resource / Ground` wholesale, and every
+    other row in it had to be taken out by a rule saying it did not belong.
+    The compartment says *a resource* and declines to say which kind, so the
+    rule is gone and these eight say `ground` row by row, as the water and
+    the standing timber beside them say `water` and `biotic`.
+    """
+
+    BAFU = "bafu-2026-v1"
+    UNSPECIFIED = ["resources", "unspecified"]
+    GROUND = PREFIX + "reso-grou"
+
+    ROWS = {
+        "7c86af3f-3c11-5821-85a7-51147f2e9506": "Aluminium, resource correction",
+        "16b4382a-901e-52a0-a8f4-816b157b8f56": "Energy, from oil",
+        "07396543-e11e-5ced-8353-b443a5f0aedf": "Iridium",
+        "842ad65b-1df9-5cec-86f2-711db6d4bd35": "Iron, resource correction",
+        "0eef7c61-49c7-520b-9596-6d0177d2f3d5": "Platinum",
+        "6bb89d74-4079-5184-8f91-d65735e4f772": "Shale",
+        "c7f733b4-4241-55a7-92cd-0ae66056d634": "Sodium bromide",
+        "8daa605b-050a-50ea-800d-e491a93eb282": "Uranium",
+    }
+
+    def test_each_row_says_ground_for_itself(self):
+        for uuid, name in self.ROWS.items():
+            with self.subTest(name=name):
+                self.assertEqual(
+                    flow_context_iri(self.BAFU, uuid, self.UNSPECIFIED), self.GROUND
+                )
+
+    def test_a_row_nothing_names_is_not_sent_to_ground(self):
+        """The half that stops the compartment being ground again by another
+        route: a name no rule picks out reaches no context, and the merge
+        reports that instead of guessing at a medium."""
+        expectations = ContextExpectations(
+            _by_source_context=dict(context_iri_by_source_context(self.BAFU)),
+            _source_label=self.BAFU,
+        )
+        self.assertIsNone(
+            expectations.resolve(
+                "00000000-0000-0000-0000-000000000000", self.UNSPECIFIED, "Oxygen"
+            )
+        )
+
+    def test_every_row_bafu_ships_there_is_placed_by_a_statement_about_it(self):
+        """With the compartment rule gone, a row of the compartment that no
+        name rule, per-row rule or manual fix speaks for would reach no
+        context.  Reads the extraction where it exists."""
+        source = resolve_source_list(self.BAFU)
+        if not source.flows_path.exists():
+            raise unittest.SkipTest("BAFU 2026 v1 is not extracted here")
+        expectations = ContextExpectations(
+            _by_source_context=dict(context_iri_by_source_context(self.BAFU)),
+            _source_label=self.BAFU,
+        )
+        rows = [
+            flow for flow in source.load_flows()
+            if normalize_context_key(flow.provided.context or [])
+            == normalize_context_key(self.UNSPECIFIED)
+        ]
+        self.assertTrue(rows)
+        for flow in rows:
+            with self.subTest(name=flow.provided.name):
+                self.assertIsNotNone(
+                    expectations.resolve(
+                        flow.uuid, flow.provided.context, flow.provided.name
+                    )
+                )
 
 
 class BiomassEnergyCorrectionTestCase(unittest.TestCase):

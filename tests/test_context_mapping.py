@@ -51,12 +51,13 @@ from brightway_flows.sources import (
 #: counts, measured in persons, and #173 refused them: an injury is not an
 #: emission, so the rows go and the eleventh rule goes with them.  Ten is
 #: Stepwise's compartment list with `Social` taken out.
-#: BAFU's 26 are its whole compartment list, and they came from a standalone
-#: file that nothing read until #4 folded it in here.  26 is what the 2026 v1
-#: export uses: every compartment covered, and no rule matching nothing.
+#: BAFU's rules came from a standalone file that nothing read until #4 folded
+#: it in here, and covered all 26 compartments the 2026 v1 export uses.  25 is
+#: that list less `resources / unspecified`, which names no medium: its rows
+#: are placed by their names and by rules of their own (#381).
 MERGEABLE = {
     "agribalyse-3.2": 22,
-    "bafu-2026-v1": 26,
+    "bafu-2026-v1": 25,
     "ecoinvent-3.8": 26,
     "ecoinvent-3.9.1": 25,
     "ecoinvent-3.10.1": 25,
