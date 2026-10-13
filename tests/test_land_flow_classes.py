@@ -70,6 +70,7 @@ class TheFileTestCase(unittest.TestCase):
                 "ecoinvent-3.10.1",
                 "ecoinvent-3.11",
                 "ecoinvent-3.12",
+                "openlca-2.8.2",
                 "stepwise-2006-1.09",
             },
         )
@@ -113,9 +114,13 @@ class TheFileTestCase(unittest.TestCase):
         and the rail embankment's transformation beside Stepwise's occupation
         of it. Eight of the 201 carry a country the way BAFU's rail rows do,
         split off per #65 and recorded as the row's location.
+
+        openLCA LCIA methods 2.8.2 adds 474 rows and 19 classes. Its 433 land
+        rows with a country in the name are refused, and 16 of the rest use
+        words the axes lack (`conservation tillage`, `monotone-intensive`).
         """
-        self.assertEqual(len(self.rows), 1517)
-        self.assertEqual(len({row["key"] for row in self.rows}), 345)
+        self.assertEqual(len(self.rows), 1991)
+        self.assertEqual(len({row["key"] for row in self.rows}), 364)
 
     def test_the_three_directions_are_all_present(self):
         """The repair the plan is really about.
@@ -215,7 +220,7 @@ class TheLoaderTestCase(unittest.TestCase):
 
     def test_the_reached_classes_are_the_ones_a_source_flow_lands_on(self):
         reached = published_land_classes()
-        self.assertEqual(len(reached), 345)
+        self.assertEqual(len(reached), 364)
         self.assertTrue(all(isinstance(value, LandUse) for value in reached.values()))
         self.assertTrue(all(key == value.key for key, value in reached.items()))
 
