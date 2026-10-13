@@ -77,20 +77,26 @@ All but one spelling are ecoinvent's, BAFU's or Stepwise's, and are read as
 those lists' are. The new spelling is `Particulates, > 0.2 um, and < 2.5 um`,
 read as EF 3.1's `Particles (PM0.2 - PM2.5)`.
 
+## Country-specific land rows refused
+
+433 land rows write a place into the name: `Transformation, from forest,
+extensive, GA`, `Occupation, permanent crop, BR`, `Transformation, from forest,
+extensive, US west coast`. They cover 79 countries and regions. Every one has
+an unregionalised row of the same name, which is kept. The country-specific
+rows are refused and published as excluded with the reason.
+
 ## Not yet merged
 
 openLCA LCIA methods 2.8.2 is registered and extracted, and merges last
-(priority 500) when a build names it. It cannot be merged yet, because two
-tables that every merged list needs do not cover it
+(priority 500) when a build names it. It cannot be merged yet
 ([#385](https://github.com/brightway-labs/brightway-flows/issues/385)):
 
-- **Land classes** (`land-flow-classes.json`). 724 of its land rows are read,
-  and 199 are not. Most of the 199 write a country into the name —
-  `Transformation, from forest, extensive, GA` — and the rest use words the
-  other lists don't: `conservation tillage`, `monotone-intensive`,
-  `agriculture + forest`.
-- **Water materials** (`water-flow-materials.json`). This list has no table of
-  water names yet.
+- **Land classes** (`land-flow-classes.json`). 474 of the 490 land rows that
+  are kept are read. The other 16 use words the other lists don't:
+  `conservation tillage`, `monotone-intensive`, `agriculture + forest`.
+- **Water materials** (`water-flow-materials.json`). The list has no table
+  saying which kind of water each water row is, so its water rows can only be
+  matched by the registry number every kind of water shares.
 
 No documented build includes it, so this page records no merge outcomes: no row
 has been sent anywhere by hand, no registry number corrected, and no name split

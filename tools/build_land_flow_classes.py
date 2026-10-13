@@ -53,6 +53,7 @@ from land_class_parser import (  # noqa: E402
     without_geography,
 )
 
+from brightway_flows.additional_flows import load_excluded_source_flows  # noqa: E402
 from brightway_flows.domain.land_use import LandUse  # noqa: E402
 from brightway_flows.sources import registered_source_list  # noqa: E402
 
@@ -75,6 +76,7 @@ SOURCE_KEYS = (
     "bafu-2026-v1",
     "stepwise-2006-1.09",
     "agribalyse-3.2",
+    "openlca-2.8.2",
 )
 
 #: How a list says a flow is a land flow.
@@ -142,11 +144,23 @@ def source_rows(key: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     source = registered_source_list(key)
     rows: list[dict[str, Any]] = []
     unplaced: list[dict[str, Any]] = []
+    # A row the list refuses never reaches the merge, so it needs no class --
+    # openLCA's 433 country-specific land rows among them.
+    refused = (
+        {
+            record.uuid
+            for record in load_excluded_source_flows(
+                source.additional_flows_path, source=source.source_label
+            )
+        }
+        if source.additional_flows_path is not None
+        else set()
+    )
 
     for flow in json.loads(Path(source.flows_path).read_bytes()):
         name = flow["name"]
         context = list(flow.get("context") or [])
-        if not _is_land_flow(name, context):
+        if flow["uuid"] in refused or not _is_land_flow(name, context):
             continue
 
         # #290 takes the place out of a BAFU name at extraction, so a freshly

@@ -866,6 +866,13 @@ class OpenLcaRefusalCountsTestCase(unittest.TestCase):
         self.assertIn(f"GreenDelta ships {len(black_carbon)} rows of black carbon", self.text)
         self.assertIn(f"so the {len(black_carbon)} rows are refused", self.text)
 
+    def test_the_country_specific_land_count(self):
+        country = [
+            row for row in self.excluded
+            if row["reason"].startswith("A land-use row with a place")
+        ]
+        self.assertIn(f"{len(country)} land rows write a place into the name", self.text)
+
     def test_the_particle_count(self):
         self.assertIn(
             f"{len(self.particles)} of the package's particle rows are read", self.text
