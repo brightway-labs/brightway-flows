@@ -93,8 +93,7 @@ the right flow without supplying enough evidence to convert its amount. A
 source-specific conversion requires the exact source list, version and row
 identifier; a name-only match asks for these rather than borrowing a density or
 composition from another row. `selector_details["quantity_conversion"]` records
-the source and target units, factor and basis. Unknown unit symbols are not
-guessed: `mJ` must never silently become `MJ`.
+the source and target units, factor and basis.
 
 ## What the answer tells you
 

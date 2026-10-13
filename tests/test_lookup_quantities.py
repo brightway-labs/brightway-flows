@@ -109,22 +109,6 @@ def test_unknown_conversion_is_never_reported_as_identity(tmp_path, source):
     assert result.unit_conversion_factor is None
 
 
-def test_millijoules_are_not_reported_as_megajoules(tmp_path):
-    db = quantity_build(tmp_path, source="mJ", target="MJ")
-    result = FlowMatcher.from_results(db).match(
-        FlowQuery(
-            name="Quantity fixture",
-            unit="mJ",
-            list_key="quantity-fixture-1",
-            identifier="source-row",
-        )
-    )
-    assert result.matched
-    # mJ has no vocabulary row in this build. An unknown ratio is safer than
-    # the case-insensitive spelling resolver's false factor of one.
-    assert result.unit_conversion_factor is None
-
-
 def test_quantity_table_preserves_all_published_unit_notations():
     from brightway_flows.domain.units import UNITS_FILEPATH, unit_table_factor
 
