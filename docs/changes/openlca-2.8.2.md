@@ -99,6 +99,15 @@ factors their unregionalised row does not always agree with. Ecological
 Scarcity 2013, for one, gives `Nitrogen, NO` a factor (57,000) and plain
 `Nitrogen` none. These are left out with the rows.
 
+## Water rows refused until their material is decided
+
+The 123 water rows left once the location-specific ones are refused — 76
+names, from `Water, river` to `Water BWS 40%` — are refused for now. Every kind
+of water has the same registry number, so the merge tells river water from sea
+water or cooling water only by a reading in `water-flow-materials.json`, and
+openLCA has none yet. Which reading each name gets is
+[#389](https://github.com/brightway-labs/brightway-flows/issues/389).
+
 ## Not yet merged
 
 openLCA LCIA methods 2.8.2 is registered and extracted, and merges last
@@ -108,9 +117,6 @@ openLCA LCIA methods 2.8.2 is registered and extracted, and merges last
 - **Land classes** (`land-flow-classes.json`). 474 of the 490 land rows that
   are kept are read. The other 16 use words the other lists don't:
   `conservation tillage`, `monotone-intensive`, `agriculture + forest`.
-- **Water materials** (`water-flow-materials.json`). The list has no table
-  saying which kind of water each water row is, so its water rows can only be
-  matched by the registry number every kind of water shares.
 
 No documented build includes it, so this page records no merge outcomes: no row
 has been sent anywhere by hand, no registry number corrected, and no name split
