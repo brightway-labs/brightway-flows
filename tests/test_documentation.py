@@ -888,6 +888,18 @@ class OpenLcaRefusalCountsTestCase(unittest.TestCase):
         }
         self.assertIn(f"They cover {len(places)} places", self.text)
 
+    def test_the_pending_water_count(self):
+        pending = [
+            r for r in self.excluded
+            if r["reason"].startswith("A water row with no material")
+        ]
+        names = {r["name"] for r in pending}
+        self.assertIn(
+            f"The {len(pending)} water rows left once the location-specific ones "
+            f"are refused — {len(names)} names,",
+            self.text,
+        )
+
     def test_the_particle_count(self):
         self.assertIn(
             f"{len(self.particles)} of the package's particle rows are read", self.text
