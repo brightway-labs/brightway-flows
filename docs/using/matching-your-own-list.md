@@ -114,11 +114,11 @@ not defend.
 Your compartments are yours. You do not have to translate them.
 
 `["Emissions to air", "low. pop."]` is what a SimaPro export writes, and it is
-understood, because BAFU has already written down what those 26 compartments
+understood, because BAFU has already written down what those 25 compartments
 mean. So has ecoinvent for its 26, EF 3.1 for its 37, GreenDelta's openLCA
 method package for its 21, and Stepwise 2006 for its 10 — and AGRIBALYSE 3.2 for its 22,
 eighteen of which are BAFU's spellings again, because both lists carry
-SimaPro's export vocabulary. Between them, 122
+SimaPro's export vocabulary. Between them, 121
 compartment names are recognised.
 
 Stepwise's ten are a SimaPro *method* file's vocabulary — `Air /
@@ -159,9 +159,18 @@ from air — and its own rules take the exceptions out by name and then say
 `ground` for what is left, which is true of that list and not of the
 compartment. So a caller who names Stepwise gets `ground`, and a caller who
 does not gets the dimension and no medium, which is all the compartment
-actually says. BAFU's `resources / unspecified` is read the same way, for the
-same reason: BAFU's rule says `ground` for what is left once its land rows are
-taken out by name, and BAFU files `Carbon dioxide, in air` there.
+actually says.
+
+BAFU's `resources / unspecified` gets the dimension and no medium whether or
+not you name BAFU. BAFU files 42 rows there: platinum and uranium, which come
+out of the ground, but also well water, standing timber and `Carbon dioxide, in
+air`. This project places each of those rows by a rule naming that row, not by
+a rule for the compartment, and a lookup has no BAFU row identifier to find
+those rules with. So `Carbon dioxide, in air` sent with
+`source_label="bafu-2026-v1"` is read as *a resource* and finds biogenic carbon
+dioxide taken from the air, not a carbon dioxide taken from the ground. A land
+row (`Occupation, forest, extensive`) in the same compartment is still read as
+land.
 
 `answer.context_resolution` says how yours was read:
 
@@ -169,7 +178,7 @@ taken out by name, and BAFU files `Carbon dioxide, in air` there.
 |---|---|
 | `given` | you supplied a consensus context IRI, and it was used |
 | `named-list` | you said `source_label="ecoinvent-3.12"` and that list's own rules placed it |
-| `any-list` | one of the 122 recognised compartment names |
+| `any-list` | one of the 121 recognised compartment names |
 | `simapro` | a compartment SimaPro writes and no list spells |
 | `dimension-only` | you said which *kind* of compartment and not which one — see below |
 | `consensus-strings` | you wrote this project's own words — `["Environmental", "Air", "Indoor"]` |

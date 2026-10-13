@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "description": "BAFU files 42 rows under `resources / unspecified`, a compartment that says *this is a resource* and declines to say which kind. A compartment rule mapped all of it to `Resource → Ground`, written as a default and flagged `Review recommended`. It was true of 8 of the 42 rows and wrong for the rest, which were taken out one by one: 26 land rows by their names, 7 water and biotic rows by rules of their own, and `Carbon dioxide, in air` by a manual fix moving it to `resources / in air` (#135).\n\nThe lookup applied the same rule to a caller who named BAFU. `Carbon dioxide, in air` under `resources / unspecified`, sent with `source_label=\"bafu-2026-v1\"`, was read as a resource from the ground, the recorded decision for that row (in air) was not found, and the only candidate (Carbon Dioxide (biogenic), `Resource → Air`) was rejected for being in the wrong medium (#381). A caller who named no list was placed, because #356 already reads the compartment as `Resource` with no medium.\n\nThe compartment rule is removed and the 8 rows it was right about are placed by per-row rules in `context-manual-mapping.json`, so every BAFU row in the compartment is placed by a statement about that row. These claims pin the 8 rows, and the carbon dioxide row, to the flows they reached on the build of 19d6cc6 (shared data directory, 22 September 2026): the change is meant to move none of them. The lookup half -- a caller naming BAFU gets the dimension and no medium -- is held by tests/test_simapro_contexts.py.",
+  "expectations": [
+    {
+      "id": "0381-bafu-unspecified-platinum-stays-in-ground",
+      "issue": 381,
+      "title": "BAFU's platinum filed as an unspecified resource is still platinum from the ground",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "0eef7c61-49c7-520b-9596-6d0177d2f3d5"},
+      "expect": {"target_uuid": "041fab30-6556-11dd-ad8b-0800200c9a66", "target_context_display": "Resource → Ground"},
+      "comment": "Matched by registry number on the base build. Placed by the compartment default before this change and by a per-row rule after it."
+    },
+    {
+      "id": "0381-bafu-unspecified-iridium-stays-in-ground",
+      "issue": 381,
+      "title": "BAFU's iridium filed as an unspecified resource is still iridium from the ground",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "07396543-e11e-5ced-8353-b443a5f0aedf"},
+      "expect": {"target_uuid": "fe0acd60-3ddc-11dd-a7fb-0050c2490048", "target_context_display": "Resource → Ground"},
+      "comment": "Matched by registry number on the base build."
+    },
+    {
+      "id": "0381-bafu-unspecified-uranium-stays-in-ground",
+      "issue": 381,
+      "title": "BAFU's uranium filed as an unspecified resource is still uranium from the ground",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "8daa605b-050a-50ea-800d-e491a93eb282"},
+      "expect": {"target_uuid": "3e4d2966-6556-11dd-ad8b-0800200c9a66", "target_context_display": "Resource → Ground"},
+      "comment": "Placed by a prepared correspondence on the base build, which keeps the compartment the row resolved to."
+    },
+    {
+      "id": "0381-bafu-unspecified-shale-stays-in-ground",
+      "issue": 381,
+      "title": "BAFU's shale filed as an unspecified resource is still shale from the ground",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "6bb89d74-4079-5184-8f91-d65735e4f772"},
+      "expect": {"target_uuid": "172a8bdd-6556-11dd-ad8b-0800200c9a66", "target_context_display": "Resource → Ground"},
+      "comment": "Matched by label on the base build."
+    },
+    {
+      "id": "0381-bafu-unspecified-sodium-bromide-stays-in-ground",
+      "issue": 381,
+      "title": "BAFU's sodium bromide filed as an unspecified resource is still sodium bromide from the ground",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "c7f733b4-4241-55a7-92cd-0ae66056d634"},
+      "expect": {"target_uuid": "edd6f67c0e63f3ad172603de464722a2025685b7", "target_context_display": "Resource → Ground"},
+      "comment": "Matched by registry number on the base build, onto a flow this project created."
+    },
+    {
+      "id": "0381-bafu-unspecified-energy-from-oil-stays-in-ground",
+      "issue": 381,
+      "title": "BAFU's energy from oil filed as an unspecified resource is still crude oil from the ground",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "16b4382a-901e-52a0-a8f4-816b157b8f56"},
+      "expect": {"target_uuid": "fe0acd60-3ddc-11dd-a6f8-0050c2490048", "target_context_display": "Resource → Ground"},
+      "comment": "Placed by a prepared correspondence on the base build, in MJ."
+    },
+    {
+      "id": "0381-bafu-unspecified-aluminium-correction-stays-in-ground",
+      "issue": 381,
+      "title": "BAFU's aluminium resource correction filed as an unspecified resource still corrects aluminium from the ground",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "7c86af3f-3c11-5821-85a7-51147f2e9506"},
+      "expect": {"target_uuid": "fe0acd60-3ddc-11dd-ab5f-0050c2490048", "target_context_display": "Resource → Ground"},
+      "comment": "A resource correction is an amount of the resource with the opposite sign, so it is placed where the resource is."
+    },
+    {
+      "id": "0381-bafu-unspecified-iron-correction-stays-in-ground",
+      "issue": 381,
+      "title": "BAFU's iron resource correction filed as an unspecified resource still corrects iron from the ground",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "842ad65b-1df9-5cec-86f2-711db6d4bd35"},
+      "expect": {"target_uuid": "08a91e70-3ddc-11dd-959a-0050c2490048", "target_context_display": "Resource → Ground"},
+      "comment": "As the aluminium row."
+    },
+    {
+      "id": "0381-bafu-unspecified-carbon-dioxide-in-air-stays-in-air",
+      "issue": 381,
+      "title": "BAFU's carbon dioxide in air filed as an unspecified resource still reaches biogenic carbon dioxide from air",
+      "subject": {"kind": "source_row", "list": "bafu", "uuid": "513f1d03-fdd8-5906-9eee-00ef20a0dea8"},
+      "expect": {"target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e", "target_context_display": "Resource → Air"},
+      "comment": "The row #381 is about. The build already placed it correctly, by the manual fix that moves it to `resources / in air` and the match override that names its flow; the defect was the lookup's. Pinned so the build half cannot move while the lookup half is fixed."
+    }
+  ]
+}

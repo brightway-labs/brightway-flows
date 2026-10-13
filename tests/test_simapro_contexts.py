@@ -175,27 +175,39 @@ class AResourceWithNoMediumTestCase(unittest.TestCase):
 
     def test_the_list_that_writes_resources_unspecified_does_not_speak_for_it_either(self):
         """`resources / unspecified` is BAFU's spelling of the same refusal,
-        and BAFU's rule for it says `ground` -- true of BAFU's rows once its
-        land rows are taken out by name, and not of the compartment: BAFU files
-        `Carbon dioxide, in air` there, and that row was published as a
-        resource taken from the ground until a curated target moved it (#135).
-        Until #356 a caller who did not name BAFU got BAFU's answer here while
-        the same caller writing `Raw / (unspecified)` got the refusal. The two
-        are now read alike, and naming the list still gets the list's answer,
-        exactly as for Stepwise above."""
-        named = resolve_context(
+        and BAFU has no rule for it: every row BAFU files there is placed by
+        its name or by a rule of its own (#381).  The compartment rule that
+        said `ground` was true of 8 of BAFU's 42 rows there, and a caller who
+        named BAFU got it for any row -- so `Carbon dioxide, in air`, which
+        BAFU files there, was read as a resource from the ground and lost the
+        only flow it could reach.  Naming the list and not naming it now read
+        the compartment alike, as the dimension and no medium."""
+        for label in ("", "bafu-2026-v1"):
+            for name in ("Oxygen", "Carbon dioxide, in air"):
+                with self.subTest(source_label=label, name=name):
+                    resolved = resolve_context(
+                        FlowQuery(
+                            name=name,
+                            context=["resources", "unspecified"],
+                            source_label=label,
+                        )
+                    )
+                    self.assertEqual(resolved.resolution, CONTEXT_DIMENSION_ONLY)
+                    self.assertEqual(resolved.context_iri, "")
+
+    def test_naming_bafu_still_gets_its_name_rules_in_resources_unspecified(self):
+        """The land rows are picked out by name whoever is asking, and the
+        name rules are the half of BAFU's ruling on this compartment that
+        stays."""
+        resolved = resolve_context(
             FlowQuery(
-                name="Oxygen",
+                name="Occupation, forest, extensive",
                 context=["resources", "unspecified"],
                 source_label="bafu-2026-v1",
             )
         )
-        self.assertEqual(named.resolution, CONTEXT_NAMED_LIST)
-        self.assertEqual(named.context_iri, PREFIX + "reso-grou")
-
-        anybody = _resolve(["resources", "unspecified"], name="Oxygen")
-        self.assertEqual(anybody.resolution, CONTEXT_DIMENSION_ONLY)
-        self.assertEqual(anybody.context_iri, "")
+        self.assertEqual(resolved.resolution, CONTEXT_NAMED_LIST)
+        self.assertEqual(resolved.context_iri, PREFIX + "laus-occu")
 
 
 class AResourceWithAMediumTestCase(unittest.TestCase):

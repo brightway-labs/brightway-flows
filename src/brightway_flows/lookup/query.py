@@ -391,7 +391,7 @@ def resolve_context(query: FlowQuery) -> ResolvedContext:
        compartment rules -- the answer a build of that list would give.
     3. The compartment rules of every list at once, name rules included.  A
        compartment is often not a private invention: BAFU is a SimaPro-shaped
-       list and has written down what 26 of them mean.
+       list and has written down what 25 of them mean.
     4. **The compartments SimaPro writes that no list has spelled** --
        `Raw / in ground`, `Airborne emissions / low. pop.`, `Water / river`,
        `Final waste flows /`.  A list exported from SimaPro carries SimaPro's
@@ -412,10 +412,11 @@ def resolve_context(query: FlowQuery) -> ResolvedContext:
     rows, because a flat compartment rule for `resources / land` says occupation
     and step 3 consults the *name* rules that tell occupation from
     transformation -- which is #52 for the third time.  The other 8 were
-    `resources / unspecified`, where BAFU has ruled and a caller writing BAFU's
-    own spelling should get BAFU's answer.  So a spelling a mapped list has
-    already ruled on keeps that ruling, and this step is what covers the
-    spellings no list has.
+    `resources / unspecified`, where BAFU then had a compartment rule saying
+    ground; it has none now (#381), and those 8 say ground by rules of their
+    own, which a query carrying no vendor uuid cannot reach.  So a spelling a
+    mapped list has already ruled on keeps that ruling, and this step is what
+    covers the spellings no list has.
 
     Step 4 carries its own name rules for the land compartments it introduces,
     for the same reason step 3 needs them: `Raw / land` holds both occupations
@@ -518,10 +519,13 @@ def _refused_medium(key: Any, iri: str) -> ResolvedContext | None:
     every candidate whose medium is not the row's -- so a caller's standing wood
     would lose the flow it was asking about.
 
-    BAFU's ``resources / unspecified`` is the second case and the same shape
-    (#356): its rule says ``ground`` for what is left once its land rows are
+    BAFU's ``resources / unspecified`` was the second case and the same shape
+    (#356): its rule said ``ground`` for what was left once its land rows were
     taken out by name, and BAFU itself files ``Carbon dioxide, in air`` there,
-    which a curated target had to move off the ground (#135).
+    which a curated target had to move off the ground (#135).  That rule is
+    gone (#381) -- every BAFU row there is placed by its name or a rule of its
+    own -- so step 3 finds nothing for the compartment and this refusal is
+    reached by step 4 directly, whether or not the caller names BAFU.
 
     So a ruling that a compartment names no medium outranks the compartment
     half of step 3.  Only that half: *iri* is compared against the compartment

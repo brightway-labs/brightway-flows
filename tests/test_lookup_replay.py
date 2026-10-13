@@ -261,8 +261,10 @@ class SupplyingTheNamesTheBuildUsedTestCase(_Replay):
         where an evidence row goes, and the lookup is right.**
 
         BAFU's `Energy, Gross Calorific Value, In Biomass, Resource Correction`
-        is in `resources / unspecified`, which BAFU's own rule maps onto
-        `reso-grou`. The lookup finds the `Biomass` flow that sits in exactly
+        is in `resources / unspecified`, which BAFU's own rule mapped onto
+        `reso-grou` when this was written; that rule is gone (#381), and this
+        test asserts the invariant below rather than naming the row. The
+        lookup found the `Biomass` flow that sits in exactly
         that compartment. The build did not: at the moment it matched the row,
         that flow did not exist yet -- the merge creates flows as it goes -- so
         it coarsened onto the nearest one that did. #112 is the same effect

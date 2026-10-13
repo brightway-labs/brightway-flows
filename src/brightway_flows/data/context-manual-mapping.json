@@ -2011,15 +2011,6 @@
       "comment": "Same sub-category as SimaPro 'Raw materials / land'"
     },
     {
-      "source": "bafu-2026-v1",
-      "source_context": [
-        "resources",
-        "unspecified"
-      ],
-      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
-      "comment": "No generic resource context exists; defaulting to ground resources as most common resource type in BAFU. Review recommended."
-    },
-    {
       "source": "stepwise-2006-1.09",
       "source_context": [
         "Air",
@@ -2623,7 +2614,7 @@
       "name_prefix": "Occupation, ",
       "context_iri": "https://vocab.brightway.one/flow-contexts/laus-occu",
       "unmatched": "select",
-      "comment": "BAFU files land rows in three compartments, not one: 123 in resources/land, 26 in resources/unspecified and 3 in resources/in ground. A row whose name begins Occupation, is a land occupation whichever compartment BAFU filed it in, and without this rule those 29 reach the Resource dimension instead -- which also mistypes the two land classes that arrive both ways as a class of molecules (#66 sections 1.1 and 1.9). unmatched=select because the compartment is mixed: the other 177 rows in it are ordinary resources the compartment rule decides correctly."
+      "comment": "BAFU files land rows in three compartments, not one: 123 in resources/land, 26 in resources/unspecified and 3 in resources/in ground. A row whose name begins Occupation, is a land occupation whichever compartment BAFU filed it in, and without this rule those 29 reach the Resource dimension instead -- which also mistypes the two land classes that arrive both ways as a class of molecules (#66 sections 1.1 and 1.9). unmatched=select because the compartment is mixed: its other 16 rows are ordinary resources. This compartment has no compartment rule, because it names no medium, so each of those 16 is placed by a flow-specific rule or a manual fix rather than falling through to one (#381)."
     },
     {
       "source": "bafu-2026-v1",
@@ -2634,7 +2625,7 @@
       "name_prefix": "Transformation, ",
       "context_iri": "https://vocab.brightway.one/flow-contexts/laus-tran",
       "unmatched": "select",
-      "comment": "BAFU files land rows in three compartments, not one: 123 in resources/land, 26 in resources/unspecified and 3 in resources/in ground. A row whose name begins Occupation, is a land occupation whichever compartment BAFU filed it in, and without this rule those 29 reach the Resource dimension instead -- which also mistypes the two land classes that arrive both ways as a class of molecules (#66 sections 1.1 and 1.9). unmatched=select because the compartment is mixed: the other 177 rows in it are ordinary resources the compartment rule decides correctly."
+      "comment": "BAFU files land rows in three compartments, not one: 123 in resources/land, 26 in resources/unspecified and 3 in resources/in ground. A row whose name begins Occupation, is a land occupation whichever compartment BAFU filed it in, and without this rule those 29 reach the Resource dimension instead -- which also mistypes the two land classes that arrive both ways as a class of molecules (#66 sections 1.1 and 1.9). unmatched=select because the compartment is mixed: its other 16 rows are ordinary resources. This compartment has no compartment rule, because it names no medium, so each of those 16 is placed by a flow-specific rule or a manual fix rather than falling through to one (#381)."
     },
     {
       "source": "bafu-2026-v1",
@@ -3153,7 +3144,7 @@
         "unspecified"
       ],
       "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate",
-      "comment": "Water drawn from nature, under BAFU's own name for it, filed in the compartment BAFU uses for rows it has not classified. `resources / unspecified` maps to `Resource / Ground`, and of the 42 rows filed there the other 38 are already where they belong -- minerals and energy carriers by that mapping, the 26 land classes by the name-prefix rules, standing timber by a row of its own below. This one is not: `unspecified` is the absence of a statement about where the water came from, not a statement that it came out of the ground.\n\nThe vendor settles it. 81 rows of this list carry this exact name in `resources / in water` and reach EF 3.1's water withdrawal from an unstated body; this row differs from all 81 in nothing but the compartment. Left alone it reached a `Water` flow in `Resource / Ground` that exists only because these three rows minted it, and that carries no characterisation factor at all -- so BAFU's water was published in two places and the half filed here scored zero against every water-use method. The flow it now reaches carries 209 factors.\n\nThe same argument #83 made for the `resources / land` rows above, in BAFU's other catch-all compartment. (#83, #67)"
+      "comment": "Water drawn from nature, under BAFU's own name for it, filed in the compartment BAFU uses for rows it has not classified. `resources / unspecified` mapped to `Resource / Ground` when this was written, and of the 42 rows filed there the other 38 were already where they belonged -- minerals and energy carriers by that mapping, the 26 land classes by the name-prefix rules, standing timber by a row of its own below. (#381 removed that mapping; the minerals and energy carriers now say `ground` by rows of their own.) This one is not: `unspecified` is the absence of a statement about where the water came from, not a statement that it came out of the ground.\n\nThe vendor settles it. 81 rows of this list carry this exact name in `resources / in water` and reach EF 3.1's water withdrawal from an unstated body; this row differs from all 81 in nothing but the compartment. Left alone it reached a `Water` flow in `Resource / Ground` that exists only because these three rows minted it, and that carries no characterisation factor at all -- so BAFU's water was published in two places and the half filed here scored zero against every water-use method. The flow it now reaches carries 209 factors.\n\nThe same argument #83 made for the `resources / land` rows above, in BAFU's other catch-all compartment. (#83, #67)"
     },
     {
       "source": "bafu-2026-v1",
@@ -3208,7 +3199,7 @@
         "unspecified"
       ],
       "context_iri": "https://vocab.brightway.one/flow-contexts/reso-biot",
-      "comment": "The same standing timber, and the same reading, from the third compartment BAFU files it in. `resources / unspecified` has no context of its own -- the compartment rule sends it to ground resources, which is where most of BAFU's unspecified rows belong -- so this row was landing in `Resource / Ground` while the rows from `resources / land` and `resources / biotic` both landed in `Resource / Biotic`. One resource in three compartments was becoming a substance in two contexts, split on nothing but which compartment the vendor happened to file each row in. Wood in a tree is a biotic resource wherever the row was filed. This row and the `land` one arrive as `Wood, unspecified, standing/kg` and are converted to cubic metres in bafu-2026-v1-manual-fixes.json; with all three in one context and one unit they are one flow. (#67, #4)"
+      "comment": "The same standing timber, and the same reading, from the third compartment BAFU files it in. `resources / unspecified` has no context of its own -- the compartment rule, since removed (#381), sent it to ground resources -- so this row was landing in `Resource / Ground` while the rows from `resources / land` and `resources / biotic` both landed in `Resource / Biotic`. One resource in three compartments was becoming a substance in two contexts, split on nothing but which compartment the vendor happened to file each row in. Wood in a tree is a biotic resource wherever the row was filed. This row and the `land` one arrive as `Wood, unspecified, standing/kg` and are converted to cubic metres in bafu-2026-v1-manual-fixes.json; with all three in one context and one unit they are one flow. (#67, #4)"
     },
     {
       "source": "bafu-2026-v1",
@@ -3396,7 +3387,95 @@
         "unspecified"
       ],
       "context_iri": "https://vocab.brightway.one/flow-contexts/reso-biot",
-      "comment": "The second of the two strays, from BAFU's catch-all compartment, in 19 datasets -- every one of which also carries the biotic row. `resources / unspecified` maps to `Resource / Ground`, which this file's own comment on that compartment flags for review: it is right for minerals and wrong for the energy in wood, the same way it was wrong for standing timber and for the resource correction of this very family, both already ruled above. Wood is not dug out of the ground. (#89, #69)"
+      "comment": "The second of the two strays, from BAFU's catch-all compartment, in 19 datasets -- every one of which also carries the biotic row. `resources / unspecified` mapped to `Resource / Ground`, which that rule's own comment flagged for review, and #381 has since removed it: it was right for minerals and wrong for the energy in wood, the same way it was wrong for standing timber and for the resource correction of this very family, both already ruled above. Wood is not dug out of the ground. (#89, #69)"
+    },
+    {
+      "source": "bafu-2026-v1",
+      "source_uuid": "0eef7c61-49c7-520b-9596-6d0177d2f3d5",
+      "source_name": "Platinum",
+      "source_context": [
+        "resources",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "Platinum is mined, so it is a resource taken from the ground. BAFU files it under `resources / unspecified`, a compartment that says *this is a resource* and declines to say which kind, and that used to map wholesale onto `Resource / Ground`. That rule was right for this row and seven others and wrong for the other 34 BAFU files there -- 26 land rows, three of water, three of wood and biomass, a water withdrawal and carbon dioxide taken from the air -- each of which needed a rule of its own to be taken back out. The compartment rule also told a lookup caller who named BAFU that anything filed there came out of the ground, which cost `Carbon dioxide, in air` the only flow it could reach (#381). So the compartment has no rule, as SimaPro's `resources / unspecified` has none (#356), and the eight rows that do come out of the ground say so here one by one. On the build of 19d6cc6 this row reached the platinum resource in `Resource / Ground` by its registry number, and it still does. (#381)"
+    },
+    {
+      "source": "bafu-2026-v1",
+      "source_uuid": "07396543-e11e-5ced-8353-b443a5f0aedf",
+      "source_name": "Iridium",
+      "source_context": [
+        "resources",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "Iridium is mined alongside platinum, so it is a resource taken from the ground. One of the eight rows in BAFU's `resources / unspecified` that say `ground` for themselves now that the compartment has no rule; see the platinum row for why. (#381)"
+    },
+    {
+      "source": "bafu-2026-v1",
+      "source_uuid": "8daa605b-050a-50ea-800d-e491a93eb282",
+      "source_name": "Uranium",
+      "source_context": [
+        "resources",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "Uranium ore is mined, so this is a resource taken from the ground. One of the eight rows in BAFU's `resources / unspecified` that say `ground` for themselves; see the platinum row. (#381)"
+    },
+    {
+      "source": "bafu-2026-v1",
+      "source_uuid": "6bb89d74-4079-5184-8f91-d65735e4f772",
+      "source_name": "Shale",
+      "source_context": [
+        "resources",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "Shale is quarried rock, so it is a resource taken from the ground. One of the eight rows in BAFU's `resources / unspecified` that say `ground` for themselves; see the platinum row. (#381)"
+    },
+    {
+      "source": "bafu-2026-v1",
+      "source_uuid": "c7f733b4-4241-55a7-92cd-0ae66056d634",
+      "source_name": "Sodium bromide",
+      "source_context": [
+        "resources",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "Kept where the compartment rule put it: a resource taken from the ground, on a flow this project created for the row. Bromide salts are also won from brine, which would make this a resource from water, and nothing in the row says which; this rule records the answer the build has published rather than deciding that question. One of the eight rows in BAFU's `resources / unspecified` that say `ground` for themselves; see the platinum row. (#381)"
+    },
+    {
+      "source": "bafu-2026-v1",
+      "source_uuid": "16b4382a-901e-52a0-a8f4-816b157b8f56",
+      "source_name": "Energy, from oil",
+      "source_context": [
+        "resources",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "The energy in crude oil, counted in MJ, and crude oil is pumped out of the ground. A prepared correspondence places this row on crude oil in `Resource / Ground` and keeps the compartment the row resolves to, so the row has to resolve there. One of the eight rows in BAFU's `resources / unspecified` that say `ground` for themselves; see the platinum row. (#381)"
+    },
+    {
+      "source": "bafu-2026-v1",
+      "source_uuid": "7c86af3f-3c11-5821-85a7-51147f2e9506",
+      "source_name": "Aluminium, resource correction",
+      "source_context": [
+        "resources",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A resource correction is an amount of a resource written with the opposite sign, so it cancels an extraction only if the two land on one flow (#294). Aluminium is mined as bauxite, from the ground, which is where the resource it corrects is published. One of the eight rows in BAFU's `resources / unspecified` that say `ground` for themselves; see the platinum row. (#381)"
+    },
+    {
+      "source": "bafu-2026-v1",
+      "source_uuid": "842ad65b-1df9-5cec-86f2-711db6d4bd35",
+      "source_name": "Iron, resource correction",
+      "source_context": [
+        "resources",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "The aluminium correction's twin: iron ore is mined, so the correction belongs beside the iron resource in `Resource / Ground`. One of the eight rows in BAFU's `resources / unspecified` that say `ground` for themselves; see the platinum row. (#381)"
     },
     {
       "source": "ecoinvent-3.12",
@@ -3824,7 +3903,7 @@
         "unspecified"
       ],
       "dimension": "Resource",
-      "comment": "'resources' as 'unspecified', which is BAFU's own spelling. BAFU's rule for it says ground, which is true of BAFU's rows once its land rows are taken out by name and is not what the compartment means: BAFU itself files `Carbon dioxide, in air` there, and it was published as a resource taken from the ground until a curated target moved it (#135). A caller who names BAFU gets BAFU's answer; a caller who does not gets the refusal, as for Stepwise's 'raw / (unspecified)' (#356). There is no consensus context for a resource whose medium is unstated -- only Economic, Inventory Indicator and Social render on their own -- and naming one of Resource's children would reject every candidate outside it. 209 of the 222 substances with a resource flow have exactly one, so the substance decides the medium; this states only the dimension, which is what the compartment says."
+      "comment": "'resources' as 'unspecified', which is BAFU's own spelling. BAFU's rule for it used to say ground, which was true of 8 of BAFU's 42 rows there and is not what the compartment means: BAFU itself files `Carbon dioxide, in air` there, and it was published as a resource taken from the ground until a curated target moved it (#135). That rule is gone, and BAFU's rows there are placed by their names and by rules of their own, so a caller gets the refusal whether or not they name BAFU (#356, #381). A name BAFU's land rules pick out is still land. There is no consensus context for a resource whose medium is unstated -- only Economic, Inventory Indicator and Social render on their own -- and naming one of Resource's children would reject every candidate outside it. 209 of the 222 substances with a resource flow have exactly one, so the substance decides the medium; this states only the dimension, which is what the compartment says."
     },
     {
       "source_context": [

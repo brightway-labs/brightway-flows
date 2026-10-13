@@ -218,7 +218,7 @@
       ],
       "target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e",
       "target_name": "carbon dioxide (biogenic)",
-      "comment": "The third of BAFU's `Carbon dioxide, in air` rows, and the one whose published compartment read worst: `resources / unspecified` maps to `Resource \u2192 Ground`, so carbon dioxide whose own name says *in air* was published as a resource taken from the ground. Naming the target flow settles the compartment with the substance. (#135)"
+      "comment": "The third of BAFU's `Carbon dioxide, in air` rows, and the one whose published compartment read worst: `resources / unspecified` mapped to `Resource \u2192 Ground` until #381, so carbon dioxide whose own name says *in air* was published as a resource taken from the ground. Naming the target flow settles the compartment with the substance. (#135)"
     },
     {
       "source_uuid": "2c3a4703-fb4e-5333-b38d-ed5c4e05f304",
