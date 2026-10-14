@@ -44,9 +44,11 @@ from brightway_flows.merge.contexts import (
     _context_for_new_flow,
 )
 from brightway_flows.merge.conversions import (
+    PublishedConversion,
     UnitConversion,
     conversion_from_prepared_rows,
     conversion_from_source_flow,
+    conversion_to_publish,
 )
 from brightway_flows.merge.unit_changes import published_unit_for
 from brightway_flows.merge.matching import (
@@ -83,6 +85,32 @@ from brightway_flows.merge.state import (
 from brightway_flows.transformers.unit_normalization import resolve_unit_notation
 
 logger = structlog.get_logger(__name__)
+
+
+def _conversion_to_publish(
+    conversion: UnitConversion | None,
+    *,
+    row: SourceRow,
+    target_unit: str,
+    indexes: MergeIndexes,
+) -> PublishedConversion | None:
+    """What the mapping from *row* to a flow in *target_unit* publishes.
+
+    The pair is the vendor's unit and the flow's -- :attr:`SourceRow.provenance_unit`,
+    which is the one the mapping states -- so a row a fix rebased is converted
+    from what the vendor shipped.  See
+    :func:`~brightway_flows.merge.conversions.conversion_to_publish`.
+    """
+    source = indexes.source
+    overrides = getattr(source, "match_overrides_path", None)
+    return conversion_to_publish(
+        conversion,
+        source_unit=row.provenance_unit,
+        target_unit=target_unit,
+        generated_by=str(source.merge_activity),
+        correspondence_file=str(indexes.mapping_file or ""),
+        overrides_file=str(overrides.name) if overrides is not None else "",
+    )
 
 
 def _log_conversion_dropped(
@@ -616,23 +644,22 @@ def _record_prepared_match(
     # row's unit and would hand a kg->MJ factor to a kg->kg pair.
     conversion = conversion_from_prepared_rows(prepared_rows) or row.conversion
     target_unit = target_row.unit or ""
-    conversion_factor: float | None = None
-    conversion_comment = ""
-    if conversion is not None:
-        if conversion.holds_between(
-            source_unit=row.provenance_unit, target_unit=target_unit
-        ):
-            conversion_factor = conversion.factor
-            conversion_comment = conversion.comment
-        else:
-            _log_conversion_dropped(
-                row=row,
-                conversion=conversion,
-                target_unit=target_unit,
-                target_elementary_flow_id=resolved_target_uuid,
-                route="prepared_mapping",
-                source_key=indexes.source.key,
-            )
+    if conversion is not None and not conversion.holds_between(
+        source_unit=row.provenance_unit, target_unit=target_unit
+    ):
+        _log_conversion_dropped(
+            row=row,
+            conversion=conversion,
+            target_unit=target_unit,
+            target_elementary_flow_id=resolved_target_uuid,
+            route="prepared_mapping",
+            source_key=indexes.source.key,
+        )
+    published = _conversion_to_publish(
+        conversion, row=row, target_unit=target_unit, indexes=indexes
+    )
+    conversion_factor = published.factor if published else None
+    conversion_comment = published.comment if published else ""
 
     provenance = _build_match_provenance(
         source_uuid=row.uuid,
@@ -657,7 +684,7 @@ def _record_prepared_match(
         selector_reason="direct-target-uuid",
         mapping_file=indexes.mapping_file,
         provenance=provenance,
-        conversion_factor=conversion_factor,
+        conversion=published,
         merge_details={
             "prepared_target_uuid": target_uuid,
             "resolved_target_uuid": resolved_target_uuid,
@@ -676,7 +703,7 @@ def _record_prepared_match(
         source_unit=row.provenance_unit,
         map_type_curie=SKOS_EXACT_MATCH_CURIE,
         provenance=provenance,
-        conversion_factor=conversion_factor,
+        conversion=published,
     )
 
     entry: dict[str, Any] = {
@@ -759,21 +786,20 @@ def record_algorithmic_match(
         algorithm_details=match.selector_details,
     )
     target_unit = target_row.unit or ""
-    conversion_factor: float | None = None
-    if conversion is not None:
-        if conversion.holds_between(
-            source_unit=row.provenance_unit, target_unit=target_unit
-        ):
-            conversion_factor = conversion.factor
-        else:
-            _log_conversion_dropped(
-                row=row,
-                conversion=conversion,
-                target_unit=target_unit,
-                target_elementary_flow_id=elem_id,
-                route="algorithmic_fallback",
-                source_key=indexes.source.key,
-            )
+    if conversion is not None and not conversion.holds_between(
+        source_unit=row.provenance_unit, target_unit=target_unit
+    ):
+        _log_conversion_dropped(
+            row=row,
+            conversion=conversion,
+            target_unit=target_unit,
+            target_elementary_flow_id=elem_id,
+            route="algorithmic_fallback",
+            source_key=indexes.source.key,
+        )
+    published = _conversion_to_publish(
+        conversion, row=row, target_unit=target_unit, indexes=indexes
+    )
     _append_source_ref(
         target_row,
         source=indexes.source,
@@ -790,7 +816,7 @@ def record_algorithmic_match(
         mapping_file=indexes.mapping_file,
         provenance=provenance,
         merge_details=match.selector_details,
-        conversion_factor=conversion_factor,
+        conversion=published,
     )
     _append_concept_association(
         target_row,
@@ -803,7 +829,7 @@ def record_algorithmic_match(
         # label, not asserted equivalent by a curator.
         map_type_curie=SKOS_CLOSE_MATCH_CURIE,
         provenance=provenance,
-        conversion_factor=conversion_factor,
+        conversion=published,
     )
     accumulator.algorithm_matches.append(AlgorithmMatch(
         source_uuid=row.uuid,

@@ -144,12 +144,14 @@ things to watch:
   source flows — the mapping is not reversible one-to-one.
 - **Apply the conversion factor if there is one.** An association carries
   `qudt:conversionMultiplier` where an amount of the source flow does not mean
-  an amount of the consensus flow — mass against energy, or an ore's mass
-  against its metal's. Multiply the source amount by it. Factors `units.json`
-  already carries on the unit, such as litres to cubic metres, are not here:
-  read those off the unit. Absence means no factor was stated, *not* that the
-  amounts are comparable, so check `qudt:hasUnit` on the source concept against
-  the target flow's `unit` before assuming parity. See
+  the same amount of the consensus flow. That covers mass against energy, an
+  ore's mass against its metal's, and becquerels against kilobecquerels.
+  Multiply the source amount by it. `conversion_basis` says who stated it:
+  `unit-table` is a factor `units.json` gives between two units of one kind,
+  true of any flow measured in them, while `correspondence-table` and
+  `curated` are about that one source row. Absence means the two units are the
+  same unit, or that nothing converts them, so check `qudt:hasUnit` on the
+  source concept against the target flow's `unit` before assuming parity. See
   [`qudt:conversionMultiplier`](../reference/schemas.md#qudtconversionmultiplier).
 
 ## Get only the substances, not the occurrences

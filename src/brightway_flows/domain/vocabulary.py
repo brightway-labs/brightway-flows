@@ -498,6 +498,15 @@ class Term(StrEnum):
     #: classification than the evidence carries.  Promote it when a category
     #: recurs.
     EXCLUSION_REASON = "exclusionReason"
+    #: Who stated a `qudt:conversionMultiplier` on a `xkos:ConceptAssociation`:
+    #: `correspondence-table`, `curated` or `unit-table`
+    #: (`merge.conversions.ConversionBasis`).  QUDT has a term for the number
+    #: and none for whose number it is, and a source-specific density reads
+    #: exactly like a change of SI prefix without one.
+    CONVERSION_BASIS = "conversionBasis"
+    #: The PROV record for that multiplier: the two unit IRIs, and the file
+    #: that stated it -- `units.json` for a `unit-table` factor.
+    CONVERSION_PROVENANCE = "conversionProvenance"
 
     # ── PROV ─────────────────────────────────────────────────────────────────
     WAS_GENERATED_BY = "wasGeneratedBy"
@@ -575,6 +584,7 @@ _NAMESPACE_OF: dict[Term, Namespace] = {
             Term.BASE_INTERVENTION, Term.DEPRECATION_REASON,
             Term.SUMS_OVER, Term.EXPRESSED_AS, Term.AGGREGATE_MEASUREMENT,
             Term.EXCLUDED_SOURCE_CONCEPT, Term.EXCLUSION_REASON,
+            Term.CONVERSION_BASIS, Term.CONVERSION_PROVENANCE,
         )
     },
     **{
@@ -920,6 +930,8 @@ BRIGHTWAY_AGGREGATE_MEASUREMENT = IRIS[Term.AGGREGATE_MEASUREMENT]
 # read as though the odd key came from somewhere else.
 BRIGHTWAY_EXCLUDED_SOURCE_CONCEPT_CURIE = curie(Term.EXCLUDED_SOURCE_CONCEPT)
 BRIGHTWAY_EXCLUSION_REASON_CURIE = curie(Term.EXCLUSION_REASON)
+BRIGHTWAY_CONVERSION_BASIS_CURIE = curie(Term.CONVERSION_BASIS)
+BRIGHTWAY_CONVERSION_PROVENANCE_CURIE = curie(Term.CONVERSION_PROVENANCE)
 ORIGIN_QUALIFIER_IRI_PREFIX = MintedNamespace.ORIGIN_QUALIFIER_VALUES.value
 
 
