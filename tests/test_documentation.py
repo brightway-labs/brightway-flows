@@ -288,7 +288,7 @@ class LinkTestCase(unittest.TestCase):
         with self.assertRaises(NotFound):
             self.web_routes().match("/curation/misspelled-evidence/a-source", method="GET")
         with self.assertRaises(NotFound):
-            self.web_routes().match("/Users/somebody/private-evidence.json", method="GET")
+            self.web_routes().match("/private-evidence.json", method="GET")
 
     def test_every_link_to_a_section_names_a_heading_that_is_there(self):
         """A fragment matching no heading opens the page at the top (#373).
