@@ -49,7 +49,7 @@ import structlog
 
 from brightway_flows.domain.lcia.crosswalk import ef_method
 from brightway_flows.domain.lcia.records import StatedFactor, stated_category
-from brightway_flows.filesystem import openlca_lcia_zip_path
+from brightway_flows.integrations.openlca import package_archive
 from brightway_flows.sources import LciaSpec, SourceList, registered_source_list
 
 logger = structlog.get_logger(__name__)
@@ -438,10 +438,11 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
     """The LCIA adapter for GreenDelta's package: its factors, as a file.
 
     *force* is accepted because the protocol has it, and changes nothing: the
-    archive is placed by hand (see :func:`~brightway_flows.filesystem.
-    openlca_lcia_zip_path`) and re-read every time.
+    archive is re-read every time and downloaded only when the data directory
+    has none (see :func:`~brightway_flows.integrations.openlca.package_archive`).
 
-    :raises FileNotFoundError: if the archive is not in the data directory.
+    :raises FileNotFoundError: if the archive is neither in the data
+        directory nor hosted.
     :raises GreenDeltaLciaError: if the manifest does not declare exactly one
         method, since one package method is read per fetch.
     """
@@ -453,7 +454,7 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
             f"{source.key}'s manifest declares {len(spec.methods)} methods for "
             f"GreenDelta's package; this reads one."
         )
-    archive = openlca_lcia_zip_path(registered_source_list(PACKAGE_LIST).list_version)
+    archive = package_archive(registered_source_list(PACKAGE_LIST).list_version)
     package = read_package(archive, method_name=spec.methods[0].name)
     _check_categories(package, path=archive)
     factors, described = _factors(package, path=archive)
