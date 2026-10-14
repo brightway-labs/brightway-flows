@@ -54,7 +54,9 @@ from brightway_flows.sources import (
 #: BAFU's rules came from a standalone file that nothing read until #4 folded
 #: it in here, and covered all 26 compartments the 2026 v1 export uses.  25 is
 #: that list less `resources / unspecified`, which names no medium: its rows
-#: are placed by their names and by rules of their own (#381).
+#: are placed by their names and by rules of their own (#381).  openLCA's 30
+#: are its 33 compartments less the two waste ones it refuses (#189) and its
+#: own `Resource / unspecified`, for BAFU's reason (#381).
 MERGEABLE = {
     "agribalyse-3.2": 22,
     "bafu-2026-v1": 25,
@@ -63,7 +65,7 @@ MERGEABLE = {
     "ecoinvent-3.10.1": 25,
     "ecoinvent-3.11": 25,
     "ecoinvent-3.12": 25,
-    "openlca-2.8.2": 31,
+    "openlca-2.8.2": 30,
     "stepwise-2006-1.09": 10,
 }
 
