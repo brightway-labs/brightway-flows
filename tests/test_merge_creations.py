@@ -321,17 +321,34 @@ class CreateFlowsTestCase(unittest.TestCase):
             units_by_uuid[uuid] = concept["qudt:hasUnit"]["@id"].rsplit("/", 1)[-1]
         self.assertEqual(units_by_uuid, {"u-km": "KiloM", "u-m": "M"})
 
-    def test_no_conversion_multiplier_is_published_for_two_spellings_of_one_scale(self):
-        """`units.json` converts kilometres to metres, and the reader has it.
-
-        The same test every conversion in this project passes: only a factor the
-        unit table could not already have made is published.
-        """
+    def test_two_spellings_of_one_scale_publish_the_unit_tables_factor(self):
+        """The kilometre row on a flow in metres says it is 1,000 metres, and
+        that `units.json` says so: a reader is not left to find out (#393).
+        The metre row needs nothing."""
         self._road_noise((("u-km", "km"), ("u-m", "m")))
 
         flow = self.accumulator.merged_elementary[0]
-        for association in flow.concept_associations:
-            self.assertNotIn("qudt:conversionMultiplier", association)
+        by_uuid = {
+            association["xkos:sourceConcept"]["@id"].rsplit("/", 1)[-1]: association
+            for association in flow.concept_associations
+        }
+        kilometre = by_uuid["u-km"]
+        self.assertEqual(kilometre["qudt:conversionMultiplier"], 1000.0)
+        self.assertEqual(kilometre["conversion_basis"], "unit-table")
+        self.assertEqual(
+            kilometre["conversion_provenance"]["prov:hadPrimarySource"],
+            [
+                "https://vocab.brightway.one/units/unit/KiloM",
+                "https://vocab.brightway.one/units/unit/M",
+                "units.json",
+            ],
+        )
+        self.assertNotIn("qudt:conversionMultiplier", by_uuid["u-m"])
+        refs = {
+            ref["source_flow_uuid"]: ref["source_metadata"] for ref in flow.source_refs
+        }
+        self.assertEqual(refs["u-km"]["qudt:conversionMultiplier"], 1000.0)
+        self.assertEqual(refs["u-km"]["conversion_basis"], "unit-table")
 
     def test_rows_that_agree_about_the_unit_are_left_alone(self):
         rows = [

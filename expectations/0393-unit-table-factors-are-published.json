@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "description": "A source row measured in one unit can land on a consensus flow published in another unit of the same quantity kind: becquerels on a kilobecquerel flow, kilometres on metres, kilowatt-hours on megajoules. The number has to be multiplied by the factor between them, or it is wrong by that factor. `units.json` holds the factor, but the merge did not publish it, so characterisation refused the pair and the run flagged the row as an unconverted mismatch. The mapping now states the factor as `qudt:conversionMultiplier`, with `conversion_basis` `unit-table` and a `conversion_provenance` citing both units and `units.json`, and `has_unit_mismatch` means a row nothing converts. These claims were `expectations/0409-unit-crossings.json`, which cited an issue (#409) that is not in this tracker.",
+  "expectations": [
+    {
+      "id": "0393-no-unconverted-unit-crossing",
+      "issue": 393,
+      "title": "No BAFU row lands on a flow measured in a different unit without a published conversion",
+      "subject": {
+        "kind": "measure",
+        "key": "merge.bafu-2026-v1.unit_mismatch"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "162 BAFU rows on the build of 19d6cc6: 159 in Bq on a kBq flow, 2 in km on a metre flow (road noise) and 1 in kWh on a megajoule flow (waste heat), each converted by `units.json` and none published with the factor. It was 170 in the 2026-08-14 build, which also had 14 radionuclide rows on kg flows and an m3 row on an sm3 flow; those were fixed by rulings since. 0 on a full build of this change against the same inputs."
+    },
+    {
+      "id": "0393-ecoinvent-38-no-unconverted-unit-crossing",
+      "issue": 393,
+      "title": "The same holds for ecoinvent 3.8",
+      "subject": {
+        "kind": "measure",
+        "key": "merge.ecoinvent-3.8.unit_mismatch"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "2 rows until the build of 1 September 2026: Manganese-55 in groundwater, matching a kg flow while measured in kBq. Met since, and kept so that a change to the BAFU half cannot read as fixing both lists."
+    }
+  ]
+}

@@ -1,4 +1,16 @@
 {
+  "$defs": {
+    "ConversionBasis": {
+      "description": "Who stated a published conversion factor.\n\nPublished beside the number as `conversion_basis`, because a\nsource-specific density and a change of SI prefix are otherwise the same\nbare multiplier.  See `merge.conversions`.",
+      "enum": [
+        "correspondence-table",
+        "curated",
+        "unit-table"
+      ],
+      "title": "ConversionBasis",
+      "type": "string"
+    }
+  },
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "description": "Simplified non-deprecated flows, for downstream consumers, with a redirect for every identifier that was deprecated.",
@@ -190,6 +202,30 @@
                   "default": "xkos:ConceptAssociation",
                   "title": "Jsonld Type",
                   "type": "string"
+                },
+                "brightway:conversionBasis": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/ConversionBasis"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                },
+                "brightway:conversionProvenance": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Conversion Provenance"
                 },
                 "qudt:conversionMultiplier": {
                   "anyOf": [

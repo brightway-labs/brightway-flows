@@ -246,8 +246,9 @@ With the factor, the rewrite stops being a silent reinterpretation of somebody's
 amounts. The flow is created in the new unit; the mapping back to the source
 flow states the unit the **vendor** shipped and carries the factor beside it, as
 `qudt:conversionMultiplier` on the `xkos:ConceptAssociation` and in
-`source_metadata`. That is the same property, in the same place, a factor from a
-correspondence table lands in — see
+`source_metadata`, with `conversion_basis` `curated` and a
+`conversion_provenance` naming the fixes file. That is the same property, in
+the same place, a factor from a correspondence table lands in — see
 [`qudt:conversionMultiplier`](../reference/schemas.md#qudtconversionmultiplier)
 and `brightway_flows.merge.conversions`. It exists here because a list with **no
 correspondence table** had nowhere else to say it: BAFU publishes no mappings of
@@ -264,10 +265,12 @@ Three rules, each of which fails the build rather than being ignored:
   convert.
 - **A positive real number.** One unit is a positive number of another.
 
-The factor still has to pass the test every conversion in this project passes:
-only one `units.json` could not already have made is published. Kilograms to
-cubic metres crosses quantity kinds and qualifies; kilometres to metres does
-not, and would be a second copy of something the reader already has.
+The factor still has to pass the test every stated conversion in this project
+passes: it has to say something `units.json` does not. Kilograms to cubic metres
+crosses quantity kinds and qualifies. Kilometres to metres does not need a fix
+to state it: the merge publishes `units.json`'s 1,000 on any such mapping, as
+`conversion_basis` `unit-table`
+([#393](https://github.com/brightway-labs/brightway-flows/issues/393)).
 
 ## Match overrides
 

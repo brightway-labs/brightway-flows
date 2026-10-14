@@ -390,7 +390,8 @@ def substance_targets(
                 elementary_flow_uuid=target,
                 # No multiplier: a conversion factor is a statement about a pair
                 # of flows that somebody recorded, and nobody has recorded one
-                # for a pair this pass invented. Where the units differ,
+                # for a pair this pass invented.  Units of one quantity kind
+                # still convert by `units.json`; where the kinds differ,
                 # `matching.match` reports it and publishes nothing.
                 crossing=UnitCrossing(
                     source_unit=canonical_unit(str(described.get("unit") or "")),

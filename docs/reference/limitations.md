@@ -2017,7 +2017,9 @@ otherwise.
   from the other. BAFU's unit disagreements fall from **179 to 170**, and the
   170 left are radionuclides in becquerels against kilobecquerels, which is
   [#78](https://github.com/brightway-labs/brightway-flows/issues/78)'s
-  other half. **No characterisation factor moves**, and one minted flow changes
+  other half; their mappings carry the factor from `units.json` since
+  [#393](https://github.com/brightway-labs/brightway-flows/issues/393).
+  **No characterisation factor moves**, and one minted flow changes
   identifier, which is
   [#102](https://github.com/brightway-labs/brightway-flows/issues/102).
 

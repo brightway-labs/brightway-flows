@@ -12,7 +12,6 @@ from typing import Any
 from brightway_flows.domain.common import Provenance
 from brightway_flows.domain.elementary_flow import ElementaryFlow
 from brightway_flows.domain.vocabulary import (
-    QUDT_CONVERSION_MULTIPLIER_CURIE,
     QUDT_HAS_UNIT_CURIE,
     CONSENSUS_ELEMENTARY_FLOW_IRI_PREFIX,
     SKOS_PREF_LABEL_CURIE,
@@ -20,6 +19,7 @@ from brightway_flows.domain.vocabulary import (
     XKOS_SOURCE_CONCEPT_CURIE,
     XKOS_TARGET_CONCEPT_CURIE,
 )
+from brightway_flows.merge.conversions import PublishedConversion
 from brightway_flows.sources import SourceList
 
 
@@ -102,7 +102,7 @@ def _append_source_ref(
     mapping_file: str,
     provenance: dict[str, Any],
     merge_details: dict[str, Any] | None = None,
-    conversion_factor: float | None = None,
+    conversion: PublishedConversion | None = None,
     source_shipped_name: str = "",
 ) -> None:
     """Record on *target_row* that *source_uuid* of *source* maps to it.
@@ -127,10 +127,10 @@ def _append_source_ref(
         "merge_details": merge_details or {},
     }
     # Published if there is one, without asking again whether it is worth
-    # publishing: `UnitConversion.holds_between` is where that is decided.
-    # See `merge/conversions.py`.
-    if conversion_factor is not None:
-        source_metadata[QUDT_CONVERSION_MULTIPLIER_CURIE] = conversion_factor
+    # publishing: `conversion_to_publish` is where that is decided.  See
+    # `merge/conversions.py`.
+    if conversion is not None:
+        source_metadata.update(conversion.to_metadata())
     new_ref = {
         "list_name": source.list_name,
         "list_version": source.list_version,
@@ -161,7 +161,7 @@ def _append_concept_association(
     source_unit: str,
     map_type_curie: str,
     provenance: dict[str, Any],
-    conversion_factor: float | None = None,
+    conversion: PublishedConversion | None = None,
 ) -> None:
     """Append a concept association to a flow, deduplicating by source IRI."""
     assocs = target_row.concept_associations
@@ -195,8 +195,8 @@ def _append_concept_association(
         "provenance": provenance,
     }
     # Published if there is one, without asking again whether it is worth
-    # publishing: `UnitConversion.holds_between` is where that is decided.
-    # See `merge/conversions.py`.
-    if conversion_factor is not None:
-        assoc[QUDT_CONVERSION_MULTIPLIER_CURIE] = conversion_factor
+    # publishing: `conversion_to_publish` is where that is decided.  See
+    # `merge/conversions.py`.
+    if conversion is not None:
+        assoc.update(conversion.to_metadata())
     assocs.append(assoc)
