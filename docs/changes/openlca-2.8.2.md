@@ -29,7 +29,7 @@ one kind of flow so the name decides:
 
 | Compartment | Holds | Placed as |
 |---|---|---|
-| `Resource / unspecified` | 1,565 water intakes, 250 land rows, ores and fuels | Water by name, land use by name, the rest as ground resources |
+| `Resource / unspecified` | 1,565 water intakes, 250 land rows, ores and fuels, and a few biomass, air and hydropower rows | Water by name, land use by name, and each of the other 325 by a rule naming the row: 310 as ground resources, 5 biotic (`Energy, from wood`), 4 from air (`Carbon dioxide`, `Energy, solar, converted`), 2 from water (`Energy, from hydro power`) and 4 Eco-indicator `Land use` rows as land occupation |
 | `Resource / land` | 667 land rows, 28 minerals (`Clay`, `Granite`, …), two water intakes | Land use by name, water by name, the minerals as ground resources |
 | `Resource / in ground` | Ores and fuels, and 266 water intakes | Water by name, the rest as ground resources |
 | `Resource / in water` | 1,744 water intakes and a few dissolved minerals | Water |

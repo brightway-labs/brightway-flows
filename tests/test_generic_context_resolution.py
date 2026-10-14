@@ -68,10 +68,13 @@ PREFIX = "https://vocab.brightway.one/flow-contexts/"
 #: unspecified`, which names no medium and was written by no other list, and
 #: the full openLCA LCIA package 2.8.2 was registered as a list: it repeats
 #: GreenDelta's 21 rules under its own name and writes 10 compartments
-#: GreenDelta's EF 3.1 package never used.
-RULE_COUNT = 272
+#: GreenDelta's EF 3.1 package never used.  It was 272, 11 and 131 until the
+#: openLCA package's own `Resource / unspecified` lost its rule for the reason
+#: BAFU's did: it said ground, citing BAFU's, and the compartment holds wood
+#: energy, carbon dioxide from the air and hydropower beside the ores.
+RULE_COUNT = 271
 LIST_COUNT = 11
-COMPARTMENT_COUNT = 131
+COMPARTMENT_COUNT = 130
 
 #: Every consensus context, and every one of them printed differently.
 CONTEXT_COUNT = 61
@@ -127,7 +130,7 @@ class TheListsAgreeAboutTheirCompartmentsTestCase(_CachedLoaders, unittest.TestC
         "bafu-2026-v1": 25,
         "ecoinvent": 26,
         "ef 3.1": 37,
-        "greendelta": 31,
+        "greendelta": 30,
         "stepwise-2006-1.09": 10,
     }
 

@@ -126,10 +126,13 @@ class TheRuleIsKeyedOnOneFlowTestCase(unittest.TestCase):
         self.assertTrue(self.__class__ and _helium_row()["source_uuid"])
 
     def test_no_other_helium_flow_is_named(self):
+        """Of EF 3.1's.  openLCA's `Helium`, filed in its `Resource /
+        unspecified`, has a ground rule of its own (#381)."""
         named = [
             row["source_uuid"]
             for row in _rows()
-            if row.get("source_name", "").strip().lower() == "helium"
+            if row.get("source") == "EF 3.1"
+            and row.get("source_name", "").strip().lower() == "helium"
         ]
         self.assertEqual(named, [HELIUM_UUID])
 

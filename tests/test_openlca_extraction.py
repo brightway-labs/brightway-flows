@@ -211,8 +211,15 @@ class FetchedListTestCase(unittest.TestCase):
             }
         )
         # The two waste compartments are refused rather than placed (#189).
+        # `Resource / unspecified` names no medium, so each of its rows is
+        # placed by its name or by a rule of its own (#381).
         self.assertEqual(
-            unruled, [("Waste", "ecopoints 97, CH"), ("Waste", "unspecified")]
+            unruled,
+            [
+                ("Resource", "unspecified"),
+                ("Waste", "ecopoints 97, CH"),
+                ("Waste", "unspecified"),
+            ],
         )
 
     def test_the_refused_rows_are_waste_black_carbon_and_located_rows(self):
