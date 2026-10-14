@@ -1,5 +1,12 @@
 # What we have found
 
+For the review workflow connecting these observations to proposals, executable
+modules and revision-specific sign-off, open [Curation](/curation/).
+The [finding-class records](/curation/?view=classes&document=findings/index)
+index the articles below; [registered individual cases](/curation/?view=individual&document=findings/index)
+retain their own proposals, implementation evidence and review history.
+Registration in that index does not replace the decisions documented here.
+
 Harmonising several flow lists means reading them against each other, and against
 the chemical registries, one substance at a time. That work turns up errors. A
 flow is named after a chemical it is not; two flows that are one substance are

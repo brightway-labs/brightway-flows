@@ -1,0 +1,3 @@
+{% extends "curation_shell.html" %}
+{% set page_title = "Curation" %}
+{% block curation_content %}<header class="curation-heading"><div><h1>Curation</h1><p>Findings, proposals and the modules that answer them.</p></div></header><div class="curation-empty"><h2>{{ 'Register unavailable' if invalid else 'No curation register published' }}</h2><p>{{ 'The register failed validation. No empty queue or approval status can be inferred from it.' if invalid else 'This checkout has no curation records yet. The existing Checks, documentation and queues remain available.' }}</p><a href="/checks/">Open quality checks →</a></div>{% endblock %}

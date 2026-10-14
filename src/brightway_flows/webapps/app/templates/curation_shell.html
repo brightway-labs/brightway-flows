@@ -1,0 +1,18 @@
+{% extends "curation_fragment.html" if request.headers.get('HX-Request') == 'true' and request.headers.get('HX-History-Restore-Request') != 'true' else "layout.html" %}
+{% set active_section = "curation" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='curation.css') }}">
+<meta name="htmx-config" content='{"allowEval":false,"allowScriptTags":false,"historyCacheSize":0,"historyRestoreAsHxRequest":false,"scrollIntoViewOnBoost":false,"timeout":15000}'>
+{% endblock %}
+{% block content %}
+<div class="curation" id="curation-workspace" hx-history-elt hx-history="false" hx-target="#curation-workspace" hx-select="#curation-workspace" hx-swap="outerHTML show:none" hx-sync="#curation-workspace:replace">
+  <div class="curation-context"><span class="curation-dot" aria-hidden="true"></span> Local design preview <span>·</span> {{ register.title if register else "Evidence and review history" }}</div>
+  {% block curation_content %}{% endblock %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static',filename='vendor/htmx/htmx-2.0.11.min.js') }}" defer></script>
+<script src="{{ url_for('static',filename='curation-live.js') }}" defer></script>
+<script src="{{ url_for('static', filename='curation.js') }}" defer></script>
+<script type="module" src="{{ url_for('static',filename='curation-packages.js') }}"></script>
+{% endblock %}
