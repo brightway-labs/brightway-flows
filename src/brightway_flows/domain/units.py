@@ -47,7 +47,7 @@ UNIT_ALIASES: dict[str, str] = {
     # Transport
     "tkm": "t.km",
     "ton.km": "t.km",
-    # Mass-time: kg*a and kg*yr both normalise to kg.a via _normalize_unit_token
+    # Mass-time: kg*a and kg*yr both normalise to kg.a via normalize_unit_token
     # (which replaces * with .), so only kg.yr needs an explicit alias.
     "kg.yr": "kg.a",
     # Area-time: m2*year → m2.a
@@ -71,7 +71,7 @@ UNIT_ALIASES: dict[str, str] = {
     "m3y": "m3.a",
     "personkm": "p.km",
     # Stepwise 2006's SimaPro method export writes the hectare-year with a
-    # space, which `_normalize_unit_token` closes up to `haa` -- the same
+    # space, which `normalize_unit_token` closes up to `haa` -- the same
     # separator-free habit as `m2a`, on the two occupation flows the method
     # states in hectares rather than square metres.
     "haa": "ha.a",
@@ -106,17 +106,19 @@ UNIT_ALIASES: dict[str, str] = {
 # Both cases name different SI prefixes: milli/mega, pico/peta, and the
 # zepto/zetta, yocto/yotta, ronto/ronna and quecto/quetta pairs.
 # https://www.bipm.org/en/measurement-units/si-prefixes
+# Protect the leading unit, not an annotation such as PM2.5 in kg PM2.5-eq.
 # A prefix has to be attached to a unit symbol, not the start of a word such
 # as "Megajoule" or "Mole". Other case aliases (KG, L, kbq) remain valid.
+# Stepwise's MJ primary and MJ extra also accept separator-free spellings.
 _CASE_SENSITIVE_PREFIX = re.compile(
-    r"(?<![a-z])([mMpPzZyYrRqQ])"
+    r"^([mMpPzZyYrRqQ])"
     r"(?=(?:mol|cd|Hz|Pa|Wb|lm|lx|Bq|Gy|Sv|kat|[mgsAKNJCWVFSΩTH])"
-    r"(?:$|[\d\W]))",
+    r"(?:$|[\d\W]|primary$|extra$))",
     re.IGNORECASE,
 )
 
 
-def _normalize_unit_token(value: str) -> str:
+def normalize_unit_token(value: str) -> str:
     """Fold spelling case while preserving SI prefixes that change the scale."""
     parts = _CASE_SENSITIVE_PREFIX.split(value.strip())
     token = "".join(part if index % 2 else part.lower() for index, part in enumerate(parts))
@@ -133,10 +135,10 @@ def build_units_index() -> dict[str, dict[str, Any]]:
         notation = row.get("notation")
         label = row.get("label")
         if isinstance(notation, str) and notation.strip():
-            tok = _normalize_unit_token(notation)
+            tok = normalize_unit_token(notation)
             by_notation[tok] = row
         if isinstance(label, str) and label.strip():
-            tok = _normalize_unit_token(label)
+            tok = normalize_unit_token(label)
             if tok not in by_notation:
                 by_notation[tok] = row
     return by_notation
@@ -149,9 +151,9 @@ def resolve_unit_notation(
 
     Reusable outside the transformer class.
     """
-    tok = _normalize_unit_token(unit)
+    tok = normalize_unit_token(unit)
     if tok in UNIT_ALIASES:
-        canon_tok = _normalize_unit_token(UNIT_ALIASES[tok])
+        canon_tok = normalize_unit_token(UNIT_ALIASES[tok])
         row = by_notation.get(canon_tok)
         if row:
             return row["notation"], row.get("iri") or ""
@@ -194,10 +196,10 @@ def unit_row_for(unit: str) -> dict[str, Any] | None:
     global _UNITS_INDEX_CACHE
     if _UNITS_INDEX_CACHE is None:
         _UNITS_INDEX_CACHE = build_units_index()
-    token = _normalize_unit_token(unit)
+    token = normalize_unit_token(unit)
     row = _UNITS_INDEX_CACHE.get(token)
     if row is None and (alias := UNIT_ALIASES.get(token)):
-        row = _UNITS_INDEX_CACHE.get(_normalize_unit_token(alias))
+        row = _UNITS_INDEX_CACHE.get(normalize_unit_token(alias))
     return row
 
 
