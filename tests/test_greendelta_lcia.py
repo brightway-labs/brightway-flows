@@ -352,12 +352,12 @@ class WhatTheFetchWritesTestCase(unittest.TestCase):
     def _fetch(self):
         import brightway_flows.integrations.greendelta_lcia as module
 
-        original = module.openlca_lcia_zip_path
-        module.openlca_lcia_zip_path = lambda _version: self.archive
+        original = module.package_archive
+        module.package_archive = lambda _version: self.archive
         try:
             return fetch(self.source)
         finally:
-            module.openlca_lcia_zip_path = original
+            module.package_archive = original
 
     def test_it_writes_the_records_and_says_what_it_read(self):
         path = self._fetch()

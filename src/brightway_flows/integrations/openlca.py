@@ -40,13 +40,16 @@ through a manifest's ``lcia`` block, and this one declares none.
 
 from __future__ import annotations
 
+import hashlib
 from collections import Counter
 from pathlib import Path
 from typing import Any, Iterator
 from zipfile import ZipFile
 
+import httpx
 import orjson
 import structlog
+from tqdm import tqdm
 
 from brightway_flows.integrations.ecoinvent import normalize_cas_number
 from brightway_flows.sources import SourceList
@@ -54,6 +57,19 @@ from brightway_flows.sources import SourceList
 logger = structlog.get_logger(__name__)
 
 _FLOWS = "flows/"
+
+#: The releases this project hosts, by version: the name GreenDelta ships the
+#: archive under, and its SHA-256.  GreenDelta distributes the package through
+#: openLCA Nexus rather than at a stable URL, so the copy read is hosted here
+#: under its own name, and the digest says which bytes that is.
+HOSTED_ARCHIVES: dict[str, tuple[str, str]] = {
+    "2.8.2": (
+        "openLCA LCIA Methods 2.8.2 2026-07-01.zip",
+        "c49119531de5a989252907b0956f25d34275ddef63cbc24aef5db7568566ef29",
+    ),
+}
+
+HOSTED_ARCHIVE_BASE_URL = "https://files.brightway.dev/"
 
 #: The ``flowType`` of a flow this list publishes.  openLCA also has product and
 #: waste flows; a method package ships none, and one that did would not be a
@@ -165,17 +181,64 @@ def extract_elementary_flows(archive: Path, *, source: str) -> list[dict[str, An
     return records
 
 
+def _digest(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def package_archive(list_version: str) -> Path:
+    """The package archive for *list_version*, downloading the hosted copy if
+    the data directory has none.
+
+    An archive already in the data directory is read as it is, whatever its
+    bytes: a hand-placed release is a new artifact to read, not a failure.  The
+    download is checked against :data:`HOSTED_ARCHIVES`, because a partial
+    archive that parsed would publish a list missing whatever did not arrive.
+
+    :raises FileNotFoundError: if the data directory has no archive of
+        *list_version* and this project hosts none, or has two.
+    :raises OpenLcaPackageError: if the download is not the archive hosted.
+    """
+    from brightway_flows import filesystem
+
+    pattern = f"openLCA LCIA Methods {list_version} *.zip"
+    if list_version not in HOSTED_ARCHIVES or any(filesystem.DATA_DIR.glob(pattern)):
+        return filesystem.openlca_lcia_zip_path(list_version)
+    name, expected = HOSTED_ARCHIVES[list_version]
+    url = HOSTED_ARCHIVE_BASE_URL + name.replace(" ", "%20")
+    destination = filesystem.DATA_DIR / name
+    partial = destination.with_name(name + ".part")
+    logger.info("downloading_openlca_lcia", url=url, path=str(destination))
+    with httpx.stream("GET", url, follow_redirects=True, timeout=300) as response:
+        response.raise_for_status()
+        total = int(response.headers.get("content-length", 0))
+        with partial.open("wb") as handle, tqdm(
+            total=total or None, unit="B", unit_scale=True, desc=name
+        ) as progress:
+            for chunk in response.iter_bytes(chunk_size=1024 * 64):
+                handle.write(chunk)
+                progress.update(len(chunk))
+    received = _digest(partial)
+    if received != expected:
+        partial.unlink(missing_ok=True)
+        raise OpenLcaPackageError(
+            f"{url} served an archive with digest {received}, not the "
+            f"{expected} this project hosts."
+        )
+    partial.replace(destination)
+    return destination
+
+
 def fetch(source: SourceList, *, force: bool = False) -> Path:
     """The :class:`~brightway_flows.sources.SourceAdapter` for the package.
 
     *force* is accepted because the protocol has it and re-reads the archive
-    either way: there is no download to skip.  GreenDelta distributes the
-    package through openLCA Nexus rather than at a stable URL, so it is placed
-    in the data directory by hand and a missing file is a person's next action.
+    either way; it does not download the 167 MB again.
     """
-    from brightway_flows.filesystem import openlca_lcia_zip_path
-
-    archive = openlca_lcia_zip_path(source.list_version)
+    archive = package_archive(source.list_version)
     records = extract_elementary_flows(archive, source=source.source_label)
     source.flows_path.write_bytes(orjson.dumps(records, option=orjson.OPT_INDENT_2))
     logger.info(

@@ -57,7 +57,7 @@ SHARED_PATTERNS: tuple[str, ...] = (
     "EF-v3.1.zip",
     "BAFU-*_ecoSpold v1.zip",
     # GreenDelta's full method package, under the name it ships with --
-    # 167 MB, and obtained from openLCA Nexus rather than from a stable URL.
+    # 167 MB, so shared rather than downloaded again into every worktree.
     # Both the `openlca` flow list and BAFU's GreenDelta EF 3.1 read it.
     "openLCA LCIA Methods *.zip",
     "Stepwise2006_v1.09.csv",
