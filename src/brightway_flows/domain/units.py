@@ -10,6 +10,7 @@ anything but ``units.json``.
 from __future__ import annotations
 
 import math
+import re
 from enum import StrEnum
 from functools import lru_cache
 from typing import Any
@@ -20,7 +21,8 @@ from brightway_flows.filesystem import PACKAGE_DATA_DIR
 UNITS_FILEPATH = PACKAGE_DATA_DIR / "units.json"
 
 # Aliases from normalized input token → canonical notation in units.json.
-# Normalized means: lowercased, spaces removed, · and * replaced by .
+# Normalized means: case folded except ambiguous SI prefixes, spaces removed,
+# and · and * replaced by .
 # Only include aliases that do NOT require a numeric multiplier.
 UNIT_ALIASES: dict[str, str] = {
     # Mole variants
@@ -33,6 +35,8 @@ UNIT_ALIASES: dict[str, str] = {
     # Mass
     "kilogram": "kg",
     "kilograms": "kg",
+    # Historical builds wrote kwh; the unit's symbol is kWh.
+    "kwh": "kWh",
     # Volume
     "litre": "l",
     "liter": "l",
@@ -100,9 +104,23 @@ UNIT_ALIASES: dict[str, str] = {
 }
 
 
+# Both cases name different SI prefixes: milli/mega, pico/peta, and the
+# zepto/zetta, yocto/yotta, ronto/ronna and quecto/quetta pairs.
+# https://www.bipm.org/en/measurement-units/si-prefixes
+# A prefix has to be attached to a unit symbol, not the start of a word such
+# as "Megajoule" or "Mole". Other case aliases (KG, L, kbq) remain valid.
+_CASE_SENSITIVE_PREFIX = re.compile(
+    r"(?<![a-z])([mMpPzZyYrRqQ])"
+    r"(?=(?:mol|cd|Hz|Pa|Wb|lm|lx|Bq|Gy|Sv|kat|[mgsAKNJCWVFSΩTH])"
+    r"(?:$|[\d\W]))",
+    re.IGNORECASE,
+)
+
+
 def _normalize_unit_token(value: str) -> str:
-    """Lowercase, remove spaces, replace · and * with ."""
-    token = value.strip().lower()
+    """Fold spelling case while preserving SI prefixes that change the scale."""
+    parts = _CASE_SENSITIVE_PREFIX.split(value.strip())
+    token = "".join(part if index % 2 else part.lower() for index, part in enumerate(parts))
     token = token.replace("·", ".").replace("*", ".")
     token = token.replace(" ", "")
     return token
