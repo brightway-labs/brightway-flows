@@ -50,7 +50,7 @@ from brightway_flows.domain.particulate_size import (
     size_class as particulate_size_class,
 )
 from brightway_flows.domain.flow_object import stable_flow_object_id
-from brightway_flows.domain.units import unit_table_factor
+from brightway_flows.domain.units import quantity_factor
 from brightway_flows.flow_layers.land_hierarchy import land_object_id
 from brightway_flows.filesystem import CONSENSUS_DB_FILEPATH
 from brightway_flows.domain.particulate_size import UnreadParticleRowError
@@ -918,7 +918,7 @@ def _reporting_preparation(
     if answer.matched:
         recorded_factor = answer.selector_details.get("recorded_conversion_factor")
         if answer.tier == TIER_RECORDED and recorded_factor is not None:
-            scale = unit_table_factor(
+            scale = quantity_factor(
                 original.unit,
                 str(answer.selector_details.get("recorded_source_unit") or ""),
             )
@@ -952,7 +952,7 @@ def _reporting_preparation(
                         "basis": "lineage-preparation",
                     }
                 )
-            scale = unit_table_factor(item.query.unit, answer.unit)
+            scale = quantity_factor(item.query.unit, answer.unit)
             if scale is not None:
                 factor = scale * float(conversion.get("factor", 1))
                 basis = "preparation-and-unit-table" if conversion else "unit-table"

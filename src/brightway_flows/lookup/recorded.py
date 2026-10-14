@@ -78,7 +78,7 @@ from brightway_flows.context_mapping import (
     consensus_context_strings,
     normalize_mapping_text,
 )
-from brightway_flows.domain.units import unit_row_for
+from brightway_flows.domain.units import ConversionBasis, unit_row_for
 from brightway_flows.merge.store import Outcome
 
 logger = structlog.get_logger(__name__)
@@ -299,7 +299,8 @@ class RecordedDecisions:
                 "elementary_flow_uuid, source_flow_name, "
                 "json_extract(source_metadata_json, '$.unit'), "
                 "json_extract(source_metadata_json, '$.\"qudt:conversionMultiplier\"'), "
-                "json_type(source_metadata_json, '$.\"qudt:conversionMultiplier\"') "
+                "json_type(source_metadata_json, '$.\"qudt:conversionMultiplier\"'), "
+                "json_extract(source_metadata_json, '$.conversion_basis') "
                 "FROM elementary_flow_sources "
                 "WHERE source_flow_uuid IS NOT NULL AND source_flow_uuid != '' "
                 "ORDER BY id"
@@ -315,6 +316,7 @@ class RecordedDecisions:
             source_unit,
             multiplier,
             multiplier_type,
+            basis,
         ) in rows:
             if multiplier is not None and (
                 multiplier_type not in ("integer", "real")
@@ -325,6 +327,13 @@ class RecordedDecisions:
                 raise ValueError(
                     f"Invalid recorded quantity conversion for {list_name}-{list_version}/{source_uuid}"
                 )
+            if basis == ConversionBasis.UNIT_TABLE:
+                # `units.json`'s factor between two units of one kind, true of
+                # any flow measured in them: lookup derives it itself, so it is
+                # not a factor only this row's identifier can vouch for.  A
+                # build from before the basis was published states none, and
+                # its multipliers are read as the row's own.
+                multiplier = None
             key = (f"{list_name}-{list_version}", str(source_uuid).strip())
             index.setdefault(key, []).append(
                 RecordedDecision(

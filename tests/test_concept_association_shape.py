@@ -52,7 +52,7 @@ def _association() -> dict:
         source_unit="kg",
         map_type_curie=SKOS_EXACT_MATCH_CURIE,
         provenance={},
-        conversion_factor=None,
+        conversion=None,
     )
     return row.concept_associations[0]
 

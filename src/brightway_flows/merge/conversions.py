@@ -19,8 +19,9 @@ and not one spelling of the same.  ecoinvent gives natural gas in standard cubic
 metres from 3.9 on and in cubic metres before it, and 36 MJ per standard cubic
 metre is not 36 MJ per cubic metre.
 
-Only a conversion `units.json` could not already have made is published.  That
-rules out two things at once, and it is one test rather than two:
+A stated factor is kept only where `units.json` could not already have made the
+conversion.  That rules out two things at once, and it is one test rather than
+two:
 
 - **Crossing quantity kinds.**  Kilograms to megajoules, cubic metres to
   kilograms.  The unit table has no factor between two quantity kinds, because
@@ -38,7 +39,31 @@ states it here: anything crossing a **time dimension**.  See
 
 What both have in common is that the stated factor is *not* the one the unit
 table implies, and that is the test: litres to cubic metres at 0.001 is exactly
-what `units.json` says, so it is left to the reader who already has it.
+what `units.json` says, so a table stating it is not a statement of its own.
+
+**The unit table's factor is published too**, and says that it is.  A BAFU row
+in becquerels lands on a flow this list publishes in kilobecquerels, and the
+mapping states 0.001 beside it with `conversion_basis` `unit-table`, and a
+`conversion_provenance` naming both units' IRIs and `units.json`.  Leaving it
+out made every reader convert for themselves or not at all: characterisation
+refused the pair, the merge flagged it as a mismatch, and a consumer reading the
+mapping had a number in one unit and a flow in another with nothing between
+them (#393).  The objection to publishing it was never the number -- the unit
+table is right -- but that a bare multiplier could not say whose number it was,
+so a source-specific density and a change of SI prefix read alike.
+`conversion_basis` is what tells them apart:
+
+``correspondence-table``
+    A factor the list's correspondence table states, as published.
+``curated``
+    A factor this project states, in a match override or on the manual fix that
+    rebased the row's unit.
+``unit-table``
+    The factor `units.json` implies between two units of one quantity kind.
+    True of any flow measured in them, so a reader can use it without the row's
+    identifier.
+
+:func:`conversion_to_publish` is the one place that chooses between them.
 
 The test is applied once.  :meth:`UnitConversion.holds_between` is the last
 place a factor can be refused, and what survives it is written out unexamined --
@@ -65,11 +90,18 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from brightway_flows.domain.common import Provenance
 from brightway_flows.domain.units import (
+    CONVERSION_BASIS_KEY,
+    CONVERSION_PROVENANCE_KEY,
+    UNITS_FILEPATH,
+    ConversionBasis,
     states_more_than_the_unit_table,
     unit_iri_for,
     unit_row_for,
+    unit_table_factor,
 )
+from brightway_flows.domain.vocabulary import QUDT_CONVERSION_MULTIPLIER_CURIE
 from brightway_flows.manual_fixes import UNIT_CONVERSION_KEY
 
 
@@ -85,6 +117,12 @@ class UnitConversion:
     #: releases; the factor was stated for each of them too.  Empty for every
     #: conversion built from a manual fix, whose pair is about one release.
     source_unit_alternates: tuple[str, ...] = ()
+    #: Who stated it: the correspondence table, or this project.
+    basis: ConversionBasis = ConversionBasis.CORRESPONDENCE_TABLE
+    #: The file it is stated in, where the conversion knows it -- the manual
+    #: fixes file for a rebased unit.  Empty otherwise, and
+    #: :func:`conversion_to_publish` names the file from what the merge has.
+    stated_in: str = ""
 
     def holds_between(self, *, source_unit: str, target_unit: str) -> bool:
         """Whether this factor still converts *source_unit* to *target_unit*.
@@ -200,6 +238,8 @@ def conversion_from_source_flow(source_flow: Any) -> UnitConversion | None:
         source_unit=source_unit,
         target_unit=target_unit,
         comment=str(stated.get("comment") or ""),
+        basis=ConversionBasis.CURATED,
+        stated_in=str(stated.get("stated_in") or ""),
     )
 
 
@@ -208,8 +248,9 @@ def conversion_from_prepared_rows(
 ) -> UnitConversion | None:
     """The conversion the first prepared row stating one asks for, if any.
 
-    A factor `units.json` already implies is not one: it has a home on the unit,
-    and restating it per mapping would be a second copy of it.  That is the test
+    A factor `units.json` already implies is not one the table states: it has a
+    home on the unit, and :func:`conversion_to_publish` publishes it from there,
+    as `unit-table`, whatever the table says.  That is the test
     a bare "is it 1.0?" used to stand in for, and the two differ exactly where
     it matters -- kilograms to kilograms at 1.0 converts nothing, but `m2` to
     `m2*a` at 1.0 changes the quantity kind and the unit table has no such
@@ -261,5 +302,95 @@ def conversion_from_prepared_rows(
             )
             if isinstance(alternates, (list, tuple))
             else (),
+            basis=(
+                ConversionBasis.CURATED
+                if _is_curated(row)
+                else ConversionBasis.CORRESPONDENCE_TABLE
+            ),
         )
     return None
+
+
+@dataclass(frozen=True)
+class PublishedConversion:
+    """The factor a mapping publishes, who stated it, and on what evidence.
+
+    *factor* is in the convention every multiplier here keeps: one unit of the
+    source flow, in the unit the vendor shipped, is *factor* units of the flow
+    it maps to.
+    """
+
+    factor: float
+    basis: ConversionBasis
+    provenance: Provenance
+    comment: str = ""
+
+    def to_metadata(self) -> dict[str, Any]:
+        """The three keys a source reference and a concept association carry."""
+        return {
+            QUDT_CONVERSION_MULTIPLIER_CURIE: self.factor,
+            CONVERSION_BASIS_KEY: self.basis.value,
+            CONVERSION_PROVENANCE_KEY: self.provenance.to_dict(),
+        }
+
+
+def conversion_to_publish(
+    conversion: UnitConversion | None,
+    *,
+    source_unit: str,
+    target_unit: str,
+    generated_by: str,
+    correspondence_file: str = "",
+    overrides_file: str = "",
+) -> PublishedConversion | None:
+    """The conversion a mapping from *source_unit* to *target_unit* publishes.
+
+    A stated *conversion* that still holds between the two units comes first,
+    because it says something the unit table cannot.  Otherwise, where the two
+    units differ and `units.json` converts between them, its factor: a becquerel
+    is 0.001 kilobecquerels whichever flow is measured in them.  ``None`` where
+    the units are one unit, and where nothing converts them -- a mass onto an
+    energy with no stated heating value stays a crossing, reported elsewhere.
+
+    *generated_by* is the merge activity that writes the mapping.  The file a
+    stated factor came from is the conversion's own where it knows it, else
+    *overrides_file* for a curated prepared row and *correspondence_file* for a
+    table's.
+    """
+    source_iri = unit_iri_for(source_unit) or ""
+    target_iri = unit_iri_for(target_unit) or ""
+    units = [iri for iri in (source_iri, target_iri) if iri]
+    if conversion is not None and conversion.holds_between(
+        source_unit=source_unit, target_unit=target_unit
+    ):
+        stated_in = conversion.stated_in or (
+            overrides_file
+            if conversion.basis is ConversionBasis.CURATED
+            else correspondence_file
+        )
+        return PublishedConversion(
+            factor=conversion.factor,
+            basis=conversion.basis,
+            provenance=Provenance(
+                was_generated_by=generated_by,
+                was_attributed_to="brightway-flows",
+                had_primary_source=[*units, stated_in] if stated_in else units,
+                was_derived_from=stated_in or None,
+            ),
+            comment=conversion.comment,
+        )
+    if not source_iri or not target_iri or source_iri == target_iri:
+        return None
+    factor = unit_table_factor(source_unit, target_unit)
+    if factor is None:
+        return None
+    return PublishedConversion(
+        factor=factor,
+        basis=ConversionBasis.UNIT_TABLE,
+        provenance=Provenance(
+            was_generated_by=generated_by,
+            was_attributed_to="brightway-flows",
+            had_primary_source=[source_iri, target_iri, UNITS_FILEPATH.name],
+            was_derived_from=UNITS_FILEPATH.name,
+        ),
+    )
