@@ -45,7 +45,7 @@
     {
       "id": "0804-water-emitted-to-water-carries-their-numbers",
       "issue": 804,
-      "title": "GreenDelta characterises `Water` emitted to water in 209 countries",
+      "title": "GreenDelta characterises `Water` emitted to water for no place",
       "subject": {
         "kind": "factor",
         "flow_name": "Water",
@@ -54,9 +54,9 @@
         "implemented_by": "GreenDelta"
       },
       "expect": {
-        "count": 209
+        "count": 1
       },
-      "comment": "The flow the whole issue is about. Before this change GreenDelta published nothing on it, because their factor is stated per kilogram; the JRC's 209 and the consensus's were there alone.\n\nThe magnitudes are the JRC's exactly -- 23.1 for Albania, 6.98 for France -- and the signs are not: theirs are positive where the JRC's are negative, on all 209."
+      "comment": "The flow the whole issue is about. Before this change GreenDelta published nothing on it, because their factor is stated per kilogram; the JRC's 209 and the consensus's were there alone.\n\nThe magnitudes are the JRC's exactly -- 23.1 for Albania, 6.98 for France -- and the signs are not: theirs are positive where the JRC's are negative, on all 209.\n\n**Restated 2026-10-14.** GreenDelta's factors stated per place are refused for now (#386), so what is left is the one factor their package states for no place: -42.95 per m3; 2.8.2 also states it per kilogram, -0.04295, which is the same number converted, and `lcia.collisions` keeps it once. Restated from the package, and not yet measured on a build."
     },
     {
       "id": "0804-the-sign-disagreement-is-visible",

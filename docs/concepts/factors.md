@@ -45,7 +45,10 @@ implementation of a method:
   became, and only then is there a factor about a flow of ours.
 - **`GreenDelta`** — `EF 3.1 Method (adapted)`, read by `fetch-lcia
   bafu-2026-v1` out of GreenDelta's own method package, *openLCA LCIA Methods
-  2.8.2*: 183,654 factors over 33,045 of their flows. It used to be read from
+  2.8.2*: 92,350 factors over 33,045 of their flows. The package states 91,304
+  more for a particular place — `Occupation, agriculture` in Switzerland, in
+  Brazil, and 398 other places — and those are left out for now; every flow
+  keeps its factor for no place. It used to be read from
   the 2.8.0 copy inside BAFU's openLCA distribution, which held the same method
   trimmed to 26,179 factors over 1,781 flows, and the counts in the rest of this
   bullet are that copy's — 25,266 of its factors reached 1,509 flows of ours.

@@ -20,19 +20,22 @@ what reached 1,222 of the 2.8.0 copy's 1,781 flows, and GreenDelta's own list
 last, so a flow that route reached keeps its target and GreenDelta's own flows
 are reached through the list they belong to.
 
-Four things the archive is checked to be, because the reader downstream assumes
-all four and a package that broke one would publish nonsense quietly:
+**Factors stated per place are refused, for now.**  91,304 of the 183,654
+factors name a location -- 69,116 of them in land use, 12,928 in water use --
+and they are not read; nor are 1,897 verbatim repeats of them.  Every one of
+the 33,045 flows also carries a factor stated for no place, and that is the
+one read: 92,350 factors.  The same decision refuses the package's
+location-specific *flows* (`Water, AT`) in `openlca-2.8.2-additional-flows.json`.
+
+Three things the archive is checked to be, because the reader downstream
+assumes all three and a package that broke one would publish nonsense quietly:
 
 * every category's ``@id`` is the JRC's own ILCD method-file UUID, which is what
   files a factor of theirs under one of our 25 (`domain.lcia.crosswalk`) -- less
   :data:`IGNORED_CATEGORIES`, GreenDelta's own 26th;
-* no ``(category, flow, location)`` is stated twice with two numbers -- 1,897
-  water-use rows are repeated verbatim, and are read once;
+* no ``(category, flow)`` is stated twice with two numbers;
 * every factor's unit is its flow's own reference unit, so nothing here needs a
-  unit conversion the merge did not already record;
-* every location the factors name has a code, which is what
-  :attr:`~brightway_flows.domain.lcia.records.StatedFactor.geography` holds
-  and what makes 91,304 regionalised rows comparable with the JRC's.
+  unit conversion the merge did not already record.
 """
 
 from __future__ import annotations
@@ -260,20 +263,20 @@ def _factors(
     inside a flow property, while the stub beside a factor states the unit that
     factor is *per*.  Reading the stub is reading what the row says.
 
-    A ``(category, flow, location)`` stated more than once with the same number
-    is one statement repeated, and is read once: 2.8.2's water use repeats 357
-    of its regionalised rows up to six times, every repeat identical.
+    A row that names a location is skipped and counted: the module docstring
+    says why.  A ``(category, flow)`` stated more than once with the same
+    number is one statement repeated, and is read once.
 
     :raises GreenDeltaLciaError: if a factor is stated in a unit that is not its
-        flow's own, if a location has no code, or if one
-        ``(category, flow, location)`` is stated twice with different numbers --
-        the three things the module docstring says the archive is, each of
-        which would otherwise become a wrong number rather than a stopped run.
+        flow's own, or if one ``(category, flow)`` is stated twice with
+        different numbers -- each of which would otherwise become a wrong
+        number rather than a stopped run.
     """
     factors: list[StatedFactor] = []
     described: dict[str, dict[str, str]] = {}
-    seen: dict[tuple[str, str, str], float] = {}
+    seen: dict[tuple[str, str], float] = {}
     repeated = 0
+    located = 0
     # Their own index, as `_check_categories` uses: what a category is, to this
     # project, is what the method file pairs their identifier with, and the
     # slug is how the sign rule names the one category EF states as a pair.
@@ -308,24 +311,16 @@ def _factors(
                     f"the flow's own unit, and a row that is not needs a "
                     f"conversion this does not do."
                 )
-            geography = ""
-            if location := row.get("location"):
-                geography = package.locations.get(str(location.get("@id") or ""), "")
-                if not geography:
-                    raise GreenDeltaLciaError(
-                        f"{path.name}: a factor for {flow.get('name')!r} names "
-                        f"the location {location.get('name')!r}, which the "
-                        f"package's own locations give no code for. A "
-                        f"regionalised factor with no place is not comparable "
-                        f"with anybody's."
-                    )
-            key = (str(entry.get("@id") or ""), flow_uuid, geography)
+            if row.get("location"):
+                located += 1
+                continue
+            key = (str(entry.get("@id") or ""), flow_uuid)
             stated = float(row.get("value") or 0.0)
             if key in seen:
                 if seen[key] != stated:
                     raise GreenDeltaLciaError(
                         f"{path.name}: {entry.get('name')!r} states two factors "
-                        f"for {flow.get('name')!r} in {geography or 'no place'}, "
+                        f"for {flow.get('name')!r}, "
                         f"{seen[key]} and {stated}, so one of them would "
                         f"silently win."
                     )
@@ -354,13 +349,15 @@ def _factors(
                     category=category,
                     flow_uuid=flow_uuid,
                     amount=amount,
-                    geography=geography or None,
+                    geography=None,
                 )
             )
     if signed:
         logger.info("greendelta_pair_sign_applied", factors=signed)
     if repeated:
         logger.info("greendelta_identical_repeats_read_once", rows=repeated)
+    if located:
+        logger.info("greendelta_located_rows_refused", rows=located)
     return factors, described
 
 

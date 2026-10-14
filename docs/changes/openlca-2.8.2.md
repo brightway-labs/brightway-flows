@@ -99,6 +99,16 @@ factors their unregionalised row does not always agree with. Ecological
 Scarcity 2013, for one, gives `Nitrogen, NO` a factor (57,000) and plain
 `Nitrogen` none. These are left out with the rows.
 
+## Factors for a place left out of BAFU's EF 3.1
+
+The same decision applies to the factors GreenDelta states for EF 3.1, which
+BAFU's source reads out of this package. `Occupation, agriculture` has one
+land-use factor for no place and 400 more, one per country or region. The
+package states 183,654 EF 3.1 factors; the 91,304 tied to a place are left
+out, and the 92,350 for no place are read. Every one of the 33,045 flows has
+one. 69,116 of those left out are land use and 12,928 water use. The JRC's own
+EF 3.1 factors per country are unaffected.
+
 ## Water rows refused until their material is decided
 
 The 123 water rows left once the location-specific ones are refused — 76
