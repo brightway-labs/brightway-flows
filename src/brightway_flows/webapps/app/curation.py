@@ -442,10 +442,22 @@ def package_revision(register: Register, package: ReviewPackage) -> str:
         record = asdict(case)
         record.pop("updated_at")  # Reindexing unchanged evidence is not a new finding.
         cases.append(record)
-        for link in (*case.evidence, *case.implementations):
-            path = urlsplit(link.url).path
-            if path.startswith("/curation/evidence/"):
-                documents.add(path.rsplit("/", 1)[-1])
+        urls = [
+            link.url
+            for link in (*case.evidence, *case.proposals, *case.implementations)
+        ]
+        urls.extend(
+            receipt.evidence_url
+            for receipt in (*case.validations, *case.signoffs, *case.history)
+        )
+        if case.adoption:
+            urls.append(case.adoption.evidence_url)
+        for url in urls:
+            reference = urlsplit(url)
+            if not reference.netloc and reference.path.startswith(
+                "/curation/evidence/"
+            ):
+                documents.add(reference.path.rsplit("/", 1)[-1])
     payload = dict(
         package=asdict(package),
         cases=cases,

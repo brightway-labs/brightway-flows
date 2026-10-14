@@ -56,8 +56,10 @@ def _common(register):
     )
     if (
         endpoint == "curation.index"
-        and register.packages
-        and (not request.args or request.args.get("view") == "packages")
+        and (
+            request.args.get("view") == "packages"
+            or (register.packages and not request.args)
+        )
     ):
         active = "packages"
     query = request.args.get("q", "").strip()
@@ -86,7 +88,7 @@ def _common(register):
             modules=len(g.curation_catalogue),
         ),
         packages_url=url_for(
-            "curation.index", **({"view": "packages", "q": query} if query else {})
+            "curation.index", view="packages", **({"q": query} if query else {})
         ),
         cases_url=url_for(
             "curation.index", view="all", **({"q": query} if query else {})
@@ -235,8 +237,9 @@ def index():
     register, root = _load()
     if register is None:
         return render_template("curation_empty.html", invalid=False)
-    if register.packages and (
-        not request.args or request.args.get("view") == "packages"
+    if (
+        request.args.get("view") == "packages"
+        or (register.packages and not request.args)
     ):
         return _packages(register)
     args = {
@@ -493,9 +496,7 @@ def detail(case_id):
                     if case.id in p.case_ids
                 ),
                 None,
-            )
-            if register.packages
-            else None,
+            ),
         )
     catalogue = inventory.module_catalogue(root, register.cases, register.documents)
     return render_template(
@@ -507,9 +508,7 @@ def detail(case_id):
         review_package=next(
             (p for p in curation.review_packages(register) if case.id in p.case_ids),
             None,
-        )
-        if register.packages
-        else None,
+        ),
         history=sorted(case.history, key=lambda e: e.recorded_at, reverse=True),
         code_url=f"{REPOSITORY_URL}/blob/{case.revision}/",
     )

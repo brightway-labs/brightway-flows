@@ -162,14 +162,9 @@ class SourceAudit:
             )
             if receipt.schema_version != 1 or receipt.scientific_signoff:
                 raise ValueError("Claim comparisons cannot record scientific approval")
-            for source_id, digest in receipt.source_sha256.items():
-                if (
-                    source_id not in self.checks
-                    or self.checks[source_id].sha256 != digest
-                ):
-                    raise ValueError(
-                        f"{identifier}: claim comparison source changed: {source_id}"
-                    )
+            self.verify_source_pins(
+                receipt.source_sha256, f"{identifier}: claim comparison source changed"
+            )
             known = {c.id: c for c in register.cases}
             for claim in receipt.claims:
                 if claim.id in self.claims or claim.id not in known:
@@ -203,12 +198,7 @@ class SourceAudit:
             )
             if receipt.schema_version != 1 or receipt.scientific_signoff:
                 raise ValueError("Evidence recovery cannot record scientific approval")
-            for source_id, digest in receipt.source_sha256.items():
-                if (
-                    source_id not in self.checks
-                    or self.checks[source_id].sha256 != digest
-                ):
-                    raise ValueError(f"Recovery source changed: {source_id}")
+            self.verify_source_pins(receipt.source_sha256, "Recovery source changed")
             known = {c.id: c for c in register.cases}
             resolvable = {
                 "lookup-quantity": {"receipt-receiving"},
@@ -263,12 +253,7 @@ class SourceAudit:
             )
             if receipt.schema_version != 1 or receipt.scientific_signoff:
                 raise ValueError("Application checks cannot record scientific approval")
-            for source_id, digest in receipt.source_sha256.items():
-                if (
-                    source_id not in self.checks
-                    or self.checks[source_id].sha256 != digest
-                ):
-                    raise ValueError(f"Application evidence changed: {source_id}")
+            self.verify_source_pins(receipt.source_sha256, "Application evidence changed")
             known = {c.id: c for c in register.cases}
             seen = set()
             for check in receipt.checks:
@@ -317,9 +302,7 @@ class SourceAudit:
             )
             if receipt.schema_version != 1 or receipt.scientific_signoff:
                 raise ValueError("Evidence supplements cannot record scientific approval")
-            for source_id, digest in receipt.source_sha256.items():
-                if source_id not in self.checks or self.checks[source_id].sha256 != digest:
-                    raise ValueError(f"Supplement source changed: {source_id}")
+            self.verify_source_pins(receipt.source_sha256, "Supplement source changed")
             known = {c.id: c for c in register.cases}
             for entry in receipt.entries:
                 if entry.id in self.supplements or entry.id not in known:
@@ -347,6 +330,11 @@ class SourceAudit:
                 self.supplements[entry.id] = entry
             if set(receipt.case_sha256) != set(self.supplements):
                 raise ValueError("Supplement case pins do not match its membership")
+
+    def verify_source_pins(self, pins, context):
+        for source_id, digest in pins.items():
+            if source_id not in self.checks or self.checks[source_id].sha256 != digest:
+                raise ValueError(f"{context}: {source_id}")
 
     def git(self, repo, *args):
         return subprocess.check_output(
