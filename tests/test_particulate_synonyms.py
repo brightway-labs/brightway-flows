@@ -26,6 +26,7 @@ import unittest
 from brightway_flows.domain.flow_object import FlowObject
 from brightway_flows.domain.particulate_size import size_classes
 from brightway_flows.flow_layers.synonyms import (
+    _names_answering_twice,
     carry_member_names,
     names_another_size_window,
     promise_size_class_labels,
@@ -230,6 +231,23 @@ class EveryWindowIsPromisedItsSpellingTestCase(unittest.TestCase):
         carry_member_names(objects, [])  # a second pass, as the merge runs it per list
         self.assertEqual([a.get("@value") for a in objects[0].altLabel], ["Particulates, < 10 um"])
         self.assertEqual([a.get("@value") for a in objects[1].altLabel], ["Particulates, > 10 um"])
+
+    def test_two_windows_whose_spellings_differ_only_in_punctuation_are_not_one_name(self):
+        """The measure reads the exact text too, or it counts the two spellings
+        the pass keeps on purpose as one name naming two substances -- which is
+        how `0571-a-name-names-one-substance` read 1 on the build of 22
+        September 2026 (`20260922T2037421996740000`)."""
+        objects = [_obj(self.PM10, "Particles (PM10)"), _obj(self.ABOVE, "Particles (> PM10)")]
+        stats = carry_member_names(objects, [])
+        self.assertEqual(stats["synonyms_naming_two_substances"], 0)
+
+    def test_a_plain_synonym_folding_onto_a_promised_spelling_still_counts(self):
+        """Only the scheme's own spellings are told apart by their text."""
+        objects = [_obj(self.PM10, "Particles (PM10)"), _obj("fo-somebody-else", "Dust")]
+        promise_size_class_labels(objects)
+        objects[1].altLabel = [{"@value": "Particulates > 10 um", "@language": "en"}]
+        stats = _names_answering_twice(objects)
+        self.assertEqual(stats["synonyms_naming_two_substances"], 1)
 
     def test_a_substance_that_is_not_a_window_is_untouched(self):
         obj = _obj("fo-ammonium", "Ammonium")

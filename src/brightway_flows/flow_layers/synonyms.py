@@ -608,18 +608,33 @@ def _names_answering_twice(flow_objects: list[FlowObject]) -> Counter[str]:
     #167 renamed anything.  Why they left is not recorded here, and the count
     stayed in the same range throughout, which is how two examples went stale
     without any number moving.
+
+    A window's promised spelling is told apart by its exact text, as the
+    withdrawal and `promise_size_class_labels` tell it apart:
+    `Particulates, < 10 um` on PM10 and `Particulates, > 10 um` on the fraction
+    above it fold to one key and are two names.  Counted as one, they read 1 on
+    the build of 22 September 2026 (`20260922T2037421996740000`) for a pair the
+    pass keeps on purpose.  Any other label on that key is still a collision.
     """
     named_by: dict[str, set[str]] = defaultdict(set)
     synonym_of: dict[str, set[str]] = defaultdict(set)
+    plain_synonym_of: dict[str, set[str]] = defaultdict(set)
+    promised_spellings: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
     for obj in flow_objects:
         for value in _label_values(obj.prefLabel):
             key = _canonical_name(value)
             if key:
                 named_by[key].add(obj.flow_object_id)
-        for value in _label_values(obj.altLabel):
-            key = _canonical_name(value)
-            if key:
-                synonym_of[key].add(obj.flow_object_id)
+        for row in obj.altLabel or []:
+            values = _label_values([row])
+            key = _canonical_name(values[0]) if values else ""
+            if not key:
+                continue
+            synonym_of[key].add(obj.flow_object_id)
+            if _promised_by_the_scheme(row):
+                promised_spellings[key][_exact(values[0])].add(obj.flow_object_id)
+            else:
+                plain_synonym_of[key].add(obj.flow_object_id)
 
     stats: Counter[str] = Counter()
     for key in set(named_by) | set(synonym_of):
@@ -627,6 +642,13 @@ def _names_answering_twice(flow_objects: list[FlowObject]) -> Counter[str]:
         if len(owners) < 2:
             continue
         if synonym_of[key]:
+            spellings = promised_spellings.get(key, {})
+            if (
+                not named_by[key]
+                and not plain_synonym_of[key]
+                and all(len(holders) == 1 for holders in spellings.values())
+            ):
+                continue
             stats["synonyms_naming_two_substances"] += 1
         else:
             stats["names_shared_by_two_substances"] += 1
