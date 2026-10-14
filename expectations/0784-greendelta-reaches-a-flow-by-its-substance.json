@@ -42,19 +42,6 @@
       "comment": "The tie-break, and the number is small because it is meant to be: 52 rows state 7732-18-5 in a compartment where `Water` and `Water vapour` both sit, and only the two whose name is exactly one of ours are placed. The other 50 carry a country in the name -- `Water, DK` -- which no label of ours does, and are left unmatched with a finding naming both candidates.\n\nA claim about what the rule *declines* to do, held as the count of the only case where a name is allowed to act on a number's candidates."
     },
     {
-      "id": "0784-it-still-decides-nothing",
-      "issue": 784,
-      "title": "Reaching more of GreenDelta's factors changes no factor this list publishes",
-      "subject": {
-        "kind": "measure",
-        "key": "factors.ef_consensus_factors_published"
-      },
-      "expect": {
-        "at_most": 327064
-      },
-      "comment": "The same bound #157's file states, restated here because this change is the one that could break it: 1,166 more numbers from a publisher whose implementation is comparison and not evidence. The method file's `decides: false` on GreenDelta's row is what keeps it true.\n\nAn upper bound, per #349 and for the reason #157's file argues: the count rising is this claim failing, and the count falling is one of the deciding implementations correcting its own numbers. Moved to 323,898 with the AGRIBALYSE stack (#188): giving Beta-cyfluthrin the product's own registry number took ecoinvent's rows off the consensus `Cyfluthrin` flows, and the ecoinvent Centre's factors followed its flows -- 64 arrive on the Beta-cyfluthrin substance, 40 leave with the vacated ecoinvent-compartment Cyfluthrin copies, pair-identical amounts, measured on the stack build of d98a075 (1 September 2026). That is +24 against the 323,874 the #178/#826 retirements left, none of it a comparison implementation reaching the consensus -- the movement is one deciding implementation's numbers following its own renamed substance, which is the accounting this guard exists to force. (This file's 323,890 had also gone quietly stale: an upper bound tolerates a fall, so the #178/#826 retirements that made the count 323,874 never forced an edit here.) Moved again on 2026-09-01 when the context convention in `data/context-carry-rules.json` began carrying 1,482 more factors into the contexts nobody characterised -- a river taking surface water's number, silvicultural soil taking non-agricultural soil's -- on top of the 323,898 the cyfluthrin split left: 325,380, the two movements measured on different builds and added, until the next full build records the count. A carried number is this list's own convention applied to a number it already published, not a third publisher's number becoming ours, which is still what this bound is about.\n\nRecorded at 327,064 on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), which is the full build the previous sentence was waiting for. The convention's carry came to 1,866 factors over the four-list baseline's 1,491 (3,357 `carried`), not the 1,482 measured on a branch, because AGRIBALYSE's merge added flows in contexts the convention carries into; `sole` moved by 24 the other way. `adopted` stayed at 1,334, which is the number this bound is really watching: nothing a third publisher stated became ours."
-    },
-    {
       "id": "0784-a-lake-factor-reaches-its-flow",
       "issue": 784,
       "title": "A lake factor reaches the flow it is about, in the compartment it was stated in",

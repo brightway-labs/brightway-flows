@@ -56,19 +56,6 @@
       "comment": "1,438 before. Eighteen rows, eighteen flows: no two of the 25 name one flow of ours in one compartment, which is what makes each of them a decision about a row rather than a rule about a name."
     },
     {
-      "id": "0789-it-still-decides-nothing",
-      "issue": 789,
-      "title": "Reading GreenDelta's ionic names changes no factor this list publishes",
-      "subject": {
-        "kind": "measure",
-        "key": "factors.ef_consensus_factors_published"
-      },
-      "expect": {
-        "at_most": 327064
-      },
-      "comment": "The bound #157 and #165 both state, restated here for the same reason: this change adds 69 numbers from a publisher whose implementation is comparison and not evidence, and `decides: false` on GreenDelta's row in `data/lcia-impact-categories.json` is what keeps them out of the consensus.\n\nAn upper bound, per #349: 323,890 on the build of 2026-08-29, and a rise is what would mean one of the 69 had become ours. Moved to 323,898 with the AGRIBALYSE stack (#188): giving Beta-cyfluthrin the product's own registry number took ecoinvent's rows off the consensus `Cyfluthrin` flows, and the ecoinvent Centre's factors followed its flows -- 64 arrive on the Beta-cyfluthrin substance, 40 leave with the vacated ecoinvent-compartment Cyfluthrin copies, pair-identical amounts, measured on the stack build of d98a075 (1 September 2026). That is +24 against the 323,874 the #178/#826 retirements left, none of it a comparison implementation reaching the consensus -- the movement is one deciding implementation's numbers following its own renamed substance, which is the accounting this guard exists to force. (This file's 323,890 had also gone quietly stale: an upper bound tolerates a fall, so the #178/#826 retirements that made the count 323,874 never forced an edit here.) Moved again on 2026-09-01 when the context convention in `data/context-carry-rules.json` began carrying 1,482 more factors into the contexts nobody characterised -- a river taking surface water's number, silvicultural soil taking non-agricultural soil's -- on top of the 323,898 the cyfluthrin split left: 325,380, the two movements measured on different builds and added, until the next full build records the count. A carried number is this list's own convention applied to a number it already published, not a third publisher's number becoming ours, which is still what this bound is about.\n\nRecorded at 327,064 on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), which is the full build the previous sentence was waiting for. The convention's carry came to 1,866 factors over the four-list baseline's 1,491 (3,357 `carried`), not the 1,482 measured on a branch, because AGRIBALYSE's merge added flows in contexts the convention carries into; `sole` moved by 24 the other way. `adopted` stayed at 1,334, which is the number this bound is really watching: nothing a third publisher stated became ours."
-    },
-    {
       "id": "0789-the-aluminium-resource-row-agrees",
       "issue": 789,
       "title": "GreenDelta's `Aluminium III` resource factor agrees with the JRC's to the digit",

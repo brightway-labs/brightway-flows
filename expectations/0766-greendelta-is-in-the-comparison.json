@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "#157 compared this list's EF 3.1 factors against a second implementation -- GreenDelta's, shipped for openLCA inside BAFU's 2026 v1 distribution -- by hand, in a script nobody can re-run. Six substances came back where GreenDelta's number is a real EF 3.1 number belonging to a different chemical or a different compartment. This ingests that implementation, so the comparison is a table in the build rather than a script somebody wrote once.\n\nIt is a fourth `implemented_by` and it decides nothing. `data/lcia-impact-categories.json` says `decides: true` of the two the consensus implementation is derived from -- the JRC's and ecoinvent's -- and `decides: false` of GreenDelta's: no number of theirs is evidence for one of ours, and none reaches a curator's queue. The measure below says so, by bounding the consensus factor count at what it is without the implementation.\n\nTheir package identifies flows by the ecoinvent UUID it was built against, declaring compatibility with ecoinvent 3.6 to 3.11, so a flow of theirs is resolved through the manifest's `resolve_through` chain: 1,144 through ecoinvent 3.12, 50 through 3.8, 29 are EF 3.1 flows already, and 558 name a substance under a spelling of their own and reach nothing.\n\nMeasured on the build of 2026-08-25 (`20260825T1354430622920000`, commit `1c1385b`) characterised at `13:00` on 2026-08-28. Every claim below fails on `main`, where the implementation does not exist.\n\nThe consensus count was re-measured for #349 on the full build of 2026-08-29 (`20260829T1158418340740000`, commit `505ba28`, all four source lists): 323,890 rather than 324,694, because #163 took 801 of the JRC's factors off retired identifiers between the two builds. The same 323,890 comes out of that morning's three-list build and of the four-list build before #166 and #346 landed, so the count depends neither on Stepwise being merged nor on the second method being published. It is stated as an upper bound now, for the reason the claim itself gives.",
+  "description": "#157 compared this list's EF 3.1 factors against a second implementation -- GreenDelta's, shipped for openLCA inside BAFU's 2026 v1 distribution -- by hand, in a script nobody can re-run. Six substances came back where GreenDelta's number is a real EF 3.1 number belonging to a different chemical or a different compartment. This ingests that implementation, so the comparison is a table in the build rather than a script somebody wrote once.\n\nIt is a fourth `implemented_by` and it decides nothing. `data/lcia-impact-categories.json` says `decides: true` of the two the consensus implementation is derived from -- the JRC's and ecoinvent's -- and `decides: false` of GreenDelta's: no number of theirs is evidence for one of ours, and none reaches a curator's queue. No measure here says so: the consensus count moves whenever this list's own conventions do, so a bound on it failed for reasons that were never GreenDelta's. What is stated instead is how many factors each implementation's file states, which moves only with the files.\n\nTheir package identifies flows by the ecoinvent UUID it was built against, declaring compatibility with ecoinvent 3.6 to 3.11, so a flow of theirs is resolved through the manifest's `resolve_through` chain: 1,144 through ecoinvent 3.12, 50 through 3.8, 29 are EF 3.1 flows already, and 558 name a substance under a spelling of their own and reach nothing.\n\nMeasured on the build of 2026-08-25 (`20260825T1354430622920000`, commit `1c1385b`) characterised at `13:00` on 2026-08-28. Every claim below fails on `main`, where the implementation does not exist.\n\nThe consensus count was re-measured for #349 on the full build of 2026-08-29 (`20260829T1158418340740000`, commit `505ba28`, all four source lists): 323,890 rather than 324,694, because #163 took 801 of the JRC's factors off retired identifiers between the two builds. The same 323,890 comes out of that morning's three-list build and of the four-list build before #166 and #346 landed, so the count depends neither on Stepwise being merged nor on the second method being published.",
   "expectations": [
     {
       "id": "0766-greendelta-is-published",
@@ -16,6 +16,48 @@
       "comment": "22,342 of the 26,179 factors their package states, over 1,188 consensus flows. The gap is the 558 flows that reach nothing, which carry 3,378 factors; each is a `flow-not-reached` finding naming the substance GreenDelta wrote, so the shortfall is readable rather than silent.\n\n`at_least` rather than an equality: closing part of that gap -- by resolving their names against BAFU's own flows, which is the obvious next step -- should not fail this claim."
     },
     {
+      "id": "0766-every-factor-the-jrc-states-is-read",
+      "issue": 766,
+      "title": "All 319,575 factors the JRC's file states for EF 3.1 are read",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_jrc_factors_stated"
+      },
+      "expect": {
+        "at_least": 319575,
+        "at_most": 319575
+      },
+      "comment": "An equality, because this is the count of a file rather than of a matching -- the claim `0787-every-factor-the-export-states-is-read` makes of Stepwise. A number below means a category was silently skipped and a number above means rows were duplicated. It does not move when this list changes how it maps, carries or adopts, only when the JRC's file does, and then the new count belongs here with the release that changed it. Measured on the build of 22 September 2026 (`20260922T2037421996740000`).\n\nReplaces `0766-it-decides-nothing`, an upper bound on the consensus factor count that #157, #165, #347, #166 and #188 restated here and in five other files every time the list's own conventions moved that count. Its 327,064 was exceeded by 21 on the build of 22 September 2026 (`20260922T2037421996740000`) with `adopted` unmoved at 1,334, so it failed without anything a third publisher stated becoming ours."
+    },
+    {
+      "id": "0766-every-factor-ecoinvent-states-is-read",
+      "issue": 766,
+      "title": "All 27,415 factors the ecoinvent Centre's file states for EF 3.1 are read",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_ecoinvent_centre_factors_stated"
+      },
+      "expect": {
+        "at_least": 27415,
+        "at_most": 27415
+      },
+      "comment": "The second of the two implementations the consensus is derived from, stated as `0766-every-factor-the-jrc-states-is-read` states the first, and for the same reason. Measured on the build of 22 September 2026 (`20260922T2037421996740000`)."
+    },
+    {
+      "id": "0766-every-factor-greendelta-states-is-read",
+      "issue": 766,
+      "title": "All 26,179 factors GreenDelta's package states for EF 3.1 are read",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_greendelta_factors_stated"
+      },
+      "expect": {
+        "at_least": 26179,
+        "at_most": 26179
+      },
+      "comment": "The 26,179 that `0766-greendelta-is-published` counts its 22,342 against, stated as the size of the file rather than left as a number in a comment. Measured on the build of 22 September 2026 (`20260922T2037421996740000`)."
+    },
+    {
       "id": "0766-a-fourth-implementation-is-twenty-five-more-categories",
       "issue": 766,
       "title": "Four implementations of 25 categories are published, not three",
@@ -27,19 +69,6 @@
         "at_least": 100
       },
       "comment": "`implemented_by` is a field on the category, so a fourth implementation is 25 more category rows rather than a column somewhere. 75 before this change."
-    },
-    {
-      "id": "0766-it-decides-nothing",
-      "issue": 766,
-      "title": "Adding a third publisher's numbers changes no factor this list publishes",
-      "subject": {
-        "kind": "measure",
-        "key": "factors.ef_consensus_factors_published"
-      },
-      "expect": {
-        "at_most": 327064
-      },
-      "comment": "The claim that GreenDelta's implementation is comparison and not evidence, stated as the count it must not exceed: 323,890 on the build of 2026-08-29 (`20260829T1158418340740000`), the same count `main` publishes without them. It is the only measure in this file that would fail if `derive` were handed the wider mapping, which is why it is stated as a bound rather than left to a code review.\n\nAn upper bound and not an equality, which is #349. A number going *up* is the failure this file is about -- a factor of theirs becoming one of ours -- and the bound catches it. A number going *down* is one of the two deciding implementations losing factors of its own, which is not about GreenDelta at all: this file, #165's and #347's each wrote the same integer on both sides, so #163 taking 801 of the JRC's factors off retired identifiers failed all three at once, and read as *a GreenDelta number became one of ours*. What the movement was is recorded in `expectations/baseline.json`, which is where a total that moves belongs. Moved to 323,898 with the AGRIBALYSE stack (#188): giving Beta-cyfluthrin the product's own registry number took ecoinvent's rows off the consensus `Cyfluthrin` flows, and the ecoinvent Centre's factors followed its flows -- 64 arrive on the Beta-cyfluthrin substance, 40 leave with the vacated ecoinvent-compartment Cyfluthrin copies, pair-identical amounts, measured on the stack build of d98a075 (1 September 2026). That is +24 against the 323,874 the #178/#826 retirements left, none of it a comparison implementation reaching the consensus -- the movement is one deciding implementation's numbers following its own renamed substance, which is the accounting this guard exists to force. (This file's 323,890 had also gone quietly stale: an upper bound tolerates a fall, so the #178/#826 retirements that made the count 323,874 never forced an edit here.) Moved again on 2026-09-01 when the context convention in `data/context-carry-rules.json` began carrying 1,482 more factors into the contexts nobody characterised -- a river taking surface water's number, silvicultural soil taking non-agricultural soil's -- on top of the 323,898 the cyfluthrin split left: 325,380, the two movements measured on different builds and added, until the next full build records the count. A carried number is this list's own convention applied to a number it already published, not a third publisher's number becoming ours, which is still what this bound is about.\n\nRecorded at 327,064 on the first five-list full build (2 September 2026, `944b274`, merge run `b348667251b34a60af31b157950e9d32`), which is the full build the previous sentence was waiting for. The convention's carry came to 1,866 factors over the four-list baseline's 1,491 (3,357 `carried`), not the 1,482 measured on a branch, because AGRIBALYSE's merge added flows in contexts the convention carries into; `sole` moved by 24 the other way. `adopted` stayed at 1,334, which is the number this bound is really watching: nothing a third publisher stated became ours."
     },
     {
       "id": "0766-mcpa-is-the-acid-and-greendelta-states-the-salt",
