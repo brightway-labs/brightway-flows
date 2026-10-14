@@ -1,0 +1,53 @@
+{% extends "curation_shell.html" %}
+{% set page_title = "Cases · Curation" %}
+{% block curation_content %}
+{% include "curation_browser_header.html" %}
+{% if selected_package or selected_module or selected_document %}
+<div class="curation-scope-bar"><div>
+  {% if selected_package %}Cases in <a href="{{ url_for('curation.package_detail',package_id=selected_package.id) }}">{{ selected_package.title }}</a>{% endif %}
+  {% if selected_module %}Module: <a href="{{ url_for('curation.module_detail',module_id=selected_module.id) }}">{{ selected_module.title }}</a> · {{ 'Proposed destinations' if args.relation == 'proposed' else 'Implementation links' if args.relation == 'actual' else 'All relationships' }}{% endif %}
+  {% if selected_document %}Documentation: <a href="{{ url_for('docs.page',page=selected_document.slug) }}">{{ selected_document.title }}</a>{% endif %}
+</div><a hx-boost="true" href="{{ link(package='',module='',relation='',document='') }}">Remove scope</a></div>
+{% endif %}
+<section class="curation-browser-panel">
+  <div class="curation-panel-heading"><div><h2>Cases</h2><p>Inspect individual evidence, proposals and revision-specific review.</p></div><button type="button" class="curation-local-toggle" data-shortlist-filter hidden aria-pressed="false">My shortlist <span data-shortlist-count>0</span></button></div>
+  <form id="curation-filter-form" class="curation-live-form" method="get" action="/curation/" hx-get="/curation/" hx-trigger="curation-filter, submit" hx-push-url="true" role="search" aria-label="Filter curation cases">
+    {% for key in ['module','relation','package','document','saved','sort','direction'] %}<input type="hidden" name="{{ key }}" value="{{ args[key] }}">{% endfor %}
+    <div class="curation-search-bar"><label class="curation-primary-search" for="curation-query"><span>Search cases</span><input id="curation-query" name="q" type="search" value="{{ args.q }}" placeholder="A substance, source, reference or finding…" autocomplete="off"></label><a class="curation-clear" hx-boost="true" href="{{ link(q='',stage='',source='',author='',quality='',gap='',capture='',claim='',collection='',view='all',group='',saved='',sort='updated',direction='desc') }}">Clear filters</a></div>
+    <div class="curation-view-controls">
+      <label>Collection<select id="curation-collection" name="collection"><option value="">All collections</option>{% for collection in collections %}<option value="{{ collection }}"{% if collection == args.collection %} selected{% endif %}>{{ collection }}</option>{% endfor %}</select></label>
+      <label>Record type<select id="curation-record-type" name="view">{% for value,label in [('all','All records'),('individual','Individual cases'),('classes','Finding classes'),('proposals','With proposals')] %}<option value="{{ value }}"{% if args.view == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+      <label>Evidence needed<select id="curation-gap" name="gap"><option value="">All evidence needs</option>{% for value,label in gap_labels.items() %}<option value="{{ value }}"{% if args.gap == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+      <label>Description support<select id="curation-claim" name="claim"><option value="">All descriptions</option>{% for value,label in [('compared','Compared with source'),('supported','Supported within stated scope'),('partial','Partially supported'),('conflicting','Conflicts with source'),('not-established','Not established')] %}<option value="{{ value }}"{% if args.claim == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+      <label>Group by<select id="curation-group" name="group"><option value="">None</option>{% for value,label in [('collection','Collection'),('kind','Record kind'),('stage','Stage'),('source','Source'),('author','Contributor')] %}<option value="{{ value }}"{% if args.group == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+    </div>
+    <div class="curation-result-summary"><span data-results-summary><strong>{{ matched_count }}</strong> matching {{ "finding classes" if args.view == "classes" else "records" if args.view == "all" else "cases" }} <span class="muted">· {{ selected | length }} on this page</span></span><span>Page {{ page }} of {{ page_count }}</span></div>
+    {% include "curation_live_status.html" %}
+    <p class="curation-table-hint">Scroll across the table for contributors, validation and dates →</p>
+    <div class="curation-table-scroll" tabindex="0" role="region" aria-label="Case results; scroll horizontally for all columns"><table class="curation-table curation-cases-table">
+      <colgroup><col style="width:3%"><col style="width:24%"><col style="width:16%"><col style="width:16%"><col style="width:12%"><col style="width:15%"><col style="width:14%"><col style="width:10%"></colgroup>
+      <thead><tr><th scope="col" class="curation-save-column"><span class="visually-hidden">Shortlist</span></th>
+        {% for key,label in [('title','Finding / correction'),('evidence','Evidence'),('stage','Stage'),('source','Source'),('author','Contributor'),('quality','Validation'),('updated','Updated')] %}
+        <th scope="col"{% if args.sort == key %} aria-sort="{{ 'ascending' if args.direction == 'asc' else 'descending' }}"{% endif %}><a hx-boost="true" href="{{ sort_link(key) }}">{{ label }} <span>{{ ('↑' if args.direction == 'asc' else '↓') if args.sort == key else '↕' }}</span></a>
+          {% if key == 'evidence' %}<label class="curation-column-filter"><span class="visually-hidden">Source capture</span><select id="curation-capture" name="capture"><option value="">All capture states</option>{% for value in capture_labels %}<option{% if args.capture == value %} selected{% endif %}>{{ value }}</option>{% endfor %}</select></label>{% endif %}
+          {% if key in ['stage','source','author','quality'] %}<label class="curation-column-filter"><span class="visually-hidden">{{ label }}</span><select id="curation-{{ key }}" name="{{ key }}"><option value="">All {{ {'stage':'stages','source':'sources','author':'contributors','quality':'validation states'}[key] }}</option>{% if key == 'stage' %}{% for value,text in stages.items() %}<option value="{{ value }}"{% if args[key] == value %} selected{% endif %}>{{ text }}</option>{% endfor %}{% else %}{% for value in sources if key == 'source' %}<option{% if args[key] == value %} selected{% endif %}>{{ value }}</option>{% endfor %}{% for value in authors if key == 'author' %}<option{% if args[key] == value %} selected{% endif %}>{{ value }}</option>{% endfor %}{% for value in qualities if key == 'quality' %}<option{% if args[key] == value %} selected{% endif %}>{{ value }}</option>{% endfor %}{% endif %}</select></label>{% endif %}
+        </th>{% endfor %}
+      </tr></thead>
+      <tbody>{% for group,cases in groups.items() %}{% if args.group %}<tr class="curation-group-heading"><th colspan="8" scope="rowgroup">{{ group }} <span>{{ cases | length }} on this page</span></th></tr>{% endif %}
+        {% for case in cases %}<tr data-case-row="{{ case.id }}">
+          <td><button type="button" class="curation-save" data-save-case="{{ case.id }}" aria-label="Save {{ case.title }} to my shortlist" aria-pressed="false" hidden>☆</button></td>
+          <th scope="row"><a class="curation-case-title" href="{{ url_for('curation.detail',case_id=case.id) }}">{{ case.title }}</a><div class="curation-case-meta"><span>{{ case.id }}</span>{% for tag in case.tags[:2] %}<span>{{ tag }}</span>{% endfor %}</div></th>
+          <td>{% set audit = evidence_audit.cases.get(case.id) %}{% if audit %}<a href="{{ url_for('curation.detail',case_id=case.id) }}#provenance" class="{{ 'curation-conflict' if audit.label == 'Conflicting evidence' else '' }}">{{ audit.label }}</a>{% if audit.claims %}<small>{{ audit.claim_label }}</small>{% endif %}<small>{{ audit.gaps | length }} evidence gaps</small>{% else %}<small>{{ evidence_audit.status }}</small>{% endif %}</td>
+          <td><span class="curation-badge stage-{{ case.stage }}">{{ case.stage_label }}</span>{% if case.disposition %}<small>{{ case.disposition }}</small>{% endif %}<small>{{ (case.modules | length) + (case.implementations | length) }} implementations · {{ case.proposals | length }} proposals</small></td>
+          <td><div class="curation-source-list">{% for source in case.sources %}<span>{{ source }}</span>{% endfor %}</div></td>
+          <td>{{ case.contributor_label }}<small>Sign-off: {{ case.signoff_label }}</small></td>
+          <td><span class="curation-quality{% if case.quality == 'Focused checks pass' %} is-passed{% endif %}">{{ case.quality }}</span><small>{{ 'Release recorded' if case.adoption else 'Release not recorded' }}</small></td>
+          <td class="curation-date">{{ case.updated_at.strftime('%d %b %Y') }}{% if not case.reported_at %}<small>Index import</small>{% endif %}</td>
+        </tr>{% endfor %}{% else %}<tr><td colspan="8" class="curation-table-empty">No cases match these filters. Change a column filter or clear the search.</td></tr>{% endfor %}
+      </tbody>
+    </table></div>
+    <nav class="curation-pagination" aria-label="Case pages" hx-boost="true" hx-swap="outerHTML show:#curation-filter-form:top">{% if page > 1 %}<a href="{{ link(page=page-1) }}">← Previous</a>{% endif %}<span>Page {{ page }} of {{ page_count }}</span>{% if page < page_count %}<a href="{{ link(page=page+1) }}">Next →</a>{% endif %}</nav>
+  </form>
+</section>
+<p class="curation-caption">A proposal, implemented module, validation receipt and scientific sign-off are separate facts.{% if has_migration_coverage %} <a href="/curation/evidence/migration-coverage">Source coverage →</a>{% endif %}</p>
+{% endblock %}

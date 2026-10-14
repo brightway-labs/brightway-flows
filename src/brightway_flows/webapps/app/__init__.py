@@ -45,6 +45,7 @@ from brightway_flows.webapps.app.views import (
     changes,
     checks,
     contexts,
+    curation as curation_views,
     docs,
     download,
     elements,
@@ -108,7 +109,7 @@ def create_app(
     filters.register(app)
     for section in (overview, flows, substances, agrochemicals, land, water,
                     particles, elements, factors, scores, checks, queue, merge, changes,
-                    contexts, docs, browse, download, about, search, home):
+                    contexts, curation_views, docs, browse, download, about, search, home):
         app.register_blueprint(section.blueprint)
     # The flow-object pages answer to their old `/substances` addresses too.
     # See `views.substances.legacy_blueprint` for why.
