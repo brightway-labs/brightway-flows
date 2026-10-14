@@ -9,14 +9,13 @@ adapter rather than recording them once is that each is a fact about a package:
 * its 25 categories are addressed by the JRC's own ILCD method-file UUIDs, so a
   factor of theirs is filed under one of our categories by identity and not by a
   name nobody could derive (`Ecotoxicity freshwater (organics)`);
-* 183,654 factors over 33,045 flows, no ``(category, flow, location)`` stated
-  twice with two numbers, so nothing silently wins -- 1,897 water-use rows are
-  repeated verbatim and read once;
+* 183,654 factors over 33,045 flows, of which the 91,304 stated per place are
+  refused for now and the 92,350 stated for no place are read -- every flow
+  has one;
+* no ``(category, flow)`` stated twice with two numbers, so nothing silently
+  wins;
 * every factor is stated per its flow's own reference unit, so no conversion is
-  needed that the merge did not already record;
-* 91,304 of the rows carry a location, and every location the package ships has
-  a code -- which is the spelling `StatedFactor.geography` holds and what makes
-  a regionalised row of theirs comparable with the JRC's.
+  needed that the merge did not already record.
 
 The archive is not in the repository, so the cases that need one build a small
 stand-in.  The ones at the end read what a real fetch wrote, and skip where
@@ -227,10 +226,13 @@ class ReadingThePackageTestCase(unittest.TestCase):
         self.assertEqual(described["f-1"]["name"], "Ammonia")
         self.assertEqual(described["f-1"]["unit"], "kg")
 
-    def test_a_place_is_the_location_s_code_and_not_its_name(self):
-        """`CH`, not `Switzerland`: the code is the spelling every other
-        implementation's geography is in."""
-        self.category["impactFactors"] = [_factor(self.flow, 1.5, location="l-ch")]
+    def test_a_factor_stated_for_a_place_is_not_read(self):
+        """Refused for now, beside the location-specific flows: the flow's
+        factor for no place is the one read."""
+        self.category["impactFactors"] = [
+            _factor(self.flow, 1.5),
+            _factor(self.flow, 2.5, location="l-ch"),
+        ]
         path, package = self._read(
             locations=[
                 {"@type": "Location", "@id": "l-ch", "name": "Switzerland",
@@ -238,17 +240,7 @@ class ReadingThePackageTestCase(unittest.TestCase):
             ]
         )
         factors, _described = _factors(package, path=path)
-        self.assertEqual(factors[0].geography, "CH")
-
-    def test_a_location_with_no_code_stops_the_read(self):
-        """A regionalised factor with no place is not comparable with
-        anybody's."""
-        self.category["impactFactors"] = [_factor(self.flow, 1.5, location="l-ch")]
-        path, package = self._read(
-            locations=[{"@type": "Location", "@id": "l-ch", "name": "Switzerland"}]
-        )
-        with self.assertRaises(GreenDeltaLciaError):
-            _factors(package, path=path)
+        self.assertEqual([(f.amount, f.geography) for f in factors], [(1.5, None)])
 
     def test_a_factor_in_another_unit_than_its_flow_stops_the_read(self):
         row = _factor(self.flow, 1.5)
@@ -259,8 +251,9 @@ class ReadingThePackageTestCase(unittest.TestCase):
             _factors(package, path=path)
 
     def test_one_flow_stated_twice_with_one_number_is_read_once(self):
-        """2.8.2 repeats 1,897 water-use rows verbatim; a repeat is not a
-        second statement."""
+        """A repeat is not a second statement.  2.8.2's 1,897 verbatim repeats
+        are all of rows stated per place, which are refused, but the rule
+        does not depend on that."""
         self.category["impactFactors"] = [
             _factor(self.flow, 1.5),
             _factor(self.flow, 1.5),
@@ -270,8 +263,8 @@ class ReadingThePackageTestCase(unittest.TestCase):
         self.assertEqual([factor.amount for factor in factors], [1.5])
 
     def test_one_flow_stated_twice_in_a_category_stops_the_read(self):
-        """Two numbers for one (category, flow, place) means one of them wins
-        without anybody choosing."""
+        """Two numbers for one (category, flow) means one of them wins without
+        anybody choosing."""
         self.category["impactFactors"] = [
             _factor(self.flow, 1.5),
             _factor(self.flow, 3.0),
@@ -279,25 +272,6 @@ class ReadingThePackageTestCase(unittest.TestCase):
         path, package = self._read()
         with self.assertRaises(GreenDeltaLciaError):
             _factors(package, path=path)
-
-    def test_the_same_flow_in_two_places_is_two_factors(self):
-        self.category["impactFactors"] = [
-            _factor(self.flow, 1.5, location="l-ch"),
-            _factor(self.flow, 2.5, location="l-at"),
-        ]
-        path, package = self._read(
-            locations=[
-                {"@type": "Location", "@id": "l-ch", "name": "Switzerland",
-                 "code": "CH"},
-                {"@type": "Location", "@id": "l-at", "name": "Austria",
-                 "code": "AT"},
-            ]
-        )
-        factors, _described = _factors(package, path=path)
-        self.assertEqual(
-            {factor.geography: factor.amount for factor in factors},
-            {"CH": 1.5, "AT": 2.5},
-        )
 
     def test_a_category_the_crosswalk_does_not_know_stops_the_read(self):
         """Their package carries the JRC's own UUIDs; one that does not needs a
@@ -322,7 +296,7 @@ class WhatTheFetchWritesTestCase(unittest.TestCase):
             "@id": FIRST,
             "name": ef_method().by_stated_identifier("jrc")[FIRST].stated["greendelta"].name,
             "refUnit": "mol H+ eq",
-            "impactFactors": [_factor(flow, 1.5, location="l-ch")],
+            "impactFactors": [_factor(flow, 1.5)],
         }
         self.archive = _package(
             self.root,
@@ -377,7 +351,7 @@ class WhatTheFetchWritesTestCase(unittest.TestCase):
         factors = load_factors(path)[GREENDELTA_METHOD_NAME]
         self.assertEqual(len(factors), 1)
         self.assertEqual(factors[0].amount, 1.5)
-        self.assertEqual(factors[0].geography, "CH")
+        self.assertIsNone(factors[0].geography)
         self.assertEqual(factors[0].category.uuid, FIRST)
         self.assertEqual(flow_descriptions(path)["f-1"]["name"], "Ammonia")
 
@@ -482,17 +456,16 @@ class WhatAFetchWroteTestCase(unittest.TestCase):
         self.assertEqual(self.payload["package"], "openLCA LCIA Methods 2.8.2")
         self.assertEqual(self.method["method"], GREENDELTA_METHOD_NAME)
 
-    def test_a_hundred_and_eighty_thousand_factors_over_thirty_thousand_flows(self):
-        self.assertEqual(self.method["factor_count"], 183_654)
+    def test_ninety_thousand_factors_over_thirty_thousand_flows(self):
+        self.assertEqual(self.method["factor_count"], 92_350)
         self.assertEqual(self.method["flow_count"], 33_045)
         self.assertEqual(len(self.method["categories"]), 25)
 
-    def test_the_regionalised_rows(self):
-        """Land use, water use, acidification, particulate matter and the
-        others are stated per place: 91,304 of 183,654 rows, over 429 codes."""
-        placed = [row for row in self.method["factors"] if row["geography"]]
-        self.assertEqual(len(placed), 91_304)
-        self.assertEqual(len({row["geography"] for row in placed}), 429)
+    def test_no_factor_stated_for_a_place_is_read(self):
+        """The 91,304 the package states per place are refused for now."""
+        self.assertEqual(
+            [row for row in self.method["factors"] if row["geography"]], []
+        )
 
     def test_every_category_is_addressed_by_the_jrc_s_uuid(self):
         known = ef_method().by_stated_identifier("jrc")
