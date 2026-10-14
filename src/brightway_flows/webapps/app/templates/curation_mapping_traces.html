@@ -1,0 +1,18 @@
+{% extends "curation_shell.html" %}
+{% set page_title = "Original mapping provenance · Curation" %}
+{% block curation_content %}
+<h1>Original mapping provenance</h1>
+<p>Original source rows and historical aliases, with verified artifact hashes and row coordinates. All scientific applicability and adoption remain unresolved. Shared identifiers establish reading links; they do not establish independent support.</p>
+<p><a href="/docs/curation/source-mapping-provenance">Checks and remaining evidence →</a> · <a href="/curation/evidence/source-mapping-provenance">Full manifest →</a> · <a href="/curation/mappings/?source=inhouse-placeholder&amp;status=quarantined">Quarantined placeholder rows →</a> · <a href="/curation/mappings/?kind=aliases">Historical aliases →</a></p>
+<details><summary>Source inputs and counts</summary><ul>{% for artifact in manifest.inputs.artifacts %}<li><a href="/curation/mappings/?source={{ artifact.id }}">{{ artifact.title }}</a> — {{ manifest.counts.artifacts.get(artifact.id, 0) }} records; <code>{{ artifact.sha256 }}</code>. Role: {{ artifact.role.value }}. Scope: {{ artifact.scope or 'Not qualified' }}. Historical binding: {{ artifact.historical_binding }}.</li>{% endfor %}</ul></details>
+<p>{{ total }} {{ kind }} in this scope. Page {{ page }}. Source-row IDs identify evidence records, not new flow identifiers.</p>
+{% for row in rows %}<article class="curation-panel">
+<h2><a href="/curation/mappings/?kind={{ kind }}&amp;id={{ row.id }}">{{ row.id }}</a></h2>
+<p><strong>{{ row.status }}</strong>{% if row.artifact_id %} · {{ row.artifact_id }} · {{ row.locator }}{% endif %}</p>
+{% if row.source %}<p>{{ row.source.name or 'Source name unrecorded' }} · Flow identifier: <code>{{ row.source.identifier or 'Missing — quarantined' }}</code></p><p>Mapper: {{ row.mapper or 'Not recorded' }} · Verifier: {{ row.verifier or 'Not recorded' }} · Source statement date: {{ row.stated_date or 'Not recorded' }}</p>{% endif %}
+<p>{{ row.issues | join(' · ') }}</p>
+<ul>{% for link in row.source_reading_links %}<li><a href="{{ link.url }}">{{ link.label }} ↗</a></li>{% endfor %}</ul>
+<details {{ 'open' if rows | length == 1 else '' }}><summary>Complete preserved trace and original record</summary><pre class="curation-evidence-text">{{ row | tojson(indent=2) }}</pre></details>
+</article>{% else %}<p>No records match this scope.</p>{% endfor %}
+<nav>{% if previous %}<a href="{{ previous }}">← Previous</a>{% endif %} {% if next_page %}<a href="{{ next_page }}">Next →</a>{% endif %}</nav>
+{% endblock %}

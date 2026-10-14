@@ -47,13 +47,14 @@ import json
 import re
 import unittest
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import typer
 
 from brightway_flows.application.cli import app
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 from brightway_flows.transformers import DEFAULT_TRANSFORMERS
-from brightway_flows.webapps.app import documentation
+from brightway_flows.webapps.app import create_app, documentation
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
@@ -253,6 +254,17 @@ class AgentsRuleReferenceTestCase(unittest.TestCase):
 
 
 class LinkTestCase(unittest.TestCase):
+    @staticmethod
+    @functools.cache
+    def web_routes():
+        """Root-relative application links must match a real Flask route.
+
+        Evidence IDs depend on the selected register. Their existence and
+        source locators are checked by its provenance audit, separately from
+        documentation files and route spelling.
+        """
+        return create_app(database_path=ROOT / ".data/nonexistent-link-check.sqlite3", docs_path=DOCS).url_map.bind("localhost")
+
     def test_every_relative_link_resolves(self):
         for page in PAGES:
             for target in _LINK.findall(page.read_text()):
@@ -262,10 +274,21 @@ class LinkTestCase(unittest.TestCase):
                 if not path:
                     continue
                 with self.subTest(page=page_id(page), target=target):
+                    if target.startswith("/"):
+                        self.web_routes().match(urlsplit(target).path, method="GET")
+                        continue
                     self.assertTrue(
                         (page.parent / path).resolve().exists(),
                         f"{page.relative_to(ROOT)} links to {target}",
                     )
+
+    def test_application_links_reject_misspelled_routes(self):
+        from werkzeug.exceptions import NotFound
+
+        with self.assertRaises(NotFound):
+            self.web_routes().match("/curation/misspelled-evidence/a-source", method="GET")
+        with self.assertRaises(NotFound):
+            self.web_routes().match("/private-evidence.json", method="GET")
 
     def test_every_link_to_a_section_names_a_heading_that_is_there(self):
         """A fragment matching no heading opens the page at the top (#373).

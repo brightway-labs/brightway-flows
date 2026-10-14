@@ -1,0 +1,803 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-13T11:47:11+00:00",
+  "source_revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+  "coverage": "Selected public cases and the existing finding classes. Historical attribution, review and release records are incomplete; missing values are not inferred.",
+  "cases": [
+    {
+      "id": "finding-names-and-numbers",
+      "title": "Names and registry numbers disagree",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1",
+        "ecoinvent",
+        "BAFU"
+      ],
+      "tags": [
+        "Identity",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/names-and-numbers",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-catch-alls",
+      "title": "A named substance maps to a catch-all",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1",
+        "GLAD"
+      ],
+      "tags": [
+        "Correspondence",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/catch-alls",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-class-as-member",
+      "title": "A class is represented by one member",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "ecoinvent",
+        "BAFU",
+        "GLAD"
+      ],
+      "tags": [
+        "Identity",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/class-as-member",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-identifier-reuse",
+      "title": "An identifier survives a change of substance",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1",
+        "ecoinvent",
+        "GLAD"
+      ],
+      "tags": [
+        "Versioning",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/identifier-reuse",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-relatives",
+      "title": "A relative is used as the named substance",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1",
+        "GLAD"
+      ],
+      "tags": [
+        "Identity",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/relatives",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-duplicate-rows",
+      "title": "Repeated names and contexts conceal different cases",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1"
+      ],
+      "tags": [
+        "Duplicates",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/duplicate-rows",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-part-numbers",
+      "title": "A product code stands in for a substance name",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1"
+      ],
+      "tags": [
+        "Names",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/part-numbers",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-nuclides",
+      "title": "Nuclide identity conflicts with a name or number",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1",
+        "ecoinvent",
+        "BAFU"
+      ],
+      "tags": [
+        "Radionuclides",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/nuclides",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-compartments",
+      "title": "One compartment name covers different situations",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1",
+        "ecoinvent",
+        "BAFU"
+      ],
+      "tags": [
+        "Contexts",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/compartments",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-units",
+      "title": "A unit omits the measurement basis",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1",
+        "ecoinvent",
+        "BAFU",
+        "Stepwise"
+      ],
+      "tags": [
+        "Quantities",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/units",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-registry-numbers",
+      "title": "The registry number belongs to another substance",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1",
+        "ecoinvent",
+        "BAFU"
+      ],
+      "tags": [
+        "Identity",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/registry-numbers",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-factors",
+      "title": "A factor is attributed to another substance",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1",
+        "ecoinvent"
+      ],
+      "tags": [
+        "Characterisation",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/factors",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "finding-not-substances",
+      "title": "An exchange represents more than a substance",
+      "summary": "Documented finding class with worked examples in the source review.",
+      "reason": "The existing narrative remains the evidence. Individual corrections should be linked to their own proposal and executable module before this class is treated as fully curated.",
+      "origin": "finding-class",
+      "stage": "recorded",
+      "sources": [
+        "EF 3.1",
+        "ecoinvent",
+        "BAFU"
+      ],
+      "tags": [
+        "Classification",
+        "Finding class"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-10-13T11:47:11+00:00",
+      "reported_by": null,
+      "reported_at": null,
+      "owner": null,
+      "next_action": "Link the individual cases and their review records; original reporter and sign-off are not recorded in this imported index.",
+      "evidence": [
+        {
+          "label": "Read the worked examples",
+          "url": "/docs/findings/not-substances",
+          "kind": "Findings documentation",
+          "note": "Imported from source revision 19d6cc6; import time is not the discovery date."
+        }
+      ]
+    },
+    {
+      "id": "lookup-quantity",
+      "title": "Preserve quantity conversions in flow lookup",
+      "summary": "A matched flow needs the source-to-target amount conversion as well as its identity.",
+      "reason": "The candidate composes source preparation and final unit scaling once, preserving unknown ratios. Its PR reports focused tests and a replay of published BAFU rows; a qualified same-input full build remains outstanding.",
+      "origin": "processing",
+      "stage": "review",
+      "sources": [
+        "BAFU",
+        "Stepwise"
+      ],
+      "tags": [
+        "Quantities",
+        "Partner contribution"
+      ],
+      "revision": "f77270f6bee3649fcf2ca3196455200022670b64",
+      "updated_at": "2026-10-12T20:33:13Z",
+      "reported_by": "mklarmann",
+      "reported_at": "2026-10-12T17:16:07Z",
+      "owner": null,
+      "next_action": "Maintainers review the exact-source conversion contract and the proposed full-build validation. The candidate is not merged or applied by this preview.",
+      "evidence": [
+        {
+          "label": "Finding and source evidence",
+          "url": "/docs/findings/units",
+          "kind": "Findings documentation",
+          "note": ""
+        },
+        {
+          "label": "GitHub PR #387",
+          "url": "https://github.com/brightway-labs/brightway-flows/pull/387",
+          "kind": "GitHub record",
+          "note": "Status and authorship retrieved on 13 October 2026; closure is not scientific approval."
+        }
+      ],
+      "proposals": [
+        {
+          "title": "Report BAFU quantity conversions in flow lookup",
+          "url": "https://github.com/brightway-labs/brightway-flows/pull/387",
+          "kind": "Pull request",
+          "state": "open",
+          "author": "mklarmann",
+          "recorded_at": "2026-10-12T17:16:07Z",
+          "note": "Snapshot retrieved on 13 October 2026."
+        }
+      ],
+      "modules": [
+        "brightway_flows.lookup.matcher"
+      ],
+      "test_paths": [],
+      "expectation_paths": [],
+      "validations": [
+        {
+          "label": "Focused tests and published-archive replay reported in PR #387",
+          "result": "reported",
+          "revision": "f77270f6bee3649fcf2ca3196455200022670b64",
+          "scope": "Candidate tests and replay; full same-input build outstanding",
+          "recorded_at": "2026-10-12T20:33:13+00:00",
+          "evidence_url": "https://github.com/brightway-labs/brightway-flows/pull/387",
+          "note": "The PR is the evidence source. This preview has not rerun the candidate or independently signed off its scientific validity."
+        }
+      ],
+      "signoffs": [],
+      "history": [
+        {
+          "label": "GitHub record opened",
+          "recorded_at": "2026-10-12T17:16:07Z",
+          "person": "mklarmann",
+          "evidence_url": "https://github.com/brightway-labs/brightway-flows/pull/387",
+          "note": "Attribution is to the author of this GitHub record, not an inferred original discoverer."
+        }
+      ]
+    },
+    {
+      "id": "bafu-water-units",
+      "title": "Keep BAFU water quantities on a stated basis",
+      "summary": "Mass and volume rows need an explicit conversion and a preserved source unit.",
+      "reason": "The source documentation distinguishes water by mass from water by volume. Existing unit decisions and executable expectations document the intended receiving unit. The stage records that code exists; no named scientific sign-off is inferred.",
+      "origin": "source",
+      "stage": "implemented",
+      "sources": [
+        "BAFU"
+      ],
+      "tags": [
+        "Quantities",
+        "Water"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-09-22T10:19:50Z",
+      "reported_by": "jsvgoncalves",
+      "reported_at": "2026-09-22T07:38:49Z",
+      "owner": null,
+      "next_action": "Record revision-specific scientific review and a qualifying build receipt before claiming release adoption.",
+      "evidence": [
+        {
+          "label": "Finding and source evidence",
+          "url": "/docs/findings/units",
+          "kind": "Findings documentation",
+          "note": ""
+        },
+        {
+          "label": "GitHub issue #78",
+          "url": "https://github.com/brightway-labs/brightway-flows/issues/78",
+          "kind": "GitHub record",
+          "note": "Status and authorship retrieved on 13 October 2026; closure is not scientific approval."
+        }
+      ],
+      "proposals": [
+        {
+          "title": "A vendor list can ship one flow in two units and the run says nothing",
+          "url": "https://github.com/brightway-labs/brightway-flows/issues/78",
+          "kind": "Issue",
+          "state": "closed",
+          "author": "jsvgoncalves",
+          "recorded_at": "2026-09-22T07:38:49Z",
+          "note": "Snapshot retrieved on 13 October 2026."
+        }
+      ],
+      "modules": [
+        "brightway_flows.merge.unit_changes"
+      ],
+      "test_paths": [
+        "tests/test_unit_changes.py",
+        "tests/test_water_conversion_survives_the_split.py"
+      ],
+      "expectation_paths": [
+        "expectations/0409-bafu-water-in-cubic-metres.json"
+      ],
+      "validations": [
+        {
+          "label": "40 focused tests passed on the inspected baseline",
+          "result": "passed",
+          "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+          "scope": "Unit decisions and water identity after splitting flow objects",
+          "recorded_at": "2026-10-13T11:47:11+00:00",
+          "evidence_url": "/docs/curation/validation-2026-10-13",
+          "note": "Executed locally with public inputs. This is focused implementation evidence, not a full-build assessment, scientific sign-off or release receipt."
+        }
+      ],
+      "signoffs": [],
+      "history": [
+        {
+          "label": "GitHub record opened",
+          "recorded_at": "2026-09-22T07:38:49Z",
+          "person": "jsvgoncalves",
+          "evidence_url": "https://github.com/brightway-labs/brightway-flows/issues/78",
+          "note": "Attribution is to the author of this GitHub record, not an inferred original discoverer."
+        },
+        {
+          "label": "GitHub record closed",
+          "recorded_at": "2026-09-22T07:38:52Z",
+          "person": "Not recorded in this snapshot",
+          "evidence_url": "https://github.com/brightway-labs/brightway-flows/issues/78",
+          "note": "Issue closure alone does not establish sign-off or release adoption."
+        }
+      ]
+    },
+    {
+      "id": "same-unit-conversion",
+      "title": "Apply a conversion even when both units say kg",
+      "summary": "A mineral mass and an elemental mass can use the same unit but a different basis.",
+      "reason": "The factor conversion code consumes an explicitly recorded multiplier. Unit names alone do not determine whether conversion is needed. The scientific choice of which substance to publish remains a separate decision.",
+      "origin": "processing",
+      "stage": "implemented",
+      "sources": [
+        "ecoinvent",
+        "EF 3.1",
+        "GLAD"
+      ],
+      "tags": [
+        "Quantities",
+        "Characterisation"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-09-22T15:11:11Z",
+      "reported_by": "jsvgoncalves",
+      "reported_at": "2026-09-22T07:42:48Z",
+      "owner": null,
+      "next_action": "Record revision-specific scientific review and a qualifying build receipt before claiming release adoption.",
+      "evidence": [
+        {
+          "label": "Finding and source evidence",
+          "url": "/docs/findings/units",
+          "kind": "Findings documentation",
+          "note": ""
+        },
+        {
+          "label": "GitHub issue #118",
+          "url": "https://github.com/brightway-labs/brightway-flows/issues/118",
+          "kind": "GitHub record",
+          "note": "Status and authorship retrieved on 13 October 2026; closure is not scientific approval."
+        }
+      ],
+      "proposals": [
+        {
+          "title": "A conversion between two masses is thrown away because both sides are in kilograms, and zirconium and gypsum lose their factors",
+          "url": "https://github.com/brightway-labs/brightway-flows/issues/118",
+          "kind": "Issue",
+          "state": "closed",
+          "author": "jsvgoncalves",
+          "recorded_at": "2026-09-22T07:42:48Z",
+          "note": "Snapshot retrieved on 13 October 2026."
+        }
+      ],
+      "modules": [
+        "brightway_flows.lcia.conversion"
+      ],
+      "test_paths": [
+        "tests/test_characterise.py"
+      ],
+      "expectation_paths": [],
+      "validations": [
+        {
+          "label": "53 focused tests passed on the inspected baseline",
+          "result": "passed",
+          "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+          "scope": "Characterisation and explicit amount conversion",
+          "recorded_at": "2026-10-13T11:47:11+00:00",
+          "evidence_url": "/docs/curation/validation-2026-10-13",
+          "note": "Executed locally with public inputs. This is focused implementation evidence, not a full-build assessment, scientific sign-off or release receipt."
+        }
+      ],
+      "signoffs": [],
+      "history": [
+        {
+          "label": "GitHub record opened",
+          "recorded_at": "2026-09-22T07:42:48Z",
+          "person": "jsvgoncalves",
+          "evidence_url": "https://github.com/brightway-labs/brightway-flows/issues/118",
+          "note": "Attribution is to the author of this GitHub record, not an inferred original discoverer."
+        },
+        {
+          "label": "GitHub record closed",
+          "recorded_at": "2026-09-22T07:42:52Z",
+          "person": "Not recorded in this snapshot",
+          "evidence_url": "https://github.com/brightway-labs/brightway-flows/issues/118",
+          "note": "Issue closure alone does not establish sign-off or release adoption."
+        }
+      ]
+    },
+    {
+      "id": "carnallite-water",
+      "title": "Retain the decision to decline carnallite’s water factor",
+      "summary": "A crustal-depletion factor was proposed for a mineral taken from water.",
+      "reason": "The existing ruling declines this project’s proposed factor while retaining the publisher’s stated value. A deliberate decline is a recorded outcome and must stay connected to the evidence and executable expectation.",
+      "origin": "source",
+      "stage": "implemented",
+      "sources": [
+        "ecoinvent",
+        "EF 3.1"
+      ],
+      "tags": [
+        "Characterisation",
+        "Declined proposal"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-09-22T10:22:13Z",
+      "reported_by": "jsvgoncalves",
+      "reported_at": "2026-09-22T07:46:23Z",
+      "owner": null,
+      "next_action": "Record revision-specific scientific review and a qualifying build receipt before claiming release adoption.",
+      "evidence": [
+        {
+          "label": "Finding and source evidence",
+          "url": "/docs/findings/factors",
+          "kind": "Findings documentation",
+          "note": ""
+        },
+        {
+          "label": "GitHub issue #148",
+          "url": "https://github.com/brightway-labs/brightway-flows/issues/148",
+          "kind": "GitHub record",
+          "note": "Status and authorship retrieved on 13 October 2026; closure is not scientific approval."
+        }
+      ],
+      "proposals": [
+        {
+          "title": "Carnallite taken from water is characterised for the chlorine in it, while chlorine taken from water is not",
+          "url": "https://github.com/brightway-labs/brightway-flows/issues/148",
+          "kind": "Issue",
+          "state": "closed",
+          "author": "jsvgoncalves",
+          "recorded_at": "2026-09-22T07:46:23Z",
+          "note": "Snapshot retrieved on 13 October 2026."
+        }
+      ],
+      "modules": [
+        "brightway_flows.lcia.rulings"
+      ],
+      "test_paths": [
+        "tests/test_factor_rulings.py"
+      ],
+      "expectation_paths": [
+        "expectations/0714-carnallite-from-water-is-declined.json"
+      ],
+      "validations": [
+        {
+          "label": "29 focused tests passed on the inspected baseline",
+          "result": "passed",
+          "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+          "scope": "Factor rulings, including deliberate declines",
+          "recorded_at": "2026-10-13T11:47:11+00:00",
+          "evidence_url": "/docs/curation/validation-2026-10-13",
+          "note": "Executed locally with public inputs. This is focused implementation evidence, not a full-build assessment, scientific sign-off or release receipt."
+        }
+      ],
+      "signoffs": [],
+      "history": [
+        {
+          "label": "GitHub record opened",
+          "recorded_at": "2026-09-22T07:46:23Z",
+          "person": "jsvgoncalves",
+          "evidence_url": "https://github.com/brightway-labs/brightway-flows/issues/148",
+          "note": "Attribution is to the author of this GitHub record, not an inferred original discoverer."
+        },
+        {
+          "label": "GitHub record closed",
+          "recorded_at": "2026-09-22T07:46:27Z",
+          "person": "Not recorded in this snapshot",
+          "evidence_url": "https://github.com/brightway-labs/brightway-flows/issues/148",
+          "note": "Issue closure alone does not establish sign-off or release adoption."
+        }
+      ]
+    },
+    {
+      "id": "vanadium-withdrawal",
+      "title": "Preserve the withdrawn vanadium interpretation",
+      "summary": "A factor-of-ten difference was initially read as a unit error.",
+      "reason": "The recorded history explains that the two numbers concern the element and vanadium(V). The earlier decimal-slip interpretation was withdrawn. Preserve that reasoning so the same unsupported correction is not proposed again.",
+      "origin": "source",
+      "stage": "withdrawn",
+      "sources": [
+        "EF 3.1",
+        "ecoinvent"
+      ],
+      "tags": [
+        "Identity",
+        "Withdrawn conclusion"
+      ],
+      "revision": "19d6cc6268e59e18fcbb47bfec0f440fb0f6a353",
+      "updated_at": "2026-09-22T15:10:23Z",
+      "reported_by": "jsvgoncalves",
+      "reported_at": "2026-09-22T07:35:36Z",
+      "owner": null,
+      "next_action": "Keep the withdrawn interpretation visible and link any new evidence as a new proposal; do not reactivate the old ruling.",
+      "evidence": [
+        {
+          "label": "Finding and source evidence",
+          "url": "/docs/findings/identifier-reuse",
+          "kind": "Findings documentation",
+          "note": ""
+        },
+        {
+          "label": "GitHub issue #49",
+          "url": "https://github.com/brightway-labs/brightway-flows/issues/49",
+          "kind": "GitHub record",
+          "note": "Status and authorship retrieved on 13 October 2026; closure is not scientific approval."
+        },
+        {
+          "label": "Recorded withdrawal in the ruling history",
+          "url": "https://github.com/brightway-labs/brightway-flows/blob/19d6cc6268e59e18fcbb47bfec0f440fb0f6a353/src/brightway_flows/data/lcia-factor-rulings.json",
+          "kind": "Decision history",
+          "note": ""
+        }
+      ],
+      "proposals": [
+        {
+          "title": "`Vanadium V` carries exactly ten times EF 3.1's vanadium human-toxicity factor across all 14 rows",
+          "url": "https://github.com/brightway-labs/brightway-flows/issues/49",
+          "kind": "Issue",
+          "state": "closed",
+          "author": "jsvgoncalves",
+          "recorded_at": "2026-09-22T07:35:36Z",
+          "note": "Snapshot retrieved on 13 October 2026."
+        }
+      ],
+      "modules": [],
+      "test_paths": [],
+      "expectation_paths": [],
+      "validations": [],
+      "signoffs": [],
+      "history": [
+        {
+          "label": "GitHub record opened",
+          "recorded_at": "2026-09-22T07:35:36Z",
+          "person": "jsvgoncalves",
+          "evidence_url": "https://github.com/brightway-labs/brightway-flows/issues/49",
+          "note": "Attribution is to the author of this GitHub record, not an inferred original discoverer."
+        },
+        {
+          "label": "GitHub record closed",
+          "recorded_at": "2026-09-22T07:35:43Z",
+          "person": "Not recorded in this snapshot",
+          "evidence_url": "https://github.com/brightway-labs/brightway-flows/issues/49",
+          "note": "Issue closure alone does not establish sign-off or release adoption."
+        }
+      ]
+    }
+  ]
+}
