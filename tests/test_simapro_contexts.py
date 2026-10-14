@@ -209,6 +209,32 @@ class AResourceWithNoMediumTestCase(unittest.TestCase):
         self.assertEqual(resolved.resolution, CONTEXT_NAMED_LIST)
         self.assertEqual(resolved.context_iri, PREFIX + "laus-occu")
 
+    def test_openlcas_resource_unspecified_is_read_as_bafus_is(self):
+        """GreenDelta's openLCA package spells the compartment `Resource /
+        unspecified`, and its rule for it said `ground`, citing BAFU's.  Both
+        are gone (#381): naming openLCA or not, the compartment is the
+        dimension and no medium, and the land and water names are still land
+        and water."""
+        for label in ("", "openlca-2.8.2"):
+            with self.subTest(source_label=label):
+                resolved = resolve_context(
+                    FlowQuery(
+                        name="Carbon dioxide",
+                        context=["Resource", "unspecified"],
+                        source_label=label,
+                    )
+                )
+                self.assertEqual(resolved.resolution, CONTEXT_DIMENSION_ONLY)
+                self.assertEqual(resolved.context_iri, "")
+                land = resolve_context(
+                    FlowQuery(
+                        name="Occupation, forest, extensive",
+                        context=["Resource", "unspecified"],
+                        source_label=label,
+                    )
+                )
+                self.assertEqual(land.context_iri, PREFIX + "laus-occu")
+
 
 class AResourceWithAMediumTestCase(unittest.TestCase):
     """The same three compartment names, with the medium actually said (#360).
