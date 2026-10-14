@@ -90,6 +90,32 @@ def test_shared_navigation_keeps_search_and_has_one_active_view(browsing):
         assert nav.count('aria-current="page"') == 1
 
 
+def test_public_register_exposes_unassigned_intake_without_invented_groupings(tmp_path):
+    register = read_register(ROOT / "docs/curation/register.json")
+    assert register.cases and not register.packages
+    app = create_app(database_path=tmp_path / "absent.sqlite3", docs_path=ROOT / "docs")
+    client = app.test_client()
+    html = client.get("/curation/").text
+    nav = html.split('<nav class="curation-view-switcher"', 1)[1].split("</nav>", 1)[0]
+    package_url = next(url for url in links(nav) if "view=packages" in url)
+    intake = client.get(package_url)
+    assert intake.status_code == 200
+    assert 'data-package-row="unassigned-cases"' in intake.text
+    assert "Cases awaiting grouping" in intake.text
+    intake_nav = intake.text.split('<nav class="curation-view-switcher"', 1)[1].split(
+        "</nav>", 1
+    )[0]
+    assert 'aria-current="page"' in intake_nav.split("Review packages", 1)[0]
+    detail = client.get("/curation/packages/unassigned-cases")
+    assert detail.status_code == 200
+    assert all(case.id in detail.text for case in register.cases)
+    for case in (register.cases[0], register.cases[-1]):
+        assert (
+            "/curation/packages/unassigned-cases"
+            in client.get(f"/curation/cases/{case.id}").text
+        )
+
+
 def test_quality_filter_sort_and_clear_preserve_case_scope(browsing):
     client, register = browsing
     case = register.cases[0]

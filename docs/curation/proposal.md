@@ -4,6 +4,13 @@ Status: proposed workflow for maintainer review.
 
 ## Purpose
 
+An engineer importing BAFU radiation exchanges finds a quantity recorded in Bq
+where the receiving flow uses kBq. Matching the flow's identity does not establish
+that its amount was converted. The engineer needs the original unit evidence,
+the proposed conversion, the code that applies it and a measured check of how
+often it runs. A reviewer must also see which source and code revision the check
+actually covers, and what remains unverified.
+
 Keep Checks as overall quality control. Add a navigable response to what those
 checks and contributors find: finding → proposals → applicable correction
 modules, with evidence, authorship, dates, decision history, validation and

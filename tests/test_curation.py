@@ -13,8 +13,15 @@ import pytest
 
 from brightway_flows.webapps.app import create_app
 from brightway_flows.webapps.app.curation import (
+    Adoption,
+    Document,
+    Event,
+    Evidence,
     Implementation,
     ImplementationRole,
+    Proposal,
+    ProposalKind,
+    ProposalState,
     ReviewPackage,
     Result,
     ReviewScope,
@@ -435,6 +442,89 @@ def test_unassigned_cases_remain_visible_after_import(register, case):
     grouped = review_packages(replace(register, packages=[package]))
     inbox = next(p for p in grouped if p.id == "unassigned-cases")
     assert set(inbox.case_ids) == {c.id for c in register.cases if c.id != case.id}
+
+
+@pytest.mark.parametrize(
+    "citation_kind",
+    [
+        "finding",
+        "proposal",
+        "implementation",
+        "validation",
+        "signoff",
+        "history",
+        "adoption",
+    ],
+)
+def test_package_triage_reopens_when_any_cited_document_changes(
+    register, case, citation_kind
+):
+    """Synthetic receipt controls stay outside the actual example register."""
+    url = "/curation/evidence/test-trace?pointer=/result"
+    clean = replace(
+        case,
+        evidence=[],
+        proposals=[],
+        implementations=[],
+        validations=[],
+        signoffs=[],
+        history=[],
+        adoption=None,
+    )
+    citations = {
+        "finding": dict(evidence=[Evidence("Test source", url, "Synthetic control")]),
+        "proposal": dict(
+            proposals=[
+                Proposal(
+                    "Test proposal",
+                    url,
+                    ProposalKind.ISSUE,
+                    ProposalState.OPEN,
+                    None,
+                    None,
+                )
+            ]
+        ),
+        "implementation": dict(
+            implementations=[
+                Implementation(
+                    "Test implementation",
+                    url,
+                    ImplementationRole.CANDIDATE,
+                    case.revision,
+                    "test.py",
+                )
+            ]
+        ),
+        "validation": dict(validations=[replace(receipt(case), evidence_url=url)]),
+        "signoff": dict(signoffs=[replace(review(case), evidence_url=url)]),
+        "history": dict(history=[Event("Test event", STAMP, "Test recorder", url)]),
+        "adoption": dict(adoption=Adoption("Test release", case.revision, url, STAMP)),
+    }
+    cited = replace(clean, **citations[citation_kind])
+    document = Document("test-trace", "Test trace", "trace.json", "0" * 64, "Synthetic")
+    unrelated = replace(document, id="unrelated-trace", filename="unrelated.json")
+    original = replace(register, cases=[cited], documents=[document, unrelated])
+    package = package_for(cited)
+    fingerprint = package_revision(original, package)
+    assert (
+        package_revision(
+            replace(
+                original, documents=[replace(document, sha256="1" * 64), unrelated]
+            ),
+            package,
+        )
+        != fingerprint
+    )
+    assert (
+        package_revision(
+            replace(
+                original, documents=[document, replace(unrelated, sha256="1" * 64)]
+            ),
+            package,
+        )
+        == fingerprint
+    )
 
 
 @pytest.mark.parametrize(
