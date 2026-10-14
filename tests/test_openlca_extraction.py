@@ -20,6 +20,7 @@ from brightway_flows import filesystem
 from brightway_flows.integrations.openlca import (
     OpenLcaPackageError,
     extract_elementary_flows,
+    package_archive,
     record,
 )
 from brightway_flows.sources import base_source_list, known_source_lists
@@ -173,6 +174,17 @@ class ArchivePathTestCase(unittest.TestCase):
         (self.directory / "openLCA LCIA Methods 2.8.2 2026-08-01.zip").write_bytes(b"")
         with self.assertRaises(FileNotFoundError):
             filesystem.openlca_lcia_zip_path("2.8.2")
+
+    def test_an_archive_in_the_data_directory_is_read_without_a_download(self):
+        path = _archive(self.directory, THEOPHYLLINE)
+        with mock.patch("httpx.stream") as stream:
+            self.assertEqual(package_archive("2.8.2"), path)
+        stream.assert_not_called()
+
+    def test_a_version_nobody_hosts_is_a_question_for_a_person(self):
+        with mock.patch("httpx.stream") as stream, self.assertRaises(FileNotFoundError):
+            package_archive("9.9.9")
+        stream.assert_not_called()
 
 
 class FetchedListTestCase(unittest.TestCase):

@@ -147,7 +147,9 @@ def openlca_lcia_zip_path(list_version: str) -> Path:
             f"Expected one archive matching {pattern!r} in {DATA_DIR}, found "
             f"{[path.name for path in found] or 'none'}. GreenDelta's package is "
             f"not downloadable from a stable URL: obtain it from openLCA Nexus "
-            f"and place it there under the name it ships with."
+            f"and place it there under the name it ships with. A release this "
+            f"project hosts is downloaded instead (see `integrations.openlca."
+            f"HOSTED_ARCHIVES`)."
         )
     return found[0]
 
