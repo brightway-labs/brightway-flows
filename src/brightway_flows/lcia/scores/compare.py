@@ -27,7 +27,10 @@ move, which is the order to fix them in.
 **The multiplier goes on the amount.**  The inventory is in the vendor's unit
 and our factor is per our unit; the merge recorded, per source flow, how many
 of our units one of the vendor's is (`UnitCrossing.multiplier`, #260), so our
-contribution is ``amount × multiplier × our_factor``.  `UnitCrossing.convert`
+contribution is ``amount × multiplier × our_factor``.  Where the units differ
+and no multiplier was stated, `UnitCrossing.factor` supplies the `units.json`
+one (#393), so a becquerel against a kilobecquerel is not read as 1:1.
+`UnitCrossing.convert`
 goes the other way -- it turns a factor per source unit into one per ours --
 and is not what this needs.
 
@@ -250,7 +253,10 @@ def contributions_for(
         elif not target.crossing.convertible:
             reason = ContributionReason.UNIT_CROSSING_UNCONVERTED
         else:
-            multiplier = target.crossing.multiplier
+            # A crossing `units.json` converts states no multiplier but is
+            # still one (Bq -> kBq is 0.001), as characterisation reads it.
+            crossing = target.crossing
+            multiplier = crossing.factor if crossing.crosses else crossing.multiplier
             our_factor = our_factors.get(target.elementary_flow_uuid)
             if our_factor is not None:
                 ours = line.amount * (multiplier or 1.0) * our_factor
