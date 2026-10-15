@@ -27,12 +27,16 @@ rather than one the merge had to invent.
 
 ```
   list                       rows   prepared  algorithm     manual    created   unplaced  charact'd     unit x  on existing
-  ecoinvent-3.12            9,850        189      8,813          0        848          0      6,487          0        91.4%
-  ecoinvent-3.8             4,421        199      4,220          0          2          0      2,502          0       100.0%
+  ecoinvent-3.12            9,850        185      8,810          0        855          0      6,483          0        91.3%
+  ecoinvent-3.8             4,421        194      4,225          0          2          0      2,498          0       100.0%
   bafu-2026-v1              2,679         26      2,562          0         91          0      1,467        162        96.6%
-  stepwise-2006-1.09        6,055         13      5,921          0        119          2      3,725          0        98.0%
-  agribalyse-3.2            5,485         22      5,383          0         80          0      3,204         26        98.5%
+  stepwise-2006-1.09        6,055         13      5,919          0        123          0      3,725          0        98.0%
+  agribalyse-3.2            5,485         28      5,368          0         89          0      3,161         26        98.4%
 ```
+
+Copied from the full build of `main` at `ad57820` on 14 October 2026 (run
+`20261014T1414435780790000`), the build `expectations/baseline.json` was
+recorded from.
 
 **Expectations** — the statements in `expectations/`, each graded against this
 build. For anything that does not hold, it prints what the merge decided
