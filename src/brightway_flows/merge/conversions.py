@@ -117,12 +117,13 @@ def _same_unit(left: str, right: str) -> bool:
 
     By IRI where `units.json` knows both, so that a table's `kg` and a flow's
     `kilogram` agree.  Two units it does not know are compared as text, which is
-    weaker but still refuses a pair that does not even spell the same.
+    weaker but still refuses a pair that does not even spell the same. Unknown
+    spellings retain their case: mJ must never bind a factor stated for MJ.
     """
     left_iri, right_iri = unit_iri_for(left), unit_iri_for(right)
-    if left_iri and right_iri:
+    if left_iri or right_iri:
         return left_iri == right_iri
-    return left.strip().casefold() == right.strip().casefold()
+    return left.strip() == right.strip()
 
 
 def crosses_a_time_dimension(source_unit: str, target_unit: str) -> bool:
