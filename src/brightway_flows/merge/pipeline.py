@@ -45,6 +45,10 @@ from brightway_flows.merge.matching import (
     build_merge_accumulator,
     build_merge_indexes,
 )
+from brightway_flows.merge.duplicate_rows import (
+    duplicates_reaching_their_valid_row,
+    mark_deprecated_mappings,
+)
 from brightway_flows.merge.land_groupings import (
     load_land_flow_groupings,
     unrecorded_land_groupings,
@@ -67,6 +71,7 @@ from brightway_flows.merge.report import (
 )
 from brightway_flows.merge.rows import (
     match_source_rows,
+    shared_identifier_rows,
 )
 from brightway_flows.merge.store import (
     MergeRunInput,
@@ -176,9 +181,12 @@ def _enrich_against_consensus(
     # which is not marked.  Nothing is corrupted, nothing is lost; the routing is
     # simply wrong, and silently so.
     #
-    # Nothing produces a collision today: #212 removed the merge feedback file,
-    # which reused ecoinvent's uuids for consensus flows.  This makes a silent
-    # mis-route a loud failure if one returns.
+    # `merge_source_list` keeps rows that share a consensus flow's uuid out of
+    # this call -- GreenDelta's openLCA package ships 125 of EF 3.1's flows
+    # under EF's uuids -- and matches them by that uuid instead.  #212 removed
+    # the other way a collision arose, the merge feedback file, which reused
+    # ecoinvent's uuids for consensus flows.  This makes a silent mis-route a
+    # loud failure if a third appears.
     collisions = {f.uuid for f in consensus_flows} & {f.uuid for f in source_flows}
     if collisions:
         raise ValueError(
@@ -427,11 +435,28 @@ def merge_source_list(
             max_rows=max_rows,
             kept_by_uuid=kept_by_uuid,
         )
+    # A row carrying a consensus flow's own uuid is that flow by the vendor's
+    # statement, and goes onto it directly below.  Kept out of the enrichment,
+    # which addresses a change by uuid and would send changes meant for the
+    # consensus flow to the row.
+    consensus_ids = {flow.elementary_flow_id for flow in elementary}
+    shared_identifier_uuids = {
+        flow.uuid.strip() for flow in source_flows if flow.uuid.strip() in consensus_ids
+    }
+    if shared_identifier_uuids:
+        logger.info(
+            "source_rows_share_consensus_identifiers",
+            source=source.key,
+            count=len(shared_identifier_uuids),
+        )
     if transformers:
         with timings.stage("merge_enrich", detail=source.key):
             _enrich_against_consensus(
                 source=source,
-                source_flows=source_flows,
+                source_flows=[
+                    flow for flow in source_flows
+                    if flow.uuid.strip() not in shared_identifier_uuids
+                ],
                 transformers=transformers,
                 timings=timings,
             )
@@ -466,11 +491,12 @@ def merge_source_list(
         if flow.cas_numbers
     }
 
+    declared_table = load_prepared_match_table(source, registered_as=registered_as)
     with timings.stage("merge_match_rows", detail=source.key):
         match_source_rows(
             source_flows=source_flows,
-            replace_table=load_prepared_match_table(
-                source, registered_as=registered_as
+            replace_table=declared_table + shared_identifier_rows(
+                source_flows, consensus_ids=consensus_ids, declared=declared_table
             ),
             units_index=units_index,
             indexes=indexes,
@@ -519,10 +545,42 @@ def merge_source_list(
         accumulator=accumulator,
     )
 
+    # A row the list ships twice is one flow, so its two copies have to have
+    # landed together; checked before the fold check below, which would
+    # otherwise read the pair as two land classes folded into one.  The
+    # duplicate's mapping is marked deprecated onto the row kept.
+    landed: dict[str, str] = {
+        row.source_uuid: row.target_elementary_flow_id
+        for row in [*accumulator.prepared_matches, *accumulator.algorithm_matches]
+    }
+    landed.update(
+        (row.source_uuid, row.new_elementary_flow_id)
+        for row in [*manual_additions, *created_flows]
+    )
+    duplicates = duplicates_reaching_their_valid_row(
+        landed, list_name=source.list_name, source_label=source.key
+    )
+    if duplicates:
+        marked = mark_deprecated_mappings(
+            accumulator.merged_elementary,
+            duplicates,
+            flow_iri_prefix=source.flow_iri_prefix,
+        )
+        logger.info(
+            "duplicate_source_rows_deprecated",
+            source=source.key,
+            ruled=len(duplicates),
+            mappings_marked=marked,
+        )
+
     # Over both kinds of match, because a fold is a fold whether a curator's
     # table made it or the selector did.
     _refuse_unrecorded_land_groupings(
-        [*accumulator.prepared_matches, *accumulator.algorithm_matches],
+        [
+            match
+            for match in [*accumulator.prepared_matches, *accumulator.algorithm_matches]
+            if match.source_uuid not in duplicates
+        ],
         list_name=source.list_name,
     )
     _refuse_invalid_contexts(accumulator.merged_elementary)

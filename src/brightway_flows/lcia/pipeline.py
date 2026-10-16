@@ -504,9 +504,9 @@ def _own_flows(
     For a publisher whose factors name its *own* list's flows, that is the list
     -- every consensus flow it was merged onto, whether or not a factor landed
     there.  A publisher with no list of its own names somebody else's, and its
-    manifest says so by declaring a `resolve_through`: GreenDelta's package ships
-    1,781 flows and no more, so the flows it *could* characterise are the ones
-    its factors reached, and *reached* is what the run just measured.  Asking
+    manifest says so by declaring a `resolve_through`: GreenDelta's EF 3.1 names
+    the flows it characterises and no more, so the flows it *could* characterise
+    are the ones its factors reached, and *reached* is what the run just measured.  Asking
     after the fact would be the same answer computed twice.
 
     Keyed on `implemented_by`, which is what a coverage row carries.

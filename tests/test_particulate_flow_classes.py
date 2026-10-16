@@ -62,6 +62,7 @@ class TheFileTestCase(unittest.TestCase):
                 "ecoinvent-3.10.1",
                 "ecoinvent-3.11",
                 "ecoinvent-3.12",
+                "openlca-2.8.2",
                 "stepwise-2006-1.09",
             },
         )
@@ -70,7 +71,9 @@ class TheFileTestCase(unittest.TestCase):
         """Six names over nineteen compartments is most of EF's share.
         AGRIBALYSE ships 27 particle rows and all 27 are placed since the
         owner's readings of `diesel soot` and `SPM` (#196); Stepwise's six
-        are in the table since the list joined the tool's sources."""
+        are in the table since the list joined the tool's sources. openLCA
+        2.8.2 ships 56 and 43 are placed: its 13 black-carbon rows are refused
+        in `openlca-2.8.2-additional-flows.json`."""
         counts: dict[str, int] = {}
         for row in self.rows:
             counts[row["source"]] = counts.get(row["source"], 0) + 1
@@ -85,10 +88,11 @@ class TheFileTestCase(unittest.TestCase):
                 "ecoinvent-3.10.1": 13,
                 "ecoinvent-3.11": 13,
                 "ecoinvent-3.12": 13,
+                "openlca-2.8.2": 43,
                 "stepwise-2006-1.09": 6,
             },
         )
-        self.assertEqual(len(self.rows), 233)
+        self.assertEqual(len(self.rows), 276)
 
     def test_every_row_names_a_class_the_scheme_carries(self):
         known = set(size_classes())
@@ -119,9 +123,10 @@ class TheTwoAxesTestCase(unittest.TestCase):
                 self.assertIn(row.get("source_category", ""), SOURCE_CATEGORIES)
 
     def test_almost_no_row_states_a_source_category(self):
-        """Six today — BAFU's stationary PM10, AGRIBALYSE's mobile and
-        stationary PM10 and its above-ten process fraction (#190), and
-        Stepwise's mobile and stationary PM10 (#196)."""
+        """Seventeen today — BAFU's stationary PM10, AGRIBALYSE's mobile and
+        stationary PM10 and its above-ten process fraction (#190), Stepwise's
+        mobile and stationary PM10 (#196), and openLCA's mobile and stationary
+        PM10 in each of five air compartments with its process fraction."""
         categorised = [row for row in self.rows if row.get("source_category")]
         self.assertEqual(
             [(row["source"], row["source_name"], row["source_category"])
@@ -131,6 +136,9 @@ class TheTwoAxesTestCase(unittest.TestCase):
                 ("agribalyse-3.2", "Particulates, < 10 um (stationary)", "stationary"),
                 ("agribalyse-3.2", "Particulates, > 10 um (process)", "process"),
                 ("bafu-2026-v1", "Particulates, < 10 um (stationary)", "stationary"),
+                *[("openlca-2.8.2", "Particulates, < 10 um (mobile)", "mobile")] * 5,
+                *[("openlca-2.8.2", "Particulates, < 10 um (stationary)", "stationary")] * 5,
+                ("openlca-2.8.2", "Particulates, > 10 um (process)", "process"),
                 ("stepwise-2006-1.09", "Particulates, < 10 um (mobile)", "mobile"),
                 ("stepwise-2006-1.09", "Particulates, < 10 um (stationary)", "stationary"),
             ],
@@ -143,7 +151,9 @@ class TheTwoAxesTestCase(unittest.TestCase):
             row for row in self.rows
             if row["source_name"] == "Particulates, > 10 um (process)"
         ]
-        self.assertEqual([row["size_class"] for row in process], ["above_pm10"])
+        self.assertEqual(
+            [row["size_class"] for row in process], ["above_pm10", "above_pm10"]
+        )
         self.assertEqual(
             source_category_for_source_flow(process[0]["source"], process[0]["source_uuid"]),
             "process",
@@ -171,7 +181,7 @@ class TheTwoAxesTestCase(unittest.TestCase):
             row for row in self.rows
             if row["source_name"] in ("Particulates, < 10 um (stationary)", "Particulates, < 10 um (mobile)")
         ]
-        self.assertEqual(len(qualified), 5)
+        self.assertEqual(len(qualified), 15)
         self.assertEqual({row["size_class"] for row in qualified}, {"pm10"})
 
     def test_the_category_is_readable_without_the_window(self):

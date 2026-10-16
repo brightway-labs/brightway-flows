@@ -3056,6 +3056,565 @@
       "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
     },
     {
+      "source": "openlca-2.8.2",
+      "source_uuid": "051aaf7a-6c1a-4e86-999f-85d5f0830df6",
+      "source_name": "Particulate Matter, < 2.5 um",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of `Particulates, < 2.5 um`, same uuid. A vendor renaming its own rows is exactly the event a name-based identity cannot survive, and the window is unmoved by it."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "21e46cb8-6233-4c99-bac3-c41d2ab99498",
+      "source_name": "Particulate Matter, < 2.5 um",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of `Particulates, < 2.5 um`, same uuid. A vendor renaming its own rows is exactly the event a name-based identity cannot survive, and the window is unmoved by it."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "230d8a0a-517c-43fe-8357-1818dd12997a",
+      "source_name": "Particulate Matter, < 2.5 um",
+      "source_context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of `Particulates, < 2.5 um`, same uuid. A vendor renaming its own rows is exactly the event a name-based identity cannot survive, and the window is unmoved by it."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "66f50b33-fd62-4fdd-a373-c5b0de7de00d",
+      "source_name": "Particulate Matter, < 2.5 um",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of `Particulates, < 2.5 um`, same uuid. A vendor renaming its own rows is exactly the event a name-based identity cannot survive, and the window is unmoved by it."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "ddd99a3a-be86-423d-b36a-a9dc8af1b1f8",
+      "source_name": "Particulate Matter, < 2.5 um",
+      "source_context": [
+        "Emission to air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of `Particulates, < 2.5 um`, same uuid. A vendor renaming its own rows is exactly the event a name-based identity cannot survive, and the window is unmoved by it."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "1eb1b94c-e9d8-47ab-969b-9cca920157d8",
+      "source_name": "Particulate Matter, > 10 um",
+      "source_context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "unit": "kg",
+      "size_class": "above_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the above-ten fraction, same uuid."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "66020d27-7ae4-4e59-83a3-89214b72c40a",
+      "source_name": "Particulate Matter, > 10 um",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "above_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the above-ten fraction, same uuid."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "7678cec7-b8e1-439d-8242-99cd452834b1",
+      "source_name": "Particulate Matter, > 10 um",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "size_class": "above_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the above-ten fraction, same uuid."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "b001715e-60e4-4f1d-949d-1acfab65bd8f",
+      "source_name": "Particulate Matter, > 10 um",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "above_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the above-ten fraction, same uuid."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "e22e8f39-d8f2-4702-bed3-0b95babb7788",
+      "source_name": "Particulate Matter, > 10 um",
+      "source_context": [
+        "Emission to air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "unit": "kg",
+      "size_class": "above_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the above-ten fraction, same uuid."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "24c7db29-3a43-362d-8f21-1a1f52ccf217",
+      "source_name": "Particulate Matter, > 2.5 um and < 10um",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5_to_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "295c9740-6fdb-4676-9eb8-15e3786f713d",
+      "source_name": "Particulate Matter, > 2.5 um and < 10um",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5_to_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "5716c728-bd33-414d-8691-16e5534f5d37",
+      "source_name": "Particulate Matter, > 2.5 um and < 10um",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5_to_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "604f9273-f26b-46be-83a7-3a65280011d1",
+      "source_name": "Particulate Matter, > 2.5 um and < 10um",
+      "source_context": [
+        "Emission to air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5_to_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "b967e1bf-f09b-4c89-8740-ace21db47bba",
+      "source_name": "Particulate Matter, > 2.5 um and < 10um",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5_to_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "ccb169c3-8aae-4727-89bb-a7dd122946f3",
+      "source_name": "Particulate Matter, > 2.5 um and < 10um",
+      "source_context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5_to_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "252c2e43-c6e3-3010-b045-72aa0e172abb",
+      "source_name": "Particulates",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "unsized",
+      "source_category": "",
+      "comment": "No cut stated. See the note on `particulates, unspecified`: these two are one class here, and Stepwise characterises them differently."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "f80eead1-54c8-3530-a8be-7a9e2394edd0",
+      "source_name": "Particulates",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "unsized",
+      "source_category": "",
+      "comment": "No cut stated. See the note on `particulates, unspecified`: these two are one class here, and Stepwise characterises them differently."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "0245b0e3-f250-3fac-aea1-26a7d949926d",
+      "source_name": "Particulates, < 10 um",
+      "source_context": [
+        "Emission to air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "",
+      "comment": "PM10 in the ecoinvent-2 spelling three SimaPro-shaped lists inherit. On the 25 August 2026 build this minted a substance of its own with one elementary flow and no characterisation factors, beside the PM10 the list already published with eleven (#153)."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "08a91e70-3ddc-11dd-91be-0050c2490048",
+      "source_name": "Particulates, < 10 um",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "",
+      "comment": "PM10 in the ecoinvent-2 spelling three SimaPro-shaped lists inherit. On the 25 August 2026 build this minted a substance of its own with one elementary flow and no characterisation factors, beside the PM10 the list already published with eleven (#153)."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "32295152-7da7-47cb-b4a2-60ca4f246a80",
+      "source_name": "Particulates, < 10 um",
+      "source_context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "",
+      "comment": "PM10 in the ecoinvent-2 spelling three SimaPro-shaped lists inherit. On the 25 August 2026 build this minted a substance of its own with one elementary flow and no characterisation factors, beside the PM10 the list already published with eleven (#153)."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "c1f89bab-74fe-4995-9ed4-72bb73ca45f1",
+      "source_name": "Particulates, < 10 um",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "",
+      "comment": "PM10 in the ecoinvent-2 spelling three SimaPro-shaped lists inherit. On the 25 August 2026 build this minted a substance of its own with one elementary flow and no characterisation factors, beside the PM10 the list already published with eleven (#153)."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "d42f8d08-08f6-42ef-ae04-dc2025462880",
+      "source_name": "Particulates, < 10 um",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "",
+      "comment": "PM10 in the ecoinvent-2 spelling three SimaPro-shaped lists inherit. On the 25 August 2026 build this minted a substance of its own with one elementary flow and no characterisation factors, beside the PM10 the list already published with eleven (#153)."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "4f0f45e0-b6ed-3927-9eac-55897e58fff3",
+      "source_name": "Particulates, < 10 um (mobile)",
+      "source_context": [
+        "Emission to air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "mobile",
+      "comment": "Stepwise 2006's mobile-source PM10, which BAFU does not ship. Same window, same factor as the stationary and unqualified rows; carried here so that registering Stepwise (#2) needs no new reading."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "67b5f511-45bc-4612-8bbb-282b83eb725a",
+      "source_name": "Particulates, < 10 um (mobile)",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "mobile",
+      "comment": "Stepwise 2006's mobile-source PM10, which BAFU does not ship. Same window, same factor as the stationary and unqualified rows; carried here so that registering Stepwise (#2) needs no new reading."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "6f93e5a6-5040-36e2-aa7d-195f56eef1ce",
+      "source_name": "Particulates, < 10 um (mobile)",
+      "source_context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "mobile",
+      "comment": "Stepwise 2006's mobile-source PM10, which BAFU does not ship. Same window, same factor as the stationary and unqualified rows; carried here so that registering Stepwise (#2) needs no new reading."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "a8694654-e98f-3a45-b8d2-4da938b70331",
+      "source_name": "Particulates, < 10 um (mobile)",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "mobile",
+      "comment": "Stepwise 2006's mobile-source PM10, which BAFU does not ship. Same window, same factor as the stationary and unqualified rows; carried here so that registering Stepwise (#2) needs no new reading."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "cbe8b27c-ecac-3475-b1b0-5f0abc3dda9e",
+      "source_name": "Particulates, < 10 um (mobile)",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "mobile",
+      "comment": "Stepwise 2006's mobile-source PM10, which BAFU does not ship. Same window, same factor as the stationary and unqualified rows; carried here so that registering Stepwise (#2) needs no new reading."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "20267798-78eb-3957-a510-19ebf3525a9e",
+      "source_name": "Particulates, < 10 um (stationary)",
+      "source_context": [
+        "Emission to air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "stationary",
+      "comment": "The same window, from a stationary source. The category is recorded and the row lands on PM10: Stepwise 2006 gives plain, mobile and stationary PM10 the identical factor -- 0.535714286 kg PM2.5-eq -- so a separate identity would buy a distinction no method in this list uses, at the cost of every factor the row could have had."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "2071631d-7d90-4040-ac40-1829af0bd3c2",
+      "source_name": "Particulates, < 10 um (stationary)",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "stationary",
+      "comment": "The same window, from a stationary source. The category is recorded and the row lands on PM10: Stepwise 2006 gives plain, mobile and stationary PM10 the identical factor -- 0.535714286 kg PM2.5-eq -- so a separate identity would buy a distinction no method in this list uses, at the cost of every factor the row could have had."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "56ffbc8c-bf1b-3466-b5bf-f53effa642a5",
+      "source_name": "Particulates, < 10 um (stationary)",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "stationary",
+      "comment": "The same window, from a stationary source. The category is recorded and the row lands on PM10: Stepwise 2006 gives plain, mobile and stationary PM10 the identical factor -- 0.535714286 kg PM2.5-eq -- so a separate identity would buy a distinction no method in this list uses, at the cost of every factor the row could have had."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "82acf258-a5f4-3813-85d7-9070c470bd13",
+      "source_name": "Particulates, < 10 um (stationary)",
+      "source_context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "stationary",
+      "comment": "The same window, from a stationary source. The category is recorded and the row lands on PM10: Stepwise 2006 gives plain, mobile and stationary PM10 the identical factor -- 0.535714286 kg PM2.5-eq -- so a separate identity would buy a distinction no method in this list uses, at the cost of every factor the row could have had."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "912bc031-a78d-3288-b2d4-5d41dd037df2",
+      "source_name": "Particulates, < 10 um (stationary)",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm10",
+      "source_category": "stationary",
+      "comment": "The same window, from a stationary source. The category is recorded and the row lands on PM10: Stepwise 2006 gives plain, mobile and stationary PM10 the identical factor -- 0.535714286 kg PM2.5-eq -- so a separate identity would buy a distinction no method in this list uses, at the cost of every factor the row could have had."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "4d9a8790-3ddd-11dd-936e-0050c2490048",
+      "source_name": "Particulates, > 0.2 um, and < 2.5 um",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "pm0_2_to_pm2_5",
+      "source_category": "",
+      "comment": "EF's `Particles (PM0.2 - PM2.5)` band in ecoinvent's spelling. The row in unspecified air is EF's own flow under its own uuid, renamed by GreenDelta; the other three are the same band in the population-density compartments EF does not have."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "8f6e6a27-8b5b-399d-ae2a-0bc45fe6e580",
+      "source_name": "Particulates, > 0.2 um, and < 2.5 um",
+      "source_context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm0_2_to_pm2_5",
+      "source_category": "",
+      "comment": "EF's `Particles (PM0.2 - PM2.5)` band in ecoinvent's spelling. The row in unspecified air is EF's own flow under its own uuid, renamed by GreenDelta; the other three are the same band in the population-density compartments EF does not have."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "9074a026-07b8-3dbd-bde5-04f066e0be42",
+      "source_name": "Particulates, > 0.2 um, and < 2.5 um",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "pm0_2_to_pm2_5",
+      "source_category": "",
+      "comment": "EF's `Particles (PM0.2 - PM2.5)` band in ecoinvent's spelling. The row in unspecified air is EF's own flow under its own uuid, renamed by GreenDelta; the other three are the same band in the population-density compartments EF does not have."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "d5e29411-ccc4-3ea7-b0ac-05b5dfc74a4f",
+      "source_name": "Particulates, > 0.2 um, and < 2.5 um",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "size_class": "pm0_2_to_pm2_5",
+      "source_category": "",
+      "comment": "EF's `Particles (PM0.2 - PM2.5)` band in ecoinvent's spelling. The row in unspecified air is EF's own flow under its own uuid, renamed by GreenDelta; the other three are the same band in the population-density compartments EF does not have."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "51f39696-ecd5-3ee0-a6a9-01010c251047",
+      "source_name": "Particulates, > 10 um (process)",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "above_pm10",
+      "source_category": "process",
+      "comment": "The above-ten fraction from a process source rather than combustion -- the third source category, beside `(stationary)` and `(mobile)`, and read the same way: the window is the identity, the category is recorded. Without a reading the row minted a substance of its own with no factors on the first five-list build (1 September 2026, b0b8d76); see #190."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "7573078a-f1bb-384f-9132-4a0df40bb32b",
+      "source_name": "Particulates, diesel soot",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "pm0_2_to_pm2_5",
+      "source_category": "",
+      "comment": "Diesel exhaust particles, read as the fine band. The name says what the particles are made of and where they came from, not where the sample was cut, and the plan left it to a person (#190 group J). The owner's ruling of 2 September 2026: diesel soot is fine particulate, almost entirely below 2.5 um and above the 0.2 um ultrafine cut, so it is PM0.2 - PM2.5 rather than PM2.5 as a whole (plans/particle-family.md section 4). One AGRIBALYSE row, in unspecified air."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "7ae398c2-8532-11e0-9d78-0800200c9a66",
+      "source_name": "Particulates, unspecified",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "unit": "kg",
+      "size_class": "unsized",
+      "source_category": "",
+      "comment": "Also no cut stated, and read as the same class as bare `Particulates` -- a stated `unspecified` is the absence of a statement, not a statement, which is the rule the land taxonomy applies to `arable land, unspecified use`.\n\nThe evidence argues, and it is recorded rather than hidden: Stepwise 2006 characterises `Particulates` at 0.157142857 and `Particulates, unspecified` at 0.535714286 kg PM2.5-eq, the second being exactly its PM10 factor. That is Stepwise deciding what factor to give a row that did not say, which is a characterisation choice rather than a statement about what the row is. When #2 lands, the two factors meet on one flow and the conflict belongs in lcia-factor-rulings.json, where it is visible. Minting a second identity to carry one list's default is how `Particulates, < 10 Um` came to be a substance in the first place. See plans/particulate-taxonomy.md \u00a76."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "7ae398c3-8532-11e0-9d78-0800200c9a66",
+      "source_name": "Particulates, unspecified",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "unsized",
+      "source_category": "",
+      "comment": "Also no cut stated, and read as the same class as bare `Particulates` -- a stated `unspecified` is the absence of a statement, not a statement, which is the rule the land taxonomy applies to `arable land, unspecified use`.\n\nThe evidence argues, and it is recorded rather than hidden: Stepwise 2006 characterises `Particulates` at 0.157142857 and `Particulates, unspecified` at 0.535714286 kg PM2.5-eq, the second being exactly its PM10 factor. That is Stepwise deciding what factor to give a row that did not say, which is a characterisation choice rather than a statement about what the row is. When #2 lands, the two factors meet on one flow and the conflict belongs in lcia-factor-rulings.json, where it is visible. Minting a second identity to carry one list's default is how `Particulates, < 10 Um` came to be a substance in the first place. See plans/particulate-taxonomy.md \u00a76."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "933aa823-4d33-3059-9123-99f772115ad5",
+      "source_name": "Particulates, unspecified",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "unsized",
+      "source_category": "",
+      "comment": "Also no cut stated, and read as the same class as bare `Particulates` -- a stated `unspecified` is the absence of a statement, not a statement, which is the rule the land taxonomy applies to `arable land, unspecified use`.\n\nThe evidence argues, and it is recorded rather than hidden: Stepwise 2006 characterises `Particulates` at 0.157142857 and `Particulates, unspecified` at 0.535714286 kg PM2.5-eq, the second being exactly its PM10 factor. That is Stepwise deciding what factor to give a row that did not say, which is a characterisation choice rather than a statement about what the row is. When #2 lands, the two factors meet on one flow and the conflict belongs in lcia-factor-rulings.json, where it is visible. Minting a second identity to carry one list's default is how `Particulates, < 10 Um` came to be a substance in the first place. See plans/particulate-taxonomy.md \u00a76."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "dbb6a388-825e-3d45-b108-76c1ba99164b",
+      "source_name": "Particulates, unspecified",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "unsized",
+      "source_category": "",
+      "comment": "Also no cut stated, and read as the same class as bare `Particulates` -- a stated `unspecified` is the absence of a statement, not a statement, which is the rule the land taxonomy applies to `arable land, unspecified use`.\n\nThe evidence argues, and it is recorded rather than hidden: Stepwise 2006 characterises `Particulates` at 0.157142857 and `Particulates, unspecified` at 0.535714286 kg PM2.5-eq, the second being exactly its PM10 factor. That is Stepwise deciding what factor to give a row that did not say, which is a characterisation choice rather than a statement about what the row is. When #2 lands, the two factors meet on one flow and the conflict belongs in lcia-factor-rulings.json, where it is visible. Minting a second identity to carry one list's default is how `Particulates, < 10 Um` came to be a substance in the first place. See plans/particulate-taxonomy.md \u00a76."
+    },
+    {
       "source": "stepwise-2006-1.09",
       "source_uuid": "091b4543-a1fd-57c4-a373-c451dbc9ae0c",
       "source_name": "Particulates",

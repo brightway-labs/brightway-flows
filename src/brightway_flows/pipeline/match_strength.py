@@ -43,6 +43,7 @@ from typing import Any, Iterable
 import structlog
 
 from brightway_flows.domain.vocabulary import (
+    OWL_DEPRECATED_CURIE,
     SKOS_BROAD_MATCH_CURIE,
     SKOS_CLOSE_MATCH_CURIE,
     SKOS_EXACT_MATCH_CURIE,
@@ -131,6 +132,12 @@ def _pairing(association: Any) -> tuple[dict[str, Any], str, str, str] | None:
     source_iri = str(source.get("@id") or "").strip()
     target_iri = str(target.get("@id") or "").strip()
     if not source_iri or not target_iri or not match_property_key(source):
+        return None
+    if source.get(OWL_DEPRECATED_CURIE) is True:
+        # A row ruled a duplicate of another row of its list
+        # (`source-row-duplicates.json`).  Its copy is the same flow, not a
+        # second one sharing the target, so it neither counts towards the
+        # valid row's strength nor is weakened by it.
         return None
     scheme = scheme_for_flow_iri(source_iri)
     if scheme is None:

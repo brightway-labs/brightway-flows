@@ -2,9 +2,9 @@
 
 The second route, and it exists because a method package is not a flow list.
 GreenDelta's identifies a flow by the ecoinvent UUID it was built against, and
-`matching.chained_merge_targets` follows that for 1,223 of its 1,781 flows.  The
-other 558 name a substance under an identifier nothing here has -- and they are
-not substances this list is missing.  `Arsenic ion` is our `Arsenic, Ion`;
+`matching.chained_merge_targets` followed that for 1,223 of the 1,781 flows in
+the 2.8.0 copy BAFU distributed.  The other 558 named a substance under an
+identifier nothing here had -- and they were not substances this list is missing.  `Arsenic ion` is our `Arsenic, Ion`;
 `Tetrachloroethylene` is our `Ethene, tetrachloro-`; 410 of them state a registry
 number we already publish, once the zero-padding their file writes is taken off
 (`000056-23-5`).  #165.

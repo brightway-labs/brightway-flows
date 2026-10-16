@@ -356,6 +356,44 @@ def _record_unmatched(
     ))
 
 
+#: What a prepared row says when nobody wrote it: the source row carries the
+#: identifier of a flow already in the consensus list, so the vendor has stated
+#: which flow it is.  GreenDelta's openLCA package ships 125 of EF 3.1's own
+#: flows under EF 3.1's uuids -- `Particulates, < 10 um` is EF's
+#: `particles (PM10)`, renamed -- and a name-and-CAS match could only arrive at
+#: the same flow by a longer road, or miss it.
+SHARED_IDENTIFIER_BASIS = "shared_identifier"
+
+
+def shared_identifier_rows(
+    source_flows: list[Flow],
+    *,
+    consensus_ids: set[str],
+    declared: list[Any],
+) -> list[dict[str, Any]]:
+    """A prepared row onto itself for each source row a consensus flow shares.
+
+    A row the declared table already decides keeps the table's decision: a
+    curator who wrote one has looked, and two targets for one row would be
+    reported rather than matched.
+    """
+    decided = {
+        str((item.get("source") or {}).get("uuid") or "").strip()
+        for item in declared
+        if isinstance(item, dict) and isinstance(item.get("source"), dict)
+    }
+    rows: list[dict[str, Any]] = []
+    for flow in source_flows:
+        uuid = flow.uuid.strip()
+        if uuid in consensus_ids and uuid not in decided:
+            rows.append({
+                "source": {"uuid": uuid},
+                "target": {"uuid": uuid},
+                "basis": SHARED_IDENTIFIER_BASIS,
+            })
+    return rows
+
+
 def apply_prepared_decision(
     *,
     row: SourceRow,
@@ -634,13 +672,21 @@ def _record_prepared_match(
                 source_key=indexes.source.key,
             )
 
+    # No table stated a row that shares its identifier with the flow, so the
+    # provenance names the identifier rather than a table that does not exist.
+    shared_identifier = all(
+        item.get("basis") == SHARED_IDENTIFIER_BASIS for item in prepared_rows
+    )
+    merge_basis = SHARED_IDENTIFIER_BASIS if shared_identifier else "prepared_mapping"
+    merge_method = SHARED_IDENTIFIER_BASIS if shared_identifier else "randonneur_replace_table"
+    mapping_file = None if shared_identifier else indexes.mapping_file
     provenance = _build_match_provenance(
         source_uuid=row.uuid,
         source_name=row.name,
         source=indexes.source,
-        mapping_file=indexes.mapping_file,
-        merge_method="randonneur_replace_table",
-        merge_basis="prepared_mapping",
+        mapping_file=mapping_file,
+        merge_method=merge_method,
+        merge_basis=merge_basis,
     )
     _append_source_ref(
         target_row,
@@ -652,10 +698,10 @@ def _record_prepared_match(
         source_unit=row.provenance_unit,
         source_cas=row.cas,
         source_ec=row.ec,
-        merge_basis="prepared_mapping",
-        merge_method="randonneur_replace_table",
+        merge_basis=merge_basis,
+        merge_method=merge_method,
         selector_reason="direct-target-uuid",
-        mapping_file=indexes.mapping_file,
+        mapping_file=mapping_file,
         provenance=provenance,
         conversion_factor=conversion_factor,
         merge_details={

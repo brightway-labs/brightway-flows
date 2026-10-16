@@ -48,6 +48,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
+from brightway_flows.additional_flows import load_excluded_source_flows  # noqa: E402
 from brightway_flows.domain.particulate_size import (  # noqa: E402
     names_a_particle_by_size,
     size_classes,
@@ -81,6 +82,7 @@ SOURCE_KEYS = (
     "bafu-2026-v1",
     "stepwise-2006-1.09",
     "agribalyse-3.2",
+    "openlca-2.8.2",
 )
 
 #: How a list says a flow is an airborne-particle measurement.
@@ -254,6 +256,17 @@ READINGS: dict[str, tuple[str, str, str]] = {
         "its own with no factor, which is what the merge now refuses to do "
         "silently (#196).",
     ),
+    # ── openLCA LCIA methods 2.8.2 ──────────────────────────────────────────
+    # GreenDelta's package ships ecoinvent's and EF's spellings, all read
+    # above, and one of its own.  Its 13 black-carbon rows are refused in
+    # `openlca-2.8.2-additional-flows.json` rather than read here.
+    "particulates, > 0.2 um, and < 2.5 um": (
+        "pm0_2_to_pm2_5", "",
+        "EF's `Particles (PM0.2 - PM2.5)` band in ecoinvent's spelling. The "
+        "row in unspecified air is EF's own flow under its own uuid, renamed by "
+        "GreenDelta; the other three are the same band in the population-"
+        "density compartments EF does not have.",
+    ),
 }
 
 #: The source categories `source_category` may take.  Closed, because an open
@@ -271,9 +284,22 @@ def source_rows(key: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     source = registered_source_list(key)
     rows: list[dict[str, Any]] = []
     unplaced: list[dict[str, Any]] = []
+    # A row the list refuses never reaches the merge, so it needs no reading.
+    refused = (
+        {
+            record.uuid
+            for record in load_excluded_source_flows(
+                source.additional_flows_path, source=source.source_label
+            )
+        }
+        if source.additional_flows_path is not None
+        else set()
+    )
 
     for flow in json.loads(Path(source.flows_path).read_bytes()):
         name = flow["name"]
+        if flow["uuid"] in refused:
+            continue
         if not _is_particulate_flow(name):
             continue
 

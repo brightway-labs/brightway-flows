@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "Manual corrections for the elementary flows of GreenDelta's openLCA LCIA methods 2.8.2 package, applied to the extracted records before anything reads them. Matched on name where the correction is about the substance, as the other lists' files are: GreenDelta repeats a substance once per compartment, so a rule keyed on one row would miss the next compartment added.",
+  "fixes": [
+    {
+      "match": {
+        "name": "Nitrogen, organic bound"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7727-37-9",
+      "comment": "7727-37-9 is dinitrogen -- N2, the inert gas that is 78% of the air, indexed by Common Chemistry as `Nitrogen` with structure `N#N`. `Nitrogen, organic bound` is not a compound: it is the nitrogen locked inside the organic matter of a discharge, reported as a mass of nitrogen, and no registry number can name it because a number names one compound and this is a measurement over many. GreenDelta writes the gas's number on all eleven of its organic-bound rows, one per water compartment, exactly as ecoinvent does on its five and EF 3.1 on its five, so the number has to come off here too or the merge is handed lists that disagree about whether a nutrient load is nitrogen gas (#26). Removed rather than corrected: there is nothing to correct it to, and with it gone the rows group by name, onto the same flow object EF's do. GreenDelta's own `Nitrogen` rows keep the number, which is theirs. The reasoning and the evidence are in ef-3.1-manual-fixes.json. Matched on name rather than UUID for the reason given in the description above. (#57)"
+    },
+    {
+      "match": {
+        "name": "Nitrogen, organic bound"
+      },
+      "field": "synonyms",
+      "remove_value": "dinitrogen",
+      "comment": "`dinitrogen` names the gas, and this flow is not the gas -- same argument as the registry number above. GreenDelta carries it on five of the eleven organic-bound rows, as ecoinvent does from 3.9.1 on. A synonym is what the label rules and the name index read, so leaving it would re-assert by name the identity the registry-number removal takes away. (#57)"
+    },
+    {
+      "match": {
+        "name": "Nitrogen, organic bound"
+      },
+      "field": "synonyms",
+      "remove_value": "molecular nitrogen",
+      "comment": "The second of the two gas synonyms on the organic-bound rows. Removed for the same reason as `dinitrogen` above. (#57)"
+    }
+  ]
+}

@@ -15,7 +15,7 @@
     "adapter": "brightway_flows.integrations.greendelta_lcia:fetch",
     "factors": "bafu-greendelta-lcia-factors.json",
     "implemented_by": "GreenDelta",
-    "resolve_through": ["ecoinvent-3.12", "ecoinvent-3.8", "EF-3.1"],
+    "resolve_through": ["ecoinvent-3.12", "ecoinvent-3.8", "EF-3.1", "openlca-2.8.2"],
     "methods": [
       {
         "name": "EF 3.1 Method (adapted)"
