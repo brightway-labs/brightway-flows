@@ -78,9 +78,22 @@ a build applies them to a SimaPro-shaped list — `Uranium-238` sent with the
 element's registry number takes the isotope's; `Uranium, 451 GJ per kg` in
 kilograms becomes `Uranium` in megajoules; `Carbon dioxide, in air` is read as
 the biogenic uptake it means. `preparation_steps` then includes `lineage-fix`,
-and where your unit was rebased `prepared_unit` and `unit_conversion_factor`
-say onto what and by how much, so a kilogram you sent and the megajoule flow
-you were matched to add up.
+and where your unit was rebased `prepared_unit` names that intermediate unit.
+`unit_conversion_factor` includes the complete conversion from the amount you
+sent to the final answer's `unit`, including any further change of scale.
+
+A BAFU amount of 1,000 Bq matched to a flow in kBq becomes 1 kBq: multiply the
+original amount by the returned factor, 0.001. Apply it once, before a factor
+stated per kBq. The same rule covers recorded source conversions, such as a
+density converting kilograms into cubic metres, and composition corrections
+that change the amount even when both units are kilograms.
+
+`None` means the conversion is unknown, not that it is one. A match can identify
+the right flow without supplying enough evidence to convert its amount. A
+source-specific conversion requires the exact source list, version and row
+identifier; a name-only match asks for these rather than borrowing a density or
+composition from another row. `selector_details["quantity_conversion"]` records
+the source and target units, factor and basis.
 
 ## What the answer tells you
 

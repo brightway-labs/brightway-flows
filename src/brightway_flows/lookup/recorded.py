@@ -63,7 +63,9 @@ every answer it produced.
 from __future__ import annotations
 
 import sqlite3
+import math
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from functools import cached_property, lru_cache
 from pathlib import Path
@@ -76,6 +78,7 @@ from brightway_flows.context_mapping import (
     consensus_context_strings,
     normalize_mapping_text,
 )
+from brightway_flows.domain.units import unit_row_for
 from brightway_flows.merge.store import Outcome
 
 logger = structlog.get_logger(__name__)
@@ -110,6 +113,8 @@ class RecordedDecision:
     list_version: str
     source_flow_uuid: str = ""
     source_flow_name: str = ""
+    source_unit: str = ""
+    unit_conversion_factor: float | None = None
 
     @property
     def list_key(self) -> str:
@@ -132,6 +137,32 @@ class RecordedNameAnswer:
     decision: RecordedDecision
     arbitrated_by: str = ""
     alternatives: tuple[str, ...] = ()
+    requires_identifier_for_quantity: bool = False
+
+
+def _a_multiplier_could_apply(
+    decisions: Sequence[RecordedDecision], unit: str
+) -> bool:
+    """Whether a recorded multiplier among *decisions* could convert *unit*.
+
+    BAFU records `Water` in kg at 0.001 m3 per kg, and also in m3.  A caller
+    sending `Water` in m3 by name is 1:1 onto the m3 flow whichever row they
+    meant, because a multiplier per kilogram cannot apply to cubic metres.  A
+    caller sending kilograms might be either row -- or a composition such as
+    titanium dioxide's 0.599 kg titanium per kg -- so only the identifier says.
+    A unit `units.json` does not know is the second case: nothing rules the
+    multiplier out.
+    """
+    caller = unit_row_for(unit) if unit.strip() else None
+    for decision in decisions:
+        if decision.unit_conversion_factor is None:
+            continue
+        stated = unit_row_for(decision.source_unit)
+        if caller is None or stated is None:
+            return True
+        if caller.get("quantity_kind_iri") == stated.get("quantity_kind_iri"):
+            return True
+    return False
 
 
 def _collapsed(text: str) -> str:
@@ -265,14 +296,35 @@ class RecordedDecisions:
         try:
             rows = connection.execute(
                 "SELECT list_name, list_version, source_flow_uuid, "
-                "elementary_flow_uuid, source_flow_name "
+                "elementary_flow_uuid, source_flow_name, "
+                "json_extract(source_metadata_json, '$.unit'), "
+                "json_extract(source_metadata_json, '$.\"qudt:conversionMultiplier\"'), "
+                "json_type(source_metadata_json, '$.\"qudt:conversionMultiplier\"') "
                 "FROM elementary_flow_sources "
                 "WHERE source_flow_uuid IS NOT NULL AND source_flow_uuid != '' "
                 "ORDER BY id"
             ).fetchall()
         finally:
             connection.close()
-        for list_name, list_version, source_uuid, flow_uuid, source_name in rows:
+        for (
+            list_name,
+            list_version,
+            source_uuid,
+            flow_uuid,
+            source_name,
+            source_unit,
+            multiplier,
+            multiplier_type,
+        ) in rows:
+            if multiplier is not None and (
+                multiplier_type not in ("integer", "real")
+                or not isinstance(multiplier, (int, float))
+                or not math.isfinite(multiplier)
+                or multiplier <= 0
+            ):
+                raise ValueError(
+                    f"Invalid recorded quantity conversion for {list_name}-{list_version}/{source_uuid}"
+                )
             key = (f"{list_name}-{list_version}", str(source_uuid).strip())
             index.setdefault(key, []).append(
                 RecordedDecision(
@@ -281,6 +333,8 @@ class RecordedDecisions:
                     list_version=str(list_version or ""),
                     source_flow_uuid=str(source_uuid or ""),
                     source_flow_name=str(source_name or ""),
+                    source_unit=str(source_unit or ""),
+                    unit_conversion_factor=multiplier,
                 )
             )
         logger.info("lookup_recorded_identifier_index", links=len(rows), keys=len(index))
@@ -317,9 +371,9 @@ class RecordedDecisions:
         means the build itself resolved no place, which re-deriving cannot
         improve on and remaking the build will not change, so it is re-derived
         without being counted.
-        Decisions are deduplicated by ``(list, flow)``, so one list recording
-        the same answer in five spellings of a compartment is one voice, not
-        five.
+        Decisions retain distinct quantity bases even where their identities
+        agree. Otherwise a mass-composition factor could disappear behind a
+        second source row measured in the same unit.
         """
         from brightway_flows.lookup.query import (
             FlowQuery,
@@ -327,7 +381,7 @@ class RecordedDecisions:
             resolve_context,
         )
 
-        index: dict[tuple[str, str], dict[tuple[str, str], RecordedDecision]] = {}
+        index: dict[tuple[str, str], dict[tuple, RecordedDecision]] = {}
         connection = self._connect()
         try:
             placeholders = ", ".join("?" for _ in _MATCHED_OUTCOMES)
@@ -360,6 +414,12 @@ class RecordedDecisions:
                 source_flow_uuid=str(source_uuid or ""),
                 source_flow_name=str(name or ""),
             )
+            links = self.for_identifier(decision.list_key, decision.source_flow_uuid)
+            linked = [
+                d for d in links if d.elementary_flow_id == decision.elementary_flow_id
+            ]
+            if len(linked) == 1:
+                decision = linked[0]
             # NULL from json_extract means the key is absent -- a record from
             # before #361 -- and only that is counted; "" means the field was
             # written and the build resolved nothing.
@@ -396,9 +456,15 @@ class RecordedDecisions:
             if iri:
                 rungs.append(iri)
             for rung in rungs:
-                index.setdefault((key, rung), {})[
-                    (decision.list_key, decision.elementary_flow_id)
-                ] = decision
+                for quantity_decision in linked or [decision]:
+                    index.setdefault((key, rung), {})[
+                        (
+                            quantity_decision.list_key,
+                            quantity_decision.elementary_flow_id,
+                            quantity_decision.source_unit,
+                            quantity_decision.unit_conversion_factor,
+                        )
+                    ] = quantity_decision
         built = {
             rung_key: tuple(decisions.values()) for rung_key, decisions in index.items()
         }
@@ -485,6 +551,7 @@ class RecordedDecisions:
         context_iri: str = "",
         dimension: str = "",
         source_label: str = "",
+        unit: str = "",
     ) -> RecordedNameAnswer | None:
         """What was recorded for this name where the caller says their row is.
 
@@ -507,6 +574,11 @@ class RecordedDecisions:
         *source_label*, where it names one of the agreeing lists, picks whose
         decision reports the answer, so the attribution is the caller's own
         list rather than whichever row a merge happened to write first.
+
+        *unit* is the caller's, and decides whether a recorded multiplier
+        stands between their amount and the answer: one stated per a unit of
+        the caller's quantity kind might be theirs to apply, so the answer asks
+        for the row's identifier; one stated per another kind cannot be.
         """
         key = normalize_mapping_text(name)
         if not key:
@@ -527,13 +599,22 @@ class RecordedDecisions:
             else []
         )
         if len(targets) == 1:
-            return RecordedNameAnswer(decision=named[0] if named else decisions[0])
+            relevant = named or decisions
+            return RecordedNameAnswer(
+                decision=relevant[0],
+                requires_identifier_for_quantity=_a_multiplier_could_apply(
+                    relevant, unit
+                ),
+            )
         named_targets = {d.elementary_flow_id for d in named}
         if len(named_targets) == 1:
             return RecordedNameAnswer(
                 decision=named[0],
                 arbitrated_by=named[0].list_key,
                 alternatives=tuple(t for t in targets if t not in named_targets),
+                requires_identifier_for_quantity=_a_multiplier_could_apply(
+                    named, unit
+                ),
             )
         return None
 
