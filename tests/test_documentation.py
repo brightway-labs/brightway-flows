@@ -888,6 +888,34 @@ class OpenLcaRefusalCountsTestCase(unittest.TestCase):
         }
         self.assertIn(f"They cover {len(places)} places", self.text)
 
+    def test_the_compartment_table_counts_the_per_row_rules(self):
+        """The rows of `Resource / unspecified` and `Resource / land` that no
+        name rule picks out are each placed by a flow-specific rule (#381)."""
+        rules = [
+            row
+            for row in json.loads(
+                (PACKAGE_DATA_DIR / "context-manual-mapping.json").read_text()
+            )["flow_specific_context_mappings"]
+            if row.get("source") == "openlca-2.8.2"
+        ]
+
+        def count(compartment, slug=None):
+            return sum(
+                1 for row in rules
+                if row["source_context"] == ["Resource", compartment]
+                and (slug is None or row["context_iri"].endswith("/" + slug))
+            )
+
+        self.assertIn(
+            f"each of the other {count('unspecified')} by a rule naming the row: "
+            f"{count('unspecified', 'reso-grou')} as ground resources, "
+            f"{count('unspecified', 'reso-biot')} biotic",
+            self.text,
+        )
+        self.assertIn(
+            f"{count('land', 'reso-grou')} minerals (`Clay`, `Granite`, …)", self.text
+        )
+
     def test_the_pending_water_count(self):
         pending = [
             r for r in self.excluded
