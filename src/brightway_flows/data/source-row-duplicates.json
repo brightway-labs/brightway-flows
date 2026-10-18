@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Source rows that are the same flow as another row of the same list, shipped twice. Each entry names the duplicate and the row kept as valid, and says why that one. Both rows are still merged and must reach the same consensus flow -- a merge that sends them to two different flows stops, because the ruling says they are one. The duplicate's published mapping is marked `owl:deprecated`, with `dcterms:isReplacedBy` pointing at the valid row, and it does not count towards the match strength of the valid row's mapping: two copies of one flow are not two flows sharing a consensus flow. It is the source-list counterpart of `elementary-flow-collision-decisions.json`, which does the same for two flows this project publishes. A row names its list and not its release, as `land-flow-groupings.json` does. Read by `brightway_flows.merge.duplicate_rows`.\n\nThe first entries are GreenDelta's openLCA LCIA methods 2.8.2 package, which ships 160 land-use names twice, almost always once in `Resource / land` and once in `Resource / unspecified`; the `Resource / land` row is the valid one (decided 2026-10-13).",
+  "description": "Source rows that are the same flow as another row of the same list, shipped twice. Each entry names the duplicate and the row kept as valid, and says why that one. Both rows are still merged and must reach the same consensus flow -- a merge that sends them to two different flows stops, because the ruling says they are one. The duplicate's published mapping is marked `owl:deprecated`, with `dcterms:isReplacedBy` pointing at the valid row, and it does not count towards the match strength of the valid row's mapping: two copies of one flow are not two flows sharing a consensus flow. It is the source-list counterpart of `elementary-flow-collision-decisions.json`, which does the same for two flows this project publishes. A row names its list and not its release, as `land-flow-groupings.json` does. Read by `brightway_flows.merge.duplicate_rows`.\n\nThe first entries are GreenDelta's openLCA LCIA methods 2.8.2 package, which ships 166 land-use names twice, almost always once in `Resource / land` and once in `Resource / unspecified`; the `Resource / land` row is the valid one (decided 2026-10-13). It also ships 25 water names more than once, in `Resource / in water` and again in `Resource / unspecified`, `Resource / land` or `Resource / in ground`; there the `Resource / in water` row is the valid one (decided 2026-10-18, #389).",
   "duplicates": [
     {
       "list_name": "openlca",
@@ -2551,6 +2551,426 @@
         "land"
       ],
       "comment": "GreenDelta ships `Transformation, to wetland, inland (non-use)` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "47ede456-cb14-44fd-bc8e-01cb1bee4af1",
+      "duplicate_name": "Water, barrage",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "d340bcfb-77bb-34f2-8052-b598a2cdf17e",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, barrage` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (surface water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "3c27fe4e-eec8-4bea-91cd-afc0b0ab138f",
+      "duplicate_name": "Water, cooling, drinking",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "ed378a66-92b6-39bf-93e4-5b6a6b2b4fae",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, cooling, drinking` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (cooling water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "640abc29-56f4-39cb-8dcb-287b03adc19c",
+      "duplicate_name": "Water, cooling, salt, ocean",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "19040c6d-bc90-3742-9c7b-324ecec69cfe",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, cooling, salt, ocean` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (cooling water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "31950f2d-17c2-469f-9066-0f6dbb76ce7a",
+      "duplicate_name": "Water, cooling, surface",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "ec735bee-9e15-3d89-a3e4-26e633949cb0",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, cooling, surface` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (cooling water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "f31750b0-268a-4d18-b694-8e79e91aff86",
+      "duplicate_name": "Water, cooling, unspecified natural origin",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "fc1c42ce-a759-49fa-b987-f1ec5e503db1",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, cooling, unspecified natural origin` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (cooling water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "895fa4b4-dc58-3158-8337-1c442a693d65",
+      "duplicate_name": "Water, cooling, unspecified natural origin/kg",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "17f97e13-8812-3fd3-81c9-a7c355f258bf",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, cooling, unspecified natural origin/kg` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (cooling water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "d68c92f6-2a11-37ce-a1a3-ea95daea1d42",
+      "duplicate_name": "Water, cooling, unspecified natural origin/m3",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "0c6d244f-6086-3c6e-bd96-f287f8bb74f7",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, cooling, unspecified natural origin/m3` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (cooling water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "27b915f1-b59f-35b9-a698-90d3b717da9c",
+      "duplicate_name": "Water, cooling, well",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "1d158fc5-859b-3507-ae79-94b101c29655",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, cooling, well` in `Resource / in water` and again in `Resource / in ground` and `Resource / unspecified`, with the same unit and water material (cooling water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "2a380e4d-c06a-3a4c-8475-07885c3aa047",
+      "duplicate_name": "Water, cooling, well",
+      "duplicate_context": [
+        "Resource",
+        "in ground"
+      ],
+      "valid_uuid": "1d158fc5-859b-3507-ae79-94b101c29655",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, cooling, well` in `Resource / in water` and again in `Resource / in ground` and `Resource / unspecified`, with the same unit and water material (cooling water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `in ground` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "4a57e617-eb1f-4c75-b6d9-61dea2d82295",
+      "duplicate_name": "Water, fossil",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "26e62e38-880d-3c67-a705-33aa05ca78e3",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, fossil` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (fossil groundwater), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "164673ff-3f7d-3587-af97-ccc3503195f9",
+      "duplicate_name": "Water, fresh",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "b91a1be8-51c0-33f2-a578-61786d9adfc1",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, fresh` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (fresh water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "e0e6bb44-1b7b-4d85-a3f8-1ee6a1e983d4",
+      "duplicate_name": "Water, lake",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "1acb026e-9de6-48fe-9e0d-be4d24125bbc",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, lake` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (lake water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "c56bfea1-912d-468f-ba43-bef7c14c8c1e",
+      "duplicate_name": "Water, process and cooling, unspecified natural origin",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "c0f39d6f-dd5a-4465-9dee-b0c5f897d175",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, process and cooling, unspecified natural origin` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "1fef4759-76ce-4443-9a0e-cfa38c4ce14a",
+      "duplicate_name": "Water, process, drinking",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "12604ba6-b7a1-4036-885c-72704b029906",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, process, drinking` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "a945fa6e-b056-4eec-b684-cf42e461d64c",
+      "duplicate_name": "Water, process, surface",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "a5e216e9-1b15-3a08-ae24-8f8ad8e44f29",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, process, surface` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (surface water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "4dbbc4de-4e1b-4b19-b6e4-d89f39a4dd80",
+      "duplicate_name": "Water, process, unspecified natural origin",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "433b7ce7-5c2d-41c3-80ef-ead7f45c8699",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, process, unspecified natural origin` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "d2fc8c70-6510-3f1f-933a-39f3a263c609",
+      "duplicate_name": "Water, process, unspecified natural origin/kg",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "2e2c9e13-2197-33a0-8cdb-6a24f4c0f973",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, process, unspecified natural origin/kg` in `Resource / in water` and again in `Resource / land` and `Resource / unspecified`, with the same unit and water material (water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "e4521dfd-1897-3ab4-a281-b8de776efeb4",
+      "duplicate_name": "Water, process, unspecified natural origin/kg",
+      "duplicate_context": [
+        "Resource",
+        "land"
+      ],
+      "valid_uuid": "2e2c9e13-2197-33a0-8cdb-6a24f4c0f973",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, process, unspecified natural origin/kg` in `Resource / in water` and again in `Resource / land` and `Resource / unspecified`, with the same unit and water material (water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `land` row is its duplicate (#389). EF 3.1 gives this `Resource / land` copy a water-use factor of 0.0 against the 0.04295 of the other two; the copy in the water compartment carries the factor the material has."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "28182006-69ba-388d-9289-00d649518c9d",
+      "duplicate_name": "Water, process, unspecified natural origin/m3",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "68ee3cd2-e897-3388-b259-38ece38752f2",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, process, unspecified natural origin/m3` in `Resource / in water` and again in `Resource / land` and `Resource / unspecified`, with the same unit and water material (water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "f8b55757-7bc1-38e6-b663-6053878c7ebb",
+      "duplicate_name": "Water, process, unspecified natural origin/m3",
+      "duplicate_context": [
+        "Resource",
+        "land"
+      ],
+      "valid_uuid": "68ee3cd2-e897-3388-b259-38ece38752f2",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, process, unspecified natural origin/m3` in `Resource / in water` and again in `Resource / land` and `Resource / unspecified`, with the same unit and water material (water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `land` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "6efff6a9-428a-4062-b415-3950e32c1dab",
+      "duplicate_name": "Water, process, well",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "aa5b5285-4914-316e-babc-95007e28bc5d",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, process, well` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (groundwater), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "30aa8b31-d824-4c3a-b6b3-d141f710b63f",
+      "duplicate_name": "Water, river",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "8c75e7ab-8ab8-41e4-b394-c166ff5b050d",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, river` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (river water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "4dc484bb-ecba-3137-9f58-27ff8edfd2cd",
+      "duplicate_name": "Water, salt, ocean",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "629ffbca-ca71-4e4b-a006-ca9bdd9cd1df",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, salt, ocean` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (sea water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "20a57f2b-2d7c-341a-b04a-8957bd33d97f",
+      "duplicate_name": "Water, salt, sole",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "79238018-8ec1-4615-9469-2b0df95a43c3",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, salt, sole` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (brine), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "5be81c7a-31d9-4b79-b9e4-50e92d78a014",
+      "duplicate_name": "Water, turbine use, unspecified natural origin",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "8c1494a5-4987-4715-aa2d-1908c495f4eb",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, turbine use, unspecified natural origin` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (turbine water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "478e8437-1c21-4032-8438-872a6b5ddcdf",
+      "duplicate_name": "Water, unspecified natural origin",
+      "duplicate_context": [
+        "Resource",
+        "in ground"
+      ],
+      "valid_uuid": "831f249e-53f2-49cf-a93c-7cee105f048e",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, unspecified natural origin` in `Resource / in water` and again in `Resource / in ground`, with the same unit and water material (water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `in ground` row is its duplicate (#389). The `in ground` compartment is a filing slip for this name, as for BAFU (#89): it does not say the water is groundwater."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "ce73afe2-f94d-3224-ba60-2f6f13bf909d",
+      "duplicate_name": "Water, unspecified natural origin/kg",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "cce37357-b138-3933-b89c-d9e42500195f",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, unspecified natural origin/kg` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (water), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389)."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "7e09a71d-ec9f-3a09-8c17-070cb8cd4524",
+      "duplicate_name": "Water, well",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "0c755f21-5270-3341-9239-4f4fd780e143",
+      "valid_context": [
+        "Resource",
+        "in water"
+      ],
+      "comment": "GreenDelta ships `Water, well` in `Resource / in water` and again in `Resource / unspecified`, with the same unit and water material (groundwater), and every copy reaches `Resource / water`. The `Resource / in water` row is kept as the one in the right compartment for a water withdrawal; this `unspecified` row is its duplicate (#389). Hoekstra et al 2012 gives this copy 1.392831615 and the valid row 1.39, the same value rounded."
     }
   ]
 }

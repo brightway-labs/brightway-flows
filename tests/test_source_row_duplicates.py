@@ -50,7 +50,7 @@ def _association(uuid: str) -> dict:
 
 class TheFileTestCase(unittest.TestCase):
     def setUp(self):
-        self.rulings = {
+        rulings = {
             uuid: row
             for (list_name, uuid), row in load_source_row_duplicates().items()
             if list_name == "openlca"
@@ -62,14 +62,38 @@ class TheFileTestCase(unittest.TestCase):
             )["rows"]
             if row["source"] == "openlca-2.8.2"
         }
+        self.water = {
+            row["source_uuid"]: row
+            for row in json.loads(
+                (PACKAGE_DATA_DIR / "water-flow-materials.json").read_bytes()
+            )["rows"]
+            if row["source"] == "openlca-2.8.2"
+        }
+        self.land_rulings = {u: r for u, r in rulings.items() if u in self.land}
+        self.water_rulings = {u: r for u, r in rulings.items() if u in self.water}
+        self.rulings = rulings
+
+    def test_every_ruling_is_a_land_row_or_a_water_row(self):
+        self.assertEqual(
+            len(self.land_rulings) + len(self.water_rulings), len(self.rulings)
+        )
 
     def test_166_names_shipped_twice(self):
         """170 duplicates over 166 names: four names ship three copies."""
-        self.assertEqual(len(self.rulings), 170)
-        self.assertEqual(len({row.valid_uuid for row in self.rulings.values()}), 166)
+        self.assertEqual(len(self.land_rulings), 170)
+        self.assertEqual(
+            len({row.valid_uuid for row in self.land_rulings.values()}), 166
+        )
+
+    def test_25_water_names_shipped_twice(self):
+        """28 duplicates over 25 names: three names ship three copies (#389)."""
+        self.assertEqual(len(self.water_rulings), 28)
+        self.assertEqual(
+            len({row.valid_uuid for row in self.water_rulings.values()}), 25
+        )
 
     def test_a_duplicate_and_its_valid_row_are_one_land_class(self):
-        for uuid, row in self.rulings.items():
+        for uuid, row in self.land_rulings.items():
             with self.subTest(uuid):
                 self.assertEqual(
                     self.land[uuid]["key"], self.land[row.valid_uuid]["key"]
@@ -79,14 +103,32 @@ class TheFileTestCase(unittest.TestCase):
                     self.land[row.valid_uuid]["source_name"],
                 )
 
+    def test_a_duplicate_and_its_valid_row_are_one_water_material(self):
+        for uuid, row in self.water_rulings.items():
+            with self.subTest(uuid):
+                self.assertEqual(
+                    self.water[uuid]["node"], self.water[row.valid_uuid]["node"]
+                )
+                self.assertEqual(
+                    self.water[uuid]["source_name"],
+                    self.water[row.valid_uuid]["source_name"],
+                )
+
     def test_the_valid_row_is_the_one_in_resource_land(self):
         """Except `Occupation, sea and ocean`, which has no land copy and keeps
         `in water`."""
         compartments = Counter(
             self.land[row.valid_uuid]["source_context"][1]
-            for row in self.rulings.values()
+            for row in self.land_rulings.values()
         )
         self.assertEqual(compartments, Counter({"land": 169, "in water": 1}))
+
+    def test_the_valid_water_row_is_the_one_in_resource_in_water(self):
+        compartments = Counter(
+            self.water[row.valid_uuid]["source_context"][1]
+            for row in self.water_rulings.values()
+        )
+        self.assertEqual(compartments, Counter({"in water": 28}))
 
 
 class TheMergeCheckTestCase(unittest.TestCase):

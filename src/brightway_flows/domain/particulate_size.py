@@ -402,8 +402,8 @@ def flow_object_basis_for(class_id: str) -> str | None:
     """The id basis *class_id*'s flow object is minted from, or ``None``.
 
     Every class in this scheme mints an object -- unlike the material taxonomy,
-    where `saline_water` exists only to give sea water and brine the parent ENVO
-    gives them -- so ``None`` here means the id is not one of ours.
+    where a concept can exist only to give its children the parent ENVO gives
+    them -- so ``None`` here means the id is not one of ours.
     """
     found = size_class(class_id)
     return found.flow_object_basis if found else None

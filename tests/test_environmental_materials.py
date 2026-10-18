@@ -28,6 +28,7 @@ from brightway_flows.domain.materials import (
     MATERIALS_FILEPATH,
     anchor_snapshot,
     broader_chain,
+    material_by_source_flow,
     material_concepts,
 )
 
@@ -46,19 +47,21 @@ def _envo_id(concept):
 
 
 class ShapeTestCase(unittest.TestCase):
-    def test_seventeen_concepts_and_sixteen_flow_objects(self):
+    def test_seventeen_concepts_and_seventeen_flow_objects(self):
+        """Sixteen until openLCA's `Water, Saline water consumption` landed on
+        `saline_water` (#389)."""
         concepts = material_concepts()
         self.assertEqual(len(concepts), 17)
-        self.assertEqual(sum(1 for c in concepts.values() if c["flow_object_id"]), 16)
+        self.assertEqual(sum(1 for c in concepts.values() if c["flow_object_id"]), 17)
 
-    def test_the_one_concept_without_an_object_is_the_one_nothing_maps_onto(self):
-        """A concept earns an object when a source flow lands on it. Carrying
-        `saline_water` is what gives sea water and brine the parent ENVO gives
-        them; nothing maps onto it, so it mints nothing."""
-        without = [
-            c["id"] for c in material_concepts().values() if not c["flow_object_id"]
-        ]
-        self.assertEqual(without, ["saline_water"])
+    def test_every_concept_has_an_object_because_a_flow_lands_on_it(self):
+        """A concept earns an object when a source flow lands on it.
+        `saline_water` is carried to give sea water and brine the parent ENVO
+        gives them, and minted nothing until a flow landed on it (#389)."""
+        landed = {row["node"] for row in material_by_source_flow().values()}
+        for concept in material_concepts().values():
+            with self.subTest(concept=concept["id"]):
+                self.assertEqual(bool(concept["flow_object_id"]), concept["id"] in landed)
 
     def test_an_intermediate_is_carried_only_when_it_groups_two_concepts(self):
         """The test for adding one. `underground water`, `hypersaline water` and

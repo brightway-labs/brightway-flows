@@ -109,43 +109,84 @@ out, and the 92,350 for no place are read. Every one of the 33,045 flows has
 one. 69,116 of those left out are land use and 12,928 water use. The JRC's own
 EF 3.1 factors per country are unaffected.
 
-## Water rows refused until their material is decided
+## Which kind of water each water row is
 
-The 123 water rows left once the location-specific ones are refused — 76
-names, from `Water, river` to `Water BWS 40%` — are refused for now. Every kind
-of water has the same registry number, so the merge tells river water from sea
-water or cooling water only by a reading in `water-flow-materials.json`, and
-openLCA has none yet. Which reading each name gets is
-[#389](https://github.com/brightway-labs/brightway-flows/issues/389).
+Every kind of water has the same registry number, so the merge tells river
+water from sea water or cooling water only by a reading in
+`water-flow-materials.json`. 123 water rows are left once the location-specific
+ones are refused
+([#389](https://github.com/brightway-labs/brightway-flows/issues/389)). 101 of
+them, under 54 names, are read:
+
+- A name another list already ships is read the way that list reads it:
+  `Water, river` is river water, `Water, salt, sole` brine, `Water, cooling,
+  well` cooling water.
+- A name that says what the water is, is read that way: `Water, ground` and
+  `Water, process, well` are groundwater, `Water, process, salt, ocean` sea
+  water, `Cooling water` returned to a river is cooling water.
+- Four readings are ours rather than the name's. `Water, thermoelectric
+  groundwater consumption` and its saline and surface siblings are cooling
+  water: it is the water a power plant's cooling uses up, and every cooling
+  name is read by its use. `Thermally polluted water` is returned cooling
+  water, warm rather than contaminated. `Water, with river silt` is river water.
+- Names that say nothing about the source, such as `Water`, `Water/kg` and
+  `Water, process and cooling, unspecified natural origin`, are water of no
+  stated kind. So is `Water, unspecified natural origin` filed `in ground`,
+  for the reason BAFU's is
+  ([#89](https://github.com/brightway-labs/brightway-flows/issues/89)).
+
+Where two names are read as one kind of water, the methods in the package
+score them alike, with one exception: ECO-COSTS 2025's `Baseline Water
+Stress` gives some of them different factors, for example −0.0001 to the
+thermoelectric rows and +0.0001 to the cooling rows. They are read as one
+kind of water regardless.
+
+Twenty-two rows are refused for good, because they are not a kind of water:
+
+- The 11 water-stress rows, `Water, low water stress` to `Water, unspecified
+  natural origin, very high water stress`. A stress class stands in for the
+  watershed the water came from, as a place in the name does. Ecological
+  Scarcity 2006 and 2013, ILCD 2011 and ECO-COSTS 2025 score each class
+  differently — Ecological Scarcity 2013 from 24 to 22,000 — and the other
+  methods score every class as plain water.
+- the 11 `Water BWS` rows, `Water BWS 0%` to `Water BWS 100%`. Only ECO-COSTS
+  2025 scores them, with a factor equal to the percentage in the name.
+
+## Which land class each land row is
+
+All 490 land rows that are kept are read in `land-flow-classes.json`. Sixteen
+of them use words the other lists don't, and each was read as follows:
+
+- `Occupation, annual crop, conservation tillage`, and `conventional` and
+  `reduced`: cropland under that tillage, the class ecoinvent's
+  `arable, … tillage (obsolete)` rows already have. Every method in the
+  package gives them the factors of `annual crop`.
+- `annual crop, non-irrigated, monotone-intensive`, in all three
+  directions: cropland, non-irrigated, farmed **monotone-intensive** — a
+  new intensity, beside `diverse-intensive`. Every method gives it the
+  factors of `annual crop, non-irrigated` except Ecosystem Damage
+  Potential, which scores it 0.74 against diverse-intensive's 0.61.
+- `Transformation, to unknown (used)`: to unspecified land in use, the
+  class of `Transformation, to unspecified, used`. EF 3.1 scores it
+  1,914.6, which EF 3.0 gives the other spelling.
+- `Transformation, from agriculture + forest`, and `to`: agroforestry,
+  read as agriculture, mosaic. CORINE files agro-forestry areas (2.4.4)
+  under heterogeneous agricultural areas (2.4).
+- `Occupation, sparsely vegetated areas, steppe, tundra, badlands`: CORINE
+  Land Cover class 3.3.3, published as a new cover, **sparsely vegetated
+  area**. It is not read as grassland, because ILCD 2011, IMPACT 2002+ and
+  EF 2.0 score it differently from openLCA's `Occupation, grassland`.
 
 ## Not yet merged
 
 openLCA LCIA methods 2.8.2 is registered and extracted, and merges last
 (priority 500) when a build names it. It cannot be merged yet
-([#385](https://github.com/brightway-labs/brightway-flows/issues/385)):
-
-- **Land classes** (`land-flow-classes.json`). All 490 land rows that are
-  kept are read. Sixteen of them use words the other lists don't, and each was
-  read as follows:
-  - `Occupation, annual crop, conservation tillage`, and `conventional` and
-    `reduced`: cropland under that tillage, the class ecoinvent's
-    `arable, … tillage (obsolete)` rows already have. Every method in the
-    package gives them the factors of `annual crop`.
-  - `annual crop, non-irrigated, monotone-intensive`, in all three
-    directions: cropland, non-irrigated, farmed **monotone-intensive** — a
-    new intensity, beside `diverse-intensive`. Every method gives it the
-    factors of `annual crop, non-irrigated` except Ecosystem Damage
-    Potential, which scores it 0.74 against diverse-intensive's 0.61.
-  - `Transformation, to unknown (used)`: to unspecified land in use, the
-    class of `Transformation, to unspecified, used`. EF 3.1 scores it
-    1,914.6, which EF 3.0 gives the other spelling.
-  - `Transformation, from agriculture + forest`, and `to`: agroforestry,
-    read as agriculture, mosaic. CORINE files agro-forestry areas (2.4.4)
-    under heterogeneous agricultural areas (2.4).
-  - `Occupation, sparsely vegetated areas, steppe, tundra, badlands`: CORINE
-    Land Cover class 3.3.3, published as a new cover, **sparsely vegetated
-    area**. It is not read as grassland, because ILCD 2011, IMPACT 2002+ and
-    EF 2.0 score it differently from openLCA's `Occupation, grassland`.
+([#385](https://github.com/brightway-labs/brightway-flows/issues/385)): in 20
+land classes, two openLCA rows with different names reach one class —
+`Occupation, annual crop` and `Occupation, arable land, unspecified use`, for
+example — and the build stops on each until `land-flow-groupings.json` says the
+fold is meant. A grouping names the flow the two reach, so it is written from
+the first build that merges the list.
 
 No documented build includes it, so this page records no merge outcomes: no row
 has been sent anywhere by hand, no registry number corrected, and no name split
@@ -176,6 +217,14 @@ Two names needed a different tie-break:
 - `Occupation, inland waterbody, unspecified` is in `Resource / land` twice,
   with one factor each. The row kept is the one whose identifier ecoinvent 3.12
   also ships.
+
+**Water rows shipped twice.** 25 water names are in the package more than once
+with the same unit, usually in `Resource / in water` and again in
+`Resource / unspecified`. Every copy reaches `Resource / water`, and the row in
+`Resource / in water` is kept as the valid one; the other copies, 28 rows,
+still map but are published deprecated. The copies are scored alike, except
+that EF 3.1 gives the `Resource / land` copy of `Water, process, unspecified
+natural origin/kg` a water-use factor of 0.0.
 
 A deprecated copy does not weaken the valid row's match: two copies of one flow
 are not two flows sharing one.

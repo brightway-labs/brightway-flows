@@ -17,8 +17,7 @@ This module is how a page reads that back.
 **The tree comes from the taxonomy, the counts come from the build.**  The other
 way round -- deriving the tree from the flow objects, as `queries/land.py`
 derives a land class from its key -- would show a taxonomy with holes in it, and
-the holes are the point: `saline_water` mints no flow object at all, because it
-exists so that sea water and brine have the parent ENVO gives them, and three
+the holes are the point: `saline_water` is reached only by openLCA, and three
 more kinds carry no flow in a build that leaves BAFU out.  A page that listed
 only what the build reached could not tell a concept nothing maps onto from a
 concept this build happens not to have.
