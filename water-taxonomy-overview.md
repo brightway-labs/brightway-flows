@@ -92,7 +92,7 @@ The list has two levels, and it helps to keep them apart:
 - a **substance entry** — what the thing is: name, CAS number, formula, definitions, links to reference databases;
 - an **elementary flow** — one occurrence of that substance in a particular compartment and unit. These are the rows an inventory or an impact method refers to.
 
-**Sixteen of the seventeen kinds of water become substance entries.** *Saline water* is the exception: it exists only so that sea water and brine have a sensible parent, and no database flow lands on it directly.
+**All seventeen kinds of water become substance entries.** *Saline water* was the exception until openLCA's *Water, Saline water consumption* landed on it: it is there so that sea water and brine have a sensible parent, and that is the only list with a flow of saline water that is neither.
 
 Each of those entries now carries the environmental vocabulary class alongside the chemistry — sea water is stated to be both "a neutral molecule, CAS 7732-18-5" and "sea water, ENVO 00002149". Those are not competing claims: ENVO's own definition of liquid water is "an environmental material primarily composed of dihydrogen oxide", so the chemistry describes what the material is made of.
 
@@ -233,4 +233,4 @@ The other water flows — water vapour, sea water, brine, rainwater, green water
 
 ## 9. In short
 
-Water now records **what kind of water it is**, as well as its chemistry, its direction and its water body. Seventeen kinds, tied to published environmental vocabularies, with any hierarchy we added ourselves marked as ours. Sixteen of them become substance entries, and those entries carry 40 published water flows, none of them retired — 41 once the fossil groundwater withdrawal arrives. Withdrawals now record the water body they came from, read flow by flow because EF 3.1 files all of them under one compartment. And EF 3.1's *Water use* factors — seven positive withdrawals, four negative returns — now sit on eleven distinct published flows, which is what keeps a balanced method balanced.
+Water now records **what kind of water it is**, as well as its chemistry, its direction and its water body. Seventeen kinds, tied to published environmental vocabularies, with any hierarchy we added ourselves marked as ours. All seventeen now become substance entries — saline water since openLCA's *Water, Saline water consumption* (#389); at the time of writing it was sixteen, and those entries carried 40 published water flows, none of them retired — 41 once the fossil groundwater withdrawal arrives. Withdrawals now record the water body they came from, read flow by flow because EF 3.1 files all of them under one compartment. And EF 3.1's *Water use* factors — seven positive withdrawals, four negative returns — now sit on eleven distinct published flows, which is what keeps a balanced method balanced.

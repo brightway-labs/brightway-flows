@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_version": "2.8.2",
-  "description": "Nothing to add: the package ships every flow it has under `flows/`, which the adapter reads whole. What this file holds is the refusal of the package's two `Waste` compartments, its 13 black-carbon particle rows its 433 country-specific land rows, and its 5,773 other location-specific rows -- water, and emissions such as `Nitrogen oxides, ES` -- whose name ends in a place. The 123 remaining water rows are refused until their materials are decided (#389). The waste rows are extracted like every other compartment and refused here on the record, as AGRIBALYSE's final waste is (#189); the black-carbon rows carry climate factors no plain particle flow has, so they are kept out until black carbon is decided as a substance; the location-specific rows, land included, are left out by decision, the unregionalised rows being kept. `excluded_rows_are_in_the_fetch` is set because the fetch produces these rows on every run, and their removal at load is the ordinary path.",
+  "description": "Nothing to add: the package ships every flow it has under `flows/`, which the adapter reads whole. What this file holds is the refusal of the package's two `Waste` compartments, its 13 black-carbon particle rows its 433 country-specific land rows, and its 5,773 other location-specific rows -- water, and emissions such as `Nitrogen oxides, ES` -- whose name ends in a place. Of the 123 water rows left after those, the 22 that encode a water-stress class or an ECO-COSTS stress indicator rather than a kind of water are refused by decision (#389); the other 101 are read in water-flow-materials.json. The waste rows are extracted like every other compartment and refused here on the record, as AGRIBALYSE's final waste is (#189); the black-carbon rows carry climate factors no plain particle flow has, so they are kept out until black carbon is decided as a substance; the location-specific rows, land included, are left out by decision, the unregionalised rows being kept. `excluded_rows_are_in_the_fetch` is set because the fetch produces these rows on every run, and their removal at load is the ordinary path.",
   "flows": [],
   "excluded_rows_are_in_the_fetch": true,
   "excluded": [
@@ -70461,259 +70461,6 @@
       "comment": "Enumerated from `openLCA LCIA Methods 2.8.2 2026-07-01.zip` by matching the end of the name against the region spellings `tools/build_water_flow_materials.py` recognises; the uuid is GreenDelta's own `@id`."
     },
     {
-      "uuid": "85cc4ef6-5fa2-3a1e-809d-3502836bf657",
-      "name": "Chemically polluted water",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "8a1611c2-515a-3dc6-a7bf-c6346f70407c",
-      "name": "Cooling water",
-      "context": [
-        "Emission to water",
-        "ocean"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "2cafcdab-a95a-3a66-a4d4-c03bca3fdc10",
-      "name": "Cooling water",
-      "context": [
-        "Emission to water",
-        "river"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "7522ee87-5d75-3523-b679-0b86f690699b",
-      "name": "Cooling water",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "00437a54-1662-3785-8f9d-69a9d5169cdc",
-      "name": "Thermally polluted water",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "72721c4e-d589-4ad7-8c5e-4228b8690ddb",
-      "name": "Waste water",
-      "context": [
-        "Emission to water",
-        "fresh water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "b61cc486-7a9d-3880-a2ae-1bc3a65d0f43",
-      "name": "Waste water",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "461b9748-ac92-46d2-96ad-fb63097c0376",
-      "name": "Waste water/m3",
-      "context": [
-        "Emission to water",
-        "ground water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "6e323b42-84de-3746-bc4e-baea6f53e6ab",
-      "name": "Waste water/m3",
-      "context": [
-        "Emission to water",
-        "river"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "e0065ac9-4578-3e8d-9338-fd99a299ae46",
-      "name": "Waste water/m3",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "51254820-3456-4373-b7b4-056cf7b16e01",
-      "name": "Water",
-      "context": [
-        "Emission to water",
-        "ground water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "6e9312ec-1e02-4232-9589-0746bc67d4e6",
-      "name": "Water",
-      "context": [
-        "Emission to water",
-        "ground water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "3f7e0b7e-aefd-4efd-a946-7bdad142fd50",
-      "name": "Water",
-      "context": [
-        "Emission to water",
-        "ground water, long-term"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "19229850-3ddf-3c30-bfa5-b356b7be2fbd",
-      "name": "Water",
-      "context": [
-        "Emission to water",
-        "river"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "22f7036b-d608-4e79-844f-7ccf7ca409e8",
-      "name": "Water",
-      "context": [
-        "Emission to water",
-        "surface water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "db4566b1-bd88-427d-92da-2d25879063b9",
-      "name": "Water",
-      "context": [
-        "Emission to water",
-        "surface water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "2404b41a-2eed-4e9d-8ab6-783946fdf5d6",
-      "name": "Water",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "3564b893-744f-326d-a75d-a086409ef6ca",
-      "name": "Water",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "0609bdf8-819f-4556-8686-94e3a2476f2e",
-      "name": "Water (fresh water)",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "1a88c7ff-be1f-4134-bf27-c09936d144a8",
-      "name": "Water (river water from technosphere turbined)",
-      "context": [
-        "Emission to water",
-        "fresh water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "793876ab-193f-34a0-80ff-0d8c5163d1b0",
-      "name": "Water (river water from technosphere, turbined)",
-      "context": [
-        "Emission to water",
-        "river"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "96a997d1-fd7b-31f3-8b54-151bcc90202e",
-      "name": "Water (river water from technosphere, turbined)",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "e5e2fee5-20bd-3953-a9a9-e79801674215",
-      "name": "Water (with river silt)",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
       "uuid": "dd641e2e-8f4c-47e9-8a18-8b262c2b476c",
       "name": "Water BWS 0%",
       "context": [
@@ -70721,8 +70468,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "50a12d1c-d150-4f0d-865d-95fe277b337e",
@@ -70732,8 +70479,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "49fc71f1-8155-3212-bf1b-729450ba6b8b",
@@ -70743,8 +70490,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "070c4066-4460-44e2-b563-8986d80bf66c",
@@ -70754,8 +70501,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "2fb5ac12-ef1d-4859-ba95-d0c7ffe4feb4",
@@ -70765,8 +70512,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "6ca08573-97ce-4e3b-9982-b4ab97e09d49",
@@ -70776,8 +70523,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "c75cceea-0371-4d50-b9fe-92faace3adca",
@@ -70787,8 +70534,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "f5269dc3-8c82-4587-af32-984053016fe7",
@@ -70798,8 +70545,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "dbe9474e-3980-43d9-85e5-751424d7863a",
@@ -70809,8 +70556,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "a1588f11-2542-43c4-bc83-913aa9ce3521",
@@ -70820,8 +70567,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "312a465f-c9ab-49c9-875d-45074b03cbde",
@@ -70831,206 +70578,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "d340bcfb-77bb-34f2-8052-b598a2cdf17e",
-      "name": "Water, barrage",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "47ede456-cb14-44fd-bc8e-01cb1bee4af1",
-      "name": "Water, barrage",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "ed378a66-92b6-39bf-93e4-5b6a6b2b4fae",
-      "name": "Water, cooling, drinking",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "3c27fe4e-eec8-4bea-91cd-afc0b0ab138f",
-      "name": "Water, cooling, drinking",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "19040c6d-bc90-3742-9c7b-324ecec69cfe",
-      "name": "Water, cooling, salt, ocean",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "640abc29-56f4-39cb-8dcb-287b03adc19c",
-      "name": "Water, cooling, salt, ocean",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "ec735bee-9e15-3d89-a3e4-26e633949cb0",
-      "name": "Water, cooling, surface",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "31950f2d-17c2-469f-9066-0f6dbb76ce7a",
-      "name": "Water, cooling, surface",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "fc1c42ce-a759-49fa-b987-f1ec5e503db1",
-      "name": "Water, cooling, unspecified natural origin",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "f31750b0-268a-4d18-b694-8e79e91aff86",
-      "name": "Water, cooling, unspecified natural origin",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "17f97e13-8812-3fd3-81c9-a7c355f258bf",
-      "name": "Water, cooling, unspecified natural origin/kg",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "895fa4b4-dc58-3158-8337-1c442a693d65",
-      "name": "Water, cooling, unspecified natural origin/kg",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "0c6d244f-6086-3c6e-bd96-f287f8bb74f7",
-      "name": "Water, cooling, unspecified natural origin/m3",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "d68c92f6-2a11-37ce-a1a3-ea95daea1d42",
-      "name": "Water, cooling, unspecified natural origin/m3",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "2a380e4d-c06a-3a4c-8475-07885c3aa047",
-      "name": "Water, cooling, well",
-      "context": [
-        "Resource",
-        "in ground"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "1d158fc5-859b-3507-ae79-94b101c29655",
-      "name": "Water, cooling, well",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "27b915f1-b59f-35b9-a698-90d3b717da9c",
-      "name": "Water, cooling, well",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "96ad8bf8-e303-4034-a27c-631b5115fa4c",
-      "name": "Water, cooling, well, in ground",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "An indicator encoded as a flow, not a kind of water: only ECO-COSTS 2025's `Baseline Water Stress` scores it, with a factor equal to the stress fraction in the name. Refused by decision of 2026-10-18 (#389).",
+      "comment": "One of the eleven `Water BWS 0%` to `Water BWS 100%` names. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "c899947f-fae8-3869-bdc5-2137a3877d95",
@@ -71040,74 +70589,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "26e62e38-880d-3c67-a705-33aa05ca78e3",
-      "name": "Water, fossil",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "4a57e617-eb1f-4c75-b6d9-61dea2d82295",
-      "name": "Water, fossil",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "b91a1be8-51c0-33f2-a578-61786d9adfc1",
-      "name": "Water, fresh",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "164673ff-3f7d-3587-af97-ccc3503195f9",
-      "name": "Water, fresh",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "fe0acd60-3ddc-11dd-ae59-0050c2490048",
-      "name": "Water, ground",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "f835e4b9-3073-4547-ab20-ba20886fd6a3",
-      "name": "Water, groundwater consumption",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "4ccf250d-4ca3-3133-9d80-053ca48fec35",
@@ -71117,52 +70600,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "31417daa-cd7a-4920-9c73-708b68d494ad",
-      "name": "Water, in air",
-      "context": [
-        "Resource",
-        "in air"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "dd6eaf13-5f58-37ab-b0f5-9402aee2d3ef",
-      "name": "Water, lake",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "1acb026e-9de6-48fe-9e0d-be4d24125bbc",
-      "name": "Water, lake",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "e0e6bb44-1b7b-4d85-a3f8-1ee6a1e983d4",
-      "name": "Water, lake",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "bd42b074-86e5-3e15-991a-bc3cc90ed439",
@@ -71172,8 +70611,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "bdb17b62-a4a6-3dee-ab53-9a5b01e751bf",
@@ -71183,8 +70622,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "d9f02074-6bf6-34f1-bf83-4bcabb47e429",
@@ -71194,426 +70633,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "c0f39d6f-dd5a-4465-9dee-b0c5f897d175",
-      "name": "Water, process and cooling, unspecified natural origin",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "c56bfea1-912d-468f-ba43-bef7c14c8c1e",
-      "name": "Water, process and cooling, unspecified natural origin",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "12604ba6-b7a1-4036-885c-72704b029906",
-      "name": "Water, process, drinking",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "1fef4759-76ce-4443-9a0e-cfa38c4ce14a",
-      "name": "Water, process, drinking",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "27b6f884-cc33-4496-8652-b889a2bf8ad1",
-      "name": "Water, process, salt, ocean",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "a5e216e9-1b15-3a08-ae24-8f8ad8e44f29",
-      "name": "Water, process, surface",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "a945fa6e-b056-4eec-b684-cf42e461d64c",
-      "name": "Water, process, surface",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "433b7ce7-5c2d-41c3-80ef-ead7f45c8699",
-      "name": "Water, process, unspecified natural origin",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "4dbbc4de-4e1b-4b19-b6e4-d89f39a4dd80",
-      "name": "Water, process, unspecified natural origin",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "2e2c9e13-2197-33a0-8cdb-6a24f4c0f973",
-      "name": "Water, process, unspecified natural origin/kg",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "e4521dfd-1897-3ab4-a281-b8de776efeb4",
-      "name": "Water, process, unspecified natural origin/kg",
-      "context": [
-        "Resource",
-        "land"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "d2fc8c70-6510-3f1f-933a-39f3a263c609",
-      "name": "Water, process, unspecified natural origin/kg",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "68ee3cd2-e897-3388-b259-38ece38752f2",
-      "name": "Water, process, unspecified natural origin/m3",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "f8b55757-7bc1-38e6-b663-6053878c7ebb",
-      "name": "Water, process, unspecified natural origin/m3",
-      "context": [
-        "Resource",
-        "land"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "28182006-69ba-388d-9289-00d649518c9d",
-      "name": "Water, process, unspecified natural origin/m3",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "aa5b5285-4914-316e-babc-95007e28bc5d",
-      "name": "Water, process, well",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "6efff6a9-428a-4062-b415-3950e32c1dab",
-      "name": "Water, process, well",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "e0241436-ad0b-40ab-90f8-db4fd79f4e8c",
-      "name": "Water, rain",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "e53baeec-63bb-3c00-9b35-c0ea5f82fe2f",
-      "name": "Water, rain",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "5ea69c55-b481-36c1-9e58-1f9a8398f2e6",
-      "name": "Water, river",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "8c75e7ab-8ab8-41e4-b394-c166ff5b050d",
-      "name": "Water, river",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "30aa8b31-d824-4c3a-b6b3-d141f710b63f",
-      "name": "Water, river",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "d35d62a3-c1e1-40ce-a972-54f302fff50f",
-      "name": "Water, Saline water consumption",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "629ffbca-ca71-4e4b-a006-ca9bdd9cd1df",
-      "name": "Water, salt, ocean",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "4dc484bb-ecba-3137-9f58-27ff8edfd2cd",
-      "name": "Water, salt, ocean",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "79238018-8ec1-4615-9469-2b0df95a43c3",
-      "name": "Water, salt, sole",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "20a57f2b-2d7c-341a-b04a-8957bd33d97f",
-      "name": "Water, salt, sole",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "1f31247d-6556-11dd-ad8b-0800200c9a66",
-      "name": "Water, surface",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "1deae9e0-aa46-31c5-b746-6f71b126f6b4",
-      "name": "Water, surface water consumption",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "75b5c052-b7fa-48f6-8ce8-cfefed1f6fd2",
-      "name": "Water, Surface water consumption",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "b8e26d9b-b07b-45b7-a2dc-5320a8934416",
-      "name": "Water, thermoelectric groundwater consumption",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "f76f7cb6-f5ca-42c8-a348-7912a086625a",
-      "name": "Water, thermoelectric saline water consumption",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "e07f3eae-2be2-4768-bb89-11e5bf4c743e",
-      "name": "Water, thermoelectric surface water consumption",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "8c1494a5-4987-4715-aa2d-1908c495f4eb",
-      "name": "Water, turbine use, unspecified natural origin",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "5be81c7a-31d9-4b79-b9e4-50e92d78a014",
-      "name": "Water, turbine use, unspecified natural origin",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "2caa889e-8187-459d-963a-fa47a79c5378",
-      "name": "Water, unspecified natural origin",
-      "context": [
-        "Resource",
-        "fossil well"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "478e8437-1c21-4032-8438-872a6b5ddcdf",
-      "name": "Water, unspecified natural origin",
-      "context": [
-        "Resource",
-        "in ground"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "831f249e-53f2-49cf-a93c-7cee105f048e",
-      "name": "Water, unspecified natural origin",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "83cabada-4576-3c8d-8188-e1ce97faf490",
@@ -71623,8 +70644,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "f9a80bc3-60ae-3f6a-8dc0-0a4a6afda3c5",
@@ -71634,8 +70655,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "3af4d3d2-fae5-3a39-b469-e4f2b4bd37fa",
@@ -71645,8 +70666,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "b971b6e7-9900-39f2-927e-07951fe9962c",
@@ -71656,8 +70677,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "3e169b64-519a-3f20-8f86-acfaf9325434",
@@ -71667,8 +70688,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     },
     {
       "uuid": "f5a496e6-a749-3f63-80ea-597f7b631f5c",
@@ -71678,140 +70699,8 @@
         "unspecified"
       ],
       "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "cce37357-b138-3933-b89c-d9e42500195f",
-      "name": "Water, unspecified natural origin/kg",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "ce73afe2-f94d-3224-ba60-2f6f13bf909d",
-      "name": "Water, unspecified natural origin/kg",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "7c0da4f3-d0f3-33c2-b2ae-1da5f9954dda",
-      "name": "Water, unspecified natural origin/m3",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "0c755f21-5270-3341-9239-4f4fd780e143",
-      "name": "Water, well",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "7e09a71d-ec9f-3a09-8c17-070cb8cd4524",
-      "name": "Water, well",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "67c40aae-d403-464d-9649-c12695e43ad8",
-      "name": "Water, well, in ground",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "4deca3ec-ae40-460b-b063-35934d4fc936",
-      "name": "Water, well, unspecified",
-      "context": [
-        "Resource",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "9e0de545-41c5-4d35-897d-561df22e6272",
-      "name": "Water, with river silt",
-      "context": [
-        "Resource",
-        "in water"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "c9eaca71-6924-483f-9e86-51265bc0e9ef",
-      "name": "Water/kg",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "kg",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "aaed1031-362c-386d-854f-07ba4f81ba37",
-      "name": "Water/m3",
-      "context": [
-        "Emission to water",
-        "ocean"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "a882a1cc-d051-3e55-9aba-e9d68bbaaaad",
-      "name": "Water/m3",
-      "context": [
-        "Emission to water",
-        "river"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
-    },
-    {
-      "uuid": "995f3484-64f1-4d38-bc97-5364463e02b0",
-      "name": "Water/m3",
-      "context": [
-        "Emission to water",
-        "unspecified"
-      ],
-      "unit": "m3",
-      "reason": "A water row with no material assigned yet. Every kind of water shares 7732-18-5, so without a reading in water-flow-materials.json the merge cannot tell river water from sea water or cooling water and would place the row nowhere. Refused until its material is decided (#389).",
-      "comment": "One of the 123 water rows left once the location-specific rows are refused, refused together on 2026-10-13 pending #389. The uuid is GreenDelta's own `@id`."
+      "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
+      "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
     }
   ]
 }

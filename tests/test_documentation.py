@@ -916,17 +916,24 @@ class OpenLcaRefusalCountsTestCase(unittest.TestCase):
             f"{count('land', 'reso-grou')} minerals (`Clay`, `Granite`, …)", self.text
         )
 
-    def test_the_pending_water_count(self):
-        pending = [
-            r for r in self.excluded
-            if r["reason"].startswith("A water row with no material")
+    def test_the_water_counts(self):
+        read = [
+            r for r in json.loads(
+                (PACKAGE_DATA_DIR / "water-flow-materials.json").read_text()
+            )["rows"]
+            if r["source"] == "openlca-2.8.2"
         ]
-        names = {r["name"] for r in pending}
+        stress = [r for r in self.excluded if r["reason"].startswith("A water-stress class")]
+        indicator = [
+            r for r in self.excluded if r["reason"].startswith("An indicator encoded")
+        ]
         self.assertIn(
-            f"The {len(pending)} water rows left once the location-specific ones "
-            f"are refused — {len(names)} names,",
+            f"{len(read)} of them, under {len({r['source_name'] for r in read})} "
+            "names, are read",
             self.text,
         )
+        self.assertIn(f"The {len(stress)} water-stress rows", self.text)
+        self.assertIn(f"the {len(indicator)} `Water BWS` rows", self.text)
 
     def test_the_duplicate_land_counts(self):
         rows = [
@@ -934,6 +941,7 @@ class OpenLcaRefusalCountsTestCase(unittest.TestCase):
                 (PACKAGE_DATA_DIR / "source-row-duplicates.json").read_text()
             )["duplicates"]
             if r["list_name"] == "openlca"
+            and r["duplicate_name"].startswith(("Occupation", "Transformation"))
         ]
         names = {r["duplicate_name"] for r in rows}
         groups: dict[str, list] = {}
@@ -948,6 +956,19 @@ class OpenLcaRefusalCountsTestCase(unittest.TestCase):
         self.assertIn(f"{len(names)} land-use names are in the package", self.text)
         self.assertIn(f"and so for {pairs} of them", self.text)
         self.assertIn(f"The other copy, {len(rows)} rows in all,", self.text)
+
+    def test_the_duplicate_water_counts(self):
+        rows = [
+            r for r in json.loads(
+                (PACKAGE_DATA_DIR / "source-row-duplicates.json").read_text()
+            )["duplicates"]
+            if r["list_name"] == "openlca" and r["duplicate_name"].startswith("Water")
+        ]
+        names = {r["duplicate_name"] for r in rows}
+        self.assertIn(
+            f"{len(names)} water names are in the package more than once", self.text
+        )
+        self.assertIn(f"the other copies, {len(rows)} rows,", self.text)
 
     def test_the_particle_count(self):
         self.assertIn(

@@ -178,15 +178,16 @@ NODES: tuple[dict[str, Any], ...] = (
         "parent": "water",
         "envo": "ENVO_00002010",
         "label": "Saline water",
-        "basis": None,
+        "basis": f"material:saline_water|cas:{WATER_CAS}",
         "comment": (
-            "The one concept with no flow object: nothing maps onto it, and it is "
-            "here because it groups sea water and brine, which is the test for "
-            "carrying an intermediate at all. A node earns an object when a source "
-            "flow lands on it. Labelled all the same: sea water and brine publish "
-            "it as their `skos:broader`, so it is read even though it is never "
-            "landed on, and it was the one node in the scheme with nothing to "
-            "display there (#273)."
+            "Here because it groups sea water and brine, which is the test for "
+            "carrying an intermediate at all, and with no flow object until "
+            "openLCA's `Water, Saline water consumption` landed on it (#389): a "
+            "node earns an object when a source flow lands on it. Saline water "
+            "rather than sea water, because the name says the water is salt and "
+            "not where it was taken from -- a saline aquifer is saline water too. "
+            "Labelled since #273, because sea water and brine publish it as their "
+            "`skos:broader`."
         ),
     },
     {
