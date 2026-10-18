@@ -117,6 +117,11 @@ QUALIFIERS: dict[str, tuple[str, Any]] = {
     "non-irrigated": ("irrigation", Irrigation.RAINFED),
     "intensive": ("intensity", ManagementIntensity.INTENSIVE),
     "diverse-intensive": ("intensity", ManagementIntensity.DIVERSE_INTENSIVE),
+    # openLCA's.  Every method in GreenDelta's 2.8.2 package scores it as
+    # `annual crop, non-irrigated` except Ecosystem Damage Potential, which
+    # gives it 0.74 against diverse-intensive's 0.61: the other half of the
+    # pair, not a spelling of `intensive`.
+    "monotone-intensive": ("intensity", ManagementIntensity.MONOTONE_INTENSIVE),
     "integrated": ("intensity", ManagementIntensity.INTEGRATED),
     "extensive": ("intensity", ManagementIntensity.EXTENSIVE),
     "organic": ("intensity", ManagementIntensity.ORGANIC),
@@ -171,6 +176,12 @@ QUALIFIERS: dict[str, tuple[str, Any]] = {
     "conservation tillage (obsolete)": ("tillage", Tillage.CONSERVATION),
     "conventional tillage (obsolete)": ("tillage", Tillage.CONVENTIONAL),
     "reduced tillage (obsolete)": ("tillage", Tillage.REDUCED),
+    # openLCA writes the same three classes on `annual crop` and without the
+    # `(obsolete)`.  Every method in the package gives them the factors of
+    # `annual crop`, as ecoinvent's are given those of `arable`.
+    "conservation tillage": ("tillage", Tillage.CONSERVATION),
+    "conventional tillage": ("tillage", Tillage.CONVENTIONAL),
+    "reduced tillage": ("tillage", Tillage.REDUCED),
 }
 
 #: Names the vendors write as one token that mean two.  Applied before the
@@ -179,6 +190,11 @@ REWRITES: tuple[tuple[str, str], ...] = (
     # `(non-use)` is glued onto whatever precedes it: `lake, natural (non-use)`
     # is a natural lake that is not used, which is two statements.
     (" (non-use)", ", non-use"),
+    # openLCA's `Transformation, to unknown (used)`, glued the same way.  It is
+    # the transformation twin of `Occupation, unspecified, used`: EF 3.1 gives
+    # it 1,914.6 against that row's 45.049, the same ratio of 42.5 as
+    # `to unspecified` (2,943.6) to `Occupation, unspecified` (69.262).
+    (" (used)", ", used"),
     # ...except where the glued pair is the whole qualifier, and says one thing
     # twice: a fallow cropland is by definition not in use.
     ("cropland fallow, non-use", "cropland, fallow"),

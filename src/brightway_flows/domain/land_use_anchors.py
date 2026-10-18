@@ -29,10 +29,11 @@ most regime anchors are `relatedMatch`, because the AGROVOC concept is a
 claimed `exactMatch` sixteen times out of seventeen; this scheme claims it
 rarely, and saying so is the point.
 
-**Some values are deliberately unanchored.**  `diverse-intensive` is BAFU's
-intensity and no published vocabulary carries it: ours, flagged as ours, with an
-AGROVOC term request behind it -- the treatment `turbine_water` got.  Silence
-here is a recorded decision, and :data:`UNANCHORED` names every one with its
+**Some values are deliberately unanchored.**  `diverse-intensive` and
+`monotone-intensive` are Ecosystem Damage Potential's intensities, carried by
+BAFU and openLCA, and no published vocabulary carries either: ours, flagged
+as ours, with an AGROVOC term request behind them -- the treatment
+`turbine_water` got.  Silence here is a recorded decision, and :data:`UNANCHORED` names every one with its
 reason, so a new value cannot join them by being forgotten.
 """
 
@@ -140,6 +141,7 @@ COVER_REALMS: dict[LandCover, Realm] = {
     LandCover.GRASSLAND: Realm.TERRESTRIAL,
     LandCover.GRASSLAND_PASTURE_MEADOW: Realm.TERRESTRIAL,
     LandCover.WETLAND: Realm.TERRESTRIAL,
+    LandCover.SPARSELY_VEGETATED: Realm.TERRESTRIAL,
     LandCover.BARREN: Realm.TERRESTRIAL,
     LandCover.SNOW_AND_ICE: Realm.TERRESTRIAL,
     LandCover.URBAN: Realm.TERRESTRIAL,
@@ -456,9 +458,20 @@ UNANCHORED: dict[StrEnum, str] = {
         "Not a cover. The source said nothing, and citing a class for that "
         "would turn silence into a claim."
     ),
+    LandCover.SPARSELY_VEGETATED: (
+        "CORINE Land Cover 3.3.3, sparsely vegetated areas. CORINE publishes "
+        "no SKOS class to cite, and no ENVO class has been checked against it; "
+        "anchored when the CORINE classes are added."
+    ),
     ManagementIntensity.DIVERSE_INTENSIVE: (
         "BAFU's, and Swiss agricultural LCA's. No published vocabulary carries "
         "it; ours, with an AGROVOC term request behind it (plan §6.1)."
+    ),
+    ManagementIntensity.MONOTONE_INTENSIVE: (
+        "The other half of `DIVERSE_INTENSIVE` in Ecosystem Damage Potential, "
+        "which GreenDelta's openLCA package carries as `annual crop, "
+        "non-irrigated, monotone-intensive`. Ours for the same reason: no "
+        "published vocabulary carries it."
     ),
     ManagementIntensity.INTEGRATED: (
         "Swiss integrated production, which Stepwise 2006 carries from "

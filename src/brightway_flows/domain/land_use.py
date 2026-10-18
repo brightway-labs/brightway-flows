@@ -117,6 +117,13 @@ class LandCover(StrEnum):
     #: alone, and this cover is the coarser class neither of them names.
     GRASSLAND_PASTURE_MEADOW = "Grassland, pasture or meadow"
     WETLAND = "Wetland"
+    #: CORINE Land Cover 3.3.3, `sparsely vegetated areas`, which openLCA ships
+    #: as `sparsely vegetated areas, steppe, tundra, badlands`.  The first
+    #: CORINE class in this module, added on its own because it could not be
+    #: folded onto grassland: ILCD 2011, IMPACT 2002+ and EF 2.0 each score it
+    #: differently from `Occupation, grassland` (#385).  When the CORINE classes
+    #: are added, this is one of them.
+    SPARSELY_VEGETATED = "Sparsely vegetated area"
     # ── unvegetated ──
     BARREN = "Barren land"
     SNOW_AND_ICE = "Snow and ice"
@@ -158,8 +165,14 @@ class ManagementIntensity(StrEnum):
     beside `annual crop, non-irrigated, intensive` -- so it is one value of one
     axis rather than an axis of its own that is never combined with this one.
 
-    `DIVERSE_INTENSIVE` is BAFU's, and is the only value in this module with no
-    published class anywhere to cite (§6.1).
+    `DIVERSE_INTENSIVE` and `MONOTONE_INTENSIVE` are the two halves of
+    intensive arable farming in Koellner's Ecosystem Damage Potential, which
+    ecoinvent 2 shipped and BAFU and GreenDelta's openLCA package still carry.
+    EDP scores them apart -- `annual crop, non-irrigated, diverse-intensive`
+    0.61, `monotone-intensive` 0.74, in openLCA LCIA Methods 2.8.2 -- so they
+    are two values, and neither is a spelling of plain `INTENSIVE`, which says
+    the land is farmed intensively without saying which way.  No published
+    vocabulary carries either (§6.1).
 
     `INTEGRATED` is Stepwise 2006's, inherited from ecoinvent 2: Swiss
     integrated production, a farming system between organic and conventional
@@ -171,6 +184,7 @@ class ManagementIntensity(StrEnum):
 
     INTENSIVE = "Intensive"
     DIVERSE_INTENSIVE = "Diverse-intensive"
+    MONOTONE_INTENSIVE = "Monotone-intensive"
     INTEGRATED = "Integrated"
     EXTENSIVE = "Extensive"
     ORGANIC = "Organic"
@@ -336,6 +350,8 @@ COVER_AXES: dict[LandCover, frozenset[str]] = {
     # a source that had a use status or an intensity to state would have stated
     # one of the two finer covers instead.
     LandCover.GRASSLAND_PASTURE_MEADOW: frozenset(),
+    # Nothing: openLCA's one row qualifies it with nothing but examples.
+    LandCover.SPARSELY_VEGETATED: frozenset(),
     LandCover.SHRUBLAND: frozenset({"vegetation_form"}),
     LandCover.WETLAND: frozenset({"position", "use_status"}),
     LandCover.BARREN: frozenset({"use_status"}),

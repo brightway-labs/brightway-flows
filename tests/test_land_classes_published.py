@@ -105,16 +105,17 @@ class TheKeyReadsBackTestCase(unittest.TestCase):
                     self.assertEqual(value.name, value.name.upper())
 
     def test_every_published_class_round_trips(self):
-        """The 364 classes six source lists between them ship.
+        """The 368 classes seven source lists between them ship.
 
         The reached space rather than the legal one, which is what any reader
         of a built list will actually hold.  It was 336 and three lists until
         #174 curated Stepwise 2006's land rows, and 339 and four until #351
-        curated AGRIBALYSE 3.2's, and 345 until openLCA LCIA methods 2.8.2
-        was added.
+        curated AGRIBALYSE 3.2's, 345 until openLCA LCIA methods 2.8.2
+        was added, and 364 until its three `monotone-intensive` classes and CORINE's
+        sparsely vegetated area were read (#385).
         """
         published = published_land_classes()
-        self.assertEqual(len(published), 364)
+        self.assertEqual(len(published), 368)
         for key, value in published.items():
             with self.subTest(key=key):
                 self.assertEqual(LandUse.from_key(key), value)

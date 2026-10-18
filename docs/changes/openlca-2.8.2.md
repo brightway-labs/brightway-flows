@@ -124,9 +124,28 @@ openLCA LCIA methods 2.8.2 is registered and extracted, and merges last
 (priority 500) when a build names it. It cannot be merged yet
 ([#385](https://github.com/brightway-labs/brightway-flows/issues/385)):
 
-- **Land classes** (`land-flow-classes.json`). 474 of the 490 land rows that
-  are kept are read. The other 16 use words the other lists don't:
-  `conservation tillage`, `monotone-intensive`, `agriculture + forest`.
+- **Land classes** (`land-flow-classes.json`). All 490 land rows that are
+  kept are read. Sixteen of them use words the other lists don't, and each was
+  read as follows:
+  - `Occupation, annual crop, conservation tillage`, and `conventional` and
+    `reduced`: cropland under that tillage, the class ecoinvent's
+    `arable, … tillage (obsolete)` rows already have. Every method in the
+    package gives them the factors of `annual crop`.
+  - `annual crop, non-irrigated, monotone-intensive`, in all three
+    directions: cropland, non-irrigated, farmed **monotone-intensive** — a
+    new intensity, beside `diverse-intensive`. Every method gives it the
+    factors of `annual crop, non-irrigated` except Ecosystem Damage
+    Potential, which scores it 0.74 against diverse-intensive's 0.61.
+  - `Transformation, to unknown (used)`: to unspecified land in use, the
+    class of `Transformation, to unspecified, used`. EF 3.1 scores it
+    1,914.6, which EF 3.0 gives the other spelling.
+  - `Transformation, from agriculture + forest`, and `to`: agroforestry,
+    read as agriculture, mosaic. CORINE files agro-forestry areas (2.4.4)
+    under heterogeneous agricultural areas (2.4).
+  - `Occupation, sparsely vegetated areas, steppe, tundra, badlands`: CORINE
+    Land Cover class 3.3.3, published as a new cover, **sparsely vegetated
+    area**. It is not read as grassland, because ILCD 2011, IMPACT 2002+ and
+    EF 2.0 score it differently from openLCA's `Occupation, grassland`.
 
 No documented build includes it, so this page records no merge outcomes: no row
 has been sent anywhere by hand, no registry number corrected, and no name split
@@ -144,11 +163,11 @@ and writes the element's registry number on many of them
 
 ## Rows merged into one flow
 
-**Land-use rows shipped twice.** 160 land-use names are in the package more
+**Land-use rows shipped twice.** 166 land-use names are in the package more
 than once with the same unit: `Occupation, annual crop` in `Resource / land`
-and again in `Resource / unspecified`, and so for 154 of them. Each copy is the
+and again in `Resource / unspecified`, and so for 160 of them. Each copy is the
 same land class, and both map to the same flow. The row in `Resource / land` is
-kept as the valid one. The other copy, 164 rows in all, still maps but is
+kept as the valid one. The other copy, 170 rows in all, still maps but is
 published deprecated, pointing at the valid row (`source-row-duplicates.json`).
 Two names needed a different tie-break:
 

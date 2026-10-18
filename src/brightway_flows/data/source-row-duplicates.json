@@ -19,6 +19,36 @@
     },
     {
       "list_name": "openlca",
+      "duplicate_uuid": "3c578bf7-6ce7-365b-835a-a8c385fe94aa",
+      "duplicate_name": "Occupation, annual crop, conservation tillage",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "dbc67ab5-f891-33ff-b1f2-eed940a1205b",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Occupation, annual crop, conservation tillage` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "74db152d-7ea2-3563-b2f0-25de8fb6c647",
+      "duplicate_name": "Occupation, annual crop, conventional tillage",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "ded8e6ec-41f4-3417-8fee-a44d8a35bd77",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Occupation, annual crop, conventional tillage` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
       "duplicate_uuid": "759324e5-0469-376f-8e45-7a910659b20c",
       "duplicate_name": "Occupation, annual crop, flooded crop",
       "duplicate_context": [
@@ -184,6 +214,21 @@
     },
     {
       "list_name": "openlca",
+      "duplicate_uuid": "36e3de27-9337-37bb-8e42-6402adc97f58",
+      "duplicate_name": "Occupation, annual crop, non-irrigated, monotone-intensive",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "77e63dc5-3fbd-3535-90cb-18fdcb6bad17",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Occupation, annual crop, non-irrigated, monotone-intensive` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
       "duplicate_uuid": "2c701803-1116-3c24-ae30-a3aeabea7d74",
       "duplicate_name": "Occupation, annual crop, organic",
       "duplicate_context": [
@@ -196,6 +241,21 @@
         "land"
       ],
       "comment": "GreenDelta ships `Occupation, annual crop, organic` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "7f52bb75-5d74-338f-b69b-815161f57c07",
+      "duplicate_name": "Occupation, annual crop, reduced tillage",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "d903114a-8c2c-3649-ab5b-22f404fc4646",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Occupation, annual crop, reduced tillage` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
     },
     {
       "list_name": "openlca",
@@ -991,6 +1051,21 @@
         "land"
       ],
       "comment": "GreenDelta ships `Transformation, from annual crop, non-irrigated, intensive` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "f23dcf2e-2508-3274-bda0-bba3ec27dec4",
+      "duplicate_name": "Transformation, from annual crop, non-irrigated, monotone-intensive",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "6298cf1e-af72-3f28-a296-1ae880d427e4",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, from annual crop, non-irrigated, monotone-intensive` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
     },
     {
       "list_name": "openlca",
@@ -1801,6 +1876,21 @@
         "land"
       ],
       "comment": "GreenDelta ships `Transformation, to annual crop, non-irrigated, intensive` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "7c3b3fa1-676a-3452-86c4-9725c915ba57",
+      "duplicate_name": "Transformation, to annual crop, non-irrigated, monotone-intensive",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "873be1a5-2186-3326-9989-8d695db71eb8",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, to annual crop, non-irrigated, monotone-intensive` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
     },
     {
       "list_name": "openlca",

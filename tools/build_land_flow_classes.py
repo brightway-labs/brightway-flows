@@ -90,6 +90,30 @@ SOURCE_KEYS = (
 _LAND_CONTEXT = "land use"
 _LAND_NAME_PREFIXES = ("occupation", "transformation")
 
+#: Why openLCA's `agriculture + forest` is agriculture, mosaic.
+MOSAIC_WHY = (
+    "openLCA's `agriculture + forest`, read as agroforestry: CORINE files "
+    "agro-forestry areas (2.4.4) under heterogeneous agricultural areas (2.4), "
+    "which is the class `agriculture, mosaic` and ecoinvent's `heterogeneous, "
+    "agricultural` stand for. The factors do not decide it: EF 2.0, the only "
+    "method in openLCA LCIA Methods 2.8.2 that scores the row, gives it its "
+    "catch-all value (134, as `sealed soil`), not the 121 of `agriculture, "
+    "mosaic`. Published as agriculture, mosaic."
+)
+
+#: Why CORINE 3.3.3 is a cover of its own.
+SPARSELY_VEGETATED_WHY = (
+    "openLCA's `sparsely vegetated areas, steppe, tundra, badlands` is CORINE "
+    "Land Cover class 3.3.3, sparsely vegetated areas, and is published as "
+    "that cover: the first CORINE class in the taxonomy. It is not folded onto "
+    "grassland, which ReCiPe 2016 scores it as (0.55), because three methods "
+    "in openLCA LCIA Methods 2.8.2 score it differently from openLCA's "
+    "`Occupation, grassland`: ILCD 2011 0.83 against 5.0, IMPACT 2002+ 0.101 "
+    "against 1.037, EF 2.0 134 against 98.5. Nor onto bare area, though CORINE "
+    "files it beside bare rock (3.3, open spaces with little or no "
+    "vegetation): no method scores it as bare area."
+)
+
 #: The curated answers for strings the parser declines.
 #:
 #: Keyed by the name as the vendor ships it, lower-cased.  `cropland fallow
@@ -101,7 +125,25 @@ _LAND_NAME_PREFIXES = ("occupation", "transformation")
 #: Empty is the goal and not the expectation.  A row here is a curator's answer
 #: to a question the axes could not; a row the parser *silently* placed would be
 #: the same answer with nobody's name on it.
-CURATED: dict[str, tuple[dict[str, str], str]] = {}
+CURATED: dict[str, tuple[dict[str, str], str]] = {
+    # openLCA's `agriculture + forest` (#385).  `+` is not a separator the
+    # parser splits on, and reading it as agroforestry is a curator's call.
+    "transformation, from agriculture + forest": (
+        {"direction": "TRANSFORMATION_FROM", "cover": "AGRICULTURE", "built_form": "MOSAIC"},
+        MOSAIC_WHY,
+    ),
+    "transformation, to agriculture + forest": (
+        {"direction": "TRANSFORMATION_TO", "cover": "AGRICULTURE", "built_form": "MOSAIC"},
+        MOSAIC_WHY,
+    ),
+    # CORINE 3.3.3: the one CORINE class in the taxonomy so far (#385).  The
+    # parser would read `sparsely vegetated areas` as the cover and then fail on
+    # the three examples after it, which qualify nothing.
+    "occupation, sparsely vegetated areas, steppe, tundra, badlands": (
+        {"direction": "OCCUPATION", "cover": "SPARSELY_VEGETATED"},
+        SPARSELY_VEGETATED_WHY,
+    ),
+}
 
 
 def _axis_words(land_use: LandUse) -> str:
