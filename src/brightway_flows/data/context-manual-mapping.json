@@ -2547,8 +2547,8 @@
         "Resource",
         "land"
       ],
-      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
-      "comment": "700 flows. A mixed compartment: 667 land rows, which the name-prefix rules pick out, and 28 minerals (`Clay`, `Granite`, `Basalt`, ...) and two water intakes. What the prefixes leave are ground resources, so the compartment rule says that -- unlike ecoinvent's and BAFU's `land`, which hold land rows alone and default to occupation."
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-occu",
+      "comment": "700 flows: 160 `Occupation, ` and 507 `Transformation, ` rows, which the name-prefix rules tell apart, three Eco-indicator `Land use` rows in m2*a, two water intakes, which the `Water` rule takes, and 27 minerals. It is a land-use compartment, as ecoinvent's, BAFU's and AGRIBALYSE's `land` are, so a row nothing else names is land occupation, as theirs is. The 27 minerals and the one transformation spelled in lower case each have a rule of their own, as BAFU's `Uranium` in its `resources / land` has. This rule used to say ground, which sent the three `Land use` rows to the ground while their copies in `Resource / unspecified` went to land occupation."
     },
     {
       "source": "openlca-2.8.2",
@@ -7574,6 +7574,314 @@
       ],
       "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
       "comment": "A metal, ore or mineral, mined or quarried, or a salt won from underground brine, so a resource taken from the ground. One of the 310 rows in openLCA's `Resource / unspecified` that say `ground` for themselves now that the compartment has no rule; see the `Aluminium III` row. (#381)"
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "9d2cef79-0948-4b35-8181-89e93f85a7df",
+      "source_name": "Anhydrite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "45561f28-5f45-402a-aa93-70f5c924fc94",
+      "source_name": "Basalt",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "3a0b712d-34ee-4060-b424-1b1967ced363",
+      "source_name": "Calcite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "f9006a90-d2b6-4d89-b545-cfe4513595c2",
+      "source_name": "Chrysotile",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "d4928577-92f1-468a-ad97-b1c818928c49",
+      "source_name": "Clay",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "Clay is dug out of the ground, so this is a resource taken from the ground. GreenDelta files it under `Resource / land`, beside 667 occupation and transformation rows. The compartment rule reads that compartment as land occupation, as BAFU's rule for its own `resources / land` does, and the 27 minerals filed there are placed here one row at a time, as BAFU's `Uranium` is. Where the name is one ecoinvent 3.12, EF 3.1, BAFU or AGRIBALYSE also ships, it is filed as a resource from the ground there too."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "d4ad56bd-0ca1-47a8-ab23-9ee06db439ee",
+      "source_name": "Clay, bentonite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "c1c2b8ae-afa1-45b5-a06f-e48280fed802",
+      "source_name": "Clay, unspecified",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "8ab40341-a686-49c1-a279-7b1ca5290b85",
+      "source_name": "Dolomite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "24eacd5b-4673-4623-aba5-557c13b9b222",
+      "source_name": "Feldspar",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "4b354612-9b7c-44ac-9e24-3edadd43a00d",
+      "source_name": "Granite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "8a810459-c628-4995-ab1e-ab5bc2ff39e5",
+      "source_name": "Kaolinite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "40ac112e-b350-4eb4-8c6b-5f31de3fbb25",
+      "source_name": "Metamorphous rock, graphite containing",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "3a23546c-d97b-4418-8394-a3040a26d76e",
+      "source_name": "Oil shale",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "708bba4b-32e5-46ac-aa53-68a1413ba326",
+      "source_name": "Olivine",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "f3abd38a-2a6f-4d3f-911b-a90579643c36",
+      "source_name": "Perlite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "4a5dff25-7802-4891-8b99-04b12b869b88",
+      "source_name": "Pumice",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "e8213d5a-197d-4065-b3d3-acda2f3c47a5",
+      "source_name": "Pyrite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "fbef6d27-9899-4a19-a837-92e2d84d47fc",
+      "source_name": "Pyrolusite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "71480177-7371-47e3-bfda-3b713df1b90d",
+      "source_name": "Shale",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "b8c7e7aa-b43f-4d85-9bbe-4b088e4b4f75",
+      "source_name": "Sodium nitrate",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "ab3f1ef2-8ed9-4df0-8415-1e93bbd3c342",
+      "source_name": "Spodumene",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "abdfc495-4119-4fbf-8799-a99963055e17",
+      "source_name": "Sylvinite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "4718c804-ed44-464c-acbe-c5cc51b7580b",
+      "source_name": "TiO2, 54% in ilmenite, 18% in crude ore",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "a0e87b60-3731-47d3-afe8-633752905d11",
+      "source_name": "Titanium ore",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "e8c47a67-92db-4050-acc1-1737908df243",
+      "source_name": "Uranium oxide, 332 GJ per kg, in ore",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "594263c2-8c19-4ae2-a21c-4a570bc297e6",
+      "source_name": "Vermiculite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "589a9c1a-3389-4748-89b9-c47c37baaa72",
+      "source_name": "Zirconia",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "A mineral, ore, salt or fuel, mined or quarried, so a resource taken from the ground. One of the 27 such rows GreenDelta files in openLCA's `Resource / land`, whose compartment rule says land occupation; see the `Clay` row."
+    },
+    {
+      "source": "openlca-2.8.2",
+      "source_uuid": "f0a39567-8eac-4916-b2d5-f98caccb9d10",
+      "source_name": "transformation, from forest, extensive, CM",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-tran",
+      "comment": "Land transformation, by its name. GreenDelta writes it in lower case, so the `Transformation, ` rule does not pick it out, and the compartment rule would file it as an occupation, which is #52. Placed where the compartment's other 507 transformation rows go."
     }
   ],
   "simapro_context_mappings": [
