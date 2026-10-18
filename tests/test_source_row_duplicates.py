@@ -63,10 +63,10 @@ class TheFileTestCase(unittest.TestCase):
             if row["source"] == "openlca-2.8.2"
         }
 
-    def test_160_names_shipped_twice(self):
-        """164 duplicates over 160 names: four names ship three copies."""
-        self.assertEqual(len(self.rulings), 164)
-        self.assertEqual(len({row.valid_uuid for row in self.rulings.values()}), 160)
+    def test_166_names_shipped_twice(self):
+        """170 duplicates over 166 names: four names ship three copies."""
+        self.assertEqual(len(self.rulings), 170)
+        self.assertEqual(len({row.valid_uuid for row in self.rulings.values()}), 166)
 
     def test_a_duplicate_and_its_valid_row_are_one_land_class(self):
         for uuid, row in self.rulings.items():
@@ -86,7 +86,7 @@ class TheFileTestCase(unittest.TestCase):
             self.land[row.valid_uuid]["source_context"][1]
             for row in self.rulings.values()
         )
-        self.assertEqual(compartments, Counter({"land": 163, "in water": 1}))
+        self.assertEqual(compartments, Counter({"land": 169, "in water": 1}))
 
 
 class TheMergeCheckTestCase(unittest.TestCase):

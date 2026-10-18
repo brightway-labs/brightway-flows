@@ -232,8 +232,8 @@ class ProhibitedCombinationTestCase(unittest.TestCase):
         """The validators have to remove something, or they are commentary.
 
         Pinned as numbers rather than an inequality so the effect of a new rule
-        is visible in the diff.  The per-cover product is 4,097 land classes;
-        the rules of §3.5 cut that to 1,665, against 119 the lists actually
+        is visible in the diff.  The per-cover product is 4,591 land classes;
+        the rules of §3.5 cut that to 1,727, against 119 the lists actually
         ship.  Both grew by one when `GRASSLAND_PASTURE_MEADOW` was added:
         it takes no qualifiers, so it contributes exactly one combination.  The plan quoted 4,286 for the raw figure, measured before #290
         removed the `geography` axis and before the cover table was tightened
@@ -251,6 +251,13 @@ class ProhibitedCombinationTestCase(unittest.TestCase):
         combinations, 18 legal ones, because `crop_type` multiplies only the
         permanent cropland it belongs to.
 
+        And 4,097 and 1,665 until #385 added
+        `ManagementIntensity.MONOTONE_INTENSIVE`, the other half of
+        `DIVERSE_INTENSIVE` that GreenDelta's openLCA package ships: one value,
+        493 raw combinations, 61 legal ones.  And `LandCover.SPARSELY_VEGETATED`,
+        CORINE 3.3.3, which openLCA ships and which takes no qualifiers, so it
+        adds exactly one of each, as `GRASSLAND_PASTURE_MEADOW` did.
+
         Still sparse, and deliberately: this is the *legal* space, and the
         published one is what a source flow lands on.
         """
@@ -261,8 +268,8 @@ class ProhibitedCombinationTestCase(unittest.TestCase):
             axes = sorted(COVER_AXES.get(cover, frozenset()))
             choices = [list(QUALIFIER_AXES[name]) + [None] for name in axes]
             raw += len(list(itertools.product(*choices)))
-        self.assertEqual(raw, 4097)
-        self.assertEqual(len(all_land_uses()), 1665 * len(Direction))
+        self.assertEqual(raw, 4591)
+        self.assertEqual(len(all_land_uses()), 1727 * len(Direction))
 
 
 class StructuralIdentityTestCase(unittest.TestCase):

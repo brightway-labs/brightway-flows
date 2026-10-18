@@ -126,9 +126,9 @@ class MintedNamespace(StrEnum):
     #: fall out of its fields.  So the local name is `LandUse.key` --
     #: `occupation/cropland/irrigation=rainfed/intensity=intensive` -- and two
     #: spellings of one class cannot mint two IRIs, because they do not produce
-    #: two keys.  `diverse-intensive` is the only value in the scheme with no
-    #: published class anywhere to cite, and an AGROVOC term request goes with
-    #: it, which is the promise this namespace stands for.
+    #: two keys.  `diverse-intensive` and `monotone-intensive` have no published
+    #: class anywhere to cite, and an AGROVOC term request goes with them,
+    #: which is the promise this namespace stands for.
     LAND_CLASS = "https://vocab.brightway.one/land-classes/"
     #: The substance layer, under the same authority as the flows that occur of
     #: it and named for what it holds.  Minted for the same reason
