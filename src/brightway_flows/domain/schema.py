@@ -293,8 +293,9 @@ def harmonised_flows_simple_schema() -> dict[str, Any]:
     # the right fix.
     correspondence = record_schema(CorrespondenceNode)
     correspondence.pop("$defs", None)
+    association = record_schema(ConceptAssociationNode)
     correspondence["properties"][XKOS_MADE_OF_CURIE] = {
-        "type": "array", "items": record_schema(ConceptAssociationNode),
+        "type": "array", "items": association,
     }
 
     document: dict[str, Any] = {
@@ -326,6 +327,9 @@ def harmonised_flows_simple_schema() -> dict[str, Any]:
     for record in document["properties"].values():
         if isinstance(record.get("items"), dict):
             _hoist_defs(record["items"], into=document)
+    # And from one level further in: an association's `conversion_basis` is an
+    # enum, so `xkos:madeOf`'s items carry a `$defs` of their own.
+    _hoist_defs(association, into=document)
     return document
 
 

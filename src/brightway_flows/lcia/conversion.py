@@ -17,9 +17,12 @@ ecoinvent's 560,000 are not a disagreement to report but a conversion to perform
 statement about a *pair* -- 9.41 is not a fact about brown coal until it is 9.41 MJ
 per kg -- and the merge already recorded the ones its correspondence tables state,
 on the source reference as `qudt:conversionMultiplier` (#260,
-`merge.conversions`).  Nothing here re-derives one: a factor whose units cross and
-whose pair states no multiplier gets no factor and a finding, because the
-alternative is publishing a mass where an energy was asked for.
+`merge.conversions`).  Nothing here re-derives one: a factor whose units cross
+quantity kinds and whose pair states no multiplier gets no factor and a finding,
+because the alternative is publishing a mass where an energy was asked for.  A
+pair of one quantity kind -- becquerels against kilobecquerels -- converts by
+`units.json` whether or not the mapping stated it, which is the rule lookup
+applies too (`domain.units.quantity_factor`, #393).
 
 Measured over the build: **eight** of the 9,848 ecoinvent 3.12 flows that reach a
 consensus flow carry factors and cross a unit, and all eight state a multiplier --
@@ -31,6 +34,8 @@ the time-dimension crossing #272 exists to admit.
 from __future__ import annotations
 
 from dataclasses import dataclass
+
+from brightway_flows.domain.units import quantity_factor
 
 
 @dataclass(frozen=True, slots=True)
@@ -56,8 +61,18 @@ class UnitCrossing:
         )
 
     @property
+    def factor(self) -> float | None:
+        """How many target units one source unit is, by
+        :func:`~brightway_flows.domain.units.quantity_factor` -- the rule
+        lookup applies too: the stated multiplier, else 1.0 for one unit, else
+        what `units.json` gives between two units of one quantity kind."""
+        return quantity_factor(
+            self.source_unit, self.target_unit, self.multiplier or None
+        )
+
+    @property
     def convertible(self) -> bool:
-        return not self.crosses or bool(self.multiplier)
+        return not self.crosses or self.factor is not None
 
     def convert(self, amount: float) -> float:
         """*amount*, per unit of the source flow, as an amount per unit of ours.
@@ -90,10 +105,13 @@ class UnitCrossing:
         """
         if self.multiplier:
             return amount / self.multiplier
-        if self.crosses:
+        if not self.crosses:
+            return amount
+        factor = self.factor
+        if factor is None:
             raise ValueError(
                 f"A factor stated per {self.source_unit} cannot be published per "
                 f"{self.target_unit}: the merge recorded no conversion for the "
-                "pair."
+                "pair, and `units.json` has none between them."
             )
-        return amount
+        return amount / factor

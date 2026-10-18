@@ -68,10 +68,17 @@ import structlog
 
 from brightway_flows.additional_flows import ExcludedSourceFlow
 from brightway_flows.domain.records import SerialisableRecord
-from brightway_flows.domain.units import unit_iri_for
+from brightway_flows.domain.units import (
+    CONVERSION_BASIS_KEY,
+    CONVERSION_PROVENANCE_KEY,
+    ConversionBasis,
+    unit_iri_for,
+)
 from brightway_flows.domain.vocabulary import (
     BIBO_STATUS_ACCEPTED,
     BIBO_STATUS_CURIE,
+    BRIGHTWAY_CONVERSION_BASIS_CURIE,
+    BRIGHTWAY_CONVERSION_PROVENANCE_CURIE,
     BRIGHTWAY_EXCLUDED_SOURCE_CONCEPT_CURIE,
     BRIGHTWAY_EXCLUSION_REASON_CURIE,
     DCTERMS_CREATED_CURIE,
@@ -151,6 +158,11 @@ class ConceptAssociationNode(SerialisableRecord):
     target_concept: dict[str, Any]
     jsonld_type: str = XKOS_CONCEPT_ASSOCIATION_CURIE
     conversion_multiplier: float | None = None
+    #: Who stated the multiplier, and on what evidence; see
+    #: `merge.conversions`.  Absent with the multiplier, and absent beside one
+    #: written by a build from before they were published.
+    conversion_basis: ConversionBasis | None = None
+    conversion_provenance: dict[str, Any] | None = None
 
     _ALIASES: ClassVar[dict[str, str]] = {
         "jsonld_id": "@id",
@@ -158,8 +170,12 @@ class ConceptAssociationNode(SerialisableRecord):
         "source_concept": XKOS_SOURCE_CONCEPT_CURIE,
         "target_concept": XKOS_TARGET_CONCEPT_CURIE,
         "conversion_multiplier": QUDT_CONVERSION_MULTIPLIER_CURIE,
+        "conversion_basis": BRIGHTWAY_CONVERSION_BASIS_CURIE,
+        "conversion_provenance": BRIGHTWAY_CONVERSION_PROVENANCE_CURIE,
     }
-    _OMIT_IF_NONE: ClassVar[frozenset[str]] = frozenset({"conversion_multiplier"})
+    _OMIT_IF_NONE: ClassVar[frozenset[str]] = frozenset({
+        "conversion_multiplier", "conversion_basis", "conversion_provenance",
+    })
 
 
 @dataclass
@@ -440,6 +456,14 @@ def build_correspondences(
             seen_iris.add(iri)
             schemes_seen[scheme.slug] = scheme
             multiplier = association.get(QUDT_CONVERSION_MULTIPLIER_CURIE)
+            multiplier = (
+                float(multiplier)
+                if isinstance(multiplier, (int, float))
+                and not isinstance(multiplier, bool)
+                else None
+            )
+            basis = association.get(CONVERSION_BASIS_KEY)
+            stated_by = association.get(CONVERSION_PROVENANCE_KEY)
             # Copied, not referenced: the strength is settled below and the
             # payload this came from belongs to the caller.
             collected.append((
@@ -448,10 +472,11 @@ def build_correspondences(
                 source_iri,
                 target_iri,
                 dict(source),
+                multiplier,
+                ConversionBasis(basis) if multiplier is not None and basis else None,
                 (
-                    float(multiplier)
-                    if isinstance(multiplier, (int, float))
-                    and not isinstance(multiplier, bool)
+                    dict(stated_by)
+                    if multiplier is not None and isinstance(stated_by, dict)
                     else None
                 ),
             ))
@@ -464,7 +489,9 @@ def build_correspondences(
     # weakened here and the counter stays absent.  It is done again anyway
     # because this is the last point before the claim is published, and a
     # non-zero `weakened_*` says a route into the export skipped the pass (#76).
-    for scheme, iri, source_iri, target_iri, source, multiplier in collected:
+    for (
+        scheme, iri, source_iri, target_iri, source, multiplier, basis, stated_by
+    ) in collected:
         current = match_property_key(source)
         published = cardinality.published_match_for(
             current, scheme.slug, source_iri, target_iri
@@ -477,6 +504,8 @@ def build_correspondences(
                 source_concept=source,
                 target_concept={"@id": target_iri},
                 conversion_multiplier=multiplier,
+                conversion_basis=basis,
+                conversion_provenance=stated_by,
             )
         )
 

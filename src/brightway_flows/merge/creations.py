@@ -44,7 +44,6 @@ from brightway_flows.domain.vocabulary import (
     CHEMINF_CAS_REGISTRY_NUMBER,
     CHEMINF_EC_NUMBER,
     CONSENSUS_ELEMENTARY_FLOW_IRI_PREFIX,
-    QUDT_CONVERSION_MULTIPLIER_CURIE,
     QUDT_HAS_UNIT_CURIE,
     SKOS_EXACT_MATCH_CURIE,
     SKOS_PREF_LABEL_CURIE,
@@ -64,6 +63,7 @@ from brightway_flows.merge.contexts import (
 from brightway_flows.merge.conversions import (
     UnitConversion,
     conversion_from_source_flow,
+    conversion_to_publish,
 )
 from brightway_flows.merge.matching import _classification_values
 from brightway_flows.merge.provenance import (
@@ -418,15 +418,16 @@ def _add_created_flow(
     the whole group by :func:`_unit_by_flow`.  The row's own unit is unchanged
     everywhere it is recorded -- the source ref and the concept association both
     keep it, because it is what the source list says and this list does not get
-    to restate it.  No `qudt:conversionMultiplier` is written for the
-    difference: these are two spellings of one scale and `units.json` already
-    converts between them, which is the same test every other conversion here
-    passes.
+    to restate it.  The difference is two spellings of one scale, so the
+    mapping states the factor `units.json` gives between them, with
+    `conversion_basis` `unit-table`, as every other mapping here does
+    (#393).
 
-    A row whose own unit is not the one the flow states is returned with
-    ``has_unit_mismatch``, which means on a creation exactly what it means on a
-    match: this source row is measured in something other than the flow it
-    landed on (#78).
+    A row whose own unit is not the one the flow states, and that nothing
+    converts, is returned with ``has_unit_mismatch``, which means on a creation
+    exactly what it means on a match: this source row is measured in something
+    other than the flow it landed on, and no published factor says how much
+    (#78).
 
     *conversion* is the one case where the row's own unit is **not** what the
     mapping keeps, and it is the opposite of the paragraph above rather than an
@@ -444,9 +445,6 @@ def _add_created_flow(
         resolve_unit_notation(stated_unit, units_index) if stated_unit else None
     )
     unit_iri = (resolved_unit[1] or "") if resolved_unit else ""
-    unit_mismatch = bool(
-        row.source_unit and declared_unit and row.source_unit != declared_unit
-    )
     provenance = _build_match_provenance(
         source_uuid=row.source_uuid,
         source_name=row.source_name,
@@ -458,13 +456,20 @@ def _add_created_flow(
     # What the *mapping* says, which is the vendor's unit where a fix rebased
     # the row, and the row's own unit everywhere else.
     provenance_unit = conversion.source_unit if conversion else row.source_unit
-    conversion_factor = (
-        conversion.factor
-        if conversion is not None
-        and conversion.holds_between(
-            source_unit=provenance_unit, target_unit=stated_unit
-        )
-        else None
+    overrides = indexes.source.match_overrides_path
+    published = conversion_to_publish(
+        conversion,
+        source_unit=provenance_unit,
+        target_unit=stated_unit,
+        generated_by=str(indexes.source.merge_activity),
+        correspondence_file=str(indexes.mapping_file or ""),
+        overrides_file=str(overrides.name) if overrides is not None else "",
+    )
+    unit_mismatch = bool(
+        row.source_unit
+        and declared_unit
+        and row.source_unit != declared_unit
+        and published is None
     )
 
     existing = accumulator.flows_for_object_in_context(object_id, context_iri)
@@ -485,7 +490,7 @@ def _add_created_flow(
             selector_reason=CREATION_SELECTOR_REASON,
             mapping_file=indexes.mapping_file or "",
             provenance=provenance,
-            conversion_factor=conversion_factor,
+            conversion=published,
         )
         _append_concept_association(
             target,
@@ -499,7 +504,7 @@ def _add_created_flow(
             # narrower reading of it.
             map_type_curie=SKOS_EXACT_MATCH_CURIE,
             provenance=provenance,
-            conversion_factor=conversion_factor,
+            conversion=published,
         )
         elementary_flow_id = target.elementary_flow_id
     else:
@@ -531,11 +536,7 @@ def _add_created_flow(
                     "mapping_file": indexes.mapping_file or "",
                     "provenance": provenance,
                     "merge_details": {},
-                    **(
-                        {QUDT_CONVERSION_MULTIPLIER_CURIE: conversion_factor}
-                        if conversion_factor is not None
-                        else {}
-                    ),
+                    **(published.to_metadata() if published is not None else {}),
                 },
             }],
             context=_context_for_new_flow(context_iri),
@@ -563,11 +564,7 @@ def _add_created_flow(
                     "@id": f"{CONSENSUS_ELEMENTARY_FLOW_IRI_PREFIX}{elementary_flow_id}",
                 },
                 "provenance": provenance,
-                **(
-                    {QUDT_CONVERSION_MULTIPLIER_CURIE: conversion_factor}
-                    if conversion_factor is not None
-                    else {}
-                ),
+                **(published.to_metadata() if published is not None else {}),
             }],
             # The substance keys, in the bag the record keeps undeclared keys
             # in; see `_inherited_flow_object_fields`.

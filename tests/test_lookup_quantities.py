@@ -20,7 +20,13 @@ from test_lookup_index import (
 
 
 def quantity_build(
-    tmp_path: Path, *, name="Quantity fixture", source="Bq", target="kBq", factor=None
+    tmp_path: Path,
+    *,
+    name="Quantity fixture",
+    source="Bq",
+    target="kBq",
+    factor=None,
+    basis=None,
 ):
     db = tmp_path / "consensus-flows.sqlite3"
     obj = _flow_object("quantity-object", name)
@@ -30,6 +36,8 @@ def quantity_build(
     metadata = {"unit": source, "original_context": ["Environmental", "Air", "Unknown"]}
     if factor is not None:
         metadata["qudt:conversionMultiplier"] = factor
+    if basis is not None:
+        metadata["conversion_basis"] = basis
     elementary.source_refs = [
         {
             "list_name": "quantity-fixture",
@@ -265,3 +273,32 @@ def test_invalid_recorded_conversion_is_refused(tmp_path, factor):
                 identifier="source-row",
             )
         )
+
+
+def test_a_unit_table_multiplier_is_not_a_reason_to_ask_for_the_identifier(tmp_path):
+    """A build publishes `units.json`'s 0.001 on a Bq row mapped onto a kBq
+    flow, saying so with `conversion_basis` (#393).  It is true of any flow
+    measured in those units, so a caller sending the name gets it too."""
+    db = quantity_build(
+        tmp_path, source="Bq", target="kBq", factor=0.001, basis="unit-table"
+    )
+    result = FlowMatcher.from_results(db, recorded_by_name=True).match(
+        FlowQuery(name="Quantity fixture", unit="Bq", context_iri=AIR)
+    )
+    assert result.matched and result.tier == "recorded-by-name"
+    assert result.unit_conversion_factor == pytest.approx(0.001)
+    assert result.selector_details["quantity_conversion"]["basis"] == "unit-table"
+
+
+def test_a_stated_multiplier_still_asks_for_the_identifier(tmp_path):
+    db = quantity_build(
+        tmp_path, source="kg", target="kg", factor=0.599, basis="correspondence-table"
+    )
+    result = FlowMatcher.from_results(db, recorded_by_name=True).match(
+        FlowQuery(name="Quantity fixture", unit="kg", context_iri=AIR)
+    )
+    assert result.unit_conversion_factor is None
+    assert (
+        result.selector_details["quantity_conversion"]["basis"]
+        == "source-identifier-required"
+    )

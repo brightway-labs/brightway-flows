@@ -1173,6 +1173,7 @@ class RebasingARowOntoAnotherUnitTestCase(unittest.TestCase):
             "target_unit": "m3",
             "factor": 0.00204,
             "comment": "0.49 oven-dry tonnes per m3, IPCC Table 4.14",
+            "stated_in": "fixes.json",
         })
 
     def test_the_record_survives_normalisation(self):

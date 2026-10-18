@@ -64,6 +64,21 @@ class DisagreementIsReportedTestCase(unittest.TestCase):
         self.assertEqual(_find(matches, allowed={("s-1", "t-1")}), {"s-1"})
 
 
+class AConvertedPairIsNotAMismatchTestCase(unittest.TestCase):
+    """A pair `units.json` converts has its factor published on the mapping,
+    so it is not a row measured in something nothing says how to convert
+    (#393)."""
+
+    def test_becquerels_on_a_kilobecquerel_flow_are_not_reported(self):
+        self.assertEqual(_find([Match(source_unit="Bq", target_unit="kBq")]), set())
+
+    def test_kilowatt_hours_on_a_megajoule_flow_are_not_reported(self):
+        self.assertEqual(_find([Match(source_unit="kWh", target_unit="MJ")]), set())
+
+    def test_a_crossing_of_quantity_kinds_still_is(self):
+        self.assertEqual(_find([Match(source_unit="kg", target_unit="MJ")]), {"s-1"})
+
+
 class BothSidesAreCanonicalisedTestCase(unittest.TestCase):
     """The source side is canonical by the time it reaches the merge; the
     target side is whatever the flow record stores."""
