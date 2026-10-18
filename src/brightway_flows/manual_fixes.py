@@ -212,6 +212,8 @@ def _conversion_declared_by(
         "target_unit": str(fix["new_value"]),
         "factor": float(factor),
         "comment": str(fix.get("comment") or "").strip(),
+        # Which file stated it, so the published conversion can cite it.
+        "stated_in": filename,
     }
 
 

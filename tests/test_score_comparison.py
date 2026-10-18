@@ -203,6 +203,13 @@ class ReasonsTestCase(unittest.TestCase):
         self.assertIs(rows[URANIUM].reason, ContributionReason.UNIT_CROSSING_UNCONVERTED)
         self.assertEqual(rows[URANIUM].our_contribution, 0.0)
 
+    def test_a_crossing_the_unit_table_converts_takes_its_factor(self):
+        """Bq against kBq states no multiplier; 1 Bq is 0.001 kBq all the same."""
+        targets = {URANIUM: _target("c-uranium", source_unit="Bq", target_unit="kBq")}
+        rows = self.rows(ours={"c-uranium": 1.0}, targets=targets)
+        self.assertAlmostEqual(rows[URANIUM].our_contribution, 6.0e-8 * 0.001)
+        self.assertAlmostEqual(rows[URANIUM].multiplier, 0.001)
+
     def test_a_factor_only_we_state(self):
         rows = self.rows(ours={"c-water": 5.0}, targets={WATER: _target("c-water")})
         self.assertIs(rows[WATER].reason, ContributionReason.ONLY_CONSENSUS_FACTOR)

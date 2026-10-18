@@ -9,8 +9,9 @@ megajoules and in kilowatt-hours, produced flows nobody was told about.
 The question a creation can answer is not the same one.  There is no target to
 disagree with, because the row is the target; what can disagree is the rows
 landing together.  Whichever way that is settled, a row measured in something
-other than the flow it made is flagged exactly as a matched row is, and means
-the same by it.
+other than the flow it made is treated exactly as a matched row is: where
+`units.json` converts the two its mapping states that factor, and where nothing
+does it is flagged (#393).
 """
 
 import json
@@ -424,15 +425,29 @@ class ThroughTheMergeTestCase(unittest.TestCase):
         self.assertEqual(len(renamed), 1, "the stray row is no longer renamed here")
         self.assertEqual(renamed[0]["unit"], "MJ")
 
-    def test_waste_heat_takes_the_curated_unit_and_flags_the_other_row(self):
+    def _published(self, accumulator):
+        """``source uuid -> the source reference's metadata`` over every flow."""
+        return {
+            ref["source_flow_uuid"]: ref["source_metadata"]
+            for flow in accumulator.merged_elementary
+            for ref in flow.source_refs
+        }
+
+    def test_waste_heat_takes_the_curated_unit_and_converts_the_other_row(self):
         """BAFU writes `Heat, waste` in megajoules in thirteen compartments and
-        in kilowatt-hours in one, where it writes the megajoule row too."""
+        in kilowatt-hours in one, where it writes the megajoule row too.  The
+        kilowatt-hour row's mapping states 3.6 MJ per kWh, from `units.json`,
+        so it is converted rather than flagged (#393)."""
         created, accumulator = _merge_bafu(self._rows("heat, waste"))
 
-        flagged = [row for row in created if row.has_unit_mismatch]
-        self.assertEqual([row.source_unit for row in flagged], ["kWh"])
-        self.assertEqual(flagged[0].unit_decision["declared"], "MJ")
-        self.assertEqual(flagged[0].unit_decision["decided_by"], DECIDED_BY_CURATOR)
+        other = [row for row in created if row.source_unit != "MJ"]
+        self.assertEqual([row.source_unit for row in other], ["kWh"])
+        self.assertEqual(other[0].unit_decision["declared"], "MJ")
+        self.assertEqual(other[0].unit_decision["decided_by"], DECIDED_BY_CURATOR)
+        self.assertFalse(other[0].has_unit_mismatch)
+        metadata = self._published(accumulator)[other[0].source_uuid]
+        self.assertAlmostEqual(metadata["qudt:conversionMultiplier"], 3.6)
+        self.assertEqual(metadata["conversion_basis"], "unit-table")
         self.assertEqual(
             {
                 flow.unit for flow in accumulator.merged_elementary
@@ -442,41 +457,58 @@ class ThroughTheMergeTestCase(unittest.TestCase):
             {"MJ"},
         )
 
-    def test_road_noise_takes_the_reference_unit_and_flags_the_other_rows(self):
+    def test_road_noise_takes_the_reference_unit_and_converts_the_other_rows(self):
         created, accumulator = _merge_bafu(self._rows("noise, road"))
 
-        flagged = [row for row in created if row.has_unit_mismatch]
-        self.assertEqual({row.source_unit for row in flagged}, {"km"})
+        other = [row for row in created if row.source_unit != "m"]
+        self.assertEqual({row.source_unit for row in other}, {"km"})
         self.assertEqual(
-            {row.unit_decision["decided_by"] for row in flagged},
+            {row.unit_decision["decided_by"] for row in other},
             {DECIDED_BY_UNIT_TABLE},
         )
+        published = self._published(accumulator)
+        for row in other:
+            with self.subTest(name=row.source_name):
+                self.assertFalse(row.has_unit_mismatch)
+                self.assertEqual(
+                    published[row.source_uuid]["qudt:conversionMultiplier"], 1000.0
+                )
         self.assertEqual(
             {flow.unit for flow in accumulator.merged_elementary}, {"m"}
         )
 
-    def test_a_row_that_agrees_with_its_flow_is_not_flagged(self):
-        """Only the row measured in something else.  The same rule the matched
-        side follows, so a reader of the report needs one explanation."""
-        created, _accumulator = _merge_bafu(self._rows("heat, waste", "noise, road"))
+    def test_a_row_that_agrees_with_its_flow_states_no_conversion(self):
+        """Only the row measured in something else carries a factor.  The same
+        rule the matched side follows, so a reader of the report needs one
+        explanation."""
+        created, accumulator = _merge_bafu(self._rows("heat, waste", "noise, road"))
+        published = self._published(accumulator)
 
-        agreeing = [row for row in created if not row.has_unit_mismatch]
+        agreeing = [
+            row for row in created
+            if row.source_unit == row.unit_decision["declared"]
+        ]
         self.assertTrue(agreeing)
         for row in agreeing:
             with self.subTest(name=row.source_name, unit=row.source_unit):
-                self.assertEqual(row.source_unit, row.unit_decision["declared"])
+                self.assertFalse(row.has_unit_mismatch)
+                self.assertNotIn(
+                    "qudt:conversionMultiplier", published[row.source_uuid]
+                )
 
-    def test_the_flag_reaches_the_merge_outcome(self):
-        """`has_unit_mismatch` was 0 on every created outcome ever written."""
+    def test_a_converted_row_reaches_the_merge_outcome_unflagged(self):
+        """`has_unit_mismatch` means a row nothing converts, and the outcome
+        says the same as the created record."""
         created, _accumulator = _merge_bafu(self._rows("noise, road"))
         source = resolve_source_list(BAFU)
 
         outcomes = [
             MergeOutcome.from_created("run-1", source, row) for row in created
         ]
-        flagged = [outcome for outcome in outcomes if outcome.has_unit_mismatch]
-        self.assertEqual({outcome.source_unit for outcome in flagged}, {"km"})
-        self.assertEqual({outcome.outcome for outcome in flagged}, {"created"})
+        self.assertEqual(
+            [outcome for outcome in outcomes if outcome.has_unit_mismatch], []
+        )
+        self.assertEqual({outcome.outcome for outcome in outcomes}, {"created"})
 
     def test_the_outcome_carries_how_the_unit_was_settled(self):
         """`outcome` says which question was asked; the detail says who

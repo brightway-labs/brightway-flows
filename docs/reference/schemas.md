@@ -204,7 +204,9 @@ matches on and publishes the vendor's.
   },
   "xkos:targetConcept": {"@id": "<target IRI>"},
   "provenance": { … },
-  "qudt:conversionMultiplier": 9.41
+  "qudt:conversionMultiplier": 9.41,
+  "conversion_basis": "correspondence-table",
+  "conversion_provenance": { … }
 }
 ```
 
@@ -220,14 +222,58 @@ flow groups several source flows. Everything else uses `skos:exactMatch`.
 #### `qudt:conversionMultiplier`
 
 Multiply an amount of the **source** flow by it to get the amount of the
-**target** flow.
+**target** flow. The source amount is in the unit the vendor shipped, which is
+the source concept's `qudt:hasUnit`.
 
-It is published **only where `units.json` could not already have supplied the
-factor**. Litres to cubic metres, tonnes to kilograms, MJ to J: those are
-properties of the units themselves, carried on the unit via
-`conversion_multiplier` and `reference_unit_iri`, and restating them per
-mapping would be a second copy of a fact that has a home. Two kinds of
-conversion have no such home, and both are here.
+It is published wherever the two units differ and something converts them, and
+`conversion_basis` says what did:
+
+| `conversion_basis` | Who stated the factor | Example |
+|---|---|---|
+| `correspondence-table` | the source list's own correspondence table | ecoinvent's `Coal, brown, in ground`, 9.41 MJ per kg |
+| `curated` | this project, in a match override or the manual fix that rebased the row's unit | BAFU's standing wood, 0.00204 m³ per kg |
+| `unit-table` | `units.json`, between two units of one quantity kind | a BAFU row in Bq on a flow in kBq, 0.001 |
+
+`conversion_provenance` is the factor's own PROV record. For a `unit-table`
+factor it names the two unit IRIs and `units.json`:
+
+```json
+"qudt:conversionMultiplier": 0.001,
+"conversion_basis": "unit-table",
+"conversion_provenance": {
+  "prov:wasGeneratedBy": "merge_bafu",
+  "prov:wasAttributedTo": "brightway-flows",
+  "prov:hadPrimarySource": [
+    "https://vocab.brightway.one/units/unit/BQ",
+    "https://vocab.brightway.one/units/unit/KiloBQ",
+    "units.json"
+  ],
+  "prov:wasDerivedFrom": "units.json"
+}
+```
+
+For a stated factor it names the two units and the file that stated it. In the
+published correspondences the same two keys are `brightway:conversionBasis` and
+`brightway:conversionProvenance`.
+
+**A `unit-table` factor is true of any flow measured in those two units**, so
+you can apply it to an amount whichever row it came from. A
+`correspondence-table` or `curated` factor is about one source row: a density,
+a heating value, an ore's share of its metal. Apply it to that row's amounts
+and no others.
+
+Until [#393](https://github.com/brightway-labs/brightway-flows/issues/393) a
+`unit-table` factor was left out. The mapping then gave a source unit and a
+target unit with nothing between them, and a bare multiplier could not have
+said whose number it was. On the build of 19d6cc6, 162 BAFU rows were in that
+position: 159 in becquerels on kilobecquerel flows, two road-noise rows in
+kilometres on metre flows, and `Heat, Waste` in kilowatt-hours on a megajoule
+flow.
+
+A stated factor is kept only where `units.json` could not already have
+supplied it. A table stating litres to cubic metres at 0.001 is publishing what
+`units.json` says, so the mapping states it as `unit-table`. Two kinds of
+conversion have no home in the unit table, and both are below.
 
 **Crossing quantity kinds.** Mass to Energy, Volume to Mass. There is no
 unit-table factor to defer to, because how many megajoules a kilogram is
@@ -426,15 +472,16 @@ flow in. Where neither a decision, a published unit nor a reference unit
 settles it, the first row stands and the run says so — and the row is listed
 under **Checks → Unit disagreements** as needing a decision.
 
-Either way, a row whose own unit is not the one the flow states is flagged
-`has_unit_mismatch` on its merge outcome, which means on a creation exactly what
-it means on a match: this source row is measured in something other than the
-flow it landed on. Which of the two situations produced it is the outcome's own
-`outcome` column.
-
 Each row keeps its own unit where its own unit belongs: on its source ref and
-on its `qudt:hasUnit`. No multiplier is published for the difference, by the
-rule above — kilometres to metres is exactly what the unit table already says.
+on its `qudt:hasUnit`. The kilometre row's mapping states 1,000 beside it, with
+`conversion_basis` `unit-table`, because a kilometre is 1,000 metres whichever
+flow is measured in them.
+
+A row whose own unit is not the one the flow states, and that nothing converts,
+is flagged `has_unit_mismatch` on its merge outcome. That means on a creation
+exactly what it means on a match: this source row is measured in something
+other than the flow it landed on, and no published factor says by how much.
+Which of the two situations produced it is the outcome's own `outcome` column.
 A group whose units share no reference unit is left as it arrived and reported,
 because choosing there would be picking rather than deciding.
 

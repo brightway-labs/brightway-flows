@@ -10,6 +10,7 @@ anything but ``units.json``.
 from __future__ import annotations
 
 import math
+from enum import StrEnum
 from functools import lru_cache
 from typing import Any
 
@@ -255,6 +256,59 @@ def unit_table_factor(source_unit: str, target_unit: str) -> float | None:
     if not isinstance(target_multiplier, (int, float)) or not target_multiplier:
         return None
     return float(source_multiplier) / float(target_multiplier)
+
+
+#: The key a mapping states :class:`ConversionBasis` under, beside
+#: `qudt:conversionMultiplier`.
+CONVERSION_BASIS_KEY = "conversion_basis"
+
+#: The key a mapping states the conversion's own provenance under.
+CONVERSION_PROVENANCE_KEY = "conversion_provenance"
+
+
+class ConversionBasis(StrEnum):
+    """Who stated a published conversion factor.
+
+    Published beside the number as `conversion_basis`, because a
+    source-specific density and a change of SI prefix are otherwise the same
+    bare multiplier.  See `merge.conversions`.
+    """
+
+    #: The list's correspondence table, as published.
+    CORRESPONDENCE_TABLE = "correspondence-table"
+    #: This project: a match override, or the manual fix that rebased a unit.
+    CURATED = "curated"
+    #: `units.json`, between two units of one quantity kind.
+    UNIT_TABLE = "unit-table"
+
+
+def quantity_factor(
+    source_unit: str, target_unit: str, stated: float | None = None
+) -> float | None:
+    """How many *target_unit* one *source_unit* of a flow is, or None.
+
+    The rule lookup and characterisation both apply, so that the two cannot
+    convert one pair differently:
+
+    1. A multiplier *stated* for the pair -- a density, a heating value, an
+       ore's share of its metal -- because it says something about the flow
+       that no unit table can.
+    2. 1.0 where the two are one unit: by IRI where `units.json` knows both,
+       as text otherwise.
+    3. The factor `units.json` gives between two units of one quantity kind.
+
+    None where none of them answers: a kilogram against a megajoule with no
+    heating value stated is a crossing, and a guess would publish a mass where
+    an energy was asked for.
+    """
+    if stated is not None:
+        return float(stated)
+    source_iri, target_iri = unit_iri_for(source_unit), unit_iri_for(target_unit)
+    if source_iri and target_iri and source_iri == target_iri:
+        return 1.0
+    if source_unit.strip() and source_unit.strip() == target_unit.strip():
+        return 1.0
+    return unit_table_factor(source_unit, target_unit)
 
 
 def states_more_than_the_unit_table(
