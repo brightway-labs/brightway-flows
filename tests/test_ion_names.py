@@ -197,6 +197,32 @@ class PassTestCase(unittest.TestCase):
             )
 
 
+class FlowsCarryTheSynonymsTestCase(unittest.TestCase):
+    """The published list reads a flow's synonyms off the flow."""
+
+    def test_every_flow_of_an_ion_carries_the_standards_synonyms_first(self):
+        from brightway_flows.domain.flow import Flow
+        from brightway_flows.pipeline.ion_names import carry_ion_synonyms_onto_flows
+        from brightway_flows.pipeline.layer_writes import LayerWriteLog
+
+        lead = _object("Lead(2+)", CATION, charge=2, object_id="fo-lead")
+        standardise_ion_names([lead])
+        flow = Flow(uuid="ef-1", flow_object_id="fo-lead",
+                    prefLabel=[{"@value": "Lead(2+)", "@language": "en"}],
+                    altLabel=[{"@value": "plumbous ion", "@language": "en"}])
+        writes = LayerWriteLog()
+        stats = carry_ion_synonyms_onto_flows([flow], [lead], writes=writes)
+        self.assertEqual(
+            [row["@value"] for row in flow.altLabel],
+            ["Lead(II)", "Lead II", "plumbous ion"],
+        )
+        self.assertEqual(stats["flows_given_synonyms"], 1)
+        self.assertEqual(len(writes.writes), 1)
+
+        again = carry_ion_synonyms_onto_flows([flow], [lead], writes=writes)
+        self.assertEqual(again["flows_given_synonyms"], 0)
+
+
 class SynonymsSurviveTestCase(unittest.TestCase):
     """`carry_member_names` withdraws a synonym that answers for two
     substances.  One the standard promises stays where the standard put it."""

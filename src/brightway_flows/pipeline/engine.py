@@ -62,7 +62,10 @@ from brightway_flows.pipeline.element_labels import (
     IonPrefLabelPass,
 )
 from brightway_flows.pipeline.ion_names import PASS_NAME as ION_NAMING_PASS_NAME
-from brightway_flows.pipeline.ion_names import standardise_ion_names
+from brightway_flows.pipeline.ion_names import (
+    carry_ion_synonyms_onto_flows,
+    standardise_ion_names,
+)
 from brightway_flows.pipeline.substance_labels import SubstancePrefLabelPass
 from brightway_flows.pipeline.loading import (
     _load_transform_inputs,
@@ -1061,6 +1064,12 @@ def run_pipeline(
     # synonyms it writes before they are serialised; before the substance pass,
     # which carries the names onto the flows.
     tally(ION_NAMING_PASS_NAME, standardise_ion_names(flow_objects))
+    # ... and onto the ions' flows, which is where the published list reads a
+    # flow's synonyms from.
+    tally(
+        "carry_ion_synonyms_onto_flows",
+        carry_ion_synonyms_onto_flows(flows, flow_objects, writes=layer_writes),
+    )
 
     # After the element pass, and last of the label writers on purpose: a flow
     # leaves for the export called what its substance is called, or carrying a

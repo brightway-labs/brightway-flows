@@ -154,7 +154,16 @@ Applied Chemistry recommends for ions — `iron(2+)`, `chloride(1-)` — with th
 element spelled as IUPAC spells it. IUPAC has no name for an ion whose charge
 nobody stated, so `Copper, ion` is this list's own spelling, the one EF's
 `Titanium, ion` already had. Synonyms the substance already carried stay; the
-standard's own come first.
+standard's own come first, on the substance and on every one of its flows.
+
+**Respelling a name moves no source row.** The label a substance had before —
+`Bromide`, `Cesium(1+)` — is still a name the merge matches it by, so
+AGRIBALYSE's `Bromide` to industrial soil, whose registry number 59-99-4 reaches
+nothing, still lands on bromide by its name. The synonyms the standard adds are
+matched as synonyms always are, which on a substance with a registry number
+means not on their own. Matched as names, `Chromium VI` would have let
+ecoinvent's own record of a rename, `Chromium IV` → `Chromium VI`, move
+ecoinvent 3.8's row numbered for chromium(4+) onto chromium(6+).
 
 A Roman numeral states an oxidation number, and only for a single atom is that
 the charge. So the numerals are added for single-atom ions only:

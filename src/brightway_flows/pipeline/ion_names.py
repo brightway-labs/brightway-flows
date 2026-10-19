@@ -31,6 +31,8 @@ from typing import Any
 
 import structlog
 
+from brightway_flows.domain.common import Provenance
+from brightway_flows.domain.flow import Flow
 from brightway_flows.domain.flow_object import FlowObject
 from brightway_flows.domain.ion_names import (
     ION_NAMING_STANDARD,
@@ -38,6 +40,7 @@ from brightway_flows.domain.ion_names import (
     STANDARD_SYNONYM_DERIVED_FROM,
     is_anion_name,
     is_replaced_label_row,
+    is_standard_label_row,
     standard_ion_label,
     standard_ion_synonyms,
 )
@@ -49,6 +52,7 @@ from brightway_flows.domain.vocabulary import (
 )
 from brightway_flows.flow_layers.ions import _extract_ion_base_and_charge
 from brightway_flows.flow_layers.labels import _label_entry, _set_pref_label
+from brightway_flows.pipeline.layer_writes import LayerWriteLog
 from brightway_flows.sources import base_source_label
 
 logger = structlog.get_logger(__name__)
@@ -241,4 +245,73 @@ def standardise_ion_names(flow_objects: list[FlowObject]) -> Counter[str]:
     return stats
 
 
-__all__ = ["PASS_NAME", "ion_reading", "standardise_ion_names"]
+def _published_synonyms(obj: FlowObject) -> list[str]:
+    """The standard's synonyms *obj* carries, in the order it carries them."""
+    return [
+        _row_value(row) for row in obj.altLabel or []
+        if is_standard_label_row(row) and _row_value(row)
+    ]
+
+
+def _flow_label_row(value: str, object_id: str) -> dict[str, Any]:
+    """A synonym in the shape a flow's labels take, which is `source` where a
+    flow object's take `provenance` (`pipeline.sqlite`)."""
+    return {
+        "@value": value,
+        "@language": "en",
+        "@lang": "en",
+        "source": Provenance(
+            was_generated_by=PASS_NAME,
+            was_attributed_to="brightway-flows",
+            had_primary_source=[],
+            was_derived_from=f"flow_object.altLabel ({object_id})",
+        ).to_dict(),
+    }
+
+
+def carry_ion_synonyms_onto_flows(
+    flows: list[Flow],
+    flow_objects: list[FlowObject],
+    *,
+    writes: LayerWriteLog,
+) -> Counter[str]:
+    """Give every flow of an ion the synonyms the standard gave its substance.
+
+    The published list takes a flow's synonyms from the flow, and in the
+    transform a flow's synonyms are its own, gathered by the chain before any
+    substance existed: on the first build of #401, 13 of `Lead(2+)`'s 18
+    published flows -- EF 3.1's -- lacked `Lead II` while the substance had
+    it, and the 5 the merge minted, which copy their substance's synonyms when
+    they are made, had it.  So the standard's synonyms are written onto the
+    flows as well, first, as on the substance, and through `writes`, so each
+    write reaches the change log.
+    """
+    stats: Counter[str] = Counter()
+    synonyms_by_object = {
+        obj.flow_object_id: names
+        for obj in flow_objects
+        if (names := _published_synonyms(obj))
+    }
+    for flow in flows:
+        object_id = flow.flow_object_id.strip()
+        synonyms = synonyms_by_object.get(object_id)
+        if not synonyms:
+            continue
+        promised = set(synonyms)
+        kept = [row for row in flow.altLabel or [] if _row_value(row) not in promised]
+        rows = [_flow_label_row(value, object_id) for value in synonyms] + kept
+        if writes.write(
+            flow, "altLabel", rows, pass_name=PASS_NAME,
+            comment="the ion naming standard's synonyms, from the substance",
+        ):
+            stats["flows_given_synonyms"] += 1
+    logger.info("ion_synonyms_carried_onto_flows", **dict(stats))
+    return stats
+
+
+__all__ = [
+    "PASS_NAME",
+    "carry_ion_synonyms_onto_flows",
+    "ion_reading",
+    "standardise_ion_names",
+]
