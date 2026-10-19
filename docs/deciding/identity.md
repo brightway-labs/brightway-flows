@@ -181,5 +181,5 @@ On the five-list build of `main` at `43403ac` (run
 `Cesium(1+)`, `Chromium IV`, the five anions, and the seven generic ions that
 had a capital `Ion`. It reads four of the 51 as ions because each is recorded
 as the ion of its element, though typed an imprecise mixture
-([#628](https://github.com/brightway-labs/brightway-flows/issues/628)):
+([#403](https://github.com/brightway-labs/brightway-flows/issues/403)):
 `Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)` and `Chromium IV`.

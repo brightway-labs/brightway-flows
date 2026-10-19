@@ -40,7 +40,7 @@
       "title": "`Chromium IV` is published as `Chromium(4+)`, though it is typed a mixture",
       "subject": {"kind": "substance", "id": "fo-14c58fbff9ee611d"},
       "expect": {"label": "Chromium(4+)", "alt_label": "Chromium(IV)"},
-      "comment": "Typed `ImpreciseChemicalMixture` on the build of `43403ac` (#628), and recorded as the ion of chromium with a stated charge of 4: read as an ion by that record, which only an element's name can produce."
+      "comment": "Typed `ImpreciseChemicalMixture` on the build of `43403ac` (#403), and recorded as the ion of chromium with a stated charge of 4: read as an ion by that record, which only an element's name can produce."
     },
     {
       "id": "0401-chromium-ion-answers-to-its-capitalised-spellings",

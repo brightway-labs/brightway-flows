@@ -152,7 +152,7 @@ class PassTestCase(unittest.TestCase):
         self.assertEqual(stats["ions"], 0)
 
     def test_an_ion_of_an_element_is_read_whatever_it_is_typed(self):
-        """`Chromium IV` is typed a mixture on the build of `43403ac` (#628),
+        """`Chromium IV` is typed a mixture on the build of `43403ac` (#403),
         and recorded as the ion of chromium: the name is still an ion's."""
         obj = _object("Chromium IV", IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE], charge=4)
         obj.properties["relationships"] = {

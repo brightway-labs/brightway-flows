@@ -90,7 +90,7 @@ def _ion_of_an_element(obj: FlowObject) -> bool:
     A second way of knowing an object is one charged atom, because the typing
     can say otherwise: on the build of `43403ac` (run
     `20261019T0759116033000000`) `Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)`
-    and `Chromium IV` are each typed an imprecise mixture (#628), and each is
+    and `Chromium IV` are each typed an imprecise mixture (#403), and each is
     recorded as the ion of its element with one stated charge.  The record is
     written only where the name resolved to an element, so `Pyrethrin I` --
     a name ending in a numeral -- is never read as one.
