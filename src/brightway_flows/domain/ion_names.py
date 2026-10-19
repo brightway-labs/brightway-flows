@@ -45,22 +45,49 @@ ION_NAMING_STANDARD = "ion_naming_standard"
 #: both; `sulphur` is British, and not asked for.
 AMERICAN_SPELLINGS = {"Aluminium": "Aluminum", "Caesium": "Cesium"}
 
+#: The `prov:wasDerivedFrom` on a synonym the standard wrote.
+STANDARD_SYNONYM_DERIVED_FROM = "domain.ion_names standard"
+#: ... and on the one synonym that was the substance's label until the
+#: standard respelled it: `Bromide` on `Bromide(1-)`, `Cesium(1+)` on
+#: `Caesium(1+)`.
+REPLACED_LABEL_DERIVED_FROM = "domain.ion_names standard, the label it replaced"
+
+
+def _standard_entries(row: Any) -> list[dict[str, Any]]:
+    if not isinstance(row, dict):
+        return []
+    provenance = row.get("provenance")
+    entries = provenance if isinstance(provenance, list) else [provenance]
+    return [
+        entry for entry in entries
+        if isinstance(entry, dict)
+        and entry.get(PROV_WAS_GENERATED_BY_CURIE) == ION_NAMING_STANDARD
+    ]
+
+
 def is_standard_label_row(row: Any) -> bool:
     """Whether a label row is one this standard wrote.
 
     Such a synonym is the substance's own name in another spelling, built from
     the name rather than gathered from a registry, so it can be neither a
-    trade name nor another substance's: the merge reads it as a preferred
-    name, and `carry_member_names` never withdraws it.
+    trade name nor another substance's: `carry_member_names` never withdraws
+    it.
     """
-    if not isinstance(row, dict):
-        return False
-    provenance = row.get("provenance")
-    entries = provenance if isinstance(provenance, list) else [provenance]
+    return bool(_standard_entries(row))
+
+
+def is_replaced_label_row(row: Any) -> bool:
+    """Whether a label row is the label the standard replaced.
+
+    The merge reads that one as a preferred name, as it read it before the
+    respelling, so matching stays where it was.  The rest of the standard's
+    synonyms are not: `Chromium VI` was never chromium(6+)'s name, and read as
+    one it let ecoinvent's own `Chromium IV` -> `Chromium VI` crosswalk move a
+    row numbered for chromium(4+) onto chromium(6+).
+    """
     return any(
-        isinstance(entry, dict)
-        and entry.get(PROV_WAS_GENERATED_BY_CURIE) == ION_NAMING_STANDARD
-        for entry in entries
+        entry.get("prov:wasDerivedFrom") == REPLACED_LABEL_DERIVED_FROM
+        for entry in _standard_entries(row)
     )
 
 
@@ -177,6 +204,7 @@ __all__ = [
     "anion_base",
     "iupac_base",
     "is_anion_name",
+    "is_replaced_label_row",
     "is_standard_label_row",
     "roman_numeral",
     "standard_ion_label",

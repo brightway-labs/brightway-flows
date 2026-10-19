@@ -228,16 +228,30 @@ class MatchingReadsTheStandardTestCase(unittest.TestCase):
         self.assertEqual(preferred["bromide"], {"fo-bromide"})
         self.assertEqual(preferred["bromide(1-)"], {"fo-bromide"})
 
-    def test_a_gathered_synonym_is_still_only_a_synonym(self):
+    def test_a_synonym_that_was_never_the_label_is_only_a_synonym(self):
+        """`Chromium VI` was never chromium(6+)'s name.  Read as one, it let
+        ecoinvent's own `Chromium IV` -> `Chromium VI` crosswalk move 3.8's
+        row numbered for chromium(4+) onto chromium(6+)."""
         from brightway_flows.merge.matching import _build_indexes
 
-        lead = _object("Lead(2+)", CATION, charge=2, alt=["plumbous ion"],
-                       object_id="fo-lead")
-        standardise_ion_names([lead])
-        _, _, labels, preferred = _build_indexes([lead])
-        self.assertIn("plumbous ion", labels)
-        self.assertNotIn("plumbous ion", preferred)
-        self.assertIn("lead ii", preferred)
+        chromium = _object("Chromium(6+)", CATION, charge=6, alt=["chromate ion"],
+                           object_id="fo-cr6")
+        standardise_ion_names([chromium])
+        _, _, labels, preferred = _build_indexes([chromium])
+        self.assertIn("chromium vi", labels)
+        self.assertNotIn("chromium vi", preferred)
+        self.assertNotIn("chromate ion", preferred)
+
+    def test_the_replaced_label_stays_marked_when_read_back(self):
+        """The merge reads the transform's substances back and runs the pass
+        again over what it mints; the mark must survive a second pass."""
+        caesium = _object("Cesium(1+)", CATION, charge=1, object_id="fo-cs")
+        standardise_ion_names([caesium])
+        standardise_ion_names([caesium])
+        from brightway_flows.domain.ion_names import is_replaced_label_row
+
+        replaced = [row["@value"] for row in caesium.altLabel if is_replaced_label_row(row)]
+        self.assertEqual(replaced, ["Cesium(1+)"])
 
 
 if __name__ == "__main__":

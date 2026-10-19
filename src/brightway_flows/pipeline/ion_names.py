@@ -34,7 +34,10 @@ import structlog
 from brightway_flows.domain.flow_object import FlowObject
 from brightway_flows.domain.ion_names import (
     ION_NAMING_STANDARD,
+    REPLACED_LABEL_DERIVED_FROM,
+    STANDARD_SYNONYM_DERIVED_FROM,
     is_anion_name,
+    is_replaced_label_row,
     standard_ion_label,
     standard_ion_synonyms,
 )
@@ -65,7 +68,7 @@ _POLYATOMIC_ION_TYPES = frozenset(
 
 _GENERIC_SUFFIXES = (", ion", " ion")
 
-_WAS_DERIVED_FROM = "domain.ion_names standard"
+_WAS_DERIVED_FROM = STANDARD_SYNONYM_DERIVED_FROM
 
 
 def _types(obj: FlowObject) -> set[str]:
@@ -152,13 +155,13 @@ def ion_reading(obj: FlowObject) -> tuple[str, int | None] | None:
     return None
 
 
-def _label_row(value: str) -> dict[str, Any]:
+def _label_row(value: str, *, replaced: bool = False) -> dict[str, Any]:
     return _label_entry(
         value=value,
         language="en",
         resolver_name=PASS_NAME,
         seed_source=base_source_label(),
-        was_derived_from=_WAS_DERIVED_FROM,
+        was_derived_from=REPLACED_LABEL_DERIVED_FROM if replaced else _WAS_DERIVED_FROM,
     )
 
 
@@ -189,7 +192,13 @@ def standardise_ion_names(flow_objects: list[FlowObject]) -> Counter[str]:
         current = flow_label_value(obj).strip()
         label = standard_ion_label(base, charge)
         synonyms = standard_ion_synonyms(base, charge)
+        # Labels replaced on an earlier pass -- the transform's, read back by
+        # the merge -- stay marked as such, and so does this pass's own.
+        replaced = {
+            _row_value(row) for row in obj.altLabel or [] if is_replaced_label_row(row)
+        }
         if current != label:
+            replaced.add(current)
             _set_pref_label(
                 obj=obj,
                 value=label,
@@ -198,8 +207,6 @@ def standardise_ion_names(flow_objects: list[FlowObject]) -> Counter[str]:
                 was_derived_from=_WAS_DERIVED_FROM,
             )
             stats["renamed"] += 1
-            if current not in synonyms:
-                synonyms = [*synonyms, current]
             logger.debug(
                 "ion_name_standardised",
                 flow_object_id=obj.flow_object_id,
@@ -207,6 +214,7 @@ def standardise_ion_names(flow_objects: list[FlowObject]) -> Counter[str]:
                 now=label,
             )
 
+        synonyms = [*synonyms, *sorted(replaced - set(synonyms) - {label})]
         promised = set(synonyms)
         label_key = canonical_label_value(label)
         kept = []
@@ -225,7 +233,9 @@ def standardise_ion_names(flow_objects: list[FlowObject]) -> Counter[str]:
             kept.append(row)
         before = {_row_value(row) for row in obj.altLabel or []}
         stats["synonyms_added"] += sum(1 for value in synonyms if value not in before)
-        obj.altLabel = [_label_row(value) for value in synonyms] + kept
+        obj.altLabel = [
+            _label_row(value, replaced=value in replaced) for value in synonyms
+        ] + kept
 
     logger.info("ion_names_standardised", **dict(stats))
     return stats
