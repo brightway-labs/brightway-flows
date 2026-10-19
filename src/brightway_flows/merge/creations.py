@@ -83,6 +83,7 @@ from brightway_flows.merge.unit_changes import (
     created_flow_unit_decisions,
     decide_created_flow_unit,
 )
+from brightway_flows.pipeline.ion_names import standardise_ion_names
 from brightway_flows.pipeline.semantic_typing import assign_semantic_types
 from brightway_flows.transformers.unit_normalization import resolve_unit_notation
 
@@ -248,6 +249,13 @@ def create_flows_for_unmatched_rows(
     family_stats = {**family_stats, **land_stats}
     typing_stats = assign_semantic_types(kept_objects, new_elementary)
     normalise_records(kept_objects)
+    # After the typing, which is what says an object is an ion, and before the
+    # flows are minted, which copy the object's names: a vendor's `Chromium,
+    # ion` is minted as the standard spells it, as the transform's ions are,
+    # rather than as the chain title-cased it (`domain.ion_names`).  Unlike
+    # the ion layer's own rename above, this one does run here -- it changes
+    # the spelling of a name and never what it names.
+    ion_name_stats = standardise_ion_names(kept_objects)
     objects_by_id = {obj.flow_object_id: obj for obj in kept_objects}
 
     # Before the loop, not inside it: the unit a flow declares is a property of
@@ -298,6 +306,7 @@ def create_flows_for_unmatched_rows(
         flow_object_count=len(objects_by_id),
         elementary_flow_count=len(created),
         name_only_flow_count=name_only,
+        ion_names_standardised=ion_name_stats.get("renamed", 0),
         blocked_object_count=len(blocked_object_ids),
         # Nested rather than splatted: `resolve_flow_layers` reports a
         # `flow_object_count` of its own, and flattening both would silently

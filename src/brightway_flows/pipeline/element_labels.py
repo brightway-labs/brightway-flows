@@ -35,6 +35,7 @@ import structlog
 from brightway_flows.domain.common import Provenance
 from brightway_flows.domain.flow import Flow
 from brightway_flows.domain.flow_object import FlowObject
+from brightway_flows.domain.ion_names import standard_ion_label
 from brightway_flows.pipeline.layer_writes import LayerWriteLog
 from brightway_flows.domain.labels import flow_label_value
 from brightway_flows.domain.preferred_label_decisions import (
@@ -246,8 +247,8 @@ def _stated_charge(obj: FlowObject) -> int | None:
 
 
 def _ion_title_for(base: str, charge: int) -> str:
-    """`Tin` and 4 as `Tin(4+)`, which is how every named ion here is spelled."""
-    return f"{base}({abs(charge)}{'+' if charge >= 0 else '-'})"
+    """`Tin` and 4 as `Tin(4+)`, as the ion naming standard spells it."""
+    return standard_ion_label(base, charge)
 
 
 class IonPrefLabelPass:

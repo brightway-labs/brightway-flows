@@ -29,7 +29,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "a7a01388d3fc9ca42b2689da95011bffd94ee366",
-      "substance": "Antimony, Ion",
+      "substance": "Antimony, ion",
       "context": "Environmental → Water → Surface water",
       "unit": "kg",
       "comment": "8 of their 9 flows of this name resolve by ecoinvent uuid to `Antimony, Ion`, and none of them to any other substance. Three air compartments, three soil compartments, ground water and unspecified water; this is the ninth and last. `Antimony, Ion` publishes `Antimony Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied. #157 leaves open whether antimony's ion in this list should be `Antimony(3+)` or `Antimony(5+)`. This row does not touch that question: their package never points this name at either of them."
@@ -61,7 +61,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "436e4db97f79e2102ba102a3546f67ed1248c7d6",
-      "substance": "Arsenic, Ion",
+      "substance": "Arsenic, ion",
       "context": "Environmental → Ground → Agricultural",
       "unit": "kg",
       "comment": "6 of their 11 flows of this name resolve by ecoinvent uuid to `Arsenic, Ion`, and none of them to any other substance. Their package names `Arsenic V` separately, and never points this name at `Arsenic(3+)` or `Arsenic(5+)`. `Arsenic, Ion` publishes `Arsenic Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
@@ -77,7 +77,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "cc0b83ce73fe5ff455897e34c4a0484eefaaaad8",
-      "substance": "Arsenic, Ion",
+      "substance": "Arsenic, ion",
       "context": "Environmental → Ground → Industrial",
       "unit": "kg",
       "comment": "6 of their 11 flows of this name resolve by ecoinvent uuid to `Arsenic, Ion`, and none of them to any other substance. Their package names `Arsenic V` separately, and never points this name at `Arsenic(3+)` or `Arsenic(5+)`. `Arsenic, Ion` publishes `Arsenic Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
@@ -93,7 +93,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "0f3651eed9d17d16e04034fa0249ef108012b027",
-      "substance": "Arsenic, Ion",
+      "substance": "Arsenic, ion",
       "context": "Environmental → Water → Surface water",
       "unit": "kg",
       "comment": "6 of their 11 flows of this name resolve by ecoinvent uuid to `Arsenic, Ion`, and none of them to any other substance. Their package names `Arsenic V` separately, and never points this name at `Arsenic(3+)` or `Arsenic(5+)`. `Arsenic, Ion` publishes `Arsenic Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
@@ -109,7 +109,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "9e01530a7a30d59f118a995cf4e35539191bbfcc",
-      "substance": "Arsenic, Ion",
+      "substance": "Arsenic, ion",
       "context": "Environmental → Water → Unknown",
       "unit": "kg",
       "comment": "6 of their 11 flows of this name resolve by ecoinvent uuid to `Arsenic, Ion`, and none of them to any other substance. Their package names `Arsenic V` separately, and never points this name at `Arsenic(3+)` or `Arsenic(5+)`. `Arsenic, Ion` publishes `Arsenic Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
@@ -125,7 +125,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "5889bdb350d6b05b45e689c9151bd06b0f24a491",
-      "substance": "Copper, Ion",
+      "substance": "Copper, ion",
       "context": "Environmental → Water → Surface water",
       "unit": "kg",
       "comment": "7 of their 12 flows of this name resolve by ecoinvent uuid to `Copper, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Copper, Ion` publishes `Copper Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
@@ -141,7 +141,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "e5bbea955d736a4e722be2dde9a701e281aef832",
-      "substance": "Copper, Ion",
+      "substance": "Copper, ion",
       "context": "Environmental → Water → Unconfined aquifer",
       "unit": "kg",
       "comment": "7 of their 12 flows of this name resolve by ecoinvent uuid to `Copper, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Copper, Ion` publishes `Copper Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
@@ -157,7 +157,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "0c988396a794b281c0a04992b40373fef5e39769",
-      "substance": "Copper, Ion",
+      "substance": "Copper, ion",
       "context": "Environmental → Water → Unknown",
       "unit": "kg",
       "comment": "7 of their 12 flows of this name resolve by ecoinvent uuid to `Copper, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Copper, Ion` publishes `Copper Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
@@ -173,7 +173,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "530160531b5ed654d0429fd949159da30ad5dad7",
-      "substance": "Iron, Ion",
+      "substance": "Iron, ion",
       "context": "Environmental → Water → Surface water",
       "unit": "kg",
       "comment": "7 of their 10 flows of this name resolve by ecoinvent uuid to `Iron, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Iron, Ion` publishes `Iron Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied. `Iron(2+)` and `Iron(3+)` are published in the same compartment and their name does not say which of the two it is, which is why this list holds a separate substance for the unspecified ion at all (#71)."
@@ -189,7 +189,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "384a7d4000e351b8cab39798dcf35f8ec41a61b9",
-      "substance": "Iron, Ion",
+      "substance": "Iron, ion",
       "context": "Environmental → Water → Unknown",
       "unit": "kg",
       "comment": "7 of their 10 flows of this name resolve by ecoinvent uuid to `Iron, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Iron, Ion` publishes `Iron Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied. `Iron(2+)` and `Iron(3+)` are published in the same compartment and their name does not say which of the two it is, which is why this list holds a separate substance for the unspecified ion at all (#71)."
@@ -205,7 +205,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "0f06f91dd6bcb87bc097d182d2ed2117c1d05a44",
-      "substance": "Tin, Ion",
+      "substance": "Tin, ion",
       "context": "Environmental → Water → Surface water",
       "unit": "kg",
       "comment": "5 of their 9 flows of this name resolve by ecoinvent uuid to `Tin, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Tin, Ion` publishes `Tin Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
@@ -221,7 +221,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "1a16e64d9fee2d888e9164c13d4a410f8fc29083",
-      "substance": "Tin, Ion",
+      "substance": "Tin, ion",
       "context": "Environmental → Water → Unconfined aquifer",
       "unit": "kg",
       "comment": "5 of their 9 flows of this name resolve by ecoinvent uuid to `Tin, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Tin, Ion` publishes `Tin Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."
@@ -237,7 +237,7 @@
       ],
       "decision": "reaches",
       "elementary_flow_uuid": "fcf82ad88b79810cd8654bed06ae0c6bf031e027",
-      "substance": "Tin, Ion",
+      "substance": "Tin, ion",
       "context": "Environmental → Water → Unknown",
       "unit": "kg",
       "comment": "5 of their 9 flows of this name resolve by ecoinvent uuid to `Tin, Ion`, and none of them to any other substance. Their ocean flow is the exception and is not a disagreement about the substance: it carries EF 3.1's own identifier for the plain element, and #165's rule let that identifier outrank the name, as it does everywhere. `Tin, Ion` publishes `Tin Ion` as an alternative label, taken from ecoinvent's own name field, which is the spelling their package copied."

@@ -1,0 +1,212 @@
+"""Apply the ion naming standard to the substances a build publishes.
+
+`domain.ion_names` says what an ion is called and which synonyms it carries.
+This pass makes every ion substance say it, last of the substance-name writers,
+so that whichever route a name took -- EF's `arsenic (v)` parsed by
+`flow_layers.ions`, a curated name copied from the merge's lookup spelling
+(`Copper, Ion`), a vendor's `X, ion` title-cased and minted by the merge
+(`Chromium, Ion`), PubChem's `Cesium(1+)` -- the published list spells it one
+way and answers to the others.
+
+What it does **not** decide is whether an ion's charge is known.  That is
+`IonPrefLabelPass`'s question, gated by `preferred-label-decisions.json` and by
+the disambiguation rule of #143: `Titanium, ion` stays generic though PubChem
+says Ti+4.  This pass reads the charge the name already states and spells it,
+so it changes how a name is written and never which ion it names.  A
+monatomic anion is the one case where the charge is read from the object
+rather than the name, because `Chloride` states it by being an anion name.
+
+Deliberately not a `Transformer`: it reads semantic types and the stated
+charge, which exist only once the substances are built.  Returns a `Counter`
+and leaves its trace in the provenance it stamps on each label, because a
+`LayerWriteLog` records writes to flows and this writes to flow objects --
+`SubstancePrefLabelPass`, which runs after it, is what carries the new names
+onto the flows, and logs that.
+"""
+
+from __future__ import annotations
+
+from collections import Counter
+from typing import Any
+
+import structlog
+
+from brightway_flows.domain.flow_object import FlowObject
+from brightway_flows.domain.ion_names import (
+    ION_NAMING_STANDARD,
+    is_anion_name,
+    standard_ion_label,
+    standard_ion_synonyms,
+)
+from brightway_flows.domain.labels import canonical_label_value, flow_label_value
+from brightway_flows.domain.vocabulary import (
+    CHEMROF_ELEMENTAL_CHARGE,
+    IRIS,
+    Term,
+)
+from brightway_flows.flow_layers.ions import _extract_ion_base_and_charge
+from brightway_flows.flow_layers.labels import _label_entry, _set_pref_label
+from brightway_flows.sources import base_source_label
+
+logger = structlog.get_logger(__name__)
+
+PASS_NAME = ION_NAMING_STANDARD
+
+#: One atom with a charge: these take the whole standard.
+_MONATOMIC_ION_TYPES = frozenset(
+    IRIS[term] for term in (Term.MONOATOMIC_ION, Term.ATOM_CATION, Term.ATOM_ANION)
+)
+#: Several atoms with a charge: only the generic `X, ion` spelling applies,
+#: because a numeral would state an oxidation number no one atom has.
+_POLYATOMIC_ION_TYPES = frozenset(
+    IRIS[term]
+    for term in (Term.POLYATOMIC_ION, Term.MOLECULAR_ANION, Term.MOLECULAR_CATION)
+)
+
+_GENERIC_SUFFIXES = (", ion", " ion")
+
+_WAS_DERIVED_FROM = "domain.ion_names standard"
+
+
+def _types(obj: FlowObject) -> set[str]:
+    raw = obj.types
+    if isinstance(raw, str):
+        return {raw}
+    if isinstance(raw, list):
+        return {str(x) for x in raw if isinstance(x, str)}
+    return set()
+
+
+def _stated_charge(obj: FlowObject) -> int | None:
+    """The one non-zero charge *obj* states, or ``None``."""
+    properties = obj.properties
+    if not isinstance(properties, dict):
+        return None
+    entry = properties.get(CHEMROF_ELEMENTAL_CHARGE)
+    if not isinstance(entry, dict):
+        return None
+    values = entry.get("@value")
+    if not isinstance(values, list):
+        values = [values]
+    charges = {int(v) for v in values if isinstance(v, (int, float))}
+    if len(charges) != 1:
+        return None
+    return charges.pop() or None
+
+
+def _generic_base(label: str) -> str:
+    lower = label.lower()
+    for suffix in _GENERIC_SUFFIXES:
+        if lower.endswith(suffix):
+            return label[: -len(suffix)].strip().rstrip(",").strip()
+    return ""
+
+
+def ion_reading(obj: FlowObject) -> tuple[str, int | None] | None:
+    """What *obj*'s name says it is, as ``(base, charge)``, or ``None``.
+
+    ``None`` where the standard is not about *obj*: not an ion, or an ion whose
+    name this cannot read.  A charge of ``None`` in the pair is the generic
+    reading, `Copper, ion`.
+    """
+    types = _types(obj)
+    monatomic = bool(types & _MONATOMIC_ION_TYPES)
+    if not monatomic and not types & _POLYATOMIC_ION_TYPES:
+        return None
+    label = flow_label_value(obj).strip()
+    if not label:
+        return None
+    generic = _generic_base(label)
+    if generic:
+        return generic, None
+    if not monatomic:
+        return None
+    base, charge = _extract_ion_base_and_charge(label)
+    if base and charge:
+        return base, charge
+    stated = _stated_charge(obj)
+    if stated is not None and stated < 0 and is_anion_name(label):
+        return label, stated
+    return None
+
+
+def _label_row(value: str) -> dict[str, Any]:
+    return _label_entry(
+        value=value,
+        language="en",
+        resolver_name=PASS_NAME,
+        seed_source=base_source_label(),
+        was_derived_from=_WAS_DERIVED_FROM,
+    )
+
+
+def _row_value(row: Any) -> str:
+    value = row.get("@value") if isinstance(row, dict) else row
+    return value.strip() if isinstance(value, str) else ""
+
+
+def standardise_ion_names(flow_objects: list[FlowObject]) -> Counter[str]:
+    """Give every ion in *flow_objects* the standard name and synonyms.
+
+    Mutates the objects.  A name the standard replaces stays as a synonym, so
+    nothing a source list called the substance stops finding it.  The
+    standard's synonyms lead the list, ahead of what enrichment gathered, and
+    are stamped `ion_naming_standard`: the export keeps the first of two
+    spellings that differ only in case, and `carry_member_names` never
+    withdraws a label the standard promised.
+    """
+    stats: Counter[str] = Counter()
+    for obj in flow_objects:
+        reading = ion_reading(obj)
+        if reading is None:
+            continue
+        base, charge = reading
+        stats["ions"] += 1
+        stats["generic" if charge is None else "charged"] += 1
+
+        current = flow_label_value(obj).strip()
+        label = standard_ion_label(base, charge)
+        synonyms = standard_ion_synonyms(base, charge)
+        if current != label:
+            _set_pref_label(
+                obj=obj,
+                value=label,
+                resolver_name=PASS_NAME,
+                seed_source=base_source_label(),
+                was_derived_from=_WAS_DERIVED_FROM,
+            )
+            stats["renamed"] += 1
+            if current not in synonyms:
+                synonyms = [*synonyms, current]
+            logger.debug(
+                "ion_name_standardised",
+                flow_object_id=obj.flow_object_id,
+                was=current,
+                now=label,
+            )
+
+        promised = set(synonyms)
+        label_key = canonical_label_value(label)
+        kept = []
+        for row in obj.altLabel or []:
+            value = _row_value(row)
+            if value in promised:
+                # Re-stamped below rather than kept under the provenance it
+                # came with: an unprotected copy is one `carry_member_names`
+                # could withdraw.
+                continue
+            if value and canonical_label_value(value) == label_key:
+                # The label itself in another case -- `caesium(1+)` beside
+                # `Caesium(1+)` -- which the export would publish as a synonym.
+                stats["synonyms_equal_to_the_label_dropped"] += 1
+                continue
+            kept.append(row)
+        before = {_row_value(row) for row in obj.altLabel or []}
+        stats["synonyms_added"] += sum(1 for value in synonyms if value not in before)
+        obj.altLabel = [_label_row(value) for value in synonyms] + kept
+
+    logger.info("ion_names_standardised", **dict(stats))
+    return stats
+
+
+__all__ = ["PASS_NAME", "ion_reading", "standardise_ion_names"]

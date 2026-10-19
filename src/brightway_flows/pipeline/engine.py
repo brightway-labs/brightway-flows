@@ -61,6 +61,8 @@ from brightway_flows.pipeline.element_labels import (
     ElementPrefLabelPass,
     IonPrefLabelPass,
 )
+from brightway_flows.pipeline.ion_names import PASS_NAME as ION_NAMING_PASS_NAME
+from brightway_flows.pipeline.ion_names import standardise_ion_names
 from brightway_flows.pipeline.substance_labels import SubstancePrefLabelPass
 from brightway_flows.pipeline.loading import (
     _load_transform_inputs,
@@ -1051,6 +1053,14 @@ def run_pipeline(
     # its flows.
     ion_labels = IonPrefLabelPass()
     tally(IonPrefLabelPass.name, ion_labels.apply(flow_objects))
+
+    # Every ion spelled one way -- `Lead(2+)`, `Chloride(1-)`, `Copper, ion` --
+    # and answering to the others (`domain.ion_names`).  After the pass above,
+    # which decides whether a charge is known, so this only spells what the
+    # name already states; after `carry_member_names`, so nothing withdraws the
+    # synonyms it writes before they are serialised; before the substance pass,
+    # which carries the names onto the flows.
+    tally(ION_NAMING_PASS_NAME, standardise_ion_names(flow_objects))
 
     # After the element pass, and last of the label writers on purpose: a flow
     # leaves for the export called what its substance is called, or carrying a

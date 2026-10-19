@@ -195,13 +195,18 @@ class CreatedIonReachesItsElementTestCase(unittest.TestCase):
 
         self.assertIn(CHEMROF_MONOATOMIC_ION, created.types or [])
 
-    def test_the_label_enrichment_settled_on_is_left_alone(self):
-        """The merge does not let this pass rewrite a published label (#221)."""
+    def test_the_label_is_spelled_by_the_ion_naming_standard(self):
+        """The ion layer does not rename a created object (#221) -- but the ion
+        naming standard does respell it, as it does every ion the transform
+        publishes: `Iron, Ion` is minted as `Iron, ion`, and keeps answering to
+        `Iron, Ion` and `Iron Ion` (`domain.ion_names`)."""
         self.flow_objects_by_id[IRON_OBJECT_ID] = _iron_element()
 
         created = self.create("Iron, Ion")
 
-        self.assertEqual(created.prefLabel[0]["@value"], "Iron, Ion")
+        self.assertEqual(created.prefLabel[0]["@value"], "Iron, ion")
+        synonyms = [row["@value"] for row in created.altLabel]
+        self.assertEqual(synonyms[:2], ["Iron, Ion", "Iron Ion"])
 
 
 if __name__ == "__main__":

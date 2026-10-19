@@ -45,7 +45,7 @@
     },
     {
       "flow_object_id": "fo-5c42d374aca497d5",
-      "substance": "Antimony, Ion",
+      "substance": "Antimony, ion",
       "donor": {
         "flow_object_id": "fo-0bfffb5e4dadc218",
         "substance": "Antimony"
@@ -107,7 +107,7 @@
     },
     {
       "flow_object_id": "fo-697e126705df00f6",
-      "substance": "Arsenic, Ion",
+      "substance": "Arsenic, ion",
       "donor": {
         "flow_object_id": "fo-59b3f7e57542f6bb",
         "substance": "Arsenic"
@@ -227,7 +227,7 @@
     },
     {
       "flow_object_id": "fo-436304b385710fab",
-      "substance": "Copper, Ion",
+      "substance": "Copper, ion",
       "donor": {
         "flow_object_id": "fo-a9a85c11aea1c46a",
         "substance": "Copper"
@@ -285,7 +285,7 @@
     },
     {
       "flow_object_id": "fo-68a028e14ee2f8de",
-      "substance": "Iron, Ion",
+      "substance": "Iron, ion",
       "donor": {
         "flow_object_id": "fo-968d11f00ea71f40",
         "substance": "Iron"

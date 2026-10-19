@@ -18,6 +18,7 @@ import httpx
 import orjson
 
 from brightway_flows.domain.flow_object import FlowObject
+from brightway_flows.domain.ion_names import standard_ion_label
 from brightway_flows.domain.vocabulary import (
     CHEMINF_CAS_REGISTRY_NUMBER,
     CHEMINF_EC_NUMBER,
@@ -337,11 +338,10 @@ def enrich_monoatomic_ions(
         obj.properties = props
         ion_marked_count += 1
 
-        if charge_state is None:
-            ion_title = f"{base_title}, ion"
-        else:
-            sign = "+" if charge_state >= 0 else "-"
-            ion_title = f"{base_title}({abs(charge_state)}{sign})"
+        # Spelled by the ion naming standard, which `pipeline.ion_names`
+        # applies again once every other writer has run.
+        ion_title = standard_ion_label(base_title, charge_state)
+        if charge_state is not None:
             ion_charge_detected_count += 1
         if rename_labels:
             _set_pref_label(
@@ -379,7 +379,15 @@ def enrich_monoatomic_ions(
             else []
         )
         parent_cas = element_cas_by_id.get(base_object_id, set())
-        search_names = sorted({pref_value.strip(), ion_title, f"{base_title}, ion"} - {""})
+        # Looked up under the spellings the registry caches were filled with,
+        # not the standard's: `Caesium(1+)` is a name the Common Chemistry cache
+        # has never been asked, and a miss there is a network call.
+        cached_title = (
+            f"{base_title}, ion"
+            if charge_state is None
+            else f"{base_title}({abs(charge_state)}{'+' if charge_state >= 0 else '-'})"
+        )
+        search_names = sorted({pref_value.strip(), cached_title, f"{base_title}, ion"} - {""})
         commonchem_cas: list[str] = []
         pubchem_cas: list[str] = []
         for ion_name in search_names:
