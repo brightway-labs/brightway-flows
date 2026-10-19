@@ -28,6 +28,7 @@ from brightway_flows.merge.species import (
     canonicalized_for_matching,
     load_canonical_identities,
     parse_species,
+    redefines,
     rule_governs,
     species_object_label,
 )
@@ -116,7 +117,7 @@ class LoaderTestCase(unittest.TestCase):
             "name": "Zinc II",
             "cas_number": "23713-49-7",
             "decided_by": "3.12",
-            "replaces": [{"version": "3.8", "name": "Zinc", "cas_number": "7440-66-6"}],
+            "replaces": [{"version": "3.8", "name": "Zinc, ion", "cas_number": "23713-49-7"}],
         }
         row.update(entry)
         return {
@@ -136,12 +137,20 @@ class LoaderTestCase(unittest.TestCase):
         with self.assertRaises(CanonicalIdentityError):
             load_canonical_identities(self._file(self._payload(replaces=[])))
 
+    def test_an_entry_that_turns_the_element_into_the_ion_is_refused(self):
+        """#398: 3.8's `Zinc` under 7440-66-6 is the metal, and an entry
+        sending it to `Zinc II` is a substitution the ruling forbids."""
+        with self.assertRaises(CanonicalIdentityError):
+            load_canonical_identities(self._file(self._payload(
+                replaces=[{"version": "3.8", "name": "Zinc", "cas_number": "7440-66-6"}]
+            )))
+
     def test_a_missing_file_is_an_empty_index(self):
         self.assertEqual(load_canonical_identities(self.dir / "absent.json"), {})
 
     def test_the_derived_file_loads_and_every_entry_is_the_family(self):
         index = load_canonical_identities(CANONICAL_IDENTITIES_FILEPATH)
-        self.assertGreater(len(index), 300)
+        self.assertGreater(len(index), 100)
         zinc = [i for i in index.values() if i.name == "Zinc II"]
         self.assertTrue(zinc)
         self.assertTrue(all(i.replaces for i in index.values()))
@@ -152,24 +161,33 @@ class MatchingEvidenceTestCase(unittest.TestCase):
         "s-zinc": CanonicalIdentity(
             uuid="s-zinc", name="Zinc II", cas_number="23713-49-7",
             decided_by="3.12",
-            replaces=(("3.8", "Zinc", "7440-66-6"),),
+            replaces=(("3.8", "Zinc, ion", "23713-49-7"),),
         ),
         "s-copper": CanonicalIdentity(
             uuid="s-copper", name="Copper ion", cas_number="",
             decided_by="3.12",
-            replaces=(("3.8", "Copper", "7440-50-8"),),
+            replaces=(("3.8", "Copper, ion", "17493-86-6"),),
+        ),
+        # The shape #398 leaves behind: 3.8 and 3.9.1 name the uuid `Calcium`
+        # under the element's number and are not listed, and the entry exists
+        # only for 3.10.1, which stated the ion under the element's number.
+        "s-calcium": CanonicalIdentity(
+            uuid="s-calcium", name="Calcium II", cas_number="14127-61-8",
+            decided_by="3.12",
+            replaces=(("3.10.1", "Calcium II", "7440-70-2"),),
         ),
     }
 
     def test_a_stale_identity_is_replaced_and_its_labels_dropped(self):
-        row = _row(uuid="s-zinc", name="Zinc", cas="7440-66-6", labels=["Zinc"])
+        row = _row(uuid="s-zinc", name="Zinc, ion", cas="23713-49-7", labels=["Zinc, ion"])
         out = canonicalized_for_matching(row, self.IDENTITIES)
         self.assertEqual((out.name, out.cas), ("Zinc II", "23713-49-7"))
         self.assertEqual(out.labels, ["Zinc(2+)", "Zinc II"])
-        self.assertNotIn("Zinc", out.labels)
+        self.assertNotIn("Zinc, ion", out.labels)
 
     def test_a_deleted_number_is_deleted(self):
-        row = _row(uuid="s-copper", name="Copper", cas="7440-50-8", labels=["Copper"])
+        row = _row(uuid="s-copper", name="Copper, ion", cas="17493-86-6",
+                   labels=["Copper, ion"])
         out = canonicalized_for_matching(row, self.IDENTITIES)
         self.assertEqual((out.name, out.cas), ("Copper ion", ""))
         self.assertEqual(out.labels, ["Copper, Ion", "Copper ion"])
@@ -179,8 +197,8 @@ class MatchingEvidenceTestCase(unittest.TestCase):
         registration; a substitution that cleared the CAS and kept the EC sent
         nine of them to elemental arsenic while their 3.12 siblings minted the
         ion -- one uuid, two substances."""
-        row = _row(uuid="s-copper", name="Copper", cas="7440-50-8",
-                   labels=["Copper"], ec="231-159-6")
+        row = _row(uuid="s-copper", name="Copper, ion", cas="17493-86-6",
+                   labels=["Copper, ion"], ec="231-159-6")
         out = canonicalized_for_matching(row, self.IDENTITIES)
         self.assertEqual(out.ec, "")
         # ... and a row with no substitution keeps its EC: the rule only takes
@@ -190,6 +208,28 @@ class MatchingEvidenceTestCase(unittest.TestCase):
         self.assertEqual(
             canonicalized_for_matching(untouched, self.IDENTITIES).ec, "231-159-6"
         )
+
+    def test_a_bare_element_on_a_uuid_now_naming_the_ion_is_untouched(self):
+        """#398: 3.8's `Zinc`, 7440-66-6, on a uuid 3.12 calls `Zinc II`, is
+        the metal it says it is -- name, number, labels and EC all stay."""
+        row = _row(uuid="s-zinc", name="Zinc", cas="7440-66-6", labels=["Zinc"],
+                   ec="231-175-3")
+        self.assertEqual(canonicalized_for_matching(row, self.IDENTITIES), row)
+
+    def test_a_bare_element_whose_number_was_deleted_is_untouched(self):
+        """`Copper` (7440-50-8) on a uuid 3.12 calls `Copper ion` with no
+        number: the number moved to none, which is still the element leaving."""
+        row = _row(uuid="s-copper", name="Copper", cas="7440-50-8", labels=["Copper"])
+        self.assertEqual(canonicalized_for_matching(row, self.IDENTITIES), row)
+
+    def test_an_entry_kept_for_a_later_release_does_not_reach_the_bare_one(self):
+        bare = _row(uuid="s-calcium", name="Calcium", cas="7440-70-2", labels=["Calcium"])
+        self.assertEqual(canonicalized_for_matching(bare, self.IDENTITIES), bare)
+        # ... while the release that stated the ion is still corrected.
+        stated = _row(uuid="s-calcium", name="Calcium II", cas="7440-70-2",
+                      labels=["Calcium II"])
+        out = canonicalized_for_matching(stated, self.IDENTITIES)
+        self.assertEqual((out.name, out.cas), ("Calcium II", "14127-61-8"))
 
     def test_a_row_already_canonical_only_gains_the_normalised_label(self):
         row = _row()
@@ -205,6 +245,36 @@ class MatchingEvidenceTestCase(unittest.TestCase):
         row = _row(uuid="s-else", name="Metaldehyde", cas="108-62-3",
                    labels=["Metaldehyde"])
         self.assertEqual(canonicalized_for_matching(row, self.IDENTITIES), row)
+
+
+class RedefinitionTestCase(unittest.TestCase):
+    """The #398 predicate, on the vendor statements it was written from."""
+
+    def test_the_element_becoming_the_ion_is_a_redefinition(self):
+        for earlier, newest in (
+            (("Lead", "7439-92-1"), ("Lead II", "14280-50-3")),
+            (("Copper", "7440-50-8"), ("Copper ion", "")),
+            (("Cesium", "7440-46-2"), ("Caesium I", "18459-37-5")),
+        ):
+            with self.subTest(earlier=earlier):
+                self.assertTrue(redefines(*earlier, *newest))
+
+    def test_one_substance_spelled_twice_is_not(self):
+        for earlier, newest in (
+            # 3.8 already called it the ion.
+            (("Cadmium, ion", "22537-48-0"), ("Cadmium II", "22537-48-0")),
+            (("Arsenic, ion", "17428-41-0"), ("Arsenic ion", "")),
+            # The element, respelled.
+            (("Aluminium, in ground", "7429-90-5"), ("Aluminium", "7429-90-5")),
+            (("Manganese-55", "7439-96-5"), ("Manganese", "7439-96-5")),
+            # A charge on the name with the number unmoved is not the element
+            # leaving: the number is what the ruling reads.
+            (("Strontium", "7440-24-6"), ("Strontium II", "7440-24-6")),
+            # Outside the family altogether.
+            (("Thiocyanate, ion", "71048-69-6"), ("Thiocyanate", "302-04-5")),
+        ):
+            with self.subTest(earlier=earlier):
+                self.assertFalse(redefines(*earlier, *newest))
 
 
 class LeashTestCase(unittest.TestCase):

@@ -6,8 +6,11 @@ between 3.8 and 3.9.1 -- `Selenium` (7782-49-2) became `Selenium IV`
 (22541-55-5), `Copper` became `Copper ion` with the number deleted, and 3.8's
 separate elemental-`Zinc` and `Zinc, ion` flows both became `Zinc II` -- the
 same uuids throughout. The newest release's identity is the vendor's current
-opinion, earlier ones are treated as mistaken, and one uuid is one substance in
-every release. Two pieces make that real:
+opinion of a flow it still means, and an earlier spelling of it is treated as
+mistaken: 3.8's `Zinc, ion` is `Zinc II`. Where the newest release has made the
+uuid mean another substance, it is two flows (#398, :func:`redefines`): 3.8's
+`Zinc`, 7440-66-6, is the metal it says it is, and is matched as the metal. Two
+pieces make that real:
 
 * **The canonical identities**, one file, derived mechanically from the release
   extractions by ``tools/derive_ecoinvent_canonical_identities.py`` and checked
@@ -135,6 +138,38 @@ def _canonical_element(word: str) -> str:
     return _SPELLINGS.get(word, word).capitalize()
 
 
+def redefines(earlier_name: str, earlier_cas: str, newest_name: str, newest_cas: str) -> bool:
+    """Whether the newest statement of a uuid names a different substance.
+
+    The ruling on #398: **a uuid whose registry number moves from the element
+    to an ion is two flows.**  ecoinvent 3.8 ships
+    6a903634-c97f-4c49-a7c0-88f0e6ac7a23 as `Lead`, 7439-92-1, the metal; 3.9.1
+    onwards ships the same uuid as `Lead II`, 14280-50-3.  That is not a
+    corrected spelling of one substance but a second substance under a reused
+    identifier, and the earlier release's rows keep the element they were
+    published with -- which is where BAFU 2026 v1 and EF 3.1 put their `Lead`.
+    Whatever links the two goes through a recorded correspondence, never the
+    shared uuid.
+
+    The test is the one the vendor's own fields answer: the earlier name is the
+    bare element, the newest names an ion -- a stated charge or the generic
+    marker -- and the number moved, to the ion's or to none.  A row the earlier
+    release already called an ion (3.8's `Cadmium, ion`, 22537-48-0, which is
+    `Cadmium II` from 3.9.1) is one substance spelled twice and still follows
+    the newest name; so does an element that only changed its spelling
+    (`Aluminium, in ground` to `Aluminium`).
+    """
+    earlier = parse_species(earlier_name)
+    newest = parse_species(newest_name)
+    return (
+        earlier is not None
+        and newest is not None
+        and earlier.kind == "bare"
+        and newest.kind != "bare"
+        and (earlier_cas or "").strip() != (newest_cas or "").strip()
+    )
+
+
 def species_object_label(species: SpeciesName) -> str:
     """The label this list spells *species* with.
 
@@ -221,11 +256,18 @@ def load_canonical_identities(
                 and bool(str(earlier.get("version") or "").strip()),
                 f"identity {position} ({uuid}) has a malformed `replaces` row",
             )
-            rows_out.append((
-                str(earlier["version"]),
-                str(earlier.get("name") or ""),
-                str(earlier.get("cas_number") or ""),
-            ))
+            earlier_name = str(earlier.get("name") or "")
+            earlier_cas = str(earlier.get("cas_number") or "")
+            _require(
+                not redefines(
+                    earlier_name, earlier_cas, name, str(row.get("cas_number") or "")
+                ),
+                f"identity {position} ({uuid}) replaces {earlier['version']}'s "
+                f"{earlier_name!r} ({earlier_cas or 'no number'}) with {name!r}: "
+                f"the element became an ion, which is a second substance under "
+                f"the same uuid (#398), not a correction of the first",
+            )
+            rows_out.append((str(earlier["version"]), earlier_name, earlier_cas))
         index[uuid] = CanonicalIdentity(
             uuid=uuid,
             name=name,
@@ -259,10 +301,11 @@ def canonicalized_for_matching(
     provenance keeps the release's own words:
 
     * A uuid the canonical-identities file names takes the newest release's
-      name and number, *including* an empty number: 3.8's `Zinc` (7440-66-6)
-      matches as `Zinc II` (23713-49-7), and 3.8's `Copper` matches as
-      `Copper ion` with no number at all, because deleting the number is the
-      newest release's statement too.
+      name and number, *including* an empty number: 3.8's `Zinc, ion`
+      (23713-49-7) matches as `Zinc II`, and 3.8's `Copper, ion` (17493-86-6)
+      matches as `Copper ion` with no number at all, because deleting the
+      number is the newest release's statement too.  A row whose release
+      stated the bare element is left as it is (:func:`redefines`, #398).
     * A name of the element/ion family with a stated charge or a generic ion
       marker leads its labels with the spelling this list publishes that
       identity under -- `Nickel II` looks up `Nickel(2+)`, `Copper ion` looks
@@ -271,14 +314,22 @@ def canonicalized_for_matching(
 
     The stale labels are dropped rather than appended for a substituted row:
     the earlier release's name is exactly the evidence the rule overrides, and
-    leaving `Zinc` in the lookup set would let the label narrowing resurrect
+    leaving `Zinc, ion` in the lookup set would let the label narrowing resurrect
     the identity the vendor withdrew.  A bare canonical name is left entirely
     alone -- EF 3.1 ships bare elements in every compartment, and a bare name
     is an identity, not an omission.
     """
     identity = identities.get(row.uuid)
     name = row.name
-    if identity is not None and (identity.name, identity.cas_number) != (row.name, row.cas):
+    if (
+        identity is not None
+        and (identity.name, identity.cas_number) != (row.name, row.cas)
+        # The file carries no such row, but an entry kept for a later release
+        # still reaches this one: 3.8 and 3.9.1 call five calcium uuids
+        # `Calcium` (7440-70-2), 3.10.1 `Calcium II` under the same number,
+        # and only the 3.10.1 statement is a spelling of 3.12's ion.
+        and not redefines(row.name, row.cas, identity.name, identity.cas_number)
+    ):
         name = identity.name
         # The EC number goes with the labels: it is the *earlier* registration's
         # companion evidence, and leaving it made nine of 3.8's `Arsenic ion`

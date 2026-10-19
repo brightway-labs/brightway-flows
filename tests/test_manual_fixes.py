@@ -2506,8 +2506,9 @@ class EcoinventStatesTheElementOnTwoIonsTestCase(unittest.TestCase):
     metal in the release carries the ion's number.  The ruling is that the
     name is the vendor's statement of what the flow is, so the three releases
     that state the charge correct the number.  3.8 and 3.9.1 name the same
-    uuids bare and are left alone: a bare name is the element, and their rows
-    follow 3.12's corrected identity through the canonical-identities file.
+    uuids bare and are left alone: a bare name under the element's number is
+    the element, and since #398 their rows stay it rather than following 3.12's
+    corrected identity -- the uuid names two substances.
     """
 
     RELEASES = ("ecoinvent-3.10.1", "ecoinvent-3.11", "ecoinvent-3.12")
@@ -2554,17 +2555,19 @@ class EcoinventStatesTheElementOnTwoIonsTestCase(unittest.TestCase):
                 with self.subTest(release=key, vendor=vendor):
                     self.assertEqual(self._apply(key, self._row(vendor, wrong))["cas_number"], wrong)
 
-    def test_the_canonical_identity_carries_the_corrected_number_to_the_bare_releases(self):
+    def test_the_corrected_identity_does_not_reach_the_bare_releases(self):
         """The 3.8 row for `abb7f444…` is `Strontium` under 7440-24-6; 3.12
         calls the uuid `Strontium II` and, corrected, numbers it 22537-39-9.
-        The derived file is what carries that to 3.8."""
+        Until #398 the derived file carried that to 3.8 and 3.9.1; the number
+        moving from the element to the ion is now a second substance, and the
+        only releases that disagreed with 3.12 were the bare ones, so the uuid
+        has no entry at all."""
         from brightway_flows.merge.species import load_canonical_identities
 
         identities = load_canonical_identities()
-        for uuid, expected in (
-            ("abb7f444-e74a-46b5-a6a5-080a847cbbc5", ("Strontium II", "22537-39-9")),
-            ("e189eb4e-0f6a-4054-aaf8-47df28c87ec4", ("Caesium I", "18459-37-5")),
+        for uuid in (
+            "abb7f444-e74a-46b5-a6a5-080a847cbbc5",
+            "e189eb4e-0f6a-4054-aaf8-47df28c87ec4",
         ):
             with self.subTest(uuid=uuid):
-                identity = identities[uuid]
-                self.assertEqual((identity.name, identity.cas_number), expected)
+                self.assertNotIn(uuid, identities)

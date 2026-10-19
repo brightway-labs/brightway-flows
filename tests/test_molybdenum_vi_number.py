@@ -106,9 +106,11 @@ class TheDerivationReadsCorrectedRowsTestCase(unittest.TestCase):
         self.derive = _tool("derive_ecoinvent_canonical_identities").derive
         self._release("3.9.1", ION)
         self._release("3.12", METAL)
-        # A 3.8 that names the flow plain `Molybdenum`, so the newest identity
-        # has something to replace and an entry is written either way.
-        self._release("3.8", METAL, name="Molybdenum")
+        # A 3.8 that spells the ion another way under the metal's number, so
+        # the newest identity has something to replace and an entry is written
+        # either way.  (3.8 itself names these uuids plain `Molybdenum`, which
+        # since #398 is the metal and replaced by nothing; see the last test.)
+        self._release("3.8", METAL, name="Molybdenum (VI)")
         self.fixes = self.dir / "fixes-3.12.json"
         self.fixes.write_bytes(orjson.dumps({
             "fixes": [{
@@ -148,21 +150,28 @@ class TheDerivationReadsCorrectedRowsTestCase(unittest.TestCase):
             [r["version"] for r in entry["replaces"]], ["3.8", "3.9.1"]
         )
 
-    def test_the_checked_in_file_carries_the_ions_number_for_the_thirteen(self):
-        """The regenerated file, read as data: 3.12 decides the thirteen rows,
-        with the ion's number, replacing 3.8's plain `Molybdenum` only."""
+    def test_a_bare_molybdenum_is_not_replaced_by_the_ion(self):
+        """3.8's plain `Molybdenum` under the metal's number, on the uuid the
+        corrected 3.12 calls `Molybdenum VI` under the ion's: two substances
+        (#398), so with 3.9.1 agreeing there is nothing left to decide."""
+        self._release("3.8", METAL, name="Molybdenum")
+        payload = self.derive(self.dir, fixes={"3.12": self.fixes})
+        self.assertEqual(
+            [e for e in payload["identities"] if e["uuid"] == self.UUID], []
+        )
+
+    def test_the_checked_in_file_never_carries_the_metals_number_for_the_ion(self):
+        """The regenerated file, read as data.  The thirteen were entries until
+        #398, replacing 3.8's plain `Molybdenum`; that is the metal now, the
+        later releases all agree with the corrected 3.12, and no `Molybdenum
+        VI` entry is left -- in particular none carrying 7439-98-7."""
         payload = orjson.loads(
             (PACKAGE_DATA_DIR / "ecoinvent-canonical-identities.json").read_bytes()
         )
-        thirteen = [
-            e for e in payload["identities"]
-            if e["name"] == "Molybdenum VI" and e["decided_by"] == "3.12"
-        ]
-        self.assertEqual(len(thirteen), 13)
-        for entry in thirteen:
-            with self.subTest(uuid=entry["uuid"]):
-                self.assertEqual(entry["cas_number"], ION)
-                self.assertEqual([r["version"] for r in entry["replaces"]], ["3.8"])
+        self.assertEqual(
+            [e["uuid"] for e in payload["identities"] if e["name"] == "Molybdenum VI"],
+            [],
+        )
 
 
 if __name__ == "__main__":

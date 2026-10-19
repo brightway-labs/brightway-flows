@@ -7,8 +7,10 @@ do the rest.  These cases prove the ride works, on the fixtures the simulation
 in `plans/retire-prepared-correspondence.md` §3a measured at scale:
 
 * a charged name lands on the ion object through its number;
-* a stale elemental row follows its canonical identity to the ion -- and,
-  without the identity, provably does not, which is the whole 638-row point;
+* a stale ion row follows its canonical identity to the newest release's ion
+  -- and, without the identity, provably does not;
+* a row its release called the bare element stays the element, though a later
+  release reused its uuid for the ion (#398);
 * a generic-ion name is its own substance: it lands on a generic-ion object
   where one exists and matches *nothing* where none does, so the creation path
   mints one rather than a charge being guessed;
@@ -40,12 +42,21 @@ OBJECTS = {
     "Copper": ("fo-copper", "7440-50-8"),
     "Copper, Ion": ("fo-copper-ion", None),
     "Antimony": ("fo-antimony", "7440-36-0"),
+    "Vanadium": ("fo-vanadium", "7440-62-2"),
+    "Vanadium(3+)": ("fo-vanadium-3", "22541-77-1"),
+    "Vanadium(5+)": ("fo-vanadium-5", "22537-31-1"),
 }
 
 IDENTITIES = {
     "s-zinc-38": CanonicalIdentity(
         uuid="s-zinc-38", name="Zinc II", cas_number="23713-49-7",
-        decided_by="3.12", replaces=(("3.8", "Zinc", "7440-66-6"),),
+        decided_by="3.12", replaces=(("3.8", "Zinc, ion", "23713-49-7"),),
+    ),
+    # ecoinvent 3.8's `Vanadium, ion` under the trivalent ion's number, which
+    # 3.12 calls `Vanadium V` under the pentavalent one's.
+    "s-vanadium-38": CanonicalIdentity(
+        uuid="s-vanadium-38", name="Vanadium V", cas_number="22537-31-1",
+        decided_by="3.12", replaces=(("3.8", "Vanadium, ion", "22541-77-1"),),
     ),
 }
 
@@ -105,15 +116,26 @@ class SpeciesMatchingTestCase(unittest.TestCase):
         resolution = self._resolve(_row("Nickel(2+)"))
         self.assertEqual(resolution.flow_object_id, "fo-nickel-ion")
 
-    def test_a_stale_elemental_row_follows_its_canonical_identity(self):
-        resolution = self._resolve(_row("Zinc", uuid="s-zinc-38", cas="7440-66-6"))
-        self.assertEqual(resolution.flow_object_id, "fo-zinc-ion")
+    def test_a_stale_ion_row_follows_its_canonical_identity(self):
+        resolution = self._resolve(
+            _row("Vanadium, ion", uuid="s-vanadium-38", cas="22541-77-1")
+        )
+        self.assertEqual(resolution.flow_object_id, "fo-vanadium-5")
         self.assertEqual(resolution.basis, "cas")
 
-    def test_without_the_identity_the_same_row_stays_elemental(self):
+    def test_without_the_identity_the_same_row_keeps_its_own_number(self):
         """The counterfactual that sizes the rule: same words, no entry."""
-        resolution = self._resolve(_row("Zinc", uuid="s-unknown", cas="7440-66-6"))
+        resolution = self._resolve(
+            _row("Vanadium, ion", uuid="s-unknown", cas="22541-77-1")
+        )
+        self.assertEqual(resolution.flow_object_id, "fo-vanadium-3")
+
+    def test_a_bare_element_on_a_reused_uuid_stays_the_element(self):
+        """#398: 3.8's `Zinc` (7440-66-6) on a uuid whose newest name is
+        `Zinc II` lands on the metal, where BAFU's and EF's `Zinc` are."""
+        resolution = self._resolve(_row("Zinc", uuid="s-zinc-38", cas="7440-66-6"))
         self.assertEqual(resolution.flow_object_id, "fo-zinc")
+        self.assertEqual(resolution.basis, "cas")
 
     def test_a_generic_ion_name_lands_on_the_generic_ion_object(self):
         resolution = self._resolve(_row("Copper ion"))
