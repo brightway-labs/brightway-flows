@@ -47,7 +47,7 @@
       "title": "A lake factor reaches the flow it is about, in the compartment it was stated in",
       "subject": {
         "kind": "factor",
-        "flow_name": "Fluoride",
+        "flow_name": "Fluoride(1-)",
         "context_display": "Environmental → Water → Lake",
         "category": "Ecotoxicity, freshwater",
         "implemented_by": "GreenDelta"
@@ -55,7 +55,7 @@
       "expect": {
         "amount": "20.361"
       },
-      "comment": "`Emission to water/lake` is one of the compartments ecoinvent 3 does not have, so no flow of theirs resolves in it by identifier and the rule for it rests on BAFU's evidence: 50 of BAFU's rows, every one in `Environmental -> Water -> Lake`. Fluoride reaches this flow on its registry number and 20.361 is GreenDelta's own number republished unchanged. Before this change every lake row of theirs was dropped, so the whole compartment was missing from the comparison rather than differing in it."
+      "comment": "`Emission to water/lake` is one of the compartments ecoinvent 3 does not have, so no flow of theirs resolves in it by identifier and the rule for it rests on BAFU's evidence: 50 of BAFU's rows, every one in `Environmental -> Water -> Lake`. Fluoride reaches this flow on its registry number and 20.361 is GreenDelta's own number republished unchanged. Named `Fluoride(1-)` since #401 gave every anion its charge number; `Fluoride` until then. Before this change every lake row of theirs was dropped, so the whole compartment was missing from the comparison rather than differing in it."
     }
   ]
 }

@@ -65,7 +65,7 @@ The minerals' entries are pinned, because their reason is the arithmetic.
 
 ## The number another substance carries
 
-`Copper, Ion` is a substance this list has only because ecoinvent shipped it.
+`Copper, ion` is a substance this list has only because ecoinvent shipped it.
 The JRC characterises copper, not its ion; ecoinvent gives the ion copper's own
 numbers, 46.47592828149169 CTUe/kg in surface water; and that number stands
 published on copper. Until 2026-09-01 the ion's factor was published as

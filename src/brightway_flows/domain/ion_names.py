@@ -31,6 +31,10 @@ them.
 
 from __future__ import annotations
 
+from typing import Any
+
+from brightway_flows.domain.vocabulary import PROV_WAS_GENERATED_BY_CURIE
+
 #: The `prov:wasGeneratedBy` on every label this standard writes.  Read by
 #: `flow_layers.synonyms.carry_member_names`, which does not withdraw a synonym
 #: carrying it: the standard promises the name, as the size-class scheme
@@ -40,6 +44,25 @@ ION_NAMING_STANDARD = "ion_naming_standard"
 #: IUPAC spelling to American, where the two differ.  Sulfur is one spelling in
 #: both; `sulphur` is British, and not asked for.
 AMERICAN_SPELLINGS = {"Aluminium": "Aluminum", "Caesium": "Cesium"}
+
+def is_standard_label_row(row: Any) -> bool:
+    """Whether a label row is one this standard wrote.
+
+    Such a synonym is the substance's own name in another spelling, built from
+    the name rather than gathered from a registry, so it can be neither a
+    trade name nor another substance's: the merge reads it as a preferred
+    name, and `carry_member_names` never withdraws it.
+    """
+    if not isinstance(row, dict):
+        return False
+    provenance = row.get("provenance")
+    entries = provenance if isinstance(provenance, list) else [provenance]
+    return any(
+        isinstance(entry, dict)
+        and entry.get(PROV_WAS_GENERATED_BY_CURIE) == ION_NAMING_STANDARD
+        for entry in entries
+    )
+
 
 _IUPAC_SPELLINGS = {american: iupac for iupac, american in AMERICAN_SPELLINGS.items()}
 
@@ -154,6 +177,7 @@ __all__ = [
     "anion_base",
     "iupac_base",
     "is_anion_name",
+    "is_standard_label_row",
     "roman_numeral",
     "standard_ion_label",
     "standard_ion_synonyms",

@@ -210,5 +210,35 @@ class SynonymsSurviveTestCase(unittest.TestCase):
         self.assertNotIn("Lead II", _synonyms(other))
 
 
+
+class MatchingReadsTheStandardTestCase(unittest.TestCase):
+    """A synonym the standard wrote is the substance's own name respelled, and
+    the merge reads it as a preferred name.  AGRIBALYSE's `Bromide` to
+    industrial soil carries 59-99-4, which reaches nothing, so it is matched
+    on its name -- which was bromide's label until the standard made it
+    `Bromide(1-)`.  Read as an ordinary synonym of a numbered substance it was
+    refused, and the row minted a second `Bromide` (#401)."""
+
+    def test_the_old_label_still_finds_the_ion_as_its_name(self):
+        from brightway_flows.merge.matching import _build_indexes
+
+        bromide = _object("Bromide", ANION, charge=-1, object_id="fo-bromide")
+        standardise_ion_names([bromide])
+        _, _, labels, preferred = _build_indexes([bromide])
+        self.assertEqual(preferred["bromide"], {"fo-bromide"})
+        self.assertEqual(preferred["bromide(1-)"], {"fo-bromide"})
+
+    def test_a_gathered_synonym_is_still_only_a_synonym(self):
+        from brightway_flows.merge.matching import _build_indexes
+
+        lead = _object("Lead(2+)", CATION, charge=2, alt=["plumbous ion"],
+                       object_id="fo-lead")
+        standardise_ion_names([lead])
+        _, _, labels, preferred = _build_indexes([lead])
+        self.assertIn("plumbous ion", labels)
+        self.assertNotIn("plumbous ion", preferred)
+        self.assertIn("lead ii", preferred)
+
+
 if __name__ == "__main__":
     unittest.main()

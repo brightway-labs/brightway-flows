@@ -84,7 +84,7 @@ import structlog
 
 from brightway_flows.domain.elementary_flow import ElementaryFlow
 from brightway_flows.domain.flow_object import FlowObject
-from brightway_flows.domain.ion_names import ION_NAMING_STANDARD
+from brightway_flows.domain.ion_names import is_standard_label_row
 from brightway_flows.domain.particulate_size import (
     class_by_flow_object,
     particulate_class_by_source_flow,
@@ -357,7 +357,7 @@ def carry_member_names(
         for row in obj.altLabel or []:
             values = _label_values([row])
             key = _canonical_name(values[0]) if values else ""
-            if not key or _promised_by_the_scheme(row) or _promised_by_the_ion_standard(row):
+            if not key or _promised_by_the_scheme(row) or is_standard_label_row(row):
                 # A window's promised spelling is never withdrawn here, and
                 # nor is a synonym the ion naming standard promises
                 # (`domain.ion_names`): `Lead II` is lead(2+)'s whatever
@@ -580,18 +580,6 @@ def _promised_by_the_scheme(row: Any) -> bool:
     entries = provenance if isinstance(provenance, list) else [provenance]
     return any(
         isinstance(entry, dict) and entry.get(PROV_WAS_GENERATED_BY_CURIE) == SIZE_CLASS_PASS_NAME
-        for entry in entries
-    )
-
-
-def _promised_by_the_ion_standard(row: Any) -> bool:
-    """Whether this label row is one `domain.ion_names` promises."""
-    if not isinstance(row, dict):
-        return False
-    provenance = row.get("provenance")
-    entries = provenance if isinstance(provenance, list) else [provenance]
-    return any(
-        isinstance(entry, dict) and entry.get(PROV_WAS_GENERATED_BY_CURIE) == ION_NAMING_STANDARD
         for entry in entries
     )
 

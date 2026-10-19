@@ -119,7 +119,7 @@ under the element in the table's first column. Where 3.8's compartment was
 not one the list already held for the element, the merge added it: 28 new
 flows, most of them in forestry soil (`Environmental → Ground →
 Silvicultural`), and none of them characterised. Six ion flows at aircraft cruise height —
-`Antimony, Ion`, `Arsenic, Ion`, `Iron, Ion`, `Tin, Ion`, `Titanium, ion` and
+`Antimony, ion`, `Arsenic, ion`, `Iron, ion`, `Tin, ion`, `Titanium, ion` and
 `Potassium(1+)` — were reached only by 3.8's stratosphere rows, which 3.12 no
 longer ships, and are no longer published; none carried a factor.
 

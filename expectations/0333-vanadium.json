@@ -703,7 +703,7 @@
     {
       "id": "0333-table6-cesium1-as-ef-published-it",
       "issue": 333,
-      "title": "EF 3.1 gives `Cesium(1+)` a freshwater ecotoxicity factor of 4.47E+03 CTUe/kg",
+      "title": "EF 3.1 gives `Caesium(1+)` a freshwater ecotoxicity factor of 4.47E+03 CTUe/kg",
       "subject": {
         "kind": "factor",
         "substance_cas": "18459-37-5",
@@ -714,12 +714,12 @@
       "expect": {
         "amount": "4.47E+03"
       },
-      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cesium (i)` as 4.47E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cesium(1+)` (18459-37-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cesium (i)` as 4.47E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Caesium(1+)` (18459-37-5; `Cesium(1+)` until #401), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against the JRC's own implementation: this is the transcription half, and it fails if the pipeline has lost or mis-attributed a number EF stated rather than if a decision here was wrong."
     },
     {
       "id": "0333-table6-cesium1-as-this-list-publishes-it",
       "issue": 333,
-      "title": "This list publishes 4.47E+03 CTUe/kg for `Cesium(1+)` in fresh water",
+      "title": "This list publishes 4.47E+03 CTUe/kg for `Caesium(1+)` in fresh water",
       "subject": {
         "kind": "factor",
         "substance_cas": "18459-37-5",
@@ -730,7 +730,7 @@
       "expect": {
         "amount": "4.47E+03"
       },
-      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cesium (i)` as 4.47E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Cesium(1+)` (18459-37-5), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
+      "comment": "JRC 130796 Table 6 prints EF 3.1's freshwater ecotoxicity factor for `cesium (i)` as 4.47E+03 CTUe/kg, for an emission to fresh water. This list publishes that substance as `Caesium(1+)` (18459-37-5; `Cesium(1+)` until #401), and the context the table means is `Environmental → Water → Surface water`. The table marks it **b,c**: the HC20 was extrapolated from USEtox's HC50 (b), and the CF of the element was set equal to the CF of the speciation (c) -- so the same number belongs on both rows. Checked against what this list publishes, which is the half a consumer reads. Where the two implementations disagree the consensus publishes nothing until somebody rules, so an `unresolved` here is a contested factor waiting in the queue rather than a wrong number."
     },
     {
       "id": "0333-table6-cobalt-as-ef-published-it",

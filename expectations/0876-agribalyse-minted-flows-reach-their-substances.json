@@ -59,7 +59,7 @@
     {
       "id": "0876-chromium-iv-reaches-ecoinvents-substance",
       "issue": 876,
-      "title": "AGRIBALYSE's Chromium (IV) row reaches the Chromium IV substance ecoinvent 3.8's row made",
+      "title": "AGRIBALYSE's Chromium (IV) row reaches the chromium(4+) substance ecoinvent 3.8's row made",
       "subject": {
         "kind": "source_row",
         "list": "agribalyse",
@@ -70,10 +70,10 @@
         "outcome": "algorithm",
         "basis": "cas",
         "target_cas": "15723-28-1",
-        "target_name": "Chromium IV"
+        "target_name": "Chromium(4+)"
       },
       "pending": true,
-      "comment": "ecoinvent 3.8's one `Chromium IV` row, in urban air with 15723-28-1, minted the published substance; AGRIBALYSE's one row is the same name in the same compartment with the state in parentheses and no number, and on the build of 1 September 2026 it minted a second. Selected by uuid because the two spellings differ only in punctuation."
+      "comment": "ecoinvent 3.8's one `Chromium IV` row, in urban air with 15723-28-1, minted the published substance; AGRIBALYSE's one row is the same name in the same compartment with the state in parentheses and no number, and on the build of 1 September 2026 it minted a second. Selected by uuid because the two spellings differ only in punctuation. The substance ecoinvent 3.8 minted was published as `Chromium IV` until #401 spelled every ion by its charge number, and is `Chromium(4+)` since."
     },
     {
       "id": "0876-benzovindiflupyr-reaches-efs-substance",

@@ -20,6 +20,7 @@ import structlog
 
 from brightway_flows.domain.elementary_flow import ElementaryFlow
 from brightway_flows.domain.flow import Flow
+from brightway_flows.domain.ion_names import is_standard_label_row
 from brightway_flows.domain.labels import coerce_alt_labels, flow_label_value
 from brightway_flows.domain.vocabulary import (
     CHEMINF_CAS_REGISTRY_NUMBER,
@@ -204,6 +205,19 @@ def _build_indexes(
         for item in coerce_alt_labels(obj.altLabel):
             if isinstance(item.value, str) and item.value.strip():
                 label_to_object_ids.setdefault(_normalize_text(item.value), set()).add(object_id)
+
+        # The ion naming standard's synonyms are the substance's own name in
+        # its other spellings -- `Bromide` for `Bromide(1-)`, `Lead II` for
+        # `Lead(2+)` -- and are a preferred name here, as the name they were
+        # built from was.  Indexed as an alternative label only, the standard's
+        # respelling of `Bromide` turned AGRIBALYSE's `Bromide` to industrial
+        # soil, whose 59-99-4 reaches nothing, from a match on the name into a
+        # second substance called `Bromide` (#401).
+        for row in obj.altLabel or []:
+            if is_standard_label_row(row) and isinstance(row.get("@value"), str):
+                pref_label_to_object_ids.setdefault(
+                    _normalize_text(row["@value"]), set()
+                ).add(object_id)
 
     return cas_to_object_ids, ec_to_object_ids, label_to_object_ids, pref_label_to_object_ids
 

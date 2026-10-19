@@ -66,7 +66,7 @@ implementation of a method:
 
   **The curated decisions are 91 rows**, in
   `data/lcia-substance-decisions.json`, and 25 of them are about ions. Their
-  package writes `Copper ion` where this list publishes `Copper, Ion`, and
+  package writes `Copper ion` where this list publishes `Copper, ion`, and
   `Cadmium II` where it publishes `Cadmium(2+)`, with no registry number to fall
   back on. Nothing about the
   strings settles that, but their own file does: each of those names appears in
