@@ -128,7 +128,49 @@ reader needs and unseat the label those rows land by, so the ruling in
 `preferred-label-decisions.json` records a rejection, with the reasoning on
 the row.
 
-Whichever way a case falls, the gate is the same: a published label only ever
-changes through a ruling in `preferred-label-decisions.json`, and a proposal
-nobody has ruled on queues for a curator instead of applying
+Whichever way a case falls, the gate is the same: whether an ion's name states
+a charge only ever changes through a ruling in `preferred-label-decisions.json`,
+as does any other published label, and a proposal nobody has ruled on queues for
+a curator instead of applying
 ([#16](https://github.com/brightway-labs/brightway-flows/issues/16)).
+
+## How an ion is spelled
+
+ecoinvent 3.12 calls lead dissolved in water `Lead II`, EF 3.1 calls it
+`lead(II) ion`, and BAFU `Lead (Pb2+)`. They are one substance, published as
+`Lead(2+)`, and all three spellings find it. Every ion in the list is spelled by
+one standard and carries the same set of other spellings as synonyms
+([#401](https://github.com/brightway-labs/brightway-flows/issues/401)):
+
+| Ion | Published as | Also answers to |
+|---|---|---|
+| One atom, positive charge | `Lead(2+)` | `Lead(II)`, `Lead II` |
+| One atom, negative charge | `Chloride(1-)` | `Chloride`, `Chloride(-I)`, `Chloride -I` |
+| Charge not stated | `Copper, ion` | `Copper, Ion`, `Copper Ion` |
+| An element America spells differently | `Caesium(1+)`, `Aluminium(3+)` | each form above in the American spelling as well: `Cesium(1+)`, `Cesium(I)`, `Cesium I` |
+
+The charged forms are the charge numbers the International Union of Pure and
+Applied Chemistry recommends for ions — `iron(2+)`, `chloride(1-)` — with the
+element spelled as IUPAC spells it. IUPAC has no name for an ion whose charge
+nobody stated, so `Copper, ion` is this list's own spelling, the one EF's
+`Titanium, ion` already had. Synonyms the substance already carried stay; the
+standard's own come first.
+
+A Roman numeral states an oxidation number, and only for a single atom is that
+the charge. So the numerals are added for single-atom ions only:
+`Methylmercury(1+)` is not mercury(I), and nothing is added to it. `X, ion` is
+the exception, because it says nothing about charge, so
+`Thiocyanate, ion` is spelled the same way.
+
+The standard spells what a name already says. It does not decide whether an
+ion's charge is known: `Titanium, ion` stays generic though PubChem says Ti⁴⁺,
+by the ruling described above. Elements keep their own labels — the element is
+still `Cesium`, beside its ion `Caesium(1+)`.
+
+On the five-list build of `main` at `43403ac` (run
+`20261019T0759116033000000`) the standard reads 51 ions and renames 14:
+`Cesium(1+)`, `Chromium IV`, the five anions, and the seven generic ions that
+had a capital `Ion`. It reads four of the 51 as ions because each is recorded
+as the ion of its element, though typed an imprecise mixture
+([#628](https://github.com/brightway-labs/brightway-flows/issues/628)):
+`Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)` and `Chromium IV`.

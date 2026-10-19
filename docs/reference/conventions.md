@@ -328,6 +328,16 @@ tell a curator which evidence settles the question, so that the answer written
 into `preferred-label-decisions.json` or `ef-3.1-manual-fixes.json` is the same
 answer next time somebody asks.
 
+**An ion is the one family where the grammar is coded**, because for ions it is
+a grammar a string can be asked about: an element, a charge or none, a sign.
+`domain/ion_names.py` spells every ion by IUPAC's charge numbers and IUPAC's
+element spellings (`Lead(2+)`, `Chloride(1-)`, `Caesium(1+)`), spells an ion of
+unstated charge `X, ion`, and publishes the other spellings — the Stock numeral,
+the bare anion name, `X, Ion`, the American element — as synonyms;
+`pipeline/ion_names.py` applies it last of the substance-name writers, and to
+what the merge mints (#401). It decides spelling only. Whether a name states a
+charge stays a ruling (#143).
+
 **A ruling names a collision, and naming the wrong one is silent.** Seven
 rulings in `elementary-flow-collision-decisions.json` named the compartment
 `envi-air-hist15me` while every flow they named was in
