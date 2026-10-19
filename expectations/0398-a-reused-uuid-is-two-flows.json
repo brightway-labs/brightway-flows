@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent 3.8 ships 6a903634-c97f-4c49-a7c0-88f0e6ac7a23 as `Lead`, emitted to urban air close to ground, under 7439-92-1 -- lead the metal. ecoinvent 3.9.1 ships the same uuid as `Lead II` under 14280-50-3, the lead(2+) ion, and 3.10.1 and 3.12 keep it that way. The canonical identities read the newer statement as the vendor correcting the older one, so on the full build of `ad57820` (run 20261014T1414435780790000) 3.8's row was matched as `Lead II` and published as `Lead(2+)`, while BAFU 2026 v1's `Lead` in high-population air, under the same name and the same number, reached `Lead` beside EF 3.1's `lead`. The ruling on #398: a uuid whose registry number moves from the element to an ion is two flows. 3.8's rows keep the element they were published with, and whatever links them to the ion goes through a recorded correspondence, not the shared uuid. `merge/species.py:redefines` is the test; the derived file no longer lists those 308 3.8 rows, nor 34 of 3.9.1's.",
+  "expectations": [
+    {
+      "id": "0398-ecoinvent-38-lead-in-urban-air-is-the-metal",
+      "issue": 398,
+      "title": "ecoinvent 3.8's `Lead` to urban air close to ground reaches lead, the metal 3.8 named",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "6a903634-c97f-4c49-a7c0-88f0e6ac7a23"},
+      "expect": {"outcome": "matched", "basis": "cas", "target_cas": "7439-92-1", "target_substance_id": "fo-4ec5c05a87990179"},
+      "comment": "The row the issue is written around: `air / urban air close to ground`, kg, 7439-92-1. On the build of `ad57820` it was `algorithm` on `basis: cas` too -- but on 14280-50-3, the number 3.12 writes, landing on `Lead(2+)` (fo-250b361dd7295454), flow b01ef1c9-3904-446e-98ae-8a6a9ad407fd, and recorded under the name `Lead II`. `basis: cas` with the element's number is the claim: the row's own registration answered, not a name. fo-4ec5c05a87990179 is the substance BAFU's fifteen `Lead` rows reached on the same build."
+    },
+    {
+      "id": "0398-ecoinvent-38-and-bafu-lead-are-one-substance",
+      "issue": 398,
+      "title": "Every ecoinvent 3.8 row named lead reaches the same substance as BAFU's `Lead`",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "name": "Lead"},
+      "expect": {"row_count": 15, "same_substance": true, "target_substance_id": "fo-4ec5c05a87990179"},
+      "comment": "Fourteen emissions -- five to air, four to soil, five to water, the uuids 3.9.1 reused for `Lead II` -- and the `Lead, in ground` resource, which the merge records as `Lead`. Selected by name, not number: 7439-92-1 is also on 3.8's three ore-grade lead resources, which reach the same metal but are not this question. On the build of `ad57820` only the resource row was recorded as `Lead`: the fourteen were recorded as `Lead II`, under 3.12's number, and reached `Lead(2+)`."
+    },
+    {
+      "id": "0398-ecoinvent-312-lead-ii-is-still-the-ion",
+      "issue": 398,
+      "title": "ecoinvent 3.12's `Lead II` under the same uuid still reaches lead(2+)",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.12", "uuid": "6a903634-c97f-4c49-a7c0-88f0e6ac7a23"},
+      "expect": {"outcome": "matched", "target_cas": "14280-50-3", "target_name": "Lead(2+)"},
+      "comment": "The other half. The ruling says the uuid names two substances, one per reading; it does not move the release that wrote the ion."
+    },
+    {
+      "id": "0398-ecoinvent-38-copper-is-the-metal",
+      "issue": 398,
+      "title": "ecoinvent 3.8's bare `Copper` rows reach copper, not 3.12's ion of unstated charge",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "name": "Copper"},
+      "expect": {"row_count": 10, "same_substance": true, "target_substance_id": "fo-a9a85c11aea1c46a"},
+      "comment": "The shape where the newer release deletes the number rather than writing the ion's: nine air and soil uuids that 3.9.1 calls `Copper ion` with no CAS, plus `Copper, in ground`. Selected by name: 7440-50-8 is also on 3.8's fourteen ore-grade copper resources. On the build of `ad57820` the nine were recorded as `Copper ion` with no number and reached `Copper, Ion` (fo-436304b385710fab), the substance ecoinvent 3.12's rows minted. fo-a9a85c11aea1c46a is where BAFU's fourteen `Copper` rows are."
+    },
+    {
+      "id": "0398-ecoinvent-38-vanadium-is-the-metal",
+      "issue": 398,
+      "title": "ecoinvent 3.8's bare `Vanadium` rows reach vanadium, not vanadium(5+)",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "name": "Vanadium"},
+      "expect": {"row_count": 10, "same_substance": true, "target_substance_id": "fo-4a5e946df5e4203b"},
+      "comment": "Nine air and soil uuids 3.12 calls `Vanadium V`, and the resource. These rows were the case `ecoinvent-match-overrides.json` already guarded with `only_when_named: Vanadium V` -- the overrides were written for 3.12's name and must not reach a release that said something else -- and the guard was being satisfied by the canonical name the substitution gave the 3.8 rows, not by anything 3.8 wrote. On the build of `ad57820` thirteen 3.8 rows were `prepared` onto `Vanadium(5+)` that way. 3.8's five `Vanadium, ion` rows in water are still `Vanadium V` at matching: 3.8 already called them an ion."
+    },
+    {
+      "id": "0398-chromium-keeps-its-recorded-correspondence",
+      "issue": 398,
+      "title": "ecoinvent 3.8's nine bare `Chromium` emissions still reach chromium(3+), on the override that records why",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "name": "Chromium"},
+      "expect": {"row_count": 10, "substance_count": 2},
+      "comment": "The ruling's exception, and the ruling's own words: a recorded correspondence links 3.8 to the ion, not the uuid. Nine `Chromium` rows under 7440-47-3 in air and soil have overrides that send them to `chromium (iii)` with `carries_when_registered_as: [7440-47-3, 16065-83-1]`, because 3.8 also shipped a separate `Chromium VI` in those nine contexts, so its unspeciated chromium already meant trivalent (#45, #109). They stay where the override puts them; the tenth row is `Chromium, in ground`, the metal. Two substances among ten rows, then, on purpose."
+    },
+    {
+      "id": "0398-ecoinvent-38-chromium-forestry-is-trivalent",
+      "issue": 398,
+      "title": "ecoinvent 3.8's bare `Chromium` to forestry soil reaches chromium(3+) on its curated override",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "591de726-f2c7-43ba-8e22-15fd08acc8dc"},
+      "expect": {"outcome": "prepared", "target_substance_id": "fo-cc41dd8cd4558176"},
+      "comment": "One of the nine rows the exception is about, `soil / forestry`, 7440-47-3. `prepared` is the claim: the override answered, not the shared uuid. On the build of `43403ac` it was `prepared` too, but recorded as `Chromium III`, the identity the substitution gave it."
+    }
+  ]
+}

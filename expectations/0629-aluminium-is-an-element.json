@@ -13,9 +13,9 @@
       "expect": {
         "exists": true,
         "flow_type": "ChemicalElement",
-        "flow_count": 18
+        "flow_count": 19
       },
-      "comment": "The defect itself. `NeutralMolecule` before, with no atomic number, no symbol, no element link and no isotope list, while all 92 other elements had them.\n\n`flow_count` is claimed alongside the type because the type is the thing that moved and the flows are the thing that must not: nineteen before and nineteen after, so this is aluminium being recognised rather than aluminium being replaced by some other object that happened to be typed correctly. 18 from the retirement build (#141): the ore-content flow (`Aluminium, 24% in bauxite...`) is published as bauxite the mineral rather than as a flow of elemental aluminium, the #118/#606 reading applied to the last ore the tables were converting."
+      "comment": "The defect itself. `NeutralMolecule` before, with no atomic number, no symbol, no element link and no isotope list, while all 92 other elements had them.\n\n`flow_count` is claimed alongside the type because the type is the thing that moved and the flows are the thing that must not: nineteen before and nineteen after, so this is aluminium being recognised rather than aluminium being replaced by some other object that happened to be typed correctly. 18 from the retirement build (#141): the ore-content flow (`Aluminium, 24% in bauxite...`) is published as bauxite the mineral rather than as a flow of elemental aluminium, the #118/#606 reading applied to the last ore the tables were converting. 19 since #398: ecoinvent 3.8's fourteen bare `Aluminium` emissions, 7429-90-5, are the metal 3.8 named rather than 3.12's `Aluminium III`, and the one to forestry soil lands in a compartment EF 3.1's aluminium has no flow in, so the merge adds it (uncharacterised). Eighteen on the build of `43403ac`, nineteen on `bb21bfa`."
     },
     {
       "id": "0629-its-ion-is-recognised-as-an-ion",

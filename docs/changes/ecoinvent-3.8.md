@@ -16,53 +16,33 @@ Most of what is on this page comes from one habit of the 3.8 release: it names
 a metal in water, air or soil as the bare element — `Lead`, `Aluminium`,
 `Copper` — and gives it the element's registry number, while every release
 from 3.9.1 onwards names the same row, under the same uuid, `Lead II`,
-`Aluminium III` or `Copper ion`. ecoinvent means one flow by one uuid, so the
-newest release's name is taken as the vendor's current opinion of what the row
-is, and 3.8's row is published under that identity. Nothing 3.8 wrote is
-altered on the row itself; the newer name and number are what the matching
-reads, and the row's provenance keeps 3.8's own words.
+`Aluminium III` or `Copper ion`, with the ion's number or none. That is not a
+newer spelling of the same flow: the number moved from the element to the
+ion, so the identifier now names a second substance, and 3.8's row is
+published as the element 3.8 named
+([#398](https://github.com/brightway-labs/brightway-flows/issues/398)). It
+lands where BAFU's `Lead` and EF 3.1's `lead` already are. Where 3.8 already
+called the row an ion — `Cadmium, ion`, which is `Cadmium II` from 3.9.1 —
+the newer name is only a better spelling, and it is what the matching reads.
+Nothing 3.8 wrote is altered on the row itself; the row's provenance keeps
+3.8's own words.
 
 ## One name, two substances
 
-On the 2026-08-29 build of `54b0f9d` seven names in 3.8 landed on more than
-one substance. Two of those — `Molybdenum` and `Carbon` — were defects and
-have been corrected ([#181](https://github.com/brightway-labs/brightway-flows/issues/181), [#180](https://github.com/brightway-labs/brightway-flows/issues/180)); on the build of 2026-08-30 at
-`9fbb0d5` five remain, and in each either the registry numbers 3.8 wrote
-differ, or the newest release names some rows and no longer carries the
-others.
+On the build of 19 October 2026 at `bb21bfa` (run
+`20261019T0726568423740000`) three of the names 3.8 ships land on more than
+one substance, and in each a curated correspondence or the compartment
+decides. Until #398, `Sodium`, `Iron` and `Calcium` were split too: the rows
+3.12 still carries followed its ion, the ones it had dropped kept the
+element. All their rows are now the element.
 
-**`Sodium`, eleven rows.** Eight — the four air compartments and the four soil
-compartments, `235b2f02-ff98-4da9-82e2-e4246c7b7990` (air, unspecified) among
-them — are `Sodium I` with the ion's number 17341-25-2 in 3.12 and are
-published as `Sodium(1+)`. The other three, `460716f9-f5b8-4ee0-8198-545b24822124`
-(air, lower stratosphere + upper troposphere), `73a1b292-e31d-4100-a413-304795a3656f`
-(water, ground-) and `723f56f9-c68e-5692-a969-0fb2a70bce20` (water,
-unspecified), are absent from 3.12, so nothing overrides 3.8's element number
-7440-23-5, and they are published as `Sodium`, the metal.
-
-**`Iron`, ten rows.** Nine air and soil rows are `Iron ion` in 3.12, which
-gives them no registry number, and they are published as `Iron, Ion` — an
-iron ion of unstated charge. The tenth, `e3043a7f-5347-4c7b-89ee-93f11b2f6d9b`
-(water, ground-), is absent from 3.12, keeps 7439-89-6 and is published as
-`Iron`, the element.
-
-**`Calcium`, nine rows.** Eight are `Calcium II` (14127-61-8) in 3.12 and are
-published as `Calcium(2+)`. `b24b66e6-633c-49bf-a6ce-1e81da0715ce` (air, lower
-stratosphere + upper troposphere) is absent from 3.12 and stays `Calcium`.
-
-**`Molybdenum`, fourteen rows — split on the 2026-08-29 build, and since
-corrected.** Thirteen rows are `Molybdenum VI` in 3.12, but 3.12 left the
-*element's* number 7439-98-7 on them (3.9.1 had the ion's, 16065-87-5), and a
-CAS number outranks a name (see [When a name and a CAS number
-disagree](../deciding/identity.md)), so all thirteen were published as
-`Molybdenum`. The one row 3.12 no longer carries,
-`697e8ecf-bdbe-4857-92c9-e01960c91db7` (air, lower stratosphere + upper
-troposphere), was decided by 3.9.1's number and alone was published as
-`Molybdenum(6+)`. The ion's number is now written on the name in the 3.10.1,
-3.11 and 3.12 fixes files, and the newest-release identities are derived from
-each release *with its fixes applied* — otherwise 3.12's raw number would have
-been substituted back over the correction — so on the build of 2026-08-30 at `9fbb0d5` all
-fourteen 3.8 rows are published as `Molybdenum(6+)` ([#181](https://github.com/brightway-labs/brightway-flows/issues/181)).
+**`Chromium`, ten rows.** The nine emissions to air and soil, 7440-47-3, are
+published as `Chromium(3+)`, on curated overrides in
+`ecoinvent-match-overrides.json`: 3.8 also shipped a separate `Chromium VI`
+in each of those nine places, so its unspeciated chromium meant the trivalent
+kind ([#45](https://github.com/brightway-labs/brightway-flows/issues/45)). The
+tenth, `Chromium, in ground`, is the metal. 3.8's five `Chromium, ion` rows to
+water, 16065-83-1, are `Chromium(3+)` as well.
 
 **`Carbon`, four rows in soil — split on the 2026-08-29 build, and since
 corrected**, all carrying 7440-44-0. ecoinvent's own correspondence table
@@ -88,70 +68,78 @@ and `2caa889e-8187-459d-963a-fa47a79c5378` (fossil well) is `Fossil groundwater`
 
 ## An ionic charge was added or corrected
 
-**Twenty-three bare element names published with a charge, 243 rows.** In each
-case 3.8 wrote the element's name and the element's number, and the newest
-release that carries the row writes the ion. The consensus list follows the
-newest release and publishes the ion; the charge comes from the newer
-release's registry number. For strontium and caesium the newest release
-states the charge in the name but still writes the element's number, which
-`ecoinvent-3.12-manual-fixes.json` corrects ([#198](https://github.com/brightway-labs/brightway-flows/issues/198)); the corrected identity
-is what 3.8's rows follow.
+**Twenty-nine bare element names are published as the element, though a later
+release made the identifier an ion, 299 rows.** In each case 3.8 wrote the
+element's name and the element's number, and the newest release that carries
+the row writes an ion — with the ion's number, or with none. The identifier
+then names two substances, one per reading, and 3.8's row is the one 3.8
+named ([#398](https://github.com/brightway-labs/brightway-flows/issues/398)).
+Until #398 these rows followed the newest release and were published as the
+ion. On the build of `43403ac`, run `20261019T0759116033000000`, 3.8's
+`Lead` to urban air close to ground was `Lead(2+)`, while BAFU's `Lead`, with
+the same name and number, was `Lead`. On the build of `bb21bfa`, run
+`20261019T0726568423740000`, all 299 rows are matched on their own number,
+and 41 of them now reach a flow that carries a characterisation factor where
+they reached one that did not.
 
-| 3.8 name | 3.8 CAS | Newest release says | Published as | Rows |
-|---|---|---|---|---|
-| Aluminium | 7429-90-5 | Aluminium III, 22537-23-1 | Aluminium(3+) | 14 |
-| Barium | 7440-39-3 | Barium II, 22541-12-4 | Barium(2+) | 14 |
-| Beryllium | 7440-41-7 | Beryllium II, 22537-20-8 | Beryllium(2+) | 14 |
-| Cadmium | 7440-43-9 | Cadmium II, 22537-48-0 | Cadmium(2+) | 9 |
-| Calcium | 7440-70-2 | Calcium II, 14127-61-8 | Calcium(2+) | 8 |
-| Chromium | 7440-47-3 | Chromium III, 16065-83-1 | Chromium(3+) | 9 |
-| Cobalt | 7440-48-4 | Cobalt II, 22541-53-3 | Cobalt(2+) | 14 |
-| Lead | 7439-92-1 | Lead II, 14280-50-3 | Lead(2+) | 14 |
-| Lithium | 7439-93-2 | Lithium I, 17341-24-1 | Lithium(1+) | 3 |
-| Manganese | 7439-96-5 | Manganese II, 16397-91-4 | Manganese(2+) | 14 |
-| Mercury | 7439-97-6 | Mercury II, 14302-87-5 | Mercury(2+) | 14 |
-| Molybdenum | 7439-98-7 | Molybdenum VI, 16065-87-5 (3.9.1's number, restored on 3.10.1–3.12 by a curated fix, [#181](https://github.com/brightway-labs/brightway-flows/issues/181)) | Molybdenum(6+) | 14 |
-| Nickel | 7440-02-0 | Nickel II, 14701-22-5 | Nickel(2+) | 10 |
-| Potassium | 7440-09-7 | Potassium I, 24203-36-9 | Potassium(1+) | 10 |
-| Selenium | 7782-49-2 | Selenium IV, 22541-55-5 | Selenium(4+) | 14 |
-| Cesium | 7440-46-2 | Caesium I, 7440-46-2 corrected to 18459-37-5 (#198) | Cesium(1+) | 5 |
-| Silver | 7440-22-4 | Silver I, 14701-21-4 | Silver(1+) | 9 |
-| Sodium | 7440-23-5 | Sodium I, 17341-25-2 | Sodium(1+) | 8 |
-| Strontium | 7440-24-6 | Strontium II, 7440-24-6 corrected to 22537-39-9 (#198) | Strontium(2+) | 13 |
-| Thallium | 7440-28-0 | Thallium I, 22537-56-0 | Thallium(1+) | 14 |
-| Vanadium | 7440-62-2 | Vanadium V, 22537-31-1 | Vanadium(5+) | 9 |
-| Zinc | 7440-66-6 | Zinc II, 23713-49-7 | Zinc(2+) | 9 |
+| 3.8 name | 3.8 CAS | Newest release says | Rows |
+|---|---|---|---|
+| Aluminium | 7429-90-5 | Aluminium III, 22537-23-1 | 14 |
+| Antimony | 7440-36-0 | Antimony ion, none | 14 |
+| Arsenic | 7440-38-2 | Arsenic ion, none | 9 |
+| Barium | 7440-39-3 | Barium II, 22541-12-4 | 14 |
+| Beryllium | 7440-41-7 | Beryllium II, 22537-20-8 | 14 |
+| Cadmium | 7440-43-9 | Cadmium II, 22537-48-0 | 9 |
+| Calcium | 7440-70-2 | Calcium II, 14127-61-8 | 8 |
+| Cesium | 7440-46-2 | Caesium I, 18459-37-5 (corrected, #198) | 5 |
+| Cobalt | 7440-48-4 | Cobalt II, 22541-53-3 | 14 |
+| Copper | 7440-50-8 | Copper ion, none | 9 |
+| Iron | 7439-89-6 | Iron ion, none | 9 |
+| Lead | 7439-92-1 | Lead II, 14280-50-3 | 14 |
+| Lithium | 7439-93-2 | Lithium I, 17341-24-1 | 3 |
+| Manganese | 7439-96-5 | Manganese II, 16397-91-4 | 14 |
+| Mercury | 7439-97-6 | Mercury II, 14302-87-5 | 14 |
+| Molybdenum | 7439-98-7 | Molybdenum VI, 16065-87-5 (restored by a curated fix, [#181](https://github.com/brightway-labs/brightway-flows/issues/181)) | 14 |
+| Nickel | 7440-02-0 | Nickel II, 14701-22-5 | 10 |
+| Palladium | 7440-05-3 | Palladium II, 16065-88-6 | 6 |
+| Potassium | 7440-09-7 | Potassium I, 24203-36-9 | 10 |
+| Rhodium | 7440-16-6 | Rhodium III, 16065-89-7 | 1 |
+| Selenium | 7782-49-2 | Selenium IV, 22541-55-5 | 14 |
+| Silver | 7440-22-4 | Silver I, 14701-21-4 | 9 |
+| Sodium | 7440-23-5 | Sodium I, 17341-25-2 | 8 |
+| Strontium | 7440-24-6 | Strontium II, 22537-39-9 (corrected, #198) | 13 |
+| Thallium | 7440-28-0 | Thallium I, 22537-56-0 | 14 |
+| Tin | 7440-31-5 | Tin ion, none | 9 |
+| Titanium | 7440-32-6 | Titanium ion, none | 9 |
+| Vanadium | 7440-62-2 | Vanadium V, 22537-31-1 | 9 |
+| Zinc | 7440-66-6 | Zinc II, 23713-49-7 | 9 |
 
-The rows are the air and soil compartments, and for the elements with fewer
-than 13 rows the missing compartments are ones 3.8 files under a different
-name (`Cadmium, ion` in water) or ones 3.12 no longer carries. The 14th row,
-where there is one, is `air / lower stratosphere + upper troposphere`, which
-3.10.1 dropped and 3.9.1 decides. `Chromium VI` (18540-29-9, 14 rows) is
-published as `Chromium(6+)`, which is the same statement in a different
-notation and is not a change.
+The rows are emissions to air, soil and water, and every one is published
+under the element in the table's first column. Where 3.8's compartment was
+not one the list already held for the element, the merge added it: 28 new
+flows, most of them in forestry soil (`Environmental → Ground →
+Silvicultural`), and none of them characterised. Six ion flows at aircraft cruise height —
+`Antimony, Ion`, `Arsenic, Ion`, `Iron, Ion`, `Tin, Ion`, `Titanium, ion` and
+`Potassium(1+)` — were reached only by 3.8's stratosphere rows, which 3.12 no
+longer ships, and are no longer published; none carried a factor.
+
+`Chromium` is the thirtieth name of this shape and the exception: its nine
+rows reach `Chromium(3+)` on a curated correspondence, for the reason given
+above. `Chromium VI` (18540-29-9, 14 rows) is published as `Chromium(6+)`,
+which is the same statement in a different notation and is not a change.
 
 **Ten `X, ion` names in water given a charge, 50 rows.** 3.8 names the
 dissolved form in the five water compartments `Cadmium, ion`, `Calcium, ion`,
 `Chromium, ion`, `Lithium, ion`, `Nickel, ion`, `Potassium, ion`, `Silver,
 ion`, `Sodium, ion`, `Vanadium, ion` and `Zinc, ion`, and on every one of them
 3.8 itself wrote the specific ion's registry number — 22537-48-0 for cadmium,
-14127-61-8 for calcium, and so on down the table above. The number states the
+14127-61-8 for calcium, and so on. The number states the
 charge the name left out, and the rows are published as `Cadmium(2+)`,
 `Calcium(2+)`, `Chromium(3+)`, `Lithium(1+)`, `Nickel(2+)`, `Potassium(1+)`,
 `Silver(1+)`, `Sodium(1+)`, `Vanadium(5+)` and `Zinc(2+)`. `Vanadium, ion`
 is the one where 3.8's own CAS number (22541-77-1) differs from the newest
 release's (22537-31-1, `Vanadium V`); both are vanadium ions and the newer
 one is followed.
-
-**Six bare element names published as an ion of unstated charge, 59 rows.**
-`Antimony`, `Arsenic`, `Copper`, `Iron`, `Tin` and `Titanium` in the air and
-soil compartments carry the element's number in 3.8. From 3.9.1 onwards
-ecoinvent names them `Antimony ion`, `Arsenic ion`, `Copper ion`, `Iron ion`,
-`Tin ion` and `Titanium ion` and deletes the CAS number. The vendor deliberately
-declined to say which ion, so the consensus list does the same and publishes
-`Antimony, Ion`, `Arsenic, Ion`, `Copper, Ion`, `Iron, Ion`, `Tin, Ion` and
-`Titanium, ion`; picking a charge would be a reinterpretation the vendor
-refused.
 
 **Six `X, ion` names whose registry number is a neutral or polyatomic species,
 19 rows.** These are not charge corrections. The number 3.8 wrote settles
@@ -172,7 +160,11 @@ substance 3.8's registry number designates.
 
 ## Rows merged into one flow
 
-77 consensus flows carry more than one 3.8 row. They fall into five groups.
+77 consensus flows carried more than one 3.8 row on the build of `43403ac`,
+and 79 do on the build of `bb21bfa`: three groundwater pairs of an element and
+its ion came apart (below), and five pairs met, in each of which 3.8's bare
+`Manganese` to water joins the `Manganese-55` row in the same place, which
+already reached elemental manganese. They fall into five groups.
 
 ### Ore-grade resource names
 
@@ -361,13 +353,14 @@ number except where noted.
 
 In `water / ground-` and `water / unspecified`, 3.8 sometimes carries a row
 under the bare name and another under `X, ion`, with the *same* ion registry
-number on both, so they were one substance in the vendor's own terms:
+number on both, so they were one substance in the vendor's own terms. (The
+bare `Lithium`, `Nickel` and `Potassium` rows to groundwater were listed here
+until #398, as though they carried the ions' numbers; they carry the
+elements', 7439-93-2, 7440-02-0 and 7440-09-7, and are published as the
+elements.)
 
 | Rows | Published as |
 |---|---|
-| `4569494e-085e-413a-8fef-63a3c419e0cf` Lithium · `09cf7c11-0269-4fc1-a5f3-47121a7882d3` Lithium, ion (water / ground-, both 17341-24-1) | Lithium(1+) |
-| `56815b4f-6138-4e0b-9fac-c94fd6b102b3` Nickel · `e030108f-2125-4bcb-a73b-ad72130fcca3` Nickel, ion (water / ground-, both 14701-22-5) | Nickel(2+) |
-| `c21a1397-82dc-427a-a6cb-c790ba2626f4` Potassium · `a07b8a8c-8cab-4656-a82f-310e8069e323` Potassium, ion (water / ground-, both 24203-36-9) | Potassium(1+) |
 | `6d25e386-4ef9-4d40-85c6-e694f523a4da` Chloride · `c4e01cfb-2f50-52d5-8177-1518ad8b7bea` Chloride, ion (water / unspecified, both 16887-00-6) | Chloride |
 | `28bca51a-6cc7-46af-961a-fd2b675a1376` Sulfate, 14808-79-8 · `f3e5bff4-5bdf-55d7-8dd9-3cac7b09e57f` Sulfate, ion, 14996-02-2 (water / unspecified) | Sulfate |
 | `31eacbfc-683a-4d36-afc1-80dee42a3b94` Sulfate · `b8c794de-ac20-47f6-ae87-84d91e95da93` Sulfate, ion (water / ground-) | Sulfate |
