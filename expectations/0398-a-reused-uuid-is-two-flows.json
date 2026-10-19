@@ -57,6 +57,14 @@
       "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "591de726-f2c7-43ba-8e22-15fd08acc8dc"},
       "expect": {"outcome": "prepared", "target_substance_id": "fo-cc41dd8cd4558176"},
       "comment": "One of the nine rows the exception is about, `soil / forestry`, 7440-47-3. `prepared` is the claim: the override answered, not the shared uuid. On the build of `43403ac` it was `prepared` too, but recorded as `Chromium III`, the identity the substitution gave it."
+    },
+    {
+      "id": "0398-a-redefined-uuid-is-not-a-conflict",
+      "issue": 398,
+      "title": "The uuids the ruling splits are recorded as redefined, not counted as conflicts between the lists",
+      "subject": {"kind": "measure", "key": "merge.redefined_uuids", "value_when_absent": 0},
+      "expect": {"at_least": 284},
+      "comment": "The ruling places one uuid on two flows on purpose, and the conflict check groups the outcomes by uuid, so every split it makes is one uuid with two targets. On the five-list build of `bb21bfa` (run 20261019T0726568423740000) that was 284 more `divergent-target` reports -- 3.8's `Lead` on lead and 3.12's `Lead II` on lead(2+), and so on -- taking `merge.conflicts` from 185 to 469 and filling 284 of the 299 entries on the conflicts page with questions already answered. They are the 299 moved 3.8 rows less the 15 whose uuid 3.12 no longer ships. `merge/store.py` now records a uuid as `redefined-uuid` when its two targets are, on every row, the bare element on one and the ion on the other with the number moved -- the same test `merge/species.py:redefines` applies -- and `merge.conflicts` counts every other kind. On the same build: 284 redefined, and 185 conflicts, the 170 unit disagreements and 15 divergent targets `main` already had. A bound rather than a count, because the failure this guards against is the splits going back to being reported as disagreements, which takes this to 0."
     }
   ]
 }

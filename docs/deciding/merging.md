@@ -96,6 +96,20 @@ override in `ecoinvent-match-overrides.json`. 3.8 also shipped a separate
 the trivalent kind ([#45](https://github.com/brightway-labs/brightway-flows/issues/45)).
 That is a recorded reason, and the ruling leaves it standing.
 
+**A split the ruling makes is not reported as a conflict.** After every list is
+merged, the build looks for an identifier two releases placed on different
+flows, because that usually means a mapping moved without anyone deciding it
+should. ecoinvent 3.8's `Lead` on lead and 3.12's `Lead II` on lead(2+) are one
+identifier on two flows, and that is the decision rather than a symptom. Such a
+pair is listed as `redefined-uuid` — on every row, the bare element on one side
+and the ion on the other, with the number moved — and the rest stay
+`divergent-target`. On the five-list build of this change (run
+`20261019T0726568423740000`) that is 284 identifiers: the 299 ecoinvent 3.8
+rows the ruling moved, less the 15 whose identifier 3.12 no longer ships. The
+merge still reports 185 conflicts, the 170 unit disagreements and 15 moved
+mappings `main` had before — `Thiocyanate`, `Acrylate`, `Cypermethrin` among
+them — and the review app lists the 284 in a section of their own under them.
+
 ## First: has a curator already answered for this row?
 
 A ruling for a named row beats everything below. 403 rows were placed this way,

@@ -46,7 +46,8 @@ def index():
         totals=queries.run_totals(connection, run.run_id),
         reasons=queries.reason_breakdown(connection, run.run_id),
         bases=queries.basis_breakdown(connection, run.run_id),
-        conflicts=queries.conflicts(connection, run.run_id),
+        conflicts=[c for c in queries.conflicts(connection, run.run_id)
+                   if c["kind"].is_disagreement],
     )
 
 
@@ -150,9 +151,11 @@ def conflicts():
     if not run.exists:
         return render_template("merge_no_run.html")
     connection = db.get_connection()
+    recorded = queries.conflicts(connection, run.run_id)
     return render_template(
         "merge_conflicts.html",
         run=run,
-        conflicts=queries.conflicts(connection, run.run_id),
+        conflicts=[c for c in recorded if c["kind"].is_disagreement],
+        redefinitions=[c for c in recorded if not c["kind"].is_disagreement],
         source_lists=queries.source_lists(connection, run.run_id),
     )

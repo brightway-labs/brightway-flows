@@ -281,6 +281,9 @@ matching algorithm. Results land in `consensus-flows.sqlite3`: what became of
 each source row is the `merge_outcomes` table, and where two lists disagree is
 `merge_conflicts`. Both are keyed by run, so one run merging several lists is one
 set of rows — see [Which output do I need?](../using/outputs.md).
+`merge_conflicts` also holds the identifiers a later ecoinvent release reused
+for an ion, as `redefined-uuid`; those are decided, and are not counted as
+conflicts — see [how the merge decides](../deciding/merging.md).
 
 **Which lists are merged is the `--source` option**, and nothing else — see
 [Choosing sources](sources.md).

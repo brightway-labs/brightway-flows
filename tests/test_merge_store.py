@@ -397,10 +397,14 @@ class ConflictDetectionTestCase(StoreTestCase):
 
     OTHER = known_source_lists()["ecoinvent-3.11"]
 
-    def outcome(self, source, uuid, target, unit="kg"):
+    def outcome(self, source, uuid, target, unit="kg", name=None, cas=None):
         row = algorithm_row(uuid)
         row.target_elementary_flow_id = target
         row.source_unit = unit
+        if name is not None:
+            row.source_name = name
+        if cas is not None:
+            row.source_cas = cas
         return MergeOutcome.from_algorithm("run-1", source, row)
 
     def write_two(self, first, second):
@@ -452,6 +456,37 @@ class ConflictDetectionTestCase(StoreTestCase):
         conflicts = detect_conflicts(self.db, "run-1")
         kinds = [c["kind"] for c in conflicts]
         self.assertIn(str(ConflictKind.DIVERGENT_TARGET), kinds)
+
+    def test_a_uuid_reused_for_the_ion_is_recorded_and_not_a_disagreement(self):
+        """ecoinvent 3.8's `Lead`, 7439-92-1, is `Lead II`, 14280-50-3, from
+        3.9.1 on: two flows by the ruling on #398, so the split is listed under
+        a kind of its own and not counted among the disagreements."""
+        uuid = "6a903634-c97f-4c49-a7c0-88f0e6ac7a23"
+        self.write_two(
+            [self.outcome(SOURCE, uuid, "ef-lead", name="Lead", cas="7439-92-1")],
+            [self.outcome(self.OTHER, uuid, "ef-lead-ion", name="Lead II",
+                          cas="14280-50-3")],
+        )
+        [conflict] = detect_conflicts(self.db, "run-1")
+        self.assertEqual(conflict["kind"], str(ConflictKind.REDEFINED_UUID))
+        self.assertFalse(ConflictKind(conflict["kind"]).is_disagreement)
+        self.assertEqual(
+            sorted(c["source_cas"] for c in conflict["claimants"]),
+            ["14280-50-3", "7439-92-1"],
+        )
+
+    def test_a_moved_mapping_the_ruling_does_not_name_is_still_divergent(self):
+        """The other half: `Cadmium, ion` to `Cadmium II` is one substance
+        spelled twice, so the two releases landing apart is a real question."""
+        uuid = "shared-uuid"
+        self.write_two(
+            [self.outcome(SOURCE, uuid, "ef-1", name="Cadmium, ion", cas="22537-48-0")],
+            [self.outcome(self.OTHER, uuid, "ef-2", name="Cadmium II",
+                          cas="22537-48-0")],
+        )
+        [conflict] = detect_conflicts(self.db, "run-1")
+        self.assertEqual(conflict["kind"], str(ConflictKind.DIVERGENT_TARGET))
+        self.assertTrue(ConflictKind(conflict["kind"]).is_disagreement)
 
     def test_the_same_source_flow_placed_identically_is_not_a_conflict(self):
         self.write_two(

@@ -314,7 +314,8 @@ def load_merge(connection: sqlite3.Connection) -> MergeSummary:
     }
     conflicts = int(
         connection.execute(
-            "SELECT count(*) FROM merge_conflicts WHERE run_id = ?", (run_id,)
+            "SELECT count(*) FROM merge_conflicts WHERE run_id = ? AND kind != ?",
+            (run_id, "redefined-uuid"),
         ).fetchone()[0]
     )
     return MergeSummary(

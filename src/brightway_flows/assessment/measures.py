@@ -818,11 +818,28 @@ def _merge_measures(connection: sqlite3.Connection) -> list[MeasureValue]:
             ))
 
     if _table_exists(connection, "merge_conflicts"):
+        # A redefined uuid is a split the #398 ruling made on purpose, recorded
+        # beside the conflicts so it stays visible and counted apart from them.
         out.append(MeasureValue(
             "merge.conflicts",
-            _scalar(connection, "SELECT count(*) FROM merge_conflicts WHERE run_id = ?", (run_id,)),
+            _scalar(
+                connection,
+                "SELECT count(*) FROM merge_conflicts WHERE run_id = ? AND kind != ?",
+                (run_id, "redefined-uuid"),
+            ),
             "Targets two lists disagree about",
             Direction.LOWER,
+            "merge",
+        ))
+        out.append(MeasureValue(
+            "merge.redefined_uuids",
+            _scalar(
+                connection,
+                "SELECT count(*) FROM merge_conflicts WHERE run_id = ? AND kind = ?",
+                (run_id, "redefined-uuid"),
+            ),
+            "Uuids an earlier release named the element and a later one the ion",
+            Direction.NEUTRAL,
             "merge",
         ))
     return out

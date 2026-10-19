@@ -210,6 +210,19 @@ matches on and publishes the vendor's.
 }
 ```
 
+**The source concept's `prefLabel` is the name the row was matched on, not
+always the name the vendor shipped.** ecoinvent 3.12 ships
+`6a903634-c97f-4c49-a7c0-88f0e6ac7a23` as `Lead II`; enrichment calls it
+`Lead(2+)`, and that is the label on its mapping. The vendor's `Lead II` is
+`source_flow_name` on the flow's [source reference](#sourceref), which is
+the field to search by. On the five-list build of run
+`20261019T0726568423740000`, 10,093 of the 28,490 mappings from the merged
+lists carry a label that differs from the shipped name — 2,333 of ecoinvent
+3.12's 9,850, many only in capitalisation (`Sodium Chlorate` for `Sodium
+chlorate`). EF 3.1's mappings all carry the shipped name. The shipped name is not
+added to the target's labels either: `Lead II` is not among the 13
+`altLabel`s of the `Lead(2+)` substance.
+
 **There is no `xkos:mapType`.** XKOS defines no property for the type or
 strength of a mapping — the specification says so explicitly. The match kind is
 carried on the source concept as the SKOS mapping property itself. Readers
