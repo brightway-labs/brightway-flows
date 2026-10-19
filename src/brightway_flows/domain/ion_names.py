@@ -33,7 +33,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from brightway_flows.domain.vocabulary import PROV_WAS_GENERATED_BY_CURIE
+from brightway_flows.domain.vocabulary import (
+    PROV_WAS_DERIVED_FROM_CURIE,
+    PROV_WAS_GENERATED_BY_CURIE,
+)
 
 #: The `prov:wasGeneratedBy` on every label this standard writes.  Read by
 #: `flow_layers.synonyms.carry_member_names`, which does not withdraw a synonym
@@ -86,7 +89,7 @@ def is_replaced_label_row(row: Any) -> bool:
     row numbered for chromium(4+) onto chromium(6+).
     """
     return any(
-        entry.get("prov:wasDerivedFrom") == REPLACED_LABEL_DERIVED_FROM
+        entry.get(PROV_WAS_DERIVED_FROM_CURIE) == REPLACED_LABEL_DERIVED_FROM
         for entry in _standard_entries(row)
     )
 
