@@ -77,6 +77,28 @@ def _types(obj: FlowObject) -> set[str]:
     return set()
 
 
+def _ion_of_an_element(obj: FlowObject) -> bool:
+    """Whether `flow_layers.ions` recorded *obj* as an ion of an element.
+
+    A second way of knowing an object is one charged atom, because the typing
+    can say otherwise: on the build of `43403ac` (run
+    `20261019T0759116033000000`) `Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)`
+    and `Chromium IV` are each typed an imprecise mixture (#628), and each is
+    recorded as the ion of its element with one stated charge.  The record is
+    written only where the name resolved to an element, so `Pyrethrin I` --
+    a name ending in a numeral -- is never read as one.
+    """
+    properties = obj.properties
+    if not isinstance(properties, dict):
+        return False
+    relationships = properties.get("relationships")
+    return (
+        isinstance(relationships, dict)
+        and relationships.get("relationship_type") == "ion_of"
+        and bool(relationships.get("parent_element_flow_object_id"))
+    )
+
+
 def _stated_charge(obj: FlowObject) -> int | None:
     """The one non-zero charge *obj* states, or ``None``."""
     properties = obj.properties
@@ -110,7 +132,7 @@ def ion_reading(obj: FlowObject) -> tuple[str, int | None] | None:
     reading, `Copper, ion`.
     """
     types = _types(obj)
-    monatomic = bool(types & _MONATOMIC_ION_TYPES)
+    monatomic = bool(types & _MONATOMIC_ION_TYPES) or _ion_of_an_element(obj)
     if not monatomic and not types & _POLYATOMIC_ION_TYPES:
         return None
     label = flow_label_value(obj).strip()

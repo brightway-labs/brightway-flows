@@ -151,6 +151,23 @@ class PassTestCase(unittest.TestCase):
         self.assertEqual(_synonyms(obj), [])
         self.assertEqual(stats["ions"], 0)
 
+    def test_an_ion_of_an_element_is_read_whatever_it_is_typed(self):
+        """`Chromium IV` is typed a mixture on the build of `43403ac` (#628),
+        and recorded as the ion of chromium: the name is still an ion's."""
+        obj = _object("Chromium IV", IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE], charge=4)
+        obj.properties["relationships"] = {
+            "parent_element_flow_object_id": "fo-chromium",
+            "relationship_type": "ion_of",
+        }
+        standardise_ion_names([obj])
+        self.assertEqual(_label(obj), "Chromium(4+)")
+        self.assertEqual(_synonyms(obj), ["Chromium(IV)", "Chromium IV"])
+
+    def test_a_name_ending_in_a_numeral_is_not_an_ion_for_that(self):
+        obj = _object("Pyrethrin I", NEUTRAL)
+        standardise_ion_names([obj])
+        self.assertEqual(_label(obj), "Pyrethrin I")
+
     def test_a_substance_that_is_not_an_ion_is_left_alone(self):
         obj = _object("Lead(2+) nitrate", NEUTRAL)
         standardise_ion_names([obj])
