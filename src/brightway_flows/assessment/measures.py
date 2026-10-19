@@ -50,6 +50,7 @@ from brightway_flows.domain.elementary_flow import minted_elementary_flow_id
 from brightway_flows.domain.labels import flow_label_value
 from brightway_flows.domain.preferred_label_decisions import decision_key
 from brightway_flows.domain.vocabulary import CHEMROF_MOLECULAR_FORMULA
+from brightway_flows.merge.store import ConflictKind, disagreement_filter
 from brightway_flows.pipeline.review_records import ReviewQueue
 from brightway_flows.pipeline.sqlite import merge_object_payload
 from brightway_flows.sources import known_source_lists
@@ -820,12 +821,15 @@ def _merge_measures(connection: sqlite3.Connection) -> list[MeasureValue]:
     if _table_exists(connection, "merge_conflicts"):
         # A redefined uuid is a split the #398 ruling made on purpose, recorded
         # beside the conflicts so it stays visible and counted apart from them.
+        # Which kinds count is `ConflictKind.is_disagreement`'s decision, not
+        # this query's.
+        disagreements, kinds = disagreement_filter()
         out.append(MeasureValue(
             "merge.conflicts",
             _scalar(
                 connection,
-                "SELECT count(*) FROM merge_conflicts WHERE run_id = ? AND kind != ?",
-                (run_id, "redefined-uuid"),
+                f"SELECT count(*) FROM merge_conflicts WHERE run_id = ? AND {disagreements}",
+                (run_id, *kinds),
             ),
             "Targets two lists disagree about",
             Direction.LOWER,
@@ -836,7 +840,7 @@ def _merge_measures(connection: sqlite3.Connection) -> list[MeasureValue]:
             _scalar(
                 connection,
                 "SELECT count(*) FROM merge_conflicts WHERE run_id = ? AND kind = ?",
-                (run_id, "redefined-uuid"),
+                (run_id, str(ConflictKind.REDEFINED_UUID)),
             ),
             "Uuids an earlier release named the element and a later one the ion",
             Direction.NEUTRAL,

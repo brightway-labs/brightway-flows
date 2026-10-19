@@ -77,14 +77,15 @@
     7439-92-1, is <code>Lead II</code>, 14280-50-3, from 3.9.1 on. They are two
     flows by ruling
     (<a href="https://github.com/brightway-labs/brightway-flows/issues/398">#398</a>),
-    so they are listed here and not counted as conflicts.
+    so they are listed here and not counted as conflicts. Each one names two
+    flows, the element's and the ion's, and neither is <em>the</em> target.
   </p>
   <div class="table-scroll">
     <table>
       <thead>
         <tr>
           <th scope="col">Kind</th>
-          <th scope="col">Target flow</th>
+          <th scope="col">Flows</th>
           <th scope="col">Releases</th>
         </tr>
       </thead>
@@ -92,7 +93,14 @@
         {% for conflict in redefinitions %}
         <tr>
           <td><span class="tag tag--info">{{ conflict.kind }}</span></td>
-          <td>{{ t.flow_link(conflict.target_elementary_flow_id) }}</td>
+          <td>
+            {# Both targets, read off the claimants: the stored column holds
+               one id, chosen by sort order, and for this kind that is not a
+               target but a placeholder. #}
+            {% for target in conflict.claimants | map(attribute="target_elementary_flow_id") | unique | sort %}
+            <div>{{ t.flow_link(target) }}</div>
+            {% endfor %}
+          </td>
           <td>{{ claimants(conflict) }}</td>
         </tr>
         {% endfor %}

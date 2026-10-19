@@ -439,7 +439,12 @@ def build(
     )
     from brightway_flows.pipeline.timings import RunTimings
     from brightway_flows.sources import merge_order, resolve_source_list
-    from brightway_flows.merge.store import detect_conflicts, finish_run, start_run
+    from brightway_flows.merge.store import (
+        count_disagreements,
+        detect_conflicts,
+        finish_run,
+        start_run,
+    )
 
     # Resolved before any work, so an unknown source list fails immediately
     # rather than after a transform that would then be thrown away.
@@ -579,8 +584,12 @@ def build(
     # transform wrote of it partway through.
     write_run_timings(CONSENSUS_DB_FILEPATH, timings=timings.records())
     _log_run_timings(timings)
+    # The same count the warning above and `merge.conflicts` report: a uuid the
+    # #398 ruling split is recorded beside the conflicts and is not one.
+    disagreements = count_disagreements(conflicts)
     logger.info(
-        "build_finished", run_id=run_id, dry_run=False, conflicts=len(conflicts)
+        "build_finished", run_id=run_id, dry_run=False,
+        conflicts=disagreements, redefined_uuids=len(conflicts) - disagreements,
     )
 
 

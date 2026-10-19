@@ -25,6 +25,8 @@ from brightway_flows.merge.species import (
     CANONICAL_IDENTITIES_SCHEMA_VERSION,
     CanonicalIdentity,
     CanonicalIdentityError,
+    ELEMENT_CAS,
+    ELEMENTS,
     canonicalized_for_matching,
     load_canonical_identities,
     parse_species,
@@ -275,6 +277,28 @@ class RedefinitionTestCase(unittest.TestCase):
         ):
             with self.subTest(earlier=earlier):
                 self.assertFalse(redefines(*earlier, *newest))
+
+    def test_a_bare_name_beside_another_number_never_stated_the_element(self):
+        """The ruling reads the element's own number off the earlier row.  A
+        bare name under an ion's number, or under none, is the newest name
+        respelled, and matching it by that number onto whichever ion it names
+        would be neither the element the ruling promises nor the vendor's
+        current statement."""
+        for earlier, newest in (
+            (("Vanadium", "22541-77-1"), ("Vanadium V", "22537-31-1")),
+            (("Lead", "14280-50-3"), ("Lead II", "14280-50-3")),
+            (("Copper", ""), ("Copper II", "20427-59-2")),
+            (("Copper", ""), ("Copper ion", "")),
+        ):
+            with self.subTest(earlier=earlier):
+                self.assertFalse(redefines(*earlier, *newest))
+
+    def test_every_element_the_rule_knows_has_its_number(self):
+        """`redefines` looks the element up by the name it parsed, so a name in
+        `ELEMENTS` without a number would raise on the first row it met."""
+        for name in sorted(ELEMENTS):
+            with self.subTest(name):
+                self.assertIn(parse_species(name).element, ELEMENT_CAS)
 
 
 class LeashTestCase(unittest.TestCase):

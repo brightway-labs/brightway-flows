@@ -741,6 +741,29 @@ class ConflictKind(StrEnum):
         return self is not ConflictKind.REDEFINED_UUID
 
 
+def disagreement_kinds() -> tuple[str, ...]:
+    """The kinds `merge.conflicts` counts, as `merge_conflicts.kind` stores them.
+
+    Read off the enum wherever a count is taken, rather than restated as a
+    literal in each query, so the measure, the overview tile and the review
+    page cannot drift apart about what a conflict is.
+    """
+    return tuple(str(kind) for kind in ConflictKind if kind.is_disagreement)
+
+
+def disagreement_filter() -> tuple[str, tuple[str, ...]]:
+    """A SQL condition selecting the disagreements in `merge_conflicts`, with
+    the parameters it binds."""
+    kinds = disagreement_kinds()
+    return f"kind IN ({', '.join('?' * len(kinds))})", kinds
+
+
+def count_disagreements(conflicts: list[dict[str, Any]]) -> int:
+    """How many of *conflicts*, as :func:`detect_conflicts` returns them, are
+    open questions rather than splits the #398 ruling made on purpose."""
+    return sum(ConflictKind(c["kind"]).is_disagreement for c in conflicts)
+
+
 def detect_conflicts(db_path: Path, run_id: str) -> list[dict[str, Any]]:
     """Find and record disagreements between the source lists of a run.
 
@@ -792,6 +815,11 @@ def detect_conflicts(db_path: Path, run_id: str) -> list[dict[str, Any]]:
                 )
                 conflicts.append({
                     "source_uuid": source_uuid,
+                    # The column holds one flow and a uuid-level conflict has
+                    # two, so the first in sort order stands for the row.  For
+                    # a redefined uuid neither is "the" target -- the element
+                    # and the ion are both right -- and the review page reads
+                    # both off the claimants rather than this column.
                     "target_elementary_flow_id": sorted(targets)[0],
                     "kind": str(kind),
                     "claimants": [_claimant(r) for r in appearances],
@@ -805,7 +833,7 @@ def detect_conflicts(db_path: Path, run_id: str) -> list[dict[str, Any]]:
         connection.commit()
     finally:
         connection.close()
-    disagreements = sum(ConflictKind(c["kind"]).is_disagreement for c in conflicts)
+    disagreements = count_disagreements(conflicts)
     if disagreements:
         logger.warning("merge_conflicts_detected", run_id=run_id, count=disagreements)
     return conflicts

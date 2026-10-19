@@ -414,11 +414,18 @@ def basis_breakdown(
     ]
 
 
-def conflicts(connection: sqlite3.Connection, run_id: str) -> list[dict[str, Any]]:
-    """Disagreements between source lists. Empty unless a run merged several."""
+def conflicts(
+    connection: sqlite3.Connection, run_id: str, *, disagreements_only: bool = False,
+) -> list[dict[str, Any]]:
+    """What the conflict check recorded. Empty unless a run merged several lists.
+
+    Every recorded kind by default, the uuids the #398 ruling split among them;
+    with *disagreements_only*, just the kinds `ConflictKind.is_disagreement`
+    counts, which is what a page saying "N conflicts" means.
+    """
     if not table_exists(connection, "merge_conflicts"):
         return []
-    return [
+    recorded = [
         {
             "target_elementary_flow_id": row["target_elementary_flow_id"],
             "kind": ConflictKind(row["kind"]),
@@ -429,6 +436,9 @@ def conflicts(connection: sqlite3.Connection, run_id: str) -> list[dict[str, Any
             (run_id,),
         )
     ]
+    if disagreements_only:
+        return [conflict for conflict in recorded if conflict["kind"].is_disagreement]
+    return recorded
 
 
 def source_lists(connection: sqlite3.Connection, run_id: str) -> list[str]:

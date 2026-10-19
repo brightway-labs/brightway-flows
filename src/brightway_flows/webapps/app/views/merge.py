@@ -46,8 +46,7 @@ def index():
         totals=queries.run_totals(connection, run.run_id),
         reasons=queries.reason_breakdown(connection, run.run_id),
         bases=queries.basis_breakdown(connection, run.run_id),
-        conflicts=[c for c in queries.conflicts(connection, run.run_id)
-                   if c["kind"].is_disagreement],
+        conflicts=queries.conflicts(connection, run.run_id, disagreements_only=True),
     )
 
 

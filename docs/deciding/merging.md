@@ -82,10 +82,13 @@ BAFU's `Lead` and EF 3.1's `lead` already are, and nothing links it to the
 ion except a correspondence somebody wrote down.
 
 The test is what the vendor wrote on the two rows: the older name is the bare
-element, the newer one an ion (`Lead II`, or `Copper ion` with no charge
-stated), and the registry number moved — to the ion's, or to none at all.
-308 of ecoinvent 3.8's rows, on 30 elements, are of that kind: 130 emissions
-to air, 105 to soil and 73 to water. The other ecoinvent 3.8 rows that a
+element under the element's own registry number, the newer one an ion (`Lead
+II`, or `Copper ion` with no charge stated), and the number moved — to the
+ion's, or to none at all. A bare name beside some other number never stated
+the element, and follows the newer name like any respelling. On the five-list
+build of `bb21bfa` (run `20261019T0726568423740000`), 308 of ecoinvent 3.8's
+rows, on 30 elements, are of that kind: 130 emissions to air, 105 to soil and
+73 to water. The other ecoinvent 3.8 rows that a
 later release spells differently still follow the newer spelling: `Cadmium,
 ion` above, and `Aluminium, in ground`, which is `Aluminium` from 3.9.1 on.
 

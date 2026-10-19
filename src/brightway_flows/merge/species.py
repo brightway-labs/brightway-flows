@@ -80,6 +80,27 @@ ELEMENTS = frozenset(
 #: Spellings folded to the one this list's labels use.
 _SPELLINGS = {"aluminum": "aluminium", "caesium": "cesium", "sulphur": "sulfur"}
 
+#: The registry number of each element in ``ELEMENTS``, keyed as
+#: :attr:`SpeciesName.element` spells it.  What :func:`redefines` reads off the
+#: earlier row: the ruling on #398 is about a bare name *under the element's
+#: number*, and a bare name beside an ion's number never stated the element.
+ELEMENT_CAS: Mapping[str, str] = {
+    "Aluminium": "7429-90-5", "Antimony": "7440-36-0", "Arsenic": "7440-38-2",
+    "Barium": "7440-39-3", "Beryllium": "7440-41-7", "Boron": "7440-42-8",
+    "Bromine": "7726-95-6", "Cadmium": "7440-43-9", "Calcium": "7440-70-2",
+    "Cesium": "7440-46-2", "Chlorine": "7782-50-5", "Chromium": "7440-47-3",
+    "Cobalt": "7440-48-4", "Copper": "7440-50-8", "Fluorine": "7782-41-4",
+    "Gold": "7440-57-5", "Iodine": "7553-56-2", "Iron": "7439-89-6",
+    "Lead": "7439-92-1", "Lithium": "7439-93-2", "Magnesium": "7439-95-4",
+    "Manganese": "7439-96-5", "Mercury": "7439-97-6", "Molybdenum": "7439-98-7",
+    "Nickel": "7440-02-0", "Palladium": "7440-05-3", "Phosphorus": "7723-14-0",
+    "Potassium": "7440-09-7", "Rhodium": "7440-16-6", "Scandium": "7440-20-2",
+    "Selenium": "7782-49-2", "Silicon": "7440-21-3", "Silver": "7440-22-4",
+    "Sodium": "7440-23-5", "Strontium": "7440-24-6", "Sulfur": "7704-34-9",
+    "Thallium": "7440-28-0", "Tin": "7440-31-5", "Titanium": "7440-32-6",
+    "Tungsten": "7440-33-7", "Vanadium": "7440-62-2", "Zinc": "7440-66-6",
+}
+
 _ROMAN = {"i": 1, "ii": 2, "iii": 3, "iv": 4, "v": 5, "vi": 6}
 _NUMERIC = re.compile(r"^([a-z]+)\s*\((\d)\+\)$")
 _ROMAN_RE = re.compile(r"^([a-z]+)\s+\(?(i{1,3}v?|vi?)\)?$")
@@ -152,21 +173,26 @@ def redefines(earlier_name: str, earlier_cas: str, newest_name: str, newest_cas:
     shared uuid.
 
     The test is the one the vendor's own fields answer: the earlier name is the
-    bare element, the newest names an ion -- a stated charge or the generic
-    marker -- and the number moved, to the ion's or to none.  A row the earlier
-    release already called an ion (3.8's `Cadmium, ion`, 22537-48-0, which is
-    `Cadmium II` from 3.9.1) is one substance spelled twice and still follows
-    the newest name; so does an element that only changed its spelling
-    (`Aluminium, in ground` to `Aluminium`).
+    bare element under the element's own registry number, the newest names an
+    ion -- a stated charge or the generic marker -- and the number moved, to
+    the ion's or to none.  A row the earlier release already called an ion
+    (3.8's `Cadmium, ion`, 22537-48-0, which is `Cadmium II` from 3.9.1) is one
+    substance spelled twice and still follows the newest name; so does an
+    element that only changed its spelling (`Aluminium, in ground` to
+    `Aluminium`).  So does a bare name beside a number that is not the
+    element's, or beside none: that row never stated the element, and the
+    number is what the ruling reads.
     """
     earlier = parse_species(earlier_name)
     newest = parse_species(newest_name)
+    if earlier is None or newest is None:
+        return False
+    stated = (earlier_cas or "").strip()
     return (
-        earlier is not None
-        and newest is not None
-        and earlier.kind == "bare"
+        earlier.kind == "bare"
         and newest.kind != "bare"
-        and (earlier_cas or "").strip() != (newest_cas or "").strip()
+        and stated == ELEMENT_CAS[earlier.element]
+        and stated != (newest_cas or "").strip()
     )
 
 
