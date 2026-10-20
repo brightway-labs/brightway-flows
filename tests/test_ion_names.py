@@ -26,6 +26,7 @@ from brightway_flows.domain.ion_names import (
 )
 from brightway_flows.domain.vocabulary import (
     CHEMROF_ELEMENTAL_CHARGE,
+    CHEMROF_MOLECULAR_FORMULA,
     IRIS,
     PROV_HAD_PRIMARY_SOURCE_CURIE,
     PROV_WAS_GENERATED_BY_CURIE,
@@ -191,6 +192,30 @@ class PassTestCase(unittest.TestCase):
         standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Chromium(4+)")
         self.assertEqual(_synonyms(obj), ["Chromium(IV)", "Chromium IV"])
+
+    def test_a_recorded_charged_ion_typed_by_an_earlier_rule_is_still_spelled(self):
+        """Rules 0c, 0d and 1 run before rule 3b.  A recorded ion with a
+        stated charge and no formula that one of them typed first -- here a
+        curated class -- is still one charged atom, and is spelled as one."""
+        obj = _object("Rhodium III", IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE], charge=3)
+        obj.properties["relationships"] = {
+            "parent_element_flow_object_id": "fo-rhodium",
+            "relationship_type": "ion_of",
+        }
+        standardise_ion_names([obj], seed_source=SOURCE)
+        self.assertEqual(_label(obj), "Rhodium(3+)")
+
+    def test_a_recorded_charged_ion_with_a_formula_is_left_to_its_type(self):
+        """A formula is the better evidence of how many atoms there are, so
+        the record does not make a molecular ion monatomic."""
+        obj = _object("Chromium VI", MOLECULAR_ANION, charge=-2)
+        obj.properties["relationships"] = {
+            "parent_element_flow_object_id": "fo-chromium",
+            "relationship_type": "ion_of",
+        }
+        obj.properties[CHEMROF_MOLECULAR_FORMULA] = {"@value": ["CrO4-2"]}
+        standardise_ion_names([obj], seed_source=SOURCE)
+        self.assertEqual(_label(obj), "Chromium VI")
 
     def test_a_mixture_is_not_read_as_an_ion_on_its_record_alone(self):
         """The record is `classify`'s evidence, not this pass's.  An object

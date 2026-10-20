@@ -542,17 +542,26 @@ def _recorded_ion_of_an_element(obj: FlowObject) -> bool:
 def is_monatomic_ion(obj: FlowObject) -> bool:
     """Whether *obj* is one charged atom, by the one reading every pass shares.
 
+    Two readings, and they agree wherever `classify` gets as far as rule 3b.
     An object `classify` typed a monatomic ion: rule 2, an element carrying a
     charge; rule 3, a charge with a one-atom formula; or rule 3b, the ion
-    layer's `ion_of` record beside a stated charge.  Until #403 there was no
-    rule 3b, so `Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)` and
-    `Chromium(4+)` -- a charge, a record and no formula -- were typed
-    imprecise mixtures, and this read the record itself so that the naming
-    standard would still spell them.  `classify` reads it now, so the types
-    are the whole answer, and a pass that asks this runs after
-    `assign_semantic_types`, as `pipeline.ion_names` does.
+    layer's `ion_of` record beside a stated charge and no formula (#403).  And
+    an object carrying rule 3b's evidence itself, read here rather than off
+    the types, because rules 0c, 0d and 1 run before rule 3b and can decide an
+    object first: a recorded, charged ion that a curator typed in
+    `structure-corrections.json` is still one charged atom, and the naming
+    standard should still spell it.  None is in that state on the build of
+    318b10e; this keeps the spelling from depending on the order of the
+    typing rules.
     """
-    return bool(set(_existing_types(obj)) & _MONATOMIC_ION_TYPES)
+    if set(_existing_types(obj)) & _MONATOMIC_ION_TYPES:
+        return True
+    properties = obj.properties if isinstance(obj.properties, dict) else {}
+    return (
+        not _first_str(properties, CHEMROF_MOLECULAR_FORMULA)
+        and bool(_charge(properties))
+        and _recorded_ion_of_an_element(obj)
+    )
 
 
 def classify(
