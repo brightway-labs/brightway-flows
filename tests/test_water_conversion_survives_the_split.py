@@ -167,7 +167,8 @@ class SeaWaterIsTheOnlyWaterConversionTestCase(unittest.TestCase):
 
     AGRIBALYSE's other water rows are accepted here instead (#352): thirteen
     density crossings, each with its number stated on the mapping or in the
-    row's comment. `test_agribalyse_water_reaches_the_taxonomy` holds those;
+    row's comment. `test_agribalyse_water_reaches_the_taxonomy` holds those,
+    and `test_agribalyse_unit_crossings` the water release #370 added;
     this class holds that nothing beyond them and sea water is in the
     allowlist's water corpus.
     """
@@ -195,12 +196,17 @@ class SeaWaterIsTheOnlyWaterConversionTestCase(unittest.TestCase):
         recorded crossings (#352). If a second shared water *name* ever needs
         one, it needs this reasoning too, and this test is where that gets
         noticed."""
+        from test_agribalyse_unit_crossings import CONVERTED
         from test_agribalyse_water_reaches_the_taxonomy import (
             RecordedCrossingsTestCase,
         )
 
         agribalyse = {source for source, _ in RecordedCrossingsTestCase.CROSSINGS} | {
             source for source, _ in RecordedCrossingsTestCase.RECORDED_ONLY
+        }
+        # #370's water release by mass onto a cubic-metre flow.
+        agribalyse |= {
+            uuid for uuid, (name, *_rest) in CONVERTED.items() if "water" in name.lower()
         }
         others = [
             row

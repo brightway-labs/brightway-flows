@@ -1030,7 +1030,7 @@ class ConversionMultiplierTableTestCase(unittest.TestCase):
         # Absent until the #354 work landed with the table untranscribed --
         # exactly the drift this class exists to catch, and it caught it: nine
         # subfailures on `main` until the page printed the water conversions.
-        "agribalyse-3.2-match-overrides.json": "AGRIBALYSE's eight",
+        "agribalyse-3.2-match-overrides.json": "AGRIBALYSE's twenty-four",
     }
 
     #: The same, for the mappings whose two ends share a unit and still need a

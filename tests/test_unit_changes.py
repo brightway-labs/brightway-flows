@@ -153,7 +153,14 @@ class TheAllowlistTestCase(unittest.TestCase):
         # their own energy content -- wood and wood waste at 9.5 MJ/kg, ore-
         # bound uranium oxide at 332 GJ/kg -- onto the megajoule `Wood` and
         # `Uranium` flows, the vendor's own numbers carried as the factors.
-        self.assertEqual(len(allowed), 55)
+        #
+        # 79 with #370's AGRIBALYSE rows: twenty-one carry a factor on the
+        # mapping, mostly the vendor's own stated heating value, and three of
+        # those are coal-mine off-gas moved off natural gas onto its own flow;
+        # argon-40 and manganese-55, stable isotopes, are accepted with no
+        # number.  Two more water releases are rebased to cubic metres in the
+        # manual fixes and cross nothing.
+        self.assertEqual(len(allowed), 79)
         self.assertIn(
             ("024c9722-1e88-412b-8c4b-10c532be8dca",
              "fe0acd60-3ddc-11dd-a6f9-0050c2490048"),

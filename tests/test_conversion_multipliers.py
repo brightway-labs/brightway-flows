@@ -91,6 +91,7 @@ from brightway_flows.merge.prepared_context_decisions import (
     PreparedContextDecision,
 )
 from brightway_flows.merge.rows import (
+    _add_flow_in_missing_context,
     _record_prepared_match,
     record_algorithmic_match,
 )
@@ -659,6 +660,71 @@ class AlgorithmicRouteTestCase(unittest.TestCase):
         self.assertNotIn(
             QUDT_CONVERSION_MULTIPLIER_CURIE, target_row.concept_associations[0]
         )
+
+
+class NewContextRouteTestCase(unittest.TestCase):
+    """A rebased row that creates its context's flow still states the vendor's
+    unit and the fix's factor (#370).
+
+    AGRIBALYSE's `Water` released to rivers, by the kilogram, is rebased to
+    cubic metres in its manual fixes.  The substance is known and the river has
+    no flow for it, so the row creates one, and this route used to state the
+    rebased unit as the vendor's and no factor: a consumer's kilograms
+    published as cubic metres.
+    """
+
+    RIVER = "https://vocab.brightway.one/flow-contexts/envi-wate-rive"
+
+    def _create(self, *, conversion, unit="m3"):
+        accumulator = MergeAccumulator()
+        indexes = mock.Mock()
+        indexes.source.list_name = "agribalyse"
+        indexes.source.list_version = "3.2"
+        indexes.source.key = "agribalyse-3.2"
+        indexes.source.merge_activity = "merge_agribalyse"
+        indexes.source.match_overrides_path = None
+        indexes.source.algorithm_addition_source = "agribalyse"
+        indexes.source.flow_iri_prefix = "https://example.invalid/flow/"
+        indexes.mapping_file = ""
+        indexes.context_expectations.resolve.return_value = self.RIVER
+        indexes.consensus_context_strings = {}
+        indexes.flow_objects_by_id = {}
+        indexes.flow_object_label_by_id = {"fo-1": "Water"}
+        created = _add_flow_in_missing_context(
+            row=SourceRow(
+                uuid="s-1", name="Water", synonyms=[], labels=[],
+                context=["Emissions to water", "river"], context_iri="",
+                context_normalized=(), unit=unit, unit_iri="", cas="", ec="",
+                conversion=conversion,
+            ),
+            match=MatchAttempt(
+                flow_object_id="fo-1", candidates=[], selected=None,
+                selector_reason="no-candidate-in-context", selector_details={},
+                basis="material", basis_value="water",
+            ),
+            indexes=indexes,
+            accumulator=accumulator,
+        )
+        self.assertTrue(created)
+        (flow,) = accumulator.by_elem_id.values()
+        return flow
+
+    def test_the_mapping_states_the_vendors_unit_and_the_factor(self):
+        flow = self._create(conversion=UnitConversion(0.001, "kg", "m3"))
+        self.assertEqual(flow.unit, "m3")
+        metadata = flow.source_refs[0]["source_metadata"]
+        self.assertEqual(metadata["unit"], "kg")
+        self.assertEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 0.001)
+        association = flow.concept_associations[0]
+        self.assertEqual(association[QUDT_CONVERSION_MULTIPLIER_CURIE], 0.001)
+
+    def test_a_row_no_fix_rebased_is_published_as_before(self):
+        """The other half: no factor appears where no fix stated one."""
+        flow = self._create(conversion=None)
+        metadata = flow.source_refs[0]["source_metadata"]
+        self.assertEqual(metadata["unit"], "m3")
+        self.assertNotIn(QUDT_CONVERSION_MULTIPLIER_CURIE, metadata)
+        self.assertNotIn(QUDT_CONVERSION_MULTIPLIER_CURIE, flow.concept_associations[0])
 
 
 class ReachesTheExportTestCase(unittest.TestCase):

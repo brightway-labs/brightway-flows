@@ -593,6 +593,38 @@
         "biotic"
       ],
       "comment": "`Fish, pelagic, in ocean` (kg), the pelagic sibling of the row above: filed in `Resources / in water`, ruled biotic for the same reason, 4 uses at 1e-19 kg. (#369.)"
+    },
+    {
+      "match": {
+        "name": "Gas, mine, off-gas, process, coal mining/kg"
+      },
+      "field": "cas_numbers",
+      "remove_value": "8006-14-2",
+      "comment": "8006-14-2 is natural gas's registry number, and gas drawn off a coal seam while the coal is mined is not natural gas: EF 3.1 says so on its `Pit Methane` flow, and ecoinvent took the number off this flow at 3.10.1. The same removal is made in `ecoinvent-3.8-manual-fixes.json`, `ef-3.1-manual-fixes.json` and `bafu-2026-v1-manual-fixes.json` (#80). AGRIBALYSE writes it on all three of its coal-mine rows, and on the first five-list build (2 September 2026, `944b274`) it sent them to `Natural Gas` in MJ by that number. With it gone they reach the coal-mine off-gas flow ecoinvent's and BAFU's rows reach; the conversion is in `agribalyse-3.2-match-overrides.json`. (#370)"
+    },
+    {
+      "match": {
+        "name": "Gas, mine, off-gas, process, coal mining/m3"
+      },
+      "field": "cas_numbers",
+      "remove_value": "8006-14-2",
+      "comment": "8006-14-2 is natural gas's registry number, and gas drawn off a coal seam while the coal is mined is not natural gas: EF 3.1 says so on its `Pit Methane` flow, and ecoinvent took the number off this flow at 3.10.1. The same removal is made in `ecoinvent-3.8-manual-fixes.json`, `ef-3.1-manual-fixes.json` and `bafu-2026-v1-manual-fixes.json` (#80). AGRIBALYSE writes it on all three of its coal-mine rows, and on the first five-list build (2 September 2026, `944b274`) it sent them to `Natural Gas` in MJ by that number. With it gone they reach the coal-mine off-gas flow ecoinvent's and BAFU's rows reach; the conversion is in `agribalyse-3.2-match-overrides.json`. (#370)"
+    },
+    {
+      "uuid": "65724528-8bc6-52e4-a77a-4d530d34caaf",
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "`Water` released by the kilogram to `Emissions to water / river`, rebased to cubic metres at fresh water's 1,000 kg per cubic metre: 0.001 m3 per kg, the factor #352 gave the water intakes of the same shape. The row reaches the river `Water` flow, which this list publishes in cubic metres and which is created by the merge rather than taken from EF 3.1; a curated target in `agribalyse-3.2-match-overrides.json` can only name an EF 3.1 flow, and one naming a created flow leaves the row unmatched (`prepared-target-not-found`, found on a bounded build for #370). Rebasing the row's own unit is the other place a factor can be stated, as `bafu-2026-v1-manual-fixes.json` does for standing wood, and the mapping back to this row still states `kg` with the factor beside it. On the first five-list full build (2 September 2026, `944b274`) the row reached the same flow with no factor, so its kilograms were published as cubic metres. (#370)"
+    },
+    {
+      "uuid": "f91a9f9a-cc75-509f-aa74-ea0f1845d80d",
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "`Waste water` released by the kilogram to `Emissions to water`, rebased to cubic metres at fresh water's 1,000 kg per cubic metre: 0.001 m3 per kg, the factor #352 gave the water intakes of the same shape. The row reaches the `Waste water` flow, which this list publishes in cubic metres and which is created by the merge rather than taken from EF 3.1; a curated target in `agribalyse-3.2-match-overrides.json` can only name an EF 3.1 flow, and one naming a created flow leaves the row unmatched (`prepared-target-not-found`, found on a bounded build for #370). Rebasing the row's own unit is the other place a factor can be stated, as `bafu-2026-v1-manual-fixes.json` does for standing wood, and the mapping back to this row still states `kg` with the factor beside it. On the first five-list full build (2 September 2026, `944b274`) the row reached the same flow with no factor, so its kilograms were published as cubic metres. (#370)"
     }
   ]
 }

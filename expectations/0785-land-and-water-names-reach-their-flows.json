@@ -157,7 +157,7 @@
     {
       "id": "0785-no-country-number-under-no-country",
       "issue": 785,
-      "title": "GreenDelta no longer characterises `Water` emitted to a river",
+      "title": "GreenDelta characterises `Water` emitted to a river with its one site-generic number and no country's",
       "subject": {
         "kind": "factor",
         "flow_name": "Water",
@@ -166,9 +166,10 @@
         "implemented_by": "GreenDelta"
       },
       "expect": {
-        "exists": false
+        "count": 1,
+        "amount": "-42.95"
       },
-      "comment": "45 factors before this change, and every one of them a country's number -- Switzerland's -1.34, Egypt's -98.4 -- published under no country, because the row that stated it was `Water, CH` and the registry number reached `Water`. The 47 rows stated 47 different numbers for one flow and one place, which the build reported as a `factor-collision`. Nobody else characterises water emitted to a river, so the flow now carries nothing, which is the truthful count: EF 3.1 states its water-use factors on the withdrawal."
+      "comment": "45 factors before this change, and every one of them a country's number -- Switzerland's -1.34, Egypt's -98.4 -- published under no country, because the row that stated it was `Water, CH` and the registry number reached `Water`. The 47 rows stated 47 different numbers for one flow and one place, which the build reported as a `factor-collision`. Nobody else characterises water emitted to a river, so the flow now carries nothing, which is the truthful count: EF 3.1 states its water-use factors on the withdrawal.\n\nRewritten for #370. The claim was `exists: false`, which said more than the defect: the defect was a country's number published under no country, and an absent factor was the only way the build of the day could avoid that. #370 records 0.001 m3 per kg on this flow -- BAFU's own kilogram river row now publishes the factor its manual fix states (#78), where a creation route had dropped it -- and #804's fallback uses that pair to convert GreenDelta's one site-generic per-kilogram row, `Water` to river at -0.04295 per kg, into -42.95 per cubic metre: the JRC's site-generic number for water returned to surface water, which this list already carries onto the river flow. One factor at that number is what the claim now holds: 45 country numbers coming back would fail both halves of it."
     },
     {
       "id": "0785-the-collision-is-gone",
