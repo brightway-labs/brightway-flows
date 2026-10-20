@@ -672,18 +672,26 @@ def classify(
         return Classification(_ion_types(charge, monoatomic=True), "monoatomic_ion")
 
     # 3b. One atom, charged, and no formula to say so.  `flow_layers.ions`
-    #     writes `relationships.ion_of` only where a charged name resolved to
-    #     an element, with the charge the name states beside it, and four
-    #     substances arrive with that record and nothing else: `Palladium(2+)`,
-    #     `Rhodium(3+)`, `Rhenium(2+)` and `Chromium(4+)` have no formula,
-    #     SMILES or InChI on file anywhere, so rule 3 never saw them and rule
-    #     10 published each as a mixture of unknown composition (#403).  The
-    #     record is the same evidence `pipeline.ion_names` spells the name
-    #     from.  The charge is required as well as the record: a generic
-    #     `X, ion` states none, and which ion it is is #143's question.
-    if charged and _recorded_ion_of_an_element(obj):
+    #     writes `relationships.ion_of` wherever an ion's name resolved to an
+    #     element, and writes `elemental_charge` beside it only where the name
+    #     states a charge.  Three substances arrive with both and no formula,
+    #     SMILES or InChI: `Palladium(2+)`, `Rhodium(3+)` and `Chromium(4+)`.
+    #     Rule 3 reads the formula, so it never saw them, and rule 10 published
+    #     each as a mixture of unknown composition (#403).
+    #
+    #     Three guards, each for a population this must not reach.  No formula
+    #     at all: a recorded ion that does carry one is rule 3's if it is one
+    #     atom and rule 5's if it is several, and the formula is the better
+    #     evidence.  A *stated* charge, read from `elemental_charge` and never
+    #     from the formula fallback, which only speaks where there is a
+    #     formula.  And the record: a charge with no record says nothing about
+    #     how many atoms there are.  The seven generic `X, ion` substances carry
+    #     the record and no stated charge, and which ion each is is #143's
+    #     question, so they are left alone.
+    stated_charge = _charge(properties)
+    if not formula and stated_charge and _recorded_ion_of_an_element(obj):
         return Classification(
-            _ion_types(charge, monoatomic=True), "recorded_ion_of_element"
+            _ion_types(stated_charge, monoatomic=True), "recorded_ion_of_element"
         )
 
     # 4. Several components: held together by something weaker than a covalent

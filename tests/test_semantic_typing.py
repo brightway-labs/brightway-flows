@@ -159,20 +159,52 @@ class KnownSubstanceTestCase(unittest.TestCase):
         )
 
     def test_a_recorded_ion_with_a_charge_and_no_formula_is_a_cation(self):
-        """`Rhenium(2+)`: the ion layer recorded it as the ion of rhenium with
-        a charge of 2, and no database holds a formula, SMILES or InChI for
-        it.  Rule 3 reads the formula, so it fell through to rule 10 and was
-        published as a mixture of unknown composition (#403).
+        """`Palladium(2+)`: the ion layer recorded it as the ion of palladium
+        with a charge of 2, and it carries its own registry number, 16065-88-6,
+        and no formula, SMILES or InChI.  Rule 3 reads the formula, so it fell
+        through to rule 10 and was published as a mixture of unknown
+        composition (#403).
         """
         self.assertTypes(
             make_object(
-                label="Rhenium(2+)", charge=2, cas="7440-15-5",
+                label="Palladium(2+)", charge=2, cas="16065-88-6",
                 relationships={
-                    "parent_element_flow_object_id": "fo-rhenium",
+                    "parent_element_flow_object_id": "fo-palladium",
                     "relationship_type": "ion_of",
                 },
             ),
             [IRIS[Term.ATOM_CATION]],
+        )
+
+    def test_a_recorded_ion_with_a_formula_of_several_atoms_is_a_molecular_ion(self):
+        """The record says the name resolved to an element; a formula of
+        several atoms says the substance is more than that element.  The
+        formula is the better evidence, so rule 3b leaves it to rule 5 -- here
+        with the charge read off the formula, which rule 3b never reads.
+        """
+        self.assertTypes(
+            make_object(
+                label="Chromium, ion", formula="CrO4-2",
+                relationships={
+                    "parent_element_flow_object_id": "fo-chromium",
+                    "relationship_type": "ion_of",
+                },
+            ),
+            [IRIS[Term.MOLECULAR_ANION]],
+        )
+
+    def test_a_recorded_ion_with_a_stated_charge_and_a_molecular_formula_is_molecular(self):
+        """The same with the charge stated rather than read off the formula:
+        the formula still decides how many atoms there are."""
+        self.assertTypes(
+            make_object(
+                label="Chromium(6+)", formula="CrO4-2", charge=-2,
+                relationships={
+                    "parent_element_flow_object_id": "fo-chromium",
+                    "relationship_type": "ion_of",
+                },
+            ),
+            [IRIS[Term.MOLECULAR_ANION]],
         )
 
     def test_a_recorded_ion_with_a_negative_charge_is_an_anion(self):
