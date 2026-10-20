@@ -86,6 +86,7 @@ from brightway_flows.lcia.differences import (
     CoverageGap,
     Difference,
     compare,
+    blank_coverage,
     coverage,
 )
 from brightway_flows.lcia.matching import (
@@ -997,26 +998,23 @@ def _characterise_method(
     # the other rows say where a *transcription* skipped a flow its list has,
     # and these say where *nobody* characterised a flow ours has.
     gaps.extend(
-        CoverageGap(
+        blank_coverage(
             method=method.slug,
             implemented_by=method.consensus.name,
             dimension=BLANK_DIMENSION,
-            value=row.recipient,
-            flows=row.blanks,
+            blanks=((row.recipient, row.blanks) for row in blank_contexts),
         )
-        for row in blank_contexts
     )
     # And one per substance blank beside its relative, under the same
     # implementation: `Zinc(2+) — ion of Zinc`, and how many pairs are blank.
+    # Summed by that name, because two substances can carry one label.
     gaps.extend(
-        CoverageGap(
+        blank_coverage(
             method=method.slug,
             implemented_by=method.consensus.name,
             dimension=IDENTITY_BLANK_DIMENSION,
-            value=row.value,
-            flows=row.blanks,
+            blanks=((row.value, row.blanks) for row in blank_ions),
         )
-        for row in blank_ions
     )
     del blank_pairs  # the per-pair table is the tool's; the run keeps the totals
     logger.info(

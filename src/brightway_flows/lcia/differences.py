@@ -44,7 +44,7 @@ timeframes would report 225 phantom differences that are a declared scope, and w
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from typing import Any
 
 import structlog
@@ -173,6 +173,40 @@ def compare(
         differing=shared - counts[str(Band.IDENTICAL)],
     )
     return rows, dict(counts)
+
+
+def blank_coverage(
+    *,
+    method: str,
+    implemented_by: str,
+    dimension: str,
+    blanks: Iterable[tuple[str, int]],
+) -> list[CoverageGap]:
+    """One coverage row per distinct *value*, with the blanks of every row that
+    names it added up.
+
+    The blank census writes one row per substance, and names it by its label:
+    `Vanadium(5+) -- ion of Vanadium`.  Two substances can carry one label --
+    the first build with openLCA LCIA methods 2.8.2 published thirteen such
+    pairs -- and `lcia_coverage` is keyed on the value, so written one row per
+    substance the second one broke the write.  A coverage row is a count, and
+    the count of blank pairs under a label is the same number whether one
+    substance or two stand behind it; the label clash itself is a defect of
+    the merge and is caught where substances are published, not here.
+    """
+    summed: Counter[str] = Counter()
+    for value, count in blanks:
+        summed[value] += count
+    return [
+        CoverageGap(
+            method=method,
+            implemented_by=implemented_by,
+            dimension=dimension,
+            value=value,
+            flows=count,
+        )
+        for value, count in sorted(summed.items(), key=lambda item: (-item[1], item[0]))
+    ]
 
 
 def coverage(

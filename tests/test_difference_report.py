@@ -30,6 +30,7 @@ from brightway_flows.domain.lcia.records import StatedFactor, stated_category
 from brightway_flows.domain.lcia.crosswalk import ef_method
 from brightway_flows.lcia.differences import (
     Band,
+    blank_coverage,
     compare,
     coverage,
     only_stated_by,
@@ -315,3 +316,45 @@ class TheCoverageSummaryTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TheBlankRowsTestCase(unittest.TestCase):
+    """A blank count is one coverage row per name, however many substances
+    carry the name.
+
+    `lcia_coverage` is keyed on (method, implementer, dimension, value), and
+    the identity-blank value is a label: `Vanadium(5+) — ion of Vanadium`.  The
+    first build with openLCA LCIA methods 2.8.2 published two substances
+    labelled `Vanadium(5+)`, each blank beside vanadium, and the second row
+    broke the write.
+    """
+
+    def _rows(self, blanks):
+        return blank_coverage(
+            method=_METHOD.slug,
+            implemented_by="Brightway",
+            dimension="identity-blank",
+            blanks=blanks,
+        )
+
+    def test_two_substances_under_one_label_are_one_row(self):
+        rows = self._rows([
+            ("Vanadium(5+) — ion of Vanadium", 17),
+            ("Vanadium(5+) — ion of Vanadium", 3),
+        ])
+        self.assertEqual([(row.value, row.flows) for row in rows],
+                         [("Vanadium(5+) — ion of Vanadium", 20)])
+        self.assertEqual(rows[0].method, _METHOD.slug)
+        self.assertEqual(rows[0].dimension, "identity-blank")
+
+    def test_distinct_labels_stay_distinct_and_sort_by_count(self):
+        rows = self._rows([
+            ("Lithium(1+) — ion of Lithium", 2),
+            ("Zinc(2+) — ion of Zinc", 9),
+        ])
+        self.assertEqual([(row.value, row.flows) for row in rows],
+                         [("Zinc(2+) — ion of Zinc", 9), ("Lithium(1+) — ion of Lithium", 2)])
+
+    def test_nothing_blank_is_no_row(self):
+        self.assertEqual(self._rows([]), [])
+
