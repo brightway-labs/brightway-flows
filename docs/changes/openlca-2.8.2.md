@@ -226,6 +226,9 @@ where an inventory database carries exchanges
   fossil fuel, so all three go to the megajoule fuel `Peat` at that factor. A
   method package's peat is the fuel; AGRIBALYSE's biotic kilogram is the
   growing medium because an agricultural database's peat is a substrate.
+  The biotic row is ecoinvent's own, under ecoinvent's uuid, and the merge
+  places ecoinvent's copy on `Peat, Horticulture`; the two readings of one
+  flow are left to disagree for now, recorded on #412.
 - **Sixteen `Hydrocarbons, unspecified` rows.** The bucket EF 3.1 publishes as
   `Hydrocarbons (unspecified)`, shipped with no number under ecoinvent's
   spelling; the two rows that are EF's own flows reach it by uuid, and the
