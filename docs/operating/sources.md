@@ -329,7 +329,7 @@ answers it one of two ways:
 
 | Field | What the row is saying |
 |---|---|
-| `only_when_named` | This correction was written about a flow answering to *this* name, and is withheld from a row answering to another. Checked in the merge against the name the row is matched on -- the canonical identity's, where the element/ion rule governs. The thirteen vanadium rows. |
+| `only_when_named` | This correction was written about a flow answering to *this* name, and is withheld from a row answering to another. Checked in the merge against the name the row is matched on -- the canonical identity's, where the element/ion rule governs. The thirteen vanadium rows: ecoinvent 3.8's five `Vanadium, ion` rows to water are `Vanadium V` at matching and take the correction, and its nine bare `Vanadium` rows to air and soil are the metal and do not ([#398](https://github.com/brightway-labs/brightway-flows/issues/398)). |
 | `not_the_stated_substance` | This row's target is deliberately not the substance the row's stated registry number names, and the comment says why. The signature `tools/audit_prepared_correspondence.py` requires before `--strict` will pass a contradicting row; a signature on a row that agrees is stale and flags the same way. The five carbon rows. |
 | `carries_when_registered_as` | This correction is about the substance behind the code, and it has been checked against these registrations. Nine `Chromium III` rows and one `Lutetium, in ground` row — the copper-oxychloride and flupyrsulfuron declines that used to be recorded here were spent when #141 retired the tables they declined rows out of. |
 

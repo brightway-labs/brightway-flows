@@ -28,8 +28,9 @@ Whether a row's published name carries a charge its source name did not is
 measured on a build, and this release is not in one. What can be said is how
 the release names dissolved metals, and where 3.12 has since changed its
 mind about a row — because the rule for a release with no correspondence
-table is that ecoinvent's newest name for a uuid is the one that counts, and
-that rule is written down in `ecoinvent-canonical-identities.json`.
+table is that ecoinvent's newest name for a uuid is the one that counts —
+unless it turned the element into an ion — and that rule is written down in
+`ecoinvent-canonical-identities.json`.
 
 This release names 24 metal ions with a Roman numeral — `Aluminium III`,
 `Chromium VI`, `Zinc II` — and six with the word `ion` and no charge —
@@ -38,15 +39,18 @@ This release names 24 metal ions with a Roman numeral — `Aluminium III`,
 and is not a change. Every bare element name in the release carries the
 element's own registry number; none carries an ion's.
 
-Four elements were renamed by ecoinvent *after* 3.9.1, and 3.12's name is
-the one the merge would use for these rows:
+Four elements were renamed by ecoinvent *after* 3.9.1. In each, this
+release writes the bare element under the element's number and 3.12 the ion,
+so the identifier names two substances, and these rows would be published as
+the element this release names
+([#398](https://github.com/brightway-labs/brightway-flows/issues/398)):
 
 | 3.9.1 name and number | Rows | 3.12 name and number for the same uuids | What the merge would publish |
 |---|---|---|---|
-| `Sodium`, 7440-23-5 (the metal) | 8 emission rows to air and soil (the stratosphere row and the two water rows keep the metal's name in 3.12) | `Sodium I`, 17341-25-2 | `Sodium(1+)` |
-| `Calcium`, 7440-70-2 (the metal) | 8 emission rows to air and soil (the stratosphere row keeps the metal's name in 3.12) | `Calcium II`, 14127-61-8 | `Calcium(2+)` |
-| `Caesium`, 7440-46-2 | 5 emission rows to water | `Caesium I`, same number | `Caesium, ion` — the CAS number is the element's, so the charge is left unstated |
-| `Strontium`, 7440-24-6 | 13 emission rows to air, soil and water | `Strontium II`, same number | `Strontium, ion`, for the same reason |
+| `Sodium`, 7440-23-5 (the metal) | 8 emission rows to air and soil (the stratosphere row and the two water rows keep the metal's name in 3.12) | `Sodium I`, 17341-25-2 | `Sodium` |
+| `Calcium`, 7440-70-2 (the metal) | 8 emission rows to air and soil (the stratosphere row keeps the metal's name in 3.12) | `Calcium II`, 14127-61-8 | `Calcium` |
+| `Caesium`, 7440-46-2 | 5 emission rows to water | `Caesium I`, corrected to 18459-37-5 | `Cesium` |
+| `Strontium`, 7440-24-6 | 13 emission rows to air, soil and water | `Strontium II`, corrected to 22537-39-9 | `Strontium` |
 
 The resource rows (`natural resource / in ground`) of these four keep the
 element's name and number in every release and are untouched. Two further

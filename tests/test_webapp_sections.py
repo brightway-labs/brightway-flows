@@ -25,11 +25,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from brightway_flows.merge.report import UnmatchedRow
+from brightway_flows.merge.report import AlgorithmMatch, UnmatchedRow
 from brightway_flows.sources import resolve_source_list
 from brightway_flows.merge.store import (
     MergeOutcome,
     MergeRunInput,
+    detect_conflicts,
     write_merge_run,
 )
 from brightway_flows.pipeline.review_records import (
@@ -858,6 +859,89 @@ class RouteTestCase(SectionTestCase):
         for label in ("Flow objects", "Elementary flows", "Checks", "Merge"):
             with self.subTest(label):
                 self.assertIn(f">{label}</a>", body)
+
+
+def _placed(uuid, target, *, unit="kg", name=None, cas="124-38-9"):
+    return AlgorithmMatch(
+        source_uuid=uuid, source_name=name or f"Flow {uuid}", source_context=["air"],
+        source_context_normalized=(), source_context_iri="", source_unit=unit,
+        source_cas=cas, source_ec="", flow_object_id="fo-co2",
+        target_name="target", target_elementary_flow_id=target,
+        target_context=["air"], target_unit="kg", basis="cas",
+        basis_value=cas, selector_reason="", matching_method="cas",
+        algorithm_details={}, provenance={},
+    )
+
+
+class ConflictsPageTestCase(SectionTestCase):
+    """The conflicts page with something on it.
+
+    `RouteTestCase` reaches `/merge/conflicts` with no `merge_conflicts` row,
+    so the claimants macro and the redefinitions section were rendered by
+    nothing: a run of two lists, with one open disagreement and one uuid the
+    #398 ruling splits, is what makes them execute.
+    """
+
+    LATER = resolve_source_list("ecoinvent-3.12")
+    EARLIER = resolve_source_list("ecoinvent-3.8")
+
+    def setUp(self):
+        super().setUp()
+        write_merge_run(
+            self.path, run_id="run-1", started_at="t", finished_at="t",
+            inputs=[
+                MergeRunInput(run_id="run-1", list_name=self.LATER.list_name,
+                              list_version=self.LATER.list_version, sequence=0),
+                MergeRunInput(run_id="run-1", list_name=self.EARLIER.list_name,
+                              list_version=self.EARLIER.list_version, sequence=1),
+            ],
+            outcomes=[
+                # Two lists on u-1 in different units: a question still open.
+                MergeOutcome.from_algorithm(
+                    "run-1", self.LATER, _placed("m-1", "u-1", unit="kg")),
+                MergeOutcome.from_algorithm(
+                    "run-1", self.EARLIER, _placed("m-2", "u-1", unit="m3")),
+                # One uuid, the metal in 3.8 and the ion from 3.9.1 on: two
+                # flows by ruling, listed apart and not counted.
+                MergeOutcome.from_algorithm(
+                    "run-1", self.LATER,
+                    _placed("6a903634", "u-2", name="Lead II", cas="14280-50-3")),
+                MergeOutcome.from_algorithm(
+                    "run-1", self.EARLIER,
+                    _placed("6a903634", "u-3", name="Lead", cas="7439-92-1")),
+            ],
+            stats={},
+        )
+        detect_conflicts(self.path, "run-1")
+
+    def page(self, route="/merge/conflicts"):
+        response = self.client().get(route)
+        self.assertEqual(response.status_code, 200)
+        return response.get_data(as_text=True)
+
+    def test_the_open_disagreement_is_listed_with_its_claimants(self):
+        body = self.page()
+        self.assertIn("unit-disagreement", body)
+        for claimant in ("ecoinvent-3.12", "ecoinvent-3.8", "m-1", "m-2"):
+            with self.subTest(claimant):
+                self.assertIn(claimant, body)
+
+    def test_a_redefined_uuid_is_listed_apart_with_both_its_flows(self):
+        """Both flows, not whichever id the stored column happened to sort
+        first: for this kind neither is *the* target."""
+        body = self.page()
+        self.assertIn("Uuids reused for another substance", body)
+        self.assertIn("redefined-uuid", body)
+        for flow in ("u-2", "u-3"):
+            with self.subTest(flow):
+                self.assertIn(flow, body)
+        self.assertIn("7439-92-1", body)
+        self.assertIn("14280-50-3", body)
+
+    def test_the_summary_counts_the_disagreement_and_not_the_split(self):
+        body = self.page("/merge/")
+        self.assertIn("1 conflict", body)
+        self.assertNotIn("2 conflicts", body)
 
 
 if __name__ == "__main__":

@@ -43,6 +43,7 @@ from brightway_flows.merge.report import (
     PreparedMatch,
     UnmatchedRow,
 )
+from brightway_flows.merge.species import redefines
 from brightway_flows.pipeline.sqlite_schema import insert_statement
 from brightway_flows.sources import SourceList
 
@@ -728,6 +729,39 @@ class ConflictKind(StrEnum):
     #: consensus flows.  Two releases of one list share most uuids, so this
     #: says the mapping moved -- deliberately or not.
     DIVERGENT_TARGET = "divergent-target"
+    #: A divergent target the ruling on #398 explains: the earlier release
+    #: named the bare element, a later one reused the uuid for an ion, and the
+    #: two are two flows on purpose.  Recorded so the split stays visible, and
+    #: not counted as a disagreement, because nothing about it is undecided.
+    REDEFINED_UUID = "redefined-uuid"
+
+    @property
+    def is_disagreement(self) -> bool:
+        """Whether this kind is a question still open, and counted as one."""
+        return self is not ConflictKind.REDEFINED_UUID
+
+
+def disagreement_kinds() -> tuple[str, ...]:
+    """The kinds `merge.conflicts` counts, as `merge_conflicts.kind` stores them.
+
+    Read off the enum wherever a count is taken, rather than restated as a
+    literal in each query, so the measure, the overview tile and the review
+    page cannot drift apart about what a conflict is.
+    """
+    return tuple(str(kind) for kind in ConflictKind if kind.is_disagreement)
+
+
+def disagreement_filter() -> tuple[str, tuple[str, ...]]:
+    """A SQL condition selecting the disagreements in `merge_conflicts`, with
+    the parameters it binds."""
+    kinds = disagreement_kinds()
+    return f"kind IN ({', '.join('?' * len(kinds))})", kinds
+
+
+def count_disagreements(conflicts: list[dict[str, Any]]) -> int:
+    """How many of *conflicts*, as :func:`detect_conflicts` returns them, are
+    open questions rather than splits the #398 ruling made on purpose."""
+    return sum(ConflictKind(c["kind"]).is_disagreement for c in conflicts)
 
 
 def detect_conflicts(db_path: Path, run_id: str) -> list[dict[str, Any]]:
@@ -745,7 +779,7 @@ def detect_conflicts(db_path: Path, run_id: str) -> list[dict[str, Any]]:
         connection.execute("DELETE FROM merge_conflicts WHERE run_id = ?", (run_id,))
         rows = connection.execute(
             "SELECT list_name, list_version, source_uuid, source_name, source_unit, "
-            "target_elementary_flow_id FROM merge_outcomes "
+            "source_cas, target_elementary_flow_id FROM merge_outcomes "
             "WHERE run_id = ? AND target_elementary_flow_id != '' ORDER BY rowid",
             (run_id,),
         ).fetchall()
@@ -774,10 +808,20 @@ def detect_conflicts(db_path: Path, run_id: str) -> list[dict[str, Any]]:
             lists = {(r["list_name"], r["list_version"]) for r in appearances}
             targets = {r["target_elementary_flow_id"] for r in appearances}
             if len(lists) > 1 and len(targets) > 1:
+                kind = (
+                    ConflictKind.REDEFINED_UUID
+                    if _is_redefinition(appearances)
+                    else ConflictKind.DIVERGENT_TARGET
+                )
                 conflicts.append({
                     "source_uuid": source_uuid,
+                    # The column holds one flow and a uuid-level conflict has
+                    # two, so the first in sort order stands for the row.  For
+                    # a redefined uuid neither is "the" target -- the element
+                    # and the ion are both right -- and the review page reads
+                    # both off the claimants rather than this column.
                     "target_elementary_flow_id": sorted(targets)[0],
-                    "kind": str(ConflictKind.DIVERGENT_TARGET),
+                    "kind": str(kind),
                     "claimants": [_claimant(r) for r in appearances],
                 })
 
@@ -789,9 +833,37 @@ def detect_conflicts(db_path: Path, run_id: str) -> list[dict[str, Any]]:
         connection.commit()
     finally:
         connection.close()
-    if conflicts:
-        logger.warning("merge_conflicts_detected", run_id=run_id, count=len(conflicts))
+    disagreements = count_disagreements(conflicts)
+    if disagreements:
+        logger.warning("merge_conflicts_detected", run_id=run_id, count=disagreements)
     return conflicts
+
+
+def _is_redefinition(appearances: list[sqlite3.Row]) -> bool:
+    """Whether one uuid's two targets are the element and the ion it became.
+
+    The split `merge.species.redefines` decides, read back from what each
+    release shipped: exactly two targets, every row on one of them the bare
+    element and every row on the other an ion that moved the number.  3.9.1
+    and 3.12 both reaching the ion is still one side.  Anything else -- a third
+    target, or one row on either side the ruling does not name -- stays a
+    divergent target, because then something other than the ruling moved it.
+    """
+    by_target: dict[str, list[sqlite3.Row]] = {}
+    for row in appearances:
+        by_target.setdefault(row["target_elementary_flow_id"], []).append(row)
+    if len(by_target) != 2:
+        return False
+    first, second = by_target.values()
+
+    def element_then_ion(elements: list[sqlite3.Row], ions: list[sqlite3.Row]) -> bool:
+        return all(
+            redefines(e["source_name"] or "", e["source_cas"] or "",
+                      i["source_name"] or "", i["source_cas"] or "")
+            for e in elements for i in ions
+        )
+
+    return element_then_ion(first, second) or element_then_ion(second, first)
 
 
 def _claimant(row: sqlite3.Row) -> dict[str, Any]:
@@ -801,6 +873,7 @@ def _claimant(row: sqlite3.Row) -> dict[str, Any]:
         "source_uuid": row["source_uuid"],
         "source_name": row["source_name"],
         "source_unit": row["source_unit"],
+        "source_cas": row["source_cas"],
         "target_elementary_flow_id": row["target_elementary_flow_id"],
     }
 

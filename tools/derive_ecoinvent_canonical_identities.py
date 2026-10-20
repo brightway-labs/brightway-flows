@@ -15,6 +15,11 @@ at least one earlier release on disk states a different name or number. A uuid
 every release names alike gets no entry, and the loader refuses an entry that
 replaces nothing, so the file cannot silently grow into a general rename table.
 
+An earlier release that stated the bare element under the element's number --
+3.8's `Lead`, 7439-92-1, on the uuid 3.9.1 reused for `Lead II` -- is not
+recorded as replaced: the uuid names two substances, and that release's rows
+keep the one they were published with (#398, `merge/species.py:redefines`).
+
     uv run python tools/derive_ecoinvent_canonical_identities.py \\
         --data-dir .data \\
         --output src/brightway_flows/data/ecoinvent-canonical-identities.json
@@ -39,6 +44,7 @@ from brightway_flows.manual_fixes import apply_manual_fixes  # noqa: E402
 from brightway_flows.merge.species import (  # noqa: E402
     CANONICAL_IDENTITIES_SCHEMA_VERSION,
     parse_species,
+    redefines,
 )
 from brightway_flows.sources import known_source_lists  # noqa: E402
 
@@ -121,6 +127,9 @@ def derive(data_dir: Path, fixes: dict[str, Path] | None = None) -> dict:
             if version != decided_by
             and uuid in releases[version]
             and releases[version][uuid] != (name, cas)
+            # A release that stated the element under its own number is not
+            # an earlier spelling of the ion the uuid now names (#398).
+            and not redefines(*releases[version][uuid], name, cas)
         ]
         if not replaces:
             continue
@@ -142,9 +151,12 @@ def derive(data_dir: Path, fixes: dict[str, Path] | None = None) -> dict:
             f"extractions ({', '.join(ordered)}); do not edit by hand -- "
             "regenerate. plans/retire-prepared-correspondence.md §3a is the rule "
             "this implements: the newest name is the vendor's current opinion, "
-            "the earlier ones are treated as mistaken, and one uuid is one "
-            "substance in every release. merge/species.py loads it, and only "
-            "for a source list with no prepared correspondence table."
+            "and the earlier ones are treated as mistaken spellings of it -- "
+            "except where an earlier release stated the bare element under the "
+            "element's number and the newest an ion, which is a second "
+            "substance under a reused uuid and is not listed (#398). "
+            "merge/species.py loads it, and only for a source list with no "
+            "prepared correspondence table."
         ),
         "derived_from": ordered,
         "identities": identities,

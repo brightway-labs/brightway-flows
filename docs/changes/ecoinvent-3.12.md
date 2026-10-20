@@ -154,8 +154,10 @@ rows). EF 3.1 holds neither ion, so the number found nothing and the vendor's
 own bare synonym reached the element. The merge now refuses the element for a
 name that states a charge, and the seven rows mint their ions, `Rhodium(3+)`
 and `Palladium(2+)`, spelled by a curated name the way the minted generic ions
-are. The same uuids were `Palladium` and `Rhodium` in 3.8, so 3.8's rows
-follow 3.12's identity, as `Zinc` follows `Zinc II`.
+are. The same uuids were `Palladium` and `Rhodium` in 3.8, under the metals'
+numbers, and 3.8's rows stay the metals: an identifier whose number moved from
+the element to the ion is two flows
+([#398](https://github.com/brightway-labs/brightway-flows/issues/398)).
 
 What is listed here is the opposite case: six metals ecoinvent names as an
 ion **without** a charge, and publishes without a registry number.

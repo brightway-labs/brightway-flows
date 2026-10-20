@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 
 import orjson
 
-from brightway_flows.merge.store import Outcome
+from brightway_flows.merge.store import Outcome, disagreement_filter
 from brightway_flows.pipeline.review_records import ElementStatus, Severity
 from brightway_flows.webapps.app.db import column_exists, count, table_exists
 
@@ -312,9 +312,11 @@ def load_merge(connection: sqlite3.Connection) -> MergeSummary:
             (run_id,),
         )
     }
+    disagreements, kinds = disagreement_filter()
     conflicts = int(
         connection.execute(
-            "SELECT count(*) FROM merge_conflicts WHERE run_id = ?", (run_id,)
+            f"SELECT count(*) FROM merge_conflicts WHERE run_id = ? AND {disagreements}",
+            (run_id, *kinds),
         ).fetchone()[0]
     )
     return MergeSummary(

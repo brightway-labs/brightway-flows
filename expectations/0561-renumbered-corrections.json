@@ -5,10 +5,74 @@
     {
       "id": "0561-chromium-carries-back-to-3.8",
       "issue": 561,
-      "title": "ecoinvent 3.8's nine `Chromium` emissions reach trivalent chromium, though 3.8 registers them as the metal",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "name": "Chromium III"},
-      "expect": {"row_count": 14, "outcome": "matched", "target_name": "Chromium(3+)", "same_substance": true},
-      "comment": "The half of the renumbering question that says *yes*. These nine rows carry 7440-47-3, the registry number of chromium metal, and reach trivalent chromium anyway, on a correction written about the flow 3.9.1 renamed `Chromium III`. That is right and it was checked (#45), but until now the check lived only in a paragraph of prose: the row itself said nothing, and the identical shape thirteen rows later -- vanadium -- has the opposite answer. The nine rows now record the two registry numbers the decision was checked against, so a release that registers the flow as a third one reopens it instead of inheriting the answer. Since #141 the substitution happens at data preparation -- the canonical-identities file reads 3.9.1 as the vendor correcting 3.8, and the rows are *recorded* under the canonical name the substitution matched with, `Chromium III` -- so the selector names that. Fourteen rows rather than nine: the five water rows, which 3.8 shipped as `Chromium, Ion` and the override file already sent to the same substance, carry the same canonical name now, and all fourteen land on trivalent chromium."
+      "title": "ecoinvent 3.8's `Chromium` to unspecified air reaches trivalent chromium, though 3.8 registers it as the metal",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "e142b577-e934-4085-9a07-3983d4d92afb"},
+      "expect": {"outcome": "prepared", "target_name": "Chromium(3+)"},
+      "comment": "The half of the renumbering question that says *yes*. Nine 3.8 rows carry 7440-47-3, the registry number of chromium metal, and reach trivalent chromium anyway, on a correction written about the flow 3.9.1 renamed `Chromium III`. That is right and it was checked (#45), but until #561 the check lived only in a paragraph of prose: the row itself said nothing, and the identical shape thirteen rows later -- vanadium -- has the opposite answer. The nine rows record the two registry numbers the decision was checked against, so a release that registers the flow as a third one reopens it instead of inheriting the answer. Rewritten on #398, keeping the id: the nine were recorded under the canonical name `Chromium III` while the canonical-identities file read 3.9.1 as the vendor correcting 3.8, and the selector named that, fourteen rows with the five water ones. Since #398 a number moving from the element to the ion is two flows, the nine are recorded under 3.8's own `Chromium`, and they reach `Chromium(3+)` on the override alone, which is the correspondence the ruling asks for. One claim per uuid, this one and the eight below, because the name `Chromium` also selects `Chromium, in ground`, and a count of substances over the ten cannot say which of them reaches the ion. `prepared` is the claim: the override answered, not the shared uuid."
+    },
+    {
+      "id": "0561-chromium-urban-air-carries-back-to-3.8",
+      "issue": 561,
+      "title": "ecoinvent 3.8's `Chromium` to urban air close to ground reaches trivalent chromium",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "7705f0e1-5b14-44f4-b330-1245b5c7fc08"},
+      "expect": {"outcome": "prepared", "target_name": "Chromium(3+)"},
+      "comment": "One of the nine; see `0561-chromium-carries-back-to-3.8`."
+    },
+    {
+      "id": "0561-chromium-high-stacks-carries-back-to-3.8",
+      "issue": 561,
+      "title": "ecoinvent 3.8's `Chromium` to non-urban air or from high stacks reaches trivalent chromium",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "4d40d8e3-9bc7-4ab1-ac5c-4f4a76fda8e5"},
+      "expect": {"outcome": "prepared", "target_name": "Chromium(3+)"},
+      "comment": "One of the nine; see `0561-chromium-carries-back-to-3.8`."
+    },
+    {
+      "id": "0561-chromium-stratosphere-carries-back-to-3.8",
+      "issue": 561,
+      "title": "ecoinvent 3.8's `Chromium` to the lower stratosphere and upper troposphere reaches trivalent chromium",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "2a5ed451-12a2-47db-b4dc-fa0bfbc01d79"},
+      "expect": {"outcome": "prepared", "target_name": "Chromium(3+)"},
+      "comment": "One of the nine; see `0561-chromium-carries-back-to-3.8`."
+    },
+    {
+      "id": "0561-chromium-low-population-air-carries-back-to-3.8",
+      "issue": 561,
+      "title": "ecoinvent 3.8's `Chromium` to low population density air, long-term, reaches trivalent chromium",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "6b29d83a-c43c-484c-8e73-474a8a22d71e"},
+      "expect": {"outcome": "prepared", "target_name": "Chromium(3+)"},
+      "comment": "One of the nine; see `0561-chromium-carries-back-to-3.8`."
+    },
+    {
+      "id": "0561-chromium-agricultural-soil-carries-back-to-3.8",
+      "issue": 561,
+      "title": "ecoinvent 3.8's `Chromium` to agricultural soil reaches trivalent chromium",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "e7881581-21b3-4f5c-bd63-6b0684b5e712"},
+      "expect": {"outcome": "prepared", "target_name": "Chromium(3+)"},
+      "comment": "One of the nine; see `0561-chromium-carries-back-to-3.8`."
+    },
+    {
+      "id": "0561-chromium-forestry-soil-carries-back-to-3.8",
+      "issue": 561,
+      "title": "ecoinvent 3.8's `Chromium` to forestry soil reaches trivalent chromium",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "591de726-f2c7-43ba-8e22-15fd08acc8dc"},
+      "expect": {"outcome": "prepared", "target_name": "Chromium(3+)"},
+      "comment": "One of the nine; see `0561-chromium-carries-back-to-3.8`. `0398-ecoinvent-38-chromium-forestry-is-trivalent` makes the same claim by substance id, as the #398 ruling's own pin."
+    },
+    {
+      "id": "0561-chromium-industrial-soil-carries-back-to-3.8",
+      "issue": 561,
+      "title": "ecoinvent 3.8's `Chromium` to industrial soil reaches trivalent chromium",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "e65a9c58-21f1-48b6-b738-d05a8f10e5f3"},
+      "expect": {"outcome": "prepared", "target_name": "Chromium(3+)"},
+      "comment": "One of the nine; see `0561-chromium-carries-back-to-3.8`."
+    },
+    {
+      "id": "0561-chromium-unspecified-soil-carries-back-to-3.8",
+      "issue": 561,
+      "title": "ecoinvent 3.8's `Chromium` to unspecified soil reaches trivalent chromium",
+      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.8", "uuid": "e0336c9b-a0ff-4ae3-b8bb-ca1e46bbbc11"},
+      "expect": {"outcome": "prepared", "target_name": "Chromium(3+)"},
+      "comment": "One of the nine; see `0561-chromium-carries-back-to-3.8`."
     },
     {
       "id": "0561-chromium-in-3.12-is-the-same-substance",

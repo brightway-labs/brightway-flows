@@ -53,7 +53,7 @@
     {
       "id": "0671-bare-zinc-follows-its-canonical-identity",
       "issue": 671,
-      "title": "3.8's bare zinc rows follow the newest release's identity to zinc(2+)",
+      "title": "3.8's `Zinc, ion` rows follow the newest release's identity to zinc(2+)",
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
@@ -64,7 +64,7 @@
         "outcome": "matched",
         "target_name": "Zinc(2+)"
       },
-      "comment": "§3a clause 1: 3.8 ships these uuids as elemental `Zinc` (7440-66-6) and 3.12 renumbers them 23713-49-7; the canonical-identities file substitutes the newest identity before matching, so the recorded name here is already the canonical one."
+      "comment": "Rewritten on #398, keeping the id: the five rows this selects are 3.8's `Zinc, ion` to water, 23713-49-7, which 3.12 calls `Zinc II`: one substance spelled twice, recorded under the newest spelling. The title used to say 3.8's *bare* `Zinc` (7440-66-6) followed the same identity, and until #398 it did; a number moving from the element to the ion is now a second substance, and those nine air and soil rows are zinc, the metal."
     },
     {
       "id": "0671-the-generic-ion-is-its-own-substance",
@@ -139,9 +139,9 @@
       },
       "expect": {
         "exists": true,
-        "flow_count": 15
+        "flow_count": 14
       },
-      "comment": "The follow-up named on #141 as minted-ion label harmonisation. The creation path took whichever vendor spelling arrived first, so five substances of one shape (Antimony, Arsenic, Copper, Iron, Tin) published as `X Ion` while the module that matches them spells `X, Ion` and `Thiocyanate, Ion` already publishes that shape. Renamed through `flow-object-overrides.json` names entries -- the #335 mechanism -- with the old spellings kept as alternative labels. Antimony carries the claim for the family (one selector, one substance); the other four moved in the same change and their own expectations (0396's two, 0617's, 0627's, and the #131 claim in this file) pin them under the new spelling. flow_count 14 says renamed, not replaced: the same substance, every flow following it per #7. Fails before the rename lands, which is the fail-first this project's discipline wants. Fifteen since #198: AGRIBALYSE's eleven `Antimony, ion` rows, the element's number taken off them, reach this substance by name, and one of them is in a river, a compartment none of the fourteen had. Still renamed, not replaced: the same substance, one flow more."
+      "comment": "The follow-up named on #141 as minted-ion label harmonisation. The creation path took whichever vendor spelling arrived first, so five substances of one shape (Antimony, Arsenic, Copper, Iron, Tin) published as `X Ion` while the module that matches them spells `X, Ion` and `Thiocyanate, Ion` already publishes that shape. Renamed through `flow-object-overrides.json` names entries -- the #335 mechanism -- with the old spellings kept as alternative labels. Antimony carries the claim for the family (one selector, one substance); the other four moved in the same change and their own expectations (0396's two, 0617's, 0627's, and the #131 claim in this file) pin them under the new spelling. flow_count 14 says renamed, not replaced: the same substance, every flow following it per #7. Fails before the rename lands, which is the fail-first this project's discipline wants. Fifteen since #198: AGRIBALYSE's eleven `Antimony, ion` rows, the element's number taken off them, reach this substance by name, and one of them is in a river, a compartment none of the fourteen had. Still renamed, not replaced: the same substance, one flow more. Fourteen again since #398: the flow at aircraft cruise height was reached only by ecoinvent 3.8's bare `Antimony` to the stratosphere, which 3.12 does not ship, and that row is now antimony, the metal 3.8 named. Still the same substance, one flow fewer, and that flow carried no factor."
     }
   ]
 }

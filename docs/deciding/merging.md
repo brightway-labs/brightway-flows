@@ -60,6 +60,59 @@ placed:
 | `label+preferred-name` | 3 | a name, needing the published name to break a tie |
 | `ec` | 1 | the EC number, where the registry number reached nothing |
 
+## Before the ladder: which ecoinvent release says what the row is
+
+ecoinvent 3.8 ships cadmium dissolved in surface water as `Cadmium, ion`,
+22537-48-0. From 3.9.1 the same flow, under the same identifier, is `Cadmium
+II` with the same number. That is one substance spelled two ways, and the
+newest spelling is the one the row is matched by: an ecoinvent row whose
+identifier a later release names differently is read the way the newest
+release reads it, and the row keeps its own release's words in its
+provenance. The pairs are listed, one per identifier, in
+`ecoinvent-canonical-identities.json`, derived from the releases and never
+edited by hand.
+
+**Where the newest release has turned the element into the ion, it is two
+flows** ([#398](https://github.com/brightway-labs/brightway-flows/issues/398)).
+ecoinvent 3.8's `Lead` emitted to urban air close to ground carries
+7439-92-1, lead the metal. ecoinvent 3.9.1 ships the same identifier as `Lead
+II`, 14280-50-3, the lead(2+) ion. That is a second substance under a reused
+identifier, not a better spelling of the first. 3.8's row is lead, where
+BAFU's `Lead` and EF 3.1's `lead` already are, and nothing links it to the
+ion except a correspondence somebody wrote down.
+
+The test is what the vendor wrote on the two rows: the older name is the bare
+element under the element's own registry number, the newer one an ion (`Lead
+II`, or `Copper ion` with no charge stated), and the number moved — to the
+ion's, or to none at all. A bare name beside some other number never stated
+the element, and follows the newer name like any respelling. On the five-list
+build of `bb21bfa` (run `20261019T0726568423740000`), 308 of ecoinvent 3.8's
+rows, on 30 elements, are of that kind: 130 emissions to air, 105 to soil and
+73 to water. The other ecoinvent 3.8 rows that a
+later release spells differently still follow the newer spelling: `Cadmium,
+ion` above, and `Aluminium, in ground`, which is `Aluminium` from 3.9.1 on.
+
+One curated correspondence does link the element to an ion. ecoinvent 3.8's
+nine `Chromium` rows to air and soil, 7440-47-3, reach chromium(3+) on an
+override in `ecoinvent-match-overrides.json`. 3.8 also shipped a separate
+`Chromium VI` in each of those nine places, so its unspeciated chromium meant
+the trivalent kind ([#45](https://github.com/brightway-labs/brightway-flows/issues/45)).
+That is a recorded reason, and the ruling leaves it standing.
+
+**A split the ruling makes is not reported as a conflict.** After every list is
+merged, the build looks for an identifier two releases placed on different
+flows, because that usually means a mapping moved without anyone deciding it
+should. ecoinvent 3.8's `Lead` on lead and 3.12's `Lead II` on lead(2+) are one
+identifier on two flows, and that is the decision rather than a symptom. Such a
+pair is listed as `redefined-uuid` — on every row, the bare element on one side
+and the ion on the other, with the number moved — and the rest stay
+`divergent-target`. On the five-list build of this change (run
+`20261019T0726568423740000`) that is 284 identifiers: the 299 ecoinvent 3.8
+rows the ruling moved, less the 15 whose identifier 3.12 no longer ships. The
+merge still reports 185 conflicts, the 170 unit disagreements and 15 moved
+mappings `main` had before — `Thiocyanate`, `Acrylate`, `Cypermethrin` among
+them — and the review app lists the 284 in a section of their own under them.
+
 ## First: has a curator already answered for this row?
 
 A ruling for a named row beats everything below. 403 rows were placed this way,
@@ -205,9 +258,12 @@ merge order becomes visible.
 ecoinvent 3.12's `Copper ion` carries **no registry number at all**. No
 substance in the consensus list answers to that name either, so all fourteen of
 its rows are reported as having no candidate and the merge mints `Copper, Ion`
-for them. ecoinvent 3.8 is merged next, and its own fourteen `Copper ion` rows
-match on the label against the substance 3.12 had just created. `basis_value`
-reads `Copper ion; Copper, Ion`.
+for them. ecoinvent 3.8 is merged next, and its five `Copper, ion` rows to
+water — `Copper ion` from 3.9.1 on — match on the label against the substance
+3.12 had just created. `basis_value` reads `Copper ion; Copper, Ion`. (On that
+build 3.8's nine bare `Copper` rows to air and soil went there too; since
+[#398](https://github.com/brightway-labs/brightway-flows/issues/398) they are
+copper, the metal 3.8 named.)
 
 That is why the merge order is a property of the manifests and not of the
 command line: the first list to reach a substance mints it, and every list after
