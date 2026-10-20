@@ -452,6 +452,22 @@
       "new_value": "m3",
       "conversion_factor": 0.001,
       "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number. The name keeps its `/kg`, the package's own spelling; the unit field is what the build reads."
+    },
+    {
+      "match": {
+        "uuid": "c5035ce2-5ee5-431f-a287-4b25da42be74",
+        "name": "Peat"
+      },
+      "field": "context",
+      "original_value": [
+        "Resource",
+        "biotic"
+      ],
+      "new_value": [
+        "Resource",
+        "in ground"
+      ],
+      "comment": "ecoinvent's kilogram `Peat` under ecoinvent's uuid, which ecoinvent files as a biotic resource and the package copies so. The package reads the row as mined fuel -- EF 3.1 (adapted) `Resource use, fossils` 9.76 MJ/kg, and every other method a non-renewable fossil resource -- and this list publishes that fuel in `Resource → Ground`. The curated target in `openlca-2.8.2-match-overrides.json` sends the row to the fuel, but a target in a compartment the row's own filing contradicts is re-filed into the row's compartment by the merge (#84), so on the build of 20 October 2026 (merge run `0c16f168`) the row made a biotic megajoule peat beside the ground one. Re-filed here first, as AGRIBALYSE's bare-heading peat row is re-filed in `agribalyse-3.2-manual-fixes.json`, so the row says the compartment the package's own reading gives it. ecoinvent's copy of the row is left where the merge puts it, on `Peat, Horticulture` (#412)."
     }
   ]
 }

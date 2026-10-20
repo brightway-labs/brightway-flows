@@ -1450,6 +1450,17 @@ class OpenLcaCopiesTheOtherListsCorrectionsTestCase(unittest.TestCase):
                 self.assertEqual(self.fixed[shipped["uuid"]]["unit"], shipped["unit"])
                 self.assertNotIn(UNIT_CONVERSION_KEY, self.fixed[shipped["uuid"]])
 
+    def test_the_biotic_peat_row_is_refiled_into_the_ground(self):
+        """The package scores it as mined fuel, which this list publishes in
+        the ground; the merge keeps a row in its own compartment where that
+        contradicts the target's, so the compartment is corrected first."""
+        row = self.fixed["c5035ce2-5ee5-431f-a287-4b25da42be74"]
+        self.assertEqual(row["name"], "Peat")
+        self.assertEqual(row["context"], ["Resource", "in ground"])
+        self.assertEqual(self.shipped["c5035ce2-5ee5-431f-a287-4b25da42be74"]["context"], ["Resource", "biotic"])
+        others = [r for r in self._named("Peat") if r["uuid"] != "c5035ce2-5ee5-431f-a287-4b25da42be74"]
+        self.assertEqual(sorted(tuple(r["context"]) for r in others), [("Resource", "in ground"), ("Resource", "unspecified")])
+
     def test_gamma_chlordane_is_refused_and_the_isomers_are_not(self):
         refused = self.source.excluded_uuids()
         gamma = [r for r in self.shipped.values() if r.get("name") == "Chlordane, gamma-"]

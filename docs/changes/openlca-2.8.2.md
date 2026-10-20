@@ -226,6 +226,9 @@ where an inventory database carries exchanges
   fossil fuel, so all three go to the megajoule fuel `Peat` at that factor. A
   method package's peat is the fuel; AGRIBALYSE's biotic kilogram is the
   growing medium because an agricultural database's peat is a substrate.
+  The biotic row is re-filed into the ground by the manual fixes first,
+  because the merge keeps a row in the compartment it names where that
+  contradicts the target's (#84), and it had made a biotic megajoule peat.
   The biotic row is ecoinvent's own, under ecoinvent's uuid, and the merge
   places ecoinvent's copy on `Peat, Horticulture`; the two readings of one
   flow are left to disagree for now, recorded on #412.

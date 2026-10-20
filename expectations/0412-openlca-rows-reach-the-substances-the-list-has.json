@@ -78,11 +78,11 @@
       "expect": {
         "outcome": "matched",
         "row_count": 4,
-        "basis": "cas",
+        "basis": "cas+label",
         "target_name": "HFE-236ea2",
         "target_cas": "84011-06-3"
       },
-      "comment": "On the build of 20 October 2026 all four reached `HFE-227EA` by 2356-62-9, the number the package writes on them. Stepwise's row of the same name carries 84011-06-3 and reaches HFE-236ea2."
+      "comment": "On the build of 20 October 2026 all four reached `HFE-227EA` by 2356-62-9, the number the package writes on them. Stepwise's row of the same name carries 84011-06-3 and reaches HFE-236ea2. `basis: cas+label`: EF 3.1 registers both `HFE-236ea2` and `HFE-236fa` under 84011-06-3, so the number reaches two substances and the row's own name settles which, which is the number-then-name rule of #146. Measured on the build of 20 October 2026 with the fix (merge run `0c16f168`)."
     },
     {
       "id": "0412-arsenic-v-is-the-arsenate-the-list-has",
@@ -245,22 +245,34 @@
     {
       "id": "0412-plain-carbon-dioxide-in-air-is-fossil",
       "issue": 412,
-      "title": "openLCA's five plain `Carbon dioxide` air rows reach fossil carbon dioxide",
+      "title": "openLCA's six plain `Carbon dioxide` rows reach two substances, fossil carbon dioxide and biogenic uptake",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Carbon dioxide",
-        "context": [
-          "Emission to air"
-        ]
+        "name": "Carbon dioxide"
       },
       "expect": {
         "outcome": "matched",
-        "row_count": 5,
-        "same_substance": true,
+        "row_count": 6,
+        "substance_count": 2
+      },
+      "comment": "Five air rows, which every method in the package scores as fossil, and one resource row scored as uptake. On the build of 20 October 2026 (merge run `76b3ec8f`) all six reached EF's carbon dioxide of unstated origin and minted its long-term air flow again (0669, 0914); the next claim names the air row's substance."
+    },
+    {
+      "id": "0412-the-air-unspecified-row-is-fossil",
+      "issue": 412,
+      "title": "The plain `Carbon dioxide` row in air, unspecified reaches fossil carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "7ae371aa-8532-11e0-9d78-0800200c9a66"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "08a91e70-3ddc-11dd-923d-0050c2490048",
         "target_name": "Carbon Dioxide (fossil)"
       },
-      "comment": "Every method in the package scores them as fossil. On the build of 20 October 2026 they reached EF's carbon dioxide of unstated origin and minted its long-term air flow again (0669, 0914)."
+      "comment": "One of the five; the other four are its siblings in rural, urban, long-term and cruise-height air, each with the fossil flow of its own compartment as target."
     },
     {
       "id": "0412-carbon-dioxide-as-a-resource-is-uptake",
@@ -315,17 +327,17 @@
     {
       "id": "0412-no-water-row-is-published-in-kilograms",
       "issue": 412,
-      "title": "No openLCA water row is published on a kilogram flow",
+      "title": "No openLCA `Water` or `Waste water` row arrives in kilograms",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name_contains": "ater",
+        "name_contains": "Water",
         "unit": "kg"
       },
       "expect": {
         "row_count": 0
       },
-      "comment": "The fifty rows the package measures by mass are rewritten to cubic metres before the merge reads them, so no row of the list arrives in kilograms; `0409-bafu-waste-water-is-published-in-cubic-metres` says the flows are cubic metres. `name_contains: ater` covers `Water...` and `Waste water`."
+      "comment": "The fifty rows the package measures by mass -- `Waste water`, `Water`, and the 29 `Water, ...` names -- are rewritten to cubic metres before the merge reads them, so no such row arrives in kilograms; `0409-bafu-waste-water-is-published-in-cubic-metres` says the flows are cubic metres. `name_contains: Water`, capitalised, because the merge table title-cases names and the kept kilogram rows whose names merely contain `water` -- `Magnesium, 0.13% In Water`, `Thermally Polluted Water` -- are not water."
     },
     {
       "id": "0412-waste-water-in-kilograms-reaches-the-cubic-metre-flow",
