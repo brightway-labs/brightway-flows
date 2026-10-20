@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "GreenDelta states a water use factor for water emitted to water per kilogram -- 0.00698 for France -- and this list publishes that flow per cubic metre. A kilogram of water is a thousandth of a cubic metre, and the build already held that number: BAFU's own kilogram water rows were merged onto the same flows carrying 0.001 m3/kg. The factor pass never looked there. It compared the two unit names, reported a unit crossing and published nothing, 213 times.\n\n**A conversion is a statement about a pair, and the pair is what is keyed.** `matching.recorded_conversions` indexes every multiplier the merge wrote by `(flow, source unit, target unit)`, and a row uses one only where the flow is the same flow and both units are the same units. A kilogram of standing wood is 0.00204 cubic metres and a kilogram of water is 0.001; neither flow is the other. Where one flow carries two values for one pair -- natural gas at 34.5 and 36.0 MJ per cubic metre -- the pair is left out and the rows keep the crossing they had.\n\n**It is a fallback and never an override.** A row that arrives with its own identifier carries the merge's answer for that row, which is unchanged. This is for the rows reached by a name or by a curated decision, which have none.\n\nMeasured by running `characterise` twice over the build of 2026-08-29 (`20260829T1149`): 213 factors converted over 5 flows, 211 more published, and `Water` in Environmental → Water → Unknown gains GreenDelta's 209 country factors. Three crossings remain and should: `Water` emitted to a river and `Waste water`, whose flows carry no kilogram conversion of their own, and `Gas, mine, off-gas, process, coal mining`, whose pair has two answers.\n\n**What the 209 show is a disagreement, not an agreement.** GreenDelta states +6.98 for France where the JRC states -6.98, and so for all 209: their package drops the sign on the water-return half of EF's water use pair. `difference_incomparable` rises from 12 to 221 because of it. That is the comparison working -- a difference that was invisible while the factors were being dropped over a unit spelling.",
+  "description": "GreenDelta states a water use factor for water emitted to water per kilogram -- 0.00698 for France -- and this list publishes that flow per cubic metre. A kilogram of water is a thousandth of a cubic metre, and the build already held that number: BAFU's own kilogram water rows were merged onto the same flows carrying 0.001 m3/kg. The factor pass never looked there. It compared the two unit names, reported a unit crossing and published nothing, 213 times.\n\n**A conversion is a statement about a pair, and the pair is what is keyed.** `matching.recorded_conversions` indexes every multiplier the merge wrote by `(flow, source unit, target unit)`, and a row uses one only where the flow is the same flow and both units are the same units. A kilogram of standing wood is 0.00204 cubic metres and a kilogram of water is 0.001; neither flow is the other. Where one flow carries two values for one pair -- natural gas at 34.5 and 36.0 MJ per cubic metre -- the pair is left out and the rows keep the crossing they had.\n\n**It is a fallback and never an override.** A row that arrives with its own identifier carries the merge's answer for that row, which is unchanged. This is for the rows reached by a name or by a curated decision, which have none.\n\nMeasured by running `characterise` twice over the build of 2026-08-29 (`20260829T1149`): 213 factors converted over 5 flows, 211 more published, and `Water` in Environmental → Water → Unknown gains GreenDelta's 209 country factors. Three crossings remain and should: `Water` emitted to a river and `Waste water`, whose flows carry no kilogram conversion of their own, and `Gas, mine, off-gas, process, coal mining`, whose pair has two answers.\n\n**What the 209 show is a disagreement, not an agreement.** GreenDelta states +6.98 for France where the JRC states -6.98, and so for all 209: their package drops the sign on the water-return half of EF's water use pair. `difference_incomparable` rises from 12 to 221 because of it. That is the comparison working -- a difference that was invisible while the factors were being dropped over a unit spelling.\n\n**Re-read from the 2.8.2 package, 2026-10-20 (#386).** The package states its water returns per cubic metre, so the 213 conversions above are no longer needed and the mechanism answers for five factors instead; the three crossings are ten, every one a real change of quantity; and the incomparable count is 17, none of it water. Each claim's comment lists what its number is made of, on the default five-list build of 20 October 2026 (pipeline `20261020T1746012906270000`, merge run `be0df0cc`, characterise run `8467b7b5`, commit a607b4f).",
   "expectations": [
     {
       "id": "0804-the-conversions-are-reused",
@@ -18,29 +18,29 @@
     {
       "id": "0804-the-factors-they-carry",
       "issue": 804,
-      "title": "213 factors are converted rather than dropped",
+      "title": "Five factors are converted by a conversion the merge recorded rather than dropped",
       "subject": {
         "kind": "measure",
         "key": "factors.ef_greendelta_factors_converted_by_a_recorded_conversion"
       },
       "expect": {
-        "at_least": 213
+        "at_least": 5
       },
-      "comment": "209 on `Water` emitted to water, one on `Water` emitted to ground water, and three on the `Water, process` rows this change also decides. The published total rises by 211 rather than 213: two of the process rows state a number the list already publishes from another row of theirs, and `lcia.collisions` keeps it once."
+      "comment": "Restated 2026-10-20 (#386) for the 2.8.2 package, which states `Water` emitted to water per cubic metre itself, so the 209 country factors this change converted from kilograms arrive in the published unit and need no conversion. On the default five-list build of 20 October 2026 (pipeline `20261020T1746012906270000`, merge run `be0df0cc`, characterise run `8467b7b5`, commit a607b4f) the factors GreenDelta publishes in a unit other than the row's are `Water, process, surface` per kilogram onto surface water per cubic metre, `Coal, Hard`, `Coal, Brown`, `Oil, Crude` and `Uranium` per kilogram onto flows published per megajoule, `Gas, Natural` per cubic metre onto natural gas per megajoule, and the coal-mine off-gas per cubic metre onto its flow per standard cubic metre; five of them by a multiplier a merged list recorded for that flow and that pair of units, which is what this counts. 213 was the copy's number."
     },
     {
       "id": "0804-three-crossings-remain",
       "issue": 804,
-      "title": "The crossings this build cannot answer are still reported",
+      "title": "The ten crossings this build cannot answer are still reported",
       "subject": {
         "kind": "measure",
         "key": "factors.ef_greendelta_unit-crossing"
       },
       "expect": {
-        "at_least": 1,
-        "at_most": 1
+        "at_least": 10,
+        "at_most": 10
       },
-      "comment": "An equality, because the fix must not work by silencing the guard. Five before. What is left is `Water` emitted to a river and `Waste water`, whose flows carry no kilogram conversion of their own even though sibling flows in the same water body do, and `Gas, mine, off-gas, process, coal mining`, stated per cubic metre against a flow published per megajoule where two values are on record for that pair.\n\nGrowing means a route stopped finding a conversion it used to have; shrinking means one of those three was answered somewhere, which is a reason to re-read this file rather than to let it lapse.\n\nRewritten for #370, which answered two of the three: `Water` emitted to a river and `Waste water` both carry 0.001 m3 per kg now -- BAFU's river row publishes the factor its manual fix states, and AGRIBALYSE's two kilogram releases are rebased in theirs -- so GreenDelta's -0.04295 per kg reaches each as -42.95 per cubic metre, the JRC's site-generic number for water returned to surface water. What remains is `Gas, mine, off-gas, process, coal mining`."
+      "comment": "An equality, because the fix must not work by silencing the guard. Restated 2026-10-20 (#386) for the 2.8.2 package, on the default five-list build of 20 October 2026 (pipeline `20261020T1746012906270000`, merge run `be0df0cc`, characterise run `8467b7b5`, commit a607b4f): three before, ten now -- `Water` emitted to a river and to surface water, stated per kilogram against flows published per cubic metre; `Waste Water` to water, unspecified, the same way; `Uranium, 451 GJ Per Kg`, `Uranium, 560 GJ Per Kg`, `Uranium, 2291 GJ Per Kg, In Ground` and `Gas, Natural, 46.8 MJ Per Kg`, stated per kilogram against flows published per megajoule, where the number in the name is not a conversion this list has recorded; and `Gas, Natural/m3` and both `Gas, Mine, Off-gas, Process, Coal Mining` rows, per kilogram and per cubic metre, against flows published per megajoule, where the pair has two recorded answers.\n\nGrowing means a route stopped finding a conversion it used to have; shrinking means one of the ten was answered somewhere, which is a reason to re-read this file rather than to let it lapse."
     },
     {
       "id": "0804-water-emitted-to-water-carries-their-numbers",
@@ -61,15 +61,15 @@
     {
       "id": "0804-the-sign-disagreement-is-visible",
       "issue": 804,
-      "title": "GreenDelta's 209 water factors are comparable with the JRC's",
+      "title": "GreenDelta's water factors are comparable with the JRC's; 17 other pairs are not",
       "subject": {
         "kind": "measure",
         "key": "factors.difference_incomparable"
       },
       "expect": {
-        "at_most": 12
+        "at_most": 17
       },
-      "comment": "**Rewritten by #172, keeping its id so the baseline keeps this question's history.**\n\nIt read `at_least: 221`, and said that 209 water factors were reported as incomparable with the JRC's -- 12 before #170 and 221 after, because publishing GreenDelta's country factors on `Water` in `Environmental → Water → Unknown` made a sign disagreement visible that had been hidden while the numbers were being dropped over a unit spelling. That was right about the build and wrong about what to want.\n\nEF 3.1's water use is a pair: positive when water is withdrawn, negative when it is returned. Which half a factor is, is not stated on the factor -- it is the direction of the flow it characterises, which GreenDelta's own package states in the flow's category path. So the sign is read off the package where the package is read, rather than reported as a disagreement, and all 209 now agree with the JRC's to the digit (#172). A ratio between two negative numbers is a ratio.\n\nThe bound is turned around accordingly. `incomparable` goes back to the 12 it was before #170, and what this claims now is that publishing 211 more of GreenDelta's factors added no incomparable pair at all. Growing past 12 means either that another implementation's rows have arrived or that the sign rule has stopped reaching some of these, and both are reasons to re-read this file."
+      "comment": "**Rewritten by #172, keeping its id so the baseline keeps this question's history.** It read `at_least: 221`, and said that 209 water factors were reported as incomparable with the JRC's -- 12 before #170 and 221 after, because publishing GreenDelta's country factors on `Water` in `Environmental → Water → Unknown` made a sign disagreement visible that had been hidden while the numbers were being dropped over a unit spelling. That was right about the build and wrong about what to want: #172 applies the sign where the package is read, and the water pair agrees with the JRC's to the digit.\n\nRestated 2026-10-20 (#386) for the 2.8.2 package, on the default five-list build of 20 October 2026 (pipeline `20261020T1746012906270000`, merge run `be0df0cc`, characterise run `8467b7b5`, commit a607b4f): 17, none of them water. Sixteen are a factor the JRC states as exactly zero and GreenDelta as a number, which a ratio cannot express -- 1,1,1-trichloroethane to air in three compartments, chlorobenzene to long-term water, chromium(3+) to non-agricultural soil and aluminium(3+) to long-term air, each once in a toxicity category and once in its organics or inorganics half. The seventeenth is the land-use sign on `Permanent cropland, non-irrigated, extensive`, where the JRC and ecoinvent state +46.211 and GreenDelta −462.11. 12 on the build before the package switch."
     }
   ]
 }

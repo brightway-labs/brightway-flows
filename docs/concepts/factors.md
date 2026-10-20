@@ -50,12 +50,18 @@ implementation of a method:
   Brazil, and 398 other places — and those are left out for now; every flow
   keeps its factor for no place. It used to be read from
   the 2.8.0 copy inside BAFU's openLCA distribution, which held the same method
-  trimmed to 26,179 factors over 1,781 flows, and the counts in the rest of this
-  bullet are that copy's — 25,266 of its factors reached 1,509 flows of ours.
-  They have not yet been measured on a build that reads 2.8.2. The flows that
-  copy did not hold are mostly GreenDelta's own, and are reached through the
-  package's own flow list, [openLCA LCIA methods 2.8.2](../changes/openlca-2.8.2.md),
-  when a build merges it.
+  trimmed to 26,179 factors over 1,781 flows, of which 25,259 reached 1,508
+  flows of ours. On the default five-list build of 20 October 2026 (pipeline
+  `20261020T1746012906270000`), reading 2.8.2, 70,470 factors reach 22,972
+  flows of ours, and 9,534 of their 33,045 flows reach nothing: 5,556 with a
+  place written into the name, set aside on purpose; 8 declined on purpose;
+  3,797 in no list this build merged, which are 564 regional names
+  (`Water, Europe without Switzerland`) and 3,233 flows of other methods'
+  nomenclatures (`Metam-sodium dihydrate`), reached through the package's own
+  flow list, [openLCA LCIA methods 2.8.2](../changes/openlca-2.8.2.md), when a
+  build merges it; and 173 whose number reaches several flows in one
+  compartment. 57 flow-and-place pairs are two rows of the package stating two
+  numbers, and neither is published.
 
   In the 2.8.0 copy, their flows were found two ways. Most take the same two hops as ecoinvent's,
   through whichever release has the flow: the package identifies flows by the
@@ -308,10 +314,15 @@ The conversion comes from the row itself where the row has one, and otherwise
 from the build: every multiplier the merge recorded is indexed by the flow and
 the pair of units it joins, so a factor reached by a name or by a curated
 decision can use the number a merged list already established for that same
-flow. GreenDelta's water use factors are stated per kilogram and this list
-publishes water per cubic metre; BAFU's own kilogram water rows carry 0.001 m³
-per kg onto the very same flows, and 213 factors are published on that
-([#170](https://github.com/brightway-labs/brightway-flows/issues/170)). A
+flow. The 2.8.0 copy of GreenDelta's package stated its water use factors for
+water emitted to water per kilogram and this list publishes water per cubic
+metre; BAFU's own kilogram water rows carry 0.001 m³ per kg onto the very same
+flows, and 213 factors were published on that
+([#170](https://github.com/brightway-labs/brightway-flows/issues/170)). The
+2.8.2 package states those per cubic metre itself, and on the build of 20
+October 2026 the recorded conversions answer for five factors: `Water, process,
+surface` per kilogram onto surface water, and energy carriers stated per
+kilogram or cubic metre onto flows published per megajoule. A
 flow whose rows state two different multipliers for one pair of units — natural
 gas, at 34.5 and 36.0 MJ per cubic metre — is not converted, because the
 evidence is that there is more than one answer. Where no conversion exists at
