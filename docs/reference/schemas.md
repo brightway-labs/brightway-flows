@@ -383,8 +383,13 @@ does not use — five intakes in kilograms where the water flows are cubic
 metres, and rainwater in cubic metres where the rainwater flow is kilograms.
 Fresh water converts at its density (a tonne to the cubic metre, so 0.001 one
 way and 1000 the other); the ocean cooling intake converts at sea water's
-1,024.6 kg/m³, which is where 0.000976 comes from. AGRIBALYSE's eight rows
-that cross a unit are these six and the two fuel rows above:
+1,024.6 kg/m³, which is where 0.000976 comes from. Three water *releases* of
+the same shape take the same 0.001: a lemon farm in Italy releases 3,751,200 kg
+of `Water`, which until #370 was published as 3,751,200 cubic metres. The river
+release and the waste water reach flows this list creates rather than ones EF
+3.1 ships, so their factor is stated by rebasing the row's own unit to cubic
+metres in `agribalyse-3.2-manual-fixes.json` instead; it is published on the
+mapping all the same.
 
 | AGRIBALYSE 3.2 flow | | consensus flow | Multiplier |
 |---|---|---|---:|
@@ -394,6 +399,70 @@ that cross a unit are these six and the two fuel rows above:
 | `Water, process, drinking` (kg) | → | Water (m3) | 0.001 |
 | `Water, unspecified natural origin/kg` (kg) | → | Water (m3) | 0.001 |
 | `Water, rain` (m3) | → | Rainwater (kg) | 1000.0 |
+| `Water` (kg), released to water and to rivers | → | Water (m3) | 0.001 |
+| `Waste water` (kg), released to water | → | Waste water (m3) | 0.001 |
+
+AGRIBALYSE's coal, oil and natural gas reach the same energy-content flows as
+everybody else's, and like Stepwise it says in its own export what its
+kilogram holds: the substance block at the end of the file gives each fuel a
+lower and a higher heating value. The lower (net) one is used, because the EF
+fossil resource indicator counts net energy and AGRIBALYSE, unlike Stepwise,
+has no method of its own whose basis it would have to match. For natural gas
+by volume that is 34.5 MJ per cubic metre — the same number ecoinvent 3.8, the
+background database AGRIBALYSE is built on, states for its own gas. Uranium is
+given no energy in the substance block, and takes the 560,000 MJ/kg every other
+list uses, which is also what AGRIBALYSE's own `Uranium, 560 GJ per kg` says.
+Each fuel is shipped in the ground and again in the bare `Resources` heading;
+both rows take the same number:
+
+| AGRIBALYSE 3.2 flow | | consensus flow | Multiplier |
+|---|---|---|---:|
+| `Coal, hard` (kg) | → | Hard Coal (MJ) | 18.2 |
+| `Coal, brown` (kg) | → | Brown Coal (MJ) | 8.75 |
+| `Oil, crude` (kg) | → | Crude Oil (MJ) | 43.2 |
+| `Uranium` (kg) | → | Uranium (MJ) | 560000.0 |
+| `Gas, natural/m3` (m3) | → | Natural Gas (MJ) | 34.5 |
+| `Gas, natural/kg` (kg) | → | Natural Gas (MJ) | 43.1 |
+| `Gas, natural, 30.3 MJ per kg` (kg) | → | Natural Gas (MJ) | 30.3 |
+| `Gas, natural, 46.8 MJ per kg` (kg) | → | Natural Gas (MJ) | 46.8 |
+| `Gas, natural, 35 MJ per m3` (m3) | → | Natural Gas (MJ) | 35.0 |
+| `Gas, natural, 36.6 MJ per m3` (m3) | → | Natural Gas (MJ) | 36.6 |
+
+AGRIBALYSE writes natural gas's registry number on its coal-mine off-gas, which
+is what used to send the off-gas to Natural Gas; with the number taken off, as
+for every other list, the gas reaches the coal-mine off-gas flow, measured in
+standard cubic metres. The cubic-metre row is ecoinvent 3.8's own flow, which
+ecoinvent relabelled without changing any amount, so it converts at 1.0. The
+kilogram row converts at the ratio of the two heating values AGRIBALYSE gives
+the gas — 44.9 MJ/kg against 35.8 MJ/m³ — so a kilogram is 1.254 cubic metres:
+
+| AGRIBALYSE 3.2 flow | | consensus flow | Multiplier |
+|---|---|---|---:|
+| `Gas, mine, off-gas, process, coal mining/m3` (m3) | → | Gas, Mine, Off-gas, Process, Coal Mining (Sm3) | 1.0 |
+| `Gas, mine, off-gas, process, coal mining/kg` (kg) | → | Gas, Mine, Off-gas, Process, Coal Mining (Sm3) | 1.254 |
+
+Three radioactive isotopes are shipped by mass beside the same isotope in
+kilobecquerels. A gram of radium-226 is 3.66 × 10¹⁰ becquerels — its specific
+activity, which follows from its half-life — so a kilogram is the same number
+of kilobecquerels:
+
+| AGRIBALYSE 3.2 flow | | consensus flow | Multiplier |
+|---|---|---|---:|
+| `Lead-210/kg` (kg) | → | Lead-210 (kBq) | 2840000000000.0 |
+| `Radium-226/kg` (kg) | → | Radium-226 (kBq) | 36600000000.0 |
+| `Radium-228/kg` (kg) | → | Radium-228 (kBq) | 10100000000000.0 |
+
+Two more cross a unit and take no number, because none exists. `Argon-40/kg`,
+taken from the air and released to it, is a mass of the stable isotope that
+makes up nearly all the argon in air, on a flow measured in kilobecquerels; and
+`Manganese-55` arrives in kilobecquerels for the element's only stable isotope.
+A stable isotope has no activity, so the pairing names the right substance and
+the amount means nothing to a method that counts activity.
+`unit-change-allowlist.json` says so for each.
+
+AGRIBALYSE's twenty-four flow names that cross a unit on a curated target are
+the ones in the four tables above, less the rebased waste water, and the two
+fuel rows before them.
 
 **Changing what is measured.** ecoinvent gives the ore; EF 3.1 gives the metal.
 Both sides are in kilograms, so the units raise no objection at all, and the

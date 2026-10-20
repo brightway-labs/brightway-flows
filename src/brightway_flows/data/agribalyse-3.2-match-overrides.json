@@ -363,6 +363,353 @@
       "target_uuid": "26f9293f-8c18-4f3b-a334-e57a8ecda895",
       "target_name": "Carbon, Organic, In Soil Or Biomass Stock",
       "comment": "The peat row: `Resources / land` as shipped, re-filed to `in ground` by #351's fix, and the only row of this name in that compartment -- `;land;` occurs exactly once in the 20,440-process vendor file, in `Peat degradation emissions on grassland, per kg CO2 {GLO} - Adapted from WFLDB` (`AGRIBALU000000003111048`), at 1*12/44 = 0.2727 kg, commented \"This is for resources assessment only.\" The dataset says the same thing in its own comment: \"Reference flow: 1 kg of CO2 emission from peat degradation ... Also contains the C loss from soil and the energy loss, for the resource assessment.\" It has four exchanges and no others, and three of them are one physical event counted from three sides: `Carbon dioxide, land transformation` at 1 kg in `low. pop.`, `Energy, from peat` at 34.9*12/44 = 9.518 MJ, and this row at 0.2727 kg -- which is exactly the carbon in that 1 kg of CO2, while the 9.518 MJ is that same carbon at the 34.9 MJ per kg C the vendor writes on the energy row. So the emission is already published, on EF 3.1's `Carbon Dioxide (land Use Change)`, which carries Climate change 1.0 and Climate change-Land use and land use change 1.0: on the shared build of 3 September 2026 (d1df4ed) the dataset reads 1.0585 kg CO2eq, 1.0000 of it from that row and 0.0585 from its N2O at 273. Sending this row to the CO2 flow as well, which is what #195 proposed for it, would publish the same carbon a second time and take the dataset to 1.3312 kg CO2eq, 25.8% more. The stock flow is where the row belongs, and it moves no number: EF 3.1 writes no characterisation factor at all on `Carbon, Organic, In Soil Or Biomass Stock`, so this target settles the row's identity and nothing else. On the same build the row minted a `Carbon` resource in `Resource -> Ground` under elemental carbon, its number 7440-44-0 having been withdrawn as evidence by #116. Same unit both sides, no conversion. (#195)"
+    },
+    {
+      "source_uuid": "a7e4ae42-ba96-5583-87df-7b5e1a95ba89",
+      "source_name": "Coal, hard",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
+      "target_name": "Hard Coal",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 18.2,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Coal, hard`, kg, in `Resources`, onto EF 3.1's `Hard Coal` in MJ at 18.2 MJ/kg. AGRIBALYSE states the number itself: the substance section at the end of `AGB32_final.CSV` gives this flow a lower heating value (LHV) of 18.2 MJ/kg and a higher heating value (HHV) of 19.1 MJ/kg. The net value is used because EF 3.1's fossil resource indicator counts energy on a net basis,. It is AGRIBALYSE's number rather than the one ecoinvent's or BAFU's identical rows carry onto this target (18.01 MJ/kg), because the vendor has said what its own kilogram holds, the same reasoning that already gives `Wood and wood waste, 9.5 MJ per kg` the number in its name; whether every list should convert by its own value is #407. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "73592c08-9e10-5388-91ea-2e90c3de5bc3",
+      "source_name": "Coal, hard",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
+      "target_name": "Hard Coal",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 18.2,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Coal, hard`, kg, in `Resources / in ground`, onto EF 3.1's `Hard Coal` in MJ at 18.2 MJ/kg. AGRIBALYSE states the number itself: the substance section at the end of `AGB32_final.CSV` gives this flow a lower heating value (LHV) of 18.2 MJ/kg and a higher heating value (HHV) of 19.1 MJ/kg. The net value is used because EF 3.1's fossil resource indicator counts energy on a net basis,. It is AGRIBALYSE's number rather than the one ecoinvent's or BAFU's identical rows carry onto this target (18.01 MJ/kg), because the vendor has said what its own kilogram holds, the same reasoning that already gives `Wood and wood waste, 9.5 MJ per kg` the number in its name; whether every list should convert by its own value is #407. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "c93d8b25-7b26-526d-96c4-417ab385f38a",
+      "source_name": "Coal, brown",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
+      "target_name": "Brown Coal",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 8.75,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Coal, brown`, kg, in `Resources`, onto EF 3.1's `Brown Coal` in MJ at 8.75 MJ/kg. AGRIBALYSE states the number itself: the substance section at the end of `AGB32_final.CSV` gives this flow a lower heating value (LHV) of 8.75 MJ/kg and a higher heating value (HHV) of 9.90 MJ/kg. The net value is used because EF 3.1's fossil resource indicator counts energy on a net basis,. It is AGRIBALYSE's number rather than the one ecoinvent's or BAFU's identical rows carry onto this target (9.41 MJ/kg), because the vendor has said what its own kilogram holds, the same reasoning that already gives `Wood and wood waste, 9.5 MJ per kg` the number in its name; whether every list should convert by its own value is #407. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "b958fc8c-ff3d-5499-af0d-897d4cc569e9",
+      "source_name": "Coal, brown",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
+      "target_name": "Brown Coal",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 8.75,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Coal, brown`, kg, in `Resources / in ground`, onto EF 3.1's `Brown Coal` in MJ at 8.75 MJ/kg. AGRIBALYSE states the number itself: the substance section at the end of `AGB32_final.CSV` gives this flow a lower heating value (LHV) of 8.75 MJ/kg and a higher heating value (HHV) of 9.90 MJ/kg. The net value is used because EF 3.1's fossil resource indicator counts energy on a net basis,. It is AGRIBALYSE's number rather than the one ecoinvent's or BAFU's identical rows carry onto this target (9.41 MJ/kg), because the vendor has said what its own kilogram holds, the same reasoning that already gives `Wood and wood waste, 9.5 MJ per kg` the number in its name; whether every list should convert by its own value is #407. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "966368b2-34db-55ba-a84a-beb4533aaeb9",
+      "source_name": "Oil, crude",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
+      "target_name": "Crude Oil",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 43.2,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Oil, crude`, kg, in `Resources`, onto EF 3.1's `Crude Oil` in MJ at 43.2 MJ/kg. AGRIBALYSE states the number itself: the substance section at the end of `AGB32_final.CSV` gives this flow a lower heating value (LHV) of 43.2 MJ/kg and a higher heating value (HHV) of 45.8 MJ/kg. The net value is used because EF 3.1's fossil resource indicator counts energy on a net basis,. It is AGRIBALYSE's number rather than the one ecoinvent's or BAFU's identical rows carry onto this target (43.4 MJ/kg for ecoinvent 3.12, 42.3 for ecoinvent 3.8 -- the background database AGRIBALYSE 3.2 is built on -- and 43.1 for BAFU), because the vendor has said what its own kilogram holds, the same reasoning that already gives `Wood and wood waste, 9.5 MJ per kg` the number in its name; whether every list should convert by its own value is #407. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "92052d5f-40db-5440-b75f-6d86ea1ccfd5",
+      "source_name": "Oil, crude",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
+      "target_name": "Crude Oil",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 43.2,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Oil, crude`, kg, in `Resources / in ground`, onto EF 3.1's `Crude Oil` in MJ at 43.2 MJ/kg. AGRIBALYSE states the number itself: the substance section at the end of `AGB32_final.CSV` gives this flow a lower heating value (LHV) of 43.2 MJ/kg and a higher heating value (HHV) of 45.8 MJ/kg. The net value is used because EF 3.1's fossil resource indicator counts energy on a net basis,. It is AGRIBALYSE's number rather than the one ecoinvent's or BAFU's identical rows carry onto this target (43.4 MJ/kg for ecoinvent 3.12, 42.3 for ecoinvent 3.8 -- the background database AGRIBALYSE 3.2 is built on -- and 43.1 for BAFU), because the vendor has said what its own kilogram holds, the same reasoning that already gives `Wood and wood waste, 9.5 MJ per kg` the number in its name; whether every list should convert by its own value is #407. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "4e0fae84-bad2-5378-9a09-0d5b6ff09550",
+      "source_name": "Gas, natural/m3",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "source_unit": "m3",
+      "target_unit": "MJ",
+      "conversion_factor": 34.5,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Gas, natural/m3`, m3, in `Resources / in ground`, onto EF 3.1's `Natural Gas` in MJ at 34.5 MJ/m3. AGRIBALYSE states the number itself: the substance section at the end of `AGB32_final.CSV` gives this flow a lower heating value (LHV) of 34.5 MJ/m3 and a higher heating value (HHV) of 38.3 MJ/m3. The net value is used because EF 3.1's fossil resource indicator counts energy on a net basis,. It is AGRIBALYSE's number rather than the one ecoinvent's or BAFU's identical rows carry onto this target (36.0 MJ per standard cubic metre for ecoinvent 3.12 and BAFU); it is also exactly the 34.5 MJ per cubic metre ecoinvent 3.8, the background database AGRIBALYSE 3.2 is built on, states for its own `m3` natural gas (#777), because the vendor has said what its own kilogram holds, the same reasoning that already gives `Wood and wood waste, 9.5 MJ per kg` the number in its name; whether every list should convert by its own value is #407. The busiest of the 26: `Road vehicle factory {GLO}` alone takes 16,722,321 m3 of it, which without this number was published as 16.7 million MJ, 34.5 times too little. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "b71f49da-94c5-5015-a636-f03630a348af",
+      "source_name": "Gas, natural/kg",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 43.1,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Gas, natural/kg`, kg, in `Resources`, onto EF 3.1's `Natural Gas` in MJ at 43.1 MJ/kg. AGRIBALYSE states the number itself: the substance section at the end of `AGB32_final.CSV` gives this flow a lower heating value (LHV) of 43.1 MJ/kg and a higher heating value (HHV) of 47.9 MJ/kg. The net value is used because EF 3.1's fossil resource indicator counts energy on a net basis,. It is AGRIBALYSE's number rather than the one ecoinvent's or BAFU's identical rows carry onto this target (none: no other list ships natural gas by mass, and neither the ecoinvent nor the Stepwise factors nor the GLAD EF 3.1 to SimaPro mapping state a number per kilogram), because the vendor has said what its own kilogram holds, the same reasoning that already gives `Wood and wood waste, 9.5 MJ per kg` the number in its name; whether every list should convert by its own value is #407. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "e87519c1-c32b-5d7b-9595-d29db06904e7",
+      "source_name": "Gas, natural, 30.3 MJ per kg",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 30.3,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "An ecoinvent 2 resource flow whose name states how much energy one kg stands for, the same shape as `Uranium oxide, 332 GJ per kg, in ore` above, and the number Stepwise 2006's identically named row already carries onto this target. AGRIBALYSE's substance section gives the same figure as the flow's lower heating value. 30.3 MJ/kg, the vendor's own. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "9fdd888b-ae2b-54a1-a659-f6b1c5e5a2ac",
+      "source_name": "Gas, natural, 46.8 MJ per kg",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 46.8,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "An ecoinvent 2 resource flow whose name states how much energy one kg stands for, the same shape as `Uranium oxide, 332 GJ per kg, in ore` above, and the number Stepwise 2006's identically named row already carries onto this target. AGRIBALYSE's substance section gives the same figure as the flow's lower heating value. 46.8 MJ/kg, the vendor's own. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "06156935-5f89-5754-968c-a068a2265517",
+      "source_name": "Gas, natural, 35 MJ per m3",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "source_unit": "m3",
+      "target_unit": "MJ",
+      "conversion_factor": 35.0,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "An ecoinvent 2 resource flow whose name states how much energy one m3 stands for, the same shape as `Uranium oxide, 332 GJ per kg, in ore` above, and the number Stepwise 2006's identically named row already carries onto this target. AGRIBALYSE's substance section gives the same figure as the flow's lower heating value. 35.0 MJ/m3, the vendor's own. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "bf468574-1d70-522c-9077-637beb24f28f",
+      "source_name": "Gas, natural, 36.6 MJ per m3",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "source_unit": "m3",
+      "target_unit": "MJ",
+      "conversion_factor": 36.6,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "An ecoinvent 2 resource flow whose name states how much energy one m3 stands for, the same shape as `Uranium oxide, 332 GJ per kg, in ore` above, and the number Stepwise 2006's identically named row already carries onto this target. AGRIBALYSE's substance section gives the same figure as the flow's lower heating value. 36.6 MJ/m3, the vendor's own. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "99a20ba5-1e0c-5e9b-8c23-18c6a935a905",
+      "source_name": "Uranium",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 560000.0,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Uranium`, kg, in `Resources`, onto EF 3.1's `Uranium` in MJ at 560,000 MJ/kg: fission energy content, never a heating value. AGRIBALYSE's substance section states no energy for this flow, only its formula, but the list ships `Uranium, 560 GJ per kg` beside it, and 560,000 MJ/kg is the number ecoinvent's, BAFU's and Stepwise's uranium rows already carry onto this target. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "4328482b-3230-5bad-b039-2a40af37e3a5",
+      "source_name": "Uranium",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 560000.0,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Uranium`, kg, in `Resources / in ground`, onto EF 3.1's `Uranium` in MJ at 560,000 MJ/kg: fission energy content, never a heating value. AGRIBALYSE's substance section states no energy for this flow, only its formula, but the list ships `Uranium, 560 GJ per kg` beside it, and 560,000 MJ/kg is the number ecoinvent's, BAFU's and Stepwise's uranium rows already carry onto this target. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "2e888763-5042-5f1f-af32-b0252d7584bf",
+      "source_name": "Gas, mine, off-gas, process, coal mining/m3",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "00fdc4bc-724b-4993-ad43-c70df533b092",
+      "target_name": "Gas, Mine, Off-gas, Process, Coal Mining",
+      "source_unit": "m3",
+      "target_unit": "sm3",
+      "conversion_factor": 1.0,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Gas, mine, off-gas, process, coal mining/m3`, in `Resources / in ground`, onto the coal-mine off-gas flow in standard cubic metres at 1.0. AGRIBALYSE's background is ecoinvent 3.8, which shipped this flow in `m3` and relabelled it `Sm3` from 3.9 without changing its amounts; `ecoinvent-3.8-manual-fixes.json` makes that rebase at 1.0, and this row is the same flow through SimaPro. Before this change the row carried natural gas's registry number, 8006-14-2, and reached EF 3.1's `Natural Gas` in MJ by it; #80 established that gas drawn off a coal seam is a different substance, and the number is taken off in `agribalyse-3.2-manual-fixes.json` as it was for ecoinvent, EF 3.1 and BAFU. This target is the flow ecoinvent's and BAFU's coal-mine gas reach, and the GLAD EF 3.1 to SimaPro mapping pairs it with exactly this SimaPro name. 2,182 datasets, up to 447,520 m3. (#370)"
+    },
+    {
+      "source_uuid": "3448032e-95f6-5eb3-a7a8-04141c3b95d1",
+      "source_name": "Gas, mine, off-gas, process, coal mining/kg",
+      "source_context": [
+        "Resources"
+      ],
+      "target_uuid": "00fdc4bc-724b-4993-ad43-c70df533b092",
+      "target_name": "Gas, Mine, Off-gas, Process, Coal Mining",
+      "source_unit": "kg",
+      "target_unit": "sm3",
+      "conversion_factor": 1.254,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Gas, mine, off-gas, process, coal mining/kg`, in `Resources`, onto the coal-mine off-gas flow in standard cubic metres at 1.254 m3 per kg. The number is the vendor's: AGRIBALYSE's substance section gives the kilogram row a lower heating value of 44.9 MJ/kg and the cubic-metre row 35.8 MJ/m3, so one kilogram is 44.9 / 35.8 = 1.254 cubic metres of the same gas. (Pure methane at 0 degrees C would be 1.39; coal-mine gas carries air and carbon dioxide and is denser.) Before this change the row carried natural gas's registry number, 8006-14-2, and reached EF 3.1's `Natural Gas` in MJ by it; #80 established that gas drawn off a coal seam is a different substance, and the number is taken off in `agribalyse-3.2-manual-fixes.json` as it was for ecoinvent, EF 3.1 and BAFU. This target is the flow ecoinvent's and BAFU's coal-mine gas reach, and the GLAD EF 3.1 to SimaPro mapping pairs it with exactly this SimaPro name. Rare: 11 datasets in ground and 4 in bare `Resources`, at most 0.18 kg. (#370)"
+    },
+    {
+      "source_uuid": "6be68aec-e88a-51a6-a22a-b8e26d1c6947",
+      "source_name": "Gas, mine, off-gas, process, coal mining/kg",
+      "source_context": [
+        "Resources",
+        "in ground"
+      ],
+      "target_uuid": "00fdc4bc-724b-4993-ad43-c70df533b092",
+      "target_name": "Gas, Mine, Off-gas, Process, Coal Mining",
+      "source_unit": "kg",
+      "target_unit": "sm3",
+      "conversion_factor": 1.254,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Gas, mine, off-gas, process, coal mining/kg`, in `Resources / in ground`, onto the coal-mine off-gas flow in standard cubic metres at 1.254 m3 per kg. The number is the vendor's: AGRIBALYSE's substance section gives the kilogram row a lower heating value of 44.9 MJ/kg and the cubic-metre row 35.8 MJ/m3, so one kilogram is 44.9 / 35.8 = 1.254 cubic metres of the same gas. (Pure methane at 0 degrees C would be 1.39; coal-mine gas carries air and carbon dioxide and is denser.) Before this change the row carried natural gas's registry number, 8006-14-2, and reached EF 3.1's `Natural Gas` in MJ by it; #80 established that gas drawn off a coal seam is a different substance, and the number is taken off in `agribalyse-3.2-manual-fixes.json` as it was for ecoinvent, EF 3.1 and BAFU. This target is the flow ecoinvent's and BAFU's coal-mine gas reach, and the GLAD EF 3.1 to SimaPro mapping pairs it with exactly this SimaPro name. Rare: 11 datasets in ground and 4 in bare `Resources`, at most 0.18 kg. (#370)"
+    },
+    {
+      "source_uuid": "b5bffb1f-1e13-56b7-a45f-eb5c262078e4",
+      "source_name": "Lead-210/kg",
+      "source_context": [
+        "Emissions to water"
+      ],
+      "target_uuid": "4d9a8790-3ddd-11dd-9812-0050c2490048",
+      "target_name": "Lead-210",
+      "source_unit": "kg",
+      "target_unit": "kBq",
+      "conversion_factor": 2840000000000.0,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Lead-210/kg`, a mass of lead-210 released to water, onto EF 3.1's `Lead-210` in kBq. A mass of a radioactive isotope converts to an activity by its specific activity, which follows from the half-life (22.2 years): 2.84e+12 Bq per gram, which is the same number of kBq per kilogram. The value is the one ChemLin gives and this list already publishes on the substance (`chemlin-isotopes.json`). AGRIBALYSE also ships `Lead-210` in kBq, which reaches the same flow without conversion; this is its mass twin, used in 13 datasets at amounts no larger than 7.5e-21 kg. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "345c7fd9-afa8-5a1a-a079-46274e660f01",
+      "source_name": "Radium-226/kg",
+      "source_context": [
+        "Emissions to water"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-98c1-0050c2490048",
+      "target_name": "Radium-226",
+      "source_unit": "kg",
+      "target_unit": "kBq",
+      "conversion_factor": 36600000000.0,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Radium-226/kg`, a mass of radium-226 released to water, onto EF 3.1's `Radium-226` in kBq. A mass of a radioactive isotope converts to an activity by its specific activity, which follows from the half-life (1,600 years): 3.66e+10 Bq per gram, which is the same number of kBq per kilogram. The value is the one ChemLin gives and this list already publishes on the substance (`chemlin-isotopes.json`). AGRIBALYSE also ships `Radium-226` in kBq, which reaches the same flow without conversion; this is its mass twin, used in 13 datasets at amounts no larger than 7.5e-21 kg. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "8e15efc9-89ae-5dc2-afd1-2c53658144fd",
+      "source_name": "Radium-228/kg",
+      "source_context": [
+        "Emissions to water"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aba9-0050c2490048",
+      "target_name": "Radium-228",
+      "source_unit": "kg",
+      "target_unit": "kBq",
+      "conversion_factor": 10100000000000.0,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Radium-228/kg`, a mass of radium-228 released to water, onto EF 3.1's `Radium-228` in kBq. A mass of a radioactive isotope converts to an activity by its specific activity, which follows from the half-life (5.75 years): 1.01e+13 Bq per gram, which is the same number of kBq per kilogram. The value is the one ChemLin gives and this list already publishes on the substance (`chemlin-isotopes.json`). AGRIBALYSE also ships `Radium-228` in kBq, which reaches the same flow without conversion; this is its mass twin, used in 13 datasets at amounts no larger than 7.5e-21 kg. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
+    },
+    {
+      "source_uuid": "846692b1-2270-5a4d-92db-b1b078af8326",
+      "source_name": "Water",
+      "source_context": [
+        "Emissions to water"
+      ],
+      "target_uuid": "a3876d9b-a3e8-4680-861a-4e08642f1392",
+      "target_name": "Water",
+      "source_unit": "kg",
+      "target_unit": "m3",
+      "conversion_factor": 0.001,
+      "conversion_checked_against": [
+        "3.2"
+      ],
+      "comment": "`Water`, kg, released to `Emissions to water`, onto the cubic-metre `Water` flow at fresh water's 1,000 kg per cubic metre: 0.001 m3 per kg, the factor #352 gave the five water intakes of the same shape. `Lemon, at farm {IT} U` releases 3,751,200 kg of it, which was published as 3,751,200 cubic metres rather than 3,751. On the first five-list full build (2 September 2026, `944b274`) the row reached this flow by itself with no number on the mapping, and so published its amount in the wrong unit (#370)."
     }
   ]
 }

@@ -496,6 +496,222 @@
       "target_name": "Uranium",
       "target_unit": "MJ",
       "comment": "The published list keeps uranium as a resource by fission energy content in megajoules, and AGRIBALYSE inventories a kilogram of ore-bound oxide whose name asserts the conversion: 332 GJ per kilogram. Fission energy content, never a heating value -- the same basis as the lineage file's `Uranium, 451 GJ per kg` and `560 GJ per kg` rows; the factor (332,000 MJ/kg) is carried in `agribalyse-3.2-match-overrides.json` (#354)."
+    },
+    {
+      "source_uuid": "a7e4ae42-ba96-5583-87df-7b5e1a95ba89",
+      "source_name": "Coal, hard",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
+      "target_name": "Hard Coal",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 18.2 MJ/kg, AGRIBALYSE's own net heating value for this flow, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "73592c08-9e10-5388-91ea-2e90c3de5bc3",
+      "source_name": "Coal, hard",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
+      "target_name": "Hard Coal",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 18.2 MJ/kg, AGRIBALYSE's own net heating value for this flow, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "c93d8b25-7b26-526d-96c4-417ab385f38a",
+      "source_name": "Coal, brown",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
+      "target_name": "Brown Coal",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 8.75 MJ/kg, AGRIBALYSE's own net heating value for this flow, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "b958fc8c-ff3d-5499-af0d-897d4cc569e9",
+      "source_name": "Coal, brown",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
+      "target_name": "Brown Coal",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 8.75 MJ/kg, AGRIBALYSE's own net heating value for this flow, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "966368b2-34db-55ba-a84a-beb4533aaeb9",
+      "source_name": "Oil, crude",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
+      "target_name": "Crude Oil",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 43.2 MJ/kg, AGRIBALYSE's own net heating value for this flow, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "92052d5f-40db-5440-b75f-6d86ea1ccfd5",
+      "source_name": "Oil, crude",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
+      "target_name": "Crude Oil",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 43.2 MJ/kg, AGRIBALYSE's own net heating value for this flow, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "4e0fae84-bad2-5378-9a09-0d5b6ff09550",
+      "source_name": "Gas, natural/m3",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than volume, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 34.5 MJ/m3, AGRIBALYSE's own net heating value for this flow, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "b71f49da-94c5-5015-a636-f03630a348af",
+      "source_name": "Gas, natural/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 43.1 MJ/kg, AGRIBALYSE's own net heating value for this flow, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "e87519c1-c32b-5d7b-9595-d29db06904e7",
+      "source_name": "Gas, natural, 30.3 MJ per kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 30.3 MJ/kg, the number in the row's own name, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "9fdd888b-ae2b-54a1-a659-f6b1c5e5a2ac",
+      "source_name": "Gas, natural, 46.8 MJ per kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 46.8 MJ/kg, the number in the row's own name, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "06156935-5f89-5754-968c-a068a2265517",
+      "source_name": "Gas, natural, 35 MJ per m3",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than volume, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 35.0 MJ/m3, the number in the row's own name, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "bf468574-1d70-522c-9077-637beb24f28f",
+      "source_name": "Gas, natural, 36.6 MJ per m3",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
+      "target_name": "Natural Gas",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than volume, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 36.6 MJ/m3, the number in the row's own name, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "99a20ba5-1e0c-5e9b-8c23-18c6a935a905",
+      "source_name": "Uranium",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 560,000 MJ/kg fission energy content, as on every other list's uranium row, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "4328482b-3230-5bad-b039-2a40af37e3a5",
+      "source_name": "Uranium",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
+      "target_name": "Uranium",
+      "target_unit": "MJ",
+      "comment": "AGRIBALYSE 3.2. EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than mass, deliberately, and this target carries the 'Resource use, fossils' characterisation factor, which is defined per MJ. The substance is unchanged and only the quantity basis differs. The factor, 560,000 MJ/kg fission energy content, as on every other list's uranium row, is stated in `agribalyse-3.2-match-overrides.json` and published on the mapping as `qudt:conversionMultiplier`; the pair is listed here because the units still disagree. (#370)"
+    },
+    {
+      "source_uuid": "2e888763-5042-5f1f-af32-b0252d7584bf",
+      "source_name": "Gas, mine, off-gas, process, coal mining/m3",
+      "source_unit": "m3",
+      "target_elementary_flow_id": "00fdc4bc-724b-4993-ad43-c70df533b092",
+      "target_name": "Gas, Mine, Off-gas, Process, Coal Mining",
+      "target_unit": "sm3",
+      "comment": "AGRIBALYSE 3.2. A cubic metre of coal-mine gas onto the same flow in standard cubic metres: the ecoinvent 3.8 flow this row descends from, which ecoinvent relabelled `Sm3` at 3.9 with no change to its amounts. The factor, 1.0, is stated in `agribalyse-3.2-match-overrides.json` because `units.json` reads `m3` as a volume and `sm3` as an amount of substance and implies nothing between them. (#370, #80)"
+    },
+    {
+      "source_uuid": "3448032e-95f6-5eb3-a7a8-04141c3b95d1",
+      "source_name": "Gas, mine, off-gas, process, coal mining/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "00fdc4bc-724b-4993-ad43-c70df533b092",
+      "target_name": "Gas, Mine, Off-gas, Process, Coal Mining",
+      "target_unit": "sm3",
+      "comment": "AGRIBALYSE 3.2. A mass of coal-mine gas onto the flow in standard cubic metres. The factor, 1.254 m3 per kg, is stated in `agribalyse-3.2-match-overrides.json` and is the ratio of the two heating values AGRIBALYSE itself gives its kilogram and cubic-metre rows (44.9 MJ/kg, 35.8 MJ/m3). (#370, #80)"
+    },
+    {
+      "source_uuid": "6be68aec-e88a-51a6-a22a-b8e26d1c6947",
+      "source_name": "Gas, mine, off-gas, process, coal mining/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "00fdc4bc-724b-4993-ad43-c70df533b092",
+      "target_name": "Gas, Mine, Off-gas, Process, Coal Mining",
+      "target_unit": "sm3",
+      "comment": "AGRIBALYSE 3.2. A mass of coal-mine gas onto the flow in standard cubic metres. The factor, 1.254 m3 per kg, is stated in `agribalyse-3.2-match-overrides.json` and is the ratio of the two heating values AGRIBALYSE itself gives its kilogram and cubic-metre rows (44.9 MJ/kg, 35.8 MJ/m3). (#370, #80)"
+    },
+    {
+      "source_uuid": "b5bffb1f-1e13-56b7-a45f-eb5c262078e4",
+      "source_name": "Lead-210/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "4d9a8790-3ddd-11dd-9812-0050c2490048",
+      "target_name": "Lead-210",
+      "target_unit": "kBq",
+      "comment": "AGRIBALYSE 3.2. A mass of lead-210 onto the flow in kilobecquerels: one substance, measured by mass on one side and by activity on the other. The factor, 2.84e+12 kBq per kg, is the isotope's specific activity, stated in `agribalyse-3.2-match-overrides.json`. (#370)"
+    },
+    {
+      "source_uuid": "345c7fd9-afa8-5a1a-a079-46274e660f01",
+      "source_name": "Radium-226/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "08a91e70-3ddc-11dd-98c1-0050c2490048",
+      "target_name": "Radium-226",
+      "target_unit": "kBq",
+      "comment": "AGRIBALYSE 3.2. A mass of radium-226 onto the flow in kilobecquerels: one substance, measured by mass on one side and by activity on the other. The factor, 3.66e+10 kBq per kg, is the isotope's specific activity, stated in `agribalyse-3.2-match-overrides.json`. (#370)"
+    },
+    {
+      "source_uuid": "8e15efc9-89ae-5dc2-afd1-2c53658144fd",
+      "source_name": "Radium-228/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "fe0acd60-3ddc-11dd-aba9-0050c2490048",
+      "target_name": "Radium-228",
+      "target_unit": "kBq",
+      "comment": "AGRIBALYSE 3.2. A mass of radium-228 onto the flow in kilobecquerels: one substance, measured by mass on one side and by activity on the other. The factor, 1.01e+13 kBq per kg, is the isotope's specific activity, stated in `agribalyse-3.2-match-overrides.json`. (#370)"
+    },
+    {
+      "source_uuid": "846692b1-2270-5a4d-92db-b1b078af8326",
+      "source_name": "Water",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "a3876d9b-a3e8-4680-861a-4e08642f1392",
+      "target_name": "Water",
+      "target_unit": "m3",
+      "comment": "AGRIBALYSE 3.2. A water release by mass onto a flow published by volume, at fresh water's density: 0.001 m3 per kg, stated in `agribalyse-3.2-match-overrides.json`. The release-side companion of #352's intakes. (#370)"
+    },
+    {
+      "source_uuid": "eb3ff946-cc3e-554d-850b-33064a00bcfd",
+      "source_name": "Manganese-55",
+      "source_unit": "kBq",
+      "target_elementary_flow_id": "08a91e70-3ddc-11dd-9bcc-0050c2490048",
+      "target_name": "Manganese",
+      "target_unit": "kg",
+      "comment": "AGRIBALYSE 3.2's copy of ecoinvent's `Manganese-55` row, accepted for the reason the five ecoinvent entries above give: manganese-55 is the element's only stable isotope, so a kilobecquerel of it has no physical meaning, and the pairing onto elemental manganese is the right substance. No factor is stated because none exists; the row is inert. 13 datasets, at most 2.5e-12 Bq. (#370)"
+    },
+    {
+      "source_uuid": "46d00281-f7f8-5401-be25-55f750f2edc6",
+      "source_name": "Argon-40/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "e8d5b530-d495-4f79-8c34-ca8ec4852bfa",
+      "target_name": "Argon-40",
+      "target_unit": "kBq",
+      "comment": "AGRIBALYSE 3.2. `Argon-40/kg` is a mass of argon-40, the stable isotope that makes up 99.6% of the argon in air, onto EF 3.1's `Argon-40` flow in kilobecquerels. Accepted in the words of the manganese-55 entries: a stable isotope has no activity, so no factor turns its mass into becquerels, and the pairing names the right substance. No factor is stated; the row is inert for any activity-based method. taken from the air: 2,158 datasets, up to 137,566 kg in `Mine infrastructure, phosphate rock`. (#370)"
+    },
+    {
+      "source_uuid": "eb761cc9-c9ad-52ba-84e1-4f292d8cc77f",
+      "source_name": "Argon-40/kg",
+      "source_unit": "kg",
+      "target_elementary_flow_id": "3f5f02ed-d820-47b1-b319-505ab06b9bc0",
+      "target_name": "Argon-40",
+      "target_unit": "kBq",
+      "comment": "AGRIBALYSE 3.2. `Argon-40/kg` is a mass of argon-40, the stable isotope that makes up 99.6% of the argon in air, onto EF 3.1's `Argon-40` flow in kilobecquerels. Accepted in the words of the manganese-55 entries: a stable isotope has no activity, so no factor turns its mass into becquerels, and the pairing names the right substance. No factor is stated; the row is inert for any activity-based method. released to air: 30 datasets, up to 0.005 kg. (#370)"
     }
   ]
 }

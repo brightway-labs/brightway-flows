@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "description": "`Road vehicle factory {GLO}`, a dataset AGRIBALYSE copied from ecoinvent, takes 16,722,321 m3 of `Gas, natural/m3` from the ground. The list publishes that row on EF 3.1's `Natural Gas`, measured in megajoules, and on the first five-list full build (2 September 2026, `944b274`) nothing on the mapping said how many megajoules a cubic metre is. 26 AGRIBALYSE rows were in that state: energy carriers by mass or volume onto megajoule flows, radionuclides by mass onto kilobecquerel flows, manganese-55 by activity onto the element, water released by mass onto cubic-metre flows.\n\nEach now either carries its conversion on the mapping or is accepted with the reason no number exists. The numbers are AGRIBALYSE's own wherever it states one: the substance section at the end of `AGB32_final.CSV` gives each energy carrier a lower and a higher heating value, and the net one is used. Three of AGRIBALYSE's coal-mine off-gas rows were found to reach `Natural Gas` at all only because the vendor writes natural gas's registry number on them; with the number taken off, as #80 did for every other list, they reach the coal-mine off-gas flow ecoinvent's and BAFU's rows reach.\n\nThe population-wide claim -- no crossing left without a ruling -- is `0805-no-quantity-kind-crossing-is-unrecorded`. These name single rows, so that a later change reaching the same flows by another number fails here rather than passing the count.",
+  "expectations": [
+    {
+      "id": "0370-natural-gas-by-volume-converts-at-agribalyses-heating-value",
+      "issue": 370,
+      "title": "AGRIBALYSE's natural gas in cubic metres converts at 34.5 MJ per cubic metre",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "4e0fae84-bad2-5378-9a09-0d5b6ff09550"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Natural Gas",
+        "conversion_factor": 34.5
+      },
+      "comment": "The issue's example row. 34.5 MJ/m3 is the lower heating value AGRIBALYSE's substance section gives `Gas, natural/m3`, and also what ecoinvent 3.8 -- the background AGRIBALYSE 3.2 is built on -- states for its own cubic-metre natural gas (#777). No factor before this change."
+    },
+    {
+      "id": "0370-hard-coal-converts-at-agribalyses-heating-value",
+      "issue": 370,
+      "title": "AGRIBALYSE's hard coal in the ground converts at 18.2 MJ/kg",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "73592c08-9e10-5388-91ea-2e90c3de5bc3"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Hard Coal",
+        "conversion_factor": 18.2
+      },
+      "comment": "The vendor's net heating value, not the 18.01 ecoinvent's and BAFU's rows carry onto the same target; the choice is the user's on #370, and whether every list should convert by its own value is #407. Claimed so that a change back to one number per target has to rewrite this, with its reason."
+    },
+    {
+      "id": "0370-gas-named-by-its-energy-takes-the-number-in-its-name",
+      "issue": 370,
+      "title": "`Gas, natural, 46.8 MJ per kg` converts at 46.8 MJ/kg",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "9fdd888b-ae2b-54a1-a659-f6b1c5e5a2ac"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Natural Gas",
+        "conversion_factor": 46.8
+      }
+    },
+    {
+      "id": "0370-coal-mine-gas-by-volume-reaches-coal-mine-gas",
+      "issue": 370,
+      "title": "AGRIBALYSE's coal-mine off-gas in cubic metres reaches the coal-mine off-gas flow, at 1.0",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "2e888763-5042-5f1f-af32-b0252d7584bf"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Gas, Mine, Off-gas, Process, Coal Mining",
+        "conversion_factor": 1.0
+      },
+      "comment": "Reached `Natural Gas` in MJ by natural gas's registry number before this change, in 2,182 datasets and at up to 447,520 m3 -- a different substance (#80) published in the wrong unit. 1.0 because it is ecoinvent 3.8's `m3` flow, which ecoinvent relabelled `Sm3` without changing its amounts."
+    },
+    {
+      "id": "0370-coal-mine-gas-by-mass-reaches-coal-mine-gas",
+      "issue": 370,
+      "title": "AGRIBALYSE's coal-mine off-gas in kilograms reaches the coal-mine off-gas flow, at 1.254 cubic metres per kg",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "6be68aec-e88a-51a6-a22a-b8e26d1c6947"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Gas, Mine, Off-gas, Process, Coal Mining",
+        "conversion_factor": 1.254
+      },
+      "comment": "The ratio of AGRIBALYSE's two stated heating values for the gas, 44.9 MJ/kg over 35.8 MJ/m3."
+    },
+    {
+      "id": "0370-radium-226-by-mass-converts-by-specific-activity",
+      "issue": 370,
+      "title": "AGRIBALYSE's `Radium-226/kg` converts at radium-226's specific activity",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "345c7fd9-afa8-5a1a-a079-46274e660f01"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Radium-226",
+        "conversion_factor": 36600000000.0
+      },
+      "comment": "3.66e10 Bq per gram, the ChemLin value the list publishes on the substance, is the same number of kBq per kilogram."
+    },
+    {
+      "id": "0370-water-released-by-mass-converts-to-volume",
+      "issue": 370,
+      "title": "AGRIBALYSE's water released by mass converts at 0.001 cubic metres per kg",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "846692b1-2270-5a4d-92db-b1b078af8326"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Water",
+        "conversion_factor": 0.001
+      },
+      "comment": "`Lemon, at farm {IT} U` releases 3,751,200 kg of this water, which was published as 3,751,200 cubic metres."
+    }
+  ]
+}
