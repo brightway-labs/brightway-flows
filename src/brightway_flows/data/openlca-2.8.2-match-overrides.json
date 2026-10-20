@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "description": "Curated targets for rows of GreenDelta's openLCA LCIA Methods 2.8.2 package. The package declares no correspondence table, so every row here is appended, as AGRIBALYSE's are: `apply_match_overrides` appends an override whose source flow the table has no row for. Targets are EF 3.1 flows, or flows an earlier list's row added to the consensus list, named by consensus uuid. Each row says what the package's own characterisation factors say the flow means, which is the evidence a method package carries where an inventory database carries exchanges; and each says what the first full build that merged the list did with the row instead (20 October 2026, merge run `76b3ec8f`, #412). A row stating a `conversion_factor` names the release it was checked against, as ecoinvent's do.",
+  "overrides": [
+    {
+      "source_uuid": "7ae371aa-8532-11e0-9d78-0800200c9a66",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-923d-0050c2490048",
+      "target_name": "carbon dioxide (fossil)",
+      "comment": "Every method in the package that scores the row scores it as fossil carbon dioxide: EF 3.1 (adapted) `Climate change` and `Climate change (fossil)` both 1.0, and the same under EF 2.0, EF 3.0, IPCC 2013 `Climate change - fossil`, CML-IA, EDIP 2003 and EPD 2018. BAFU's two unqualified `Carbon dioxide` rows were sent to the same fossil flows on the same reading (#139 §17, 0669), and with these moved no source row of any merged list reaches EF's carbon dioxide of unstated origin. On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) this row reached that unqualified substance by its number and name in Environmental → Air → Unknown. GreenDelta's own flow, not a copy of ecoinvent's or EF's."
+    },
+    {
+      "source_uuid": "7ae371a9-8532-11e0-9d78-0800200c9a66",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-9c13-0050c2490048",
+      "target_name": "carbon dioxide (fossil)",
+      "comment": "Every method in the package that scores the row scores it as fossil carbon dioxide: EF 3.1 (adapted) `Climate change` and `Climate change (fossil)` both 1.0, and the same under EF 2.0, EF 3.0, IPCC 2013 `Climate change - fossil`, CML-IA, EDIP 2003 and EPD 2018. BAFU's two unqualified `Carbon dioxide` rows were sent to the same fossil flows on the same reading (#139 §17, 0669), and with these moved no source row of any merged list reaches EF's carbon dioxide of unstated origin. On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) this row reached that unqualified substance by its number and name in the rural compartment. GreenDelta's own flow, not a copy of ecoinvent's or EF's."
+    },
+    {
+      "source_uuid": "643975a8-03da-44bb-873f-4fe8e7740fe6",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-9c12-0050c2490048",
+      "target_name": "carbon dioxide (fossil)",
+      "comment": "Every method in the package that scores the row scores it as fossil carbon dioxide: EF 3.1 (adapted) `Climate change` and `Climate change (fossil)` both 1.0, and the same under EF 2.0, EF 3.0, IPCC 2013 `Climate change - fossil`, CML-IA, EDIP 2003 and EPD 2018. BAFU's two unqualified `Carbon dioxide` rows were sent to the same fossil flows on the same reading (#139 §17, 0669), and with these moved no source row of any merged list reaches EF's carbon dioxide of unstated origin. On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) this row reached that unqualified substance by its number and name in the urban compartment. GreenDelta's own flow, not a copy of ecoinvent's or EF's."
+    },
+    {
+      "source_uuid": "53487f42-0668-400b-be1f-19f3dd46709c",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-923e-0050c2490048",
+      "target_name": "carbon dioxide (fossil)",
+      "comment": "Every method in the package that scores the row scores it as fossil carbon dioxide: EF 3.1 (adapted) `Climate change` and `Climate change (fossil)` both 1.0, and the same under EF 2.0, EF 3.0, IPCC 2013 `Climate change - fossil`, CML-IA, EDIP 2003 and EPD 2018. BAFU's two unqualified `Carbon dioxide` rows were sent to the same fossil flows on the same reading (#139 §17, 0669), and with these moved no source row of any merged list reaches EF's carbon dioxide of unstated origin. On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) this row reached that unqualified substance by its number and name in Environmental → Air → Long-term; the row ships no registry number, and minted a flow in that compartment under the unqualified substance (0914). GreenDelta's own flow, not a copy of ecoinvent's or EF's."
+    },
+    {
+      "source_uuid": "f8b49a6e-fac7-4373-97fb-8ddf3bbb27f5",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "Emission to air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-9c14-0050c2490048",
+      "target_name": "carbon dioxide (fossil)",
+      "comment": "Every method in the package that scores the row scores it as fossil carbon dioxide: EF 3.1 (adapted) `Climate change` and `Climate change (fossil)` both 1.0, and the same under EF 2.0, EF 3.0, IPCC 2013 `Climate change - fossil`, CML-IA, EDIP 2003 and EPD 2018. BAFU's two unqualified `Carbon dioxide` rows were sent to the same fossil flows on the same reading (#139 §17, 0669), and with these moved no source row of any merged list reaches EF's carbon dioxide of unstated origin. On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) this row reached that unqualified substance by its number and name at aircraft cruise height; the row ships no registry number. GreenDelta's own flow, not a copy of ecoinvent's or EF's."
+    },
+    {
+      "source_uuid": "8ffbf5bb-f236-49ec-bb37-55b3561798ea",
+      "source_name": "Carbon dioxide",
+      "source_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e",
+      "target_name": "carbon dioxide (biogenic)",
+      "comment": "Carbon dioxide taken from the air as a resource. The package's own methods read it as uptake: IPCC 2013 `Climate change - CO2 uptake` 1.0, ILCD 2011 `Climate change` -1.0, and `Selected LCI results` counts it as `Carbon, biogenic, fixed` at 0.273, the carbon fraction of CO2. That is EF's biogenic uptake from air, characterised 0, which is where BAFU's three `Carbon dioxide, in air` rows and ecoinvent's flow of that name go (#257, 0669). On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) it reached the unqualified substance by its number and minted a resource flow in air under it."
+    },
+    {
+      "source_uuid": "384e875d-2237-4d74-8f62-6b04173f656b",
+      "source_name": "Peat",
+      "source_context": [
+        "Resource",
+        "in ground"
+      ],
+      "target_uuid": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "peat",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 9.76,
+      "conversion_checked_against": [
+        "2.8.2"
+      ],
+      "comment": "The package measures peat in kilograms and this list publishes the fuel in megajoules, in `Resource → Ground`, with the growing medium apart as `Peat, Horticulture` (#160, #354). Which of the two this row is, the package says itself: EF 3.1 (adapted) gives the biotic row `Resource use, fossils` 9.76 MJ per kilogram, EF 2.0 and 3.0 give all three rows 9.9 MJ of energy carriers, and Cumulative Energy Demand, IMPACT 2002+ and ReCiPe score every one of them as a non-renewable fossil resource; no method scores any of them as anything but fuel. AGRIBALYSE's biotic kilogram was read as the growing medium because an agricultural database's peat is a substrate; a method package's peat, scored as fossil energy, is the fuel. The factor is the package's own, 9.76 MJ/kg, which EF 3.1 (adapted) states on the biotic row; EF 3.1 itself has no kilogram peat flow to state one on. On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) it reached the fuel by its name and was published in kilograms beside it."
+    },
+    {
+      "source_uuid": "ba4d9a8d-6484-35db-b78b-de6bc215afbf",
+      "source_name": "Peat",
+      "source_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "target_uuid": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "peat",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 9.76,
+      "conversion_checked_against": [
+        "2.8.2"
+      ],
+      "comment": "The package measures peat in kilograms and this list publishes the fuel in megajoules, in `Resource → Ground`, with the growing medium apart as `Peat, Horticulture` (#160, #354). Which of the two this row is, the package says itself: EF 3.1 (adapted) gives the biotic row `Resource use, fossils` 9.76 MJ per kilogram, EF 2.0 and 3.0 give all three rows 9.9 MJ of energy carriers, and Cumulative Energy Demand, IMPACT 2002+ and ReCiPe score every one of them as a non-renewable fossil resource; no method scores any of them as anything but fuel. AGRIBALYSE's biotic kilogram was read as the growing medium because an agricultural database's peat is a substrate; a method package's peat, scored as fossil energy, is the fuel. The factor is the package's own, 9.76 MJ/kg, which EF 3.1 (adapted) states on the biotic row; EF 3.1 itself has no kilogram peat flow to state one on. On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) it reached the fuel by its name, in kilograms."
+    },
+    {
+      "source_uuid": "c5035ce2-5ee5-431f-a287-4b25da42be74",
+      "source_name": "Peat",
+      "source_context": [
+        "Resource",
+        "biotic"
+      ],
+      "target_uuid": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "peat",
+      "source_unit": "kg",
+      "target_unit": "MJ",
+      "conversion_factor": 9.76,
+      "conversion_checked_against": [
+        "2.8.2"
+      ],
+      "comment": "The package measures peat in kilograms and this list publishes the fuel in megajoules, in `Resource → Ground`, with the growing medium apart as `Peat, Horticulture` (#160, #354). Which of the two this row is, the package says itself: EF 3.1 (adapted) gives the biotic row `Resource use, fossils` 9.76 MJ per kilogram, EF 2.0 and 3.0 give all three rows 9.9 MJ of energy carriers, and Cumulative Energy Demand, IMPACT 2002+ and ReCiPe score every one of them as a non-renewable fossil resource; no method scores any of them as anything but fuel. AGRIBALYSE's biotic kilogram was read as the growing medium because an agricultural database's peat is a substrate; a method package's peat, scored as fossil energy, is the fuel. The factor is the package's own, 9.76 MJ/kg, which EF 3.1 (adapted) states on the biotic row; EF 3.1 itself has no kilogram peat flow to state one on. ecoinvent's own row under ecoinvent's uuid. On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) it minted a biotic kilogram flow under the fuel substance, so peat was published in two places it cannot be in at once (0450, 0856)."
+    },
+    {
+      "source_uuid": "042e5892-cd59-4e95-949e-cacce0e6a590",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to soil",
+        "unspecified"
+      ],
+      "target_uuid": "d86c13bc-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: soil, unspecified."
+    },
+    {
+      "source_uuid": "049a1473-3a62-4121-982b-5d15d0f2c683",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to water",
+        "ocean"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aaa9-0050c2490048",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: the ocean."
+    },
+    {
+      "source_uuid": "49c42751-1b0b-4ab1-8e70-032e991ce6fd",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to water",
+        "surface water"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aaa6-0050c2490048",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: surface water."
+    },
+    {
+      "source_uuid": "5cd8373d-e849-3007-aa84-0b51810ef17b",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "target_uuid": "d86bc59b-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: aircraft cruise height."
+    },
+    {
+      "source_uuid": "5e08c84c-69a2-4f0b-b3b3-6b7f0925712b",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to water",
+        "ground water, long-term"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aaa7-0050c2490048",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: long-term water."
+    },
+    {
+      "source_uuid": "614d5544-9edf-5b76-90e8-e9c7b98a8084",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to soil",
+        "agricultural"
+      ],
+      "target_uuid": "d86b9e73-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: agricultural soil."
+    },
+    {
+      "source_uuid": "63e7d74d-8549-11e0-9d78-0800200c9a66",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "target_uuid": "d86b9e8a-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: air, unspecified."
+    },
+    {
+      "source_uuid": "9636fb8c-db28-400c-8625-801dc060e29b",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to water",
+        "river"
+      ],
+      "target_uuid": "2f5e55b6258bc39e82ab61116db2dc0d6350faa6",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: a river, the flow BAFU's row added."
+    },
+    {
+      "source_uuid": "966e13f0-775c-3987-89aa-3fbf6be2029a",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to air",
+        "high population density"
+      ],
+      "target_uuid": "d86c3aa9-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: urban air."
+    },
+    {
+      "source_uuid": "9d508263-9cfd-444a-b1de-73f2bcf39c02",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to water",
+        "ground water"
+      ],
+      "target_uuid": "56bd2ac6c0bd10dfc4c617d9b6d36bfd714da9cd",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: the unconfined aquifer, the flow ecoinvent's row added."
+    },
+    {
+      "source_uuid": "b30b71c1-459c-4f65-b0aa-7d8b391a8ed4",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to water",
+        "fresh water"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aaa6-0050c2490048",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: surface water, which is where EF's `fresh water` is published."
+    },
+    {
+      "source_uuid": "c594f595-1e0b-3874-8268-b3dfbcb633ef",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to air",
+        "low population density, long-term"
+      ],
+      "target_uuid": "d86b9e90-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: long-term air."
+    },
+    {
+      "source_uuid": "df82c564-20c9-37c7-8875-de860156439a",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to water",
+        "lake"
+      ],
+      "target_uuid": "321ec5be0f0727adc85d4aa069346e8281cd75d3",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: a lake, the flow BAFU's row added."
+    },
+    {
+      "source_uuid": "e620a933-c348-4e7e-8893-ab0a0f681c7e",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to water",
+        "unspecified"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-aaa8-0050c2490048",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: water, unspecified."
+    },
+    {
+      "source_uuid": "f205c69b-c857-3c3d-803a-2e9342416cd6",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to air",
+        "indoor"
+      ],
+      "target_uuid": "7167805e-8819-4b84-b6ef-e65f719a9818",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: indoor air."
+    },
+    {
+      "source_uuid": "f9abb851-8731-4c5b-b057-863996a1f94a",
+      "source_name": "Hydrocarbons, unspecified",
+      "source_context": [
+        "Emission to air",
+        "low population density"
+      ],
+      "target_uuid": "d86becae-6555-11dd-ad8b-0800200c9a66",
+      "target_name": "Hydrocarbons (unspecified)",
+      "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: rural air."
+    }
+  ]
+}

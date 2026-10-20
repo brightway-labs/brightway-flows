@@ -12,6 +12,6 @@
     "manual_fixes": "openlca-2.8.2-manual-fixes.json",
     "manual_additions": null,
     "additional_flows": "openlca-2.8.2-additional-flows.json",
-    "match_overrides": null
+    "match_overrides": "openlca-2.8.2-match-overrides.json"
   }
 }

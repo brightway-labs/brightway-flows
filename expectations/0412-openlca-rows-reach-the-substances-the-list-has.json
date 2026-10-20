@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "openLCA LCIA Methods 2.8.2 copies most of its flows from ecoinvent and EF 3.1, and copies their errors with them. Five of those errors the other lists already correct -- in `ecoinvent-3.12-manual-fixes.json`, `ef-3.1-manual-fixes.json` and `stepwise-2006-additional-flows.json` -- and on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`, #412, fixed in #386) the openLCA copies arrived uncorrected and landed where the other lists' rows were stopped from landing:\n\n- `Stibnite` in `Resource / in ground` (3e0034cd, ecoinvent's own uuid) carries 1345-04-6, the manufactured antimony trisulfide, and joined EF's thirteen emission flows of the compound. ecoinvent's fix rewrites that number to 1317-86-8, the mineral's, in every release (#123, 0604).\n- `Epoxiconazole` to agricultural soil (1afedfb8, ecoinvent's uuid) is the one of the package's six 135319-73-2 rows that ships without the synonym `BAS 480F`, and it minted a second fungicide; the other five reach EF's `Bas 480f` on the synonym. ecoinvent's fix restores the synonym on the rows that lack it (0826).\n- `Chlordane, gamma-` (four rows) carries 5566-34-7, which is not a chlordane; Stepwise's additions refuse its row with the reasoning, and the package's four were published as a fifth chlordane (0786).\n- `Ether, 1,2,2-trifluoroethyl trifluoromethyl-, HFE-236ea2` (four rows) carries 2356-62-9, which is HFE-227ea's number -- EF 3.1 registers `HFE-227EA` under it and `HFE-236ea2` under 84011-06-3, and Stepwise's row of this name carries 84011-06-3 -- so the rows reached `HFE-227EA` and GreenDelta's two numbers for one flow were reported as a collision eight times over.\n- `Arsenic V` (fourteen rows) carries 61805-96-7, which names no arsenic compound: PubChem lists it only as a second registry number on 1,3-dimethylthiourea (CID 2723631), and Common Chemistry does not resolve it. The rows minted a second `Arsenic(5+)` beside the one EF 3.1 registers 17428-41-0, which `lcia-substance-decisions.json` already reads GreenDelta's `Arsenic V` as.\n\nThe corrections go in `openlca-2.8.2-manual-fixes.json` and the refusal in `openlca-2.8.2-additional-flows.json`, each with the evidence, so the package's copy of a row is read the way the row it was copied from is read. Written on 20 October 2026 against that build, where every claim below fails.\n\n**The second defect: a row with no registry number under a spelling the ion naming standard already publishes.** `Vanadium V` (three rows, in ground water, long-term ground water and a river), `Lithium I` (one row, river) and `Titanium Ion` (fourteen rows, across air, soil and water) ship with no number, and each name is a synonym `domain/ion_names.py` writes on `Vanadium(5+)`, `Lithium(1+)` and `Titanium, ion` (#401). The name route found those synonyms and refused the hits, because an alternative-label hit on a substance that carries a registry number is the guard against a trade name (`Granite` reaching penoxsulam, #103), so each name minted a second substance under the same published label: two `Vanadium(5+)`, two `Lithium(1+)`, two `Titanium, ion`. The copy of `Titanium, ion` then made the standard's synonyms ambiguous and `carry_member_names` withdrew them from both, which is why 0401's claim on them failed too; and `characterise` stopped on the doubled `Vanadium(5+)` label.\n\nA synonym the standard wrote is built from the substance's own name by rule, as the systematic names `_narrow_label_candidates` already accepts are, so it can be neither a trade name nor another substance's. The merge now accepts such a hit, in the narrowest form that answers for these rows: the row's own shipped name, not one of its synonyms, on a row that carries no registry number at all. A numbered row that finds nothing by its number is a disagreement, not missing evidence, and stays refused -- which is what kept ecoinvent's `Chromium IV` off chromium(6+) when every standard synonym was read as a preferred name (#401).",
+  "description": "openLCA LCIA Methods 2.8.2 copies most of its flows from ecoinvent and EF 3.1, and copies their errors with them. Five of those errors the other lists already correct -- in `ecoinvent-3.12-manual-fixes.json`, `ef-3.1-manual-fixes.json` and `stepwise-2006-additional-flows.json` -- and on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`, #412, fixed in #386) the openLCA copies arrived uncorrected and landed where the other lists' rows were stopped from landing:\n\n- `Stibnite` in `Resource / in ground` (3e0034cd, ecoinvent's own uuid) carries 1345-04-6, the manufactured antimony trisulfide, and joined EF's thirteen emission flows of the compound. ecoinvent's fix rewrites that number to 1317-86-8, the mineral's, in every release (#123, 0604).\n- `Epoxiconazole` to agricultural soil (1afedfb8, ecoinvent's uuid) is the one of the package's six 135319-73-2 rows that ships without the synonym `BAS 480F`, and it minted a second fungicide; the other five reach EF's `Bas 480f` on the synonym. ecoinvent's fix restores the synonym on the rows that lack it (0826).\n- `Chlordane, gamma-` (four rows) carries 5566-34-7, which is not a chlordane; Stepwise's additions refuse its row with the reasoning, and the package's four were published as a fifth chlordane (0786).\n- `Ether, 1,2,2-trifluoroethyl trifluoromethyl-, HFE-236ea2` (four rows) carries 2356-62-9, which is HFE-227ea's number -- EF 3.1 registers `HFE-227EA` under it and `HFE-236ea2` under 84011-06-3, and Stepwise's row of this name carries 84011-06-3 -- so the rows reached `HFE-227EA` and GreenDelta's two numbers for one flow were reported as a collision eight times over.\n- `Arsenic V` (fourteen rows) carries 61805-96-7, which names no arsenic compound: PubChem lists it only as a second registry number on 1,3-dimethylthiourea (CID 2723631), and Common Chemistry does not resolve it. The rows minted a second `Arsenic(5+)` beside the one EF 3.1 registers 17428-41-0, which `lcia-substance-decisions.json` already reads GreenDelta's `Arsenic V` as.\n\nThe corrections go in `openlca-2.8.2-manual-fixes.json` and the refusal in `openlca-2.8.2-additional-flows.json`, each with the evidence, so the package's copy of a row is read the way the row it was copied from is read. Written on 20 October 2026 against that build, where every claim below fails.\n\n**The second defect: a row with no registry number under a spelling the ion naming standard already publishes.** `Vanadium V` (three rows, in ground water, long-term ground water and a river), `Lithium I` (one row, river) and `Titanium Ion` (fourteen rows, across air, soil and water) ship with no number, and each name is a synonym `domain/ion_names.py` writes on `Vanadium(5+)`, `Lithium(1+)` and `Titanium, ion` (#401). The name route found those synonyms and refused the hits, because an alternative-label hit on a substance that carries a registry number is the guard against a trade name (`Granite` reaching penoxsulam, #103), so each name minted a second substance under the same published label: two `Vanadium(5+)`, two `Lithium(1+)`, two `Titanium, ion`. The copy of `Titanium, ion` then made the standard's synonyms ambiguous and `carry_member_names` withdrew them from both, which is why 0401's claim on them failed too; and `characterise` stopped on the doubled `Vanadium(5+)` label.\n\nA synonym the standard wrote is built from the substance's own name by rule, as the systematic names `_narrow_label_candidates` already accepts are, so it can be neither a trade name nor another substance's. The merge now accepts such a hit, in the narrowest form that answers for these rows: the row's own shipped name, not one of its synonyms, on a row that carries no registry number at all. A numbered row that finds nothing by its number is a disagreement, not missing evidence, and stays refused -- which is what kept ecoinvent's `Chromium IV` off chromium(6+) when every standard synonym was read as a preferred name (#401).\n\n**The third group: rows the other lists' curated targets and unit rulings cover and the package's copies did not.** Six plain `Carbon dioxide` rows reached EF's carbon dioxide of unstated origin, where BAFU's unqualified rows were sent to the fossil flows and its `in air` rows to biogenic uptake (0669); the package's own methods score the five air rows as fossil and the resource row as uptake. Three kilogram `Peat` rows reached the megajoule fuel by name, one of them minting a biotic kilogram flow (0450, 0856); EF 3.1 (adapted) scores the biotic row 9.76 MJ/kg of fossil resource, so all three are the fuel, converted at the package's own factor. Sixteen `Hydrocarbons, unspecified` rows with no table and no number minted a second bucket beside EF's `Hydrocarbons (unspecified)` (0825). Fifty water rows in kilograms crossed onto cubic-metre flows or minted kilogram ones (0409); they are rewritten to cubic metres at 0.001 as BAFU's sixteen were. And three rows with no number -- `HG-02`, `Tribromomethane`, `Helium, in natural gas, in ground` -- minted substances the list has under another spelling, and now carry the number. `openlca-2.8.2-match-overrides.json` holds the targets and `openlca-2.8.2-manual-fixes.json` the numbers and units. The bare `Carbon` in the ground is kept: the Crustal Scarcity Indicator scores it, and nothing else does, so it is elemental carbon as a mineral resource, a flow new to the list (0915 is restated to AGRIBALYSE's rows).",
   "expectations": [
     {
       "id": "0412-stibnite-is-the-mineral",
@@ -241,6 +241,172 @@
         "alt_label": "Titanium Ion"
       },
       "comment": "Two on the build of 20 October 2026, and the synonym withdrawn from both; one, carrying the standard's `Titanium Ion`, is what 0401 states as well."
+    },
+    {
+      "id": "0412-plain-carbon-dioxide-in-air-is-fossil",
+      "issue": 412,
+      "title": "openLCA's five plain `Carbon dioxide` air rows reach fossil carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Carbon dioxide",
+        "context": [
+          "Emission to air"
+        ]
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 5,
+        "same_substance": true,
+        "target_name": "Carbon Dioxide (fossil)"
+      },
+      "comment": "Every method in the package scores them as fossil. On the build of 20 October 2026 they reached EF's carbon dioxide of unstated origin and minted its long-term air flow again (0669, 0914)."
+    },
+    {
+      "id": "0412-carbon-dioxide-as-a-resource-is-uptake",
+      "issue": 412,
+      "title": "openLCA's `Carbon dioxide` resource row reaches biogenic uptake from air",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "8ffbf5bb-f236-49ec-bb37-55b3561798ea"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e"
+      },
+      "comment": "IPCC 2013 scores it as CO2 uptake; the target is the flow BAFU's `Carbon dioxide, in air` rows reach."
+    },
+    {
+      "id": "0412-kilogram-peat-is-the-fuel-in-megajoules",
+      "issue": 412,
+      "title": "openLCA's three kilogram `Peat` rows reach the megajoule fuel, converted",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Peat"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 3,
+        "same_target": true,
+        "target_uuid": "e2fba107-6555-11dd-ad8b-0800200c9a66",
+        "target_unit": "MJ"
+      },
+      "comment": "At the package's own 9.76 MJ/kg. On the build of 20 October 2026 the biotic row minted a kilogram flow in `Resource → Biotic` (0450, 0856)."
+    },
+    {
+      "id": "0412-hydrocarbons-unspecified-is-one-bucket",
+      "issue": 412,
+      "title": "openLCA's eighteen `Hydrocarbons, unspecified` rows reach EF's bucket",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Hydrocarbons, unspecified"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 18,
+        "same_substance": true,
+        "target_name": "Hydrocarbons (unspecified)"
+      },
+      "comment": "Two by EF's own uuid, sixteen by curated target. On the build of 20 October 2026 the sixteen minted `Hydrocarbons, Unspecified` (0825)."
+    },
+    {
+      "id": "0412-no-water-row-is-published-in-kilograms",
+      "issue": 412,
+      "title": "No openLCA water row is published on a kilogram flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name_contains": "ater",
+        "unit": "kg"
+      },
+      "expect": {
+        "row_count": 0
+      },
+      "comment": "The fifty rows the package measures by mass are rewritten to cubic metres before the merge reads them, so no row of the list arrives in kilograms; `0409-bafu-waste-water-is-published-in-cubic-metres` says the flows are cubic metres. `name_contains: ater` covers `Water...` and `Waste water`."
+    },
+    {
+      "id": "0412-waste-water-in-kilograms-reaches-the-cubic-metre-flow",
+      "issue": 412,
+      "title": "The two `Waste water` rows measured by mass reach the cubic-metre flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "b61cc486-7a9d-3880-a2ae-1bc3a65d0f43"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Waste water",
+        "target_unit": "m3"
+      },
+      "comment": "The row in water, unspecified. On the build of 20 October 2026 it published a kilogram `Waste water` flow (0409) and its GreenDelta factor was a unit crossing."
+    },
+    {
+      "id": "0412-hg-02-is-the-ether",
+      "issue": 412,
+      "title": "openLCA's `HG-02` reaches the hydrofluoropolyether EF renamed",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "07048978-213f-3668-a7b6-c12989c47fb8"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_cas": "205367-61-9"
+      },
+      "comment": "On the build of 20 October 2026 it minted a second substance named `HG-02` and `0571-hg-02-is-findable-again` lost the synonym."
+    },
+    {
+      "id": "0412-tribromomethane-is-bromoform",
+      "issue": 412,
+      "title": "openLCA's `Tribromomethane` reaches bromoform",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "c1d2124b-d2fc-4994-a2a2-a9ef07ac3e9d"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Bromoform"
+      },
+      "comment": "Twenty rows of the package named `Bromoform` carry 75-25-2 and reach it; this one carried no number."
+    },
+    {
+      "id": "0412-helium-in-natural-gas-is-helium",
+      "issue": 412,
+      "title": "openLCA's `Helium, in natural gas, in ground` reaches helium",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "b6381644-4633-5bc6-9e90-c5d0514f9363"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Helium",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "ecoinvent's row under ecoinvent's uuid, copied without its number."
+    },
+    {
+      "id": "0412-crustal-carbon-is-kept",
+      "issue": 412,
+      "title": "The package's `Carbon` in the ground is published as elemental carbon's one ground resource",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "80bb6903-93b7-4c04-ac53-37775125af8d"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Carbon",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "Scored by the Crustal Scarcity Indicator alone, at 140: the element in the crust, which no other list inventories. Kept on purpose; 0915's claim that no such flow exists is restated to AGRIBALYSE's rows, which are soil carbon stock and go to EF's stock flow."
     }
   ]
 }

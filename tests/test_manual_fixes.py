@@ -1392,6 +1392,64 @@ class OpenLcaCopiesTheOtherListsCorrectionsTestCase(unittest.TestCase):
             with self.subTest(uuid=row["uuid"]):
                 self.assertEqual(row.get("cas_numbers"), self.shipped[row["uuid"]].get("cas_numbers"))
 
+    def test_the_three_numberless_rows_gain_their_numbers(self):
+        for uuid, name, cas in [
+            ("07048978-213f-3668-a7b6-c12989c47fb8", "HG-02", "205367-61-9"),
+            ("c1d2124b-d2fc-4994-a2a2-a9ef07ac3e9d", "Tribromomethane", "75-25-2"),
+            ("b6381644-4633-5bc6-9e90-c5d0514f9363", "Helium, in natural gas, in ground", "7440-59-7"),
+        ]:
+            with self.subTest(name=name):
+                self.assertEqual(self.fixed[uuid]["name"], name)
+                self.assertEqual(self.fixed[uuid]["cas_numbers"], [cas])
+                self.assertFalse(self.shipped[uuid].get("cas_numbers"))
+
+    def test_bromoforms_own_rows_are_left_alone(self):
+        rows = self._named("Bromoform")
+        self.assertEqual(len(rows), 20)
+        for row in rows:
+            with self.subTest(uuid=row["uuid"]):
+                self.assertEqual(row["cas_numbers"], ["75-25-2"])
+
+    def _water(self, rows):
+        refused = self.source.excluded_uuids()
+        return [
+            r for r in rows.values()
+            if r["uuid"] not in refused
+            and r.get("name", "").lower().startswith(("water", "waste water"))
+            and r.get("context", [""])[0] != "Waste"
+        ]
+
+    def test_no_kept_water_row_is_measured_in_kilograms_any_more(self):
+        shipped_kg = [r for r in self._water(self.shipped) if r["unit"] == "kg"]
+        self.assertEqual(len(shipped_kg), 50)
+        self.assertEqual(len({r["name"] for r in shipped_kg}), 31)
+        left = [r for r in self._water(self.fixed) if r["unit"] == "kg"]
+        self.assertEqual(left, [])
+
+    def test_every_rewritten_water_row_carries_the_density(self):
+        """The rewrite keeps the vendor's amount convertible: 0.001 m3 per kg,
+        published on the row's concept association, as BAFU's are."""
+        for shipped in self._water(self.shipped):
+            if shipped["unit"] != "kg":
+                continue
+            row = self.fixed[shipped["uuid"]]
+            with self.subTest(name=shipped["name"], uuid=shipped["uuid"]):
+                self.assertEqual(row["unit"], "m3")
+                self.assertEqual(row["name"], shipped["name"])
+                conversion = row[UNIT_CONVERSION_KEY]
+                self.assertEqual(
+                    (conversion["source_unit"], conversion["target_unit"], conversion["factor"]),
+                    ("kg", "m3", 0.001),
+                )
+
+    def test_the_cubic_metre_water_rows_are_not_touched(self):
+        for shipped in self._water(self.shipped):
+            if shipped["unit"] == "kg":
+                continue
+            with self.subTest(name=shipped["name"], uuid=shipped["uuid"]):
+                self.assertEqual(self.fixed[shipped["uuid"]]["unit"], shipped["unit"])
+                self.assertNotIn(UNIT_CONVERSION_KEY, self.fixed[shipped["uuid"]])
+
     def test_gamma_chlordane_is_refused_and_the_isomers_are_not(self):
         refused = self.source.excluded_uuids()
         gamma = [r for r in self.shipped.values() if r.get("name") == "Chlordane, gamma-"]

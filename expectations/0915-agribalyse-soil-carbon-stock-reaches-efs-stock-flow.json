@@ -23,16 +23,18 @@
     {
       "id": "0915-no-carbon-resource-is-minted-for-them",
       "issue": 915,
-      "title": "Elemental carbon has no resource flow in the ground any more",
+      "title": "No AGRIBALYSE row mints elemental carbon as a ground resource",
       "subject": {
-        "kind": "flow",
-        "name": "Carbon",
-        "context_display": "Resource → Ground"
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Carbon, organic, in soil or biomass stock"
       },
       "expect": {
-        "exists": false
+        "row_count": 3,
+        "not_outcome": "created",
+        "target_name": "Carbon, Organic, In Soil Or Biomass Stock"
       },
-      "comment": "The flow `5cdcf97e…` existed only because these three rows minted it. With them on the stock flow nothing mints it, and elemental carbon is back to its releases, which `0588-elemental-carbon-keeps-its-releases` counts."
+      "comment": "The flow `5cdcf97e…` existed only because these three rows minted it; with them on the stock flow nothing of AGRIBALYSE's mints it, and elemental carbon is back to its releases, which `0588-elemental-carbon-keeps-its-releases` counts. Restated 2026-10-20 (#412) from `the flow does not exist` to `these rows do not make it`: openLCA LCIA Methods 2.8.2 ships a bare `Carbon` in `Resource / in ground`, scored by the Crustal Scarcity Indicator alone, which is elemental carbon as a mineral resource and is kept as a flow of its own on a build that merges that list. The claim about AGRIBALYSE's rows is unchanged."
     }
   ]
 }

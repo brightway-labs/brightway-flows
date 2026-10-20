@@ -190,6 +190,53 @@ of them use words the other lists don't, and each was read as follows:
   area**. It is not read as grassland, because ILCD 2011, IMPACT 2002+ and
   EF 2.0 score it differently from openLCA's `Occupation, grassland`.
 
+## Water measured by mass
+
+Liquid water is published in cubic metres throughout this list, and the
+package measures 50 of its kept water rows by mass, under 31 names — `Waste
+water`, `Water` emitted to a river, `Water, cooling, well`, `Water, process,
+unspecified natural origin/kg` — beside cubic-metre rows of the same kinds of
+water. `openlca-2.8.2-manual-fixes.json` rewrites every one of them to cubic
+metres at 0.001 m³ per kg, as `bafu-2026-v1-manual-fixes.json` did for BAFU's
+sixteen ([#78](https://github.com/brightway-labs/brightway-flows/issues/78)),
+and the density is published on each row's concept association, so a factor
+the package states per kilogram is converted by the same number. On the first
+build that merged the list (20 October 2026) the two `Waste water` rows had
+published a kilogram flow beside the cubic-metre one and ten of the package's
+own factors were unit crossings. The four names ending in `/kg` keep the
+package's spelling; the unit field is what the build reads.
+
+## Rows sent to a curated target
+
+`openlca-2.8.2-match-overrides.json` names the flow for 25 rows the merge
+placed wrongly on the first build, each row citing what the package's own
+characterisation factors say it means — the evidence a method package carries
+where an inventory database carries exchanges
+([#412](https://github.com/brightway-labs/brightway-flows/issues/412)).
+
+- **Six plain `Carbon dioxide` rows.** Every method in the package scores the
+  five air rows as fossil carbon dioxide (EF 3.1 `Climate change (fossil)` 1.0,
+  IPCC 2013 `fossil`, CML, EDIP), so they go to EF's fossil flows, as BAFU's
+  two unqualified rows do; the row in `Resource / unspecified` is scored as
+  uptake (IPCC 2013 `CO2 uptake` 1.0, ILCD −1) and goes to EF's biogenic
+  uptake from air, as BAFU's `Carbon dioxide, in air` rows do. As shipped they
+  had reached carbon dioxide of unstated origin, which no other list's row does.
+- **Three kilogram `Peat` rows.** EF 3.1 (adapted) scores the biotic row
+  `Resource use, fossils` at 9.76 MJ/kg and every method scores all three as
+  fossil fuel, so all three go to the megajoule fuel `Peat` at that factor. A
+  method package's peat is the fuel; AGRIBALYSE's biotic kilogram is the
+  growing medium because an agricultural database's peat is a substrate.
+- **Sixteen `Hydrocarbons, unspecified` rows.** The bucket EF 3.1 publishes as
+  `Hydrocarbons (unspecified)`, shipped with no number under ecoinvent's
+  spelling; the two rows that are EF's own flows reach it by uuid, and the
+  sixteen others minted a second bucket. Each goes to EF's flow in its own
+  compartment, or to the flow BAFU's or ecoinvent's row already added there.
+
+One row is kept where the first build put it: the bare `Carbon` in
+`Resource / in ground` (7440-44-0) is scored by the Crustal Scarcity Indicator
+alone, at 140, which counts elements in the crust. It is elemental carbon as a
+mineral resource, a flow no other list has, and it stays a flow of its own.
+
 ## The first build with the list
 
 openLCA LCIA methods 2.8.2 merges last (priority 500) when a build names it;
@@ -211,7 +258,16 @@ substances for this list.
 
 ## One name, two substances
 
-None recorded yet.
+On the first build that merged the list (20 October 2026), rows that ship no
+registry number under a spelling the list already publishes as a synonym
+minted second substances under the same label: `Vanadium V` (three rows),
+`Lithium I` (one) and `Titanium Ion` (fourteen) beside `Vanadium(5+)`,
+`Lithium(1+)` and `Titanium, ion`. The merge refused those synonyms because an
+alternative-label hit on a substance that carries a registry number is its
+guard against a trade name; a synonym the ion naming standard wrote is the
+substance's own name in another spelling, and the merge now accepts it for a
+row that ships no number under exactly that spelling
+([#412](https://github.com/brightway-labs/brightway-flows/issues/412)).
 
 ## An ionic charge was added or corrected
 
@@ -283,6 +339,9 @@ those is ruled on yet.
 | Stibnite | `Resource / in ground` | 1345-04-6 → 1317-86-8 | the row is ecoinvent's, under ecoinvent's uuid, and carries the manufactured antimony trisulfide's number where the mineral's is 1317-86-8 (IARC vol. 47); ecoinvent's own fixes rewrite it, BAFU registers its stibnite 1317-86-8, and left as shipped the row joined EF's thirteen emission flows of the compound on the build of 20 October 2026 ([#123](https://github.com/brightway-labs/brightway-flows/issues/123)) |
 | Ether, 1,2,2-trifluoroethyl trifluoromethyl-, HFE-236ea2 | air: four compartments | 2356-62-9 → 84011-06-3 | 2356-62-9 is HFE-227ea's number, under which EF 3.1 registers `HFE-227EA`; EF registers `HFE-236ea2` 84011-06-3 and Stepwise 2006 writes that number on its row of this name. As shipped, the four rows reached `HFE-227EA`, and GreenDelta's two factors for one flow were reported as eight collisions |
 | Arsenic V | air, soil and water: fourteen compartments | 61805-96-7 → 17428-41-0 | 61805-96-7 names no arsenic compound: Common Chemistry does not resolve it and PubChem lists it only as a second number on 1,3-dimethylthiourea. The name is EF 3.1's `arsenic (v)`, 17428-41-0, published as `Arsenic(5+)`; as shipped, the rows minted a second `Arsenic(5+)` beside it |
+| HG-02 | `Emission to air / unspecified` | none → 205367-61-9 | an industry designation for a hydrofluoropolyether, which EF 3.1 shipped under the designation and `ef-3.1-manual-fixes.json` renamed; the package copies the designation with no number, and its own factors (EF 3.1 `Climate change` 5,730, IPCC 2013 2,730) are that molecule's. As shipped, the row minted a second `HG-02` |
+| Tribromomethane | `Emission to air / unspecified` | none → 75-25-2 | bromoform, which the package ships twenty times under that name with the number; this one row carries the systematic name alone and bromoform's factor (0.25). As shipped, it minted a second substance |
+| Helium, in natural gas, in ground | `Resource / in ground` | none → 7440-59-7 | ecoinvent's `Helium, in natural gas` under ecoinvent's uuid, copied without the number ecoinvent's table reaches helium with. As shipped, it minted a substance named for a compartment |
 
 One synonym is restored rather than a number corrected: the agricultural-soil
 `Epoxiconazole` row (135319-73-2, ecoinvent's uuid) is the one of the package's

@@ -78,6 +78,380 @@
         "17428-41-0"
       ],
       "comment": "The package writes 61805-96-7 on all fourteen of its `Arsenic V` rows, and the number names no arsenic compound: Common Chemistry does not resolve it, and PubChem lists it only as a second registry number on 1,3-dimethylthiourea (CID 2723631), a sulfur compound with no arsenic in it. The name is EF 3.1's `arsenic (v)`, registered 17428-41-0 and published here as `Arsenic(5+)`, and `lcia-substance-decisions.json` already reads GreenDelta's `Arsenic V` as that substance for the factor it states. Rewritten to that number: with the unresolvable one, the fourteen rows minted a second `Arsenic(5+)` on the build of 20 October 2026, because `Arsenic V` is an alternative label on a substance that carries a registry number and the name route refuses such a hit (#412). Matched on the name and the number together."
+    },
+    {
+      "match": {
+        "uuid": "07048978-213f-3668-a7b6-c12989c47fb8",
+        "name": "HG-02"
+      },
+      "field": "cas_numbers",
+      "new_value": [
+        "205367-61-9"
+      ],
+      "comment": "`HG-02` is an industry designation for a hydrofluoropolyether, 1,1'-oxybis[2-(difluoromethoxy)-1,1,2,2-tetrafluoroethane], registered 205367-61-9. EF 3.1 shipped its flow under this designation with no number, and `ef-3.1-manual-fixes.json` renames it to the systematic name and keeps `HG-02` as a synonym; the package copies the designation as its own flow with no number either. The package's factors say which molecule it is -- EF 3.1 (adapted) `Climate change` 5,730, IPCC 2013 GWP 100a 2,730, the numbers EF and IPCC give HG-02 -- so the number is written on. On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) the row minted a second substance named `HG-02` beside the ether, because the designation is an alternative label on a substance that carries a number and the name route refuses such a hit (#412)."
+    },
+    {
+      "match": {
+        "uuid": "c1d2124b-d2fc-4994-a2a2-a9ef07ac3e9d",
+        "name": "Tribromomethane"
+      },
+      "field": "cas_numbers",
+      "new_value": [
+        "75-25-2"
+      ],
+      "comment": "Tribromomethane is bromoform, CHBr3, 75-25-2, which EF 3.1 publishes as `Bromoform` in thirteen compartments and the package itself ships twenty times under that name with the number. This one row carries the systematic name and no number; its factors are bromoform's (EF 3.1 (adapted) and IPCC 2021 GWP 100 both 0.25). On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) it minted a second substance, `Tribromomethane`, beside bromoform (#412)."
+    },
+    {
+      "match": {
+        "uuid": "b6381644-4633-5bc6-9e90-c5d0514f9363",
+        "name": "Helium, in natural gas, in ground"
+      },
+      "field": "cas_numbers",
+      "new_value": [
+        "7440-59-7"
+      ],
+      "comment": "ecoinvent's `Helium, in natural gas` under ecoinvent's uuid, helium as a resource in the ground, which ecoinvent's correspondence table sends to EF's helium and which the package copies with the number left off; Ecological Scarcity 2013 scores it as a mineral resource. The package's four other helium rows carry 7440-59-7 and reach `Helium`. On the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) this one minted `Helium, In Natural Gas, In Ground` as a substance of its own (#412)."
+    },
+    {
+      "match": {
+        "name": "Waste water",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water (fresh water)",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water (river water from technosphere turbined)",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water (river water from technosphere, turbined)",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water (with river silt)",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, Saline water consumption",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, Surface water consumption",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, barrage",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, cooling, drinking",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, cooling, salt, ocean",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, cooling, surface",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, cooling, unspecified natural origin/kg",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number. The name keeps its `/kg`, the package's own spelling; the unit field is what the build reads."
+    },
+    {
+      "match": {
+        "name": "Water, cooling, well",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, cooling, well, in ground",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, ground",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, groundwater consumption",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, process, drinking",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, process, salt, ocean",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, process, surface",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, process, unspecified natural origin/kg",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number. The name keeps its `/kg`, the package's own spelling; the unit field is what the build reads."
+    },
+    {
+      "match": {
+        "name": "Water, process, well",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, rain",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, surface",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, surface water consumption",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, thermoelectric groundwater consumption",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, thermoelectric saline water consumption",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, thermoelectric surface water consumption",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water, unspecified natural origin/kg",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number. The name keeps its `/kg`, the package's own spelling; the unit field is what the build reads."
+    },
+    {
+      "match": {
+        "name": "Water, with river silt",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number."
+    },
+    {
+      "match": {
+        "name": "Water/kg",
+        "unit": "kg"
+      },
+      "field": "unit",
+      "original_value": "kg",
+      "new_value": "m3",
+      "conversion_factor": 0.001,
+      "comment": "Liquid water is published in cubic metres throughout this list -- every flow carrying EF 3.1's `Water use` factors, every water resource ecoinvent ships -- and BAFU's sixteen kilogram water rows were rewritten to cubic metres at 0.001 m3/kg in `bafu-2026-v1-manual-fixes.json` (#78, 0409). The package measures 50 of its kept water rows by mass, under 31 names, beside cubic-metre rows of the same kinds of water; a kilogram row landing on a cubic-metre flow is a unit crossing, and one landing where no flow exists yet mints a kilogram flow, which is what `Waste water` did on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`). The same density, 0.001, for every one of them, sea water included, as BAFU's were. The conversion is published on the row's concept association, so a factor the package states per kilogram for the row is converted by the same number. The name keeps its `/kg`, the package's own spelling; the unit field is what the build reads."
     }
   ]
 }
