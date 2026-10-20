@@ -54,16 +54,13 @@ from brightway_flows.flow_layers.labels import (
 )
 from brightway_flows.pipeline.element_labels import stated_charge
 from brightway_flows.pipeline.layer_writes import LayerWriteLog
+from brightway_flows.pipeline.semantic_typing import is_monatomic_ion
 from brightway_flows.sources import base_source_label
 
 logger = structlog.get_logger(__name__)
 
 PASS_NAME = ION_NAMING_STANDARD
 
-#: One atom with a charge: these take the whole standard.
-_MONATOMIC_ION_TYPES = frozenset(
-    IRIS[term] for term in (Term.MONOATOMIC_ION, Term.ATOM_CATION, Term.ATOM_ANION)
-)
 #: Several atoms with a charge: only the generic `X, ion` spelling applies,
 #: because a numeral would state an oxidation number no one atom has.
 _POLYATOMIC_ION_TYPES = frozenset(
@@ -85,28 +82,6 @@ def _types(obj: FlowObject) -> set[str]:
     return set()
 
 
-def _ion_of_an_element(obj: FlowObject) -> bool:
-    """Whether `flow_layers.ions` recorded *obj* as an ion of an element.
-
-    A second way of knowing an object is one charged atom, because the typing
-    can say otherwise: on the build of `43403ac` (run
-    `20261019T0759116033000000`) `Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)`
-    and `Chromium IV` are each typed an imprecise mixture (#403), and each is
-    recorded as the ion of its element with one stated charge.  The record is
-    written only where the name resolved to an element, so `Pyrethrin I` --
-    a name ending in a numeral -- is never read as one.
-    """
-    properties = obj.properties
-    if not isinstance(properties, dict):
-        return False
-    relationships = properties.get("relationships")
-    return (
-        isinstance(relationships, dict)
-        and relationships.get("relationship_type") == "ion_of"
-        and bool(relationships.get("parent_element_flow_object_id"))
-    )
-
-
 def _generic_base(label: str) -> str:
     lower = label.lower()
     for suffix in _GENERIC_SUFFIXES:
@@ -122,9 +97,11 @@ def ion_reading(obj: FlowObject) -> tuple[str, int | None] | None:
     name this cannot read.  A charge of ``None`` in the pair is the generic
     reading, `Copper, ion`.
     """
-    types = _types(obj)
-    monatomic = bool(types & _MONATOMIC_ION_TYPES) or _ion_of_an_element(obj)
-    if not monatomic and not types & _POLYATOMIC_ION_TYPES:
+    # One charged atom by the reading the typing rules share
+    # (`semantic_typing.is_monatomic_ion`), which is also what reaches the
+    # four ions #403 types as mixtures.
+    monatomic = is_monatomic_ion(obj)
+    if not monatomic and not _types(obj) & _POLYATOMIC_ION_TYPES:
         return None
     label = flow_label_value(obj).strip()
     if not label:

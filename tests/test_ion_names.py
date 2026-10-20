@@ -163,6 +163,16 @@ class PassTestCase(unittest.TestCase):
         self.assertEqual(_label(obj), "Chromium(4+)")
         self.assertEqual(_synonyms(obj), ["Chromium(IV)", "Chromium IV"])
 
+    def test_an_ion_of_record_with_no_stated_charge_is_not_read_as_one(self):
+        """The reading is the typing's (#403): the record and one charge."""
+        obj = _object("Palladium II", IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE])
+        obj.properties["relationships"] = {
+            "parent_element_flow_object_id": "fo-palladium",
+            "relationship_type": "ion_of",
+        }
+        standardise_ion_names([obj])
+        self.assertEqual(_label(obj), "Palladium II")
+
     def test_a_name_ending_in_a_numeral_is_not_an_ion_for_that(self):
         obj = _object("Pyrethrin I", NEUTRAL)
         standardise_ion_names([obj])
