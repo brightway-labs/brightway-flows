@@ -56,7 +56,6 @@ from brightway_flows.flow_layers.labels import (
 from brightway_flows.pipeline.element_labels import stated_charge
 from brightway_flows.pipeline.layer_writes import LayerWriteLog
 from brightway_flows.pipeline.semantic_typing import is_monatomic_ion
-from brightway_flows.sources import base_source_label
 
 logger = structlog.get_logger(__name__)
 
@@ -127,12 +126,12 @@ def ion_reading(obj: FlowObject) -> tuple[str, int | None] | None:
     return None
 
 
-def _label_row(value: str, *, replaced: bool = False) -> dict[str, Any]:
+def _label_row(value: str, *, seed_source: str, replaced: bool = False) -> dict[str, Any]:
     return _label_entry(
         value=value,
         language="en",
         resolver_name=PASS_NAME,
-        seed_source=base_source_label(),
+        seed_source=seed_source,
         was_derived_from=REPLACED_LABEL_DERIVED_FROM if replaced else _WAS_DERIVED_FROM,
     )
 
@@ -142,8 +141,16 @@ def _row_value(row: Any) -> str:
     return value.strip() if isinstance(value, str) else ""
 
 
-def standardise_ion_names(flow_objects: list[FlowObject]) -> Counter[str]:
+def standardise_ion_names(
+    flow_objects: list[FlowObject], *, seed_source: str
+) -> Counter[str]:
     """Give every ion in *flow_objects* the standard name and synonyms.
+
+    *seed_source* is the list the objects were seeded from, and is the primary
+    source on every label this writes: the base list's in the transform, and
+    in the merge the list whose rows it is minting from.  It was the base
+    list's for both, which published `Chromium, ion`, minted from an
+    ecoinvent row, as EF 3.1's.
 
     Mutates the objects.  A name the standard replaces stays as a synonym, so
     nothing a source list called the substance stops finding it.  The
@@ -175,7 +182,7 @@ def standardise_ion_names(flow_objects: list[FlowObject]) -> Counter[str]:
                 obj=obj,
                 value=label,
                 resolver_name=PASS_NAME,
-                seed_source=base_source_label(),
+                seed_source=seed_source,
                 was_derived_from=_WAS_DERIVED_FROM,
             )
             stats["renamed"] += 1
@@ -206,7 +213,8 @@ def standardise_ion_names(flow_objects: list[FlowObject]) -> Counter[str]:
         before = {_row_value(row) for row in obj.altLabel or []}
         stats["synonyms_added"] += sum(1 for value in synonyms if value not in before)
         obj.altLabel = [
-            _label_row(value, replaced=value in replaced) for value in synonyms
+            _label_row(value, seed_source=seed_source, replaced=value in replaced)
+            for value in synonyms
         ] + kept
 
     logger.info("ion_names_standardised", **dict(stats))

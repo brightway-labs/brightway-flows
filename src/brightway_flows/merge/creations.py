@@ -254,8 +254,11 @@ def create_flows_for_unmatched_rows(
     # ion` is minted as the standard spells it, as the transform's ions are,
     # rather than as the chain title-cased it (`domain.ion_names`).  Unlike
     # the ion layer's own rename above, this one does run here -- it changes
-    # the spelling of a name and never what it names.
-    ion_name_stats = standardise_ion_names(kept_objects)
+    # the spelling of a name and never what it names.  Seeded from the list
+    # being merged: what is minted from an ecoinvent row is ecoinvent's.
+    ion_name_stats = standardise_ion_names(
+        kept_objects, seed_source=indexes.source.source_label
+    )
     objects_by_id = {obj.flow_object_id: obj for obj in kept_objects}
 
     # Before the loop, not inside it: the unit a flow declares is a property of

@@ -27,6 +27,7 @@ from brightway_flows.domain.ion_names import (
 from brightway_flows.domain.vocabulary import (
     CHEMROF_ELEMENTAL_CHARGE,
     IRIS,
+    PROV_HAD_PRIMARY_SOURCE_CURIE,
     PROV_WAS_GENERATED_BY_CURIE,
     Term,
 )
@@ -39,6 +40,7 @@ GENERIC = IRIS[Term.MONOATOMIC_ION]
 MOLECULAR_CATION = IRIS[Term.MOLECULAR_CATION]
 MOLECULAR_ANION = IRIS[Term.MOLECULAR_ANION]
 NEUTRAL = IRIS[Term.NEUTRAL_MOLECULE]
+SOURCE = "EF 3.1"
 
 
 def _object(label, types, *, charge=None, alt=(), object_id="fo-1"):
@@ -109,7 +111,7 @@ class StandardTestCase(unittest.TestCase):
 class PassTestCase(unittest.TestCase):
     def test_a_cation_is_respelled_and_the_old_spelling_stays_a_synonym(self):
         obj = _object("Cesium(1+)", CATION, charge=1, alt=["cesium cation"])
-        stats = standardise_ion_names([obj])
+        stats = standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Caesium(1+)")
         self.assertEqual(
             _synonyms(obj),
@@ -121,20 +123,20 @@ class PassTestCase(unittest.TestCase):
     def test_an_anion_takes_its_charge_from_the_object(self):
         """`Chloride` states no numeral; being chloride is the statement."""
         obj = _object("Chloride", ANION, charge=-1)
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Chloride(1-)")
         self.assertEqual(_synonyms(obj)[:3], ["Chloride", "Chloride(-I)", "Chloride -I"])
 
     def test_a_generic_ion_keeps_its_unstated_charge(self):
         """`Titanium, ion` stays generic though PubChem says Ti+4 (#143)."""
         obj = _object("Titanium, ion", CATION, charge=4)
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Titanium, ion")
         self.assertEqual(_synonyms(obj), ["Titanium, Ion", "Titanium Ion"])
 
     def test_a_title_cased_generic_is_respelled(self):
         obj = _object("Chromium, Ion", GENERIC)
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Chromium, ion")
         self.assertEqual(_synonyms(obj), ["Chromium, Ion", "Chromium Ion"])
 
@@ -142,24 +144,24 @@ class PassTestCase(unittest.TestCase):
         """EF 3.1 writes `lead(II) ion`: the numeral is the charge, and the
         suffix is not the whole statement."""
         obj = _object("lead(II) ion", CATION, charge=2)
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Lead(2+)")
         self.assertEqual(_synonyms(obj), ["Lead(II)", "Lead II", "lead(II) ion"])
 
     def test_a_polyatomic_ion_stating_a_charge_before_the_suffix_is_left_alone(self):
         obj = _object("methylmercury(1+) ion", MOLECULAR_CATION, charge=1)
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "methylmercury(1+) ion")
 
     def test_a_polyatomic_generic_is_respelled_too(self):
         obj = _object("Thiocyanate, Ion", MOLECULAR_ANION)
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Thiocyanate, ion")
 
     def test_a_polyatomic_ion_with_a_stated_charge_is_left_alone(self):
         """`Methylmercury(1+)` is not mercury(I): no numeral is added."""
         obj = _object("Methylmercury(1+)", MOLECULAR_CATION, charge=1)
-        stats = standardise_ion_names([obj])
+        stats = standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Methylmercury(1+)")
         self.assertEqual(_synonyms(obj), [])
         self.assertEqual(stats["ions"], 0)
@@ -172,7 +174,7 @@ class PassTestCase(unittest.TestCase):
             "parent_element_flow_object_id": "fo-chromium",
             "relationship_type": "ion_of",
         }
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Chromium(4+)")
         self.assertEqual(_synonyms(obj), ["Chromium(IV)", "Chromium IV"])
 
@@ -183,37 +185,47 @@ class PassTestCase(unittest.TestCase):
             "parent_element_flow_object_id": "fo-palladium",
             "relationship_type": "ion_of",
         }
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Palladium II")
 
     def test_a_name_ending_in_a_numeral_is_not_an_ion_for_that(self):
         obj = _object("Pyrethrin I", NEUTRAL)
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Pyrethrin I")
 
     def test_a_substance_that_is_not_an_ion_is_left_alone(self):
         obj = _object("Lead(2+) nitrate", NEUTRAL)
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Lead(2+) nitrate")
         self.assertEqual(_synonyms(obj), [])
 
     def test_the_label_in_another_case_is_not_kept_as_a_synonym(self):
         obj = _object("Caesium(1+)", CATION, charge=1, alt=["caesium(1+)"])
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         self.assertNotIn("caesium(1+)", _synonyms(obj))
 
     def test_running_twice_changes_nothing(self):
         obj = _object("Lead II", CATION, charge=2)
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         first = (_label(obj), _synonyms(obj))
-        stats = standardise_ion_names([obj])
+        stats = standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual((_label(obj), _synonyms(obj)), first)
         self.assertEqual(stats["renamed"], 0)
         self.assertEqual(stats["synonyms_added"], 0)
 
+    def test_every_label_names_the_list_the_substance_came_from(self):
+        """What the merge mints from an ecoinvent row is ecoinvent's: EF 3.1
+        never had `Chromium, ion`."""
+        obj = _object("Chromium, Ion", GENERIC)
+        standardise_ion_names([obj], seed_source="ecoinvent 3.12")
+        for row in [*obj.prefLabel, *obj.altLabel]:
+            self.assertEqual(
+                row["provenance"][PROV_HAD_PRIMARY_SOURCE_CURIE], ["ecoinvent 3.12"]
+            )
+
     def test_every_written_label_says_the_standard_wrote_it(self):
         obj = _object("Lead II", CATION, charge=2)
-        standardise_ion_names([obj])
+        standardise_ion_names([obj], seed_source=SOURCE)
         for row in [*obj.prefLabel, *obj.altLabel]:
             self.assertEqual(
                 row["provenance"][PROV_WAS_GENERATED_BY_CURIE], ION_NAMING_STANDARD
@@ -229,7 +241,7 @@ class FlowsCarryTheSynonymsTestCase(unittest.TestCase):
         from brightway_flows.pipeline.layer_writes import LayerWriteLog
 
         lead = _object("Lead(2+)", CATION, charge=2, object_id="fo-lead")
-        standardise_ion_names([lead])
+        standardise_ion_names([lead], seed_source=SOURCE)
         flow = Flow(uuid="ef-1", flow_object_id="fo-lead",
                     prefLabel=[{"@value": "Lead(2+)", "@language": "en"}],
                     altLabel=[{"@value": "plumbous ion", "@language": "en"}])
@@ -253,7 +265,7 @@ class SynonymsSurviveTestCase(unittest.TestCase):
     def test_a_promised_synonym_another_substance_claims_is_kept(self):
         lead = _object("Lead(2+)", CATION, charge=2, object_id="fo-lead")
         other = _object("Lead, ore", NEUTRAL, alt=["Lead II"], object_id="fo-ore")
-        standardise_ion_names([lead, other])
+        standardise_ion_names([lead, other], seed_source=SOURCE)
         carry_member_names([lead, other], [])
         self.assertIn("Lead II", _synonyms(lead))
         self.assertNotIn("Lead II", _synonyms(other))
@@ -272,7 +284,7 @@ class MatchingReadsTheStandardTestCase(unittest.TestCase):
         from brightway_flows.merge.matching import _build_indexes
 
         bromide = _object("Bromide", ANION, charge=-1, object_id="fo-bromide")
-        standardise_ion_names([bromide])
+        standardise_ion_names([bromide], seed_source=SOURCE)
         _, _, labels, preferred = _build_indexes([bromide])
         self.assertEqual(preferred["bromide"], {"fo-bromide"})
         self.assertEqual(preferred["bromide(1-)"], {"fo-bromide"})
@@ -285,7 +297,7 @@ class MatchingReadsTheStandardTestCase(unittest.TestCase):
 
         chromium = _object("Chromium(6+)", CATION, charge=6, alt=["chromate ion"],
                            object_id="fo-cr6")
-        standardise_ion_names([chromium])
+        standardise_ion_names([chromium], seed_source=SOURCE)
         _, _, labels, preferred = _build_indexes([chromium])
         self.assertIn("chromium vi", labels)
         self.assertNotIn("chromium vi", preferred)
@@ -295,8 +307,8 @@ class MatchingReadsTheStandardTestCase(unittest.TestCase):
         """The merge reads the transform's substances back and runs the pass
         again over what it mints; the mark must survive a second pass."""
         caesium = _object("Cesium(1+)", CATION, charge=1, object_id="fo-cs")
-        standardise_ion_names([caesium])
-        standardise_ion_names([caesium])
+        standardise_ion_names([caesium], seed_source=SOURCE)
+        standardise_ion_names([caesium], seed_source=SOURCE)
         from brightway_flows.domain.ion_names import is_replaced_label_row
 
         replaced = [row["@value"] for row in caesium.altLabel if is_replaced_label_row(row)]
