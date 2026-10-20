@@ -43,7 +43,6 @@ assumes all three and a package that broke one would publish nonsense quietly:
 
 from __future__ import annotations
 
-import hashlib
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -54,6 +53,7 @@ import orjson
 import structlog
 
 from brightway_flows.domain.lcia.crosswalk import ef_method
+from brightway_flows.download import sha256_of
 from brightway_flows.domain.lcia.records import StatedFactor, stated_category
 from brightway_flows.integrations.openlca import package_archive
 from brightway_flows.sources import LciaSpec, SourceList, registered_source_list
@@ -368,15 +368,6 @@ def _factors(
     return factors, described
 
 
-def _digest(path: Path) -> str:
-    """The archive's SHA-256, so a run can say which bytes it read."""
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def _payload(
     *,
     source: SourceList,
@@ -395,7 +386,7 @@ def _payload(
         "source": source.key,
         "list_version": source.list_version,
         "archive": archive.name,
-        "archive_sha256": _digest(archive),
+        "archive_sha256": sha256_of(archive),
         "package": str(package.method.get("category") or ""),
         "package_version": str(package.method.get("version") or ""),
         "methods": [
