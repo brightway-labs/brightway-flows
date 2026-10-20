@@ -957,6 +957,33 @@ class OpenLcaRefusalCountsTestCase(unittest.TestCase):
         self.assertIn(f"and so for {pairs} of them", self.text)
         self.assertIn(f"The other copy, {len(rows)} rows in all,", self.text)
 
+    def test_the_15_names_ruled_with_their_fold(self):
+        rows = [
+            r for r in json.loads(
+                (PACKAGE_DATA_DIR / "source-row-duplicates.json").read_text()
+            )["duplicates"]
+            if r["list_name"] == "openlca" and "land-flow-groupings.json" in r["comment"]
+        ]
+        self.assertIn(
+            f"The {len({r['duplicate_name'] for r in rows})} names whose class another "
+            "name also reaches",
+            self.text,
+        )
+
+    def test_the_land_fold_counts(self):
+        groupings = [
+            g for g in json.loads(
+                (PACKAGE_DATA_DIR / "land-flow-groupings.json").read_text()
+            )["groupings"]
+            if g["list_name"] == "openlca"
+        ]
+        three = sum(1 for g in groupings if len(g["absorbs"]) == 3)
+        self.assertIn(
+            f"{len(groupings)} land classes are each reached by two openLCA names, "
+            f"and {three} of them by three",
+            self.text,
+        )
+
     def test_the_duplicate_water_counts(self):
         rows = [
             r for r in json.loads(

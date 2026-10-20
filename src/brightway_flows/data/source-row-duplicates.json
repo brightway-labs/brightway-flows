@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Source rows that are the same flow as another row of the same list, shipped twice. Each entry names the duplicate and the row kept as valid, and says why that one. Both rows are still merged and must reach the same consensus flow -- a merge that sends them to two different flows stops, because the ruling says they are one. The duplicate's published mapping is marked `owl:deprecated`, with `dcterms:isReplacedBy` pointing at the valid row, and it does not count towards the match strength of the valid row's mapping: two copies of one flow are not two flows sharing a consensus flow. It is the source-list counterpart of `elementary-flow-collision-decisions.json`, which does the same for two flows this project publishes. A row names its list and not its release, as `land-flow-groupings.json` does. Read by `brightway_flows.merge.duplicate_rows`.\n\nThe first entries are GreenDelta's openLCA LCIA methods 2.8.2 package, which ships 166 land-use names twice, almost always once in `Resource / land` and once in `Resource / unspecified`; the `Resource / land` row is the valid one (decided 2026-10-13). It also ships 25 water names more than once, in `Resource / in water` and again in `Resource / unspecified`, `Resource / land` or `Resource / in ground`; there the `Resource / in water` row is the valid one (decided 2026-10-18, #389).",
+  "description": "Source rows that are the same flow as another row of the same list, shipped twice. Each entry names the duplicate and the row kept as valid, and says why that one. Both rows are still merged and must reach the same consensus flow -- a merge that sends them to two different flows stops, because the ruling says they are one. The duplicate's published mapping is marked `owl:deprecated`, with `dcterms:isReplacedBy` pointing at the valid row, and it does not count towards the match strength of the valid row's mapping: two copies of one flow are not two flows sharing a consensus flow. It is the source-list counterpart of `elementary-flow-collision-decisions.json`, which does the same for two flows this project publishes. A row names its list and not its release, as `land-flow-groupings.json` does. Read by `brightway_flows.merge.duplicate_rows`.\n\nThe first entries are GreenDelta's openLCA LCIA methods 2.8.2 package, which ships 181 land-use names twice, almost always once in `Resource / land` and once in `Resource / unspecified`; the `Resource / land` row is the valid one (decided 2026-10-13; 15 names whose class another name also reaches were added 2026-10-20, beside the fold in `land-flow-groupings.json`). It also ships 25 water names more than once, in `Resource / in water` and again in `Resource / unspecified`, `Resource / land` or `Resource / in ground`; there the `Resource / in water` row is the valid one (decided 2026-10-18, #389).",
   "duplicates": [
     {
       "list_name": "openlca",
@@ -16,6 +16,21 @@
         "land"
       ],
       "comment": "GreenDelta ships `Occupation, agriculture` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "34b81b2a-3230-3939-879c-1559f65badf7",
+      "duplicate_name": "Occupation, annual crop",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "c5aafa60-495c-461c-a1d4-b262a34c45b9",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Occupation, annual crop` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
     },
     {
       "list_name": "openlca",
@@ -259,6 +274,21 @@
     },
     {
       "list_name": "openlca",
+      "duplicate_uuid": "4bf710db-8c17-35e3-a99b-9a3466ee3747",
+      "duplicate_name": "Occupation, arable land, unspecified use",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "8c173ca1-5f74-4a6e-89e5-dd18e0f18d1a",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Occupation, arable land, unspecified use` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
+    },
+    {
+      "list_name": "openlca",
       "duplicate_uuid": "26586deb-0d0d-42b7-ae01-e6e517a743cb",
       "duplicate_name": "Occupation, construction site",
       "duplicate_context": [
@@ -466,6 +496,21 @@
         "land"
       ],
       "comment": "GreenDelta ships `Occupation, grassland, natural, for livestock grazing` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "7d143ee5-e848-47d0-91e8-f10f7c86963d",
+      "duplicate_name": "Occupation, heterogeneous, agricultural",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "69c7d771-04fc-499e-84f8-6c7b923b8ced",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Occupation, heterogeneous, agricultural` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
     },
     {
       "list_name": "openlca",
@@ -919,6 +964,36 @@
     },
     {
       "list_name": "openlca",
+      "duplicate_uuid": "3f63b3c5-7185-3dee-91b8-be0f9ac67a22",
+      "duplicate_name": "Transformation, from annual crop",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "f05cca02-ec18-4acc-9939-59658ff9a554",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, from annual crop` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "7137dec4-1c3b-33c0-ba11-db0bb3b14321",
+      "duplicate_name": "Transformation, from annual crop, fallow",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "5c180ec0-3dc5-3094-84c2-2cefe9402b49",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, from annual crop, fallow` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
+    },
+    {
+      "list_name": "openlca",
       "duplicate_uuid": "3a8ddbf1-2603-3f55-9ba5-121509615129",
       "duplicate_name": "Transformation, from annual crop, greenhouse",
       "duplicate_context": [
@@ -1066,6 +1141,36 @@
         "land"
       ],
       "comment": "GreenDelta ships `Transformation, from annual crop, non-irrigated, monotone-intensive` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "5ba11781-6a33-3d20-80ee-76ae7b0d5d82",
+      "duplicate_name": "Transformation, from annual crop, organic",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "932d215c-082d-3674-9e8a-a56818fbffa7",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, from annual crop, organic` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "54c07b4c-4347-310e-a6c6-ddeb94952e19",
+      "duplicate_name": "Transformation, from cropland fallow (non-use)",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "4da2ea28-8273-4901-9931-264169ec7731",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, from cropland fallow (non-use)` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
     },
     {
       "list_name": "openlca",
@@ -1336,6 +1441,21 @@
         "land"
       ],
       "comment": "GreenDelta ships `Transformation, from grassland, natural, for livestock grazing` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "07d4460c-ae27-4717-9db9-9e0b1ea12dd5",
+      "duplicate_name": "Transformation, from heterogeneous, agricultural",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "2e002771-9f22-43e3-9990-f06f8235700b",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, from heterogeneous, agricultural` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
     },
     {
       "list_name": "openlca",
@@ -1669,6 +1789,36 @@
     },
     {
       "list_name": "openlca",
+      "duplicate_uuid": "399f4fd0-8fd8-4a22-82ee-c7f3b6a3d22a",
+      "duplicate_name": "Transformation, from unknown",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "12264257-7f8b-4afe-b3cb-3ac28ca1661a",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, from unknown` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "692b4d48-3a4b-32ce-a48c-18abcd5d89d7",
+      "duplicate_name": "Transformation, from unspecified",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "29630a65-f38c-48a5-9744-c0121f586640",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, from unspecified` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
+    },
+    {
+      "list_name": "openlca",
       "duplicate_uuid": "0f361e17-252c-3f5f-bec2-e11e0f681bed",
       "duplicate_name": "Transformation, from unspecified, natural (non-use)",
       "duplicate_context": [
@@ -1741,6 +1891,36 @@
         "land"
       ],
       "comment": "GreenDelta ships `Transformation, to agriculture` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "b23d1e08-0434-321e-ac30-bc4b57a806d2",
+      "duplicate_name": "Transformation, to annual crop",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "c3f83a91-4888-41a4-add9-fd01678a1e5f",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, to annual crop` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "875601be-57c4-3b71-9cb2-598b5770ec9d",
+      "duplicate_name": "Transformation, to annual crop, fallow",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "6d5106b1-0c5e-3b60-99fe-197578809228",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, to annual crop, fallow` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
     },
     {
       "list_name": "openlca",
@@ -1891,6 +2071,21 @@
         "land"
       ],
       "comment": "GreenDelta ships `Transformation, to annual crop, non-irrigated, monotone-intensive` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "88ea48e5-649c-3b0d-9dcc-2352d5af2c2a",
+      "duplicate_name": "Transformation, to annual crop, organic",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "fa121789-03b2-3c76-bef9-6f4c9be4b4e6",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, to annual crop, organic` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
     },
     {
       "list_name": "openlca",
@@ -2146,6 +2341,21 @@
         "land"
       ],
       "comment": "GreenDelta ships `Transformation, to grassland, natural, for livestock grazing` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "9607e93d-3572-461f-bb2c-8597cc23bab0",
+      "duplicate_name": "Transformation, to heterogeneous, agricultural",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "fdda4f8e-b620-4df6-92a9-101a251d2f42",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, to heterogeneous, agricultural` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
     },
     {
       "list_name": "openlca",
@@ -2476,6 +2686,21 @@
         "land"
       ],
       "comment": "GreenDelta ships `Transformation, to tropical rain forest` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate."
+    },
+    {
+      "list_name": "openlca",
+      "duplicate_uuid": "2299398e-0846-4290-bcab-09bda2e61ee3",
+      "duplicate_name": "Transformation, to unknown",
+      "duplicate_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "valid_uuid": "36965153-1daf-452a-8089-f4b5222c46ae",
+      "valid_context": [
+        "Resource",
+        "land"
+      ],
+      "comment": "GreenDelta ships `Transformation, to unknown` in `Resource / land` and again in `Resource / unspecified`, with the same unit and land class. The `Resource / land` row is kept as the one in the right compartment for a land-use flow; this `unspecified` row is its duplicate. One of the 15 names left out of the 13 October 2026 ruling because another name reaches its land class too; that fold is recorded in `land-flow-groupings.json`, and the duplicate ruled here on 20 October 2026."
     },
     {
       "list_name": "openlca",
