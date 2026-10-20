@@ -156,7 +156,10 @@ nobody stated, so `Copper, ion` is this list's own spelling, the one EF's
 `Titanium, ion` already had. Synonyms the substance already carried stay; the
 standard's own come first, on the substance and on every one of its flows. A
 spelling a source list already gave the substance keeps that list as its
-origin, with the standard's promise recorded beside it.
+origin, with the standard's promise recorded beside it. A promised synonym is
+withdrawn in one case only: when another substance is published under that very
+name, because a synonym that sends a reader to two substances is published for
+neither.
 
 **Respelling a name moves no source row.** The label a substance had before —
 `Bromide`, `Cesium(1+)` — is still a name the merge matches it by, so

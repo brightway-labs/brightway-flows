@@ -299,6 +299,7 @@ def carry_member_names(
             "rejected_names_a_place",
             "rejected_names_another_size_window",
             "rejected_two_substances_claim_it",
+            "standard_synonyms_withdrawn",
             "substances_given_a_name",
             "substances_with_a_synonym_withdrawn",
             "synonyms_naming_two_substances",
@@ -357,11 +358,8 @@ def carry_member_names(
         for row in obj.altLabel or []:
             values = _label_values([row])
             key = _canonical_name(values[0]) if values else ""
-            if not key or _promised_by_the_scheme(row) or is_standard_label_row(row):
-                # A window's promised spelling is never withdrawn here, and
-                # nor is a synonym the ion naming standard promises
-                # (`domain.ion_names`): `Lead II` is lead(2+)'s whatever
-                # else claims the key.  The
+            if not key or _promised_by_the_scheme(row):
+                # A window's promised spelling is never withdrawn here.  The
                 # claim key strips punctuation, so `Particulates, < 10 um` and
                 # `Particulates, > 10 um` are one key claimed by two windows,
                 # and on the first build of stage 1 (#196) this loop took
@@ -372,6 +370,21 @@ def carry_member_names(
                 continue
             owners = claimed_by.get(key, set())
             others_naming = named_by.get(key, set()) - {obj.flow_object_id}
+            if is_standard_label_row(row):
+                # A synonym the ion naming standard promises
+                # (`domain.ion_names`) survives another substance *listing* it
+                # as a synonym: `Lead II` is lead(2+)'s whatever else answers
+                # to it.  It does not survive another substance being *called*
+                # it.  `Bromide` on `Bromide(1-)` beside a substance named
+                # `Bromide` sends a reader to two places, which is the thing
+                # this pass exists to stop -- and a second substance under
+                # that name is a merge defect this count is how one sees.
+                if others_naming:
+                    dropped.append(values[0])
+                    stats["standard_synonyms_withdrawn"] += 1
+                    continue
+                keep.append(row)
+                continue
             if len(owners) > 1 or others_naming:
                 dropped.append(values[0])
                 continue

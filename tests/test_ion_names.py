@@ -293,15 +293,30 @@ class FlowsCarryTheSynonymsTestCase(unittest.TestCase):
 
 class SynonymsSurviveTestCase(unittest.TestCase):
     """`carry_member_names` withdraws a synonym that answers for two
-    substances.  One the standard promises stays where the standard put it."""
+    substances.  One the standard promises stays where the standard put it
+    when another substance merely lists it, and goes when another substance
+    is called it."""
 
     def test_a_promised_synonym_another_substance_claims_is_kept(self):
         lead = _object("Lead(2+)", CATION, charge=2, object_id="fo-lead")
         other = _object("Lead, ore", NEUTRAL, alt=["Lead II"], object_id="fo-ore")
         standardise_ion_names([lead, other], seed_source=SOURCE)
-        carry_member_names([lead, other], [])
+        stats = carry_member_names([lead, other], [])
         self.assertIn("Lead II", _synonyms(lead))
         self.assertNotIn("Lead II", _synonyms(other))
+        self.assertEqual(stats["standard_synonyms_withdrawn"], 0)
+
+    def test_a_promised_synonym_that_is_another_substances_name_is_withdrawn(self):
+        """A second substance called `Bromide` is the defect #401 found; the
+        synonym on `Bromide(1-)` does not paper over it."""
+        bromide = _object("Bromide", ANION, charge=-1, object_id="fo-bromide")
+        other = _object("Bromide", NEUTRAL, object_id="fo-other")
+        standardise_ion_names([bromide, other], seed_source=SOURCE)
+        stats = carry_member_names([bromide, other], [])
+        self.assertNotIn("Bromide", _synonyms(bromide))
+        self.assertEqual(_synonyms(bromide), ["Bromide(-I)", "Bromide -I"])
+        self.assertEqual(stats["standard_synonyms_withdrawn"], 1)
+        self.assertEqual(stats["synonyms_withdrawn"], 1)
 
 
 
