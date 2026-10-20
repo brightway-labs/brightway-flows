@@ -20,7 +20,7 @@ import structlog
 
 from brightway_flows.domain.elementary_flow import ElementaryFlow
 from brightway_flows.domain.flow import Flow
-from brightway_flows.domain.ion_names import is_replaced_label_row
+from brightway_flows.domain.ion_names import is_replaced_label_row, is_standard_label_row
 from brightway_flows.domain.labels import coerce_alt_labels, flow_label_value
 from brightway_flows.domain.vocabulary import (
     CHEMINF_CAS_REGISTRY_NUMBER,
@@ -222,6 +222,30 @@ def _build_indexes(
 
     return cas_to_object_ids, ec_to_object_ids, label_to_object_ids, pref_label_to_object_ids
 
+
+def _build_standard_label_index(flow_objects: list[FlowObject]) -> dict[str, set[str]]:
+    """normalised synonym -> object ids, over the synonyms the ion naming
+    standard wrote on each object.
+
+    Kept apart from the label index because the merge reads it for one thing
+    only: a row that ships no registry number under one of these spellings.
+    Such a synonym was built from the substance's own name by rule
+    (`domain.ion_names`), so it can be neither a trade name nor another
+    substance's, which is the whole of what the alt-label guard in
+    `_narrow_label_candidates` is there to doubt.
+    """
+    index: dict[str, set[str]] = {}
+    for obj in flow_objects:
+        object_id = obj.flow_object_id
+        if not object_id:
+            continue
+        for row in obj.altLabel or []:
+            if is_standard_label_row(row) and isinstance(row.get("@value"), str):
+                norm = _normalize_text(row["@value"])
+                if norm:
+                    index.setdefault(norm, set()).add(object_id)
+    return index
+
 def _source_labels(flow: Flow) -> list[str]:
     """Every name this source row is known by, best first, deduplicated.
 
@@ -270,6 +294,7 @@ def build_merge_indexes(
     this only carries onto the frozen record.
     """
     cas_index, ec_index, label_index, pref_label_index = _build_indexes(flow_objects)
+    standard_label_index = _build_standard_label_index(flow_objects)
     # Pre-compute the set of flow object IDs that carry at least one CAS number.
     # Used to restrict no-source-CAS label matches to genuinely CAS-less flow
     # objects, preventing trade-name false positives (e.g. "Granite" matching
@@ -305,6 +330,7 @@ def build_merge_indexes(
         ec_index=ec_index,
         label_index=label_index,
         pref_label_index=pref_label_index,
+        standard_label_index=standard_label_index,
         qualifier_index=qualifier_index,
         flow_objects_with_cas=flow_objects_with_cas,
         context_expectations=context_expectations,
@@ -1391,6 +1417,20 @@ def _narrow_label_candidates(
     never systematic however chemical it looks, which is what keeps this from
     becoming the wider relaxation the refusal is there to prevent.
 
+    **A spelling the ion naming standard wrote is a fourth kind, and the
+    narrowest of all** (#412).  `domain.ion_names` publishes `Vanadium V` on
+    `Vanadium(5+)` and `Titanium Ion` on `Titanium, ion`, built from the
+    substance's own name by rule, so like a systematic name such a synonym can
+    be neither a trade name nor another substance's.  It is accepted only when
+    it is the row's own shipped name -- not one of the row's synonyms, which is
+    how ecoinvent's `Chromium IV` -> `Chromium VI` crosswalk once moved a row
+    numbered for chromium(4+) onto chromium(6+) (#401) -- and only on a row
+    that ships no registry number at all: a numbered row whose number found
+    nothing is a disagreement, as above, and stays refused.  openLCA ships
+    `Vanadium V`, `Lithium I` and `Titanium Ion` with no number in eighteen
+    rows, and each minted a second substance under the published label of the
+    one it meant until this was read.
+
     **A name that states a charge never reaches the bare element** (#198).
     ecoinvent 3.12's `Rhodium III` carries the ion's number, 16065-89-7, and
     EF 3.1 holds no rhodium ion, so the number found nothing and the label
@@ -1415,7 +1455,14 @@ def _narrow_label_candidates(
         for label in systematic_labels
     )) & candidate_ids & indexes.flow_objects_with_cas
     no_cas_hits = candidate_ids - indexes.flow_objects_with_cas
-    narrowed = pref_hits | systematic_hits | no_cas_hits
+    standard_hits: set[str] = set()
+    if not row.cas and not row.ec:
+        standard_hits = (
+            indexes.standard_label_index.get(_normalize_text(row.name), set())
+            & candidate_ids
+            & indexes.flow_objects_with_cas
+        )
+    narrowed = pref_hits | systematic_hits | standard_hits | no_cas_hits
     narrowed -= _bare_element_hits(row=row, candidate_ids=narrowed, indexes=indexes)
     return narrowed, (labels_used if narrowed else [])
 

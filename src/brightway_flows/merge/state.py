@@ -247,6 +247,12 @@ class MergeIndexes:
     #: flow (`merge/historical_names.py`).  Consulted by `resolve_flow_object`
     #: only after every registry number and every shipped name has failed.
     historical_names: Mapping[str, "HistoricalName"] = field(default_factory=dict)
+    #: normalised synonym -> flow object ids, over the synonyms the ion naming
+    #: standard wrote (`domain.ion_names`): `Vanadium V` on `Vanadium(5+)`,
+    #: `Titanium Ion` on `Titanium, ion`.  Read by `_narrow_label_candidates`
+    #: for a row that ships no registry number under one of those spellings,
+    #: which the alt-label guard would otherwise refuse (#412).
+    standard_label_index: dict[str, set[str]] = field(default_factory=dict)
 
 
 @dataclass

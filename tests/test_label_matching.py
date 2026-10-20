@@ -12,6 +12,7 @@ candidates with the source CAS first and kept them all when that came back
 empty -- which, given where it is called from, it always did.
 """
 
+import dataclasses
 import unittest
 
 from brightway_flows.merge.contexts import ContextExpectations
@@ -368,6 +369,55 @@ class RewrittenNameTestCase(unittest.TestCase):
             ),
         )
         self.assertIsNone(resolution)
+
+
+class IonStandardSpellingTestCase(unittest.TestCase):
+    """A synonym the ion naming standard wrote is the substance's own name in
+    another spelling, built by rule (#401), so a row that ships *no* registry
+    number under exactly that spelling reaches the substance -- the Talc guard
+    exists to doubt trade names, and this is not one (#412).  openLCA ships
+    `Vanadium V`, `Lithium I` and `Titanium Ion` that way, eighteen rows."""
+
+    VANADATE = "fo-vanadium-5-plus"
+
+    def _indexes(self):
+        indexes = _indexes(
+            label_index={"vanadium v": {self.VANADATE}, "vanadium(5+)": {self.VANADATE}},
+            pref_label_index={"vanadium(5+)": {self.VANADATE}},
+            with_cas={self.VANADATE},
+            cas_index={"22537-31-1": {self.VANADATE}},
+            labels={self.VANADATE: "Vanadium(5+)"},
+        )
+        return dataclasses.replace(
+            indexes, standard_label_index={"vanadium v": {self.VANADATE}}
+        )
+
+    def test_a_numberless_row_named_by_the_standard_reaches_the_ion(self):
+        resolution = _resolve(_row("Vanadium V", cas=""), self._indexes())
+        self.assertIsNotNone(resolution)
+        self.assertEqual(resolution.flow_object_id, self.VANADATE)
+        self.assertEqual(resolution.basis, "label")
+
+    def test_a_numbered_row_is_still_a_disagreement(self):
+        """The number found nothing, so the object pinned to another number is
+        a positive disagreement; the spelling does not override it."""
+        resolution = _resolve(_row("Vanadium V", cas="1314-62-1"), self._indexes())
+        self.assertIsNone(resolution)
+
+    def test_the_spelling_counts_only_as_the_rows_own_name(self):
+        """Carried as a synonym on a row named something else, it is the
+        crosswalk case (#401): `Chromium IV` with `Chromium VI` among its
+        synonyms must not move onto chromium(6+)."""
+        resolution = _resolve(
+            _row("Vanadium pentoxide", cas="", labels=["Vanadium pentoxide", "Vanadium V"]),
+            self._indexes(),
+        )
+        self.assertIsNone(resolution)
+
+    def test_an_ordinary_alt_label_is_still_refused(self):
+        """Without the standard's stamp the same hit is the Talc case."""
+        indexes = dataclasses.replace(self._indexes(), standard_label_index={})
+        self.assertIsNone(_resolve(_row("Vanadium V", cas=""), indexes))
 
 
 if __name__ == "__main__":
