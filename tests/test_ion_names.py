@@ -138,6 +138,19 @@ class PassTestCase(unittest.TestCase):
         self.assertEqual(_label(obj), "Chromium, ion")
         self.assertEqual(_synonyms(obj), ["Chromium, Ion", "Chromium Ion"])
 
+    def test_a_charge_stated_before_the_ion_suffix_is_read(self):
+        """EF 3.1 writes `lead(II) ion`: the numeral is the charge, and the
+        suffix is not the whole statement."""
+        obj = _object("lead(II) ion", CATION, charge=2)
+        standardise_ion_names([obj])
+        self.assertEqual(_label(obj), "Lead(2+)")
+        self.assertEqual(_synonyms(obj), ["Lead(II)", "Lead II", "lead(II) ion"])
+
+    def test_a_polyatomic_ion_stating_a_charge_before_the_suffix_is_left_alone(self):
+        obj = _object("methylmercury(1+) ion", MOLECULAR_CATION, charge=1)
+        standardise_ion_names([obj])
+        self.assertEqual(_label(obj), "methylmercury(1+) ion")
+
     def test_a_polyatomic_generic_is_respelled_too(self):
         obj = _object("Thiocyanate, Ion", MOLECULAR_ANION)
         standardise_ion_names([obj])

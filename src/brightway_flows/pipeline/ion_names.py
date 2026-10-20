@@ -26,6 +26,7 @@ onto the flows, and logs that.
 
 from __future__ import annotations
 
+import re
 from collections import Counter
 from typing import Any
 
@@ -108,6 +109,12 @@ def ion_reading(obj: FlowObject) -> tuple[str, int | None] | None:
         return None
     generic = _generic_base(label)
     if generic:
+        # EF 3.1 writes `lead(II) ion`: the suffix says ion and the numeral
+        # says which, and reading the suffix as the whole statement spelled
+        # it `Lead(II), ion`.  The parser wants a space before the bracket.
+        base, charge = _extract_ion_base_and_charge(re.sub(r"(?<=\S)\(", " (", generic))
+        if base and charge:
+            return (base, charge) if monatomic else None
         return generic, None
     if not monatomic:
         return None
