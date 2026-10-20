@@ -1020,12 +1020,6 @@ def run_pipeline(
     # for two substances is published for neither (#113).
     tally("carry_member_names", carry_member_names(flow_objects, elementary_flows))
 
-    # The two review-table builders below serialise a flow object and read the
-    # payload back, so they take the payload.  The SQLite writer no longer
-    # does: it takes the records and converts them itself (#96), which is why
-    # there is one list here and not three.
-    flow_object_dicts = [obj.to_dict() for obj in flow_objects]
-
     # An assertion now, not a correction.  `assign_semantic_types` withdrew
     # these from the objects that are not one substance -- an alpha-emitter
     # aggregate (#238), a delayed-emission correction (#43) -- and the flows
@@ -1130,6 +1124,16 @@ def run_pipeline(
     # identifier's redirect, and this counts how many of them this build could
     # still resolve (#102).
     tally(FLOW_RETIREMENT_STAGE, retirement_stats(CONSENSUS_DB_FILEPATH))
+
+    # The two review-table builders below serialise a flow object and read the
+    # payload back, so they take the payload -- taken here, after the last
+    # label writer, and not beside `carry_member_names` where it was: a
+    # snapshot from before the ion and substance passes named a substance in
+    # the formula-mismatch and element-coverage tables under a label the build
+    # no longer published, fourteen more of them once the ion standard ran.
+    # The SQLite writer takes the records and converts them itself (#96),
+    # which is why there is one list here and not three.
+    flow_object_dicts = [obj.to_dict() for obj in flow_objects]
 
     _review_started = perf_counter()
     write_review_tables(
