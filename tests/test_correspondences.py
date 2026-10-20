@@ -312,7 +312,9 @@ class ProvenanceTestCase(unittest.TestCase):
             run(git_commit="abc", git_dirty=True).describe(),
             "run r1, commit abc, with uncommitted changes",
         )
-        self.assertEqual(run().describe(), "run r1, commit unknown")
+        # No commit recorded: the run alone, not a word that reads as a value.
+        self.assertEqual(run().describe(), "run r1")
+        self.assertEqual(run(git_dirty=True).describe(), "run r1, with uncommitted changes")
 
     def test_every_correspondence_carries_both(self):
         _schemes, correspondences, _counts = self._build()
