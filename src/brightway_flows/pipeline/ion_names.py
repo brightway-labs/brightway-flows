@@ -216,9 +216,27 @@ def standardise_ion_names(
                 now=label,
             )
 
-        synonyms = [*synonyms, *sorted(replaced - set(synonyms) - {label})]
-        promised = set(synonyms)
+        # The replaced label stands behind the standard synonym that is the
+        # same name in another case -- `chloride` behind `Chloride` -- rather
+        # than beside it, and behind the label itself not at all: published
+        # beside them, `chloride` was a second spelling of one name on
+        # `Chloride(1-)`.  The matching reads the marked row as the name the
+        # substance had, in whichever case it is written.
         label_key = canonical_label_value(label)
+        standard_by_key = {canonical_label_value(value): value for value in synonyms}
+        extra: list[str] = []
+        marked: set[str] = set()
+        for value in replaced:
+            key = canonical_label_value(value)
+            if key == label_key:
+                continue
+            if key in standard_by_key:
+                marked.add(standard_by_key[key])
+            else:
+                extra.append(value)
+        synonyms = [*synonyms, *sorted(extra)]
+        replaced = marked | set(extra)
+        promised = set(synonyms)
         kept = []
         carried: dict[str, Any] = {}
         for row in obj.altLabel or []:

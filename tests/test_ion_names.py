@@ -204,6 +204,22 @@ class PassTestCase(unittest.TestCase):
         standardise_ion_names([obj], seed_source=SOURCE)
         self.assertNotIn("caesium(1+)", _synonyms(obj))
 
+    def test_a_replaced_label_in_another_case_stands_behind_the_standards_synonym(self):
+        """`chloride` relabelled `Chloride(1-)` is `Chloride` already, and the
+        matching still reads that row as the name the substance had."""
+        from brightway_flows.domain.ion_names import is_replaced_label_row
+        from brightway_flows.merge.matching import _build_indexes
+
+        obj = _object("chloride", ANION, charge=-1, object_id="fo-cl")
+        standardise_ion_names([obj], seed_source=SOURCE)
+        self.assertEqual(_synonyms(obj), ["Chloride", "Chloride(-I)", "Chloride -I"])
+        self.assertEqual(
+            [row["@value"] for row in obj.altLabel if is_replaced_label_row(row)],
+            ["Chloride"],
+        )
+        _, _, _, preferred = _build_indexes([obj])
+        self.assertEqual(preferred["chloride"], {"fo-cl"})
+
     def test_running_twice_changes_nothing(self):
         obj = _object("Lead II", CATION, charge=2)
         standardise_ion_names([obj], seed_source=SOURCE)
