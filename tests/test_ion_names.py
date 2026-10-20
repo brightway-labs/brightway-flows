@@ -33,6 +33,7 @@ from brightway_flows.domain.vocabulary import (
 )
 from brightway_flows.flow_layers.synonyms import carry_member_names
 from brightway_flows.pipeline.ion_names import standardise_ion_names
+from brightway_flows.pipeline.semantic_typing import classify
 
 CATION = IRIS[Term.ATOM_CATION]
 ANION = IRIS[Term.ATOM_ANION]
@@ -175,20 +176,27 @@ class PassTestCase(unittest.TestCase):
         self.assertEqual(_synonyms(obj), [])
         self.assertEqual(stats["ions"], 0)
 
-    def test_an_ion_of_an_element_is_read_whatever_it_is_typed(self):
-        """`Chromium IV` is typed a mixture on the build of `43403ac` (#403),
-        and recorded as the ion of chromium: the name is still an ion's."""
+    def test_an_ion_of_an_element_is_read_from_the_type_its_record_earns(self):
+        """`Chromium IV` states a charge and no formula.  On the build of
+        `43403ac` the typing rules published it as a mixture and this pass read
+        the `ion_of` record itself to spell it; since #403 `classify` reads the
+        record, so the pass reads the type, and the two cannot disagree."""
         obj = _object("Chromium IV", IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE], charge=4)
         obj.properties["relationships"] = {
             "parent_element_flow_object_id": "fo-chromium",
             "relationship_type": "ion_of",
         }
+        obj.types = list(classify(obj).types)
+        self.assertEqual(obj.types, [CATION])
         standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Chromium(4+)")
         self.assertEqual(_synonyms(obj), ["Chromium(IV)", "Chromium IV"])
 
-    def test_an_ion_of_record_with_no_stated_charge_is_not_read_as_one(self):
-        """The reading is the typing's (#403): the record and one charge."""
+    def test_a_mixture_is_not_read_as_an_ion_on_its_record_alone(self):
+        """The record is `classify`'s evidence, not this pass's.  An object
+        the typing rules left a mixture -- here a record with no stated
+        charge, which rule 3b refuses -- is not renamed, whatever the numeral
+        in its name says."""
         obj = _object("Palladium II", IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE])
         obj.properties["relationships"] = {
             "parent_element_flow_object_id": "fo-palladium",

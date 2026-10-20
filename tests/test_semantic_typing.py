@@ -158,6 +158,63 @@ class KnownSubstanceTestCase(unittest.TestCase):
             [IRIS[Term.ATOM_CATION]],
         )
 
+    def test_a_recorded_ion_with_a_charge_and_no_formula_is_a_cation(self):
+        """`Rhenium(2+)`: the ion layer recorded it as the ion of rhenium with
+        a charge of 2, and no database holds a formula, SMILES or InChI for
+        it.  Rule 3 reads the formula, so it fell through to rule 10 and was
+        published as a mixture of unknown composition (#403).
+        """
+        self.assertTypes(
+            make_object(
+                label="Rhenium(2+)", charge=2, cas="7440-15-5",
+                relationships={
+                    "parent_element_flow_object_id": "fo-rhenium",
+                    "relationship_type": "ion_of",
+                },
+            ),
+            [IRIS[Term.ATOM_CATION]],
+        )
+
+    def test_a_recorded_ion_with_a_negative_charge_is_an_anion(self):
+        self.assertTypes(
+            make_object(
+                label="Iodide(1-)", charge=-1,
+                relationships={
+                    "parent_element_flow_object_id": "fo-iodine",
+                    "relationship_type": "ion_of",
+                },
+            ),
+            [IRIS[Term.ATOM_ANION]],
+        )
+
+    def test_a_recorded_ion_with_no_stated_charge_is_not_typed_an_ion(self):
+        """The record alone is not enough.  A generic `X, ion` states no
+        charge, and which ion it is is #143's question, not the typing's: with
+        a number and no structure it stays rule 10's, as it was.
+        """
+        self.assertTypes(
+            make_object(
+                label="Palladium, ion", cas="16065-88-6",
+                relationships={
+                    "parent_element_flow_object_id": "fo-palladium",
+                    "relationship_type": "ion_of",
+                },
+            ),
+            [IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE]],
+            label="Palladium, ion",
+        )
+
+    def test_a_charge_without_the_record_is_not_typed_an_ion(self):
+        """A stated charge, a registry number, no formula and no record:
+        nothing says the thing is one atom, so rule 3b stays out of it and
+        rule 10 answers as before.
+        """
+        self.assertTypes(
+            make_object(label="Methylmercury(1+)", charge=1, cas="22967-92-6"),
+            [IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE]],
+            label="Methylmercury(1+)",
+        )
+
     def test_ammonium_is_a_molecular_cation(self):
         self.assertTypes(
             make_object(label="Ammonium", formula="H4N", smiles="[NH4+]", charge=1),

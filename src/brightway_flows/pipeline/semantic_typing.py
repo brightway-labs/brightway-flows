@@ -518,7 +518,7 @@ def _ion_types(charge: int | None, *, monoatomic: bool) -> tuple[str, ...]:
     )
 
 
-#: The classes `classify` gives one charged atom: rules 2 and 3 below.
+#: The classes `classify` gives one charged atom: rules 2, 3 and 3b below.
 _MONATOMIC_ION_TYPES = frozenset(
     IRIS[term] for term in (Term.MONOATOMIC_ION, Term.ATOM_CATION, Term.ATOM_ANION)
 )
@@ -542,23 +542,17 @@ def _recorded_ion_of_an_element(obj: FlowObject) -> bool:
 def is_monatomic_ion(obj: FlowObject) -> bool:
     """Whether *obj* is one charged atom, by the one reading every pass shares.
 
-    Two pieces of evidence, and the second is #403.  An object `classify`
-    typed a monatomic ion is one: rule 2, an element carrying a charge, or
-    rule 3, a charge with a one-atom formula.  So is an object the ion layer
-    recorded as the ion of an element with one stated charge, whatever it is
-    typed: `Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)` and `Chromium(4+)`
-    state a charge and no formula, so neither rule reaches them and rule 10
-    publishes each as an imprecise mixture.
-
-    `pipeline.ion_names` asks this rather than the types, so that the naming
-    standard spells those four.  When `classify` reads the `ion_of` record
-    itself (#403) the second clause is redundant and goes -- here, once,
-    rather than in every pass that had its own.
+    An object `classify` typed a monatomic ion: rule 2, an element carrying a
+    charge; rule 3, a charge with a one-atom formula; or rule 3b, the ion
+    layer's `ion_of` record beside a stated charge.  Until #403 there was no
+    rule 3b, so `Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)` and
+    `Chromium(4+)` -- a charge, a record and no formula -- were typed
+    imprecise mixtures, and this read the record itself so that the naming
+    standard would still spell them.  `classify` reads it now, so the types
+    are the whole answer, and a pass that asks this runs after
+    `assign_semantic_types`, as `pipeline.ion_names` does.
     """
-    if set(_existing_types(obj)) & _MONATOMIC_ION_TYPES:
-        return True
-    properties = obj.properties if isinstance(obj.properties, dict) else {}
-    return _recorded_ion_of_an_element(obj) and bool(_charge(properties))
+    return bool(set(_existing_types(obj)) & _MONATOMIC_ION_TYPES)
 
 
 def classify(
@@ -676,6 +670,21 @@ def classify(
     # 3. One atom, charged: a monoatomic ion, whatever the label says.
     if charged and _is_single_atom(formula):
         return Classification(_ion_types(charge, monoatomic=True), "monoatomic_ion")
+
+    # 3b. One atom, charged, and no formula to say so.  `flow_layers.ions`
+    #     writes `relationships.ion_of` only where a charged name resolved to
+    #     an element, with the charge the name states beside it, and four
+    #     substances arrive with that record and nothing else: `Palladium(2+)`,
+    #     `Rhodium(3+)`, `Rhenium(2+)` and `Chromium(4+)` have no formula,
+    #     SMILES or InChI on file anywhere, so rule 3 never saw them and rule
+    #     10 published each as a mixture of unknown composition (#403).  The
+    #     record is the same evidence `pipeline.ion_names` spells the name
+    #     from.  The charge is required as well as the record: a generic
+    #     `X, ion` states none, and which ion it is is #143's question.
+    if charged and _recorded_ion_of_an_element(obj):
+        return Classification(
+            _ion_types(charge, monoatomic=True), "recorded_ion_of_element"
+        )
 
     # 4. Several components: held together by something weaker than a covalent
     #    bond.  A charged component makes it a salt rather than a complex.

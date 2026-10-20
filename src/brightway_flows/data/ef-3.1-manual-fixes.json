@@ -1660,6 +1660,22 @@
     },
     {
       "match": {
+        "name": "rhenium(2+)"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7440-15-5",
+      "comment": "EF 3.1 ships thirteen flows named `rhenium(2+)` -- one per emission context -- and gives every one of them 7440-15-5, which is the registry number for rhenium the *element*, published separately as EF's `rhenium` resource row under that same number. The name states a charge on purpose, as `cerium(3+)` and `vanadium (v)` do, and unlike theirs the ion has no number of its own to put in the element's place: CAS has no entry for the cation, and Common Chemistry and PubChem return nothing for `rhenium(2+)` and nothing for `rhenium, ion`. So the number is removed rather than replaced -- the shape of AGRIBALYSE's `Copper, ion` and the four generic ions beside it in agribalyse-3.2-manual-fixes.json, and for the same reason: a registry number is published on a substance only where the number names that substance, and 7440-15-5 names the metal.\n\nWhat keeping it cost, on the five-list build of `main` at 67035f4 (run 20261020T0534355291470000). The one registry number that found two substances, the metal and the ion, where every other element's finds one. A `separate` ruling in contested-cas-decisions.json (#116) to hold the thirteen off the metal's record, which the CAS branch had fused them onto. And a type: with a number and no structure the ion fell to the rule for a registered substance with no structure on file and was published `ImpreciseChemicalMixture` (#403). Across the six lists 143 of the 1,261 rows that name an ion ship their element's number (measured on the build of 43403ac, run 20261019T0759116033000000), and these thirteen were the only ones the build left as shipped: every one on a merged list is corrected to the ion's own number or, where no number names it, cleared.\n\nNothing else moves. EF's factors reach the thirteen by uuid, and eleven of the thirteen carry one. No merged list ships a row named for the rhenium ion: the six merged `Rhenium` rows -- ecoinvent 3.12's, two of ecoinvent 3.8's, BAFU's and two of AGRIBALYSE's -- are the metal and reach it on its number. Perrhenate, the form rhenium normally takes in water, EF publishes separately as `hydroxy(trioxo)rhenium` (13768-11-1) and is not touched. Matched on the name rather than on the number, because the number is the field being changed and a criterion that reads it matches nothing on the second pass the base list makes over its own fixes (#237). (#404)"
+    },
+    {
+      "match": {
+        "name": "rhenium(2+)"
+      },
+      "field": "ec_numbers",
+      "remove_value": "231-124-5",
+      "comment": "The other half of the correction above. 231-124-5 is the EC number for rhenium the element -- the companion of 7440-15-5, and the number EF writes on all thirteen `rhenium(2+)` rows beside it. The ion has no EC number: the European inventory registers substances placed on the market, and a dissolved cation is not one, which is why EF's `vanadium (v)` rows carry none. Left in place it is the element's identity surviving on the ion's rows by a second route -- the merge looks a row up by its EC number where the registry number finds nothing -- and the cross-check between the two would queue thirteen rows whose EC number names the element and whose CAS field is empty. Removed rather than replaced because there is nothing to replace it with, as for `cerium(3+)` above. (#404)"
+    },
+    {
+      "match": {
         "name": "borax"
       },
       "field": "cas_numbers",

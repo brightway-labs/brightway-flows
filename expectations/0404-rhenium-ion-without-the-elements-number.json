@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 ships thirteen emission flows named `rhenium(2+)` and gives every one of them 7440-15-5 and EC 231-124-5, which are rhenium the metal's numbers; the metal is EF's own `rhenium` resource row under the same number. Across the six lists 143 of the 1,261 rows that name an ion ship their element's number this way, and the build corrected or cleared every one of them on the merged lists -- `Molybdenum VI` to 16065-87-5, `Copper, ion` to no number at all -- while keeping it on these thirteen. See #404.\n\nThe decision is to clear it. A charged ion with a number of its own is given that number (cerium(3+), vanadium(V), BAFU's `Cadmium II`); an ion no number names loses the element's (AGRIBALYSE's `Copper, ion`, `Iron, ion`, `Antimony, ion`); and rhenium(2+) is the second case with a charge stated, because CAS has no entry for the cation and Common Chemistry and PubChem return nothing for it. The principle under both is one: a registry number is published on a substance only where the number names that substance, and 7440-15-5 names the metal. The ruling in `contested-cas-decisions.json` (#116) that kept the two names apart while they shared the number is re-read in its comment and kept as the written decision; it decides nothing on this build because there is no longer a shared number to decide.\n\nMeasured on the five-list build of `main` at 67035f4 (run `20261020T0534355291470000`): 7440-15-5 finds two substances, `Rhenium` (one resource flow, `ChemicalElement`) and `Rhenium(2+)` (thirteen emission flows, `ImpreciseChemicalMixture`). Six merged rows carry the number -- ecoinvent 3.12's `Rhenium`, ecoinvent 3.8's `Rhenium, In Crude Ore, In Ground` and `Rhenium, In Ground`, BAFU's `Rhenium` and two AGRIBALYSE `Rhenium` rows -- and all six are the metal and reach it on `cas+label`. No merged list ships a row named for the ion. EF's factors reach the thirteen by uuid; eleven of the thirteen carry one.",
+  "expectations": [
+    {
+      "id": "0404-the-elements-number-finds-the-element-alone",
+      "issue": 404,
+      "title": "Rhenium's registry number 7440-15-5 finds one substance, the metal",
+      "subject": {
+        "kind": "substance",
+        "cas": "7440-15-5"
+      },
+      "expect": {
+        "count": 1,
+        "label": "Rhenium",
+        "flow_type": "ChemicalElement",
+        "flow_count": 1
+      },
+      "comment": "The claim #404 is about, asked the way a consumer asks it: look the number up. Two substances on the build of 67035f4, the metal and the ion; every other element's number finds one. The one that remains has to be the metal -- `label` and `flow_type` say which -- with its one resource flow, so a fix that cleared the number from the wrong substance, or from both, fails here rather than passing on the count."
+    },
+    {
+      "id": "0404-the-ion-keeps-its-thirteen-without-the-number",
+      "issue": 404,
+      "title": "Rhenium(2+) is still one substance of thirteen flows once the number is gone",
+      "subject": {
+        "kind": "substance",
+        "label": "Rhenium(2+)"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1,
+        "flow_count": 13
+      },
+      "comment": "**The guard.** True before the fix as well, and stated so that the fix is seen to move the number and nothing else. With the number off, the thirteen rows are grouped by their name rather than by the CAS branch and the #116 ruling; a name grouping that split them by compartment, or let the `rhenium` synonym EF writes on every one of them pull them onto the metal, would fail here. The type the substance now carries is claimed in `0403-recorded-ions-are-typed-as-ions.json`."
+    },
+    {
+      "id": "0404-the-merged-metal-rows-still-reach-the-metal",
+      "issue": 404,
+      "title": "ecoinvent 3.8's rhenium ore row still reaches the metal on its number",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.8",
+        "uuid": "a3930b4d-74da-4489-9a50-d175c25d4fe8"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Rhenium",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "`Rhenium, In Crude Ore, In Ground`, 7440-15-5, the row the #116 ruling's comment names as the metal in its ore. It reached `Rhenium` on `cas+label` on the build of 67035f4 and must go on doing so: the number this change removes is removed from the ion's rows only, and the metal's own rows and the six merged rows that carry its number are untouched. Stands for the six."
+    }
+  ]
+}

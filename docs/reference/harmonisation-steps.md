@@ -285,10 +285,12 @@ that skeleton. See [Known limitations](limitations.md#some-flow-objects-merge-un
     from a composition is the mistake #129 is about. And a registry number alone
     is not enough — **the substance's own name has to state a count that
     agrees**. Without that gate the step fires on two dozen substances and
-    several would be wrong: `Rhenium(2+)` would take neutral rhenium's formula
-    from the element's registry number, and `Uranium Alpha` — alpha-emitting
-    isotopes reported together as activity, not a substance — would be published
-    as uranium metal.
+    several would be wrong: `Rhenium(2+)`, while it still carried rhenium the
+    metal's registry number
+    ([#404](https://github.com/brightway-labs/brightway-flows/issues/404)),
+    would have taken the neutral element's formula from it, and `Uranium Alpha`
+    — alpha-emitting isotopes reported together as activity, not a substance —
+    would be published as uranium metal.
 - **Supply registered structure** is the same question about the same numbers,
   asked the other way: not what the substance is made of, but what it *is*. Some
   registry numbers carry a full structure, and a substance whose own chemistry

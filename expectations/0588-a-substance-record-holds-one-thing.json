@@ -76,7 +76,7 @@
         "count": 1,
         "flow_count": 1
       },
-      "comment": "On the before build no substance named `Rhenium` exists: the one resource flow -- ecoinvent's `Rhenium, In Crude Ore, In Ground`, BAFU's `Rhenium` -- sat on `Rhenium(2+)` and was published under the ion's name. No second registry number exists to force the split the way #49's did for vanadium, because CAS has no entry for the cation; the `separate` ruling supplies what the number cannot."
+      "comment": "On the before build no substance named `Rhenium` exists: the one resource flow -- ecoinvent's `Rhenium, In Crude Ore, In Ground`, BAFU's `Rhenium` -- sat on `Rhenium(2+)` and was published under the ion's name. No second registry number exists to force the split the way #49's did for vanadium, because CAS has no entry for the cation; the `separate` ruling supplied what the number cannot. Since #404 the thirteen ion rows no longer carry the element's number at all -- `ef-3.1-manual-fixes.json` takes it off, as every merged list's ion rows already had theirs corrected or cleared -- so the two names share nothing, the ruling decides nothing on a build of that change, and this claim holds on the name grouping alone."
     },
     {
       "id": "0588-the-ion-keeps-its-thirteen",
@@ -90,7 +90,7 @@
         "count": 1,
         "flow_count": 13
       },
-      "comment": "14 on the before build, the fourteenth being the resource flow. The thirteen are EF's `rhenium(2+)` emission rows and stay together: the ruling separates the two names and moves nothing else."
+      "comment": "14 on the before build, the fourteenth being the resource flow. The thirteen are EF's `rhenium(2+)` emission rows and stay together: the ruling separates the two names and moves nothing else. Since #404 they are together on their name rather than under the ruling, with no registry number between them; `0404-rhenium-ion-without-the-elements-number.json` claims the same thirteen from that side."
     },
     {
       "id": "0588-the-100yr-accounting-flow-is-its-own-substance",
