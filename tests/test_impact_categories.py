@@ -150,7 +150,7 @@ PUBLISHED_IRIS: tuple[str, ...] = tuple(
     for slug in STEPWISE_SLUGS
 )
 
-#: One id per implementation, stated as a literal.  The other 96 follow from
+#: One id per implementation, stated as a literal.  The other 134 follow from
 #: `uuid5` over the IRI, which the IRIs above pin -- but the namespace the hash
 #: is taken in does not appear in an IRI, and these four are what would catch a
 #: change to it.
@@ -163,7 +163,7 @@ PINNED_IDS: dict[str, str] = {
         "2e55a9ec-4781-5eaf-9523-af49223e7fc8"
     ),
     f"{_PREFIX}/brightway-flows/long/acidification": (
-        "4cda840f-abce-5935-ac63-3ddae34df76e"
+        "9e2fdedd-ad4a-5381-8725-681a744c95da"
     ),
 }
 
