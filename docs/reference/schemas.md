@@ -65,7 +65,13 @@ currently `1`. `lcia-factors.json.gz` and `lcia-differences.json` describe
 characterisation factors rather than flows, and a flow-list bump has nothing to
 say about a factor; a reader of one passes `expected=LCIA_SCHEMA_VERSION` to
 `check_schema_version`. That one number covers both the files and the `lcia_*`
-tables, because both are renderings of the same records.
+tables, because both are renderings of the same records. Both files carry the
+run's `stats`, as `lcia_runs.stats_json` holds them, and since the build of
+2026-10-20 those name the build the factors characterise: `build_run_id`,
+`build_revision` (the commit, or empty for a build that recorded none) and
+`build_revision_dirty` (whether that tree had uncommitted changes). The flow
+export names the same build on its consensus scheme's `owl:versionInfo`; see
+[Which output do I need?](../using/outputs.md#harmonised-flows-simplejsongz-the-published-list).
 
 **The score artifact is versioned separately again**, by
 `ARTIFACT_SCHEMA_VERSION` in `domain/lcia/unit_process_scores.py`, currently

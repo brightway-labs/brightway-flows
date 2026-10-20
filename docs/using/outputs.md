@@ -74,10 +74,12 @@ translation table.
 consensus list itself, as its `owl:versionInfo` — for example
 `run 20261020T1155136231560000, commit 327a5c0beb7c1a36e06bf5724995678e38fe557b`,
 with `, with uncommitted changes` on the end of a build that was made from a
-modified tree. On every other scheme the same field is the source list's own
-version, such as `3.12`. Release 1.0.0 published it empty.
-`lcia-factors.json.gz` names the same build in its `stats`, as
-`build_run_id`, `build_revision` and `build_revision_dirty`.
+modified tree, and no commit clause at all for a build that recorded none. On
+every other scheme the same field is the source list's own version, such as
+`3.12`. Release 1.0.0 published it empty. `lcia-factors.json.gz` and
+`lcia-differences.json` name the same build in their `stats`, as
+`build_run_id`, `build_revision` (empty where none was recorded) and
+`build_revision_dirty`; the same three keys are in `lcia_runs.stats_json`.
 
 !!! note "Property keys are IRIs, not short names"
 
