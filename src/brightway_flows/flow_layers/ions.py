@@ -18,7 +18,7 @@ import httpx
 import orjson
 
 from brightway_flows.domain.flow_object import FlowObject
-from brightway_flows.domain.ion_names import standard_ion_label
+from brightway_flows.domain.ion_names import pre_standard_ion_label, standard_ion_label
 from brightway_flows.domain.vocabulary import (
     CHEMINF_CAS_REGISTRY_NUMBER,
     CHEMINF_EC_NUMBER,
@@ -379,14 +379,11 @@ def enrich_monoatomic_ions(
             else []
         )
         parent_cas = element_cas_by_id.get(base_object_id, set())
-        # Looked up under the spellings the registry caches were filled with,
-        # not the standard's: `Caesium(1+)` is a name the Common Chemistry cache
-        # has never been asked, and a miss there is a network call.
-        cached_title = (
-            f"{base_title}, ion"
-            if charge_state is None
-            else f"{base_title}({abs(charge_state)}{'+' if charge_state >= 0 else '-'})"
-        )
+        # Looked up under the spelling the registry caches were filled with,
+        # which `domain.ion_names.pre_standard_ion_label` keeps for exactly
+        # this: `Caesium(1+)` is a name the Common Chemistry cache has never
+        # been asked, and a miss there is a network call.
+        cached_title = pre_standard_ion_label(base_title, charge_state)
         search_names = sorted({pref_value.strip(), cached_title, f"{base_title}, ion"} - {""})
         commonchem_cas: list[str] = []
         pubchem_cas: list[str] = []

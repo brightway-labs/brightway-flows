@@ -101,6 +101,15 @@ class StandardTestCase(unittest.TestCase):
         """Sulfur is IUPAC's and America's spelling alike."""
         self.assertNotIn("Sulphide", " ".join(standard_ion_synonyms("Sulfide", -2)))
 
+    def test_the_pre_standard_spelling_is_kept_for_the_registry_caches(self):
+        """`flow_layers.ions` asks the caches under the names they were
+        filled with, and those are not the standard's."""
+        from brightway_flows.domain.ion_names import pre_standard_ion_label
+
+        self.assertEqual(pre_standard_ion_label("Cesium", 1), "Cesium(1+)")
+        self.assertEqual(pre_standard_ion_label("Chloride", -1), "Chloride(1-)")
+        self.assertEqual(pre_standard_ion_label("Copper", None), "Copper, ion")
+
     def test_roman_numerals(self):
         self.assertEqual(
             [roman_numeral(n) for n in range(1, 9)],

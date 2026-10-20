@@ -200,6 +200,21 @@ def standard_ion_synonyms(base: str, charge: int | None) -> list[str]:
     return out
 
 
+def pre_standard_ion_label(base: str, charge: int | None) -> str:
+    """The spelling `flow_layers.ions` gave an ion before this standard.
+
+    `Cesium(1+)`, `Copper, ion`, with *base* as the element label spells it
+    and no IUPAC respelling.  Kept for one reader: the registry lookups in
+    `flow_layers.ions` are cached under the names they were first asked with,
+    and those were these.  Asked for `Caesium(1+)` instead, the Common
+    Chemistry cache misses and the miss is a network call, once per ion per
+    build, for the same answer.  Nothing published is spelled this way.
+    """
+    if charge is None:
+        return f"{base}, ion"
+    return f"{base}({abs(charge)}{'+' if charge >= 0 else '-'})"
+
+
 __all__ = [
     "AMERICAN_SPELLINGS",
     "ANION_NAMES",
@@ -209,6 +224,7 @@ __all__ = [
     "is_anion_name",
     "is_replaced_label_row",
     "is_standard_label_row",
+    "pre_standard_ion_label",
     "roman_numeral",
     "standard_ion_label",
     "standard_ion_synonyms",
