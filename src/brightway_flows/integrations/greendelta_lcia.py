@@ -13,6 +13,9 @@ the same method over 33,045 flows, 183,654 factors: 26,175 of the 2.8.0 rows are
 still there, nine with another number (eight in water use) and four gone.  The
 implementation hangs off BAFU's manifest still, because BAFU's distribution is
 where it first came from; the package is GreenDelta's, and so is the credit.
+Which list's archive that is, the manifest says (``lcia.archive_of``), beside
+the ``resolve_through`` that names the same list, so the archive read here and
+the list its flows resolve through cannot be two releases.
 
 **Its flows are ecoinvent's where it was built against ecoinvent, and its own
 otherwise.**  The manifest walks ecoinvent 3.12, 3.8 and EF 3.1 first, which is
@@ -61,13 +64,6 @@ logger = structlog.get_logger(__name__)
 #: ecoinvent's file rather than the same one: this states a geography on every
 #: row, which the workbook's format has nowhere to put.
 FACTORS_SCHEMA_VERSION = 1
-
-#: The source list whose archive holds the package.  GreenDelta's EF 3.1 used to
-#: be read from the copy inside BAFU's openLCA distribution -- 2.8.0, trimmed to
-#: the one method and the 1,781 flows it characterised there.  The full package
-#: is registered as a flow list of its own, so the method is read out of the
-#: same archive that list is extracted from, and the two cannot drift apart.
-PACKAGE_LIST = "openlca-2.8.2"
 
 #: Categories of the method that are deliberately not read, by ``@id``, with
 #: the reason.  2.8.2 states a 26th category beside EF 3.1's 25 -- a second
@@ -446,7 +442,8 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
     :raises FileNotFoundError: if the archive is neither in the data
         directory nor hosted.
     :raises GreenDeltaLciaError: if the manifest does not declare exactly one
-        method, since one package method is read per fetch.
+        method, since one package method is read per fetch, or does not say
+        which list's archive the package is (``lcia.archive_of``).
     """
     if source.lcia is None:  # pragma: no cover - the manifest declares one
         raise ValueError(f"{source.key} declares no lcia block.")
@@ -456,7 +453,12 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
             f"{source.key}'s manifest declares {len(spec.methods)} methods for "
             f"GreenDelta's package; this reads one."
         )
-    archive = package_archive(registered_source_list(PACKAGE_LIST).list_version)
+    if not spec.archive_of:
+        raise GreenDeltaLciaError(
+            f"{source.key}'s manifest does not say which source list's archive "
+            f"GreenDelta's package is: set lcia.archive_of to the openLCA list."
+        )
+    archive = package_archive(registered_source_list(spec.archive_of).list_version)
     package = read_package(archive, method_name=spec.methods[0].name)
     _check_categories(package, path=archive)
     factors, described = _factors(package, path=archive)

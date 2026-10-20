@@ -254,6 +254,14 @@ class LciaSpec:
     #: and ships no list of its own -- so it declares the chain that reaches
     #: them, newest release first.
     resolve_through: tuple[str, ...] = ()
+    #: The source list whose archive the factors are read out of, when it is
+    #: another list's.  GreenDelta's EF 3.1 hangs off BAFU's manifest and is
+    #: read from the package the ``openlca`` list is extracted from, and
+    #: naming that list here, beside the ``resolve_through`` that already
+    #: names it, keeps the archive and the flows it resolves through from
+    #: being two releases.  Empty for an implementation with an archive of its
+    #: own, which is every other one.
+    archive_of: str = ""
 
     @classmethod
     def from_manifest(cls, payload: Any, *, path: Path) -> LciaSpec:
@@ -297,12 +305,21 @@ class LciaSpec:
                 f"{path.name}: lcia.resolve_through must be a list of source "
                 "list keys, or absent."
             )
+        archive_of = payload.get("archive_of")
+        if archive_of is not None and (
+            not isinstance(archive_of, str) or not archive_of.strip()
+        ):
+            raise ValueError(
+                f"{path.name}: lcia.archive_of must name the source list whose "
+                "archive the factors are read from, or be absent."
+            )
         return cls(
             adapter=adapter.strip(),
             factors_path=DATA_DIR / factors.strip(),
             methods=parsed,
             implemented_by=(implemented_by or "").strip(),
             resolve_through=tuple(key.strip() for key in through),
+            archive_of=(archive_of or "").strip(),
         )
 
 

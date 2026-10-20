@@ -327,6 +327,7 @@ class WhatTheFetchWritesTestCase(unittest.TestCase):
                 factors_path=self.factors_path,
                 methods=(LciaMethodSpec(name=GREENDELTA_METHOD_NAME),),
                 implemented_by="GreenDelta",
+                archive_of="openlca-2.8.2",
             ),
         )
 
@@ -434,14 +435,33 @@ class TheManifestDeclaresItTestCase(unittest.TestCase):
 
     def test_the_archive_is_the_package_list_s(self):
         """One archive, read by the flow list and by this; the two cannot be
-        two releases of the package."""
-        from brightway_flows.integrations.greendelta_lcia import PACKAGE_LIST
-
-        self.assertIn(PACKAGE_LIST, known_source_lists())
+        two releases of the package.  The manifest names the list, and names
+        it among the lists the factors resolve through."""
+        spec = known_source_lists()["bafu-2026-v1"].lcia
+        self.assertIn(spec.archive_of, known_source_lists())
+        self.assertIn(spec.archive_of, spec.resolve_through)
         self.assertEqual(
-            known_source_lists()[PACKAGE_LIST].adapter,
+            known_source_lists()[spec.archive_of].adapter,
             "brightway_flows.integrations.openlca:fetch",
         )
+
+    def test_a_manifest_naming_no_archive_list_is_refused(self):
+        source = known_source_lists()["bafu-2026-v1"]
+        spec = source.lcia
+        bare = SourceList(
+            **{
+                **{f: getattr(source, f) for f in source.__dataclass_fields__},
+                "lcia": LciaSpec(
+                    adapter=spec.adapter,
+                    factors_path=spec.factors_path,
+                    methods=spec.methods,
+                    implemented_by=spec.implemented_by,
+                    resolve_through=spec.resolve_through,
+                ),
+            }
+        )
+        with self.assertRaisesRegex(GreenDeltaLciaError, "archive_of"):
+            fetch(bare)
 
 
 class WhatAFetchWroteTestCase(unittest.TestCase):
