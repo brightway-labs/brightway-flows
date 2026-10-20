@@ -21,6 +21,7 @@ from pathlib import Path
 import orjson
 
 from brightway_flows.pipeline.exporting import build_simple_export, write_simple_export
+from brightway_flows.pipeline.review_records import PipelineRun
 from brightway_flows.pipeline.review_tables import create_review_tables
 
 #: The shape written for a flow that came from EF 3.1.
@@ -116,6 +117,19 @@ class SimpleExportTestCase(unittest.TestCase):
             consensus["owl:versionInfo"],
             f"run run-new, commit {'2' * 40}, with uncommitted changes",
         )
+
+    def test_the_run_writing_the_export_names_itself_before_its_row_exists(self):
+        """The transform writes the export before `pipeline_runs`, so it hands
+        its own run over rather than reading back a table not yet written."""
+        build_db(self.db, [FLOW_SHAPED])
+        run = PipelineRun(
+            run_id="run-live", timestamp="2026-10-20T00:00:00+00:00", schema_version=1,
+            git_commit="3" * 40,
+        )
+        out = self.root / "harmonised-flows-simple.json.gz"
+        write_simple_export(self.db, out, run=run)
+        (consensus, *_sources) = self.read(out)["concept_schemes"]
+        self.assertEqual(consensus["owl:versionInfo"], f"run run-live, commit {'3' * 40}")
 
     def test_a_database_without_runs_publishes_an_empty_version(self):
         build_db(self.db, [FLOW_SHAPED])

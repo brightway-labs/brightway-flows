@@ -1116,7 +1116,10 @@ def run_pipeline(
     logger.info("wrote_consensus_sqlite", path=str(CONSENSUS_DB_FILEPATH))
 
     with timings.stage("write_simple_export"):
-        write_simple_export(CONSENSUS_DB_FILEPATH, HARMONISED_FLOWS_SIMPLE_FILEPATH)
+        # `run` is handed over because its `pipeline_runs` row is written
+        # below, after this: read back from the database here, the export
+        # would name no build.
+        write_simple_export(CONSENSUS_DB_FILEPATH, HARMONISED_FLOWS_SIMPLE_FILEPATH, run=run)
     # After the export, because it is the export that groups the per-flow
     # associations into correspondences, and this counts the same grouping.
     tally("build_correspondences", correspondence_stats(CONSENSUS_DB_FILEPATH))

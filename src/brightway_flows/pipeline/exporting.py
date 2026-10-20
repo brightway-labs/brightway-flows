@@ -332,18 +332,23 @@ def _strip_lcia_from_flows(
 strip_lcia_from_flows = _strip_lcia_from_flows
 
 
-def build_simple_export(db_path: Path) -> HarmonisedFlowsSimple:
+def build_simple_export(
+    db_path: Path, *, run: PipelineRun | None = None
+) -> HarmonisedFlowsSimple:
     """Project the database onto the published export.
 
     Three reads: the flows come from `elementary_flows.flow_json`, the source
     contexts behind each redirect's reason from `elementary_flow_sources`,
     which is where a flow's references live (#30), and the run and commit the
-    document names from `pipeline_runs`.
+    document names from `pipeline_runs` -- unless the caller is the run itself
+    and passes *run*.  The transform writes this export before it writes its
+    own `pipeline_runs` row, so reading the table back there finds nothing,
+    and the document would name no build: the defect release 1.0.0 shipped.
     """
     return _strip_lcia_from_flows(
         read_published_flow_payloads(db_path),
         read_source_contexts(db_path),
-        build=read_pipeline_run(db_path),
+        build=run if run is not None else read_pipeline_run(db_path),
     )
 
 
@@ -467,7 +472,9 @@ def _retirement_outcome(
     return counts, items
 
 
-def write_simple_export(db_path: Path, output_path: Path) -> int:
+def write_simple_export(
+    db_path: Path, output_path: Path, *, run: PipelineRun | None = None
+) -> int:
     """Write ``harmonised-flows-simple.json.gz`` from the database.
 
     This is the only artifact with a downstream consumer, and until now it was
@@ -475,9 +482,10 @@ def write_simple_export(db_path: Path, output_path: Path) -> int:
     A 2.5 GB intermediate was therefore load-bearing for the one thing that has
     to keep working, and if it was missing the export was silently skipped.
 
-    Returns the number of flows written.
+    *run* is the build writing the export, where the caller is that build; see
+    :func:`build_simple_export`.  Returns the number of flows written.
     """
-    export = build_simple_export(db_path)
+    export = build_simple_export(db_path, run=run)
     # `to_dict()`, not `asdict()`: the document's two JSON-LD keys are `@context`
     # and `@id`, neither of which is a valid Python identifier, so they are
     # declared as aliases on the records and only `to_dict()` restores them.
