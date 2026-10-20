@@ -84,6 +84,7 @@ import structlog
 
 from brightway_flows.domain.elementary_flow import ElementaryFlow
 from brightway_flows.domain.flow_object import FlowObject
+from brightway_flows.domain.ion_names import is_standard_label_row
 from brightway_flows.domain.particulate_size import (
     class_by_flow_object,
     particulate_class_by_source_flow,
@@ -298,6 +299,7 @@ def carry_member_names(
             "rejected_names_a_place",
             "rejected_names_another_size_window",
             "rejected_two_substances_claim_it",
+            "standard_synonyms_withdrawn",
             "substances_given_a_name",
             "substances_with_a_synonym_withdrawn",
             "synonyms_naming_two_substances",
@@ -368,6 +370,21 @@ def carry_member_names(
                 continue
             owners = claimed_by.get(key, set())
             others_naming = named_by.get(key, set()) - {obj.flow_object_id}
+            if is_standard_label_row(row):
+                # A synonym the ion naming standard promises
+                # (`domain.ion_names`) survives another substance *listing* it
+                # as a synonym: `Lead II` is lead(2+)'s whatever else answers
+                # to it.  It does not survive another substance being *called*
+                # it.  `Bromide` on `Bromide(1-)` beside a substance named
+                # `Bromide` sends a reader to two places, which is the thing
+                # this pass exists to stop -- and a second substance under
+                # that name is a merge defect this count is how one sees.
+                if others_naming:
+                    dropped.append(values[0])
+                    stats["standard_synonyms_withdrawn"] += 1
+                    continue
+                keep.append(row)
+                continue
             if len(owners) > 1 or others_naming:
                 dropped.append(values[0])
                 continue

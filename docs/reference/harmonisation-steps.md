@@ -396,7 +396,7 @@ that skeleton. See [Known limitations](limitations.md#some-flow-objects-merge-un
 ## After the steps: the layering, and the passes that follow it
 
 When every step has run, the flows are split into the two published layers, and
-fourteen further passes run over the result. Much of what you will notice about
+fifteen further passes run over the result. Much of what you will notice about
 the published list is decided here rather than in the chain above: what kind of
 thing each substance is, which occurrences are duplicates of one another, and
 which source-list flow each one answers to.
@@ -421,7 +421,8 @@ named.
 | 11 | Send the substance's chemistry to its flows | that both layers publish the same chemistry | `layer_writes` |
 | 12 | Withdraw chemistry from flows that are not one substance | which flows may state no formula at all | `withdraw_single_substance_properties` |
 | 13 | Send an element's name to its flows | that `nitrogen` publishes as `Nitrogen` | `element_pref_labels` |
-| 14 | Send the substance's name to its flows | that a flow is called what its substance is called | `substance_label_v1`, and the `substance-label-conflict` queue |
+| 14 | Spell every ion one way | that lead(2+) is `Lead(2+)` and also answers to `Lead II` and `Lead(II)` — see [how an ion is spelled](../deciding/identity.md#how-an-ion-is-spelled) | `ion_naming_standard` |
+| 15 | Send the substance's name to its flows | that a flow is called what its substance is called | `substance_label_v1`, and the `substance-label-conflict` queue |
 
 A pass that writes to a flow writes through the same change log the steps do.
 So a change in a flow's history with no step behind it is one of these, and

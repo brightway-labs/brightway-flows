@@ -47,6 +47,7 @@ from typing import TYPE_CHECKING, Mapping
 
 import orjson
 
+from brightway_flows.domain.ion_names import standard_ion_label
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 
 if TYPE_CHECKING:
@@ -199,14 +200,15 @@ def redefines(earlier_name: str, earlier_cas: str, newest_name: str, newest_cas:
 def species_object_label(species: SpeciesName) -> str:
     """The label this list spells *species* with.
 
-    ``Nickel(2+)`` for a stated charge, ``Nickel, Ion`` for the generic marker
-    -- the spelling `Arsenic, Ion` already publishes -- and the element itself
-    for a bare name.
+    ``Nickel(2+)`` for a stated charge and ``Nickel, ion`` for the generic
+    marker, as the ion naming standard spells them (`domain.ion_names`) --
+    ``Caesium(1+)``, in IUPAC's spelling -- and the element itself, as this
+    list's element labels spell it, for a bare name.
     """
     if species.kind == "charge":
-        return f"{species.element}({species.charge}+)"
+        return standard_ion_label(species.element, species.charge)
     if species.kind == "ion":
-        return f"{species.element}, Ion"
+        return standard_ion_label(species.element, None)
     return species.element
 
 

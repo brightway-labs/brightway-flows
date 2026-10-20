@@ -76,7 +76,7 @@ from brightway_flows.domain.preferred_label_decisions import (
     rule_on_replacement,
     undecided_label_item_key,
 )
-from brightway_flows.flow_layers.labels import _canonical_name
+from brightway_flows.flow_layers.labels import _canonical_name, flow_label_row
 from brightway_flows.pipeline.layer_writes import LayerWriteLog
 from brightway_flows.pipeline.review_records import (
     ReviewQueue,
@@ -313,17 +313,15 @@ def _demoted_entry(value: str, previous: Any) -> dict[str, Any]:
 
 def _pref_label_rows(target: str, object_id: str) -> list[dict[str, Any]]:
     return [
-        {
-            "@value": target,
-            "@language": "en",
-            "@lang": "en",
-            "source": Provenance(
+        flow_label_row(
+            target,
+            Provenance(
                 was_generated_by=PASS_NAME,
                 was_attributed_to="brightway-flows",
                 had_primary_source=[],
                 was_derived_from=f"flow_object.prefLabel ({object_id})",
-            ).to_dict(),
-        }
+            ),
+        )
     ]
 
 

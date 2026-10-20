@@ -518,6 +518,49 @@ def _ion_types(charge: int | None, *, monoatomic: bool) -> tuple[str, ...]:
     )
 
 
+#: The classes `classify` gives one charged atom: rules 2 and 3 below.
+_MONATOMIC_ION_TYPES = frozenset(
+    IRIS[term] for term in (Term.MONOATOMIC_ION, Term.ATOM_CATION, Term.ATOM_ANION)
+)
+
+
+def _recorded_ion_of_an_element(obj: FlowObject) -> bool:
+    """Whether `flow_layers.ions` recorded *obj* as the ion of an element.
+
+    Written only where the name resolved to an element, so a name that merely
+    ends in a numeral -- `Pyrethrin I` -- never carries it.
+    """
+    properties = obj.properties if isinstance(obj.properties, dict) else {}
+    relationships = properties.get("relationships")
+    return (
+        isinstance(relationships, dict)
+        and relationships.get("relationship_type") == "ion_of"
+        and bool(relationships.get("parent_element_flow_object_id"))
+    )
+
+
+def is_monatomic_ion(obj: FlowObject) -> bool:
+    """Whether *obj* is one charged atom, by the one reading every pass shares.
+
+    Two pieces of evidence, and the second is #403.  An object `classify`
+    typed a monatomic ion is one: rule 2, an element carrying a charge, or
+    rule 3, a charge with a one-atom formula.  So is an object the ion layer
+    recorded as the ion of an element with one stated charge, whatever it is
+    typed: `Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)` and `Chromium(4+)`
+    state a charge and no formula, so neither rule reaches them and rule 10
+    publishes each as an imprecise mixture.
+
+    `pipeline.ion_names` asks this rather than the types, so that the naming
+    standard spells those four.  When `classify` reads the `ion_of` record
+    itself (#403) the second clause is redundant and goes -- here, once,
+    rather than in every pass that had its own.
+    """
+    if set(_existing_types(obj)) & _MONATOMIC_ION_TYPES:
+        return True
+    properties = obj.properties if isinstance(obj.properties, dict) else {}
+    return _recorded_ion_of_an_element(obj) and bool(_charge(properties))
+
+
 def classify(
     obj: FlowObject,
     *,

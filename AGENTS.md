@@ -166,4 +166,6 @@ Two jobs have a procedure rather than a rule, and each is a skill:
     style — systematic against common, `Trifluoromethane` against `fluoroform` —
     the published label is the name other contributing lists use. Written down
     rather than coded: which of two names is the common one is not a question a
-    string can be asked. (§6)
+    string can be asked. An ion is the exception: it is spelled by
+    `domain/ion_names.py` (`Lead(2+)`, `Chloride(1-)`, `Copper, ion`), with its
+    other spellings published as synonyms. (§6)

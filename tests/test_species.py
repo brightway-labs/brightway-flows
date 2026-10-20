@@ -81,7 +81,15 @@ class ParseTestCase(unittest.TestCase):
             with self.subTest(name=name):
                 species = parse_species(name)
                 self.assertEqual((species.kind, species.charge), ("ion", None))
-                self.assertEqual(species_object_label(species), "Copper, Ion")
+                self.assertEqual(species_object_label(species), "Copper, ion")
+
+    def test_an_ion_is_looked_up_in_iupac_spelling(self):
+        """The published ion is `Caesium(1+)` (`domain.ion_names`), so that is
+        the name a tie is broken on, whichever spelling the row used; the
+        element itself keeps the spelling this list's element labels use."""
+        self.assertEqual(species_object_label(parse_species("Cesium I")), "Caesium(1+)")
+        self.assertEqual(species_object_label(parse_species("Caesium ion")), "Caesium, ion")
+        self.assertEqual(species_object_label(parse_species("Caesium")), "Cesium")
 
     def test_bare_stays_bare(self):
         species = parse_species("Zinc")
@@ -192,7 +200,7 @@ class MatchingEvidenceTestCase(unittest.TestCase):
                    labels=["Copper, ion"])
         out = canonicalized_for_matching(row, self.IDENTITIES)
         self.assertEqual((out.name, out.cas), ("Copper ion", ""))
-        self.assertEqual(out.labels, ["Copper, Ion", "Copper ion"])
+        self.assertEqual(out.labels, ["Copper, ion", "Copper ion"])
 
     def test_the_stale_ec_number_goes_with_the_stale_labels(self):
         """3.8's `Arsenic ion` rows carry the element's EC beside the stale

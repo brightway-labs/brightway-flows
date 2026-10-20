@@ -34,8 +34,8 @@ rather than one the merge had to invent.
   agribalyse-3.2            5,485         28      5,368          0         89          0      3,161         26        98.4%
 ```
 
-Copied from the full build of `587efdf` on 20 October 2026 (run
-`20261020T0439448362030000`), the build `expectations/baseline.json` was
+Copied from the full build of `564d256` on 20 October 2026 (run
+`20261020T0551216462180000`), the build `expectations/baseline.json` was
 recorded from.
 
 **Expectations** — the statements in `expectations/`, each graded against this

@@ -172,7 +172,7 @@
     {
       "id": "0934-ecoinvent-3-12-caesium-i-is-the-ion",
       "issue": 934,
-      "title": "ecoinvent 3.12's five `Caesium I` rows reach `Cesium(1+)` by the corrected number",
+      "title": "ecoinvent 3.12's five `Caesium I` rows reach `Caesium(1+)` by the corrected number",
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
@@ -183,9 +183,9 @@
         "row_count": 5,
         "outcome": "algorithm",
         "basis": "cas",
-        "target_name": "Cesium(1+)"
+        "target_name": "Caesium(1+)"
       },
-      "comment": "Shipped under the element's 7440-46-2; on the build of 2 September 2026 the five reached bare `Cesium`, beside AGRIBALYSE's three `Cesium (I)` rows on the ion."
+      "comment": "Shipped under the element's 7440-46-2; on the build of 2 September 2026 the five reached bare `Cesium`, beside AGRIBALYSE's three `Cesium (I)` rows on the ion. The ion was published as `Cesium(1+)` until #401 spelled it as IUPAC does; the rows did not move."
     },
     {
       "id": "0934-ecoinvent-3-8-caesium-i-is-the-ion",

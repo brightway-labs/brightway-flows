@@ -133,6 +133,24 @@ def _label_entry(
     }
 
 
+def flow_label_row(value: str, provenance: Provenance) -> dict[str, Any]:
+    """One label row as a *flow* carries it.
+
+    A flow's label rows keep their provenance under `source`, where a flow
+    object's keep it under `provenance`, and `pipeline.sqlite` reads the two
+    shapes apart -- so a flow row built with the object's key is a label the
+    database reader drops.  The element, substance and ion-name passes each
+    wrote this dict by hand, which is how a shape drifts; it is spelled once
+    here instead.
+    """
+    return {
+        "@value": value,
+        "@language": "en",
+        "@lang": "en",
+        "source": provenance.to_dict(),
+    }
+
+
 def _object_pref_label_value(obj: FlowObject | None) -> str:
     """The flow object's prefLabel, or "" when there is no object.
 

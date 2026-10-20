@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "description": "On the five-list build of `main` at `43403ac` (run 20261019T0759116033000000) the 51 ion substances published under six spellings: IUPAC charge numbers (`Lead(2+)`), the American element with a charge number (`Cesium(1+)`), a Roman numeral (`Chromium IV`), the bare anion (`Chloride`), and the generic ion as `Copper, Ion` and as `Titanium, ion`. The spellings inventories use were synonyms only by accident: ecoinvent 3.12's `Lead II` was not one of lead(2+)'s, and `Chromium, Ion` had no synonyms at all. #401 is the standard, in `domain/ion_names.py`: a cation is `Lead(2+)` and answers to `Lead(II)` and `Lead II`; an anion is `Chloride(1-)` and answers to `Chloride`, `Chloride(-I)` and `Chloride -I`; an ion of unstated charge is `Copper, ion` and answers to `Copper, Ion` and `Copper Ion`; the element is spelled as IUPAC spells it, and every form is repeated in the American spelling where that differs. `pipeline/ion_names.py` applies it last of the substance-name writers, and to the substances the merge mints. Selected by substance id where the label is what changes, because a label selector would find nothing on one side. `label` and `alt_label` compare without regard to case, so a respelling that only lowers `Ion` to `ion` is claimed through its synonyms.",
+  "expectations": [
+    {
+      "id": "0401-lead-ii-finds-lead-2plus",
+      "issue": 401,
+      "title": "ecoinvent's `Lead II` is a synonym of `Lead(2+)`",
+      "subject": {"kind": "substance", "label": "Lead(2+)"},
+      "expect": {"alt_label": "Lead II"},
+      "comment": "The example the issue opens with. On the build of `43403ac` lead(2+) carried `Lead (ii)` and `lead(II) ion` but not ecoinvent 3.12's own `Lead II`."
+    },
+    {
+      "id": "0401-caesium-is-spelled-as-iupac-spells-it",
+      "issue": 401,
+      "title": "Caesium(1+) is published in IUPAC's spelling and answers to the American one",
+      "subject": {"kind": "substance", "id": "fo-8383ed05703d1d9a"},
+      "expect": {"label": "Caesium(1+)", "alt_label": "Cesium I"},
+      "comment": "`Cesium(1+)` on the build of `43403ac`, the one charged ion in the American spelling. The element itself stays `Cesium`: the standard is about ions."
+    },
+    {
+      "id": "0401-chloride-states-its-charge",
+      "issue": 401,
+      "title": "Chloride is published as `Chloride(1-)` and answers to `Chloride` and `Chloride -I`",
+      "subject": {"kind": "substance", "id": "fo-01f183b10feaf811"},
+      "expect": {"label": "Chloride(1-)", "alt_label": "Chloride -I"},
+      "comment": "One of the five monatomic anions, published as the bare anion name on the build of `43403ac`. The charge is read off the substance, because the bare name states it by being an anion's."
+    },
+    {
+      "id": "0401-sulfide-states-its-charge",
+      "issue": 401,
+      "title": "Sulfide is published as `Sulfide(2-)`",
+      "subject": {"kind": "substance", "id": "fo-1ee126fd64965f89"},
+      "expect": {"label": "Sulfide(2-)", "alt_label": "Sulfide(-II)"},
+      "comment": "The anion with two charges, so the numeral is `-II`."
+    },
+    {
+      "id": "0401-chromium-iv-is-a-charge-number",
+      "issue": 401,
+      "title": "`Chromium IV` is published as `Chromium(4+)`, though it is typed a mixture",
+      "subject": {"kind": "substance", "id": "fo-14c58fbff9ee611d"},
+      "expect": {"label": "Chromium(4+)", "alt_label": "Chromium(IV)"},
+      "comment": "Typed `ImpreciseChemicalMixture` on the build of `43403ac` (#403), and recorded as the ion of chromium with a stated charge of 4: read as an ion by that record, which only an element's name can produce."
+    },
+    {
+      "id": "0401-chromium-ion-answers-to-its-capitalised-spellings",
+      "issue": 401,
+      "title": "`Chromium, ion` answers to `Chromium, Ion` and `Chromium Ion`",
+      "subject": {"kind": "substance", "id": "fo-391cc4d48a157376"},
+      "expect": {"alt_label": "Chromium Ion"},
+      "comment": "Minted by the merge from a vendor's `X, ion`, title-cased as `Chromium, Ion` and published with no synonyms on the build of `43403ac`."
+    },
+    {
+      "id": "0401-copper-ion-answers-to-copper-comma-ion",
+      "issue": 401,
+      "title": "`Copper, ion` keeps `Copper, Ion` as a synonym",
+      "subject": {"kind": "substance", "id": "fo-436304b385710fab"},
+      "expect": {"alt_label": "Copper, Ion"},
+      "comment": "Published as `Copper, Ion` on the build of `43403ac`, with only `Copper Ion` beside it. The standard spells the label `Copper, ion` and publishes both capitalised spellings."
+    },
+    {
+      "id": "0401-titanium-ion-stays-generic",
+      "issue": 401,
+      "title": "`Titanium, ion` keeps its unstated charge and gains its capitalised spellings",
+      "subject": {"kind": "substance", "id": "fo-bb650b137c697bce"},
+      "expect": {"label": "Titanium, ion", "alt_label": "Titanium Ion"},
+      "comment": "The leave-alone half. PubChem gives the payload Ti+4, and #143 ruled that the name still says no charge; the standard spells names and does not decide charges, so the label is unchanged and only the synonyms are new."
+    },
+    {
+      "id": "0401-methylmercury-takes-no-numeral",
+      "issue": 401,
+      "title": "`Methylmercury(1+)` gains no Roman-numeral synonym",
+      "subject": {"kind": "substance", "label": "Methylmercury(1+)"},
+      "expect": {"label": "Methylmercury(1+)", "flow_type": "MolecularCation"},
+      "comment": "The other leave-alone half. A numeral states an oxidation number, which is the charge only for one atom: methylmercury's mercury is mercury(II), so `Methylmercury(I)` would be wrong. Nothing about it is ion-standard business, which this claims by its label and type standing."
+    }
+  ]
+}
