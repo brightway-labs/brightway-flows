@@ -213,6 +213,23 @@ class PassTestCase(unittest.TestCase):
         self.assertEqual(stats["renamed"], 0)
         self.assertEqual(stats["synonyms_added"], 0)
 
+    def test_a_synonym_a_source_list_wrote_keeps_its_provenance(self):
+        """ecoinvent's `Lead II` stays ecoinvent's; the standard's promise is
+        recorded beside it, not over it."""
+        from brightway_flows.domain.ion_names import is_standard_label_row
+
+        theirs = {
+            PROV_WAS_GENERATED_BY_CURIE: "ecoinvent_synonyms",
+            PROV_HAD_PRIMARY_SOURCE_CURIE: ["ecoinvent 3.12"],
+        }
+        obj = _object("Lead(2+)", CATION, charge=2)
+        obj.altLabel = [{"@value": "Lead II", "@language": "en", "provenance": theirs}]
+        standardise_ion_names([obj], seed_source=SOURCE)
+        self.assertEqual(_synonyms(obj), ["Lead(II)", "Lead II"])
+        row = next(r for r in obj.altLabel if r["@value"] == "Lead II")
+        self.assertIn(theirs, row["provenance"])
+        self.assertTrue(is_standard_label_row(row))
+
     def test_every_label_names_the_list_the_substance_came_from(self):
         """What the merge mints from an ecoinvent row is ecoinvent's: EF 3.1
         never had `Chromium, ion`."""

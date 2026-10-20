@@ -50,6 +50,7 @@ from brightway_flows.domain.vocabulary import IRIS, Term
 from brightway_flows.flow_layers.ions import _extract_ion_base_and_charge
 from brightway_flows.flow_layers.labels import (
     _label_entry,
+    _merge_provenance,
     _set_pref_label,
     flow_label_row,
 )
@@ -126,14 +127,35 @@ def ion_reading(obj: FlowObject) -> tuple[str, int | None] | None:
     return None
 
 
-def _label_row(value: str, *, seed_source: str, replaced: bool = False) -> dict[str, Any]:
-    return _label_entry(
+def _label_row(
+    value: str,
+    *,
+    seed_source: str,
+    replaced: bool = False,
+    carried: Any = None,
+) -> dict[str, Any]:
+    """The standard's row for *value*.
+
+    *carried* is the row *value* already had on the object, if any.  Its
+    provenance is kept and the standard's recorded beside it, not over it: a
+    synonym a source list wrote was not produced by this pass and did not come
+    from the list the object was seeded from (#247), while the standard's own
+    entry is what marks the row as promised, which `carry_member_names` and
+    the merge's matching read.
+    """
+    row = _label_entry(
         value=value,
         language="en",
         resolver_name=PASS_NAME,
         seed_source=seed_source,
         was_derived_from=REPLACED_LABEL_DERIVED_FROM if replaced else _WAS_DERIVED_FROM,
     )
+    own = carried.get("provenance") if isinstance(carried, dict) else None
+    if own:
+        merged = _merge_provenance(own, row["provenance"])
+        if merged is not None:
+            row["provenance"] = merged
+    return row
 
 
 def _row_value(row: Any) -> str:
@@ -155,9 +177,10 @@ def standardise_ion_names(
     Mutates the objects.  A name the standard replaces stays as a synonym, so
     nothing a source list called the substance stops finding it.  The
     standard's synonyms lead the list, ahead of what enrichment gathered, and
-    are stamped `ion_naming_standard`: the export keeps the first of two
-    spellings that differ only in case, and `carry_member_names` never
-    withdraws a label the standard promised.
+    carry the `ion_naming_standard` stamp -- beside the provenance a synonym
+    already had, where a source list wrote it first.  The export keeps the
+    first of two spellings that differ only in case, and `carry_member_names`
+    keeps a label the standard promised.
     """
     stats: Counter[str] = Counter()
     for obj in flow_objects:
@@ -197,12 +220,14 @@ def standardise_ion_names(
         promised = set(synonyms)
         label_key = canonical_label_value(label)
         kept = []
+        carried: dict[str, Any] = {}
         for row in obj.altLabel or []:
             value = _row_value(row)
             if value in promised:
-                # Re-stamped below rather than kept under the provenance it
-                # came with: an unprotected copy is one `carry_member_names`
-                # could withdraw.
+                # Written again below, first in the list, under its own
+                # provenance and the standard's: ecoinvent's `Lead II` stays a
+                # name ecoinvent gave, and gains the promise that keeps it.
+                carried.setdefault(value, row)
                 continue
             if value and canonical_label_value(value) == label_key:
                 # The label itself in another case -- `caesium(1+)` beside
@@ -213,7 +238,12 @@ def standardise_ion_names(
         before = {_row_value(row) for row in obj.altLabel or []}
         stats["synonyms_added"] += sum(1 for value in synonyms if value not in before)
         obj.altLabel = [
-            _label_row(value, seed_source=seed_source, replaced=value in replaced)
+            _label_row(
+                value,
+                seed_source=seed_source,
+                replaced=value in replaced,
+                carried=carried.get(value),
+            )
             for value in synonyms
         ] + kept
 

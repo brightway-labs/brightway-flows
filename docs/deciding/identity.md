@@ -154,7 +154,9 @@ Applied Chemistry recommends for ions — `iron(2+)`, `chloride(1-)` — with th
 element spelled as IUPAC spells it. IUPAC has no name for an ion whose charge
 nobody stated, so `Copper, ion` is this list's own spelling, the one EF's
 `Titanium, ion` already had. Synonyms the substance already carried stay; the
-standard's own come first, on the substance and on every one of its flows.
+standard's own come first, on the substance and on every one of its flows. A
+spelling a source list already gave the substance keeps that list as its
+origin, with the standard's promise recorded beside it.
 
 **Respelling a name moves no source row.** The label a substance had before —
 `Bromide`, `Cesium(1+)` — is still a name the merge matches it by, so
