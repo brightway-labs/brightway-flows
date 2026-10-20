@@ -17,6 +17,8 @@ from brightway_flows.domain.elementary_flow import ElementaryFlow
 from brightway_flows.domain.vocabulary import (
     DCTERMS_IS_REPLACED_BY_CURIE,
     OWL_DEPRECATED_CURIE,
+    PROV_HAD_PRIMARY_SOURCE_CURIE,
+    PROV_WAS_GENERATED_BY_CURIE,
     SKOS_EXACT_MATCH_CURIE,
     XKOS_SOURCE_CONCEPT_CURIE,
     XKOS_TARGET_CONCEPT_CURIE,
@@ -182,10 +184,16 @@ class TheMappingTestCase(unittest.TestCase):
             "concept_associations": [_association("valid"), _association("dup")],
         })
 
-    def test_the_duplicate_is_deprecated_onto_the_valid_row(self):
-        marked = mark_deprecated_mappings(
-            [self.flow], {"dup": RULINGS[("openlca", "dup")]}, flow_iri_prefix=PREFIX
+    def _mark(self):
+        return mark_deprecated_mappings(
+            [self.flow],
+            {"dup": RULINGS[("openlca", "dup")]},
+            flow_iri_prefix=PREFIX,
+            merge_activity="merge:openlca-2.8.2",
         )
+
+    def test_the_duplicate_is_deprecated_onto_the_valid_row(self):
+        marked = self._mark()
         self.assertEqual(marked, 1)
         valid, duplicate = (
             a[XKOS_SOURCE_CONCEPT_CURIE] for a in self.flow.concept_associations
@@ -196,11 +204,35 @@ class TheMappingTestCase(unittest.TestCase):
             duplicate[DCTERMS_IS_REPLACED_BY_CURIE], {"@id": f"{PREFIX}valid"}
         )
 
+    def test_the_ruling_is_in_the_mapping_s_provenance(self):
+        """Why the row is superseded, and by which row, beside the mark."""
+        self._mark()
+        valid, duplicate = self.flow.concept_associations
+        self.assertNotIn("provenance", valid)
+        sources = duplicate["provenance"][PROV_HAD_PRIMARY_SOURCE_CURIE]
+        self.assertIn("source-row-duplicates.json", sources)
+        self.assertIn("duplicate_of=openlca:valid", sources)
+        self.assertEqual(
+            duplicate["provenance"][PROV_WAS_GENERATED_BY_CURIE], "merge:openlca-2.8.2"
+        )
+
+    def test_the_match_s_provenance_is_kept(self):
+        """Merged into what the match wrote, not written over it."""
+        self.flow.concept_associations[1]["provenance"] = {
+            PROV_WAS_GENERATED_BY_CURIE: "merge",
+            PROV_HAD_PRIMARY_SOURCE_CURIE: ["openlca:2.8.2:dup"],
+        }
+        self._mark()
+        provenance = self.flow.concept_associations[1]["provenance"]
+        self.assertEqual(provenance[PROV_WAS_GENERATED_BY_CURIE], "merge")
+        self.assertEqual(
+            provenance[PROV_HAD_PRIMARY_SOURCE_CURIE],
+            ["openlca:2.8.2:dup", "source-row-duplicates.json", "duplicate_of=openlca:valid"],
+        )
+
     def test_both_mappings_stay_exact(self):
         """Two copies of one flow are not two flows sharing a consensus flow."""
-        mark_deprecated_mappings(
-            [self.flow], {"dup": RULINGS[("openlca", "dup")]}, flow_iri_prefix=PREFIX
-        )
+        self._mark()
         associations = self.flow.concept_associations
         weaken(associations, cardinality_of([associations]))
         for association in associations:
