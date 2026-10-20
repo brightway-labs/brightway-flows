@@ -22,8 +22,8 @@ not merged:
 | ecoinvent 3.11 | Curated, and available to merge; not part of the standard build | [ecoinvent 3.11](ecoinvent-3.11.md) |
 | ecoinvent 3.12 | Merged first | [ecoinvent 3.12](ecoinvent-3.12.md) |
 | BAFU 2026 v1 | Merged third | [BAFU 2026 v1](bafu-2026-v1.md) |
-| Stepwise 2006 | Merged last | [Stepwise 2006](stepwise-2006.md) |
-| AGRIBALYSE 3.2 | Registered 2026-08-31; not yet in the documented build | [AGRIBALYSE 3.2](agribalyse-3.2.md) |
+| Stepwise 2006 | Merged fourth | [Stepwise 2006](stepwise-2006.md) |
+| AGRIBALYSE 3.2 | Merged last; in every build since release 1.0.0 | [AGRIBALYSE 3.2](agribalyse-3.2.md) |
 
 ## The four kinds of change these pages show
 
