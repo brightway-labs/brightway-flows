@@ -157,11 +157,13 @@ VOLATILE_KEYS = frozenset({
     "build_revision",
 })
 
-#: The same, where the key is shared with a value that is not volatile:
-#: `owl:versionInfo` is a source list's own version on its scheme, and the
-#: build on the consensus scheme (`PipelineRun.describe`).  Only the second
-#: is masked.
-VOLATILE_VALUES = re.compile(r"^run \S+, commit \S+")
+#: `owl:versionInfo` is a source list's own version on its scheme and the build
+#: on the consensus scheme (`PipelineRun.describe`), so it is masked by value
+#: rather than by key: the run and the commit go, and the `, with uncommitted
+#: changes` that may follow them stays, for the same reason
+#: `build_revision_dirty` is not in `VOLATILE_KEYS`.
+VERSION_INFO_KEY = "owl:versionInfo"
+BUILD_NAME = re.compile(r"^run [^,]*(?:, commit [^,]*)?")
 
 #: Columns holding an AUTOINCREMENT rowid, which depends on insertion order
 #: rather than content.  Dropped before rows are sorted; duplicate rows still
@@ -239,13 +241,16 @@ def scrub(value: Any, data_dir: str) -> Any:
     """
     if isinstance(value, dict):
         return {
-            key: PLACEHOLDER if key in VOLATILE_KEYS else scrub(item, data_dir)
+            key: (
+                PLACEHOLDER if key in VOLATILE_KEYS
+                else BUILD_NAME.sub(PLACEHOLDER, item)
+                if key == VERSION_INFO_KEY and isinstance(item, str)
+                else scrub(item, data_dir)
+            )
             for key, item in value.items()
         }
     if isinstance(value, list):
         return [scrub(item, data_dir) for item in value]
-    if isinstance(value, str) and VOLATILE_VALUES.match(value):
-        return PLACEHOLDER
     if isinstance(value, str) and data_dir in value:
         return value.replace(data_dir, DATA_DIR_PLACEHOLDER)
     return value
