@@ -79,7 +79,6 @@ IGNORED_CATEGORIES: dict[str, str] = {
 _FLOWS = "flows/"
 _CATEGORIES = "lcia_categories/"
 _METHODS = "lcia_methods/"
-_LOCATIONS = "locations/"
 
 
 class GreenDeltaLciaError(RuntimeError):
@@ -94,21 +93,29 @@ class Package:
     method: dict[str, Any]
     #: The 25 categories, each with its factors inline.
     categories: tuple[dict[str, Any], ...]
-    #: Every flow the package ships, by its openLCA UUID.
+    #: The flows those categories' factors name, by openLCA UUID -- 33,045 of
+    #: the 61,211 the package ships.  The rest are other methods' and are not
+    #: parsed: the stub beside a factor already states a flow's name, category
+    #: and unit, and the document is opened for the one thing the stub lacks,
+    #: its registry number.
     flows: dict[str, dict[str, Any]]
-    #: Location code by location UUID -- ``CH``, ``ES-CA``.
-    locations: dict[str, str]
 
     @property
     def method_name(self) -> str:
         return str(self.method.get("name") or "")
 
 
-def _documents(archive: ZipFile, prefix: str) -> Iterator[dict[str, Any]]:
-    """Every JSON document under one folder of the package."""
+def _documents(
+    archive: ZipFile, prefix: str, *, only: set[str] | None = None
+) -> Iterator[dict[str, Any]]:
+    """Every JSON document under one folder of the package, or with *only*,
+    the documents named by those ids: openLCA files each under its ``@id``."""
     for name in archive.namelist():
-        if name.startswith(prefix) and name.endswith(".json"):
-            yield orjson.loads(archive.read(name))
+        if not (name.startswith(prefix) and name.endswith(".json")):
+            continue
+        if only is not None and name[len(prefix):-len(".json")] not in only:
+            continue
+        yield orjson.loads(archive.read(name))
 
 
 def read_package(path: Path, *, method_name: str) -> Package:
@@ -117,7 +124,9 @@ def read_package(path: Path, *, method_name: str) -> Package:
     The package holds 45 methods, and a category document says nothing about
     which method it belongs to: the method's own ``impactCategories`` is what
     does, so only the categories it lists are read, less
-    :data:`IGNORED_CATEGORIES`.
+    :data:`IGNORED_CATEGORIES`, and only the flows their factors name.  The
+    locations are not read at all since the per-place rows are refused
+    (:func:`_factors`).
 
     :raises GreenDeltaLciaError: if no method, or more than one, is called
         *method_name*. Picking one of two would publish an implementation under
@@ -143,12 +152,14 @@ def read_package(path: Path, *, method_name: str) -> Package:
             for category in _documents(archive, _CATEGORIES)
             if str(category.get("@id") or "") in listed - IGNORED_CATEGORIES.keys()
         )
-        flows = {
-            str(flow["@id"]): flow for flow in _documents(archive, _FLOWS)
+        named = {
+            str((row.get("flow") or {}).get("@id") or "")
+            for category in categories
+            for row in category.get("impactFactors") or ()
         }
-        locations = {
-            str(location["@id"]): str(location.get("code") or "")
-            for location in _documents(archive, _LOCATIONS)
+        flows = {
+            str(flow["@id"]): flow
+            for flow in _documents(archive, _FLOWS, only=named)
         }
     ignored = sorted(listed & IGNORED_CATEGORIES.keys())
     if ignored:
@@ -156,12 +167,7 @@ def read_package(path: Path, *, method_name: str) -> Package:
             "greendelta_categories_ignored",
             categories=[IGNORED_CATEGORIES[uuid] for uuid in ignored],
         )
-    return Package(
-        method=methods[0],
-        categories=categories,
-        flows=flows,
-        locations=locations,
-    )
+    return Package(method=methods[0], categories=categories, flows=flows)
 
 
 def _check_categories(package: Package, *, path: Path) -> None:
