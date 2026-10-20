@@ -41,6 +41,7 @@ from brightway_flows.sources import (
     PACKAGE_DATA_DIR,
     base_source_list,
     known_source_lists,
+    registered_source_list,
 )
 
 MIXTURE_EC = "232-319-8"
@@ -1307,6 +1308,101 @@ class RebasingARowOntoAnotherUnitTestCase(unittest.TestCase):
             with self.subTest(factor=value):
                 with self.assertRaises(ValueError):
                     self._apply({**self.FIX, "conversion_factor": value}, [self._row()])
+
+
+class OpenLcaCopiesTheOtherListsCorrectionsTestCase(unittest.TestCase):
+    """GreenDelta's package copies rows from ecoinvent and EF 3.1 with their
+    errors, and `openlca-2.8.2-manual-fixes.json` makes the corrections the
+    other lists' files already make for the same rows (#412). Each test checks
+    the rows the fix names and that the rows beside them are left alone."""
+
+    @classmethod
+    def setUpClass(cls):
+        source = registered_source_list("openlca-2.8.2")
+        if not source.flows_path.exists():
+            raise unittest.SkipTest("openlca-2.8.2 not fetched")
+        cls.source = source
+        flows = orjson.loads(source.flows_path.read_bytes())
+        cls.shipped = {row["uuid"]: dict(row) for row in flows}
+        apply_manual_fixes(flows, source.manual_fixes_path, label=source.key, quiet=True)
+        cls.fixed = {row["uuid"]: row for row in flows}
+
+    def _named(self, name, rows=None):
+        return [row for row in (rows or self.fixed).values() if row.get("name") == name]
+
+    def test_stibnite_carries_the_minerals_number(self):
+        row = self.fixed["3e0034cd-21d6-4582-9fbf-09c26edd05df"]
+        self.assertEqual(row["name"], "Stibnite")
+        self.assertEqual(row["cas_numbers"], ["1317-86-8"])
+        self.assertEqual(
+            self.shipped["3e0034cd-21d6-4582-9fbf-09c26edd05df"]["cas_numbers"],
+            ["1345-04-6"],
+            "the fix is written against the number the package ships",
+        )
+
+    def test_the_other_stibnite_row_is_left_alone(self):
+        """The package's own `Stibnite` already carries the mineral's number."""
+        others = [r for r in self._named("Stibnite") if r["uuid"] != "3e0034cd-21d6-4582-9fbf-09c26edd05df"]
+        self.assertEqual(len(others), 1)
+        self.assertEqual(others[0]["cas_numbers"], ["1317-86-8"])
+
+    def test_the_agricultural_soil_epoxiconazole_row_gains_the_synonym(self):
+        row = self.fixed["1afedfb8-dfbd-4722-a5fc-f678c593d907"]
+        self.assertEqual(row["cas_numbers"], ["135319-73-2"])
+        self.assertIn("BAS 480F", row["synonyms"])
+        self.assertNotIn("synonyms", self.shipped["1afedfb8-dfbd-4722-a5fc-f678c593d907"])
+
+    def test_every_epoxiconazole_row_under_ecoinvents_number_now_has_it(self):
+        rows = [r for r in self._named("Epoxiconazole") if r["cas_numbers"] == ["135319-73-2"]]
+        self.assertEqual(len(rows), 6)
+        for row in rows:
+            with self.subTest(uuid=row["uuid"]):
+                self.assertIn("BAS 480F", row["synonyms"])
+
+    def test_hfe_236ea2_carries_its_own_number(self):
+        name = "Ether, 1,2,2-trifluoroethyl trifluoromethyl-, HFE-236ea2"
+        rows = self._named(name)
+        self.assertEqual(len(rows), 4)
+        for row in rows:
+            with self.subTest(uuid=row["uuid"]):
+                self.assertEqual(row["cas_numbers"], ["84011-06-3"])
+        shipped = {tuple(r["cas_numbers"]) for r in self._named(name, self.shipped)}
+        self.assertEqual(shipped, {("2356-62-9",)})
+
+    def test_hfe_227ea_is_left_as_shipped(self):
+        """The package's own `HFE-227EA` rows carry no number and keep none."""
+        rows = self._named("HFE-227EA")
+        self.assertEqual(len(rows), 4)
+        for row in rows:
+            with self.subTest(uuid=row["uuid"]):
+                self.assertEqual(row.get("cas_numbers") or [], [])
+
+    def test_arsenic_v_carries_arsenates_number(self):
+        rows = self._named("Arsenic V")
+        self.assertEqual(len(rows), 14)
+        for row in rows:
+            with self.subTest(uuid=row["uuid"]):
+                self.assertEqual(row["cas_numbers"], ["17428-41-0"])
+        shipped = {tuple(r["cas_numbers"]) for r in self._named("Arsenic V", self.shipped)}
+        self.assertEqual(shipped, {("61805-96-7",)})
+
+    def test_the_arsenic_ion_rows_are_not_touched(self):
+        """`Arsenic Ion` is the unspeciated ion and keeps whatever it ships."""
+        for row in self._named("Arsenic Ion"):
+            with self.subTest(uuid=row["uuid"]):
+                self.assertEqual(row.get("cas_numbers"), self.shipped[row["uuid"]].get("cas_numbers"))
+
+    def test_gamma_chlordane_is_refused_and_the_isomers_are_not(self):
+        refused = self.source.excluded_uuids()
+        gamma = [r for r in self.shipped.values() if r.get("name") == "Chlordane, gamma-"]
+        self.assertEqual(len(gamma), 4)
+        for row in gamma:
+            with self.subTest(uuid=row["uuid"]):
+                self.assertIn(row["uuid"], refused)
+                self.assertEqual(row["cas_numbers"], ["5566-34-7"])
+        kept = [r for r in self.shipped.values() if str(r.get("name", "")).startswith("Chlordane") and r.get("name") != "Chlordane, gamma-"]
+        self.assertTrue(kept)
+        self.assertEqual({r["uuid"] for r in kept} & refused, set())
 
 
 if __name__ == "__main__":

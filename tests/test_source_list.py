@@ -1111,7 +1111,7 @@ class ExcludedUuidsTestCase(unittest.TestCase):
     def test_a_list_with_refusals_names_them(self):
         source = registered_source_list("openlca-2.8.2")
         refused = source.excluded_uuids()
-        self.assertEqual(len(refused), 6_427)
+        self.assertEqual(len(refused), 6_431)
         self.assertIsInstance(refused, frozenset)
 
     def test_a_list_with_no_additional_flows_file_refuses_nothing(self):

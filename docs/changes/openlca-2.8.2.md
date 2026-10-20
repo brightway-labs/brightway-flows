@@ -62,6 +62,19 @@ PM10 emission. Whether black carbon is a substance of its own is not decided
 yet ([#384](https://github.com/brightway-labs/brightway-flows/issues/384)),
 so the 13 rows are refused and published as excluded with the reason.
 
+## Gamma-chlordane refused
+
+The package ships `Chlordane, gamma-` four times (air, agricultural soil,
+unspecified soil, unspecified water) under 5566-34-7. Gamma-chlordane is the
+environmental literature's name for trans-chlordane, which the package also
+ships, as `Chlordane, trans-` (5103-74-2), in the same compartments; and
+5566-34-7 is not a chlordane at all but a differently chlorinated indene that no
+inventory reports. Stepwise 2006 ships one row of the same name and
+[`stepwise-2006-additional-flows.json`](https://github.com/brightway-labs/brightway-flows/issues/167)
+refuses it with that reasoning; the four rows here are refused the same way.
+On the first build that merged the list (20 October 2026) they had been
+published as a fifth chlordane, with no factor from any implementation.
+
 ## EF 3.1's own flows
 
 125 rows carry an EF 3.1 identifier: GreenDelta's copy of EF's flow, renamed in
@@ -267,4 +280,15 @@ those is ruled on yet.
 | openLCA name | Compartments | Number removed | Why |
 |---|---|---|---|
 | Nitrogen, organic bound | water: all eleven the package uses | 7727-37-9 | that is N₂, the gas that is most of the air; organically bound nitrogen is a measurement over many compounds and no CAS number names it. The gas's two synonyms, `dinitrogen` and `molecular nitrogen`, come off the same rows. Left on, the rows would fuse with nitrogen gas ([#57](https://github.com/brightway-labs/brightway-flows/issues/57)) |
+| Stibnite | `Resource / in ground` | 1345-04-6 → 1317-86-8 | the row is ecoinvent's, under ecoinvent's uuid, and carries the manufactured antimony trisulfide's number where the mineral's is 1317-86-8 (IARC vol. 47); ecoinvent's own fixes rewrite it, BAFU registers its stibnite 1317-86-8, and left as shipped the row joined EF's thirteen emission flows of the compound on the build of 20 October 2026 ([#123](https://github.com/brightway-labs/brightway-flows/issues/123)) |
+| Ether, 1,2,2-trifluoroethyl trifluoromethyl-, HFE-236ea2 | air: four compartments | 2356-62-9 → 84011-06-3 | 2356-62-9 is HFE-227ea's number, under which EF 3.1 registers `HFE-227EA`; EF registers `HFE-236ea2` 84011-06-3 and Stepwise 2006 writes that number on its row of this name. As shipped, the four rows reached `HFE-227EA`, and GreenDelta's two factors for one flow were reported as eight collisions |
+| Arsenic V | air, soil and water: fourteen compartments | 61805-96-7 → 17428-41-0 | 61805-96-7 names no arsenic compound: Common Chemistry does not resolve it and PubChem lists it only as a second number on 1,3-dimethylthiourea. The name is EF 3.1's `arsenic (v)`, 17428-41-0, published as `Arsenic(5+)`; as shipped, the rows minted a second `Arsenic(5+)` beside it |
+
+One synonym is restored rather than a number corrected: the agricultural-soil
+`Epoxiconazole` row (135319-73-2, ecoinvent's uuid) is the one of the package's
+six that ships without `BAS 480F`, the development code EF 3.1 registers the
+fungicide under, and without it the row minted a second `Epoxiconazole` where
+its five siblings reached EF's. ecoinvent's fixes make the same correction for
+the two of its own rows that lack the synonym
+([#826](https://github.com/brightway-labs/brightway-flows/issues/826)).
 

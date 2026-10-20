@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "description": "openLCA LCIA Methods 2.8.2 copies most of its flows from ecoinvent and EF 3.1, and copies their errors with them. Five of those errors the other lists already correct -- in `ecoinvent-3.12-manual-fixes.json`, `ef-3.1-manual-fixes.json` and `stepwise-2006-additional-flows.json` -- and on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`, #412, fixed in #386) the openLCA copies arrived uncorrected and landed where the other lists' rows were stopped from landing:\n\n- `Stibnite` in `Resource / in ground` (3e0034cd, ecoinvent's own uuid) carries 1345-04-6, the manufactured antimony trisulfide, and joined EF's thirteen emission flows of the compound. ecoinvent's fix rewrites that number to 1317-86-8, the mineral's, in every release (#123, 0604).\n- `Epoxiconazole` to agricultural soil (1afedfb8, ecoinvent's uuid) is the one of the package's six 135319-73-2 rows that ships without the synonym `BAS 480F`, and it minted a second fungicide; the other five reach EF's `Bas 480f` on the synonym. ecoinvent's fix restores the synonym on the rows that lack it (0826).\n- `Chlordane, gamma-` (four rows) carries 5566-34-7, which is not a chlordane; Stepwise's additions refuse its row with the reasoning, and the package's four were published as a fifth chlordane (0786).\n- `Ether, 1,2,2-trifluoroethyl trifluoromethyl-, HFE-236ea2` (four rows) carries 2356-62-9, which is HFE-227ea's number -- EF 3.1 registers `HFE-227EA` under it and `HFE-236ea2` under 84011-06-3, and Stepwise's row of this name carries 84011-06-3 -- so the rows reached `HFE-227EA` and GreenDelta's two numbers for one flow were reported as a collision eight times over.\n- `Arsenic V` (fourteen rows) carries 61805-96-7, which names no arsenic compound: PubChem lists it only as a second registry number on 1,3-dimethylthiourea (CID 2723631), and Common Chemistry does not resolve it. The rows minted a second `Arsenic(5+)` beside the one EF 3.1 registers 17428-41-0, which `lcia-substance-decisions.json` already reads GreenDelta's `Arsenic V` as.\n\nThe corrections go in `openlca-2.8.2-manual-fixes.json` and the refusal in `openlca-2.8.2-additional-flows.json`, each with the evidence, so the package's copy of a row is read the way the row it was copied from is read. Written on 20 October 2026 against that build, where every claim below fails.\n\n**The second defect: a row with no registry number under a spelling the ion naming standard already publishes.** `Vanadium V` (three rows, in ground water, long-term ground water and a river), `Lithium I` (one row, river) and `Titanium Ion` (fourteen rows, across air, soil and water) ship with no number, and each name is a synonym `domain/ion_names.py` writes on `Vanadium(5+)`, `Lithium(1+)` and `Titanium, ion` (#401). The name route found those synonyms and refused the hits, because an alternative-label hit on a substance that carries a registry number is the guard against a trade name (`Granite` reaching penoxsulam, #103), so each name minted a second substance under the same published label: two `Vanadium(5+)`, two `Lithium(1+)`, two `Titanium, ion`. The copy of `Titanium, ion` then made the standard's synonyms ambiguous and `carry_member_names` withdrew them from both, which is why 0401's claim on them failed too; and `characterise` stopped on the doubled `Vanadium(5+)` label.\n\nA synonym the standard wrote is built from the substance's own name by rule, as the systematic names `_narrow_label_candidates` already accepts are, so it can be neither a trade name nor another substance's. The merge now accepts such a hit, in the narrowest form that answers for these rows: the row's own shipped name, not one of its synonyms, on a row that carries no registry number at all. A numbered row that finds nothing by its number is a disagreement, not missing evidence, and stays refused -- which is what kept ecoinvent's `Chromium IV` off chromium(6+) when every standard synonym was read as a preferred name (#401).",
+  "expectations": [
+    {
+      "id": "0412-stibnite-is-the-mineral",
+      "issue": 412,
+      "title": "openLCA's `Stibnite` reaches the mineral, not EF's antimony trisulfide",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "3e0034cd-21d6-4582-9fbf-09c26edd05df"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Stibnite",
+        "target_cas": "1317-86-8"
+      },
+      "comment": "On the build of 20 October 2026 it reached `Antimony Trisulfide` by 1345-04-6. `basis: cas`, because the fix rewrites the number and the row should reach the mineral by it, as ecoinvent's and BAFU's rows do."
+    },
+    {
+      "id": "0412-epoxiconazole-is-one-fungicide",
+      "issue": 412,
+      "title": "All 26 openLCA epoxiconazole rows reach EF's fungicide",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Epoxiconazole"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 26,
+        "same_substance": true,
+        "target_cas": "106325-08-0"
+      },
+      "comment": "20 rows carry 106325-08-0 and reach it by number; six carry ecoinvent's 135319-73-2, and five of those reach it on the synonym `BAS 480F`. On the build of 20 October 2026 the sixth, to agricultural soil, minted a second `Epoxiconazole`."
+    },
+    {
+      "id": "0412-the-agricultural-soil-row-joins-them",
+      "issue": 412,
+      "title": "The agricultural-soil row that ships without the synonym reaches the same substance",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "1afedfb8-dfbd-4722-a5fc-f678c593d907"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "label",
+        "target_cas": "106325-08-0"
+      },
+      "comment": "`basis: label`: the fix supplies the synonym rather than a number, and the row should reach the substance the way its five siblings do."
+    },
+    {
+      "id": "0412-no-gamma-chlordane-row-is-merged",
+      "issue": 412,
+      "title": "openLCA's four `Chlordane, gamma-` rows are refused, as Stepwise's is",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Chlordane, Gamma-"
+      },
+      "expect": {
+        "row_count": 0
+      },
+      "comment": "Four rows on the build of 20 October 2026, published as a fifth chlordane under 5566-34-7. A refused row is not in `merge_outcomes` at all, which is what a count of zero says; 0786 keeps the claim that no substance is published under the number. The subject is spelled as the merge table writes the name; the package writes `Chlordane, gamma-`."
+    },
+    {
+      "id": "0412-hfe-236ea2-reaches-hfe-236ea2",
+      "issue": 412,
+      "title": "The rows named for HFE-236ea2 reach HFE-236ea2",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Ether, 1,2,2-trifluoroethyl Trifluoromethyl-, HFE-236ea2"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 4,
+        "basis": "cas",
+        "target_name": "HFE-236ea2",
+        "target_cas": "84011-06-3"
+      },
+      "comment": "On the build of 20 October 2026 all four reached `HFE-227EA` by 2356-62-9, the number the package writes on them. Stepwise's row of the same name carries 84011-06-3 and reaches HFE-236ea2."
+    },
+    {
+      "id": "0412-arsenic-v-is-the-arsenate-the-list-has",
+      "issue": 412,
+      "title": "openLCA's fourteen `Arsenic V` rows reach EF's arsenic(5+)",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Arsenic V"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 14,
+        "same_substance": true,
+        "basis": "cas",
+        "target_cas": "17428-41-0",
+        "target_name": "Arsenic(5+)"
+      },
+      "comment": "On the build of 20 October 2026 they minted a second `Arsenic(5+)`, because 61805-96-7 reaches nothing and `Arsenic V` is an alternative label on a substance that carries a number, which the name route refuses."
+    },
+    {
+      "id": "0412-one-arsenic-5-plus",
+      "issue": 412,
+      "title": "One substance is registered 17428-41-0",
+      "subject": {
+        "kind": "substance",
+        "cas": "17428-41-0"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "Two on the build of 20 October 2026: EF's, and the copy the fourteen rows minted, which enrichment then registered under the same number."
+    },
+    {
+      "id": "0412-vanadium-v-with-no-number-is-vanadium-5-plus",
+      "issue": 412,
+      "title": "openLCA's 29 `Vanadium V` rows all reach a flow, and the three numberless ones reach `Vanadium(5+)`",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Vanadium V"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 29,
+        "substance_count": {
+          "at_most": 2
+        }
+      },
+      "comment": "29 rows: twelve carry 22537-31-1 and reach `Vanadium(5+)` by number; fourteen carry 7440-62-2, the element's number, and reach `Vanadium` by it -- the package writes the element's number on many of its ion names (#380), and a number is a ruling's question, not this rule's; the three in ground water, long-term ground water and a river (a3178646, c2e2b45b, 7b8e28ba) carry none, and on the build of 20 October 2026 minted a third substance, a second `Vanadium(5+)`, on which `characterise` then stopped. `substance_count` at most 2: the element and the ion, and a third is the defect coming back."
+    },
+    {
+      "id": "0412-the-river-row-reaches-it-by-the-standards-spelling",
+      "issue": 412,
+      "title": "The river row reaches vanadium(5+) by its name, and the merge says so",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "7b8e28ba-424c-3744-98af-56f96ddc0c83"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "label",
+        "target_name": "Vanadium(5+)"
+      },
+      "comment": "`basis: label`: the number is absent and the name is what reached the substance."
+    },
+    {
+      "id": "0412-one-vanadium-5-plus",
+      "issue": 412,
+      "title": "One substance is registered 22537-31-1",
+      "subject": {
+        "kind": "substance",
+        "cas": "22537-31-1"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "Two on the build of 20 October 2026, both labelled `Vanadium(5+)`."
+    },
+    {
+      "id": "0412-lithium-i-with-no-number-is-lithium-1-plus",
+      "issue": 412,
+      "title": "openLCA's numberless `Lithium I` row reaches `Lithium(1+)`",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "6c29b24f-7c0e-3c4c-a561-462afd4d231f"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "label",
+        "target_name": "Lithium(1+)",
+        "target_cas": "17341-24-1"
+      },
+      "comment": "The one `Lithium I` row of sixteen that ships with no number; it minted a second `Lithium(1+)` on the build of 20 October 2026."
+    },
+    {
+      "id": "0412-one-lithium-1-plus",
+      "issue": 412,
+      "title": "One substance is registered 17341-24-1",
+      "subject": {
+        "kind": "substance",
+        "cas": "17341-24-1"
+      },
+      "expect": {
+        "count": 1
+      },
+      "comment": "Two on the build of 20 October 2026."
+    },
+    {
+      "id": "0412-titanium-ion-with-no-number-is-the-generic-ion",
+      "issue": 412,
+      "title": "openLCA's 26 `Titanium Ion` rows reach two substances, the element and the ion, and the fourteen numberless ones reach the ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Titanium Ion"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 26,
+        "substance_count": {
+          "at_most": 2
+        }
+      },
+      "comment": "26 rows: nine carry titanium's own number 7440-32-6 and reach the element, as ecoinvent's rows of that number do (#380); two carry 22541-75-9 and reach `Titanium, ion` by it, and one spelled `Titanium, Ion` reaches it by the label; the fourteen with no number minted a second `Titanium, ion` on the build of 20 October 2026, a third substance. `substance_count` at most 2, so a third target is the defect coming back; the row below says which substance the numberless ones reach."
+    },
+    {
+      "id": "0412-the-titanium-river-row-reaches-the-ion-by-its-spelling",
+      "issue": 412,
+      "title": "A numberless `Titanium Ion` row reaches `Titanium, ion` by its name, and the merge says so",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "030145f6-dcf3-3230-9fb6-22a09b54d5bf"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "label",
+        "target_name": "Titanium, ion",
+        "target_cas": "22541-75-9"
+      },
+      "comment": "The river row, one of the fourteen; `basis: label` because the name is all it ships. On the build of 20 October 2026 it minted the second `Titanium, ion`."
+    },
+    {
+      "id": "0412-one-titanium-ion-substance",
+      "issue": 412,
+      "title": "One substance is labelled `Titanium, ion`",
+      "subject": {
+        "kind": "substance",
+        "label": "Titanium, ion"
+      },
+      "expect": {
+        "count": 1,
+        "alt_label": "Titanium Ion"
+      },
+      "comment": "Two on the build of 20 October 2026, and the synonym withdrawn from both; one, carrying the standard's `Titanium Ion`, is what 0401 states as well."
+    }
+  ]
+}

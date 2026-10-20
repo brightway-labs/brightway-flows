@@ -25,6 +25,59 @@
       "field": "synonyms",
       "remove_value": "molecular nitrogen",
       "comment": "The second of the two gas synonyms on the organic-bound rows. Removed for the same reason as `dinitrogen` above. (#57)"
+    },
+    {
+      "match": {
+        "uuid": "3e0034cd-21d6-4582-9fbf-09c26edd05df",
+        "name": "Stibnite"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "1345-04-6"
+      ],
+      "new_value": [
+        "1317-86-8"
+      ],
+      "comment": "The package's `Stibnite` in `Resource / in ground` is ecoinvent's row under ecoinvent's own uuid, carrying ecoinvent's number: 1345-04-6, which IARC (vol. 47) gives to manufactured antimony trisulfide, where 1317-86-8 is the mineral. ecoinvent's fixes rewrite it to 1317-86-8 in every release, with the evidence set out there -- every list's stibnite is a resource out of the ground, every row for the compound is an emission (EF 3.1's thirteen), and BAFU registers its stibnite 1317-86-8 independently (#123). Copied here so the package's copy of the row reaches the mineral the other lists' copies reach rather than joining EF's antimony trisulfide, which is where the uncorrected number sent it on the build of 20 October 2026 (#412). Matched on the uuid and the name together, so a release that reuses the uuid for something else is not rewritten."
+    },
+    {
+      "match": {
+        "uuid": "1afedfb8-dfbd-4722-a5fc-f678c593d907",
+        "name": "Epoxiconazole"
+      },
+      "field": "synonyms",
+      "new_value": [
+        "BAS 480F"
+      ],
+      "comment": "The synonym the package writes on five of its six `Epoxiconazole` rows registered 135319-73-2, restored on the agricultural-soil row that ships without it -- the same correction ecoinvent's fixes make for the two rows of its own eight that lack it. The number is ecoinvent's, stereochemistry unspecified, and EF 3.1 registers the fungicide 106325-08-0 under BASF's development code `Bas 480f`; neither list carries the other's number, so the synonym is the only bridge, and without it this row minted a second `Epoxiconazole` on the build of 20 October 2026 while its siblings reached EF's (#412, and see 0826)."
+    },
+    {
+      "match": {
+        "name": "Ether, 1,2,2-trifluoroethyl trifluoromethyl-, HFE-236ea2",
+        "cas_numbers": "2356-62-9"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "2356-62-9"
+      ],
+      "new_value": [
+        "84011-06-3"
+      ],
+      "comment": "The package writes 2356-62-9 on its four rows named for HFE-236ea2, and that number is HFE-227ea's: EF 3.1 registers `HFE-227EA` (trifluoromethyl 1,2,2,2-tetrafluoroethyl ether, C3HF7O) under 2356-62-9 and `HFE-236ea2` (1,2,2-trifluoroethyl trifluoromethyl ether, C3H2F6O) under 84011-06-3, and Stepwise 2006 writes 84011-06-3 on its row of this exact name. The name says which molecule GreenDelta meant twice over, in words and in the designation, and the number contradicts it. Rewritten to the name's number: on the build of 20 October 2026 the four rows reached `HFE-227EA`, and GreenDelta's two different factors for one flow and place were reported as eight collisions (#412). Matched on the name and the wrong number together, so a release that corrects the number itself is left alone."
+    },
+    {
+      "match": {
+        "name": "Arsenic V",
+        "cas_numbers": "61805-96-7"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "61805-96-7"
+      ],
+      "new_value": [
+        "17428-41-0"
+      ],
+      "comment": "The package writes 61805-96-7 on all fourteen of its `Arsenic V` rows, and the number names no arsenic compound: Common Chemistry does not resolve it, and PubChem lists it only as a second registry number on 1,3-dimethylthiourea (CID 2723631), a sulfur compound with no arsenic in it. The name is EF 3.1's `arsenic (v)`, registered 17428-41-0 and published here as `Arsenic(5+)`, and `lcia-substance-decisions.json` already reads GreenDelta's `Arsenic V` as that substance for the factor it states. Rewritten to that number: with the unresolvable one, the fourteen rows minted a second `Arsenic(5+)` on the build of 20 October 2026, because `Arsenic V` is an alternative label on a substance that carries a registry number and the name route refuses such a hit (#412). Matched on the name and the number together."
     }
   ]
 }

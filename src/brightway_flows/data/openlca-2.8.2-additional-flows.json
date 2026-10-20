@@ -70701,6 +70701,50 @@
       "unit": "m3",
       "reason": "A water-stress class standing in for a place: the class says which kind of watershed the water came from or went to, as a place in the name would. Ecological Scarcity 2006 and 2013, ILCD 2011 Midpoint+ and ECO-COSTS 2025 score each class differently, and EF 2.0 to 3.1, ReCiPe 2016, BEES+, Cumulative Exergy Demand and Environmental Prices score every class as plain water, so it cannot be folded onto unspecified water. Refused by decision of 2026-10-18, as the location-specific rows are (#389).",
       "comment": "One of the eleven water-stress names: five emissions to water, six `Water, unspecified natural origin, … water stress` resources. The uuid is GreenDelta's own `@id`."
+    },
+    {
+      "uuid": "aceee95c-607f-3e54-a170-c065d9d9cbfe",
+      "name": "Chlordane, gamma-",
+      "context": [
+        "Emission to air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "Gamma-chlordane is not a substance anybody inventories in its own right: in the environmental literature the name means trans-chlordane, which the package ships as `Chlordane, trans-` (5103-74-2) in this same compartment. The registry number on this row, 5566-34-7, is not a chlordane -- it belongs to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene (EC 226-938-2), a compound with two chlorines on one carbon where chlordane has one each on two, and no inventory reports it. Mapping the row onto trans-chlordane would state GreenDelta's number twice in one compartment; publishing it under its own number adds a substance no inventory means and splits chlordane a fifth way, which is what the build of 20 October 2026 did. Refused as Stepwise 2006's row of this name is, in `stepwise-2006-additional-flows.json` (#167, #412).",
+      "comment": "One of the package's four `Chlordane, gamma-` rows, each carrying 5566-34-7 and EC 226-938-2. Measured on the six-list build of 20 October 2026 (merge run `76b3ec8f`): the four minted `Chlordane, gamma-` as a fifth chlordane substance, with no factor from any implementation."
+    },
+    {
+      "uuid": "f5e2d88f-4724-3b48-a45c-05f59b63f511",
+      "name": "Chlordane, gamma-",
+      "context": [
+        "Emission to soil",
+        "agricultural"
+      ],
+      "unit": "kg",
+      "reason": "Gamma-chlordane is not a substance anybody inventories in its own right: in the environmental literature the name means trans-chlordane, which the package ships as `Chlordane, trans-` (5103-74-2) in this same compartment. The registry number on this row, 5566-34-7, is not a chlordane -- it belongs to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene (EC 226-938-2), a compound with two chlorines on one carbon where chlordane has one each on two, and no inventory reports it. Mapping the row onto trans-chlordane would state GreenDelta's number twice in one compartment; publishing it under its own number adds a substance no inventory means and splits chlordane a fifth way, which is what the build of 20 October 2026 did. Refused as Stepwise 2006's row of this name is, in `stepwise-2006-additional-flows.json` (#167, #412).",
+      "comment": "One of the package's four `Chlordane, gamma-` rows, each carrying 5566-34-7 and EC 226-938-2. Measured on the six-list build of 20 October 2026 (merge run `76b3ec8f`): the four minted `Chlordane, gamma-` as a fifth chlordane substance, with no factor from any implementation."
+    },
+    {
+      "uuid": "c7e81501-55fc-37f1-b17b-6b1872f7a0bc",
+      "name": "Chlordane, gamma-",
+      "context": [
+        "Emission to soil",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "Gamma-chlordane is not a substance anybody inventories in its own right: in the environmental literature the name means trans-chlordane, which the package ships as `Chlordane, trans-` (5103-74-2) in this same compartment. The registry number on this row, 5566-34-7, is not a chlordane -- it belongs to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene (EC 226-938-2), a compound with two chlorines on one carbon where chlordane has one each on two, and no inventory reports it. Mapping the row onto trans-chlordane would state GreenDelta's number twice in one compartment; publishing it under its own number adds a substance no inventory means and splits chlordane a fifth way, which is what the build of 20 October 2026 did. Refused as Stepwise 2006's row of this name is, in `stepwise-2006-additional-flows.json` (#167, #412).",
+      "comment": "One of the package's four `Chlordane, gamma-` rows, each carrying 5566-34-7 and EC 226-938-2. Measured on the six-list build of 20 October 2026 (merge run `76b3ec8f`): the four minted `Chlordane, gamma-` as a fifth chlordane substance, with no factor from any implementation."
+    },
+    {
+      "uuid": "1f834959-8772-3abb-8ce5-49a12daf66ea",
+      "name": "Chlordane, gamma-",
+      "context": [
+        "Emission to water",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "reason": "Gamma-chlordane is not a substance anybody inventories in its own right: in the environmental literature the name means trans-chlordane, which the package ships as `Chlordane, trans-` (5103-74-2) in this same compartment. The registry number on this row, 5566-34-7, is not a chlordane -- it belongs to 2,2,4,5,6,7,8,8-octachloro-2,3,3a,4,7,7a-hexahydro-4,7-methano-1H-indene (EC 226-938-2), a compound with two chlorines on one carbon where chlordane has one each on two, and no inventory reports it. Mapping the row onto trans-chlordane would state GreenDelta's number twice in one compartment; publishing it under its own number adds a substance no inventory means and splits chlordane a fifth way, which is what the build of 20 October 2026 did. Refused as Stepwise 2006's row of this name is, in `stepwise-2006-additional-flows.json` (#167, #412).",
+      "comment": "One of the package's four `Chlordane, gamma-` rows, each carrying 5566-34-7 and EC 226-938-2. Measured on the six-list build of 20 October 2026 (merge run `76b3ec8f`): the four minted `Chlordane, gamma-` as a fifth chlordane substance, with no factor from any implementation."
     }
   ]
 }
