@@ -1174,6 +1174,15 @@ def characterise(
     for queue, items in queues.items():
         replace_queue_items(db_path, queue=queue, items=items)
 
+    # Which build this characterises, so the files name the commit they came
+    # from.  In `stats` itself, so `lcia_runs.stats_json` and the files hold
+    # the same dict and a reader checking one against the other finds no
+    # extra keys.  Not this run's own id: characterising one build twice has
+    # to write the same bytes, and that id is new every time.
+    stats["build_run_id"] = build.run_id if build else ""
+    stats["build_revision"] = build.git_commit if build else ""
+    stats["build_revision_dirty"] = build.git_dirty if build else False
+
     write_characterisation(
         db_path,
         run=run,
@@ -1186,24 +1195,14 @@ def characterise(
     )
     # The published files, from the same records the tables were written from
     # and in the same call, so the two cannot disagree about what this run found.
-    # They also say which build and which commit they came from, which the
-    # tables already know from `pipeline_runs` and a reader of the files alone
-    # did not.  Not this run's own id: characterising one build twice has to
-    # write the same bytes, and that id is new every time.
-    published_stats = {
-        **stats,
-        "build_run_id": build.run_id if build else "",
-        "build_revision": build.git_commit if build else "",
-        "build_revision_dirty": build.git_dirty if build else False,
-    }
     factors_path, differences_path = artifact_paths(db_path)
     write_factors(
-        build_factors_document(categories=categories, factors=factors, stats=published_stats),
+        build_factors_document(categories=categories, factors=factors, stats=stats),
         factors_path,
     )
     write_differences(
         build_differences_document(
-            differences=differences, coverage=gaps, stats=published_stats
+            differences=differences, coverage=gaps, stats=stats
         ),
         differences_path,
     )

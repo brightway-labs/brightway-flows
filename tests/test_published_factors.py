@@ -364,11 +364,18 @@ class TheFilesTestCase(ARunThatPublishesTestCase):
     def test_the_files_name_the_build_they_characterise(self):
         """The fixture's run records no commit, so the run is named and the
         commit is not."""
-        for stats in (self._factors()["stats"], self._differences()["stats"]):
+        connection = sqlite3.connect(self.db)
+        (stored,) = connection.execute(
+            "SELECT stats_json FROM lcia_runs ORDER BY started_at DESC LIMIT 1"
+        ).fetchone()
+        connection.close()
+        for stats in (self._factors()["stats"], self._differences()["stats"], orjson.loads(stored)):
             self.assertEqual(stats["build_run_id"], "build-9")
             self.assertEqual(stats["build_revision"], "")
             self.assertIs(stats["build_revision_dirty"], False)
             self.assertNotIn("characterise_run_id", stats)
+        # The files' stats are the table's, key for key.
+        self.assertEqual(self._factors()["stats"], orjson.loads(stored))
 
     def test_the_factors_file_validates_against_its_schema(self):
         errors = Draft202012Validator(
