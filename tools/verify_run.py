@@ -159,7 +159,7 @@ VOLATILE_KEYS = frozenset({
 
 #: The same, where the key is shared with a value that is not volatile:
 #: `owl:versionInfo` is a source list's own version on its scheme, and the
-#: build on the consensus scheme (`BuildRevision.describe`).  Only the second
+#: build on the consensus scheme (`PipelineRun.describe`).  Only the second
 #: is masked.
 VOLATILE_VALUES = re.compile(r"^run \S+, commit \S+")
 

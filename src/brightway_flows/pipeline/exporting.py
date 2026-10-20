@@ -34,6 +34,7 @@ from brightway_flows.pipeline.correspondences import (
     build_correspondences,
 )
 from brightway_flows.pipeline.review_records import (
+    PipelineRun,
     ReviewQueue,
     ReviewQueueItem,
     Severity,
@@ -49,9 +50,8 @@ from brightway_flows.pipeline.redirects import (
 from brightway_flows.domain.labels import coerce_alt_labels, flow_label_value
 from brightway_flows.domain.schema import SCHEMA_VERSION
 from brightway_flows.domain.simple_flow import HarmonisedFlowsSimple, SimpleFlow
+from brightway_flows.pipeline.review_tables import read_pipeline_run
 from brightway_flows.pipeline.sqlite import (
-    BuildRevision,
-    read_build_revision,
     read_published_flow_payloads,
     read_source_contexts,
 )
@@ -280,7 +280,7 @@ def _strip_lcia_from_flows(
     flows: list[dict[str, Any]],
     source_contexts: Mapping[str, Mapping[str, frozenset[tuple[str, ...]]]]
     | None = None,
-    build: BuildRevision | None = None,
+    build: PipelineRun | None = None,
 ) -> HarmonisedFlowsSimple:
     """Project the flow payloads onto the published document.
 
@@ -291,8 +291,9 @@ def _strip_lcia_from_flows(
     hand gets redirects that resolve but decline to classify themselves, and
     `build_simple_export` reads the table.
 
-    *build* is named on the consensus scheme as its `owl:versionInfo`, so the
-    document says which run and which commit produced it.
+    *build* is the run that wrote the database, named on the consensus scheme
+    as its `owl:versionInfo` so the document says which run and which commit
+    produced it.
     """
     out: list[SimpleFlow] = []
     for flow in flows:
@@ -342,7 +343,7 @@ def build_simple_export(db_path: Path) -> HarmonisedFlowsSimple:
     return _strip_lcia_from_flows(
         read_published_flow_payloads(db_path),
         read_source_contexts(db_path),
-        build=read_build_revision(db_path),
+        build=read_pipeline_run(db_path),
     )
 
 

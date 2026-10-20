@@ -411,7 +411,7 @@ def build_correspondences(
     registry; pass ``{}`` for a caller that wants the associations alone.
 
     *version_info* is the consensus scheme's `owl:versionInfo`: which build
-    this is, as `BuildRevision.describe` words it.  A source scheme's is the
+    this is, as `PipelineRun.describe` words it.  A source scheme's is the
     vendor's own version; ours had been left empty, and a field that was
     already published is where the build can be named without a format bump.
     """

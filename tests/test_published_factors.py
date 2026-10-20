@@ -42,6 +42,7 @@ from brightway_flows.filesystem import (
 )
 from brightway_flows.lcia.pipeline import characterise
 from brightway_flows.lcia.publish import artifact_paths
+from brightway_flows.pipeline.review_tables import create_review_tables
 from brightway_flows.sources import LciaMethodSpec, LciaSpec, SourceList
 from brightway_flows.webapps.app.queries.flows import _factor_counts
 
@@ -101,7 +102,7 @@ class ARunThatPublishesTestCase(unittest.TestCase):
             "list_name TEXT, list_version TEXT, source_flow_uuid TEXT, "
             "source_metadata_json TEXT)"
         )
-        connection.execute("CREATE TABLE pipeline_runs (run_id TEXT, timestamp TEXT)")
+        create_review_tables(connection)
         # The substances, because `characterise` reads their registry numbers:
         # what somebody else's model states arrives keyed on CAS and nothing else
         # (`lcia.contradictions`). Neither of these is in the evidence file.
@@ -140,7 +141,8 @@ class ARunThatPublishesTestCase(unittest.TestCase):
             ],
         )
         connection.execute(
-            "INSERT INTO pipeline_runs VALUES (?, ?)", ("build-9", "2026-08-17")
+            "INSERT INTO pipeline_runs (run_id, timestamp, schema_version) VALUES (?, ?, 1)",
+            ("build-9", "2026-08-17"),
         )
         connection.commit()
         connection.close()
@@ -360,8 +362,8 @@ class TheFilesTestCase(ARunThatPublishesTestCase):
         self.assertEqual(self.differences_path.name, LCIA_DIFFERENCES_FILEPATH.name)
 
     def test_the_files_name_the_build_they_characterise(self):
-        """The fixture's `pipeline_runs` predates the git columns, so the run
-        is named and the commit is not."""
+        """The fixture's run records no commit, so the run is named and the
+        commit is not."""
         for stats in (self._factors()["stats"], self._differences()["stats"]):
             self.assertEqual(stats["build_run_id"], "build-9")
             self.assertEqual(stats["build_revision"], "")

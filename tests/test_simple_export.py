@@ -21,6 +21,7 @@ from pathlib import Path
 import orjson
 
 from brightway_flows.pipeline.exporting import build_simple_export, write_simple_export
+from brightway_flows.pipeline.review_tables import create_review_tables
 
 #: The shape written for a flow that came from EF 3.1.
 FLOW_SHAPED = {
@@ -99,13 +100,15 @@ class SimpleExportTestCase(unittest.TestCase):
         the file, read from `pipeline_runs`."""
         build_db(self.db, [FLOW_SHAPED])
         conn = sqlite3.connect(self.db)
-        conn.execute(
-            "CREATE TABLE pipeline_runs (run_id TEXT, timestamp TEXT, git_commit TEXT, git_dirty INTEGER)"
+        create_review_tables(conn)
+        conn.executemany(
+            "INSERT INTO pipeline_runs (run_id, timestamp, schema_version, git_commit, git_dirty) "
+            "VALUES (?, ?, 1, ?, ?)",
+            [
+                ("run-old", "2026-10-19T00:00:00+00:00", "1" * 40, 0),
+                ("run-new", "2026-10-20T00:00:00+00:00", "2" * 40, 1),
+            ],
         )
-        conn.executemany("INSERT INTO pipeline_runs VALUES (?, ?, ?, ?)", [
-            ("run-old", "2026-10-19T00:00:00+00:00", "1" * 40, 0),
-            ("run-new", "2026-10-20T00:00:00+00:00", "2" * 40, 1),
-        ])
         conn.commit()
         conn.close()
         (consensus, *_sources) = build_simple_export(self.db).to_dict()["concept_schemes"]

@@ -17,7 +17,7 @@ from brightway_flows.domain.vocabulary import (
     ecoinvent_source_scheme,
     scheme_for_flow_iri,
 )
-from brightway_flows.pipeline.sqlite import BuildRevision
+from brightway_flows.pipeline.review_records import PipelineRun
 from brightway_flows.sources import excluded_source_flows, known_source_lists
 from brightway_flows.pipeline.correspondences import (
     CONSENSUS_SCHEME_IRI,
@@ -304,13 +304,15 @@ class ProvenanceTestCase(unittest.TestCase):
         self.assertEqual(source.version_info, "3.1")
 
     def test_the_build_is_described_with_its_state(self):
-        clean = BuildRevision(run_id="r1", timestamp="t", revision="abc")
-        self.assertEqual(clean.describe(), "run r1, commit abc")
-        dirty = BuildRevision(run_id="r1", timestamp="t", revision="abc", revision_dirty=True)
-        self.assertEqual(dirty.describe(), "run r1, commit abc, with uncommitted changes")
+        def run(**fields):
+            return PipelineRun(run_id="r1", timestamp="t", schema_version=1, **fields)
+
+        self.assertEqual(run(git_commit="abc").describe(), "run r1, commit abc")
         self.assertEqual(
-            BuildRevision(run_id="r1", timestamp="t").describe(), "run r1, commit unknown"
+            run(git_commit="abc", git_dirty=True).describe(),
+            "run r1, commit abc, with uncommitted changes",
         )
+        self.assertEqual(run().describe(), "run r1, commit unknown")
 
     def test_every_correspondence_carries_both(self):
         _schemes, correspondences, _counts = self._build()
