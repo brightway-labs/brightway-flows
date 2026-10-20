@@ -184,7 +184,10 @@ still `Cesium`, beside its ion `Caesium(1+)`.
 On the five-list build of `main` at `43403ac` (run
 `20261019T0759116033000000`) the standard reads 51 ions and renames 14:
 `Cesium(1+)`, `Chromium IV`, the five anions, and the seven generic ions that
-had a capital `Ion`. It reads four of the 51 as ions because each is recorded
-as the ion of its element, though typed an imprecise mixture
-([#403](https://github.com/brightway-labs/brightway-flows/issues/403)):
-`Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)` and `Chromium IV`.
+had a capital `Ion`. Four of the 51 — `Palladium(2+)`, `Rhodium(3+)`,
+`Rhenium(2+)` and `Chromium IV` — were typed an imprecise mixture on that
+build, because each states a charge and no database holds a formula for it, and
+the standard read the ion layer's record of them as ions of their element
+rather than the type. The typing rules read the same record now
+([#403](https://github.com/brightway-labs/brightway-flows/issues/403)), the
+four are cations, and the standard reads the type.

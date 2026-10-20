@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "description": "Four single-atom ions were published as `ImpreciseChemicalMixture` -- a substance of variable composition and unknown stoichiometry -- though each states its charge and is recorded as the ion of its element: `Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)` and `Chromium(4+)`. See #403.\n\nThe typing rules recognised one charged atom two ways: an object already typed `ChemicalElement` that carries a charge, and a charge beside a formula of one atom. None of the four had a formula, SMILES or InChI on the build below, so neither rule applied and they fell through to the rule for a substance registered with an authority but with no structure on file, which is the UVCB rule. The evidence that each is one charged atom was on the object the whole time, written by the ion layer when the name resolved to an element: `relationships.ion_of` naming the element, and `chemrof:elemental_charge` holding the charge the name states. The rule added for this, rule 3b, reads that record, and only where there is no formula and the charge is stated: a formula is the better evidence of how many atoms there are, and a generic `X, ion` carries the record and states no charge, and which ion it is is #143's question.\n\nRule 3b reaches three of the four. Rhenium(2+) is typed `AtomCation` too, but by rule 3: once #404 takes rhenium the metal's number off EF's rows, the name step reads `Rhenium(2+)` as `[Re+2]` and the substance has a one-atom formula. So the palladium, rhodium and chromium claims are the ones that would fail if rule 3b were reverted, and the rhenium claim states the outcome #403 asked for, whichever rule delivers it.\n\nMeasured on the five-list build of `main` at 67035f4 (run `20261020T0534355291470000`): all four typed `ImpreciseChemicalMixture`, each with `ion_of` its element and one stated charge -- 2, 3, 2 and 4. Palladium(2+) is six ecoinvent 3.12 `Palladium II` rows and one AGRIBALYSE `Palladium (II)` row on 16065-88-6; Rhodium(3+) one ecoinvent 3.12 and one AGRIBALYSE row on 16065-89-7; Chromium(4+) one ecoinvent 3.8 `Chromium IV` and one AGRIBALYSE `Chromium (IV)` row on 15723-28-1; Rhenium(2+) EF 3.1's own thirteen emission rows. The rhenium ion's registry number -- the element's, which no merged ion row is allowed to keep -- is #404.",
+  "expectations": [
+    {
+      "id": "0403-palladium-2-is-a-cation",
+      "issue": 403,
+      "title": "Palladium(2+) is published as a single-atom cation, not as a mixture of unknown composition",
+      "subject": {
+        "kind": "substance",
+        "label": "Palladium(2+)"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "AtomCation",
+        "flow_count": 6
+      },
+      "comment": "The largest of the four by flows: six ecoinvent 3.12 `Palladium II` rows, one per compartment, which no EF flow matched and the merge created, plus AGRIBALYSE's `Palladium (II)` reaching one of them on the number. `ImpreciseChemicalMixture` on the build of 67035f4. `flow_count` is claimed beside the type so that this is palladium(2+) being recognised rather than replaced by some other object that happens to be typed a cation. None of the six carries a factor, so no published number moves."
+    },
+    {
+      "id": "0403-rhodium-3-is-a-cation",
+      "issue": 403,
+      "title": "Rhodium(3+) is published as a single-atom cation",
+      "subject": {
+        "kind": "substance",
+        "label": "Rhodium(3+)"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "AtomCation",
+        "flow_count": 1
+      },
+      "comment": "One ecoinvent 3.12 `Rhodium III` row to air, created, and AGRIBALYSE's `Rhodium (III)` on it by number. The charge is 3, which is the one of the four that is not 2: a rule that read the record but hard-wired the commonest charge would pass palladium and rhenium and fail here."
+    },
+    {
+      "id": "0403-rhenium-2-is-a-cation",
+      "issue": 403,
+      "title": "Rhenium(2+) is published as a single-atom cation across its thirteen flows",
+      "subject": {
+        "kind": "substance",
+        "label": "Rhenium(2+)"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "AtomCation",
+        "flow_count": 13
+      },
+      "comment": "EF 3.1's thirteen `rhenium(2+)` emission rows, eleven of them characterised, so this is the one of the four whose type is read beside a published factor. **Not a test of rule 3b**, and stated so that nobody reads it as one: on the build of this change the substance carries `[Re+2]`, which the name step reads from `Rhenium(2+)` once #404 has taken rhenium the metal's number off the rows, and rule 3 types it from that formula. With rule 3b reverted this claim still holds; the three claims above are the ones that would fail. It is here because #403 named rhenium as one of its four, and the outcome it asked for is the one claimed."
+    },
+    {
+      "id": "0403-chromium-4-is-a-cation",
+      "issue": 403,
+      "title": "Chromium(4+) is published as a single-atom cation",
+      "subject": {
+        "kind": "substance",
+        "label": "Chromium(4+)"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "AtomCation",
+        "flow_count": 1
+      },
+      "comment": "One ecoinvent 3.8 `Chromium IV` row to urban air, created, and AGRIBALYSE's `Chromium (IV)` on it by number. Named `Chromium(4+)` since #402 spelled the ions one way; `Chromium IV` on builds before it. ecoinvent itself renamed this row `Chromium VI` in later releases, and the charge on this object is 4 because the number on the row, 15723-28-1, is chromium(4+)'s -- the type follows the record, and the record follows the number."
+    },
+    {
+      "id": "0403-a-generic-ion-is-not-given-a-charge",
+      "issue": 403,
+      "title": "`Copper, ion` stays a monoatomic ion of unstated charge",
+      "subject": {
+        "kind": "substance",
+        "label": "Copper, ion"
+      },
+      "expect": {
+        "exists": true,
+        "flow_type": "MonoatomicIon"
+      },
+      "comment": "**The guard, and the population it protects.** Seven generic ions on the build of 318b10e -- `Antimony, ion`, `Arsenic, ion`, `Chromium, ion`, `Copper, ion`, `Iron, ion`, `Tin, ion` and `Titanium, ion` -- carry the same `ion_of` record as the four above and state no charge, because `X, ion` says nothing about one. Six are typed `MonoatomicIon`, the class the ion layer gives a charged atom whose charge is unknown; `Titanium, ion` is `AtomCation` on its formula and is claimed in `0628-a-charged-formula-is-an-ion.json`. The new rule requires the charge beside the record, so none of the seven is touched: which ion `Copper, ion` is remains #143's question, and a rule that read the record alone and defaulted the sign would have retyped all six as cations. True before the fix as well; stated so that the rule is seen to reach the four and stop there."
+    }
+  ]
+}

@@ -518,7 +518,7 @@ def _ion_types(charge: int | None, *, monoatomic: bool) -> tuple[str, ...]:
     )
 
 
-#: The classes `classify` gives one charged atom: rules 2 and 3 below.
+#: The classes `classify` gives one charged atom: rules 2, 3 and 3b below.
 _MONATOMIC_ION_TYPES = frozenset(
     IRIS[term] for term in (Term.MONOATOMIC_ION, Term.ATOM_CATION, Term.ATOM_ANION)
 )
@@ -542,23 +542,26 @@ def _recorded_ion_of_an_element(obj: FlowObject) -> bool:
 def is_monatomic_ion(obj: FlowObject) -> bool:
     """Whether *obj* is one charged atom, by the one reading every pass shares.
 
-    Two pieces of evidence, and the second is #403.  An object `classify`
-    typed a monatomic ion is one: rule 2, an element carrying a charge, or
-    rule 3, a charge with a one-atom formula.  So is an object the ion layer
-    recorded as the ion of an element with one stated charge, whatever it is
-    typed: `Palladium(2+)`, `Rhodium(3+)`, `Rhenium(2+)` and `Chromium(4+)`
-    state a charge and no formula, so neither rule reaches them and rule 10
-    publishes each as an imprecise mixture.
-
-    `pipeline.ion_names` asks this rather than the types, so that the naming
-    standard spells those four.  When `classify` reads the `ion_of` record
-    itself (#403) the second clause is redundant and goes -- here, once,
-    rather than in every pass that had its own.
+    Two readings, and they agree wherever `classify` gets as far as rule 3b.
+    An object `classify` typed a monatomic ion: rule 2, an element carrying a
+    charge; rule 3, a charge with a one-atom formula; or rule 3b, the ion
+    layer's `ion_of` record beside a stated charge and no formula (#403).  And
+    an object carrying rule 3b's evidence itself, read here rather than off
+    the types, because rules 0c, 0d and 1 run before rule 3b and can decide an
+    object first: a recorded, charged ion that a curator typed in
+    `structure-corrections.json` is still one charged atom, and the naming
+    standard should still spell it.  None is in that state on the build of
+    318b10e; this keeps the spelling from depending on the order of the
+    typing rules.
     """
     if set(_existing_types(obj)) & _MONATOMIC_ION_TYPES:
         return True
     properties = obj.properties if isinstance(obj.properties, dict) else {}
-    return _recorded_ion_of_an_element(obj) and bool(_charge(properties))
+    return (
+        not _first_str(properties, CHEMROF_MOLECULAR_FORMULA)
+        and bool(_charge(properties))
+        and _recorded_ion_of_an_element(obj)
+    )
 
 
 def classify(
@@ -676,6 +679,29 @@ def classify(
     # 3. One atom, charged: a monoatomic ion, whatever the label says.
     if charged and _is_single_atom(formula):
         return Classification(_ion_types(charge, monoatomic=True), "monoatomic_ion")
+
+    # 3b. One atom, charged, and no formula to say so.  `flow_layers.ions`
+    #     writes `relationships.ion_of` wherever an ion's name resolved to an
+    #     element, and writes `elemental_charge` beside it only where the name
+    #     states a charge.  Three substances arrive with both and no formula,
+    #     SMILES or InChI: `Palladium(2+)`, `Rhodium(3+)` and `Chromium(4+)`.
+    #     Rule 3 reads the formula, so it never saw them, and rule 10 published
+    #     each as a mixture of unknown composition (#403).
+    #
+    #     Three guards, each for a population this must not reach.  No formula
+    #     at all: a recorded ion that does carry one is rule 3's if it is one
+    #     atom and rule 5's if it is several, and the formula is the better
+    #     evidence.  A *stated* charge, read from `elemental_charge` and never
+    #     from the formula fallback, which only speaks where there is a
+    #     formula.  And the record: a charge with no record says nothing about
+    #     how many atoms there are.  The seven generic `X, ion` substances carry
+    #     the record and no stated charge, and which ion each is is #143's
+    #     question, so they are left alone.
+    stated_charge = _charge(properties)
+    if not formula and stated_charge and _recorded_ion_of_an_element(obj):
+        return Classification(
+            _ion_types(stated_charge, monoatomic=True), "recorded_ion_of_element"
+        )
 
     # 4. Several components: held together by something weaker than a covalent
     #    bond.  A charged component makes it a salt rather than a complex.

@@ -25,6 +25,7 @@ The rules run in order, and the first match wins:
 | 1 | it has an isotope record | `Isotope`, plus `Radionuclide` when it decays |
 | 2 | it is already an element from the periodic table | `ChemicalElement`, or an ion class if charged |
 | 3 | one atom, non-zero charge | `AtomCation` / `AtomAnion` |
+| 3b | recorded as the ion of an element, its name states a charge, and it has no formula | `AtomCation` / `AtomAnion` |
 | 4 | several SMILES components | `ChemicalSalt` if any is charged, else `MolecularComplex` |
 | 5 | several atoms, non-zero charge | `MolecularCation` / `MolecularAnion` |
 | 6 | one structure, no net charge | `Allotrope`, `Zwitterion` or `NeutralMolecule` |
@@ -42,6 +43,28 @@ macroscopic polyatomic entity that consists of multiple chemical entities where
 the stoichiometry is not known", which is the UVCB definition. It catches the
 EC-inventory names — `Alcohols, C12-15, Ethoxylated`,
 `Alkenes, C6-10, Hydroformylation Products, High-boiling`.
+
+Rule 3b is for the ion a name states and no database describes. ecoinvent
+3.12 ships six rows named `Palladium II`, under palladium(2+)'s own registry
+number, 16065-88-6. The ion layer reads the name as the ion of palladium with a
+charge of 2, but no database holds a formula, SMILES or InChI for the number.
+Rule 3 reads the formula, so it never saw the substance, and it fell through to
+rule 10 and was published as a mixture of unknown composition, with
+`Rhodium(3+)` and `Chromium(4+)` beside it
+([#403](https://github.com/brightway-labs/brightway-flows/issues/403)).
+
+Three things have to hold together. The ion layer has recorded the substance as
+the ion of an element. The name states a charge. And there is no formula,
+because a formula is the better evidence: `CrO4-2` is several atoms whatever
+the name says, and rule 5 types it. The charge matters because the ion layer
+records a generic `Copper, ion` as an ion of copper too, and its name states no
+charge; which ion it is is a question the typing does not answer.
+
+`Rhenium(2+)` was the fourth substance in this state until EF 3.1's rows lost
+rhenium the metal's registry number
+([#404](https://github.com/brightway-labs/brightway-flows/issues/404)). With no
+number on it, the name step reads `Rhenium(2+)` as `[Re+2]`, and rule 3 types
+it from that formula.
 
 Rule 1 keys on the isotope record and never on the label, because `HCFC-123a`
 has the same shape as `Americium-241` and is a molecule.

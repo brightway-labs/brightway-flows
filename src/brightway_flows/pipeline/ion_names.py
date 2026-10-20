@@ -99,8 +99,9 @@ def ion_reading(obj: FlowObject) -> tuple[str, int | None] | None:
     reading, `Copper, ion`.
     """
     # One charged atom by the reading the typing rules share
-    # (`semantic_typing.is_monatomic_ion`), which is also what reaches the
-    # four ions #403 types as mixtures.
+    # (`semantic_typing.is_monatomic_ion`): the type `classify` gave it, or
+    # the ion record and stated charge rule 3b reads, so that an ion decided
+    # by an earlier rule is spelled all the same.
     monatomic = is_monatomic_ion(obj)
     if not monatomic and not _types(obj) & _POLYATOMIC_ION_TYPES:
         return None

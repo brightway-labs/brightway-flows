@@ -26,6 +26,7 @@ from brightway_flows.domain.ion_names import (
 )
 from brightway_flows.domain.vocabulary import (
     CHEMROF_ELEMENTAL_CHARGE,
+    CHEMROF_MOLECULAR_FORMULA,
     IRIS,
     PROV_HAD_PRIMARY_SOURCE_CURIE,
     PROV_WAS_GENERATED_BY_CURIE,
@@ -33,6 +34,7 @@ from brightway_flows.domain.vocabulary import (
 )
 from brightway_flows.flow_layers.synonyms import carry_member_names
 from brightway_flows.pipeline.ion_names import standardise_ion_names
+from brightway_flows.pipeline.semantic_typing import classify
 
 CATION = IRIS[Term.ATOM_CATION]
 ANION = IRIS[Term.ATOM_ANION]
@@ -175,20 +177,51 @@ class PassTestCase(unittest.TestCase):
         self.assertEqual(_synonyms(obj), [])
         self.assertEqual(stats["ions"], 0)
 
-    def test_an_ion_of_an_element_is_read_whatever_it_is_typed(self):
-        """`Chromium IV` is typed a mixture on the build of `43403ac` (#403),
-        and recorded as the ion of chromium: the name is still an ion's."""
+    def test_an_ion_of_an_element_is_read_from_the_type_its_record_earns(self):
+        """`Chromium IV` states a charge and no formula.  On the build of
+        `43403ac` the typing rules published it as a mixture and this pass read
+        the `ion_of` record itself to spell it; since #403 `classify` reads the
+        record, so the pass reads the type, and the two cannot disagree."""
         obj = _object("Chromium IV", IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE], charge=4)
         obj.properties["relationships"] = {
             "parent_element_flow_object_id": "fo-chromium",
             "relationship_type": "ion_of",
         }
+        obj.types = list(classify(obj).types)
+        self.assertEqual(obj.types, [CATION])
         standardise_ion_names([obj], seed_source=SOURCE)
         self.assertEqual(_label(obj), "Chromium(4+)")
         self.assertEqual(_synonyms(obj), ["Chromium(IV)", "Chromium IV"])
 
-    def test_an_ion_of_record_with_no_stated_charge_is_not_read_as_one(self):
-        """The reading is the typing's (#403): the record and one charge."""
+    def test_a_recorded_charged_ion_typed_by_an_earlier_rule_is_still_spelled(self):
+        """Rules 0c, 0d and 1 run before rule 3b.  A recorded ion with a
+        stated charge and no formula that one of them typed first -- here a
+        curated class -- is still one charged atom, and is spelled as one."""
+        obj = _object("Rhodium III", IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE], charge=3)
+        obj.properties["relationships"] = {
+            "parent_element_flow_object_id": "fo-rhodium",
+            "relationship_type": "ion_of",
+        }
+        standardise_ion_names([obj], seed_source=SOURCE)
+        self.assertEqual(_label(obj), "Rhodium(3+)")
+
+    def test_a_recorded_charged_ion_with_a_formula_is_left_to_its_type(self):
+        """A formula is the better evidence of how many atoms there are, so
+        the record does not make a molecular ion monatomic."""
+        obj = _object("Chromium VI", MOLECULAR_ANION, charge=-2)
+        obj.properties["relationships"] = {
+            "parent_element_flow_object_id": "fo-chromium",
+            "relationship_type": "ion_of",
+        }
+        obj.properties[CHEMROF_MOLECULAR_FORMULA] = {"@value": ["CrO4-2"]}
+        standardise_ion_names([obj], seed_source=SOURCE)
+        self.assertEqual(_label(obj), "Chromium VI")
+
+    def test_a_mixture_is_not_read_as_an_ion_on_its_record_alone(self):
+        """The record is `classify`'s evidence, not this pass's.  An object
+        the typing rules left a mixture -- here a record with no stated
+        charge, which rule 3b refuses -- is not renamed, whatever the numeral
+        in its name says."""
         obj = _object("Palladium II", IRIS[Term.IMPRECISE_CHEMICAL_MIXTURE])
         obj.properties["relationships"] = {
             "parent_element_flow_object_id": "fo-palladium",
