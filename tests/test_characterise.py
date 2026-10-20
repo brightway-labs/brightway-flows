@@ -73,6 +73,18 @@ JRC_CATEGORY = next(iter(BY_METHOD_UUID))
 ECOINVENT_CATEGORY = next(iter(BY_ECOINVENT_NAME))
 
 
+#: `pipeline_runs` with the columns `review_tables.read_pipeline_run` reads, which
+#: `characterise` calls to name the build its factors are against.  The git
+#: columns are left out: a database older than them is readable.
+PIPELINE_RUNS_TABLE = (
+    "CREATE TABLE pipeline_runs (run_id TEXT PRIMARY KEY, timestamp TEXT NOT NULL, "
+    "schema_version INTEGER NOT NULL, dry_run INTEGER NOT NULL DEFAULT 0, "
+    "max_flows INTEGER, input_files_json TEXT NOT NULL DEFAULT '[]', "
+    "transformer_names_json TEXT NOT NULL DEFAULT '[]', "
+    "flow_count INTEGER NOT NULL DEFAULT 0, change_count INTEGER NOT NULL DEFAULT 0)"
+)
+
+
 def _jrc_factor(amount: float, *, geography: str | None = None) -> StatedFactor:
     definition = BY_METHOD_UUID[JRC_CATEGORY]
     return StatedFactor(
@@ -751,7 +763,7 @@ class EndToEndTestCase(unittest.TestCase):
             "list_name TEXT, list_version TEXT, source_flow_uuid TEXT, "
             "source_metadata_json TEXT)"
         )
-        connection.execute("CREATE TABLE pipeline_runs (run_id TEXT, timestamp TEXT)")
+        connection.execute(PIPELINE_RUNS_TABLE)
         # A build has flow objects, and `characterise` reads their registry
         # numbers: a statement about somebody else's model arrives keyed on CAS
         # and nothing else (`lcia.contradictions`).
@@ -810,7 +822,8 @@ class EndToEndTestCase(unittest.TestCase):
             ("cf-1", "ecoinvent", "3.12", "ei-1", orjson.dumps({"unit": "kg"}).decode()),
         )
         connection.execute(
-            "INSERT INTO pipeline_runs VALUES (?, ?)", ("build-9", "2026-08-17")
+            "INSERT INTO pipeline_runs (run_id, timestamp, schema_version) VALUES (?, ?, 1)",
+            ("build-9", "2026-08-17"),
         )
         connection.commit()
         connection.close()
@@ -977,7 +990,7 @@ class WhatTheUnderlyingModelContradictsTestCase(unittest.TestCase):
             "pref_label_value TEXT, classifications_json TEXT, "
             "properties_json TEXT)"
         )
-        connection.execute("CREATE TABLE pipeline_runs (run_id TEXT, timestamp TEXT)")
+        connection.execute(PIPELINE_RUNS_TABLE)
         connection.execute(
             "CREATE TABLE review_queue (queue_name TEXT NOT NULL, "
             "item_key TEXT NOT NULL, item_index INTEGER NOT NULL DEFAULT 0, "
@@ -1030,7 +1043,8 @@ class WhatTheUnderlyingModelContradictsTestCase(unittest.TestCase):
             ],
         )
         connection.execute(
-            "INSERT INTO pipeline_runs VALUES (?, ?)", ("build-552", "2026-08-17")
+            "INSERT INTO pipeline_runs (run_id, timestamp, schema_version) VALUES (?, ?, 1)",
+            ("build-552", "2026-08-17"),
         )
         connection.commit()
         connection.close()
