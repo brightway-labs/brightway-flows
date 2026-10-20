@@ -68,8 +68,7 @@
       "expect": {
         "count": 1
       },
-      "comment": "The row #166 was written about, and the one the numbers settle rather than the names: 211 of its 213 country factors are what the JRC already states for `Agriculture` in the same country, to the digit, and the JRC states nothing for the other two. Switzerland is 118.27 on both sides.\n\nA count rather than an amount, because the factor is regionalised and 213 numbers are the claim. Before this change the flow carried the JRC's 213 and the consensus's 213 and nothing of GreenDelta's.\n\n**Restated 2026-10-14.** GreenDelta's factors stated per place are refused for now (#386), so what is left is the one factor their package states for no place: 48.218 per m2*a. Restated from the package, and not yet measured on a build.",
-      "pending": true
+      "comment": "The row #166 was written about, and the one the numbers settle rather than the names: 211 of its 213 country factors are what the JRC already states for `Agriculture` in the same country, to the digit, and the JRC states nothing for the other two. Switzerland is 118.27 on both sides.\n\nA count rather than an amount, because the factor is regionalised and 213 numbers are the claim. Before this change the flow carried the JRC's 213 and the consensus's 213 and nothing of GreenDelta's.\n\n**Restated 2026-10-14.** GreenDelta's factors stated per place are refused for now (#386), so what is left is the one factor their package states for no place: 48.218 per m2*a. Restated from the package, and not yet measured on a build. Measured on the build of 20 October 2026, the first with openLCA LCIA methods 2.8.2 merged and characterised (merge run 76b3ec8f): met."
     },
     {
       "id": "0785-the-older-forest-naming-reaches-its-class",
@@ -85,8 +84,7 @@
       "expect": {
         "count": 1
       },
-      "comment": "The other kind of row, and why the table is BAFU's list rather than the JRC's numbers: nobody else characterises this class. EF 3.1 does not carry ecoinvent's older forest naming, so there is no number to agree with, and what the row rests on is BAFU's flow of exactly this name and their own `Transformation, to forest, intensive`, which resolves by ecoinvent uuid to `To forest, intensive`.\n\nIt is also the direction claim: `to forest` and `from forest` are a balanced pair of factors that the land taxonomy split into two flows precisely so they could not collapse (`land-taxonomy-overview.md`), and a row reading one as the other would put +817 where -451 belongs.\n\n**Restated 2026-10-14.** GreenDelta's factors stated per place are refused for now (#386), so what is left is the one factor their package states for no place: 339.64 per m2. Restated from the package, and not yet measured on a build.",
-      "pending": true
+      "comment": "The other kind of row, and why the table is BAFU's list rather than the JRC's numbers: nobody else characterises this class. EF 3.1 does not carry ecoinvent's older forest naming, so there is no number to agree with, and what the row rests on is BAFU's flow of exactly this name and their own `Transformation, to forest, intensive`, which resolves by ecoinvent uuid to `To forest, intensive`.\n\nIt is also the direction claim: `to forest` and `from forest` are a balanced pair of factors that the land taxonomy split into two flows precisely so they could not collapse (`land-taxonomy-overview.md`), and a row reading one as the other would put +817 where -451 belongs.\n\n**Restated 2026-10-14.** GreenDelta's factors stated per place are refused for now (#386), so what is left is the one factor their package states for no place: 339.64 per m2. Restated from the package, and not yet measured on a build. Measured on the build of 20 October 2026, the first with openLCA LCIA methods 2.8.2 merged and characterised (merge run 76b3ec8f): met."
     },
     {
       "id": "0785-water-well-is-groundwater",
@@ -102,8 +100,7 @@
       "expect": {
         "count": 1
       },
-      "comment": "Their compartment `Resource / in water` is where every withdrawal of theirs is filed, and the three flows in it that resolve by ecoinvent uuid go to three different water bodies, so the compartment cannot say which water this is and the name has to. All 209 factors are bit-identical to the JRC's for the same flow and country.\n\n209 rather than the JRC's 210: their package states this flow in 209 places.\n\n**Restated 2026-10-14.** GreenDelta's factors stated per place are refused for now (#386), so what is left is the one factor their package states for no place: 42.95 per m3, the world-average scarcity factor; their `Resource / unspecified` copy states the same number, and `lcia.collisions` keeps it once. Restated from the package, and not yet measured on a build.",
-      "pending": true
+      "comment": "Their compartment `Resource / in water` is where every withdrawal of theirs is filed, and the three flows in it that resolve by ecoinvent uuid go to three different water bodies, so the compartment cannot say which water this is and the name has to. All 209 factors are bit-identical to the JRC's for the same flow and country.\n\n209 rather than the JRC's 210: their package states this flow in 209 places.\n\n**Restated 2026-10-14.** GreenDelta's factors stated per place are refused for now (#386), so what is left is the one factor their package states for no place: 42.95 per m3, the world-average scarcity factor; their `Resource / unspecified` copy states the same number, and `lcia.collisions` keeps it once. Restated from the package, and not yet measured on a build. Measured on the build of 20 October 2026, the first with openLCA LCIA methods 2.8.2 merged and characterised (merge run 76b3ec8f): met."
     },
     {
       "id": "0785-a-unit-spelled-two-ways-is-not-a-crossing",
