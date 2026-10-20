@@ -263,14 +263,16 @@ def _factors(
     inside a flow property, while the stub beside a factor states the unit that
     factor is *per*.  Reading the stub is reading what the row says.
 
-    A row that names a location is skipped and counted: the module docstring
-    says why.  A ``(category, flow)`` stated more than once with the same
+    A row that names a location is skipped and counted before anything else
+    is asked of it: the module docstring says why it is refused, and a row
+    that is not read cannot become a wrong number, so nothing about it stops
+    the read.  A ``(category, flow)`` stated more than once with the same
     number is one statement repeated, and is read once.
 
-    :raises GreenDeltaLciaError: if a factor is stated in a unit that is not its
-        flow's own, or if one ``(category, flow)`` is stated twice with
-        different numbers -- each of which would otherwise become a wrong
-        number rather than a stopped run.
+    :raises GreenDeltaLciaError: if a factor that is read is stated in a unit
+        that is not its flow's own, or if one ``(category, flow)`` is stated
+        twice with different numbers -- each of which would otherwise become
+        a wrong number rather than a stopped run.
     """
     factors: list[StatedFactor] = []
     described: dict[str, dict[str, str]] = {}
@@ -299,6 +301,12 @@ def _factors(
             general_comment=str(entry.get("description") or "") or None,
         )
         for row in entry.get("impactFactors") or ():
+            # Before anything is checked about the row: a row that is not read
+            # cannot put a wrong number anywhere, so nothing about it can stop
+            # the read either.
+            if row.get("location"):
+                located += 1
+                continue
             flow = row.get("flow") or {}
             flow_uuid = str(flow.get("@id") or "")
             stated_unit = str((row.get("unit") or {}).get("name") or "")
@@ -311,9 +319,6 @@ def _factors(
                     f"the flow's own unit, and a row that is not needs a "
                     f"conversion this does not do."
                 )
-            if row.get("location"):
-                located += 1
-                continue
             key = (str(entry.get("@id") or ""), flow_uuid)
             stated = float(row.get("value") or 0.0)
             if key in seen:
