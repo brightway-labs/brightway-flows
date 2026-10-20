@@ -50,6 +50,8 @@ from brightway_flows.domain.labels import coerce_alt_labels, flow_label_value
 from brightway_flows.domain.schema import SCHEMA_VERSION
 from brightway_flows.domain.simple_flow import HarmonisedFlowsSimple, SimpleFlow
 from brightway_flows.pipeline.sqlite import (
+    BuildRevision,
+    read_build_revision,
     read_published_flow_payloads,
     read_source_contexts,
 )
@@ -278,6 +280,7 @@ def _strip_lcia_from_flows(
     flows: list[dict[str, Any]],
     source_contexts: Mapping[str, Mapping[str, frozenset[tuple[str, ...]]]]
     | None = None,
+    build: BuildRevision | None = None,
 ) -> HarmonisedFlowsSimple:
     """Project the flow payloads onto the published document.
 
@@ -287,6 +290,9 @@ def _strip_lcia_from_flows(
     #30 a payload carries no `source_refs`, so a caller with only payloads in
     hand gets redirects that resolve but decline to classify themselves, and
     `build_simple_export` reads the table.
+
+    *build* is named on the consensus scheme as its `owl:versionInfo`, so the
+    document says which run and which commit produced it.
     """
     out: list[SimpleFlow] = []
     for flow in flows:
@@ -307,7 +313,9 @@ def _strip_lcia_from_flows(
     # left the artifact contradicting the schema that describes it -- and the
     # drift guard in `tests/test_schemas.py` compares schema to schema, so it
     # would not have caught it.
-    schemes, correspondences, _counts = build_correspondences(flows)
+    schemes, correspondences, _counts = build_correspondences(
+        flows, version_info=build.describe() if build is not None else ""
+    )
     redirects, _redirect_counts = build_redirects(flows, source_contexts)
     return HarmonisedFlowsSimple(
         schema_version=SCHEMA_VERSION,
@@ -326,12 +334,15 @@ strip_lcia_from_flows = _strip_lcia_from_flows
 def build_simple_export(db_path: Path) -> HarmonisedFlowsSimple:
     """Project the database onto the published export.
 
-    Two reads, not one: the flows come from `elementary_flows.flow_json` and the
-    source contexts behind each redirect's reason come from
-    `elementary_flow_sources`, which is where a flow's references live (#30).
+    Three reads: the flows come from `elementary_flows.flow_json`, the source
+    contexts behind each redirect's reason from `elementary_flow_sources`,
+    which is where a flow's references live (#30), and the run and commit the
+    document names from `pipeline_runs`.
     """
     return _strip_lcia_from_flows(
-        read_published_flow_payloads(db_path), read_source_contexts(db_path)
+        read_published_flow_payloads(db_path),
+        read_source_contexts(db_path),
+        build=read_build_revision(db_path),
     )
 
 

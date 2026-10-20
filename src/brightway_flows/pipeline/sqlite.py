@@ -10,6 +10,7 @@ from __future__ import annotations
 import sqlite3
 import time
 from collections import Counter
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -1098,6 +1099,55 @@ def _write_consensus_sqlite(
         )
     finally:
         conn.close()
+
+
+@dataclass(frozen=True)
+class BuildRevision:
+    """Which run wrote a database, and from which commit.
+
+    What the published files say about the build that made them, so that a
+    reader holding only `harmonised-flows-simple.json.gz` or
+    `lcia-factors.json.gz` can find the code that produced it.  Release 1.0.0
+    published neither, and it took downloading the 3.7 GB database to learn
+    that it was built from a commit no longer in the repository.
+    """
+
+    run_id: str
+    timestamp: str
+    #: Empty for a database older than the `git_commit` column.
+    revision: str = ""
+    revision_dirty: bool = False
+
+    def describe(self) -> str:
+        """``run <id>, commit <sha>``, and whether the tree was modified."""
+        text = f"run {self.run_id}, commit {self.revision or 'unknown'}"
+        return text + (", with uncommitted changes" if self.revision_dirty else "")
+
+
+def read_build_revision(db_path: Path) -> BuildRevision | None:
+    """The latest run in `pipeline_runs`, or ``None`` for a database with none."""
+    connection = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+    try:
+        if not _table_exists(connection, "pipeline_runs"):
+            return None
+        present = {row[1] for row in connection.execute("PRAGMA table_info(pipeline_runs)")}
+        columns = ["run_id", "timestamp"] + [
+            name for name in ("git_commit", "git_dirty") if name in present
+        ]
+        row = connection.execute(
+            f"SELECT {', '.join(columns)} FROM pipeline_runs ORDER BY timestamp DESC LIMIT 1"
+        ).fetchone()
+    finally:
+        connection.close()
+    if row is None:
+        return None
+    values = dict(zip(columns, row))
+    return BuildRevision(
+        run_id=str(values["run_id"] or ""),
+        timestamp=str(values["timestamp"] or ""),
+        revision=str(values.get("git_commit") or ""),
+        revision_dirty=bool(values.get("git_dirty") or 0),
+    )
 
 
 def read_published_flow_payloads(db_path: Path) -> list[dict[str, Any]]:

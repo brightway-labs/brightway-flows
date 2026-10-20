@@ -168,6 +168,7 @@ from brightway_flows.pipeline.review_records import (
     Severity,
 )
 from brightway_flows.pipeline.review_tables import replace_queue_items
+from brightway_flows.pipeline.sqlite import read_build_revision
 from brightway_flows.sources import SourceList
 from brightway_flows.lcia.store import (
     CharacterisationRun,
@@ -1184,14 +1185,25 @@ def characterise(
     )
     # The published files, from the same records the tables were written from
     # and in the same call, so the two cannot disagree about what this run found.
+    # They also say which build and which commit they came from, which the
+    # tables already know from `pipeline_runs` and a reader of the files alone
+    # did not.  Not this run's own id: characterising one build twice has to
+    # write the same bytes, and that id is new every time.
+    build = read_build_revision(db_path)
+    published_stats = {
+        **stats,
+        "build_run_id": build.run_id if build else "",
+        "build_revision": build.revision if build else "",
+        "build_revision_dirty": build.revision_dirty if build else False,
+    }
     factors_path, differences_path = artifact_paths(db_path)
     write_factors(
-        build_factors_document(categories=categories, factors=factors, stats=stats),
+        build_factors_document(categories=categories, factors=factors, stats=published_stats),
         factors_path,
     )
     write_differences(
         build_differences_document(
-            differences=differences, coverage=gaps, stats=stats
+            differences=differences, coverage=gaps, stats=published_stats
         ),
         differences_path,
     )

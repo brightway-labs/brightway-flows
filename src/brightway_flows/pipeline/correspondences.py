@@ -368,10 +368,11 @@ def association_iri(scheme: SourceScheme, source_iri: str, target_iri: str) -> s
     return f"{MintedNamespace.ASSOCIATION.value}{scheme.slug}/{source}/{target}"
 
 
-def _consensus_scheme_node(created: str) -> ConceptSchemeNode:
+def _consensus_scheme_node(created: str, version_info: str = "") -> ConceptSchemeNode:
     return ConceptSchemeNode(
         jsonld_id=CONSENSUS_SCHEME_IRI,
         pref_label=_language_label(CONSENSUS_SCHEME_LABEL),
+        version_info=version_info,
         created=created,
         creator=creator(),
     )
@@ -382,6 +383,7 @@ def build_correspondences(
     *,
     created: str | None = None,
     excluded: Mapping[str, tuple[ExcludedSourceFlow, ...]] | None = None,
+    version_info: str = "",
 ) -> tuple[list[ConceptSchemeNode], list[CorrespondenceNode], Counter]:
     """Regroup the per-flow associations into correspondences.
 
@@ -407,6 +409,11 @@ def build_correspondences(
     correspondence to carry them would assert that the two schemes were compared
     when the build did not merge one of them.  Default ``None`` reads the
     registry; pass ``{}`` for a caller that wants the associations alone.
+
+    *version_info* is the consensus scheme's `owl:versionInfo`: which build
+    this is, as `BuildRevision.describe` words it.  A source scheme's is the
+    vendor's own version; ours had been left empty, and a field that was
+    already published is where the build can be named without a format bump.
     """
     created = created if created is not None else _now()
     if excluded is None:
@@ -509,7 +516,7 @@ def build_correspondences(
             )
         )
 
-    schemes = [_consensus_scheme_node(created)]
+    schemes = [_consensus_scheme_node(created, version_info)]
     correspondences: list[CorrespondenceNode] = []
     for slug in sorted(by_scheme):
         scheme = schemes_seen[slug]

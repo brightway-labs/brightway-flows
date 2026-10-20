@@ -94,6 +94,31 @@ class SimpleExportTestCase(unittest.TestCase):
         self.assertTrue(out.exists())
         self.assertEqual(self.read(out)["flows"][0]["identifier"], "u-1")
 
+    def test_the_consensus_scheme_names_the_build(self):
+        """`owl:versionInfo` on our scheme is the run and the commit that made
+        the file, read from `pipeline_runs`."""
+        build_db(self.db, [FLOW_SHAPED])
+        conn = sqlite3.connect(self.db)
+        conn.execute(
+            "CREATE TABLE pipeline_runs (run_id TEXT, timestamp TEXT, git_commit TEXT, git_dirty INTEGER)"
+        )
+        conn.executemany("INSERT INTO pipeline_runs VALUES (?, ?, ?, ?)", [
+            ("run-old", "2026-10-19T00:00:00+00:00", "1" * 40, 0),
+            ("run-new", "2026-10-20T00:00:00+00:00", "2" * 40, 1),
+        ])
+        conn.commit()
+        conn.close()
+        (consensus, *_sources) = build_simple_export(self.db).to_dict()["concept_schemes"]
+        self.assertEqual(
+            consensus["owl:versionInfo"],
+            f"run run-new, commit {'2' * 40}, with uncommitted changes",
+        )
+
+    def test_a_database_without_runs_publishes_an_empty_version(self):
+        build_db(self.db, [FLOW_SHAPED])
+        (consensus, *_sources) = build_simple_export(self.db).to_dict()["concept_schemes"]
+        self.assertEqual(consensus["owl:versionInfo"], "")
+
     def test_both_record_shapes_resolve_an_identifier(self):
         """One column, two shapes: `uuid` for EF flows, `elementary_flow_id`
         for the ones the merge created."""

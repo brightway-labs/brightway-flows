@@ -359,6 +359,15 @@ class TheFilesTestCase(ARunThatPublishesTestCase):
         self.assertEqual(self.factors_path.name, LCIA_FACTORS_FILEPATH.name)
         self.assertEqual(self.differences_path.name, LCIA_DIFFERENCES_FILEPATH.name)
 
+    def test_the_files_name_the_build_they_characterise(self):
+        """The fixture's `pipeline_runs` predates the git columns, so the run
+        is named and the commit is not."""
+        for stats in (self._factors()["stats"], self._differences()["stats"]):
+            self.assertEqual(stats["build_run_id"], "build-9")
+            self.assertEqual(stats["build_revision"], "")
+            self.assertIs(stats["build_revision_dirty"], False)
+            self.assertNotIn("characterise_run_id", stats)
+
     def test_the_factors_file_validates_against_its_schema(self):
         errors = Draft202012Validator(
             build_all()["lcia-factors.json"]

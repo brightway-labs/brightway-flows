@@ -853,7 +853,9 @@ class PublishedFactors:
     characterization_factors: list[CharacterizationFactor]
     #: What the run counted, as `lcia_runs.stats_json` holds it.  A reader should
     #: be able to check the file against the numbers its publisher quoted without
-    #: recomputing them.
+    #: recomputing them.  Plus which build it characterises -- ``build_run_id``,
+    #: ``build_revision`` and ``build_revision_dirty`` -- so that the file names
+    #: the commit it came from.
     stats: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

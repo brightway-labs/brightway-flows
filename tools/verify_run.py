@@ -149,7 +149,19 @@ VOLATILE_KEYS = frozenset({
     # inputs changes -- without this line every comparison would fail, and the
     # tool would stop being able to tell a real difference from a clock tick.
     "dcterms:created",
+    # Which build a published file came from, in `lcia-factors.json.gz`'s
+    # `stats`.  The two runs compared here are of two commits by design, so
+    # the commit always differs; `build_revision_dirty` is not masked, because
+    # a run from a modified tree is a difference worth seeing.
+    "build_run_id",
+    "build_revision",
 })
+
+#: The same, where the key is shared with a value that is not volatile:
+#: `owl:versionInfo` is a source list's own version on its scheme, and the
+#: build on the consensus scheme (`BuildRevision.describe`).  Only the second
+#: is masked.
+VOLATILE_VALUES = re.compile(r"^run \S+, commit \S+")
 
 #: Columns holding an AUTOINCREMENT rowid, which depends on insertion order
 #: rather than content.  Dropped before rows are sorted; duplicate rows still
@@ -232,6 +244,8 @@ def scrub(value: Any, data_dir: str) -> Any:
         }
     if isinstance(value, list):
         return [scrub(item, data_dir) for item in value]
+    if isinstance(value, str) and VOLATILE_VALUES.match(value):
+        return PLACEHOLDER
     if isinstance(value, str) and data_dir in value:
         return value.replace(data_dir, DATA_DIR_PLACEHOLDER)
     return value

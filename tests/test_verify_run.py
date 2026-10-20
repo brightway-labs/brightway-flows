@@ -220,6 +220,25 @@ class NoiseIsIgnoredTestCase(HarnessTestCase):
         self.assertIn("<volatile>", canonical)
         self.assertNotIn("generated-in-a", canonical)
 
+    def test_the_build_named_in_a_published_file_is_masked(self):
+        """The two runs compared are of two commits, so the commit a file names
+        always differs; a source list's own version does not, and is kept."""
+        schemes = [
+            {"owl:versionInfo": "run r-1, commit 1111111, with uncommitted changes"},
+            {"owl:versionInfo": "3.12"},
+        ]
+        stats = {"build_run_id": "r-1", "build_revision": "1111111", "build_revision_dirty": False}
+        self.assertEqual(
+            verify_run.scrub({"concept_schemes": schemes, "stats": stats}, "/nowhere"),
+            {
+                "concept_schemes": [{"owl:versionInfo": "<volatile>"}, {"owl:versionInfo": "3.12"}],
+                "stats": {
+                    "build_run_id": "<volatile>", "build_revision": "<volatile>",
+                    "build_revision_dirty": False,
+                },
+            },
+        )
+
     def test_volatile_sqlite_columns_are_masked(self):
         left = self.snapshot(self.build_data_dir("a"))
         text = (left / "consensus-flows.sqlite3" / "runs.tsv").read_text()
