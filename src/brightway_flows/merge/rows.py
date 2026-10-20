@@ -257,8 +257,33 @@ def _add_flow_in_missing_context(
     stated_unit = published or row.unit
     stated_unit_iri = unit_iri_for(published) if published else row.unit_iri
 
-    context_strings = indexes.consensus_context_strings.get(harmonised_iri, row.context)
+    # A row a manual fix rebased is still the vendor's: the mapping states the
+    # unit it shipped and the factor the fix gave, as every other route does.
+    # Before #370 this route stated the rebased unit as the vendor's and no
+    # factor, so AGRIBALYSE's river `Water`, rebased from kilograms, would have
+    # told a consumer their kilograms were cubic metres.  Only a fix's factor:
+    # the unit table's, between two spellings of one scale, is the paragraph
+    # above's to decline.
     new_elem_id = minted_elementary_flow_id(match.flow_object_id, harmonised_iri)
+    conversion = None
+    if row.conversion is not None:
+        if not row.conversion.holds_between(
+            source_unit=row.provenance_unit, target_unit=stated_unit
+        ):
+            _log_conversion_dropped(
+                row=row,
+                conversion=row.conversion,
+                target_unit=stated_unit,
+                target_elementary_flow_id=new_elem_id,
+                route="new_elementary_flow",
+                source_key=indexes.source.key,
+            )
+        conversion = _conversion_to_publish(
+            row.conversion, row=row, target_unit=stated_unit, indexes=indexes
+        )
+    conversion_metadata = conversion.to_metadata() if conversion else {}
+
+    context_strings = indexes.consensus_context_strings.get(harmonised_iri, row.context)
     provenance = _build_match_provenance(
         source_uuid=row.uuid,
         source_name=row.name,
@@ -282,7 +307,7 @@ def _add_flow_in_missing_context(
             "source_flow_name": row.vendor_name,
             "source_metadata": {
                 "original_context": row.context,
-                "unit": row.unit,
+                "unit": row.provenance_unit,
                 "cas_number": row.cas,
                 "ec_number": row.ec,
                 "merge_basis": match.basis,
@@ -293,6 +318,7 @@ def _add_flow_in_missing_context(
                 "mapping_file": indexes.mapping_file,
                 "provenance": provenance,
                 "merge_details": match.selector_details,
+                **conversion_metadata,
             },
         }],
         context=_context_for_new_flow(harmonised_iri),
@@ -309,7 +335,7 @@ def _add_flow_in_missing_context(
                 "context": " / ".join(str(x) for x in row.context if x),
                 **(
                     {QUDT_HAS_UNIT_CURIE: {"@id": unit_iri}}
-                    if (unit_iri := unit_iri_for(row.unit))
+                    if (unit_iri := unit_iri_for(row.provenance_unit))
                     else {}
                 ),
                 SKOS_EXACT_MATCH_CURIE: {
@@ -320,6 +346,7 @@ def _add_flow_in_missing_context(
                 "@id": f"{CONSENSUS_ELEMENTARY_FLOW_IRI_PREFIX}{new_elem_id}",
             },
             "provenance": provenance,
+            **conversion_metadata,
         }],
         # The substance keys, in the bag the record keeps undeclared keys in;
         # see `_inherited_flow_object_fields`.  A flow object the merge cannot
