@@ -250,6 +250,16 @@ class ReadingThePackageTestCase(unittest.TestCase):
         with self.assertRaises(GreenDeltaLciaError):
             _factors(package, path=path)
 
+    def test_a_located_row_in_another_unit_does_not_stop_the_read(self):
+        """A row that is refused anyway is not checked: the unit rule is about
+        a number this reads, and a per-place row's number is never read."""
+        located = _factor(self.flow, 2.5, location="l-ch")
+        located["unit"] = {"@type": "Unit", "@id": "u-g", "name": "g"}
+        self.category["impactFactors"] = [_factor(self.flow, 1.5), located]
+        path, package = self._read()
+        factors, _described = _factors(package, path=path)
+        self.assertEqual([factor.amount for factor in factors], [1.5])
+
     def test_one_flow_stated_twice_with_one_number_is_read_once(self):
         """A repeat is not a second statement.  2.8.2's 1,897 verbatim repeats
         are all of rows stated per place, which are refused, but the rule
