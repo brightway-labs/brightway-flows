@@ -31,11 +31,11 @@ rather than one the merge had to invent.
   ecoinvent-3.8             4,421        186      4,233          0          2          0      2,539          0       100.0%
   bafu-2026-v1              2,679         26      2,562          0         91          0      1,467          0        96.6%
   stepwise-2006-1.09        6,055         13      5,919          0        123          0      3,725          0        98.0%
-  agribalyse-3.2            5,485         28      5,368          0         89          0      3,161         26        98.4%
+  agribalyse-3.2            5,485         49      5,347          0         89          0      3,158          0        98.4%
 ```
 
-Copied from the full build of `564d256` on 20 October 2026 (run
-`20261020T0551216462180000`), the build `expectations/baseline.json` was
+Copied from the full build of `5f7aab7` on 20 October 2026 (run
+`20261020T1250583043960000`), the build `expectations/baseline.json` was
 recorded from.
 
 **Expectations** — the statements in `expectations/`, each graded against this

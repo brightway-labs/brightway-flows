@@ -37,10 +37,10 @@
         "key": "factors.ef_greendelta_unit-crossing"
       },
       "expect": {
-        "at_least": 3,
-        "at_most": 3
+        "at_least": 1,
+        "at_most": 1
       },
-      "comment": "An equality, because the fix must not work by silencing the guard. Five before. What is left is `Water` emitted to a river and `Waste water`, whose flows carry no kilogram conversion of their own even though sibling flows in the same water body do, and `Gas, mine, off-gas, process, coal mining`, stated per cubic metre against a flow published per megajoule where two values are on record for that pair.\n\nGrowing means a route stopped finding a conversion it used to have; shrinking means one of those three was answered somewhere, which is a reason to re-read this file rather than to let it lapse."
+      "comment": "An equality, because the fix must not work by silencing the guard. Five before. What is left is `Water` emitted to a river and `Waste water`, whose flows carry no kilogram conversion of their own even though sibling flows in the same water body do, and `Gas, mine, off-gas, process, coal mining`, stated per cubic metre against a flow published per megajoule where two values are on record for that pair.\n\nGrowing means a route stopped finding a conversion it used to have; shrinking means one of those three was answered somewhere, which is a reason to re-read this file rather than to let it lapse.\n\nRewritten for #370, which answered two of the three: `Water` emitted to a river and `Waste water` both carry 0.001 m3 per kg now -- BAFU's river row publishes the factor its manual fix states, and AGRIBALYSE's two kilogram releases are rebased in theirs -- so GreenDelta's -0.04295 per kg reaches each as -42.95 per cubic metre, the JRC's site-generic number for water returned to surface water. What remains is `Gas, mine, off-gas, process, coal mining`."
     },
     {
       "id": "0804-water-emitted-to-water-carries-their-numbers",
