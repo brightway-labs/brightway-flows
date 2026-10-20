@@ -29,7 +29,7 @@ flow across releases.
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Mapping
+from collections.abc import Collection, Iterable, Mapping
 from dataclasses import dataclass
 from functools import cache
 
@@ -125,17 +125,28 @@ def duplicates_reaching_their_valid_row(
     *,
     list_name: str,
     source_label: str,
+    source_uuids: Collection[str],
     duplicates: Mapping[tuple[str, str], DuplicateRow] | None = None,
 ) -> dict[str, DuplicateRow]:
     """The rulings this merge bears out, by duplicate uuid.
 
-    *targets* is where each of this merge's source rows landed, as the
-    consensus flow's id by source uuid.  A ruling whose duplicate or valid row
-    is not in it -- a release that does not ship one of them, or a bounded run
-    that left one out -- is not this merge's to check and is skipped.
+    *source_uuids* is every row this merge was given, and *targets* is where
+    the rows that landed went, as the consensus flow's id by source uuid.  The
+    two are kept apart because a row missing from each means a different thing:
 
-    :raises ValueError: if a duplicate and its valid row both landed and on
-        different consensus flows.  The ruling says they are one flow.
+    * a ruling naming a row that is not in *source_uuids* -- a release that
+      does not ship it, or a bounded run that left it out -- is not this
+      merge's to check, and is skipped;
+    * a ruling whose rows were both given and neither landed has nothing to
+      mark: both are published unmatched, together, and the count is logged;
+    * a ruling whose rows were both given and only one landed is a split, as
+      two rows landing apart is.  The ruling says they are one flow, and a
+      merge that matched one copy and not the other has separated them.  Left
+      as a skip, the copy ruled a duplicate would publish as the only live
+      mapping, with nothing to say the ruling went unapplied.
+
+    :raises ValueError: if a duplicate and its valid row were both given and
+        did not land together, whether apart or only one of them.
     """
     rulings = {
         uuid: row
@@ -146,25 +157,35 @@ def duplicates_reaching_their_valid_row(
     }
     borne_out: dict[str, DuplicateRow] = {}
     split: list[str] = []
+    unmatched_pairs = 0
     for uuid, row in rulings.items():
+        if uuid not in source_uuids or row.valid_uuid not in source_uuids:
+            continue
         duplicate_target = targets.get(uuid)
         valid_target = targets.get(row.valid_uuid)
-        if not duplicate_target or not valid_target:
+        if not duplicate_target and not valid_target:
+            unmatched_pairs += 1
             continue
         if duplicate_target != valid_target:
             split.append(
-                f"{uuid} reached {duplicate_target}, its valid row "
-                f"{row.valid_uuid} reached {valid_target}"
+                f"{uuid} reached {duplicate_target or 'nothing'}, its valid row "
+                f"{row.valid_uuid} reached {valid_target or 'nothing'}"
             )
             continue
         borne_out[uuid] = row
     if split:
         raise ValueError(
             f"{len(split)} {source_label} row(s) ruled duplicates in "
-            f"{DUPLICATES_FILEPATH.name} reached a different consensus flow from "
-            f"the row they duplicate; refusing to write artifacts. Either the "
-            f"ruling is wrong, or the merge placed one of the two by a route the "
-            f"other did not take:\n  " + "\n  ".join(split)
+            f"{DUPLICATES_FILEPATH.name} did not land with the row they "
+            f"duplicate; refusing to write artifacts. Either the ruling is "
+            f"wrong, or the merge placed one of the two by a route the other "
+            f"did not take:\n  " + "\n  ".join(split)
+        )
+    if unmatched_pairs:
+        logger.info(
+            "duplicate_source_rows_unmatched_together",
+            source=source_label,
+            pairs=unmatched_pairs,
         )
     return borne_out
 

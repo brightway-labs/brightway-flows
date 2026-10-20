@@ -132,27 +132,39 @@ class TheFileTestCase(unittest.TestCase):
 
 
 class TheMergeCheckTestCase(unittest.TestCase):
-    def test_a_pair_that_lands_together_is_borne_out(self):
-        borne = duplicates_reaching_their_valid_row(
-            {"dup": "t", "valid": "t"},
-            list_name="openlca", source_label="openlca-2.8.2", duplicates=RULINGS,
+    def _check(self, targets, *, given=("dup", "valid")):
+        return duplicates_reaching_their_valid_row(
+            targets,
+            list_name="openlca",
+            source_label="openlca-2.8.2",
+            source_uuids=set(given),
+            duplicates=RULINGS,
         )
-        self.assertEqual(set(borne), {"dup"})
+
+    def test_a_pair_that_lands_together_is_borne_out(self):
+        self.assertEqual(set(self._check({"dup": "t", "valid": "t"})), {"dup"})
 
     def test_a_pair_that_lands_apart_stops_the_merge(self):
         with self.assertRaises(ValueError):
-            duplicates_reaching_their_valid_row(
-                {"dup": "t1", "valid": "t2"},
-                list_name="openlca", source_label="openlca-2.8.2", duplicates=RULINGS,
-            )
+            self._check({"dup": "t1", "valid": "t2"})
 
     def test_a_pair_this_merge_did_not_see_is_skipped(self):
         """A bounded run, or a release that does not ship one of the two."""
-        borne = duplicates_reaching_their_valid_row(
-            {"dup": "t"},
-            list_name="openlca", source_label="openlca-2.8.2", duplicates=RULINGS,
-        )
-        self.assertEqual(borne, {})
+        self.assertEqual(self._check({"dup": "t"}, given=("dup",)), {})
+
+    def test_a_valid_row_given_but_unmatched_stops_the_merge(self):
+        """Both rows were in the merge and only the copy landed.  Skipped, the
+        copy ruled a duplicate would publish as the only live mapping and
+        nothing would say the ruling went unapplied."""
+        with self.assertRaisesRegex(ValueError, "valid row valid reached nothing"):
+            self._check({"dup": "t"})
+
+    def test_a_duplicate_given_but_unmatched_stops_the_merge(self):
+        with self.assertRaisesRegex(ValueError, "dup reached nothing"):
+            self._check({"valid": "t"})
+
+    def test_a_pair_given_and_both_unmatched_has_nothing_to_mark(self):
+        self.assertEqual(self._check({}), {})
 
 
 class TheMappingTestCase(unittest.TestCase):
