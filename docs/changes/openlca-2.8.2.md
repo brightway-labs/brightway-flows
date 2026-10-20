@@ -177,20 +177,24 @@ of them use words the other lists don't, and each was read as follows:
   area**. It is not read as grassland, because ILCD 2011, IMPACT 2002+ and
   EF 2.0 score it differently from openLCA's `Occupation, grassland`.
 
-## Not yet merged
+## The first build with the list
 
-openLCA LCIA methods 2.8.2 is registered and extracted, and merges last
-(priority 500) when a build names it. It cannot be merged yet
-([#385](https://github.com/brightway-labs/brightway-flows/issues/385)): in 20
-land classes, two openLCA rows with different names reach one class —
-`Occupation, annual crop` and `Occupation, arable land, unspecified use`, for
-example — and the build stops on each until `land-flow-groupings.json` says the
-fold is meant. A grouping names the flow the two reach, so it is written from
-the first build that merges the list.
+openLCA LCIA methods 2.8.2 merges last (priority 500) when a build names it;
+the default build, which the other pages' numbers come from, does not name it.
+The first full build to merge it ran on 20 October 2026 — ecoinvent 3.12 and
+3.8, BAFU 2026 v1, Stepwise 2006, AGRIBALYSE 3.2 and this list, merge run
+`76b3ec8f` — once the 23 land folds above were recorded
+([#385](https://github.com/brightway-labs/brightway-flows/issues/385)). Of the
+54,784 rows merged, 53,081 reach a flow another list already published: 51,207
+by registry number, 861 by name, 454 by land class, 100 by kind of water, 41 by
+particle size window, 119 by a uuid EF 3.1 already ships, and the rest by a
+registry number together with a name or qualifier. The other 1,703 are
+published as new flows over 1,095 new substances; no row is left unmatched.
+The 213 copies ruled duplicates are published deprecated.
 
-No documented build includes it, so this page records no merge outcomes: no row
-has been sent anywhere by hand, no registry number corrected, and no name split
-across two substances.
+That build is not yet a documented one, so this page records no row sent
+anywhere by hand, no registry number corrected, and no name split across two
+substances for this list.
 
 ## One name, two substances
 
@@ -204,13 +208,15 @@ and writes the element's registry number on many of them
 
 ## Rows merged into one flow
 
-**Land-use rows shipped twice.** 166 land-use names are in the package more
+**Land-use rows shipped twice.** 181 land-use names are in the package more
 than once with the same unit: `Occupation, annual crop` in `Resource / land`
-and again in `Resource / unspecified`, and so for 160 of them. Each copy is the
+and again in `Resource / unspecified`, and so for 175 of them. Each copy is the
 same land class, and both map to the same flow. The row in `Resource / land` is
-kept as the valid one. The other copy, 170 rows in all, still maps but is
+kept as the valid one. The other copy, 185 rows in all, still maps but is
 published deprecated, pointing at the valid row (`source-row-duplicates.json`).
-Two names needed a different tie-break:
+The 15 names whose class another name also reaches, `Occupation, annual crop`
+among them, were ruled on 20 October 2026, when the first build with the list
+showed the folds below. Two names needed a different tie-break:
 
 - `Occupation, sea and ocean` has no `Resource / land` copy, so the
   `Resource / in water` row is kept over `Resource / unspecified`.
@@ -228,6 +234,28 @@ natural origin/kg` a water-use factor of 0.0.
 
 A deprecated copy does not weaken the valid row's match: two copies of one flow
 are not two flows sharing one.
+
+**Land classes folded.** 23 land classes are each reached by two openLCA names,
+and 3 of them by three; `land-flow-groupings.json` records every fold with its
+reasoning and the factors behind it. In nine, the names are EF 3.1's word
+beside ecoinvent's, shipped under ecoinvent's own uuid, and in seven of those
+the ecoinvent or BAFU grouping on the same flow already makes the fold:
+`Occupation, annual crop` with `Occupation, arable land, unspecified use` and
+both of its transformations; `unknown` with `unspecified` in both
+transformations and in occupation; `agriculture, mosaic` with `heterogeneous,
+agricultural` in all three directions, where `agriculture + forest`,
+agroforestry, is the third name. The other fourteen are GreenDelta's own
+spellings beside ecoinvent's or EF's: a plural (`lakes, artificial`, `rivers,
+artificial`, `urban, green areas`) in six classes, the older `arable` beside
+`annual crop` in the three tillage classes and the two organic ones, `cropland
+fallow (non-use)` beside `annual crop, fallow` in the two fallow ones, and `to
+unknown (used)` beside `to unspecified, used`. In 21 of the 23 the package's
+factors never disagree between the names: a method either scores both alike or
+scores only one. The two that disagree are the transformations from and to
+`agriculture, mosaic`: EF 2.0 gives `agriculture + forest` its catch-all 134
+against 121 for the others, and ILCD 2011 gives `to agriculture, mosaic` 245
+against 485 for `to heterogeneous, agricultural`. Counted on the build of
+20 October 2026, over the factors the package states without a place.
 
 Beyond land use, the package ships 504 pairs of flows with the same name,
 compartment and unit — usually GreenDelta's own flow beside ecoinvent's copy of

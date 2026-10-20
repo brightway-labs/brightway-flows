@@ -80,11 +80,13 @@ class TheFileTestCase(unittest.TestCase):
             len(self.land_rulings) + len(self.water_rulings), len(self.rulings)
         )
 
-    def test_166_names_shipped_twice(self):
-        """170 duplicates over 166 names: four names ship three copies."""
-        self.assertEqual(len(self.land_rulings), 170)
+    def test_181_names_shipped_twice(self):
+        """185 duplicates over 181 names: four names ship three copies.  The
+        last 15 names were ruled on 20 October 2026, once the first build with
+        the list showed that another name reaches each of their classes."""
+        self.assertEqual(len(self.land_rulings), 185)
         self.assertEqual(
-            len({row.valid_uuid for row in self.land_rulings.values()}), 166
+            len({row.valid_uuid for row in self.land_rulings.values()}), 181
         )
 
     def test_25_water_names_shipped_twice(self):
@@ -123,7 +125,7 @@ class TheFileTestCase(unittest.TestCase):
             self.land[row.valid_uuid]["source_context"][1]
             for row in self.land_rulings.values()
         )
-        self.assertEqual(compartments, Counter({"land": 169, "in water": 1}))
+        self.assertEqual(compartments, Counter({"land": 184, "in water": 1}))
 
     def test_the_valid_water_row_is_the_one_in_resource_in_water(self):
         compartments = Counter(

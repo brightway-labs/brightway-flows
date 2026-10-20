@@ -1,0 +1,741 @@
+{
+  "schema_version": 1,
+  "description": "openLCA LCIA methods 2.8.2 could not be merged: in 23 land classes two or three of its names reach one flow, and the land-fold check stops a build on a fold nobody has recorded (#385). The 23 are now recorded for openLCA in land-flow-groupings.json, each with its reasoning -- EF 3.1's word beside ecoinvent's, a plural, the older `arable` beside `annual crop`, `unknown` beside `unspecified` -- and GreenDelta's same-named `Resource / unspecified` copies of 15 of the names are ruled duplicates in source-row-duplicates.json. These say where each folded row lands, so that the build of 20 October 2026, the first to merge the list, is the measure the next release is read against.",
+  "expectations": [
+    {
+      "id": "0385-cropland-annual-crop",
+      "issue": 385,
+      "title": "openLCA's `Occupation, annual crop` reaches `Cropland`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "c5aafa60-495c-461c-a1d4-b262a34c45b9"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "b88d3b6d-229e-477e-bce1-e16376f75c7b"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Cropland` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-cropland-arable-land-unspecified-use",
+      "issue": 385,
+      "title": "openLCA's `Occupation, arable land, unspecified use` reaches `Cropland`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "8c173ca1-5f74-4a6e-89e5-dd18e0f18d1a"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "b88d3b6d-229e-477e-bce1-e16376f75c7b"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Cropland` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-cropland-from-annual-crop",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from annual crop` reaches `From cropland`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "f05cca02-ec18-4acc-9939-59658ff9a554"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "9699a63f-c966-43a4-816c-b1fbbf0a3e88"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `From cropland` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-cropland-from-arable-land-unspecified-use",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from arable land, unspecified use` reaches `From cropland`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "4d166779-88fd-441b-9537-f3b974e3bff7"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "9699a63f-c966-43a4-816c-b1fbbf0a3e88"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `From cropland` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-cropland-to-annual-crop",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to annual crop` reaches `To cropland`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "c3f83a91-4888-41a4-add9-fd01678a1e5f"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "933debfd-2aa5-4a35-b07b-2732350ea29c"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To cropland` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-cropland-to-arable-land-unspecified-use",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to arable land, unspecified use` reaches `To cropland`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "2f1e926a-ec96-432b-b2a6-bd5e3de2ff87"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "933debfd-2aa5-4a35-b07b-2732350ea29c"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To cropland` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-cropland-conservation-tillage-annual-crop-conservation-tillage",
+      "issue": 385,
+      "title": "openLCA's `Occupation, annual crop, conservation tillage` reaches `Cropland, conservation tillage`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "dbc67ab5-f891-33ff-b1f2-eed940a1205b"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "00657032435d3517986e844f165a5bb6ae0d32f4"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Cropland, conservation tillage` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-cropland-conservation-tillage-arable-conservation-tillage-obsolete",
+      "issue": 385,
+      "title": "openLCA's `Occupation, arable, conservation tillage (obsolete)` reaches `Cropland, conservation tillage`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "fdb1b2d0-f537-401e-b845-1d93da512174"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "00657032435d3517986e844f165a5bb6ae0d32f4"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Cropland, conservation tillage` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-cropland-conventional-tillage-annual-crop-conventional-tillage",
+      "issue": 385,
+      "title": "openLCA's `Occupation, annual crop, conventional tillage` reaches `Cropland, conventional tillage`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "ded8e6ec-41f4-3417-8fee-a44d8a35bd77"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "e99d7b7c9fa83de1b4b4e0ba744875a6efd4e92c"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Cropland, conventional tillage` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-cropland-conventional-tillage-arable-conventional-tillage-obsolete",
+      "issue": 385,
+      "title": "openLCA's `Occupation, arable, conventional tillage (obsolete)` reaches `Cropland, conventional tillage`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "e489cce4-a80f-417d-9ae6-9fc14cc7dd49"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "e99d7b7c9fa83de1b4b4e0ba744875a6efd4e92c"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Cropland, conventional tillage` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-cropland-reduced-tillage-annual-crop-reduced-tillage",
+      "issue": 385,
+      "title": "openLCA's `Occupation, annual crop, reduced tillage` reaches `Cropland, reduced tillage`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "d903114a-8c2c-3649-ab5b-22f404fc4646"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "6c625a59de68bc6b61606555d8d9d53120bd541b"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Cropland, reduced tillage` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-cropland-reduced-tillage-arable-reduced-tillage-obsolete",
+      "issue": 385,
+      "title": "openLCA's `Occupation, arable, reduced tillage (obsolete)` reaches `Cropland, reduced tillage`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "81e07a67-28e0-4392-a553-d86e54a9b8a9"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "6c625a59de68bc6b61606555d8d9d53120bd541b"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Cropland, reduced tillage` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-cropland-organic-from-annual-crop-organic",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from annual crop, organic` reaches `From cropland, organic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "932d215c-082d-3674-9e8a-a56818fbffa7"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "252907328aab5b2b106f2ec4b2bd3ed35e9a016a"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `From cropland, organic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-cropland-organic-from-arable-organic",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from arable, organic` reaches `From cropland, organic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "43c8b65e-8551-37da-9f00-7fedc95fe17d"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "252907328aab5b2b106f2ec4b2bd3ed35e9a016a"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `From cropland, organic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-cropland-organic-to-annual-crop-organic",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to annual crop, organic` reaches `To cropland, organic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "fa121789-03b2-3c76-bef9-6f4c9be4b4e6"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "23429b274f56fc7adc82ce00efc7449dc43c9697"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To cropland, organic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-cropland-organic-to-arable-organic",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to arable, organic` reaches `To cropland, organic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "2e1a4ab8-76e5-44cf-a726-ea75ac62efac"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "23429b274f56fc7adc82ce00efc7449dc43c9697"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To cropland, organic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-cropland-fallow-from-arable-fallow",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from arable,  fallow` reaches `From cropland, fallow`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "67055318-bad9-420f-ae31-9ba54456518d"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "67055318-bad9-420f-ae31-9ba54456518d"
+      },
+      "comment": "One of the 3 names `land-flow-groupings.json` folds into `From cropland, fallow` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-cropland-fallow-from-cropland-fallow-non-use",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from cropland fallow (non-use)` reaches `From cropland, fallow`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "4da2ea28-8273-4901-9931-264169ec7731"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "67055318-bad9-420f-ae31-9ba54456518d"
+      },
+      "comment": "One of the 3 names `land-flow-groupings.json` folds into `From cropland, fallow` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-cropland-fallow-from-annual-crop-fallow",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from annual crop, fallow` reaches `From cropland, fallow`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "5c180ec0-3dc5-3094-84c2-2cefe9402b49"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "67055318-bad9-420f-ae31-9ba54456518d"
+      },
+      "comment": "One of the 3 names `land-flow-groupings.json` folds into `From cropland, fallow` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-cropland-fallow-to-cropland-fallow-non-use",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to cropland fallow (non-use)` reaches `To cropland, fallow`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "54b82481-32a3-4e82-bac7-1df475dbc80c"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "7b830424-436d-428c-b2ad-3e93f3115d7b"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To cropland, fallow` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-cropland-fallow-to-annual-crop-fallow",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to annual crop, fallow` reaches `To cropland, fallow`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "6d5106b1-0c5e-3b60-99fe-197578809228"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "7b830424-436d-428c-b2ad-3e93f3115d7b"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To cropland, fallow` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-unspecified-from-unknown",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from unknown` reaches `From unspecified`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "12264257-7f8b-4afe-b3cb-3ac28ca1661a"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "52a7fc6d-de3b-4348-9ef2-11b119da6c98"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `From unspecified` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-unspecified-from-unspecified",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from unspecified` reaches `From unspecified`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "29630a65-f38c-48a5-9744-c0121f586640"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "52a7fc6d-de3b-4348-9ef2-11b119da6c98"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `From unspecified` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-unspecified-to-unknown",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to unknown` reaches `To unspecified`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "36965153-1daf-452a-8089-f4b5222c46ae"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "7db3936a-8686-46e7-a694-107a117c6360"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To unspecified` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-unspecified-to-unspecified",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to unspecified` reaches `To unspecified`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "512a5356-8059-4772-a43f-42e3c4f3d299"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "7db3936a-8686-46e7-a694-107a117c6360"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To unspecified` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-unspecified-unspecified",
+      "issue": 385,
+      "title": "openLCA's `Occupation, unspecified` reaches `Unspecified`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "c7cb5880-4219-4051-9357-10fdd08c6f2b"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "be7cc1fe-c49e-4cce-9549-3d547f10c189"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Unspecified` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-unspecified-unknown",
+      "issue": 385,
+      "title": "openLCA's `Occupation, unknown` reaches `Unspecified`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "50b14562-ddeb-49d7-899c-dcbf9dfed004"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "be7cc1fe-c49e-4cce-9549-3d547f10c189"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Unspecified` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-unspecified-used-to-unknown-used",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to unknown (used)` reaches `To unspecified, used`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "fa4d4851-3cab-48a0-a2e4-d3e047323eb6"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "fa4d4851-3cab-48a0-a2e4-d3e047323eb6"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To unspecified, used` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-unspecified-used-to-unspecified-used",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to unspecified, used` reaches `To unspecified, used`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "7aed60f0-ad45-370c-b0a0-beb5734d7a84"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "fa4d4851-3cab-48a0-a2e4-d3e047323eb6"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To unspecified, used` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-agriculture-mosaic-agriculture-mosaic",
+      "issue": 385,
+      "title": "openLCA's `Occupation, agriculture, mosaic` reaches `Agriculture, mosaic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "310b68ea-1ea1-385f-add3-b49c49ac7293"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "1d443c61-ff6f-419a-99a8-9ff3055f4922"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Agriculture, mosaic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-agriculture-mosaic-heterogeneous-agricultural",
+      "issue": 385,
+      "title": "openLCA's `Occupation, heterogeneous, agricultural` reaches `Agriculture, mosaic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "69c7d771-04fc-499e-84f8-6c7b923b8ced"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "1d443c61-ff6f-419a-99a8-9ff3055f4922"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Agriculture, mosaic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-agriculture-mosaic-from-agriculture-mosaic",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from agriculture, mosaic` reaches `From agriculture, mosaic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "c228acda-5e76-3c9c-908d-467e0d5493e2"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "aeea42cc-4215-465f-981f-ae2ab387fbb9"
+      },
+      "comment": "One of the 3 names `land-flow-groupings.json` folds into `From agriculture, mosaic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-agriculture-mosaic-from-heterogeneous-agricultural",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from heterogeneous, agricultural` reaches `From agriculture, mosaic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "2e002771-9f22-43e3-9990-f06f8235700b"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "aeea42cc-4215-465f-981f-ae2ab387fbb9"
+      },
+      "comment": "One of the 3 names `land-flow-groupings.json` folds into `From agriculture, mosaic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-agriculture-mosaic-from-agriculture-forest",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from agriculture + forest` reaches `From agriculture, mosaic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "bf0cd69b-ada3-3ace-b837-4e314f0b5ca8"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "aeea42cc-4215-465f-981f-ae2ab387fbb9"
+      },
+      "comment": "One of the 3 names `land-flow-groupings.json` folds into `From agriculture, mosaic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-agriculture-mosaic-to-agriculture-mosaic",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to agriculture, mosaic` reaches `To agriculture, mosaic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "0b062583-0e24-373c-beb5-e3e639619895"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "b886560e-7ab8-4ec9-8a0a-802affe63186"
+      },
+      "comment": "One of the 3 names `land-flow-groupings.json` folds into `To agriculture, mosaic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-agriculture-mosaic-to-heterogeneous-agricultural",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to heterogeneous, agricultural` reaches `To agriculture, mosaic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "fdda4f8e-b620-4df6-92a9-101a251d2f42"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "b886560e-7ab8-4ec9-8a0a-802affe63186"
+      },
+      "comment": "One of the 3 names `land-flow-groupings.json` folds into `To agriculture, mosaic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-agriculture-mosaic-to-agriculture-forest",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to agriculture + forest` reaches `To agriculture, mosaic`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "8ceb8983-17eb-3411-87ca-9fd19b182695"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "b886560e-7ab8-4ec9-8a0a-802affe63186"
+      },
+      "comment": "One of the 3 names `land-flow-groupings.json` folds into `To agriculture, mosaic` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-urban-green-space-urban-green-area",
+      "issue": 385,
+      "title": "openLCA's `Occupation, urban, green area` reaches `Urban, green space`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "190d9910-5d04-4c97-abea-3b39682b7ed6"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "42378359-15eb-4e60-8f72-b796b9d71e69"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Urban, green space` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-urban-green-space-urban-green-areas",
+      "issue": 385,
+      "title": "openLCA's `Occupation, urban, green areas` reaches `Urban, green space`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "5ce41517-25bb-4da6-b839-5fd0f00baff1"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "42378359-15eb-4e60-8f72-b796b9d71e69"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Urban, green space` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-urban-green-space-from-urban-green-area",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from urban, green area` reaches `From urban, green space`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "83a691df-1e4a-4cee-bcdb-17b7bd0c8c35"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "cb72d307-631d-4e10-b036-d861d45caa82"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `From urban, green space` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-from-urban-green-space-from-urban-green-areas",
+      "issue": 385,
+      "title": "openLCA's `Transformation, from urban, green areas` reaches `From urban, green space`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "878c6877-caa9-3c08-b5d4-57bb48aa3290"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "cb72d307-631d-4e10-b036-d861d45caa82"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `From urban, green space` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-urban-green-space-to-urban-green-area",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to urban, green area` reaches `To urban, green space`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "f669a957-5574-4932-98cb-2851a12b3137"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "88586e86-b7e9-498f-866a-87055995af9e"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To urban, green space` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-urban-green-space-to-urban-green-areas",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to urban, green areas` reaches `To urban, green space`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "bdd6f3f4-b8c6-3ac8-824c-1d4480f2e39e"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "88586e86-b7e9-498f-866a-87055995af9e"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To urban, green space` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-lake-artificial-lake-artificial",
+      "issue": 385,
+      "title": "openLCA's `Occupation, lake, artificial` reaches `Lake, artificial`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "69dfa439-8e4e-4cae-bb0c-85a8aa8b9a73"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "81cfc429-5bb4-44e9-989a-f23fdd06aae4"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Lake, artificial` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-lake-artificial-lakes-artificial",
+      "issue": 385,
+      "title": "openLCA's `Occupation, lakes, artificial` reaches `Lake, artificial`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "4445c383-598e-3298-b8a5-76b89b2f4c91"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "81cfc429-5bb4-44e9-989a-f23fdd06aae4"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `Lake, artificial` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-lake-artificial-to-lake-artificial",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to lake, artificial` reaches `To lake, artificial`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "84b65d8f-2edd-4ddd-8f68-ca28d1c681b0"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "8de51fe7-2ad7-4b17-91a6-19880b0c343c"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To lake, artificial` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-lake-artificial-to-lakes-artificial",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to lakes, artificial` reaches `To lake, artificial`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "93aa0176-b368-3cb4-ae6f-59372388ba5e"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "8de51fe7-2ad7-4b17-91a6-19880b0c343c"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To lake, artificial` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-river-artificial-to-river-artificial",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to river, artificial` reaches `To river, artificial`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "090e9aa9-a9a9-4878-9634-3ad0ba7fbc91"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "b3309166-6681-46d8-a43e-68126b3f2053"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To river, artificial` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    },
+    {
+      "id": "0385-to-river-artificial-to-rivers-artificial",
+      "issue": 385,
+      "title": "openLCA's `Transformation, to rivers, artificial` reaches `To river, artificial`, the flow its grouping names",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "c181364d-6775-346f-96f6-89c168387db1"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "b3309166-6681-46d8-a43e-68126b3f2053"
+      },
+      "comment": "One of the 2 names `land-flow-groupings.json` folds into `To river, artificial` for openLCA, recorded 20 October 2026; the reasoning and the factor evidence are on the grouping. Stated per row so that a release that moves one of them off the flow is seen as the decision reopening, which the fold check alone would not show once the grouping exists."
+    }
+  ]
+}
