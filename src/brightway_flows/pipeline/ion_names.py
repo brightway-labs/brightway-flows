@@ -45,13 +45,14 @@ from brightway_flows.domain.ion_names import (
     standard_ion_synonyms,
 )
 from brightway_flows.domain.labels import canonical_label_value, flow_label_value
-from brightway_flows.domain.vocabulary import (
-    CHEMROF_ELEMENTAL_CHARGE,
-    IRIS,
-    Term,
-)
+from brightway_flows.domain.vocabulary import IRIS, Term
 from brightway_flows.flow_layers.ions import _extract_ion_base_and_charge
-from brightway_flows.flow_layers.labels import _label_entry, _set_pref_label
+from brightway_flows.flow_layers.labels import (
+    _label_entry,
+    _set_pref_label,
+    flow_label_row,
+)
+from brightway_flows.pipeline.element_labels import stated_charge
 from brightway_flows.pipeline.layer_writes import LayerWriteLog
 from brightway_flows.sources import base_source_label
 
@@ -106,23 +107,6 @@ def _ion_of_an_element(obj: FlowObject) -> bool:
     )
 
 
-def _stated_charge(obj: FlowObject) -> int | None:
-    """The one non-zero charge *obj* states, or ``None``."""
-    properties = obj.properties
-    if not isinstance(properties, dict):
-        return None
-    entry = properties.get(CHEMROF_ELEMENTAL_CHARGE)
-    if not isinstance(entry, dict):
-        return None
-    values = entry.get("@value")
-    if not isinstance(values, list):
-        values = [values]
-    charges = {int(v) for v in values if isinstance(v, (int, float))}
-    if len(charges) != 1:
-        return None
-    return charges.pop() or None
-
-
 def _generic_base(label: str) -> str:
     lower = label.lower()
     for suffix in _GENERIC_SUFFIXES:
@@ -153,7 +137,7 @@ def ion_reading(obj: FlowObject) -> tuple[str, int | None] | None:
     base, charge = _extract_ion_base_and_charge(label)
     if base and charge:
         return base, charge
-    stated = _stated_charge(obj)
+    stated = stated_charge(obj)
     if stated is not None and stated < 0 and is_anion_name(label):
         return label, stated
     return None
@@ -253,22 +237,6 @@ def _published_synonyms(obj: FlowObject) -> list[str]:
     ]
 
 
-def _flow_label_row(value: str, object_id: str) -> dict[str, Any]:
-    """A synonym in the shape a flow's labels take, which is `source` where a
-    flow object's take `provenance` (`pipeline.sqlite`)."""
-    return {
-        "@value": value,
-        "@language": "en",
-        "@lang": "en",
-        "source": Provenance(
-            was_generated_by=PASS_NAME,
-            was_attributed_to="brightway-flows",
-            had_primary_source=[],
-            was_derived_from=f"flow_object.altLabel ({object_id})",
-        ).to_dict(),
-    }
-
-
 def carry_ion_synonyms_onto_flows(
     flows: list[Flow],
     flow_objects: list[FlowObject],
@@ -299,7 +267,13 @@ def carry_ion_synonyms_onto_flows(
             continue
         promised = set(synonyms)
         kept = [row for row in flow.altLabel or [] if _row_value(row) not in promised]
-        rows = [_flow_label_row(value, object_id) for value in synonyms] + kept
+        provenance = Provenance(
+            was_generated_by=PASS_NAME,
+            was_attributed_to="brightway-flows",
+            had_primary_source=[],
+            was_derived_from=f"flow_object.altLabel ({object_id})",
+        )
+        rows = [flow_label_row(value, provenance) for value in synonyms] + kept
         if writes.write(
             flow, "altLabel", rows, pass_name=PASS_NAME,
             comment="the ion naming standard's synonyms, from the substance",

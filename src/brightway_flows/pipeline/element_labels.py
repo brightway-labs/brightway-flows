@@ -52,7 +52,7 @@ from brightway_flows.domain.vocabulary import (
     CHEMROF_CHEMICAL_ELEMENT,
     CHEMROF_ELEMENTAL_CHARGE,
 )
-from brightway_flows.flow_layers.labels import _set_pref_label
+from brightway_flows.flow_layers.labels import _set_pref_label, flow_label_row
 from brightway_flows.flow_layers.provenance import ELEMENT_ENRICHMENT_GENERATED_BY
 from brightway_flows.pipeline.review_records import (
     ReviewQueue,
@@ -174,17 +174,15 @@ class ElementPrefLabelPass:
             flow,
             "prefLabel",
             [
-                {
-                    "@value": title_name,
-                    "@language": "en",
-                    "@lang": "en",
-                    "source": Provenance(
+                flow_label_row(
+                    title_name,
+                    Provenance(
                         was_generated_by=self.name,
                         was_attributed_to="brightway-flows",
                         had_primary_source=[base_source_label(), "PubChem"],
                         was_derived_from="flow_object.prefLabel.titlecase",
-                    ).to_dict(),
-                }
+                    ),
+                )
             ],
             pass_name=self.name,
             comment=f"element name from the flow object: {title_name}",
@@ -223,7 +221,7 @@ class ElementPrefLabelPass:
 _UNSPECIFIED_CHARGE_SUFFIX = ", ion"
 
 
-def _stated_charge(obj: FlowObject) -> int | None:
+def stated_charge(obj: FlowObject) -> int | None:
     """The one charge *obj* states, or ``None`` where it states none or several.
 
     Several is not an error and is why this returns ``None`` rather than the
@@ -319,7 +317,7 @@ class IonPrefLabelPass:
             if not current.lower().endswith(_UNSPECIFIED_CHARGE_SUFFIX):
                 continue
             stats["unspecified_charge_names"] += 1
-            charge = _stated_charge(obj)
+            charge = stated_charge(obj)
             if charge is None:
                 # The case the fallback name exists for.  Counted rather than
                 # skipped silently: this number going to nought would mean the
