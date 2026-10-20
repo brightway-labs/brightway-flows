@@ -11,10 +11,11 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from zipfile import ZipFile
 
-import httpx
 import orjson
 import structlog
 from tqdm import tqdm
+
+from brightway_flows.download import download
 
 from brightway_flows.domain.lcia.records import (
     StatedFactor,
@@ -95,22 +96,7 @@ def download_ef31(url: str = EF31_URL, force: bool = False) -> Path:
         return dest
 
     logger.info("downloading EF 3.1 source data", url=url, destination=str(dest))
-
-    with httpx.stream("GET", url, follow_redirects=True, timeout=120) as response:
-        response.raise_for_status()
-        total = int(response.headers.get("content-length", 0))
-
-        with dest.open("wb") as f, tqdm(
-            total=total or None,
-            unit="B",
-            unit_scale=True,
-            desc=str(EF31_ZIP_FILEPATH),
-        ) as progress:
-            for chunk in response.iter_bytes(chunk_size=1024 * 64):
-                f.write(chunk)
-                progress.update(len(chunk))
-
-    return dest
+    return download(url, dest, timeout=120, description=str(EF31_ZIP_FILEPATH))
 
 
 # ---------------------------------------------------------------------------

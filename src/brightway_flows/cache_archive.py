@@ -46,11 +46,11 @@ from typing import Any
 from urllib.parse import urlparse
 from urllib.request import url2pathname
 
-import httpx
 import orjson
 import structlog
 from tqdm import tqdm
 
+from brightway_flows.download import download
 from brightway_flows.filesystem import (
     CHEBI_JSON_GZ_FILEPATH,
     CHEMLIN_ISOTOPE_CACHE_FILEPATH,
@@ -470,18 +470,7 @@ def _local_path(url: str) -> Path | None:
 def download_cache_archive(url: str, destination: Path) -> Path:
     """Stream the archive at *url* to *destination*."""
     logger.info("downloading_cache_archive", url=url, destination=str(destination))
-    with httpx.stream(
-        "GET", url, follow_redirects=True, timeout=300, headers=HTTP_HEADERS
-    ) as response:
-        response.raise_for_status()
-        total = int(response.headers.get("content-length", 0))
-        with destination.open("wb") as out, tqdm(
-            total=total or None, unit="B", unit_scale=True, desc="Cache archive"
-        ) as progress:
-            for chunk in response.iter_bytes(chunk_size=1024 * 64):
-                out.write(chunk)
-                progress.update(len(chunk))
-    return destination
+    return download(url, destination, headers=HTTP_HEADERS, description="Cache archive")
 
 
 def fetch_cache(

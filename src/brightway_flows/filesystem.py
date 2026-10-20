@@ -128,6 +128,17 @@ def agribalyse_csv_path(list_version: str) -> Path:
     return DATA_DIR / f"AGB{list_version.replace('.', '')}_final.CSV"
 
 
+def openlca_lcia_zip_pattern(list_version: str) -> str:
+    """The glob an archive of *list_version* matches in the data directory.
+
+    Spelled once: :func:`openlca_lcia_zip_path` reads by it and
+    :func:`~brightway_flows.integrations.openlca.package_archive` decides by
+    it whether there is anything to download, and the two agreeing is what
+    keeps a hand-placed archive from gaining a downloaded twin.
+    """
+    return f"openLCA LCIA Methods {list_version} *.zip"
+
+
 def openlca_lcia_zip_path(list_version: str) -> Path:
     """GreenDelta's openLCA LCIA method package *list_version*, as shipped.
 
@@ -140,7 +151,7 @@ def openlca_lcia_zip_path(list_version: str) -> Path:
     :raises FileNotFoundError: if there is not exactly one archive of
         *list_version* in the data directory.
     """
-    pattern = f"openLCA LCIA Methods {list_version} *.zip"
+    pattern = openlca_lcia_zip_pattern(list_version)
     found = sorted(DATA_DIR.glob(pattern))
     if len(found) != 1:
         raise FileNotFoundError(

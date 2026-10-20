@@ -40,17 +40,15 @@ through a manifest's ``lcia`` block, and this one declares none.
 
 from __future__ import annotations
 
-import hashlib
 from collections import Counter
 from pathlib import Path
 from typing import Any, Iterator
 from zipfile import ZipFile
 
-import httpx
 import orjson
 import structlog
-from tqdm import tqdm
 
+from brightway_flows.download import DigestMismatchError, download
 from brightway_flows.integrations.ecoinvent import normalize_cas_number
 from brightway_flows.sources import SourceList
 
@@ -181,14 +179,6 @@ def extract_elementary_flows(archive: Path, *, source: str) -> list[dict[str, An
     return records
 
 
-def _digest(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def package_archive(list_version: str) -> Path:
     """The package archive for *list_version*, downloading the hosted copy if
     the data directory has none.
@@ -204,32 +194,17 @@ def package_archive(list_version: str) -> Path:
     """
     from brightway_flows import filesystem
 
-    pattern = f"openLCA LCIA Methods {list_version} *.zip"
+    pattern = filesystem.openlca_lcia_zip_pattern(list_version)
     if list_version not in HOSTED_ARCHIVES or any(filesystem.DATA_DIR.glob(pattern)):
         return filesystem.openlca_lcia_zip_path(list_version)
     name, expected = HOSTED_ARCHIVES[list_version]
     url = HOSTED_ARCHIVE_BASE_URL + name.replace(" ", "%20")
-    destination = filesystem.DATA_DIR / name
-    partial = destination.with_name(name + ".part")
-    logger.info("downloading_openlca_lcia", url=url, path=str(destination))
-    with httpx.stream("GET", url, follow_redirects=True, timeout=300) as response:
-        response.raise_for_status()
-        total = int(response.headers.get("content-length", 0))
-        with partial.open("wb") as handle, tqdm(
-            total=total or None, unit="B", unit_scale=True, desc=name
-        ) as progress:
-            for chunk in response.iter_bytes(chunk_size=1024 * 64):
-                handle.write(chunk)
-                progress.update(len(chunk))
-    received = _digest(partial)
-    if received != expected:
-        partial.unlink(missing_ok=True)
+    try:
+        return download(url, filesystem.DATA_DIR / name, sha256=expected)
+    except DigestMismatchError as exc:
         raise OpenLcaPackageError(
-            f"{url} served an archive with digest {received}, not the "
-            f"{expected} this project hosts."
-        )
-    partial.replace(destination)
-    return destination
+            f"{exc} That digest is the archive this project hosts."
+        ) from exc
 
 
 def fetch(source: SourceList, *, force: bool = False) -> Path:

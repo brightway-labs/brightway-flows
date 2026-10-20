@@ -50,11 +50,10 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Iterator
 
-import httpx
 import orjson
 import structlog
-from tqdm import tqdm
 
+from brightway_flows.download import download as download_file
 from brightway_flows.integrations.ecoinvent import normalize_cas_number
 from brightway_flows.sources import SourceList
 
@@ -133,16 +132,7 @@ def download(csv_path: Path, *, force: bool = False) -> Path:
 
     url = stepwise_csv_url(csv_path)
     logger.info("downloading_stepwise_csv", url=url, destination=str(csv_path))
-    with httpx.stream("GET", url, follow_redirects=True, timeout=300) as response:
-        response.raise_for_status()
-        total = int(response.headers.get("content-length", 0))
-        with csv_path.open("wb") as handle, tqdm(
-            total=total or None, unit="B", unit_scale=True, desc=csv_path.name
-        ) as progress:
-            for chunk in response.iter_bytes(chunk_size=1024 * 64):
-                handle.write(chunk)
-                progress.update(len(chunk))
-    return csv_path
+    return download_file(url, csv_path)
 
 
 def parse_substance_comment(comment: str) -> tuple[list[str], str]:
