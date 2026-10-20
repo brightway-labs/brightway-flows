@@ -1,15 +1,27 @@
 """The migration between two releases, written in randonneur's format.
 
-Three files, one per kind of thing a consumer's database holds -- substances,
-flows, characterisation factors -- each a randonneur datapackage
-(https://github.com/brightway-lca/randonneur): a header naming the two
-releases, a ``mapping`` saying where each field is read from in the published
-artifacts, and the changes under the verbs ``create``, ``update``, ``replace``
-and ``delete``.  ``disaggregate`` is never written: splitting a consumer's
-amount across the flows a split produced is almost never what the chemistry
-says, so a split is left unresolved for a curator instead.
+Four files, one per kind of thing a consumer's database holds -- substances,
+flows, impact categories, characterisation factors -- each a randonneur
+datapackage (https://github.com/brightway-lca/randonneur): a header naming
+the two releases, a ``mapping`` saying where each field is read from in the
+published artifacts, and the changes under the verbs ``create``, ``update``,
+``replace`` and ``delete``.  ``disaggregate`` is never written: splitting a
+consumer's amount across the flows a split produced is almost never what the
+chemistry says, so a split is left unresolved for a curator instead.
 
-A fourth file, ``unresolved.json``, is not a migration.  It lists every
+**What a replaced identifier is written as depends on where it is held.**
+randonneur applies ``replace`` to edges only; on a node it raises.  A flow is
+an edge in an inventory and a node in a flow list, so a replaced flow is a
+``replace`` (for the inventory) and a ``delete`` (for the list, where its
+survivor is already held or arrives by ``create``); a replaced substance is
+the same.  An impact category and a factor are only ever rows of a method
+table, and the row itself has to survive -- it is the factor -- so a renamed
+category or a factor whose flow or category moved is an ``update`` that
+matches the old key and sets the new one.  Every source is therefore stated
+in the before release's identifiers, and the files can be applied in any
+order.
+
+A fifth file, ``unresolved.json``, is not a migration.  It lists every
 identifier the alignment could not decide, with the candidates and the
 reason, and is the worklist for `release-migration-rulings.json`.
 
@@ -34,8 +46,10 @@ from randonneur import Datapackage
 from brightway_flows.releases.diff import Delta, DeltaKind, ReleaseDiff
 from brightway_flows.releases.rulings import EntityKind
 from brightway_flows.releases.snapshot import (
+    FACTOR_KEYS,
     SnapshotElementaryFlow,
     SnapshotFlowObject,
+    SnapshotImpactCategory,
 )
 from brightway_flows.releases.version import LIST_NAME
 
@@ -55,12 +69,10 @@ UNRESOLVED_REPORT_SCHEMA_VERSION = 1
 FILE_NAMES: dict[EntityKind, str] = {
     EntityKind.FLOW_OBJECT: "flow-objects.json",
     EntityKind.ELEMENTARY_FLOW: "elementary-flows.json",
+    EntityKind.IMPACT_CATEGORY: "impact-categories.json",
     EntityKind.FACTOR: "characterization-factors.json",
 }
 UNRESOLVED_FILE_NAME = "unresolved.json"
-
-#: A factor is identified by its triple; the file says so in its mapping.
-FACTOR_KEYS = ("impact_category_id", "elementary_flow_uuid", "geography")
 
 
 def _jsonpath(prefix: str, key: str) -> str:
@@ -100,6 +112,18 @@ def elementary_flow_mapping() -> dict[str, Any]:
     }
 
 
+def impact_category_mapping() -> dict[str, Any]:
+    """Where each category field is read from: ``impact_categories`` in the
+    published factors file."""
+    return {
+        "expression language": "JSONPath",
+        "labels": {
+            key: _jsonpath("$.impact_categories[*]", key)
+            for key in SnapshotImpactCategory.published_keys()
+        },
+    }
+
+
 def factor_mapping() -> dict[str, Any]:
     """Where each factor field is read from: ``characterization_factors`` in
     the published factors file."""
@@ -115,20 +139,26 @@ def factor_mapping() -> dict[str, Any]:
 MAPPINGS: dict[EntityKind, Any] = {
     EntityKind.FLOW_OBJECT: flow_object_mapping,
     EntityKind.ELEMENTARY_FLOW: elementary_flow_mapping,
+    EntityKind.IMPACT_CATEGORY: impact_category_mapping,
     EntityKind.FACTOR: factor_mapping,
 }
 KEY_FIELDS: dict[EntityKind, str] = {
     EntityKind.FLOW_OBJECT: "flow_object_id",
     EntityKind.ELEMENTARY_FLOW: "identifier",
+    EntityKind.IMPACT_CATEGORY: "id",
 }
 GRAPH_CONTEXTS: dict[EntityKind, list[str]] = {
     # A substance is a node.  A flow is a node in a flow list and an edge in
-    # an inventory, and a `replace` is what an inventory applies.  A factor is
-    # a row of a method table: a node.
+    # an inventory, and a `replace` is what an inventory applies.  A category
+    # and a factor are rows of a method table: nodes.
     EntityKind.FLOW_OBJECT: ["nodes"],
     EntityKind.ELEMENTARY_FLOW: ["nodes", "edges"],
+    EntityKind.IMPACT_CATEGORY: ["nodes"],
     EntityKind.FACTOR: ["nodes"],
 }
+#: The entities whose replaced rows are moved by an `update` rather than
+#: replaced and deleted; see the module docstring.
+_MOVED_BY_UPDATE = frozenset({EntityKind.IMPACT_CATEGORY, EntityKind.FACTOR})
 
 
 def _factor_triple(delta: Delta) -> dict[str, str]:
@@ -169,6 +199,12 @@ def entries(entity: EntityKind, deltas: list[Delta]) -> dict[str, list[dict[str,
                 "target": dict(delta.after or {}),
                 "comment": comment,
             })
+        elif delta.kind is DeltaKind.REPLACED and entity in _MOVED_BY_UPDATE:
+            add("update", {
+                "source": _source(entity, delta),
+                "target": dict(delta.after or {}),
+                "comment": comment,
+            })
         elif delta.kind is DeltaKind.REPLACED:
             entry: dict[str, Any] = {
                 "source": _source(entity, delta),
@@ -178,6 +214,10 @@ def entries(entity: EntityKind, deltas: list[Delta]) -> dict[str, list[dict[str,
             if delta.conversion_factor is not None:
                 entry["conversion_factor"] = delta.conversion_factor
             add("replace", entry)
+            add("delete", {
+                "source": _source(entity, delta),
+                "comment": f"replaced by {delta.replaced_by}: {comment}",
+            })
         elif delta.kind is DeltaKind.DELETED:
             add("delete", {"source": _source(entity, delta), "comment": comment})
     return out
@@ -196,17 +236,26 @@ def _description(diff: ReleaseDiff, entity: EntityKind) -> str:
         f"{counts[(entity.value, kind.value)]} {kind.value}" for kind in DeltaKind
     )
     return (
-        f"Changes to the {entity.value.replace('-', ' ')}s of the Brightway flows list "
+        f"Changes to the {entity.plural.replace('-', ' ')} of the Brightway flows list "
         f"between {diff.before.randonneur_id} (run {diff.before.run_id}, commit "
         f"{diff.before.revision[:12] or 'unknown'}) and {diff.after.randonneur_id} "
         f"(run {diff.after.run_id}, commit {diff.after.revision[:12] or 'unknown'}): "
         f"{tally}. Unresolved entries are in {UNRESOLVED_FILE_NAME}, not here. "
-        + (
-            "Apply the elementary-flows migration first: factors are stated "
-            "against the after release's flow identifiers."
-            if entity is EntityKind.FACTOR
-            else "A field in `update` carries its whole new value; a nested value "
-            "replaces the old one rather than merging into it."
+        "Every source is stated in the before release's identifiers. "
+        + {
+            EntityKind.FACTOR: (
+                "A factor whose flow was replaced or whose category was renamed is "
+                "an `update` that sets the new identifier."
+            ),
+            EntityKind.IMPACT_CATEGORY: (
+                "A renamed category is an `update` that sets its new id. A field in "
+                "`update` carries its whole new value."
+            ),
+        }.get(
+            entity,
+            "A replaced identifier is a `replace` for edges and a `delete` for nodes. "
+            "A field in `update` carries its whole new value; a nested value "
+            "replaces the old one rather than merging into it.",
         )
     )
 
@@ -267,12 +316,25 @@ class MigrationFiles:
     directory: Path
     flow_objects: Path
     elementary_flows: Path
+    impact_categories: Path
     characterization_factors: Path
     unresolved: Path
 
     @property
-    def migrations(self) -> tuple[Path, Path, Path]:
-        return (self.flow_objects, self.elementary_flows, self.characterization_factors)
+    def migrations(self) -> tuple[Path, Path, Path, Path]:
+        return (
+            self.flow_objects, self.elementary_flows, self.impact_categories,
+            self.characterization_factors,
+        )
+
+    @property
+    def by_entity(self) -> dict[EntityKind, Path]:
+        return {
+            EntityKind.FLOW_OBJECT: self.flow_objects,
+            EntityKind.ELEMENTARY_FLOW: self.elementary_flows,
+            EntityKind.IMPACT_CATEGORY: self.impact_categories,
+            EntityKind.FACTOR: self.characterization_factors,
+        }
 
 
 def migration_directory(diff: ReleaseDiff, output_dir: Path) -> Path:
@@ -280,7 +342,7 @@ def migration_directory(diff: ReleaseDiff, output_dir: Path) -> Path:
 
 
 def write_migration_files(diff: ReleaseDiff, output_dir: Path) -> MigrationFiles:
-    """Write the three migrations and the unresolved report under *output_dir*.
+    """Write the four migrations and the unresolved report under *output_dir*.
 
     Every file is written even when it holds no entry: an empty ``update``
     list says something a missing file does not.
@@ -299,6 +361,7 @@ def write_migration_files(diff: ReleaseDiff, output_dir: Path) -> MigrationFiles
         directory=directory,
         flow_objects=paths[EntityKind.FLOW_OBJECT],
         elementary_flows=paths[EntityKind.ELEMENTARY_FLOW],
+        impact_categories=paths[EntityKind.IMPACT_CATEGORY],
         characterization_factors=paths[EntityKind.FACTOR],
         unresolved=unresolved,
     )

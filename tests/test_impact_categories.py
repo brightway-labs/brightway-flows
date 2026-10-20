@@ -28,6 +28,7 @@ the workbook is read, which is the change that adds a reader for it.
 
 import tempfile
 import unittest
+import uuid
 from dataclasses import fields, replace
 from pathlib import Path
 
@@ -58,7 +59,7 @@ from brightway_flows.lcia import (
     published_impact_categories,
     published_method,
 )
-from brightway_flows.lcia.categories import _category
+from brightway_flows.lcia.categories import _category, retired_impact_category_ids
 
 #: EF 3.1's four implementations, by slug, in file order.
 JRC, ECOINVENT, GREENDELTA, CONSENSUS = (
@@ -795,6 +796,46 @@ class MalformedMethodFileTestCase(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self._read(change)
+
+    def test_a_previous_slug_another_implementation_uses_raises(self):
+        """An old id would then name two categories."""
+
+        def change(payload):
+            payload["implementations"][3]["previous_slugs"] = [JRC]
+
+        with self.assertRaises(ValueError):
+            self._read(change)
+
+    def test_previous_slugs_that_are_not_a_list_raise(self):
+        def change(payload):
+            payload["implementations"][3]["previous_slugs"] = "consensus-flow-list"
+
+        with self.assertRaises(ValueError):
+            self._read(change)
+
+
+class RetiredCategoryIdsTestCase(unittest.TestCase):
+    """Release 1.0.0 published our categories under the slug
+    ``consensus-flow-list``; their ids are recomputed from it."""
+
+    def test_our_44_categories_of_1_0_0_map_onto_todays(self):
+        retired = retired_impact_category_ids()
+        live = {str(category.id): category for category in published_impact_categories()}
+        self.assertEqual(len(retired), 44)
+        self.assertLessEqual(set(retired.values()), set(live))
+        self.assertEqual({live[new].implemented_by for new in retired.values()}, {"brightway-flows"})
+
+    def test_an_old_id_is_the_one_release_1_0_0_published(self):
+        """EF's `Acidification`, ours, as `lcia-factors.json.gz` of Zenodo
+        record 22857950 publishes it."""
+        old = "4cda840f-abce-5935-ac63-3ddae34df76e"
+        self.assertEqual(old, str(uuid.uuid5(
+            uuid.NAMESPACE_URL,
+            "https://vocab.brightway.one/lcia/impact-category/ef/3.1/consensus-flow-list/long/acidification",
+        )))
+        new = retired_impact_category_ids()[old]
+        (category,) = [c for c in published_impact_categories() if str(c.id) == new]
+        self.assertEqual((category.name, category.implemented_by), ("Acidification", "brightway-flows"))
 
 
 class CategoryHoldsItsOwnFactorsTestCase(unittest.TestCase):

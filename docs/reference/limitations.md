@@ -1765,9 +1765,11 @@ the state of a branch on a day, and nothing downstream should pin it.
 
 Two smaller ones. The two releases must have merged the same source lists,
 because a list only one side merged would read as a thousand deletions;
-`--allow-different-sources` makes those rows unresolved instead. And the
-factor file is stated against the later release's flow identifiers, so it is
-right only after the flow file has been applied.
+`--allow-different-sources` makes those rows unresolved instead. And an
+impact category is followed only when an implementation was published under
+another name before and the method file says so (`previous_slugs`): a
+category that vanished for any other reason is a change to the method, and is
+left unresolved with every factor in it.
 
 ## Source flows this list deliberately does not map
 

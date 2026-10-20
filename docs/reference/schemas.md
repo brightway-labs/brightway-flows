@@ -41,7 +41,7 @@ on macOS, overridable with `BRIGHTWAY_FLOWS_DATA_DIR`.
       release as `release-migrations` compares it, written by
       `release-snapshot`
     - `release-migration-unresolved.schema.json` — the `unresolved.json`
-      beside a pair's migration files. The three migration files themselves
+      beside a pair's migration files. The four migration files themselves
       are randonneur datapackages, validated by randonneur on writing and on
       reading; see [Which output do I need?](../using/outputs.md#releasesmigrationsfrom__to-moving-a-database-from-one-release-to-the-next)
 

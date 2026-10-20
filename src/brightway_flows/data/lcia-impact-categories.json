@@ -48,6 +48,7 @@
     {
       "slug": "brightway-flows",
       "name": "brightway-flows",
+      "previous_slugs": ["consensus-flow-list"],
       "role": "consensus",
       "decides": false,
       "source": "ours, derived from the deciding implementations, each factor saying how",

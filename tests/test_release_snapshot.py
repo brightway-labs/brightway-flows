@@ -41,6 +41,7 @@ from brightway_flows.releases.snapshot import (
     load_snapshot,
     read_stamp,
     snapshot_path,
+    upgrade_snapshot,
     write_snapshot,
 )
 from brightway_flows.releases.version import (
@@ -212,6 +213,17 @@ class SnapshotTestCase(unittest.TestCase):
         self.assertEqual(objects["fo-1"].types, ["https://w3id.org/chemrof/FullySpecifiedAtom"])
         self.assertNotIn("flow_object_id", objects["fo-1"].published_fields())
 
+    def test_impact_categories_are_read_as_published(self):
+        (category,) = self.snapshot.impact_categories
+        self.assertEqual(category.id, CATEGORY)
+        self.assertEqual(category.method, {"id": METHOD, "name": "EF", "meta": {}})
+        self.assertEqual(
+            (category.name, category.implemented_by, category.timeframe, category.unit_iri),
+            ("Climate change", "JRC", "long", "https://example.org/kgco2"),
+        )
+        self.assertEqual((category.description, category.indicator), ("", None))
+        self.assertNotIn("id", category.published_fields())
+
     def test_factors_are_read_by_their_triple(self):
         factors = self.snapshot.factors_by_key
         self.assertEqual(set(factors), {(CATEGORY, "f1", ""), (CATEGORY, "f2", "CH")})
@@ -293,6 +305,12 @@ class LoadingTestCase(unittest.TestCase):
         with self.assertRaises(SchemaVersionError):
             load_snapshot(path)
 
+    def test_a_format_1_snapshot_is_refused_with_the_command_that_upgrades_it(self):
+        path = self.root / "old.json.gz"
+        path.write_bytes(gzip.compress(orjson.dumps({"schema_version": 1, "stamp": {}})))
+        with self.assertRaisesRegex(SchemaVersionError, "release-snapshot-upgrade"):
+            load_snapshot(path)
+
     def test_a_missing_file_says_so(self):
         with self.assertRaises(SnapshotError):
             load_snapshot(self.root / "nowhere.json.gz")
@@ -307,6 +325,56 @@ class LoadingTestCase(unittest.TestCase):
             },
         }))
         self.assertEqual(load_snapshot(path).stamp.version, "1.0.0")
+
+
+class UpgradeTestCase(unittest.TestCase):
+    """A format-1 snapshot takes its categories from the release's factor file."""
+
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        db = write_fixture(Path(tmp.name) / "consensus-flows.sqlite3")
+        current = build_snapshot(db, version=named_version("1.0.0"))
+        self.categories = [category.to_dict() for category in current.impact_categories]
+        payload = current.to_dict()
+        payload["schema_version"] = 1
+        del payload["impact_categories"]
+        self.payload = payload
+        self.document = {
+            "schema_version": 2,
+            "impact_categories": [{**row, "characterization_factors": []} for row in self.categories],
+            "characterization_factors": [
+                {"impact_category_id": CATEGORY, "elementary_flow_uuid": "f1", "geography": None, "amount": 1.0},
+                {"impact_category_id": CATEGORY, "elementary_flow_uuid": "f2", "geography": "CH", "amount": 2.5},
+            ],
+        }
+
+    def test_the_categories_come_from_the_factor_file(self):
+        upgraded = upgrade_snapshot(self.payload, self.document)
+        self.assertEqual(upgraded.schema_version, RELEASE_SNAPSHOT_SCHEMA_VERSION)
+        self.assertEqual([c.to_dict() for c in upgraded.impact_categories], self.categories)
+        self.assertEqual(len(upgraded.characterization_factors), 2)
+
+    def test_a_factor_file_from_another_release_is_refused(self):
+        self.document["characterization_factors"][1]["amount"] = 3.0
+        with self.assertRaisesRegex(SnapshotError, "2.5"):
+            upgrade_snapshot(self.payload, self.document)
+
+    def test_a_factor_file_with_more_factors_is_refused(self):
+        self.document["characterization_factors"].append(
+            {"impact_category_id": CATEGORY, "elementary_flow_uuid": "f9", "geography": "", "amount": 1.0}
+        )
+        with self.assertRaisesRegex(SnapshotError, "publishes 3 factors"):
+            upgrade_snapshot(self.payload, self.document)
+
+    def test_a_category_named_differently_is_refused(self):
+        self.document["impact_categories"][0]["implemented_by"] = "Somebody else"
+        with self.assertRaises(SnapshotError):
+            upgrade_snapshot(self.payload, self.document)
+
+    def test_a_current_snapshot_is_not_upgraded(self):
+        with self.assertRaises(SnapshotError):
+            upgrade_snapshot({**self.payload, "schema_version": 2}, self.document)
 
 
 class VersionTestCase(unittest.TestCase):

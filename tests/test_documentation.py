@@ -913,6 +913,10 @@ class PublishedCategoryCountTestCase(unittest.TestCase):
         "25 categories",  # EF 3.1's own, times four implementations
         "19 categories",  # Stepwise 2006's own, times two
         "100 categories",  # EF 3.1's four implementations, in `using/outputs.md`
+        # Ours alone, 25 + 19: the ones 1.0.0 published under `consensus-flow-list`,
+        # in `using/outputs.md`.  Checked against the method files in
+        # `test_impact_categories.RetiredCategoryIdsTestCase`.
+        "44 categories",
     }
 
     def _expected(self) -> int:
