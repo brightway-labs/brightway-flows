@@ -419,6 +419,136 @@
         "target_context_display": "Resource → Ground"
       },
       "comment": "Scored by the Crustal Scarcity Indicator alone, at 140: the element in the crust, which no other list inventories. Kept on purpose; 0915's claim that no such flow exists is restated to AGRIBALYSE's rows, which are soil carbon stock and go to EF's stock flow."
+    },
+    {
+      "id": "0412-biomass-energy-reaches-the-biomass-flow",
+      "issue": 412,
+      "title": "openLCA's two unqualified biomass-energy rows reach the `Biomass` flow the other lists reach",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Energy, Gross Calorific Value, In Biomass"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 2,
+        "same_target": true,
+        "target_uuid": "fe0acd60-3ddc-11dd-a6fd-0050c2490048"
+      },
+      "comment": "On the six-list build with the first corrections (merge run `0c16f168`) they minted a flow of their own, and the lookup sent BAFU's rows of the name to it."
+    },
+    {
+      "id": "0412-anhydrite-is-calcium-sulfate",
+      "issue": 412,
+      "title": "openLCA's two `Anhydrite` rows reach the calcium sulfate the other lists' anhydrite reaches",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Anhydrite"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 2,
+        "same_substance": true,
+        "target_name": "Calcium Sulfate"
+      },
+      "comment": "14798-04-0 is the mineral's own number, which EF 3.1 does not carry; #597 reads anhydrite and calcium sulfate as one substance. On merge run `0c16f168` the two rows minted `Anhydrite` and the lookup sent ecoinvent 3.8's and AGRIBALYSE's rows to it (0597)."
+    },
+    {
+      "id": "0412-propane-dibromopentafluoro-reaches-efs-substance",
+      "issue": 412,
+      "title": "openLCA's `Propane, Dibromopentafluoro-` reaches the substance Stepwise's row of that name reaches",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "32f4b3e7-02e4-3c87-8194-1fb4582e884a"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_cas": "431-78-7"
+      },
+      "comment": "Shipped under Stepwise's SimaPro spelling with no number; on merge run `0c16f168` it minted a substance of its own and the lookup sent Stepwise's row to it."
+    },
+    {
+      "id": "0412-propane-dibromofluoro-reaches-efs-substance",
+      "issue": 412,
+      "title": "openLCA's `Propane, Dibromofluoro-` reaches the substance Stepwise's row of that name reaches",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "d75d955b-47b4-37d5-81fd-22e7fef42d86"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_cas": "453-00-9"
+      },
+      "comment": "Shipped under Stepwise's SimaPro spelling with no number; on merge run `0c16f168` it minted a substance of its own and the lookup sent Stepwise's row to it."
+    },
+    {
+      "id": "0412-propane-1-3-dibromo-1-1-3-3-tetrafluoro-reaches-efs-substance",
+      "issue": 412,
+      "title": "openLCA's `Propane, 1,3-dibromo-1,1,3,3-tetrafluoro-` reaches the substance Stepwise's row of that name reaches",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "b8e5152d-ddba-36e1-83d6-938a71eaf993"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_cas": "460-86-6"
+      },
+      "comment": "Shipped under Stepwise's SimaPro spelling with no number; on merge run `0c16f168` it minted a substance of its own and the lookup sent Stepwise's row to it."
+    },
+    {
+      "id": "0412-propane-1-2-3-tribromo-3-3-difluoro-reaches-efs-substance",
+      "issue": 412,
+      "title": "openLCA's `Propane, 1,2,3-tribromo-3,3-difluoro-` reaches the substance Stepwise's row of that name reaches",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "ff25186a-934c-30a7-997e-0479e97fc216"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_cas": "666-25-1"
+      },
+      "comment": "Shipped under Stepwise's SimaPro spelling with no number; on merge run `0c16f168` it minted a substance of its own and the lookup sent Stepwise's row to it."
+    },
+    {
+      "id": "0412-propane-1-2-2-tribromo-3-3-3-trifluoro-reaches-efs-substance",
+      "issue": 412,
+      "title": "openLCA's `Propane, 1,2,2-tribromo-3,3,3-trifluoro-` reaches the substance Stepwise's row of that name reaches",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "0d130d94-3e5d-3e5a-943d-38edb6ab26af"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_cas": "421-90-9"
+      },
+      "comment": "Shipped under Stepwise's SimaPro spelling with no number; on merge run `0c16f168` it minted a substance of its own and the lookup sent Stepwise's row to it."
+    },
+    {
+      "id": "0412-ethane-tribromofluoro-reaches-efs-substance",
+      "issue": 412,
+      "title": "openLCA's `Ethane, Tribromofluoro-` reaches the substance Stepwise's row of that name reaches",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "20b2a393-cc04-3716-8907-6a202d47cf45"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_cas": "172912-75-3"
+      },
+      "comment": "Shipped under Stepwise's SimaPro spelling with no number; on merge run `0c16f168` it minted a substance of its own and the lookup sent Stepwise's row to it."
     }
   ]
 }

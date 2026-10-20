@@ -208,7 +208,7 @@ package's spelling; the unit field is what the build reads.
 
 ## Rows sent to a curated target
 
-`openlca-2.8.2-match-overrides.json` names the flow for 25 rows the merge
+`openlca-2.8.2-match-overrides.json` names the flow for 29 rows the merge
 placed wrongly on the first build, each row citing what the package's own
 characterisation factors say it means — the evidence a method package carries
 where an inventory database carries exchanges
@@ -232,6 +232,12 @@ where an inventory database carries exchanges
   The biotic row is ecoinvent's own, under ecoinvent's uuid, and the merge
   places ecoinvent's copy on `Peat, Horticulture`; the two readings of one
   flow are left to disagree for now, recorded on #412.
+- **Two unqualified biomass-energy rows and two `Anhydrite` rows.** `Energy,
+  gross calorific value, in biomass` reaches the `Biomass` flow ecoinvent's,
+  BAFU's and AGRIBALYSE's rows reach; `Anhydrite`, under the mineral's own
+  14798-04-0, reaches the `Calcium Sulfate` that #597 reads anhydrite as. As
+  shipped, each pair minted a substance of its own and the read-only lookup
+  sent the other lists' rows there.
 - **Sixteen `Hydrocarbons, unspecified` rows.** The bucket EF 3.1 publishes as
   `Hydrocarbons (unspecified)`, shipped with no number under ecoinvent's
   spelling; the two rows that are EF's own flows reach it by uuid, and the
@@ -348,6 +354,7 @@ those is ruled on yet.
 | HG-02 | `Emission to air / unspecified` | none → 205367-61-9 | an industry designation for a hydrofluoropolyether, which EF 3.1 shipped under the designation and `ef-3.1-manual-fixes.json` renamed; the package copies the designation with no number, and its own factors (EF 3.1 `Climate change` 5,730, IPCC 2013 2,730) are that molecule's. As shipped, the row minted a second `HG-02` |
 | Tribromomethane | `Emission to air / unspecified` | none → 75-25-2 | bromoform, which the package ships twenty times under that name with the number; this one row carries the systematic name alone and bromoform's factor (0.25). As shipped, it minted a second substance |
 | Helium, in natural gas, in ground | `Resource / in ground` | none → 7440-59-7 | ecoinvent's `Helium, in natural gas` under ecoinvent's uuid, copied without the number ecoinvent's table reaches helium with. As shipped, it minted a substance named for a compartment |
+| Propane, Dibromopentafluoro- and five more | `Emission to air / unspecified` | none → 431-78-7, 453-00-9, 460-86-6, 666-25-1, 421-90-9, 172912-75-3 | six rows under Stepwise 2006's SimaPro spellings, copied without the numbers Stepwise's rows reach EF's substances under; the SimaPro name rewriting runs for SimaPro-shaped lists only. As shipped, each minted a substance under the SimaPro name and the lookup sent Stepwise's rows to it |
 
 One synonym is restored rather than a number corrected: the agricultural-soil
 `Epoxiconazole` row (135319-73-2, ecoinvent's uuid) is the one of the package's

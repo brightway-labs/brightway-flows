@@ -294,6 +294,50 @@
       "target_uuid": "d86becae-6555-11dd-ad8b-0800200c9a66",
       "target_name": "Hydrocarbons (unspecified)",
       "comment": "There is one `hydrocarbons, unspecified` in the world, and EF 3.1 publishes it as `Hydrocarbons (unspecified)` (0825). The package ships the bucket eighteen times under ecoinvent's spelling, with no registry number: eleven are ecoinvent's own rows under ecoinvent's uuids, which reach EF's substance through ecoinvent's correspondence table and its overrides, two are EF's own flows and reach it by uuid, and the rest are GreenDelta's. A list with no table has only the name, which differs from EF's by a comma and a pair of brackets, so on the first full build that merged the list (20 October 2026, merge run `76b3ec8f`) sixteen rows minted a second bucket, `Hydrocarbons, Unspecified`, and the read-only lookup then sent AGRIBALYSE's seven rows of that name to the copy. The target is EF's flow in the row's own compartment where EF publishes one, and otherwise a flow of the substance that the merge already added for BAFU's or ecoinvent's row there; the row keeps its own compartment either way. This row: rural air."
+    },
+    {
+      "source_uuid": "01c12fca-ad8b-4902-8b48-2d5afe3d3a0f",
+      "source_name": "Energy, gross calorific value, in biomass",
+      "source_context": [
+        "Resource",
+        "biotic"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fd-0050c2490048",
+      "target_name": "Biomass",
+      "comment": "The name ecoinvent, BAFU and AGRIBALYSE all ship: unqualified gross calorific value in biomass, megajoules. ecoinvent's row reaches the published `Biomass` flow by prepared match, BAFU's three by label and AGRIBALYSE's two by curated target (0856). The package ships it twice, once as ecoinvent's own row under ecoinvent's uuid and once as its own in `Resource / unspecified`, with no number and no synonym, and on the six-list build of 20 October 2026 with the first corrections (merge run `0c16f168`) the two minted an `Energy, Gross Calorific Value, In Biomass` flow beside `Biomass`, which the read-only lookup then chose for BAFU's rows of the name. ecoinvent's row."
+    },
+    {
+      "source_uuid": "842ed4a3-54cf-4fd0-bad5-c6bfefa8ef09",
+      "source_name": "Energy, gross calorific value, in biomass",
+      "source_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "target_uuid": "fe0acd60-3ddc-11dd-a6fd-0050c2490048",
+      "target_name": "Biomass",
+      "comment": "The name ecoinvent, BAFU and AGRIBALYSE all ship: unqualified gross calorific value in biomass, megajoules. ecoinvent's row reaches the published `Biomass` flow by prepared match, BAFU's three by label and AGRIBALYSE's two by curated target (0856). The package ships it twice, once as ecoinvent's own row under ecoinvent's uuid and once as its own in `Resource / unspecified`, with no number and no synonym, and on the six-list build of 20 October 2026 with the first corrections (merge run `0c16f168`) the two minted an `Energy, Gross Calorific Value, In Biomass` flow beside `Biomass`, which the read-only lookup then chose for BAFU's rows of the name. GreenDelta's own row."
+    },
+    {
+      "source_uuid": "8deeb827-d54c-3669-8fb7-d06d8ed1ff82",
+      "source_name": "Anhydrite",
+      "source_context": [
+        "Resource",
+        "unspecified"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-97f8-0050c2490048",
+      "target_name": "Calcium Sulfate",
+      "comment": "Anhydrite is anhydrous calcium sulfate, and 14798-04-0 is its own registry number, which EF 3.1 does not carry: EF's `anhydrite` is 7778-18-9, the number of calcium sulfate the compound, and #597 reads the two as one substance, published as `Calcium Sulfate`, which ecoinvent 3.8's and AGRIBALYSE's anhydrite rows reach by name. The package's two rows carry the mineral's number and the bare name, which is an alternative label on a numbered substance and so refused, and on the six-list build of 20 October 2026 with the first corrections (merge run `0c16f168`) they minted a second substance, `Anhydrite`, which the lookup then chose for the other lists' rows."
+    },
+    {
+      "source_uuid": "9d2cef79-0948-4b35-8181-89e93f85a7df",
+      "source_name": "Anhydrite",
+      "source_context": [
+        "Resource",
+        "land"
+      ],
+      "target_uuid": "08a91e70-3ddc-11dd-97f8-0050c2490048",
+      "target_name": "Calcium Sulfate",
+      "comment": "Anhydrite is anhydrous calcium sulfate, and 14798-04-0 is its own registry number, which EF 3.1 does not carry: EF's `anhydrite` is 7778-18-9, the number of calcium sulfate the compound, and #597 reads the two as one substance, published as `Calcium Sulfate`, which ecoinvent 3.8's and AGRIBALYSE's anhydrite rows reach by name. The package's two rows carry the mineral's number and the bare name, which is an alternative label on a numbered substance and so refused, and on the six-list build of 20 October 2026 with the first corrections (merge run `0c16f168`) they minted a second substance, `Anhydrite`, which the lookup then chose for the other lists' rows. Filed under `Resource / land`, which the list's compartment rules read as a ground resource for a mineral."
     }
   ]
 }

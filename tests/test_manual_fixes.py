@@ -1461,6 +1461,22 @@ class OpenLcaCopiesTheOtherListsCorrectionsTestCase(unittest.TestCase):
         others = [r for r in self._named("Peat") if r["uuid"] != "c5035ce2-5ee5-431f-a287-4b25da42be74"]
         self.assertEqual(sorted(tuple(r["context"]) for r in others), [("Resource", "in ground"), ("Resource", "unspecified")])
 
+    def test_the_six_simapro_spelled_rows_gain_their_numbers(self):
+        """The package copies Stepwise's SimaPro spellings without the numbers
+        Stepwise's rows reach EF's substances under."""
+        for uuid, name, cas in [
+            ("32f4b3e7-02e4-3c87-8194-1fb4582e884a", "Propane, dibromopentafluoro-", "431-78-7"),
+            ("d75d955b-47b4-37d5-81fd-22e7fef42d86", "Propane, dibromofluoro-", "453-00-9"),
+            ("b8e5152d-ddba-36e1-83d6-938a71eaf993", "Propane, 1,3-dibromo-1,1,3,3-tetrafluoro-", "460-86-6"),
+            ("ff25186a-934c-30a7-997e-0479e97fc216", "Propane, 1,2,3-tribromo-3,3-difluoro-", "666-25-1"),
+            ("0d130d94-3e5d-3e5a-943d-38edb6ab26af", "Propane, 1,2,2-tribromo-3,3,3-trifluoro-", "421-90-9"),
+            ("20b2a393-cc04-3716-8907-6a202d47cf45", "Ethane, tribromofluoro-", "172912-75-3"),
+        ]:
+            with self.subTest(name=name):
+                self.assertEqual(self.fixed[uuid]["name"], name)
+                self.assertEqual(self.fixed[uuid]["cas_numbers"], [cas])
+                self.assertFalse(self.shipped[uuid].get("cas_numbers"))
+
     def test_gamma_chlordane_is_refused_and_the_isomers_are_not(self):
         refused = self.source.excluded_uuids()
         gamma = [r for r in self.shipped.values() if r.get("name") == "Chlordane, gamma-"]
