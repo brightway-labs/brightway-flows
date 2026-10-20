@@ -171,6 +171,13 @@ class ReadingThePackageTestCase(unittest.TestCase):
         self.assertEqual(len(package.categories), 1)
         self.assertEqual(sorted(package.flows), ["f-1"])
 
+    def test_a_flow_no_factor_of_the_method_names_is_not_read(self):
+        """61,211 flow documents, 33,045 of them this method's: the rest are
+        other methods' and are not opened."""
+        other = _flow("f-2", "Theophylline", "Elementary flows/Emission to soil/agricultural")
+        _path, package = self._read(flows=[self.flow, other])
+        self.assertEqual(sorted(package.flows), ["f-1"])
+
     def test_the_named_method_is_read_out_of_many(self):
         """The full package ships 45 methods; only the categories the named one
         lists are its own."""
