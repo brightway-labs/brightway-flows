@@ -558,7 +558,10 @@ def merge_source_list(
         for row in [*manual_additions, *created_flows]
     )
     duplicates = duplicates_reaching_their_valid_row(
-        landed, list_name=source.list_name, source_label=source.key
+        landed,
+        list_name=source.list_name,
+        source_label=source.key,
+        source_uuids={flow.uuid.strip() for flow in source_flows},
     )
     if duplicates:
         marked = mark_deprecated_mappings(
