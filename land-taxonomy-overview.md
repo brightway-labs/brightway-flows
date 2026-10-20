@@ -35,9 +35,11 @@ The water taxonomy needed one new axis — what kind of water — so a flat list
 Two axes are required:
 
 - the **direction** — occupation, transformation *from*, or transformation *to*;
-- the **cover** — what the land is, before anything is said about its use. There are 30: cropland, permanent cropland, pasture, forest, tropical rainforest, shrubland, grassland, wetland, barren land, snow and ice, lake, river, seabed, urban, industrial area, traffic area, dump site, and so on.
+- the **cover** — what the land is, before anything is said about its use. There are 31: cropland, permanent cropland, pasture, forest, tropical rainforest, shrubland, grassland, wetland, sparsely vegetated area, barren land, snow and ice, lake, river, seabed, urban, industrial area, traffic area, dump site, and so on.
 
 A cover is drawn as finely as the source lists draw it, and no more finely. Three of them are worth knowing about together, because they look like one thing and are not: **grassland** is grassland; **pasture** is land that is mown or grazed, which is a single class in ENVO — *area of pastureland or hayfields* — and is what EF means by its `pasture/meadow`; and **grassland, pasture or meadow** is the union of the two, which EF ships as a class of its own in all three directions and which no published vocabulary carries as a single term. Grassland is not meadow, and reading the union as plain grassland would say that it is.
+
+**Sparsely vegetated area** is CORINE Land Cover class 3.3.3, and the only CORINE class in the scheme so far. openLCA ships it as *sparsely vegetated areas, steppe, tundra, badlands*. It is not grassland: three of the methods in openLCA's package score it differently from grassland. It is not bare area either, because no method scores it as one.
 
 Fifteen are optional qualifiers, and each is a different question about the ground:
 
@@ -46,7 +48,7 @@ Fifteen are optional qualifiers, and each is a different question about the grou
 | irrigation | is it watered | irrigated, non-irrigated |
 | origin | is it there by nature or by construction | natural, artificial, man-made |
 | use status | is it being used | used, not used, fallow, grazed |
-| intensity | how hard is it worked | intensive, diverse-intensive, extensive, organic |
+| intensity | how hard is it worked | intensive, diverse-intensive, monotone-intensive, extensive, organic |
 | vegetation form | how is the stand grown | sclerophyllous, flooded, under glass |
 | stage | how far through succession | primary, secondary |
 | substrate | what does the site sit on | benthic |
@@ -90,7 +92,7 @@ Different values, so different objects, so the pair cannot collapse. Direction i
 
 ## 3. What appears in the list
 
-The axes *permit* many thousands of combinations. The list publishes the ones a source flow actually lands on, which is **345 land classes**, reached by **1,517 source flows**:
+The axes *permit* many thousands of combinations. The list publishes the ones a source flow actually lands on, which is **368 land classes**, reached by **2,007 source flows**:
 
 | Source list | Land flows assigned |
 |---|---|
@@ -98,6 +100,7 @@ The axes *permit* many thousands of combinations. The list publishes the ones a 
 | ecoinvent 3.8, 3.9.1, 3.10.1, 3.11, 3.12 | 182 each |
 | BAFU 2026 v1 | 152 |
 | Stepwise 2006 | 28 of 41 |
+| openLCA LCIA methods 2.8.2 | 474 of 490 (433 country-specific rows refused) |
 
 By direction: 114 occupations, 110 transformations *from*, 115 transformations *to*. By how much they state: 85 classes name only a direction and a cover, 177 add one qualifier, 77 add two.
 
@@ -105,7 +108,7 @@ Stepwise 2006 is the only list with a number smaller than what it ships, and the
 
 The four EF flows measuring a **volume** — a repository, a reservoir, an underground deposit, filed under land occupation — are deliberately left out. No surface classification has a word for the inside of a mountain, and folding them in would make the taxonomy's root claim false. They are handled separately.
 
-**The assignment is curated, one row per source flow.** `data/land-flow-classes.json` holds all 1,517, with the vendor's uuid, name, context and unit taken mechanically from the shipped files and the class as the curated part. A parser drafts it; it does not decide it. That distinction is the point: a parser gets a curator to 152 of 153 strings, and it does not get to decide, unsupervised, that *heterogeneous, agricultural* is agricultural mosaic. It is the same discipline the water taxonomy follows, where no algorithm reads *Water, salt, sole* and knows it is brine.
+**The assignment is curated, one row per source flow.** `data/land-flow-classes.json` holds all 2,007, with the vendor's uuid, name, context and unit taken mechanically from the shipped files and the class as the curated part. A parser drafts it; it does not decide it. That distinction is the point: a parser gets a curator to 152 of 153 strings, and it does not get to decide, unsupervised, that *heterogeneous, agricultural* is agricultural mosaic. It is the same discipline the water taxonomy follows, where no algorithm reads *Water, salt, sole* and knows it is brine.
 
 ### The hierarchy is generated, not curated
 
@@ -137,7 +140,7 @@ Which authority a cover cites follows its realm, and is a **build error rather t
 
 **`exactMatch` is earned, not assumed.** Of the 50 citations, 14 claim to *be* the class they cite; 10 are close matches, 8 are broad ones — our value is narrower or coarser than the published class — and 17 are related matches, because the AGROVOC concept is a *practice* and our field says the land is under it. The water taxonomy claimed an exact equivalence sixteen times out of seventeen. This one claims it rarely, and saying so is the point.
 
-**One value in the whole scheme is ours and is flagged as ours.** BAFU's *diverse-intensive* has no published class anywhere to cite, and an AGROVOC term request goes with it. Every other axis value is either anchored or has its silence recorded with a reason, so a new value cannot join the unanchored ones by being forgotten.
+**Two values in the whole scheme are ours and are flagged as ours.** *Diverse-intensive* and *monotone-intensive*, the two halves of intensive arable farming in Ecosystem Damage Potential that BAFU and GreenDelta's openLCA package carry, have no published class anywhere to cite, and an AGROVOC term request goes with them. Every other axis value is either anchored or has its silence recorded with a reason, so a new value cannot join the unanchored ones by being forgotten.
 
 ---
 

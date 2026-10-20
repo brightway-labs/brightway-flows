@@ -129,9 +129,9 @@ Your compartments are yours. You do not have to translate them.
 `["Emissions to air", "low. pop."]` is what a SimaPro export writes, and it is
 understood, because BAFU has already written down what those 25 compartments
 mean. So has ecoinvent for its 26, EF 3.1 for its 37, GreenDelta's openLCA
-method package for its 21, and Stepwise 2006 for its 10 — and AGRIBALYSE 3.2 for its 22,
+method package for its 30, and Stepwise 2006 for its 10 — and AGRIBALYSE 3.2 for its 22,
 eighteen of which are BAFU's spellings again, because both lists carry
-SimaPro's export vocabulary. Between them, 121
+SimaPro's export vocabulary. Between them, 130
 compartment names are recognised.
 
 Stepwise's ten are a SimaPro *method* file's vocabulary — `Air /
@@ -149,7 +149,7 @@ compartment nothing is filed under is a compartment nobody has to translate.
 **And SimaPro's own spellings on top of those.** A list exported from SimaPro
 carries SimaPro's compartments whatever the flows in it came from, and most of
 those are nobody's list: `Raw / in ground`, `Airborne emissions / low. pop.`,
-`Waterborne emissions / river`, `Final waste flows /`. Another 43 spellings are
+`Waterborne emissions / river`, `Final waste flows /`. Another 44 spellings are
 read. The published `SimaPro-2025-ecoinvent-3.12-context` table is where the
 vocabulary started, but it is not where all of it lives: the spellings that
 refuse to name a medium, the bare method-file compartments and the `Raw
@@ -185,13 +185,21 @@ dioxide taken from the air, not a carbon dioxide taken from the ground. A land
 row (`Occupation, forest, extensive`) in the same compartment is still read as
 land.
 
+GreenDelta's openLCA package spells the same compartment `Resource /
+unspecified`, and it is read the same way, whether or not you name openLCA.
+GreenDelta files 2,152 rows there. The water intakes and land rows are picked
+out by name. Of the 325 left, 310 are ores, metals, minerals and fuels, placed
+in the ground one row at a time. The other 15 include
+`Energy, from wood`, `Carbon dioxide`, `Energy, solar, converted` and
+`Energy, from hydro power`, which are not taken from the ground either.
+
 `answer.context_resolution` says how yours was read:
 
 | | |
 |---|---|
 | `given` | you supplied a consensus context IRI, and it was used |
 | `named-list` | you said `source_label="ecoinvent-3.12"` and that list's own rules placed it |
-| `any-list` | one of the 121 recognised compartment names |
+| `any-list` | one of the 130 recognised compartment names |
 | `simapro` | a compartment SimaPro writes and no list spells |
 | `dimension-only` | you said which *kind* of compartment and not which one — see below |
 | `consensus-strings` | you wrote this project's own words — `["Environmental", "Air", "Indoor"]` |
@@ -252,8 +260,8 @@ wrote that down, not because a rule read the name.
 
 But every row of both tables also records the vendor's spelling, and no vendor
 disagrees with another about most of them: BAFU and five ecoinvent releases all
-call `Water, lake` lake water, and no two of the land table's 1,517 rows
-disagree about any of its 496 names. So the lookup consults both tables under
+call `Water, lake` lake water, and no two of the land table's 2,007 rows
+disagree about any of its 549 names. So the lookup consults both tables under
 your row's name, and
 
 ```python

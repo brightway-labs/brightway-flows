@@ -6,8 +6,8 @@ from, and everything worth pinning here follows from that:
 - **The tree is the taxonomy, not the build.**  A land class is a value the
   page decomposes out of a published flow object, so `queries/land.py` can read
   its rows off the database.  A kind of water is a curated concept that exists
-  whether or not a flow reaches it -- `saline_water` mints no flow object at
-  all, and several kinds are BAFU's -- so the rows are the seventeen concepts,
+  whether or not a flow reaches it -- `saline_water` is reached only by
+  openLCA, and several kinds are BAFU's -- so the rows are the seventeen concepts,
   and a build that reaches twelve of them shows five saying so.
 - **A withdrawal and a return are counted apart.**  They are the two halves of
   EF 3.1's water use pair, characterised with opposite signs, and the collapse
@@ -180,11 +180,13 @@ class TheWaterPageTestCase(unittest.TestCase):
         unreached = [row for row in overview.rows if not row.in_build]
         self.assertIn("Brine", {row.label for row in unreached})
 
-    def test_a_kind_that_mints_no_flow_object_is_a_grouping_and_says_so(self):
-        """`saline_water` exists so sea water and brine have ENVO's parent."""
+    def test_a_kind_this_build_does_not_reach_still_has_its_row(self):
+        """`saline_water` groups sea water and brine, and minted no flow object
+        until openLCA's `Water, Saline water consumption` landed on it (#389).
+        A build that leaves openLCA out reaches none of it, and says so."""
         overview = self.overview()
         saline = next(row for row in overview.rows if row.concept_id == "saline_water")
-        self.assertEqual(saline.flow_object_id, "")
+        self.assertEqual(saline.flow_object_id, "fo-cbd7abdf71c465ef")
         self.assertFalse(saline.in_build)
         self.assertEqual(saline.linked_flows, 0)
 

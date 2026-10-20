@@ -74,6 +74,7 @@ SOURCE_KEYS = (
     "ecoinvent-3.12",
     "bafu-2026-v1",
     "agribalyse-3.2",
+    "openlca-2.8.2",
 )
 
 #: EF 3.1, by flow name.  Where one name spans several contexts the value is a
@@ -189,6 +190,82 @@ AGRIBALYSE_BY_NAME: dict[str, Any] = {
     ),
 }
 
+#: openLCA LCIA Methods 2.8.2, by the vendor's name -- the list is not
+#: SimaPro-shaped, so `/kg` and `/m3` stay in the name and are listed as
+#: spelled (#389).  Twenty-four repeat a sibling list's reading of the same
+#: spelling.  The others name their material, or carry their reason here.
+#:
+#: Not here, and refused in the list's additional-flows file instead: the
+#: eleven `water stress` names, whose class stands in for a watershed exactly
+#: as a place in the name does, and the eleven `Water BWS n%` names, which
+#: encode an ECO-COSTS indicator rather than a kind of water.
+_THERMOELECTRIC = (
+    "cooling_water", "close",
+    "Thermoelectric consumption is the water a power plant's cooling uses up, "
+    "so the use wins over the source the name gives, as it does for every "
+    "cooling name (EF's `Water Cooling sea` is cooling water, not sea water). "
+    "Every method in the package scores it as it scores the cooling rows, "
+    "except ECO-COSTS 2025's Baseline Water Stress, which gives -0.0001 "
+    "against the cooling rows' +0.0001.",
+)
+_RIVER_SILT = (
+    "river_water", "close",
+    "Water carrying river silt is river water. No method in the package "
+    "distinguishes it: BEES+ and Environmental Prices, the only two that "
+    "score it, score it as any water intake. Our reading, hence `close`.",
+)
+OPENLCA_BY_NAME: dict[str, Any] = {
+    "Chemically polluted water": ("contaminated_water", "exact"),
+    "Cooling water": ("cooling_water", "exact"),
+    "Thermally polluted water": (
+        "cooling_water", "close",
+        "Heated water discharged is returned cooling water: the pollution is "
+        "its temperature, not a chemical, so it is not contaminated water. "
+        "Our reading, hence `close`.",
+    ),
+    "Waste water": ("waste_water", "exact"),
+    "Waste water/m3": ("waste_water", "exact"),
+    "Water (fresh water)": ("fresh_water", "exact"),
+    "Water (river water from technosphere turbined)": ("turbine_water", "exact"),
+    "Water (river water from technosphere, turbined)": ("turbine_water", "exact"),
+    "Water (with river silt)": _RIVER_SILT,
+    "Water, with river silt": _RIVER_SILT,
+    "Water, barrage": AGRIBALYSE_BY_NAME["Water, barrage"],
+    "Water, cooling, drinking": ("cooling_water", "exact"),
+    "Water, cooling, salt, ocean": ("cooling_water", "exact"),
+    "Water, cooling, surface": ("cooling_water", "exact"),
+    "Water, cooling, unspecified natural origin": ("cooling_water", "exact"),
+    "Water, cooling, unspecified natural origin/kg": ("cooling_water", "exact"),
+    "Water, cooling, unspecified natural origin/m3": ("cooling_water", "exact"),
+    "Water, cooling, well": ("cooling_water", "exact"),
+    "Water, cooling, well, in ground": ("cooling_water", "exact"),
+    "Water, fossil": ("fossil_groundwater", "exact"),
+    "Water, fresh": ("fresh_water", "exact"),
+    "Water, ground": ("groundwater", "exact"),
+    "Water, groundwater consumption": ("groundwater", "exact"),
+    "Water, in air": ("water_vapour", "exact"),
+    "Water, lake": ("lake_water", "exact"),
+    "Water, process, drinking": AGRIBALYSE_BY_NAME["Water, process, drinking"],
+    "Water, process, salt, ocean": ("sea_water", "exact"),
+    "Water, process, surface": ("surface_water", "exact"),
+    "Water, process, well": ("groundwater", "exact"),
+    "Water, rain": ("rainwater", "exact"),
+    "Water, river": ("river_water", "exact"),
+    "Water, Saline water consumption": ("saline_water", "exact"),
+    "Water, salt, ocean": ("sea_water", "exact"),
+    "Water, salt, sole": ("brine", "exact"),
+    "Water, surface": ("surface_water", "exact"),
+    "Water, surface water consumption": ("surface_water", "exact"),
+    "Water, Surface water consumption": ("surface_water", "exact"),
+    "Water, thermoelectric groundwater consumption": _THERMOELECTRIC,
+    "Water, thermoelectric saline water consumption": _THERMOELECTRIC,
+    "Water, thermoelectric surface water consumption": _THERMOELECTRIC,
+    "Water, turbine use, unspecified natural origin": ("turbine_water", "exact"),
+    "Water, well": ("groundwater", "exact"),
+    "Water, well, in ground": ("groundwater", "exact"),
+    "Water, well, unspecified": ("groundwater", "exact"),
+}
+
 #: The unqualified names each list ships, which the tables above deliberately
 #: do not carry: what they are made of is read off the compartment rather than
 #: the name, by :func:`classify`.  Listed per list because a name that is
@@ -207,6 +284,21 @@ UNQUALIFIED_BY_SOURCE: dict[str, frozenset[str]] = {
         "water",
         "water, unspecified natural origin",
         "water, process, unspecified natural origin",
+    }),
+    # `process and cooling` names two uses and no origin, so it is read as the
+    # other unspecified-origin names are rather than as cooling water.  As for
+    # BAFU and AGRIBALYSE, `in ground` is a filing slip here and not an origin.
+    "openlca": frozenset({
+        "water",
+        "water/kg",
+        "water/m3",
+        "water, unspecified natural origin",
+        "water, unspecified natural origin/kg",
+        "water, unspecified natural origin/m3",
+        "water, process, unspecified natural origin",
+        "water, process, unspecified natural origin/kg",
+        "water, process, unspecified natural origin/m3",
+        "water, process and cooling, unspecified natural origin",
     }),
 }
 
@@ -269,6 +361,7 @@ def _table_for(source: str) -> dict[str, Any]:
         "ecoinvent": ECOINVENT_BY_NAME,
         "bafu": BAFU_BY_NAME,
         "agribalyse": AGRIBALYSE_BY_NAME,
+        "openlca": OPENLCA_BY_NAME,
     }[_list_of(source)]
 
 
@@ -403,7 +496,13 @@ def classify(source: str, name: str, context: list[str], unit: str) -> tuple[str
     return "water", "broad", UNSPECIFIC_REASON
 
 
-def _rows_for(source: str, path: Path, *, simapro_origin: bool = False) -> list[dict[str, Any]]:
+def _rows_for(
+    source: str,
+    path: Path,
+    *,
+    simapro_origin: bool = False,
+    refused_uuids: frozenset[str] = frozenset(),
+) -> list[dict[str, Any]]:
     """Every water flow in one vendor file, classified.
 
     The name a flow is classified under is the name the *pipeline* sees.  For a
@@ -422,11 +521,16 @@ def _rows_for(source: str, path: Path, *, simapro_origin: bool = False) -> list[
     Its emissions-to-air rows were held back until #353 decided the
     water-vapour question; they classify here now, through the same air rule
     that answers every other list's airborne water.
+
+    A row the list refuses never reaches the merge, so it needs no material:
+    openLCA's water-stress and `Water BWS` rows among them (#389).
     """
     agribalyse = _list_of(source) == "agribalyse"
     rows = []
     refused: list[str] = []
     for flow in json.loads(path.read_bytes()):
+        if flow["uuid"] in refused_uuids:
+            continue
         name, unit = flow["name"], flow["unit"]
         context = list(flow.get("context") or [])
         classified = name
@@ -481,8 +585,12 @@ def source_rows(key: str) -> list[dict[str, Any]]:
     names -- so adding a list is one entry in `SOURCE_KEYS` and nothing else.
     """
     source = registered_source_list(key)
+    refused = source.excluded_uuids()
     return _rows_for(
-        source.source_label, source.flows_path, simapro_origin=source.simapro_origin
+        source.source_label,
+        source.flows_path,
+        simapro_origin=source.simapro_origin,
+        refused_uuids=refused,
     )
 
 

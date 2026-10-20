@@ -270,6 +270,12 @@ RULINGS: tuple[CuratedFile, ...] = (
         "flow, and this says that is meant, and why.",
     ),
     CuratedFile(
+        "source-row-duplicates.json",
+        "brightway_flows.merge.duplicate_rows",
+        "A source row is another row of the same list shipped twice, and this "
+        "is the one kept as valid; the other's mapping is published deprecated.",
+    ),
+    CuratedFile(
         "created-flow-unit-decisions.json",
         "brightway_flows.merge.unit_changes",
         "Source rows creating one flow disagree about its unit, and this is "
@@ -347,6 +353,16 @@ RULINGS: tuple[CuratedFile, ...] = (
         "accounting device at the product-system boundary, not exchanges with "
         "the environment -- each published as an excluded source concept "
         "(#189).",
+        named_by_manifest=True,
+    ),
+    CuratedFile(
+        "openlca-2.8.2-additional-flows.json",
+        "brightway_flows.additional_flows",
+        "GreenDelta's openLCA LCIA package ships every flow it has under "
+        "`flows/`, which the adapter reads whole, so this file adds nothing and "
+        "exists for its refusals: the 186 rows of the package's two `Waste` "
+        "compartments, refused as AGRIBALYSE's final waste is (#189) and each "
+        "published as an excluded source concept.",
         named_by_manifest=True,
     ),
     CuratedFile(

@@ -78,10 +78,12 @@ BROADER_ROOT = "root"              # no parent within the scheme
 def material_concepts() -> dict[str, dict[str, Any]]:
     """The taxonomy, keyed by local id.
 
-    A concept is not always a flow object: `saline_water` exists so sea water and
-    brine have the parent ENVO gives them, and nothing maps onto it, so its
-    `flow_object_id` is None.  A caller minting objects has to skip those rather
-    than treat them as unassigned.
+    A concept is not always a flow object: one carried only so its children have
+    the parent ENVO gives them, with nothing mapped onto it, has a
+    `flow_object_id` of None.  `saline_water` was that concept until openLCA's
+    `Water, Saline water consumption` landed on it (#389); none is today, but a
+    caller minting objects still has to skip one rather than treat it as
+    unassigned.
     """
     if not MATERIALS_FILEPATH.exists():
         raise FileNotFoundError(
@@ -193,8 +195,9 @@ def material_for_source_flow(source: str, source_uuid: str) -> str | None:
 def flow_object_basis_for(concept_id: str) -> str | None:
     """The id basis the concept's flow object is minted from, or None.
 
-    None for a concept nothing maps onto -- `saline_water` -- which a caller
-    minting objects has to skip rather than treat as unassigned.
+    None for a concept nothing maps onto -- none today; `saline_water` was one
+    until #389 -- which a caller minting objects has to skip rather than treat
+    as unassigned.
     """
     concept = material_concepts().get(concept_id)
     return concept["flow_object_basis"] if concept else None

@@ -715,9 +715,10 @@ class RecognisedCompartmentCountsTestCase(unittest.TestCase):
     """`matching-your-own-list.md` tells a reader how many compartments are
     recognised, and where they came from.
 
-    Six numbers, all read out of `context-manual-mapping.json`: 26 from BAFU,
-    26 from ecoinvent across its five releases, 37 from EF 3.1, 21 from
-    GreenDelta's openLCA package, 11 from Stepwise 2006, and 119 in total.
+    Seven numbers, all read out of `context-manual-mapping.json`: one per
+    vocabulary and the total.  GreenDelta's are counted once, though two lists
+    write them: the EF 3.1 package BAFU distributes and the whole method
+    package registered as `openlca-2.8.2` share their compartments.
 
     They used to add up exactly, because the vendors shared no compartment
     spelling.  Stepwise is a SimaPro method file and two of its eleven are
@@ -736,7 +737,13 @@ class RecognisedCompartmentCountsTestCase(unittest.TestCase):
 
     @staticmethod
     def _vendor(source: str) -> str:
-        return "ecoinvent" if source.startswith("ecoinvent") else source
+        if source.startswith("ecoinvent"):
+            return "ecoinvent"
+        # GreenDelta's whole method package, merged as a list, writes the
+        # compartments of its EF 3.1 package and more: one vocabulary.
+        if source.startswith("openlca"):
+            return "greendelta"
+        return source
 
     def setUp(self):
         from brightway_flows.context_mapping import context_mapping_index
@@ -824,6 +831,176 @@ class ParticulateFlowClassCountTestCase(unittest.TestCase):
 
     def test_the_page_counts_the_rows_the_file_holds(self):
         self.assertIn(f"the {self.count} rows in the size-class table", self.text)
+
+
+class OpenLcaRefusalCountsTestCase(unittest.TestCase):
+    """`changes/openlca-2.8.2.md` counts the rows the list refuses and reads.
+
+    Each number is copied out of a curated file -- the refusals out of
+    `openlca-2.8.2-additional-flows.json`, the particle readings out of
+    `particulate-flow-classes.json` -- and a row added to either moves it with
+    nothing else to notice (rule 30).
+    """
+
+    PAGE = DOCS / "changes" / "openlca-2.8.2.md"
+
+    def setUp(self):
+        payload = json.loads(
+            (PACKAGE_DATA_DIR / "openlca-2.8.2-additional-flows.json").read_text()
+        )
+        self.excluded = payload["excluded"]
+        rows = json.loads(
+            (PACKAGE_DATA_DIR / "particulate-flow-classes.json").read_text()
+        )["rows"]
+        self.particles = [row for row in rows if row["source"] == "openlca-2.8.2"]
+        self.text = " ".join(self.PAGE.read_text().split())
+
+    def test_the_waste_count(self):
+        waste = [row for row in self.excluded if row["context"][0] == "Waste"]
+        self.assertIn(f"The {len(waste)} rows in `Waste / unspecified`", self.text)
+
+    def test_the_black_carbon_count(self):
+        black_carbon = [
+            row for row in self.excluded if "black carbon" in row["name"].lower()
+        ]
+        self.assertIn(f"GreenDelta ships {len(black_carbon)} rows of black carbon", self.text)
+        self.assertIn(f"so the {len(black_carbon)} rows are refused", self.text)
+
+    def test_the_location_specific_counts(self):
+        land = [r for r in self.excluded if r["reason"].startswith("A land-use row")]
+        located = [
+            r for r in self.excluded if r["reason"].startswith("A location-specific row")
+        ]
+        water = [r for r in located if r["name"].lower().startswith("water")]
+        rest = [r for r in located if not r["name"].lower().startswith("water")]
+        air = [r for r in rest if r["context"][0] == "Emission to air"]
+        to_water = [r for r in rest if r["context"][0] == "Emission to water"]
+        self.assertEqual(len(rest), len(air) + len(to_water))
+        self.assertIn(
+            f"{len(land) + len(located):,} rows write a place into the name", self.text
+        )
+        self.assertIn(f"- {len(water):,} water rows:", self.text)
+        self.assertIn(f"- {len(air):,} emissions to air:", self.text)
+        self.assertIn(f"- {len(to_water):,} emissions to water:", self.text)
+        self.assertIn(f"- {len(land):,} land rows:", self.text)
+        places = {
+            re.search(r"\(`([^`]+)`", r["reason"]).group(1) for r in land + located
+        }
+        self.assertIn(f"They cover {len(places)} places", self.text)
+
+    def test_the_compartment_table_counts_the_per_row_rules(self):
+        """The rows of `Resource / unspecified` and `Resource / land` that no
+        name rule picks out are each placed by a flow-specific rule (#381)."""
+        rules = [
+            row
+            for row in json.loads(
+                (PACKAGE_DATA_DIR / "context-manual-mapping.json").read_text()
+            )["flow_specific_context_mappings"]
+            if row.get("source") == "openlca-2.8.2"
+        ]
+
+        def count(compartment, slug=None):
+            return sum(
+                1 for row in rules
+                if row["source_context"] == ["Resource", compartment]
+                and (slug is None or row["context_iri"].endswith("/" + slug))
+            )
+
+        self.assertIn(
+            f"each of the other {count('unspecified')} by a rule naming the row: "
+            f"{count('unspecified', 'reso-grou')} as ground resources, "
+            f"{count('unspecified', 'reso-biot')} biotic",
+            self.text,
+        )
+        self.assertIn(
+            f"{count('land', 'reso-grou')} minerals (`Clay`, `Granite`, …)", self.text
+        )
+
+    def test_the_water_counts(self):
+        read = [
+            r for r in json.loads(
+                (PACKAGE_DATA_DIR / "water-flow-materials.json").read_text()
+            )["rows"]
+            if r["source"] == "openlca-2.8.2"
+        ]
+        stress = [r for r in self.excluded if r["reason"].startswith("A water-stress class")]
+        indicator = [
+            r for r in self.excluded if r["reason"].startswith("An indicator encoded")
+        ]
+        self.assertIn(
+            f"{len(read)} of them, under {len({r['source_name'] for r in read})} "
+            "names, are read",
+            self.text,
+        )
+        self.assertIn(f"The {len(stress)} water-stress rows", self.text)
+        self.assertIn(f"the {len(indicator)} `Water BWS` rows", self.text)
+
+    def test_the_duplicate_land_counts(self):
+        rows = [
+            r for r in json.loads(
+                (PACKAGE_DATA_DIR / "source-row-duplicates.json").read_text()
+            )["duplicates"]
+            if r["list_name"] == "openlca"
+            and r["duplicate_name"].startswith(("Occupation", "Transformation"))
+        ]
+        names = {r["duplicate_name"] for r in rows}
+        groups: dict[str, list] = {}
+        for r in rows:
+            groups.setdefault(r["valid_uuid"], [tuple(r["valid_context"])]).append(
+                tuple(r["duplicate_context"])
+            )
+        pairs = sum(
+            1 for members in groups.values()
+            if sorted(members) == [("Resource", "land"), ("Resource", "unspecified")]
+        )
+        self.assertIn(f"{len(names)} land-use names are in the package", self.text)
+        self.assertIn(f"and so for {pairs} of them", self.text)
+        self.assertIn(f"The other copy, {len(rows)} rows in all,", self.text)
+
+    def test_the_15_names_ruled_with_their_fold(self):
+        rows = [
+            r for r in json.loads(
+                (PACKAGE_DATA_DIR / "source-row-duplicates.json").read_text()
+            )["duplicates"]
+            if r["list_name"] == "openlca" and "land-flow-groupings.json" in r["comment"]
+        ]
+        self.assertIn(
+            f"The {len({r['duplicate_name'] for r in rows})} names whose class another "
+            "name also reaches",
+            self.text,
+        )
+
+    def test_the_land_fold_counts(self):
+        groupings = [
+            g for g in json.loads(
+                (PACKAGE_DATA_DIR / "land-flow-groupings.json").read_text()
+            )["groupings"]
+            if g["list_name"] == "openlca"
+        ]
+        three = sum(1 for g in groupings if len(g["absorbs"]) == 3)
+        self.assertIn(
+            f"{len(groupings)} land classes are each reached by two openLCA names, "
+            f"and {three} of them by three",
+            self.text,
+        )
+
+    def test_the_duplicate_water_counts(self):
+        rows = [
+            r for r in json.loads(
+                (PACKAGE_DATA_DIR / "source-row-duplicates.json").read_text()
+            )["duplicates"]
+            if r["list_name"] == "openlca" and r["duplicate_name"].startswith("Water")
+        ]
+        names = {r["duplicate_name"] for r in rows}
+        self.assertIn(
+            f"{len(names)} water names are in the package more than once", self.text
+        )
+        self.assertIn(f"the other copies, {len(rows)} rows,", self.text)
+
+    def test_the_particle_count(self):
+        self.assertIn(
+            f"{len(self.particles)} of the package's particle rows are read", self.text
+        )
 
 
 class PlacementTableTestCase(unittest.TestCase):
@@ -1211,6 +1388,7 @@ class SourceChangePagesTestCase(unittest.TestCase):
             "stepwise-2006-manual-fixes.json",
             "simapro-lineage-manual-fixes.json",
         ),
+        "openlca-2.8.2.md": ("openlca-2.8.2-manual-fixes.json",),
     }
 
     #: The four kinds of change every page reports, in this order.

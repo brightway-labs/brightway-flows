@@ -183,7 +183,9 @@ def fetch_lcia(
     ),
     force: bool = typer.Option(
         False, "--force", "-f", help="Re-download the release rather than "
-        "reading what is cached."
+        "reading what is cached, where the adapter downloads one. GreenDelta's "
+        "package is read from the archive in the data directory either way, "
+        "and downloaded only when there is none."
     ),
 ) -> None:
     """Fetch one source list's characterisation factors.

@@ -810,6 +810,156 @@ class BafuUnspecifiedGroundRowsTestCase(unittest.TestCase):
                 )
 
 
+class OpenLcaUnspecifiedResourceRowsTestCase(unittest.TestCase):
+    """The 325 rows GreenDelta files in openLCA's `Resource / unspecified` that
+    no water or land name rule picks out, each placed by a rule of its own.
+
+    The compartment used to map onto `Resource / Ground` wholesale, on the
+    strength of BAFU's ruling for its own `resources / unspecified` -- which
+    #381 removed.  It was as wrong here: wood energy, carbon dioxide from the
+    air, wind, sunlight and hydropower were sent to the ground with the ores.
+    """
+
+    OPENLCA = "openlca-2.8.2"
+    UNSPECIFIED = ["Resource", "unspecified"]
+
+    ROWS = {
+        "0305b169-255d-4041-8f5d-6e095bcb6358": ("Aluminium III", "reso-grou"),
+        "929b7d7e-39d5-4320-8282-856d9a9f7f3f": ("Platinum", "reso-grou"),
+        "ec0d301e-fd17-301d-8cc8-9fd0306d0cc5": ("Energy, from wood", "reso-biot"),
+        "8ffbf5bb-f236-49ec-bb37-55b3561798ea": ("Carbon dioxide", "reso-air"),
+        "730399c8-335f-43f0-b1b2-d3f1cb2617b9": ("Energy, solar, converted", "reso-air"),
+        "b281f40a-9bd2-3973-b92d-a03734b4a506": ("Energy, from hydro power", "reso-wate"),
+        "935ebd53-709e-3ea8-8145-51218d9e716f": ("Land use II-III", "laus-occu"),
+    }
+
+    def _expectations(self):
+        return ContextExpectations(
+            _by_source_context=dict(context_iri_by_source_context(self.OPENLCA)),
+            _source_label=self.OPENLCA,
+        )
+
+    def test_each_row_says_where_it_comes_from(self):
+        for uuid, (name, slug) in self.ROWS.items():
+            with self.subTest(name=name):
+                self.assertEqual(
+                    flow_context_iri(self.OPENLCA, uuid, self.UNSPECIFIED),
+                    PREFIX + slug,
+                )
+
+    def test_a_row_nothing_names_is_not_sent_to_ground(self):
+        self.assertIsNone(
+            self._expectations().resolve(
+                "00000000-0000-0000-0000-000000000000", self.UNSPECIFIED, "Oxygen"
+            )
+        )
+
+    def test_every_row_openlca_ships_there_is_placed_by_a_statement_about_it(self):
+        """Reads the extraction where it exists."""
+        source = resolve_source_list(self.OPENLCA)
+        if not source.flows_path.exists():
+            raise unittest.SkipTest("openLCA 2.8.2 is not extracted here")
+        expectations = self._expectations()
+        rows = [
+            flow for flow in source.load_flows()
+            if normalize_context_key(flow.provided.context or [])
+            == normalize_context_key(self.UNSPECIFIED)
+        ]
+        self.assertTrue(rows)
+        for flow in rows:
+            with self.subTest(name=flow.provided.name, uuid=flow.uuid):
+                self.assertIsNotNone(
+                    expectations.resolve(
+                        flow.uuid, flow.provided.context, flow.provided.name
+                    )
+                )
+
+
+class OpenLcaLandResourceRowsTestCase(unittest.TestCase):
+    """openLCA's `Resource / land` is land use, as BAFU's `resources / land`
+    is, and the 27 minerals GreenDelta files there are named one row at a time.
+
+    The compartment rule used to say ground, so the three Eco-indicator `Land
+    use` rows filed there went to the ground while their copies in `Resource /
+    unspecified` went to land occupation.
+    """
+
+    OPENLCA = "openlca-2.8.2"
+    LAND = ["Resource", "land"]
+
+    ROWS = {
+        "d4928577-92f1-468a-ad97-b1c818928c49": ("Clay", "reso-grou"),
+        "ab3f1ef2-8ed9-4df0-8415-1e93bbd3c342": ("Spodumene", "reso-grou"),
+        "e8c47a67-92db-4050-acc1-1737908df243": (
+            "Uranium oxide, 332 GJ per kg, in ore", "reso-grou",
+        ),
+        "f0a39567-8eac-4916-b2d5-f98caccb9d10": (
+            "transformation, from forest, extensive, CM", "laus-tran",
+        ),
+    }
+
+    LAND_USE = {
+        "e2dd6951-2a4c-4651-bbc5-83c44b68a4d7": "Land use II-III",
+        "d6d2a0ff-902a-4ed4-85cb-ccd61be3d562": "Land use II-IV",
+        "ea00fa19-a543-48ec-bf06-98e2c14576a2": "Land use III-IV",
+    }
+
+    def _expectations(self):
+        return ContextExpectations(
+            _by_source_context=dict(context_iri_by_source_context(self.OPENLCA)),
+            _source_label=self.OPENLCA,
+        )
+
+    def test_each_mineral_says_where_it_comes_from(self):
+        for uuid, (name, slug) in self.ROWS.items():
+            with self.subTest(name=name):
+                self.assertEqual(
+                    flow_context_iri(self.OPENLCA, uuid, self.LAND), PREFIX + slug
+                )
+
+    def test_the_land_use_rows_are_land_occupation(self):
+        expectations = self._expectations()
+        for uuid, name in self.LAND_USE.items():
+            with self.subTest(name=name):
+                self.assertEqual(
+                    expectations.resolve(uuid, self.LAND, name), PREFIX + "laus-occu"
+                )
+
+    def test_a_row_nothing_names_is_land_occupation_as_in_bafus(self):
+        self.assertEqual(
+            self._expectations().resolve(
+                "00000000-0000-0000-0000-000000000000", self.LAND, "Something new"
+            ),
+            PREFIX + "laus-occu",
+        )
+
+    def test_no_row_openlca_ships_there_reaches_the_ground_by_the_compartment(self):
+        """Reads the extraction where it exists."""
+        source = resolve_source_list(self.OPENLCA)
+        if not source.flows_path.exists():
+            raise unittest.SkipTest("openLCA 2.8.2 is not extracted here")
+        named = {
+            row["source_uuid"]
+            for row in json.loads(MANUAL_MAPPING_FILEPATH.read_text())[
+                "flow_specific_context_mappings"
+            ]
+            if row.get("source") == self.OPENLCA and row["source_context"] == self.LAND
+        }
+        expectations = self._expectations()
+        rows = [
+            flow for flow in source.load_flows()
+            if normalize_context_key(flow.provided.context or [])
+            == normalize_context_key(self.LAND)
+        ]
+        self.assertTrue(rows)
+        for flow in rows:
+            iri = expectations.resolve(flow.uuid, flow.provided.context, flow.provided.name)
+            with self.subTest(name=flow.provided.name, uuid=flow.uuid):
+                self.assertIsNotNone(iri)
+                if flow.uuid not in named:
+                    self.assertNotEqual(iri, PREFIX + "reso-grou")
+
+
 class BiomassEnergyCorrectionTestCase(unittest.TestCase):
     """The energy in biomass, credited back from BAFU's blank compartment.
 

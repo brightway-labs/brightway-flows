@@ -106,6 +106,10 @@ class MintedNamespace(StrEnum):
     #: AGRIBALYSE by release: 3.2 is ADEME's own version string, and the
     #: export itself states none, so the manifest's version is the claim.
     AGRIBALYSE_3_2_FLOW = "https://vocab.brightway.one/agribalyse/3.2/flow/"
+    #: GreenDelta's LCIA method package by the openLCA release it ships with:
+    #: `openLCA LCIA Methods 2.8.2`.  The flows are the package's, not the
+    #: software's.
+    OPENLCA_2_8_2_FLOW = "https://vocab.brightway.one/openlca/2.8.2/flow/"
     SIMAPRO_102_FLOW = "https://vocab.brightway.one/simapro/professional/10.2/flow/"
     ECOINVENT_FLOW_TEMPLATE = "https://vocab.brightway.one/ecoinvent/{version}/flow/"
     CONSENSUS_ELEMENTARY_FLOW = "https://vocab.brightway.dev/elementary-flows/"
@@ -122,9 +126,9 @@ class MintedNamespace(StrEnum):
     #: fall out of its fields.  So the local name is `LandUse.key` --
     #: `occupation/cropland/irrigation=rainfed/intensity=intensive` -- and two
     #: spellings of one class cannot mint two IRIs, because they do not produce
-    #: two keys.  `diverse-intensive` is the only value in the scheme with no
-    #: published class anywhere to cite, and an AGROVOC term request goes with
-    #: it, which is the promise this namespace stands for.
+    #: two keys.  `diverse-intensive` and `monotone-intensive` have no published
+    #: class anywhere to cite, and an AGROVOC term request goes with them,
+    #: which is the promise this namespace stands for.
     LAND_CLASS = "https://vocab.brightway.one/land-classes/"
     #: The substance layer, under the same authority as the flows that occur of
     #: it and named for what it holds.  Minted for the same reason
@@ -158,6 +162,7 @@ class MintedNamespace(StrEnum):
     BAFU_2026_V1_SCHEME = "https://vocab.brightway.one/bafu/2026-v1"
     STEPWISE_2006_1_09_SCHEME = "https://vocab.brightway.one/stepwise/2006-1.09"
     AGRIBALYSE_3_2_SCHEME = "https://vocab.brightway.one/agribalyse/3.2"
+    OPENLCA_2_8_2_SCHEME = "https://vocab.brightway.one/openlca/2.8.2"
     SIMAPRO_102_SCHEME = "https://vocab.brightway.one/simapro/professional/10.2"
     ECOINVENT_SCHEME_TEMPLATE = "https://vocab.brightway.one/ecoinvent/{version}"
 
@@ -1074,6 +1079,13 @@ SOURCE_SCHEMES: tuple[SourceScheme, ...] = (
         flow_prefix=MintedNamespace.AGRIBALYSE_3_2_FLOW.value,
         label="AGRIBALYSE 3.2",
         version="3.2",
+    ),
+    SourceScheme(
+        slug="openlca-2.8.2",
+        scheme_iri=MintedNamespace.OPENLCA_2_8_2_SCHEME.value,
+        flow_prefix=MintedNamespace.OPENLCA_2_8_2_FLOW.value,
+        label="openLCA LCIA methods 2.8.2",
+        version="2.8.2",
     ),
     SourceScheme(
         slug="simapro-10.2",

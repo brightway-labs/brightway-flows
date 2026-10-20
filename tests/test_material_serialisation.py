@@ -246,8 +246,8 @@ class LabelTestCase(unittest.TestCase):
         self.assertEqual(unlabelled, [])
 
     def test_the_grouping_concept_is_labelled_where_it_is_read(self):
-        """Nothing lands on `saline_water`, so it has no object of its own and
-        the only place it is read is as somebody's parent."""
+        """`saline_water` is read as sea water's and brine's parent, in every
+        build, whether or not a flow lands on it."""
         for child in ("sea_water", "brine"):
             with self.subTest(concept=child):
                 parent = self._entry(child)[SKOS_BROADER_IRI][0]

@@ -1,56 +1,62 @@
 """EF 3.1 as GreenDelta implements it, read from an openLCA JSON-LD package.
 
 The third transcription, and the first that arrives as neither a method file nor
-a workbook.  BAFU distributes its 2026 v1 database for openLCA with the method
-package inside it; what the archive holds is 25 impact categories, the 1,781
-elementary flows they characterise, 227 locations and nothing else -- no
-processes, and no flow list of BAFU's own.
+a workbook.  GreenDelta publishes the LCIA methods it implements for openLCA as
+one archive, ``openLCA LCIA Methods 2.8.2``: 45 methods, their categories, the
+61,211 elementary flows they characterise and the locations their regionalised
+factors name.  This reads one method out of it, ``EF 3.1 Method (adapted)``.
 
-**The package is GreenDelta's, not BAFU's.**  Its method file says ``EF 3.1
-Method (adapted)``, ``openLCA LCIA methods package 2.8.0``, and lists the
-databases it is compatible with: ecoinvent 3.6 through 3.11.  So the
-implementation is attributed to GreenDelta, and the manifest it hangs off is
-BAFU's only because BAFU's distribution is where this copy came from.
+**Read from the archive the `openlca` list is read from.**  It used to be the
+copy inside BAFU's openLCA distribution -- 2.8.0, trimmed to this one method and
+the 1,781 flows it characterised there, 26,179 factors.  The full package states
+the same method over 33,045 flows, 183,654 factors: 26,175 of the 2.8.0 rows are
+still there, nine with another number (eight in water use) and four gone.  The
+implementation hangs off BAFU's manifest still, because BAFU's distribution is
+where it first came from; the package is GreenDelta's, and so is the credit.
+Which list's archive that is, the manifest says (``lcia.archive_of``), beside
+the ``resolve_through`` that names the same list, so the archive read here and
+the list its flows resolve through cannot be two releases.
 
-**Its flows carry ecoinvent's UUIDs.**  That is the whole reason this needs no
-new matching: 1,143 of the 1,781 resolve through `elementary_flow_sources` under
-ecoinvent 3.12 *and* 3.8 to the same consensus flow, 50 more through 3.8 alone --
-the aircraft-cruise-height emissions and the ore-grade copper and gold that 3.12
-no longer ships -- and 29 are EF 3.1 UUIDs, which are consensus flows already.
-The remaining 558 name a substance under a spelling of their own; they are
-reported rather than guessed at (`lcia.report.FindingKind`).
+**Its flows are ecoinvent's where it was built against ecoinvent, and its own
+otherwise.**  The manifest walks ecoinvent 3.12, 3.8 and EF 3.1 first, which is
+what reached 1,222 of the 2.8.0 copy's 1,781 flows, and GreenDelta's own list
+last, so a flow that route reached keeps its target and GreenDelta's own flows
+are reached through the list they belong to.
 
-Four things the archive is checked to be, because the reader downstream assumes
-all four and a package that broke one would publish nonsense quietly:
+**Factors stated per place are refused, for now.**  91,304 of the 183,654
+factors name a location -- 69,116 of them in land use, 12,928 in water use --
+and they are not read; nor are 1,897 verbatim repeats of them.  Every one of
+the 33,045 flows also carries a factor stated for no place, and that is the
+one read: 92,350 factors.  The same decision refuses the package's
+location-specific *flows* (`Water, AT`) in `openlca-2.8.2-additional-flows.json`.
+
+Three things the archive is checked to be, because the reader downstream
+assumes all three and a package that broke one would publish nonsense quietly:
 
 * every category's ``@id`` is the JRC's own ILCD method-file UUID, which is what
-  files a factor of theirs under one of our 25 (`domain.lcia.crosswalk`);
-* no ``(category, flow, location)`` is stated twice -- 26,179 rows, 0 repeats;
+  files a factor of theirs under one of our 25 (`domain.lcia.crosswalk`) -- less
+  :data:`IGNORED_CATEGORIES`, GreenDelta's own 26th;
+* no ``(category, flow)`` is stated twice with two numbers;
 * every factor's unit is its flow's own reference unit, so nothing here needs a
-  unit conversion the merge did not already record;
-* every location the factors name has a code, which is what
-  :attr:`~brightway_flows.domain.lcia.records.StatedFactor.geography` holds
-  and what makes 20,332 regionalised rows comparable with the JRC's.
+  unit conversion the merge did not already record.
 """
 
 from __future__ import annotations
 
-import hashlib
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterator
 from zipfile import ZipFile
 
-import httpx
 import orjson
 import structlog
-from tqdm import tqdm
 
 from brightway_flows.domain.lcia.crosswalk import ef_method
+from brightway_flows.download import sha256_of
 from brightway_flows.domain.lcia.records import StatedFactor, stated_category
-from brightway_flows.filesystem import greendelta_lcia_zip_path
-from brightway_flows.sources import LciaSpec, SourceList
+from brightway_flows.integrations.openlca import package_archive
+from brightway_flows.sources import LciaSpec, SourceList, registered_source_list
 
 logger = structlog.get_logger(__name__)
 
@@ -59,24 +65,20 @@ logger = structlog.get_logger(__name__)
 #: row, which the workbook's format has nowhere to put.
 FACTORS_SCHEMA_VERSION = 1
 
-#: Where the archive is downloaded from.  BAFU hands the distribution over
-#: rather than publishing it at a stable URL -- the same position their ecoSpold
-#: export is in -- so this project hosts the copy it read, under a name of its
-#: own, and the digest below says which bytes that is.
-GREENDELTA_LCIA_URL = "https://files.brightway.dev/bafu-greendelta-lcia.zip"
-
-#: The archive this implementation was transcribed from.  Checked on a
-#: download, recorded in the file that is written, and *not* enforced against a
-#: hand-placed archive: a new BAFU export is a new artifact to read, not a
-#: failure, and what it was read from is stated rather than assumed.
-GREENDELTA_LCIA_SHA256 = (
-    "c7c98b847398cd15ad193c51beb59fb2a95c022df05abada1e50fab5c8917e6f"
-)
+#: Categories of the method that are deliberately not read, by ``@id``, with
+#: the reason.  2.8.2 states a 26th category beside EF 3.1's 25 -- a second
+#: rendering of water use with GreenDelta's own spatialisation -- which is not a
+#: category of the method the JRC publishes, so nothing here can file it.
+IGNORED_CATEGORIES: dict[str, str] = {
+    "1c11bfb6-3f1c-4e2b-a278-313d215e585f": (
+        "Water use (adapted spatialization): GreenDelta's own variant of EF "
+        "3.1's water use, not a category of the method."
+    ),
+}
 
 _FLOWS = "flows/"
 _CATEGORIES = "lcia_categories/"
 _METHODS = "lcia_methods/"
-_LOCATIONS = "locations/"
 
 
 class GreenDeltaLciaError(RuntimeError):
@@ -91,51 +93,81 @@ class Package:
     method: dict[str, Any]
     #: The 25 categories, each with its factors inline.
     categories: tuple[dict[str, Any], ...]
-    #: Every flow the package ships, by its openLCA UUID.
+    #: The flows those categories' factors name, by openLCA UUID -- 33,045 of
+    #: the 61,211 the package ships.  The rest are other methods' and are not
+    #: parsed: the stub beside a factor already states a flow's name, category
+    #: and unit, and the document is opened for the one thing the stub lacks,
+    #: its registry number.
     flows: dict[str, dict[str, Any]]
-    #: Location code by location UUID -- ``CH``, ``ES-CA``.
-    locations: dict[str, str]
 
     @property
     def method_name(self) -> str:
         return str(self.method.get("name") or "")
 
 
-def _documents(archive: ZipFile, prefix: str) -> Iterator[dict[str, Any]]:
-    """Every JSON document under one folder of the package."""
+def _documents(
+    archive: ZipFile, prefix: str, *, only: set[str] | None = None
+) -> Iterator[dict[str, Any]]:
+    """Every JSON document under one folder of the package, or with *only*,
+    the documents named by those ids: openLCA files each under its ``@id``."""
     for name in archive.namelist():
-        if name.startswith(prefix) and name.endswith(".json"):
-            yield orjson.loads(archive.read(name))
+        if not (name.startswith(prefix) and name.endswith(".json")):
+            continue
+        if only is not None and name[len(prefix):-len(".json")] not in only:
+            continue
+        yield orjson.loads(archive.read(name))
 
 
-def read_package(path: Path) -> Package:
-    """The archive, parsed.
+def read_package(path: Path, *, method_name: str) -> Package:
+    """The method named *method_name* out of the archive, parsed.
 
-    :raises GreenDeltaLciaError: if it holds no method, or more than one. A
-        package with two methods is not this one, and picking the first would
-        publish half an implementation under the other's name.
+    The package holds 45 methods, and a category document says nothing about
+    which method it belongs to: the method's own ``impactCategories`` is what
+    does, so only the categories it lists are read, less
+    :data:`IGNORED_CATEGORIES`, and only the flows their factors name.  The
+    locations are not read at all since the per-place rows are refused
+    (:func:`_factors`).
+
+    :raises GreenDeltaLciaError: if no method, or more than one, is called
+        *method_name*. Picking one of two would publish an implementation under
+        the other's name.
     """
     with ZipFile(path) as archive:
-        methods = list(_documents(archive, _METHODS))
+        methods = [
+            method
+            for method in _documents(archive, _METHODS)
+            if str(method.get("name") or "") == method_name
+        ]
         if len(methods) != 1:
             raise GreenDeltaLciaError(
-                f"{path.name} holds {len(methods)} LCIA methods; this reads a "
-                f"package that ships exactly one."
+                f"{path.name} holds {len(methods)} LCIA methods called "
+                f"{method_name!r}; this reads exactly one."
             )
-        categories = tuple(_documents(archive, _CATEGORIES))
+        listed = {
+            str(entry.get("@id") or "")
+            for entry in methods[0].get("impactCategories") or ()
+        }
+        categories = tuple(
+            category
+            for category in _documents(archive, _CATEGORIES)
+            if str(category.get("@id") or "") in listed - IGNORED_CATEGORIES.keys()
+        )
+        named = {
+            str((row.get("flow") or {}).get("@id") or "")
+            for category in categories
+            for row in category.get("impactFactors") or ()
+        }
         flows = {
-            str(flow["@id"]): flow for flow in _documents(archive, _FLOWS)
+            str(flow["@id"]): flow
+            for flow in _documents(archive, _FLOWS, only=named)
         }
-        locations = {
-            str(location["@id"]): str(location.get("code") or "")
-            for location in _documents(archive, _LOCATIONS)
-        }
-    return Package(
-        method=methods[0],
-        categories=categories,
-        flows=flows,
-        locations=locations,
-    )
+    ignored = sorted(listed & IGNORED_CATEGORIES.keys())
+    if ignored:
+        logger.info(
+            "greendelta_categories_ignored",
+            categories=[IGNORED_CATEGORIES[uuid] for uuid in ignored],
+        )
+    return Package(method=methods[0], categories=categories, flows=flows)
 
 
 def _check_categories(package: Package, *, path: Path) -> None:
@@ -233,15 +265,22 @@ def _factors(
     inside a flow property, while the stub beside a factor states the unit that
     factor is *per*.  Reading the stub is reading what the row says.
 
-    :raises GreenDeltaLciaError: if a factor is stated in a unit that is not its
-        flow's own, if a location has no code, or if one
-        ``(category, flow, location)`` is stated twice -- the three things the
-        module docstring says the archive is, each of which would otherwise
-        become a wrong number rather than a stopped run.
+    A row that names a location is skipped and counted before anything else
+    is asked of it: the module docstring says why it is refused, and a row
+    that is not read cannot become a wrong number, so nothing about it stops
+    the read.  A ``(category, flow)`` stated more than once with the same
+    number is one statement repeated, and is read once.
+
+    :raises GreenDeltaLciaError: if a factor that is read is stated in a unit
+        that is not its flow's own, or if one ``(category, flow)`` is stated
+        twice with different numbers -- each of which would otherwise become
+        a wrong number rather than a stopped run.
     """
     factors: list[StatedFactor] = []
     described: dict[str, dict[str, str]] = {}
-    seen: set[tuple[str, str, str]] = set()
+    seen: dict[tuple[str, str], float] = {}
+    repeated = 0
+    located = 0
     # Their own index, as `_check_categories` uses: what a category is, to this
     # project, is what the method file pairs their identifier with, and the
     # slug is how the sign rule names the one category EF states as a pair.
@@ -264,6 +303,12 @@ def _factors(
             general_comment=str(entry.get("description") or "") or None,
         )
         for row in entry.get("impactFactors") or ():
+            # Before anything is checked about the row: a row that is not read
+            # cannot put a wrong number anywhere, so nothing about it can stop
+            # the read either.
+            if row.get("location"):
+                located += 1
+                continue
             flow = row.get("flow") or {}
             flow_uuid = str(flow.get("@id") or "")
             stated_unit = str((row.get("unit") or {}).get("name") or "")
@@ -272,29 +317,23 @@ def _factors(
                 raise GreenDeltaLciaError(
                     f"{path.name}: {entry.get('name')!r} states a factor for "
                     f"{flow.get('name')!r} per {stated_unit!r}, but the flow is "
-                    f"measured in {flow_unit!r}. Every one of the 26,179 rows "
-                    f"read so far is per the flow's own unit, and a row that is "
-                    f"not needs a conversion this does not do."
+                    f"measured in {flow_unit!r}. Every row read so far is per "
+                    f"the flow's own unit, and a row that is not needs a "
+                    f"conversion this does not do."
                 )
-            geography = ""
-            if location := row.get("location"):
-                geography = package.locations.get(str(location.get("@id") or ""), "")
-                if not geography:
-                    raise GreenDeltaLciaError(
-                        f"{path.name}: a factor for {flow.get('name')!r} names "
-                        f"the location {location.get('name')!r}, which the "
-                        f"package's own locations give no code for. A "
-                        f"regionalised factor with no place is not comparable "
-                        f"with anybody's."
-                    )
-            key = (str(entry.get("@id") or ""), flow_uuid, geography)
+            key = (str(entry.get("@id") or ""), flow_uuid)
+            stated = float(row.get("value") or 0.0)
             if key in seen:
-                raise GreenDeltaLciaError(
-                    f"{path.name}: {entry.get('name')!r} states two factors for "
-                    f"{flow.get('name')!r} in {geography or 'no place'}, so one "
-                    f"of them would silently win."
-                )
-            seen.add(key)
+                if seen[key] != stated:
+                    raise GreenDeltaLciaError(
+                        f"{path.name}: {entry.get('name')!r} states two factors "
+                        f"for {flow.get('name')!r}, "
+                        f"{seen[key]} and {stated}, so one of them would "
+                        f"silently win."
+                    )
+                repeated += 1
+                continue
+            seen[key] = stated
             described.setdefault(
                 flow_uuid,
                 {
@@ -306,7 +345,6 @@ def _factors(
                     ),
                 },
             )
-            stated = float(row.get("value") or 0.0)
             amount = with_the_pairs_sign(
                 stated,
                 category_slug=category_slug,
@@ -318,56 +356,16 @@ def _factors(
                     category=category,
                     flow_uuid=flow_uuid,
                     amount=amount,
-                    geography=geography or None,
+                    geography=None,
                 )
             )
     if signed:
         logger.info("greendelta_pair_sign_applied", factors=signed)
+    if repeated:
+        logger.info("greendelta_identical_repeats_read_once", rows=repeated)
+    if located:
+        logger.info("greendelta_located_rows_refused", rows=located)
     return factors, described
-
-
-def _digest(path: Path) -> str:
-    """The archive's SHA-256, so a run can say which bytes it read."""
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def download(url: str = GREENDELTA_LCIA_URL, *, force: bool = False) -> Path:
-    """The archive, in the data directory, downloading it if it is not there.
-
-    :raises GreenDeltaLciaError: if what arrives is not the archive
-        :data:`GREENDELTA_LCIA_SHA256` names. A partial download that parsed
-        would publish an implementation missing whatever it did not receive.
-    """
-    destination = greendelta_lcia_zip_path()
-    if destination.exists() and not force:
-        return destination
-    logger.info("downloading_greendelta_lcia", url=url, path=str(destination))
-    partial = destination.with_suffix(".zip.part")
-    with httpx.stream("GET", url, follow_redirects=True, timeout=120) as response:
-        response.raise_for_status()
-        total = int(response.headers.get("content-length", 0))
-        with partial.open("wb") as handle, tqdm(
-            total=total or None,
-            unit="B",
-            unit_scale=True,
-            desc=destination.name,
-        ) as progress:
-            for chunk in response.iter_bytes(chunk_size=1024 * 64):
-                handle.write(chunk)
-                progress.update(len(chunk))
-    received = _digest(partial)
-    if received != GREENDELTA_LCIA_SHA256:
-        partial.unlink(missing_ok=True)
-        raise GreenDeltaLciaError(
-            f"{url} served an archive with digest {received}, not the "
-            f"{GREENDELTA_LCIA_SHA256} this implementation was read from."
-        )
-    partial.replace(destination)
-    return destination
 
 
 def _payload(
@@ -388,7 +386,7 @@ def _payload(
         "source": source.key,
         "list_version": source.list_version,
         "archive": archive.name,
-        "archive_sha256": _digest(archive),
+        "archive_sha256": sha256_of(archive),
         "package": str(package.method.get("category") or ""),
         "package_version": str(package.method.get("version") or ""),
         "methods": [
@@ -434,34 +432,32 @@ def _payload(
 def fetch(source: SourceList, *, force: bool = False) -> Path:
     """The LCIA adapter for GreenDelta's package: its factors, as a file.
 
-    *force* re-downloads the archive rather than reading the one in the data
-    directory; the parse happens either way, because it is two seconds.
+    *force* is accepted because the protocol has it, and changes nothing: the
+    archive is re-read every time and downloaded only when the data directory
+    has none (see :func:`~brightway_flows.integrations.openlca.package_archive`).
 
-    :raises FileNotFoundError: if the archive is neither in the data directory
-        nor downloadable, naming both.
+    :raises FileNotFoundError: if the archive is neither in the data
+        directory nor hosted.
+    :raises GreenDeltaLciaError: if the manifest does not declare exactly one
+        method, since one package method is read per fetch, or does not say
+        which list's archive the package is (``lcia.archive_of``).
     """
     if source.lcia is None:  # pragma: no cover - the manifest declares one
         raise ValueError(f"{source.key} declares no lcia block.")
     spec = source.lcia
-    archive = greendelta_lcia_zip_path()
-    if force or not archive.exists():
-        try:
-            archive = download(force=force)
-        except (httpx.HTTPError, OSError) as exc:
-            if not archive.exists():
-                raise FileNotFoundError(
-                    f"GreenDelta's openLCA package is not at {archive} and "
-                    f"{GREENDELTA_LCIA_URL} could not be read ({exc}). Obtain "
-                    f"BAFU's openLCA distribution and place it there."
-                ) from exc
-    package = read_package(archive)
-    _check_categories(package, path=archive)
-    declared = {method.name for method in spec.methods}
-    if package.method_name not in declared:
+    if len(spec.methods) != 1:
         raise GreenDeltaLciaError(
-            f"{archive.name} ships {package.method_name!r}; "
-            f"{source.key}'s manifest declares {sorted(declared)}."
+            f"{source.key}'s manifest declares {len(spec.methods)} methods for "
+            f"GreenDelta's package; this reads one."
         )
+    if not spec.archive_of:
+        raise GreenDeltaLciaError(
+            f"{source.key}'s manifest does not say which source list's archive "
+            f"GreenDelta's package is: set lcia.archive_of to the openLCA list."
+        )
+    archive = package_archive(registered_source_list(spec.archive_of).list_version)
+    package = read_package(archive, method_name=spec.methods[0].name)
+    _check_categories(package, path=archive)
     factors, described = _factors(package, path=archive)
     payload = _payload(
         source=source,

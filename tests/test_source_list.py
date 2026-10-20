@@ -38,6 +38,7 @@ from brightway_flows.sources import (
     base_source_list,
     known_source_lists,
     load_prepared_match_table,
+    registered_source_list,
     merge_order,
     resolve_source_list,
     simapro_origin_source_labels,
@@ -215,6 +216,9 @@ class ManifestsAreTheRegistryTestCase(unittest.TestCase):
                     "https://vocab.brightway.one/stepwise/2006-1.09/flow/"
                 ),
                 "agribalyse-3.2": "https://vocab.brightway.one/agribalyse/3.2/flow/",
+                "openlca-2.8.2": (
+                    "https://vocab.brightway.one/openlca/2.8.2/flow/"
+                ),
                 "ecoinvent-3.8": "https://vocab.brightway.one/ecoinvent/3.8/flow/",
                 "ecoinvent-3.9.1": "https://vocab.brightway.one/ecoinvent/3.9.1/flow/",
                 "ecoinvent-3.10.1": "https://vocab.brightway.one/ecoinvent/3.10.1/flow/",
@@ -239,8 +243,11 @@ class ManifestsAreTheRegistryTestCase(unittest.TestCase):
         AGRIBALYSE 3.2 is last at 400: 87% of its rows carry a registry
         number, but it is the newest arrival, its review queues are unworked,
         and a new list matches against what the established stack created
-        rather than the other way around.
-        It is not a flow list at all: it is an LCIA method, its rows are
+        rather than the other way around.  openLCA's LCIA package 2.8.2 is
+        after it at 500 for the same reason: 91% of its rows carry a registry
+        number, and it arrived later still.
+
+        Stepwise is not a flow list at all: it is an LCIA method, its rows are
         whatever its nineteen categories happen to characterise, it carries no
         identifiers of its own -- a SimaPro method file has none, so its UUIDs
         are derived from its names -- and 164 of its 6,064 rows carry no
@@ -256,6 +263,7 @@ class ManifestsAreTheRegistryTestCase(unittest.TestCase):
                 "bafu-2026-v1": 200,
                 "stepwise-2006-1.09": 300,
                 "agribalyse-3.2": 400,
+                "openlca-2.8.2": 500,
                 "ecoinvent-3.8": 100,
                 "ecoinvent-3.9.1": 100,
                 "ecoinvent-3.10.1": 100,
@@ -1095,6 +1103,28 @@ class BafuUnitSuffixesTestCase(unittest.TestCase):
         }
         self.assertEqual(left, set(self.KEPT))
         self.assertEqual(left, set())
+
+
+class ExcludedUuidsTestCase(unittest.TestCase):
+    """The rows a list refuses, as the set a reader of the raw file drops."""
+
+    def test_a_list_with_refusals_names_them(self):
+        source = registered_source_list("openlca-2.8.2")
+        refused = source.excluded_uuids()
+        self.assertEqual(len(refused), 6_427)
+        self.assertIsInstance(refused, frozenset)
+
+    def test_a_list_with_no_additional_flows_file_refuses_nothing(self):
+        source = registered_source_list("EF-3.1")
+        self.assertIsNone(source.additional_flows_path)
+        self.assertEqual(source.excluded_uuids(), frozenset())
+
+    def test_it_is_what_load_flows_leaves_out(self):
+        source = registered_source_list("openlca-2.8.2")
+        if not source.flows_path.exists():
+            self.skipTest("openlca-2.8.2 not fetched")
+        loaded = {flow.uuid for flow in source.load_flows()}
+        self.assertEqual(loaded & source.excluded_uuids(), set())
 
 
 if __name__ == "__main__":

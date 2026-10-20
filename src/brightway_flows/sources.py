@@ -254,6 +254,14 @@ class LciaSpec:
     #: and ships no list of its own -- so it declares the chain that reaches
     #: them, newest release first.
     resolve_through: tuple[str, ...] = ()
+    #: The source list whose archive the factors are read out of, when it is
+    #: another list's.  GreenDelta's EF 3.1 hangs off BAFU's manifest and is
+    #: read from the package the ``openlca`` list is extracted from, and
+    #: naming that list here, beside the ``resolve_through`` that already
+    #: names it, keeps the archive and the flows it resolves through from
+    #: being two releases.  Empty for an implementation with an archive of its
+    #: own, which is every other one.
+    archive_of: str = ""
 
     @classmethod
     def from_manifest(cls, payload: Any, *, path: Path) -> LciaSpec:
@@ -297,12 +305,21 @@ class LciaSpec:
                 f"{path.name}: lcia.resolve_through must be a list of source "
                 "list keys, or absent."
             )
+        archive_of = payload.get("archive_of")
+        if archive_of is not None and (
+            not isinstance(archive_of, str) or not archive_of.strip()
+        ):
+            raise ValueError(
+                f"{path.name}: lcia.archive_of must name the source list whose "
+                "archive the factors are read from, or be absent."
+            )
         return cls(
             adapter=adapter.strip(),
             factors_path=DATA_DIR / factors.strip(),
             methods=parsed,
             implemented_by=(implemented_by or "").strip(),
             resolve_through=tuple(key.strip() for key in through),
+            archive_of=(archive_of or "").strip(),
         )
 
 
@@ -498,6 +515,25 @@ class SourceList:
         run, and a hint naming a command that would fail is worse than none.
         """
         return f"fetch-source {self.key}" if self.adapter else ""
+
+    def excluded_uuids(self) -> frozenset[str]:
+        """The uuids of the rows this list refuses, from its additional-flows file.
+
+        What a reader of the fetched file has to drop to see the rows the
+        merge sees: :meth:`load_flows` applies the same file, and a tool or a
+        test that reads the raw rows instead -- to classify them, or to check
+        a fix against the vendor's spelling -- was rebuilding this set from
+        :func:`~brightway_flows.additional_flows.load_excluded_source_flows`
+        in five places.  Empty for a list with no such file.
+        """
+        if self.additional_flows_path is None:
+            return frozenset()
+        return frozenset(
+            record.uuid
+            for record in load_excluded_source_flows(
+                self.additional_flows_path, source=self.source_label
+            )
+        )
 
     @property
     def merge_activity(self) -> str:
