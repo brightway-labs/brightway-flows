@@ -568,6 +568,7 @@ def merge_source_list(
             accumulator.merged_elementary,
             duplicates,
             flow_iri_prefix=source.flow_iri_prefix,
+            merge_activity=source.merge_activity,
         )
         logger.info(
             "duplicate_source_rows_deprecated",
