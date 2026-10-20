@@ -48,7 +48,6 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from brightway_flows.additional_flows import load_excluded_source_flows  # noqa: E402
 from brightway_flows.domain.particulate_size import (  # noqa: E402
     names_a_particle_by_size,
     size_classes,
@@ -285,16 +284,7 @@ def source_rows(key: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     rows: list[dict[str, Any]] = []
     unplaced: list[dict[str, Any]] = []
     # A row the list refuses never reaches the merge, so it needs no reading.
-    refused = (
-        {
-            record.uuid
-            for record in load_excluded_source_flows(
-                source.additional_flows_path, source=source.source_label
-            )
-        }
-        if source.additional_flows_path is not None
-        else set()
-    )
+    refused = source.excluded_uuids()
 
     for flow in json.loads(Path(source.flows_path).read_bytes()):
         name = flow["name"]

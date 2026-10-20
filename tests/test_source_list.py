@@ -38,6 +38,7 @@ from brightway_flows.sources import (
     base_source_list,
     known_source_lists,
     load_prepared_match_table,
+    registered_source_list,
     merge_order,
     resolve_source_list,
     simapro_origin_source_labels,
@@ -1102,6 +1103,28 @@ class BafuUnitSuffixesTestCase(unittest.TestCase):
         }
         self.assertEqual(left, set(self.KEPT))
         self.assertEqual(left, set())
+
+
+class ExcludedUuidsTestCase(unittest.TestCase):
+    """The rows a list refuses, as the set a reader of the raw file drops."""
+
+    def test_a_list_with_refusals_names_them(self):
+        source = registered_source_list("openlca-2.8.2")
+        refused = source.excluded_uuids()
+        self.assertEqual(len(refused), 6_427)
+        self.assertIsInstance(refused, frozenset)
+
+    def test_a_list_with_no_additional_flows_file_refuses_nothing(self):
+        source = registered_source_list("EF-3.1")
+        self.assertIsNone(source.additional_flows_path)
+        self.assertEqual(source.excluded_uuids(), frozenset())
+
+    def test_it_is_what_load_flows_leaves_out(self):
+        source = registered_source_list("openlca-2.8.2")
+        if not source.flows_path.exists():
+            self.skipTest("openlca-2.8.2 not fetched")
+        loaded = {flow.uuid for flow in source.load_flows()}
+        self.assertEqual(loaded & source.excluded_uuids(), set())
 
 
 if __name__ == "__main__":

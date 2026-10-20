@@ -516,6 +516,25 @@ class SourceList:
         """
         return f"fetch-source {self.key}" if self.adapter else ""
 
+    def excluded_uuids(self) -> frozenset[str]:
+        """The uuids of the rows this list refuses, from its additional-flows file.
+
+        What a reader of the fetched file has to drop to see the rows the
+        merge sees: :meth:`load_flows` applies the same file, and a tool or a
+        test that reads the raw rows instead -- to classify them, or to check
+        a fix against the vendor's spelling -- was rebuilding this set from
+        :func:`~brightway_flows.additional_flows.load_excluded_source_flows`
+        in five places.  Empty for a list with no such file.
+        """
+        if self.additional_flows_path is None:
+            return frozenset()
+        return frozenset(
+            record.uuid
+            for record in load_excluded_source_flows(
+                self.additional_flows_path, source=self.source_label
+            )
+        )
+
     @property
     def merge_activity(self) -> str:
         """`prov:wasGeneratedBy` for values this merge writes."""

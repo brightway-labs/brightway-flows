@@ -50,7 +50,6 @@ import re
 from pathlib import Path
 from typing import Any
 
-from brightway_flows.additional_flows import load_excluded_source_flows
 from brightway_flows.simapro_names import name_without_unit_suffix
 from brightway_flows.sources import registered_source_list
 
@@ -586,16 +585,7 @@ def source_rows(key: str) -> list[dict[str, Any]]:
     names -- so adding a list is one entry in `SOURCE_KEYS` and nothing else.
     """
     source = registered_source_list(key)
-    refused = (
-        frozenset(
-            record.uuid
-            for record in load_excluded_source_flows(
-                source.additional_flows_path, source=source.source_label
-            )
-        )
-        if source.additional_flows_path is not None
-        else frozenset()
-    )
+    refused = source.excluded_uuids()
     return _rows_for(
         source.source_label,
         source.flows_path,

@@ -21,8 +21,6 @@ from pathlib import Path
 import orjson
 from structlog.testing import capture_logs
 
-from brightway_flows.additional_flows import load_excluded_source_flows
-
 from brightway_flows.context_mapping import (
     context_iri_by_source_context,
     flow_context_iri,
@@ -734,14 +732,8 @@ class OrganicBoundNitrogenIsNotNitrogenGasTestCase(unittest.TestCase):
             flows = orjson.loads(source.flows_path.read_bytes())
             # A row the list refuses is not in it -- GreenDelta's `Nitrogen,
             # NO`, nitrogen emitted in Norway, among them.
-            if source.additional_flows_path is not None:
-                refused = {
-                    record.uuid
-                    for record in load_excluded_source_flows(
-                        source.additional_flows_path, source=source.source_label
-                    )
-                }
-                flows = [row for row in flows if row["uuid"] not in refused]
+            refused = source.excluded_uuids()
+            flows = [row for row in flows if row["uuid"] not in refused]
             if source.manual_fixes_path is not None:
                 apply_manual_fixes(flows, source.manual_fixes_path, label=key)
             cls.fixed[key] = [

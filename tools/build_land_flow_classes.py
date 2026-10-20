@@ -53,7 +53,6 @@ from land_class_parser import (  # noqa: E402
     without_geography,
 )
 
-from brightway_flows.additional_flows import load_excluded_source_flows  # noqa: E402
 from brightway_flows.domain.land_use import LandUse  # noqa: E402
 from brightway_flows.sources import registered_source_list  # noqa: E402
 
@@ -188,16 +187,7 @@ def source_rows(key: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     unplaced: list[dict[str, Any]] = []
     # A row the list refuses never reaches the merge, so it needs no class --
     # openLCA's 433 country-specific land rows among them.
-    refused = (
-        {
-            record.uuid
-            for record in load_excluded_source_flows(
-                source.additional_flows_path, source=source.source_label
-            )
-        }
-        if source.additional_flows_path is not None
-        else set()
-    )
+    refused = source.excluded_uuids()
 
     for flow in json.loads(Path(source.flows_path).read_bytes()):
         name = flow["name"]
