@@ -1,0 +1,587 @@
+{
+  "schema_version": 1,
+  "description": "openLCA 2.8.2 names metal ions with a Stock numeral or the generic marker -- `Cadmium II`, `Arsenic V`, `Copper Ion` -- and writes the bare metal's registry number on 339 of those rows under 29 names: 7440-43-9 on `Cadmium II`, 7439-92-1 on `Lead II`. The number route runs before the name route, so on the six-list build of 21 October 2026 (commit 931ed30) every one of them reached the metal, while the sibling rows carrying the ion's own number reached the ion: `Cadmium II` was two substances depending on which number came with it, and the lookup read the name three ways (#380). The merge now sets a bare element's number aside where the row's name states an ion (`merge.species.element_number_set_aside`), the row is placed by its name through the ion naming standard, and the mapping's basis reads `label+element-number-set-aside` with the number. The lookup prepares a query the same way. One claim per name; the two substance claims hold the numbers apart.",
+  "expectations": [
+    {
+      "id": "0380-openlca-aluminium-iii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 10 `Aluminium III` rows under 7429-90-5 reach `Aluminium(3+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Aluminium III",
+        "cas": "7429-90-5"
+      },
+      "expect": {
+        "row_count": 10,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Aluminium(3+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Aluminium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-antimony-ion-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 12 `Antimony Ion` rows under 7440-36-0 reach `Antimony, ion` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Antimony Ion",
+        "cas": "7440-36-0"
+      },
+      "expect": {
+        "row_count": 12,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Antimony, ion"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 12 rows reached `Antimony` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-arsenic-ion-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 16 `Arsenic Ion` rows under 7440-38-2 reach `Arsenic, ion` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Arsenic Ion",
+        "cas": "7440-38-2"
+      },
+      "expect": {
+        "row_count": 16,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 16 rows reached `Arsenic` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-barium-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 10 `Barium II` rows under 7440-39-3 reach `Barium(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Barium II",
+        "cas": "7440-39-3"
+      },
+      "expect": {
+        "row_count": 10,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Barium(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Barium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-beryllium-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 10 `Beryllium II` rows under 7440-41-7 reach `Beryllium(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Beryllium II",
+        "cas": "7440-41-7"
+      },
+      "expect": {
+        "row_count": 10,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Beryllium(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Beryllium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-cadmium-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 18 `Cadmium II` rows under 7440-43-9 reach `Cadmium(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Cadmium II",
+        "cas": "7440-43-9"
+      },
+      "expect": {
+        "row_count": 18,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Cadmium(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 18 rows reached `Cadmium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-caesium-i-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 4 `Caesium I` rows under 7440-46-2 reach `Caesium(1+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Caesium I",
+        "cas": "7440-46-2"
+      },
+      "expect": {
+        "row_count": 4,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Caesium(1+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 4 rows reached `Cesium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-calcium-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 7 `Calcium II` rows under 7440-70-2 reach `Calcium(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Calcium II",
+        "cas": "7440-70-2"
+      },
+      "expect": {
+        "row_count": 7,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Calcium(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 7 rows reached `Calcium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-chromium-iii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 16 `Chromium III` rows under 7440-47-3 reach `Chromium(3+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Chromium III",
+        "cas": "7440-47-3"
+      },
+      "expect": {
+        "row_count": 16,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Chromium(3+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 16 rows reached `Chromium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-cobalt-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 10 `Cobalt II` rows under 7440-48-4 reach `Cobalt(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Cobalt II",
+        "cas": "7440-48-4"
+      },
+      "expect": {
+        "row_count": 10,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Cobalt(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Cobalt` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-copper-ion-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 18 `Copper Ion` rows under 7440-50-8 reach `Copper, ion` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Copper Ion",
+        "cas": "7440-50-8"
+      },
+      "expect": {
+        "row_count": 18,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Copper, ion"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 18 rows reached `Copper` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-iron-ion-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 9 `Iron Ion` rows under 7439-89-6 reach `Iron, ion` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Iron Ion",
+        "cas": "7439-89-6"
+      },
+      "expect": {
+        "row_count": 9,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Iron, ion"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 9 rows reached `Iron` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-lead-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 15 `Lead II` rows under 7439-92-1 reach `Lead(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Lead II",
+        "cas": "7439-92-1"
+      },
+      "expect": {
+        "row_count": 15,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Lead(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 15 rows reached `Lead` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-lithium-i-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 8 `Lithium I` rows under 7439-93-2 reach `Lithium(1+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Lithium I",
+        "cas": "7439-93-2"
+      },
+      "expect": {
+        "row_count": 8,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Lithium(1+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 8 rows reached `Lithium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-manganese-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 10 `Manganese II` rows under 7439-96-5 reach `Manganese(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Manganese II",
+        "cas": "7439-96-5"
+      },
+      "expect": {
+        "row_count": 10,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Manganese(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Manganese` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-mercury-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 12 `Mercury II` rows under 7439-97-6 reach `Mercury(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Mercury II",
+        "cas": "7439-97-6"
+      },
+      "expect": {
+        "row_count": 12,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Mercury(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 12 rows reached `Mercury` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-molybdenum-vi-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 24 `Molybdenum VI` rows under 7439-98-7 reach `Molybdenum(6+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Molybdenum VI",
+        "cas": "7439-98-7"
+      },
+      "expect": {
+        "row_count": 24,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Molybdenum(6+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 24 rows reached `Molybdenum` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-nickel-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 17 `Nickel II` rows under 7440-02-0 reach `Nickel(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Nickel II",
+        "cas": "7440-02-0"
+      },
+      "expect": {
+        "row_count": 17,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Nickel(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 17 rows reached `Nickel` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-palladium-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 1 `Palladium II` rows under 7440-05-3 reach `Palladium(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Palladium II",
+        "cas": "7440-05-3"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Palladium(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 1 rows reached `Palladium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-potassium-i-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 2 `Potassium I` rows under 7440-09-7 reach `Potassium(1+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Potassium I",
+        "cas": "7440-09-7"
+      },
+      "expect": {
+        "row_count": 2,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Potassium(1+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 2 rows reached `Potassium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-rhodium-iii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 2 `Rhodium III` rows under 7440-16-6 reach `Rhodium(3+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Rhodium III",
+        "cas": "7440-16-6"
+      },
+      "expect": {
+        "row_count": 2,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Rhodium(3+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 2 rows reached `Rhodium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-selenium-iv-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 13 `Selenium IV` rows under 7782-49-2 reach `Selenium(4+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Selenium IV",
+        "cas": "7782-49-2"
+      },
+      "expect": {
+        "row_count": 13,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Selenium(4+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 13 rows reached `Selenium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-silver-i-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 14 `Silver I` rows under 7440-22-4 reach `Silver(1+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Silver I",
+        "cas": "7440-22-4"
+      },
+      "expect": {
+        "row_count": 14,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Silver(1+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 14 rows reached `Silver` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-strontium-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 12 `Strontium II` rows under 7440-24-6 reach `Strontium(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Strontium II",
+        "cas": "7440-24-6"
+      },
+      "expect": {
+        "row_count": 12,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Strontium(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 12 rows reached `Strontium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-thallium-i-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 12 `Thallium I` rows under 7440-28-0 reach `Thallium(1+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Thallium I",
+        "cas": "7440-28-0"
+      },
+      "expect": {
+        "row_count": 12,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Thallium(1+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 12 rows reached `Thallium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-tin-ion-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 16 `Tin Ion` rows under 7440-31-5 reach `Tin, ion` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Tin Ion",
+        "cas": "7440-31-5"
+      },
+      "expect": {
+        "row_count": 16,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Tin, ion"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 16 rows reached `Tin` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-titanium-ion-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 10 `Titanium Ion` rows under 7440-32-6 reach `Titanium, ion` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Titanium Ion",
+        "cas": "7440-32-6"
+      },
+      "expect": {
+        "row_count": 10,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Titanium, ion"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Titanium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-vanadium-v-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 13 `Vanadium V` rows under 7440-62-2 reach `Vanadium(5+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Vanadium V",
+        "cas": "7440-62-2"
+      },
+      "expect": {
+        "row_count": 13,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Vanadium(5+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 13 rows reached `Vanadium` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-openlca-zinc-ii-is-the-ion",
+      "issue": 380,
+      "title": "openLCA's 18 `Zinc II` rows under 7440-66-6 reach `Zinc(2+)` with the number set aside",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Zinc II",
+        "cas": "7440-66-6"
+      },
+      "expect": {
+        "row_count": 18,
+        "outcome": "matched",
+        "basis": "label+element-number-set-aside",
+        "same_substance": true,
+        "target_name": "Zinc(2+)"
+      },
+      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 18 rows reached `Zinc` by the number. The number is the metal's; the name says the ion."
+    },
+    {
+      "id": "0380-cadmium-keeps-one-number",
+      "issue": 380,
+      "title": "One substance carries cadmium's number 7440-43-9 and it is called Cadmium",
+      "subject": {
+        "kind": "substance",
+        "cas": "7440-43-9"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1,
+        "label": "Cadmium"
+      },
+      "comment": "The rule sets the number aside rather than carrying it onto the ion: a `Cadmium(2+)` under the metal's number would be a second substance on the number, which the number route would then find for every bare `Cadmium` row."
+    },
+    {
+      "id": "0380-cadmium-ion-keeps-its-own-number",
+      "issue": 380,
+      "title": "One substance carries cadmium(2+)'s number 22537-48-0 and it is called Cadmium(2+)",
+      "subject": {
+        "kind": "substance",
+        "cas": "22537-48-0"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1,
+        "label": "Cadmium(2+)"
+      },
+      "comment": "Where openLCA's 38 `Cadmium II` rows meet ecoinvent's 19 and BAFU's one."
+    }
+  ]
+}

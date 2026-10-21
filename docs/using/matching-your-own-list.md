@@ -105,9 +105,13 @@ When it matched: `elementary_flow_id` is the identifier, `pref_label` and
 `cas`, `ec`, `label`, `cas+qualifier`, `cas+designation` for a shared CAS
 settled by the industry designation the row's name ends in — `Ether, …,
 HFE-347mcc3` — `simapro-name-pattern` for a name this project derived from
-SimaPro's habits, or `historical-name` for a name ecoinvent retired after 2.2 —
+SimaPro's habits, `historical-name` for a name ecoinvent retired after 2.2 —
 `Basalt, in ground`, `Sulfate, ion` — that the vendor's own crosswalk says
-became a substance this list holds.
+became a substance this list holds, or `label+element-number-set-aside` for
+a name that states an ion beside the bare metal's registry number — openLCA's
+`Cadmium II` under 7440-43-9 — which reaches the ion by its name, with the
+number it was not believed on named in `basis_value`
+([#380](https://github.com/brightway-labs/brightway-flows/issues/380)).
 
 When it did not, `selector_reason` says why, and `candidates` names every
 substance the row could have been, with what each is called. That is what a

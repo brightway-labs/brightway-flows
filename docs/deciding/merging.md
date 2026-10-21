@@ -232,13 +232,43 @@ above accepts. AGRIBALYSE's rows for the same two substances, arriving later,
 minted ion flows, so one substance in air had two published flows and the
 read-only lookup disagreed with the build.
 
-Only label evidence is judged. A row whose *number* is the element's —
-ecoinvent's `Strontium II` and `Caesium I` under 7440-24-6 and 7440-46-2,
-AGRIBALYSE's six generic `Antimony, Ion` to `Titanium, Ion` names — matches
-on the number and never reaches this rule. What such a number means is a
-ruling about the vendor's data, not a rule of the merge; AGRIBALYSE's
-`Lithium (I)` and `Potassium (I)` got theirs in
-`agribalyse-3.2-manual-fixes.json`, and the others are open.
+### An ion name beside the bare element's number is the ion
+
+A row whose *number* is the element's own — openLCA 2.8.2's `Cadmium II`
+under 7440-43-9, `Lead II` under 7439-92-1, `Copper Ion` under
+7440-50-8 — would never reach the rule above, because the number route runs
+first and finds the metal. On the six-list build of 21 October 2026 the
+package's 339 such rows, under 29 names, were all published as the metal,
+while the sibling rows carrying the ion's own number (`Cadmium II` under
+22537-48-0, 20 rows) reached the ion: one name, two substances, decided by
+which number the row happened to carry
+([#380](https://github.com/brightway-labs/brightway-flows/issues/380)).
+
+So where a row's name states an ion — a charge, or the generic marker — and
+its number is the bare element's, the number is set aside before any route
+runs, together with its companion EC number, and the ion's own spelling leads
+the row's labels. The row then arrives at the label rule with no number and
+is placed on `Cadmium(2+)` or `Copper, ion` by its preferred label, as a
+numberless row would be. The mapping says what happened: its `basis` reads
+`label+element-number-set-aside` and its `basis_value` names the number,
+so a curator sees both what the row said and what was not believed. Where no
+such ion exists yet the row mints it, with no number, as AGRIBALYSE's
+`Chromium, Ion` did. The read-only lookup prepares a query the same way, so
+`Cadmium II` with the metal's number gets the same answer from it as the
+build gave the package's row.
+
+The rule fires on exactly that pair and nothing else. A bare `Lead` under
+7439-92-1 is the metal ([#398](https://github.com/brightway-labs/brightway-flows/issues/398)),
+an ion name under the ion's own number is read by the number, and an ion name
+under some third number — `Vanadium V` under vanadium pentoxide's — is the
+disagreement the label rule judges. Before it, the same pair was corrected
+row by row in the lists' own fixes: BAFU's three
+([#146](https://github.com/brightway-labs/brightway-flows/issues/146),
+[#183](https://github.com/brightway-labs/brightway-flows/issues/183)),
+AGRIBALYSE's `Lithium (I)` and `Potassium (I)` and ecoinvent 3.12's
+`Strontium II` and `Caesium I`
+([#198](https://github.com/brightway-labs/brightway-flows/issues/198)).
+Those fixes stand and the rule agrees with every one of them.
 
 ## Then the EC number
 

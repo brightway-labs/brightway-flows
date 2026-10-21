@@ -197,6 +197,58 @@ def redefines(earlier_name: str, earlier_cas: str, newest_name: str, newest_cas:
     )
 
 
+#: What the mapping's `basis` reads when a row was placed by its ion name with
+#: the bare element's registry number set aside (#380).
+ELEMENT_NUMBER_SET_ASIDE_BASIS = "label+element-number-set-aside"
+
+
+def number_is_the_bare_elements(name: str, cas: str) -> bool:
+    """Whether *name* states an ion and *cas* is its bare element's own number.
+
+    openLCA 2.8.2 writes 7440-43-9, cadmium the metal, on `Cadmium II`, and
+    7439-92-1 on `Lead II`: 339 rows under 32 names, measured on the six-list
+    build of 21 October 2026 (#380).  BAFU did the same on three rows (#146,
+    #183) and AGRIBALYSE on `Lithium (I)` and `Potassium (I)` (#198).  The
+    name says the ion twice over -- the charge, or the generic marker, exists
+    to distinguish it from the element -- and the number says the element.
+    True only for that exact pair: a bare name under the element's number is
+    the element (`redefines`, #398), and an ion name under any other number
+    is read by the number as usual.
+    """
+    species = parse_species(name)
+    if species is None or species.kind == "bare":
+        return False
+    return (cas or "").strip() == ELEMENT_CAS.get(species.element, "")
+
+
+def element_number_set_aside(row: "SourceRow") -> "SourceRow":
+    """*row* with the bare element's number set aside where its name states an ion.
+
+    The same shape as :func:`canonicalized_for_matching`: what changes is the
+    matching evidence, never what the vendor shipped.  The number and its
+    companion EC number are cleared, so neither the number route nor the EC
+    route can reach the element, and the ion's spelling in this list leads the
+    labels, so the label route reaches `Cadmium(2+)` by its preferred label and
+    `Copper, ion` by its own.  The number that was set aside is kept on
+    ``number_set_aside`` and written into the mapping's `basis_value`, so a
+    curator reading `merge_outcomes` sees both what the row said and what was
+    not believed (#380).
+
+    Before this, the number route ran first and found the element, and the
+    name's charge was never consulted: openLCA's `Cadmium II` rows reached
+    `Cadmium` when they carried 7440-43-9 and `Cadmium(2+)` when they carried
+    22537-48-0, and the read-only lookup read `Cadmium II` three ways
+    depending on which number came with it.
+    """
+    if not number_is_the_bare_elements(row.name, row.cas):
+        return row
+    species = parse_species(row.name)
+    assert species is not None  # number_is_the_bare_elements parsed it
+    label = species_object_label(species)
+    labels = [label, *[item for item in row.labels if item != label]]
+    return replace(row, cas="", ec="", labels=labels, number_set_aside=row.cas)
+
+
 def species_object_label(species: SpeciesName) -> str:
     """The label this list spells *species* with.
 

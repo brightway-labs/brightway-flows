@@ -75,7 +75,10 @@ from brightway_flows.merge.report import (
     UnmatchedReason,
     UnmatchedRow,
 )
-from brightway_flows.merge.species import canonicalized_for_matching
+from brightway_flows.merge.species import (
+    canonicalized_for_matching,
+    element_number_set_aside,
+)
 from brightway_flows.merge.state import (
     MatchAttempt,
     MergeAccumulator,
@@ -1057,6 +1060,9 @@ def match_source_rows(
             parsed_row = canonicalized_for_matching(
                 parsed_row, indexes.canonical_identities
             )
+        # Every list: a name that states an ion beside the bare element's own
+        # number is the ion, and the number is set aside (#380).
+        parsed_row = element_number_set_aside(parsed_row)
 
         prepared_rows = admitted_prepared_rows(
             prepared_by_source_uuid.get(source_uuid, []),

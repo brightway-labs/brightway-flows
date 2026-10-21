@@ -289,9 +289,57 @@ row that ships no number under exactly that spelling
 
 ## An ionic charge was added or corrected
 
-None recorded yet. The package names metal ions `Cadmium II` and `Arsenic V`
-and writes the element's registry number on many of them
-([#380](https://github.com/brightway-labs/brightway-flows/issues/380)).
+No row's name or number is rewritten. The package names metal ions with a
+Stock numeral or the generic marker — `Cadmium II`, `Arsenic V`, `Copper
+Ion` — and on 339 of those rows, under 29 names, writes the bare metal's
+registry number: 7440-43-9 on `Cadmium II`, 7439-92-1 on `Lead II`
+([#380](https://github.com/brightway-labs/brightway-flows/issues/380)). On
+the six-list build of 21 October 2026 every one of them reached the metal by
+the number, while the package's sibling rows carrying the ion's own number
+reached the ion, so `Cadmium II` was two substances depending on which number
+the row carried.
+
+The merge now reads such a row as the ion its name states and sets the
+metal's number aside, for every list alike
+([the rule](../deciding/merging.md#an-ion-name-beside-the-bare-elements-number-is-the-ion)).
+The mapping's `basis` reads `label+element-number-set-aside` and names the
+number. Every ion below already exists in the list, so nothing is minted. The
+rows carrying the ion's own number — `Cadmium II` under 22537-48-0,
+`Arsenic V` under 17428-41-0 — are untouched and keep reaching the ion by the
+number, and the 20 `Pyrethrin I` and `Pyrethrin II` rows are not ions and
+are not read by this rule.
+
+| Name | Rows | Number shipped | Reached on the build of 21 October | Reaches now |
+|---|---:|---|---|---|
+| `Aluminium III` | 10 | 7429-90-5 | `Aluminium` | `Aluminium(3+)` |
+| `Antimony Ion` | 12 | 7440-36-0 | `Antimony` | `Antimony, ion` |
+| `Arsenic Ion / Arsenic ion` | 16 | 7440-38-2 | `Arsenic` | `Arsenic, ion` |
+| `Barium II` | 10 | 7440-39-3 | `Barium` | `Barium(2+)` |
+| `Beryllium II` | 10 | 7440-41-7 | `Beryllium` | `Beryllium(2+)` |
+| `Cadmium II` | 18 | 7440-43-9 | `Cadmium` | `Cadmium(2+)` |
+| `Caesium I` | 4 | 7440-46-2 | `Cesium` | `Caesium(1+)` |
+| `Calcium II` | 7 | 7440-70-2 | `Calcium` | `Calcium(2+)` |
+| `Chromium III` | 16 | 7440-47-3 | `Chromium` | `Chromium(3+)` |
+| `Cobalt II` | 10 | 7440-48-4 | `Cobalt` | `Cobalt(2+)` |
+| `Copper Ion / Copper ion` | 18 | 7440-50-8 | `Copper` | `Copper, ion` |
+| `Iron Ion / Iron ion` | 9 | 7439-89-6 | `Iron` | `Iron, ion` |
+| `Lead II` | 15 | 7439-92-1 | `Lead` | `Lead(2+)` |
+| `Lithium I` | 8 | 7439-93-2 | `Lithium` | `Lithium(1+)` |
+| `Manganese II` | 10 | 7439-96-5 | `Manganese` | `Manganese(2+)` |
+| `Mercury II` | 12 | 7439-97-6 | `Mercury` | `Mercury(2+)` |
+| `Molybdenum VI` | 24 | 7439-98-7 | `Molybdenum` | `Molybdenum(6+)` |
+| `Nickel II` | 17 | 7440-02-0 | `Nickel` | `Nickel(2+)` |
+| `Palladium II` | 1 | 7440-05-3 | `Palladium` | `Palladium(2+)` |
+| `Potassium I` | 2 | 7440-09-7 | `Potassium` | `Potassium(1+)` |
+| `Rhodium III` | 2 | 7440-16-6 | `Rhodium` | `Rhodium(3+)` |
+| `Selenium IV` | 13 | 7782-49-2 | `Selenium` | `Selenium(4+)` |
+| `Silver I` | 14 | 7440-22-4 | `Silver` | `Silver(1+)` |
+| `Strontium II` | 12 | 7440-24-6 | `Strontium` | `Strontium(2+)` |
+| `Thallium I` | 12 | 7440-28-0 | `Thallium` | `Thallium(1+)` |
+| `Tin Ion / Tin ion` | 16 | 7440-31-5 | `Tin` | `Tin, ion` |
+| `Titanium Ion / Titanium ion` | 10 | 7440-32-6 | `Titanium` | `Titanium, ion` |
+| `Vanadium V` | 13 | 7440-62-2 | `Vanadium` | `Vanadium(5+)` |
+| `Zinc II` | 18 | 7440-66-6 | `Zinc` | `Zinc(2+)` |
 
 ## Rows merged into one flow
 

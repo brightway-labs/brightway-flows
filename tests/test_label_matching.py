@@ -21,6 +21,10 @@ from brightway_flows.merge.matching import (
     resolve_flow_object,
 )
 from brightway_flows.sources import resolve_source_list
+from brightway_flows.merge.species import (
+    ELEMENT_NUMBER_SET_ASIDE_BASIS,
+    element_number_set_aside,
+)
 from brightway_flows.merge.state import MergeAccumulator, MergeIndexes, SourceRow
 
 TALC = "fo-talc"
@@ -369,6 +373,66 @@ class RewrittenNameTestCase(unittest.TestCase):
             ),
         )
         self.assertIsNone(resolution)
+
+
+class TheElementsNumberOnAnIonNameTestCase(unittest.TestCase):
+    """openLCA 2.8.2 writes the metal's number on its ion names (#380):
+    `Cadmium II` under 7440-43-9.  The number is set aside before matching
+    (`merge.species.element_number_set_aside`), the row arrives with no
+    number and `Cadmium(2+)` leading its labels, and the preferred-label rule
+    places it on the ion; the record says so in its basis."""
+
+    CADMIUM = "fo-cadmium"
+    CADMIUM_ION = "fo-cadmium-2-plus"
+
+    def _indexes(self, *, with_ion=True):
+        labels = {self.CADMIUM: "Cadmium"}
+        label_index = {"cadmium": {self.CADMIUM}}
+        pref = {"cadmium": {self.CADMIUM}}
+        cas_index = {"7440-43-9": {self.CADMIUM}}
+        with_cas = {self.CADMIUM}
+        if with_ion:
+            labels[self.CADMIUM_ION] = "Cadmium(2+)"
+            label_index.update({"cadmium(2+)": {self.CADMIUM_ION}, "cadmium ii": {self.CADMIUM_ION}})
+            pref["cadmium(2+)"] = {self.CADMIUM_ION}
+            cas_index["22537-48-0"] = {self.CADMIUM_ION}
+            with_cas.add(self.CADMIUM_ION)
+        return _indexes(label_index=label_index, pref_label_index=pref,
+                        with_cas=with_cas, cas_index=cas_index, labels=labels,
+                        source="openlca-2.8.2")
+
+    def test_the_row_reaches_the_ion_with_the_number_set_aside(self):
+        row = element_number_set_aside(_row("Cadmium II", cas="7440-43-9"))
+        resolution = _resolve(row, self._indexes())
+        self.assertIsNotNone(resolution)
+        self.assertEqual(resolution.flow_object_id, self.CADMIUM_ION)
+        self.assertEqual(resolution.basis, ELEMENT_NUMBER_SET_ASIDE_BASIS)
+        self.assertEqual(resolution.basis_value, "Cadmium II; Cadmium(2+) (7440-43-9 set aside)")
+
+    def test_without_the_rule_the_number_reaches_the_metal(self):
+        """What the build did before #380, kept as the measure of the rule."""
+        resolution = _resolve(_row("Cadmium II", cas="7440-43-9"), self._indexes())
+        self.assertIsNotNone(resolution)
+        self.assertEqual((resolution.flow_object_id, resolution.basis), (self.CADMIUM, "cas"))
+
+    def test_the_bare_element_under_its_own_number_still_reaches_the_metal(self):
+        row = element_number_set_aside(_row("Cadmium", cas="7440-43-9"))
+        resolution = _resolve(row, self._indexes())
+        self.assertEqual((resolution.flow_object_id, resolution.basis), (self.CADMIUM, "cas"))
+
+    def test_the_ions_own_number_reaches_the_ion_by_the_number(self):
+        row = element_number_set_aside(_row("Cadmium II", cas="22537-48-0"))
+        resolution = _resolve(row, self._indexes())
+        self.assertEqual((resolution.flow_object_id, resolution.basis), (self.CADMIUM_ION, "cas"))
+
+    def test_with_no_ion_to_reach_the_row_mints_one_and_says_why(self):
+        row = element_number_set_aside(_row("Cadmium II", cas="7440-43-9"))
+        accumulator = MergeAccumulator()
+        resolution = resolve_flow_object(row=row, indexes=self._indexes(with_ion=False),
+                                         accumulator=accumulator)
+        self.assertIsNone(resolution)
+        self.assertEqual([u.basis for u in accumulator.unmatched], [ELEMENT_NUMBER_SET_ASIDE_BASIS])
+        self.assertEqual(accumulator.unmatched[0].source_cas, "")
 
 
 class IonStandardSpellingTestCase(unittest.TestCase):

@@ -145,6 +145,12 @@ class SourceRow:
     #: matching (#149).  Empty for a row built without a record, and then
     #: `vendor_name` falls back to `name`.
     shipped_name: str = ""
+    #: The registry number the row shipped and the merge set aside, because the
+    #: row's name states an ion and the number is the bare element's own
+    #: (`merge.species.element_number_set_aside`, #380).  Empty for every other
+    #: row.  `cas` is then empty too: the number is kept here for the record
+    #: and consulted by nothing.
+    number_set_aside: str = ""
 
     @property
     def vendor_name(self) -> str:

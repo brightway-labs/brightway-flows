@@ -42,7 +42,13 @@ from brightway_flows.merge.prepared_context_decisions import (
 )
 from brightway_flows.merge.historical_names import load_historical_names
 from brightway_flows.merge.report import UnmatchedReason, UnmatchedRow
-from brightway_flows.merge.species import load_canonical_identities, rule_governs, parse_species, species_object_label
+from brightway_flows.merge.species import (
+    ELEMENT_NUMBER_SET_ASIDE_BASIS,
+    load_canonical_identities,
+    parse_species,
+    rule_governs,
+    species_object_label,
+)
 from brightway_flows.merge.state import (
     CandidateResolution,
     MergeAccumulator,
@@ -1150,6 +1156,14 @@ def resolve_flow_object(
         if candidate_ids:
             basis = "label"
             basis_value = "; ".join(sorted(set(labels_used))[:3])
+            if row.number_set_aside:
+                # The row's name states an ion and its number was the bare
+                # element's, so the number was set aside before this route
+                # ran (`merge.species.element_number_set_aside`, #380).  Said
+                # in the basis, with the number, so the record shows both
+                # what the row said and what was not believed.
+                basis = ELEMENT_NUMBER_SET_ASIDE_BASIS
+                basis_value = f"{basis_value} ({row.number_set_aside} set aside)"
 
     # Last, and only for a list SimaPro shaped: the row's names rewritten out of
     # the habits that lineage carries -- `Benzene, Chloro-` for chlorobenzene
@@ -1237,10 +1251,17 @@ def resolve_flow_object(
             indexes.label_index.get(_normalize_text(label), set()) for label in row.labels
         ))
         refused = _bare_element_hits(row=row, candidate_ids=label_hits, indexes=indexes)
+        unmatched_basis: dict[str, str] = {}
+        if refused and refused == label_hits:
+            unmatched_basis = {"basis": ION_ELEMENT_REFUSED_BASIS}
+        elif row.number_set_aside:
+            # Nothing is called what the ion is, so the row mints it -- with no
+            # number, since the one it shipped was the element's (#380).
+            unmatched_basis = {"basis": ELEMENT_NUMBER_SET_ASIDE_BASIS}
         _record_unmatched_row(
             row=row, accumulator=accumulator,
             reason=UnmatchedReason.NO_FLOW_OBJECT_CANDIDATE,
-            **({"basis": ION_ELEMENT_REFUSED_BASIS} if refused and refused == label_hits else {}),
+            **unmatched_basis,
         )
         return None
 
@@ -1441,10 +1462,12 @@ def _narrow_label_candidates(
     exists to distinguish it from, so it is refused here whatever label found
     it: :func:`_bare_element_hits` names the candidates that are the bare
     element of the row's own ion name, and they are dropped.  With nothing
-    left the row mints, as AGRIBALYSE's `Rhodium (III)` already did.  Only
-    label evidence is judged: a row whose *number* is the element's -- ecoinvent's
-    `Strontium II` under 7440-24-6 -- matches on the number above and never
-    reaches here, and what that number means is a ruling, not a rule.
+    left the row mints, as AGRIBALYSE's `Rhodium (III)` already did.  A row
+    whose *number* is the element's -- openLCA's `Cadmium II` under
+    7440-43-9 -- has that number set aside before any route runs
+    (`merge.species.element_number_set_aside`, #380), arrives here with no
+    number and the ion's own spelling leading its labels, and is placed by
+    the preferred-label rule above.
     """
     pref_hits: set[str] = set().union(*(
         indexes.pref_label_index.get(_normalize_text(label), set())

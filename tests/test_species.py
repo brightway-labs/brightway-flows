@@ -25,10 +25,13 @@ from brightway_flows.merge.species import (
     CANONICAL_IDENTITIES_SCHEMA_VERSION,
     CanonicalIdentity,
     CanonicalIdentityError,
-    ELEMENT_CAS,
     ELEMENTS,
+    ELEMENT_CAS,
+    _canonical_element,
     canonicalized_for_matching,
+    element_number_set_aside,
     load_canonical_identities,
+    number_is_the_bare_elements,
     parse_species,
     redefines,
     rule_governs,
@@ -255,6 +258,56 @@ class MatchingEvidenceTestCase(unittest.TestCase):
         row = _row(uuid="s-else", name="Metaldehyde", cas="108-62-3",
                    labels=["Metaldehyde"])
         self.assertEqual(canonicalized_for_matching(row, self.IDENTITIES), row)
+
+
+class ElementNumberSetAsideTestCase(unittest.TestCase):
+    """A name that states an ion beside the bare element's own number is the
+    ion, and the number is set aside (#380).  openLCA 2.8.2 writes 7440-43-9
+    on `Cadmium II` and 7439-92-1 on `Lead II` -- 339 rows under 32 names on
+    the six-list build of 21 October 2026 -- and the number route, which runs
+    first, placed every one of them on the metal."""
+
+    def test_the_elements_number_on_an_ion_name_is_set_aside(self):
+        out = element_number_set_aside(_row(name="Cadmium II", cas="7440-43-9",
+                                            labels=["Cadmium II"], ec="231-152-8"))
+        self.assertEqual((out.cas, out.ec, out.number_set_aside), ("", "", "7440-43-9"))
+        self.assertEqual(out.labels, ["Cadmium(2+)", "Cadmium II"])
+        self.assertEqual(out.name, "Cadmium II")
+
+    def test_the_generic_marker_counts_as_an_ion_name(self):
+        out = element_number_set_aside(_row(name="Copper Ion", cas="7440-50-8",
+                                            labels=["Copper Ion"]))
+        self.assertEqual(out.number_set_aside, "7440-50-8")
+        self.assertEqual(out.labels, ["Copper, ion", "Copper Ion"])
+
+    def test_the_ions_own_number_is_left_alone(self):
+        row = _row(name="Cadmium II", cas="22537-48-0", labels=["Cadmium II"])
+        self.assertIs(element_number_set_aside(row), row)
+
+    def test_a_bare_element_under_its_own_number_is_the_element(self):
+        """The #398 ruling: `Lead` under 7439-92-1 is the metal."""
+        row = _row(name="Lead", cas="7439-92-1", labels=["Lead"])
+        self.assertIs(element_number_set_aside(row), row)
+
+    def test_another_substances_number_on_an_ion_name_is_read_by_the_number(self):
+        """`Vanadium V` under vanadium pentoxide's number is a disagreement the
+        label rule judges (#412), not this rule's pair."""
+        row = _row(name="Vanadium V", cas="1314-62-1", labels=["Vanadium V"])
+        self.assertIs(element_number_set_aside(row), row)
+
+    def test_a_name_outside_the_family_is_not_touched(self):
+        row = _row(name="Pyrethrin II", cas="121-29-9", labels=["Pyrethrin II"])
+        self.assertIs(element_number_set_aside(row), row)
+        self.assertFalse(number_is_the_bare_elements("Pyrethrin II", "121-29-9"))
+
+    def test_a_numberless_ion_name_is_not_touched(self):
+        row = _row(name="Vanadium V", cas="", labels=["Vanadium V"])
+        self.assertIs(element_number_set_aside(row), row)
+
+    def test_every_element_the_family_knows_has_a_number(self):
+        for element in sorted(ELEMENTS):
+            with self.subTest(element=element):
+                self.assertIn(_canonical_element(element), ELEMENT_CAS)
 
 
 class RedefinitionTestCase(unittest.TestCase):
