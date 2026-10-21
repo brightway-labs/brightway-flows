@@ -2191,6 +2191,11 @@ class AgribalyseSiblingNumbersTestCase(unittest.TestCase):
         "Iron, ion": "7439-89-6",
         "Tin, ion": "7440-31-5",
         "Titanium, ion": "7440-32-6",
+        # Not the element's number but pentavalent arsenic's (#202): the rows
+        # reached `Arsenic(5+)` while ecoinvent's and BAFU's `Arsenic, ion`
+        # reached the generic ion. A charge picked for a generic name is the
+        # same reinterpretation as the element read for it.
+        "Arsenic, ion": "17428-41-0",
     }
 
     def _source(self):

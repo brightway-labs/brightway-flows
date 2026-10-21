@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "description": "AGRIBALYSE 3.2 ships thirteen rows named `Arsenic, ion`, one per compartment, and gives every one of them 17428-41-0. That is pentavalent arsenic's number -- the number the published `Arsenic(5+)` carries, which EF 3.1 gives to its `arsenic (v)` flows and BAFU to its `Arsenic V` row -- and a stated number outranks a name, so on the five-list build of `main` at 3f827d6 (run 20261021T1801397624190000) all thirteen reached `Arsenic(5+)` on `basis=cas`. In industrial soil that put AGRIBALYSE's generic ion on the same flow as BAFU's `Arsenic V` and AGRIBALYSE's own `Arsenic (V)`, which is the shape the issue reports.\n\n`Arsenic, ion` states no charge. A generic ion name is its own substance and no number can name it: that is the reading #198 gave AGRIBALYSE's `Antimony, ion`, `Chromium, ion`, `Copper, ion`, `Iron, ion`, `Tin, ion` and `Titanium, ion`, whose element numbers it removed, and the one #404 restated for rhenium(2+). Arsenic was not among the six because its number is not the element's -- it is a *charged* ion's, which is the more specific of the two mistakes, not a smaller one. ecoinvent made the same correction to its own rows: 3.8 registers `Arsenic, ion` 17428-41-0 and 3.12 registers `Arsenic ion` with no number (`ecoinvent-canonical-identities.json`), and its rows reach the numberless `Arsenic, ion` the build creates, where BAFU's `Arsenic, Ion` lands too.\n\nThe fix is a `remove_value` in `agribalyse-3.2-manual-fixes.json`, the shape of the six #198 entries. AGRIBALYSE's four `Arsenic (V)` rows keep 17428-41-0 -- #190 gave it to them -- and stay on `Arsenic(5+)`.",
+  "expectations": [
+    {
+      "id": "0202-agribalyse-arsenic-ion-in-industrial-soil-reaches-the-generic-ion",
+      "issue": 202,
+      "title": "AGRIBALYSE's `Arsenic, ion` in industrial soil reaches the generic arsenic ion, not `Arsenic(5+)`",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "0831a7c5-1f4a-5817-8e1f-33c3010bc4bb"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "cc0b83ce73fe5ff455897e34c4a0484eefaaaad8"
+      },
+      "comment": "The row the issue names. On the build of 3f827d6 it reached `65bc388d0498c7c96f962d771676f948545ee56e`, `Arsenic(5+)` in Ground → Industrial, on `basis=cas` -- the flow BAFU's `Arsenic V` created. The target here is `Arsenic, ion` in the same context, the flow ecoinvent 3.12's `Arsenic Ion` row created. Selected by uuid because the claim is about one compartment; the claim about all thirteen is the next one."
+    },
+    {
+      "id": "0202-every-merged-arsenic-ion-row-reaches-one-substance",
+      "issue": 202,
+      "title": "Every merged list's `Arsenic, ion` rows reach one substance",
+      "subject": {
+        "kind": "source_row",
+        "name": "Arsenic, ion"
+      },
+      "expect": {
+        "same_substance": true
+      },
+      "comment": "AGRIBALYSE's thirteen rows and BAFU's one, under this exact spelling. On the build of 3f827d6 they reached two substances: AGRIBALYSE's thirteen `Arsenic(5+)` by the number, BAFU's numberless row `Arsenic, ion` by its label. A fix that moved the industrial-soil row alone, by override, would pass the claim above and fail this one."
+    },
+    {
+      "id": "0202-agribalyse-arsenic-v-stays-pentavalent",
+      "issue": 202,
+      "title": "AGRIBALYSE's `Arsenic (V)` rows stay on `Arsenic(5+)`",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "name": "Arsenic (V)"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Arsenic(5+)"
+      },
+      "comment": "**The guard.** True before the fix as well. The four rows that state the charge keep 17428-41-0, which #190 gave them, and reach the substance it names. A fix that removed the number from every AGRIBALYSE arsenic row carrying it, rather than from the ones whose name states no charge, would fail here."
+    }
+  ]
+}

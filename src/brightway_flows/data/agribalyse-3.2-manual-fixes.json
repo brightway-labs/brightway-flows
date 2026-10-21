@@ -259,6 +259,15 @@
     },
     {
       "match": {
+        "name": "Arsenic, ion",
+        "cas_numbers": "17428-41-0"
+      },
+      "field": "cas_numbers",
+      "remove_value": "17428-41-0",
+      "comment": "17428-41-0 is the registry number for pentavalent arsenic, the number the published `Arsenic(5+)` carries, and the row is an ion of arsenic with the charge deliberately unstated: `Arsenic, ion`, 13 rows. The six entries above take an element's number off a generic ion; this one takes a charged ion's, which is the same mistake made more specifically -- a generic ion name is its own substance and no number can name it, and picking a charge for one is the reinterpretation the six refuse. ecoinvent made this correction to its own rows: 3.8 registers `Arsenic, ion` 17428-41-0 and 3.12 registers `Arsenic ion` with no number (`ecoinvent-canonical-identities.json`). AGRIBALYSE, whose flow list is SimaPro's copy of EF 3.1's, kept the number, and a stated number outranks a name: on the five-list build of 3f827d6 (21 October 2026) all thirteen rows reached `Arsenic(5+)` on `basis=cas`, while ecoinvent's `Arsenic ion` and BAFU's `Arsenic, Ion` reached the generic `Arsenic, ion`. Missed by #198 because it looked for the element's number. With the number off, the name reaches that generic ion. AGRIBALYSE's four `Arsenic (V)` rows state the charge and keep 17428-41-0. (#202)"
+    },
+    {
+      "match": {
         "name": "Arsenic (V)",
         "cas_numbers": "61805-96-7"
       },
