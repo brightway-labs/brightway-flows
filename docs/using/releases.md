@@ -9,7 +9,7 @@ each release; see
 They list every identifier that changed. This page says why, grouped by what
 you would notice.
 
-## 1.1.0 — not yet released
+## 1.1.0 — 2026-10-21
 
 Built from the same five lists as 1.0.0: ecoinvent 3.12, ecoinvent 3.8,
 BAFU 2026 v1, Stepwise 2006 1.09 and AGRIBALYSE 3.2. A count below comes from
