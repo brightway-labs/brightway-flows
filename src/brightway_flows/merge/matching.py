@@ -1160,10 +1160,11 @@ def resolve_flow_object(
                 # The row's name states an ion and its number was the bare
                 # element's, so the number was set aside before this route
                 # ran (`merge.species.element_number_set_aside`, #380).  Said
-                # in the basis, with the number, so the record shows both
-                # what the row said and what was not believed.
+                # in the basis; `basis_value` stays the names that matched,
+                # as for every label basis, and the number itself goes into
+                # the match's details as `number_set_aside`, so the record
+                # shows both what the row said and what was not believed.
                 basis = ELEMENT_NUMBER_SET_ASIDE_BASIS
-                basis_value = f"{basis_value} ({row.number_set_aside} set aside)"
 
     # Last, and only for a list SimaPro shaped: the row's names rewritten out of
     # the habits that lineage carries -- `Benzene, Chloro-` for chlorobenzene

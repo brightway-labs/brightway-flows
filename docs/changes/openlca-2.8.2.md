@@ -302,8 +302,8 @@ the row carried.
 The merge now reads such a row as the ion its name states and sets the
 metal's number aside, for every list alike
 ([the rule](../deciding/merging.md#an-ion-name-beside-the-bare-elements-number-is-the-ion)).
-The mapping's `basis` reads `label+element-number-set-aside` and names the
-number. Every ion below already exists in the list, so nothing is minted. The
+The mapping's `basis` reads `label+element-number-set-aside` and its details
+name the number. Every ion below already exists in the list, so nothing is minted. The
 rows carrying the ion's own number — `Cadmium II` under 22537-48-0,
 `Arsenic V` under 17428-41-0 — are untouched and keep reaching the ion by the
 number, and the 20 `Pyrethrin I` and `Pyrethrin II` rows are not ions and

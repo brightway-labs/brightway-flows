@@ -671,6 +671,8 @@ class FlowMatcher:
             source_context_iri=context.context_iri,
         )
         details["flow_object_candidate_count"] = 1
+        if row.number_set_aside:
+            details["number_set_aside"] = row.number_set_aside
         details["source_context_original"] = list(row.context)
         details["source_context_normalized"] = list(context.strings)
         details["source_context_used_for_matching"] = selector_context

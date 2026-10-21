@@ -120,7 +120,7 @@ SimaPro's habits, `historical-name` for a name ecoinvent retired after 2.2 —
 became a substance this list holds, or `label+element-number-set-aside` for
 a name that states an ion beside the bare metal's registry number — openLCA's
 `Cadmium II` under 7440-43-9 — which reaches the ion by its name, with the
-number it was not believed on named in `basis_value`
+number it was not believed on named in `selector_details` as `number_set_aside`
 ([#380](https://github.com/brightway-labs/brightway-flows/issues/380)).
 
 When the substance is an element or one of its ions, `counterparts` lists the

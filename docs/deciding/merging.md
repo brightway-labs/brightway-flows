@@ -250,8 +250,9 @@ runs, together with its companion EC number, and the ion's own spelling leads
 the row's labels. The row then arrives at the label rule with no number and
 is placed on `Cadmium(2+)` or `Copper, ion` by its preferred label, as a
 numberless row would be. The mapping says what happened: its `basis` reads
-`label+element-number-set-aside` and its `basis_value` names the number,
-so a curator sees both what the row said and what was not believed. Where no
+`label+element-number-set-aside`, its `basis_value` the names that matched,
+and its details carry the number under `number_set_aside`, so a curator sees
+both what the row said and what was not believed. Where no
 such ion exists yet the row mints it, with no number, as AGRIBALYSE's
 `Chromium, Ion` did. The read-only lookup prepares a query the same way, so
 `Cadmium II` with the metal's number gets the same answer from it as the

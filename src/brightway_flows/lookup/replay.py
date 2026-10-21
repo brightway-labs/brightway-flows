@@ -101,6 +101,9 @@ _LABEL_BASES = frozenset({
     "simapro-name-pattern",
     "historical-name",
     "preferred-name",
+    # A name that states an ion, matched with the element's number set aside
+    # (#380): the value is the names, the number is in the details.
+    "label+element-number-set-aside",
 })
 
 

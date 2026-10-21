@@ -407,7 +407,7 @@ class TheElementsNumberOnAnIonNameTestCase(unittest.TestCase):
         self.assertIsNotNone(resolution)
         self.assertEqual(resolution.flow_object_id, self.CADMIUM_ION)
         self.assertEqual(resolution.basis, ELEMENT_NUMBER_SET_ASIDE_BASIS)
-        self.assertEqual(resolution.basis_value, "Cadmium II; Cadmium(2+) (7440-43-9 set aside)")
+        self.assertEqual(resolution.basis_value, "Cadmium II; Cadmium(2+)")
 
     def test_without_the_rule_the_number_reaches_the_metal(self):
         """What the build did before #380, kept as the measure of the rule."""

@@ -1117,6 +1117,8 @@ def match_source_rows(
             source_context_iri=source_context_iri or "",
         )
         selector_details["flow_object_candidate_count"] = 1
+        if parsed_row.number_set_aside:
+            selector_details["number_set_aside"] = parsed_row.number_set_aside
         selector_details["source_context_original"] = source_context
         selector_details["source_context_normalized"] = source_context_normalized
         selector_details["source_context_used_for_matching"] = selector_source_context

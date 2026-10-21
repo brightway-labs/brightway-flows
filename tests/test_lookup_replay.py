@@ -213,6 +213,7 @@ class TheBucketsAreWhatTheyClaimTestCase(_Replay):
             "cas+designation",
             "cas+label+preferred-name", "label+preferred-name",
             "simapro-name-pattern", "historical-name", "preferred-name", "",
+            "label+element-number-set-aside",
         }
         unexpected = sorted(
             {o.basis for o in self.outcomes if bucket_of(o) == EVIDENCE} - allowed

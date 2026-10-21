@@ -726,6 +726,14 @@ class TheCounterpartsTestCase(_Matcher):
             [("ion", "Mercury(2+)", "ef-mercury-ion-air")],
         )
 
+    def test_the_set_aside_number_is_in_the_details(self):
+        """#380: `Mercury II` under the metal's number reaches the ion, and the
+        answer says which number was not believed."""
+        answer = self.matcher.match(FlowQuery(name="Mercury II", context=AIR_WORDS, cas="7439-97-6", unit="kg"))
+        self.assertEqual((answer.pref_label, answer.basis), ("Mercury(2+)", "label+element-number-set-aside"))
+        self.assertEqual(answer.basis_value, "Mercury(2+)")
+        self.assertEqual(answer.selector_details.get("number_set_aside"), "7439-97-6")
+
     def test_the_ion_lists_its_element(self):
         answer = self.matcher.match(FlowQuery(name="Mercury(2+)", context=AIR_WORDS, cas="14302-87-5", unit="kg"))
         self.assertEqual(answer.pref_label, "Mercury(2+)")
