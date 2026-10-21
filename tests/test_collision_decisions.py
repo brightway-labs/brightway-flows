@@ -503,13 +503,17 @@ class TheShippedRulingsTestCase(unittest.TestCase):
     industry designation, with the same registry number on both.  Those eight
     are the first rulings written because a source row could not be placed --
     Stepwise 2006's two ether rows were tied between the copies and published
-    nowhere -- rather than because a duplicate was noticed."""
+    nowhere -- rather than because a duplicate was noticed.
+
+    Twelve more come from #201: fenpropimorph under its systematic name and
+    67564-91-4, and as `fenpropimorph` under 67306-03-0, which the EF fixes
+    renumber onto one substance -- every compartment the two entries share."""
 
     def setUp(self):
         self.index = load_collision_rulings()
 
     def test_every_shipped_ruling_loads(self):
-        self.assertEqual(len(self.index), 56)
+        self.assertEqual(len(self.index), 68)
 
     def test_no_ruling_names_the_compartment_ef_calls_high_stacks(self):
         """EF 3.1's `Emissions to non-urban air or from high stacks` maps to
