@@ -30,7 +30,10 @@ in #361).  A record from before the field existed is resolved here through the
 same rules a build resolves with -- and so is a record whose field is present
 but empty, because the build itself could resolve no place for that row.  Only
 the former counts as a fallback, because only it goes away when the build is
-remade.  Rows the merge did not place are not decisions and are not read at
+remade.  The name is keyed twice where the two differ: as the merge recorded it,
+after enrichment, and as the published mapping keeps it from the vendor's file
+-- ``tert-Butylamine`` and ``t-Butylamine`` -- because the second is what a
+caller holding that file has (#376).  Rows the merge did not place are not decisions and are not read at
 all, whatever their columns carry.
 
 A key two rows disagree about **declines rather than arbitrates**, at every
@@ -264,6 +267,7 @@ class _NameIndex(NamedTuple):
 
     index: dict[tuple[str, str], tuple[RecordedDecision, ...]]
     resolved_without_recorded_context: int
+    shipped_name_context_keys: int
 
 
 class RecordedDecisions:
@@ -391,6 +395,10 @@ class RecordedDecisions:
         )
 
         index: dict[tuple[str, str], dict[tuple, RecordedDecision]] = {}
+        # Keys written under the merge's name and under a shipped name only,
+        # so the count of what the shipped names add is a fact about the walk.
+        merged_keys: set[tuple[str, str]] = set()
+        shipped_keys: set[tuple[str, str]] = set()
         connection = self._connect()
         try:
             placeholders = ", ".join("?" for _ in _MATCHED_OUTCOMES)
@@ -464,9 +472,19 @@ class RecordedDecisions:
                 rungs.append(f"dim:{dimension}")
             if iri:
                 rungs.append(iri)
-            for rung in rungs:
+            # `source_name` is the name the merge settled on, after
+            # enrichment; the published mapping keeps the one the vendor
+            # shipped, which is what a caller holding the vendor's file has
+            # (#376).  Both are keys for the one decision, at its own place.
+            shipped = {
+                normalize_mapping_text(d.source_flow_name) for d in linked
+            } - {key, ""}
+            for name_key, rung in (
+                (name_key, rung) for name_key in (key, *sorted(shipped)) for rung in rungs
+            ):
+                (merged_keys if name_key == key else shipped_keys).add((name_key, rung))
                 for quantity_decision in linked or [decision]:
-                    index.setdefault((key, rung), {})[
+                    index.setdefault((name_key, rung), {})[
                         (
                             quantity_decision.list_key,
                             quantity_decision.elementary_flow_id,
@@ -478,14 +496,24 @@ class RecordedDecisions:
             rung_key: tuple(decisions.values()) for rung_key, decisions in index.items()
         }
         unanimous, conflicted, _ = self._count_context_keys(built)
+        shipped_only = sum(
+            1
+            for _, rung in shipped_keys - merged_keys
+            if rung and not rung.startswith("dim:")
+        )
         logger.info(
             "lookup_recorded_name_index",
             rows=len(rows),
             context_keys=unanimous,
             conflicted_context_keys=conflicted,
+            shipped_name_context_keys=shipped_only,
             resolved_without_recorded_context=resolved_here,
         )
-        return _NameIndex(index=built, resolved_without_recorded_context=resolved_here)
+        return _NameIndex(
+            index=built,
+            resolved_without_recorded_context=resolved_here,
+            shipped_name_context_keys=shipped_only,
+        )
 
     @property
     def _by_name(self) -> dict[tuple[str, str], tuple[RecordedDecision, ...]]:
@@ -504,6 +532,17 @@ class RecordedDecisions:
         counted, because remaking the build would not change it.
         """
         return self._name_index.resolved_without_recorded_context
+
+    @property
+    def shipped_name_context_keys(self) -> int:
+        """How many ``(name, resolved context)`` keys only a shipped name reaches.
+
+        The keys written under the name the vendor shipped, from the published
+        mapping, where no recorded row's merged name is the same -- what a
+        caller holding the vendor's file can now be answered from and could
+        not before #376.
+        """
+        return self._name_index.shipped_name_context_keys
 
     @staticmethod
     def _count_context_keys(

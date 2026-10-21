@@ -544,6 +544,65 @@ class OneRowTwoDecisionsTestCase(_Fixture):
         )
 
 
+class TheVendorsNameReachesTheDecisionTestCase(_Fixture):
+    """A decision is found again under the name the vendor shipped (#376).
+
+    `merge_outcomes.source_name` is the name the merge settled on, after
+    enrichment: BAFU ships `t-Butylamine` and the merge records
+    `tert-Butylamine`.  The published mapping keeps the shipped name, and that
+    is the one a caller holding the vendor's inventory has -- so a row the
+    build placed by its number, asked again without it, found nothing.
+    """
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        super().setUpClass()
+        connection = sqlite3.connect(cls.db_path)
+        try:
+            connection.execute(
+                "INSERT INTO elementary_flow_sources (elementary_flow_uuid, list_name, "
+                "list_version, source_flow_uuid, source_flow_name) "
+                "VALUES ('ef-benzene-air', 'somelist', '1.0', 'vendor-tba', 't-Butylamine')"
+            )
+            connection.execute(
+                "INSERT INTO merge_outcomes (run_id, list_name, list_version, "
+                "source_uuid, outcome, source_name, source_context_json, "
+                "target_elementary_flow_id, basis, matching_method, detail_json) "
+                "VALUES ('merge-1', 'somelist', '1.0', 'vendor-tba', 'algorithm', "
+                "'tert-Butylamine', ?, 'ef-benzene-air', 'cas', 'algorithm', ?)",
+                (orjson.dumps(["their air"]).decode(),
+                 orjson.dumps({"source_context_iri": AIR}).decode()),
+            )
+            connection.commit()
+        finally:
+            connection.close()
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.matcher = FlowMatcher.from_results(self.db_path, recorded_by_name=True)
+
+    def test_the_shipped_name_answers_from_the_decision(self):
+        result = self.matcher.match(FlowQuery(name="t-Butylamine", context_iri=AIR))
+        self.assertEqual(result.tier, TIER_RECORDED_BY_NAME)
+        self.assertEqual(result.elementary_flow_id, "ef-benzene-air")
+        self.assertEqual(result.selector_details["recorded_source_name"], "t-Butylamine")
+
+    def test_the_merges_own_name_still_answers(self):
+        result = self.matcher.match(FlowQuery(name="tert-Butylamine", context_iri=AIR))
+        self.assertEqual(result.tier, TIER_RECORDED_BY_NAME)
+        self.assertEqual(result.elementary_flow_id, "ef-benzene-air")
+
+    def test_the_shipped_name_is_answered_only_where_the_row_was(self):
+        """The other half: the shipped name is a second key for one decision,
+        at that decision's place, not a name to be answered from anywhere."""
+        result = self.matcher.match(FlowQuery(name="t-Butylamine", context_iri=WATER))
+        self.assertEqual(result.tier, TIER_ALGORITHM)
+
+    def test_the_index_counts_the_keys_only_the_shipped_name_reaches(self):
+        decisions = RecordedDecisions(self.db_path)
+        self.assertEqual(decisions.shipped_name_context_keys, 1)
+
+
 class TheListKeyIsSplitOnTheLastNameTestCase(unittest.TestCase):
     """`bafu-2026-v1` is a list called `bafu` at version `2026-v1`, so a split on
     the first hyphen is the one that works and a split on the last is not."""
@@ -701,6 +760,31 @@ class AgainstARealBuildTestCase(unittest.TestCase):
         self.assertEqual(
             result.elementary_flow_id, "e2fb04b0-6555-11dd-ad8b-0800200c9a66"
         )
+
+    def test_a_row_placed_by_its_number_is_found_by_its_shipped_name(self):
+        """#376's row: BAFU's `t-Butylamine` in urban air reached
+        `tert-Butylamine` by 75-64-9, and an exchange that omits the number --
+        which BAFU's ecoSpold 1 export does, the number being on the exchange
+        rather than the flow -- has only the name the vendor wrote."""
+        matcher = FlowMatcher.from_results(CONSENSUS_DB_FILEPATH, recorded_by_name=True)
+        recorded = self.connection.execute(
+            "SELECT elementary_flow_uuid FROM elementary_flow_sources "
+            "WHERE list_name = 'bafu' AND source_flow_name = 't-Butylamine' "
+            "AND source_metadata_json LIKE '%\"high. pop.\"%'"
+        ).fetchall()
+        if len(recorded) != 1:
+            self.skipTest("this build does not merge BAFU's t-Butylamine in urban air")
+        result = matcher.match(
+            FlowQuery(
+                name="t-Butylamine",
+                context=["emissions to air", "high. pop."],
+                unit="kg",
+                simapro_origin=True,
+                source_label="bafu-2026-v1",
+            )
+        )
+        self.assertEqual(result.tier, TIER_RECORDED_BY_NAME)
+        self.assertEqual(result.elementary_flow_id, recorded[0][0])
 
     def test_the_lineage_settles_unqualified_carbon_dioxide(self):
         """#359's own example: `Carbon dioxide` in unspecified air is fossil to
