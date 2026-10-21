@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import logging
 import tempfile
+import dataclasses
 import unittest
 
 from dataclasses import replace
@@ -79,6 +80,16 @@ def _matcher_fixture() -> tuple[Path, Path]:
         _flow_object("fo-chlorobenzene", "Chlorobenzene", cas=("108-90-7",)),
         _flow_object("fo-water", "Water", cas=("7732-18-5",)),
         _flow_object("fo-noise", "Noise", alt_labels=("Sound",)),
+        # Mercury and its ion, tied the way `flow_layers.ions` ties them, for
+        # the counterparts an answer carries (#379).
+        _flow_object("fo-mercury", "Mercury", cas=("7439-97-6",)),
+        dataclasses.replace(
+            _flow_object("fo-mercury-ion", "Mercury(2+)", cas=("14302-87-5",)),
+            properties={"relationships": {
+                "parent_element_flow_object_id": "fo-mercury",
+                "relationship_type": "ion_of",
+            }},
+        ),
     ]
     elementary = [
         _elementary("ef-benzene-air", "fo-benzene", context_iri=AIR),
@@ -87,6 +98,9 @@ def _matcher_fixture() -> tuple[Path, Path]:
         _elementary("ef-chlorobenzene-rural", "fo-chlorobenzene", context_iri=RURAL),
         _elementary("ef-water-water", "fo-water", context_iri=WATER, unit="m3"),
         _elementary("ef-noise-air", "fo-noise", context_iri=AIR, unit="kg"),
+        _elementary("ef-mercury-air", "fo-mercury", context_iri=AIR),
+        _elementary("ef-mercury-ion-air", "fo-mercury-ion", context_iri=AIR),
+        _elementary("ef-mercury-ion-water", "fo-mercury-ion", context_iri=WATER),
     ]
     flows = [
         _flow(
@@ -668,6 +682,50 @@ class TheTwoCuratedHintsTestCase(_Matcher):
 
         self.assertEqual(land_object_id_or_empty("not/a/land/class"), "")
         self.assertTrue(land_object_id_or_empty("occupation/agriculture"))
+
+
+AIR_WORDS = ["Environmental", "Air"]
+WATER_WORDS = ["Environmental", "Water"]
+
+
+class TheCounterpartsTestCase(_Matcher):
+    """An answer names the flows of its element or ions in the same
+    compartment, read off the `ion_of` relation the build records (#379):
+    BAFU's `Mercury` lands on the metal and openLCA's `Mercury II` on the ion,
+    and either caller can now see the other's flow beside their own."""
+
+    def test_the_element_lists_its_ion_in_the_same_compartment(self):
+        answer = self.matcher.match(FlowQuery(name="Mercury", context=AIR_WORDS, cas="7439-97-6", unit="kg"))
+        self.assertEqual(answer.pref_label, "Mercury")
+        self.assertEqual(
+            [(c.relation, c.pref_label, c.elementary_flow_id) for c in answer.counterparts],
+            [("ion", "Mercury(2+)", "ef-mercury-ion-air")],
+        )
+
+    def test_the_ion_lists_its_element(self):
+        answer = self.matcher.match(FlowQuery(name="Mercury(2+)", context=AIR_WORDS, cas="14302-87-5", unit="kg"))
+        self.assertEqual(answer.pref_label, "Mercury(2+)")
+        self.assertEqual(
+            [(c.relation, c.pref_label, c.elementary_flow_id) for c in answer.counterparts],
+            [("element", "Mercury", "ef-mercury-air")],
+        )
+
+    def test_only_the_answers_own_compartment_is_listed(self):
+        """The ion has a flow in water; the metal does not, so the ion's water
+        answer names no counterpart rather than the metal's air flow."""
+        answer = self.matcher.match(FlowQuery(name="Mercury(2+)", context=WATER_WORDS, cas="14302-87-5", unit="kg"))
+        self.assertEqual(answer.pref_label, "Mercury(2+)")
+        self.assertEqual(answer.counterparts, ())
+
+    def test_a_substance_with_no_relation_carries_none(self):
+        answer = self.matcher.match(FlowQuery(name="Benzene", context=AIR_WORDS, cas="71-43-2", unit="kg"))
+        self.assertTrue(answer.matched)
+        self.assertEqual(answer.counterparts, ())
+
+    def test_an_unmatched_row_carries_none(self):
+        answer = self.matcher.match(FlowQuery(name="Unobtainium", context=AIR_WORDS, unit="kg"))
+        self.assertFalse(answer.matched)
+        self.assertEqual(answer.counterparts, ())
 
 
 class ItWritesNothingTestCase(_Matcher):

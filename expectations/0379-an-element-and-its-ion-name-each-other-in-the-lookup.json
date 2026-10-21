@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "description": "BAFU reports metal emissions as the element and the openLCA LCIA package as the ion, so BAFU's `Mercury` lands on `Mercury` and the package's `Mercury II` on `Mercury(2+)`, and the lookup answer said nothing about the other (#379). The answer now carries `counterparts`: the flows of the substance's ions, or of its element and sibling ions, in the same compartment, each with its factor count, read off the `ion_of` relation `flow_layers.ions` records on every ion substance it tied to its element. That is a property of the lookup, held by tests/test_lookup_matcher.py; what a build can be asked is that the two flows the page's example names exist, one each.",
+  "expectations": [
+    {
+      "id": "0379-mercury-ion-in-air-is-one-flow",
+      "issue": 379,
+      "title": "`Mercury(2+)` to air, unspecified is one active flow, which the other's lookup answer names as its counterpart",
+      "subject": {
+        "kind": "flow",
+        "name": "Mercury(2+)",
+        "context_display": "Environmental → Air → Unknown"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1
+      },
+      "comment": "The worked example on the lookup page: BAFU's `Mercury` lands on the metal and openLCA's `Mercury II` on the ion, and each answer's `counterparts` names the other flow in this compartment, read off the `ion_of` relation the ions layer records on `Mercury(2+)`. Held so the example stays a flow that exists; on the build of 21 October 2026 (commit 931ed30) it was 653d74e8-d259-4d3d-81b3-4f47c391fd51 with 6 factors."
+    },
+    {
+      "id": "0379-mercury-in-air-is-one-flow",
+      "issue": 379,
+      "title": "`Mercury` to air, unspecified is one active flow, which the other's lookup answer names as its counterpart",
+      "subject": {
+        "kind": "flow",
+        "name": "Mercury",
+        "context_display": "Environmental → Air → Unknown"
+      },
+      "expect": {
+        "exists": true,
+        "count": 1
+      },
+      "comment": "The worked example on the lookup page: BAFU's `Mercury` lands on the metal and openLCA's `Mercury II` on the ion, and each answer's `counterparts` names the other flow in this compartment, read off the `ion_of` relation the ions layer records on `Mercury(2+)`. Held so the example stays a flow that exists; on the build of 21 October 2026 (commit 931ed30) it was fe0acd60-3ddc-11dd-a8c4-0050c2490048 with 6 factors."
+    }
+  ]
+}

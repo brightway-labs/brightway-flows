@@ -72,6 +72,8 @@ from brightway_flows.lookup.curated_names import (
     material_for_name,
 )
 from brightway_flows.lookup.index import (
+    CounterpartIndex,
+    load_counterpart_index,
     BuildStamp,
     load_lookup_index,
     lookup_source_list,
@@ -121,6 +123,27 @@ class CandidateFlowObject:
     name: str
     #: `cas`, `ec`, `label` -- which lookups reached this object.
     basis_hits: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class Counterpart:
+    """A flow of the matched substance's element or ion in the same compartment.
+
+    What a caller bridging two lists needs to see when BAFU's `Mercury` lands
+    on the metal and openLCA's `Mercury II` on `Mercury(2+)`: that the other
+    exists in this compartment, under which identifier, and whether it carries
+    factors (#379).  Read off the `ion_of` relation the build records on every
+    ion substance it tied to its element; nothing is recorded per pair.
+    """
+
+    elementary_flow_id: str
+    flow_object_id: str
+    pref_label: str
+    #: `ion` for an ion of the matched element, `element` for the element of
+    #: the matched ion, `sibling-ion` for another ion of that same element.
+    relation: str
+    unit: str = ""
+    lcia_factor_count: int = 0
 
 
 @dataclass(frozen=True)
@@ -175,6 +198,11 @@ class FlowMatch:
     unit_conversion_factor: float | None = None
     #: Set when the row matched too much: every substance it could have been.
     candidates: tuple[CandidateFlowObject, ...] = ()
+    #: For a match: the flows of the substance's element or ions in the same
+    #: compartment, so a caller holding the element can see the ion that the
+    #: other list reaches and whether it is characterised (#379).  Empty for a
+    #: substance the build relates to no element or ion.
+    counterparts: tuple[Counterpart, ...] = ()
     #: Which build answered.  A match expires with it.
     build: BuildStamp | None = None
 
@@ -216,7 +244,9 @@ class FlowMatcher:
         db_path: Path,
         enrichment: OfflineEnrichment,
         recorded_by_name: bool = False,
+        counterparts: CounterpartIndex | None = None,
     ) -> None:
+        self._counterparts = counterparts or CounterpartIndex()
         self._plain = indexes
         self._simapro = replace(indexes, source=lookup_source_list(simapro_origin=True))
         self._elementary_by_object = elementary_by_object
@@ -270,6 +300,7 @@ class FlowMatcher:
             db_path=resolved,
             enrichment=OfflineEnrichment.build(chebi=chebi),
             recorded_by_name=recorded_by_name,
+            counterparts=load_counterpart_index(resolved),
         )
 
     @property
@@ -335,7 +366,7 @@ class FlowMatcher:
         ]
         if all(answer is not None for answer in recorded):
             return [
-                _reporting_preparation(answer, item, query)
+                self._with_counterparts(_reporting_preparation(answer, item, query))
                 for item, answer, query in zip(prepared, recorded, original)
                 if answer is not None
             ]
@@ -352,17 +383,63 @@ class FlowMatcher:
             # two rows name different lists.
             self._enrichment.run_all(flows, source=self._plain.source)
         return [
-            _reporting_preparation(
+            self._with_counterparts(_reporting_preparation(
                 answer
                 if answer is not None
                 else self._match_one(item.query, flow=flow, context=context),
                 item,
                 query,
-            )
+            ))
             for item, flow, context, answer, query in zip(
                 prepared, flows, contexts, recorded, original
             )
         ]
+
+    def _with_counterparts(self, answer: FlowMatch) -> FlowMatch:
+        """*answer* with the flows of its element or ions in its compartment.
+
+        Read off the `ion_of` relation (#379).  An element's counterparts are
+        its ions; an ion's are its element and the other ions of that element.
+        Only flows in the answer's own compartment are listed -- the question
+        is whether the row the *other* list holds lands beside this one -- and
+        each says how many factors it carries, which is what tells a caller
+        holding BAFU's `Iron` to groundwater that the characterised flow is
+        `Iron, ion`.
+        """
+        if not answer.matched or not answer.flow_object_id or not answer.context_iri:
+            return answer
+        relations = self._counterparts
+        related: list[tuple[str, str]] = []
+        element = relations.element_of_ion.get(answer.flow_object_id)
+        if element:
+            related.append((element, "element"))
+            related += [
+                (ion, "sibling-ion")
+                for ion in relations.ions_of_element.get(element, ())
+                if ion != answer.flow_object_id
+            ]
+        else:
+            related += [
+                (ion, "ion")
+                for ion in relations.ions_of_element.get(answer.flow_object_id, ())
+            ]
+        found: list[Counterpart] = []
+        for flow_object_id, relation in related:
+            for flow in self._elementary_by_object.get(flow_object_id, []):
+                if flow.context_iri != answer.context_iri:
+                    continue
+                found.append(Counterpart(
+                    elementary_flow_id=flow.elementary_flow_id,
+                    flow_object_id=flow_object_id,
+                    pref_label=self._plain.flow_object_label_by_id.get(flow_object_id, ""),
+                    relation=relation,
+                    unit=flow.unit,
+                    lcia_factor_count=relations.factor_counts.get(flow.elementary_flow_id, 0),
+                ))
+        if not found:
+            return answer
+        found.sort(key=lambda item: (item.relation != "element", item.pref_label, item.elementary_flow_id))
+        return replace(answer, counterparts=tuple(found))
 
     # ── tier one ─────────────────────────────────────────────────────────────
 

@@ -77,10 +77,13 @@ from __future__ import annotations
 from brightway_flows.lookup.index import (
     BuildStamp,
     UnusableBuildError,
+    CounterpartIndex,
+    load_counterpart_index,
     load_lookup_index,
     lookup_source_list,
 )
 from brightway_flows.lookup.matcher import (
+    Counterpart,
     TIER_ALGORITHM,
     TIER_RECORDED,
     TIER_RECORDED_BY_NAME,
@@ -97,11 +100,14 @@ __all__ = [
     "TIER_RECORDED_BY_NAME",
     "BuildStamp",
     "CandidateFlowObject",
+    "Counterpart",
     "FlowMatch",
     "FlowMatcher",
     "FlowQuery",
     "RecordedDecision",
     "UnusableBuildError",
+    "CounterpartIndex",
+    "load_counterpart_index",
     "load_lookup_index",
     "lookup_source_list",
 ]

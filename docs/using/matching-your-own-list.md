@@ -113,6 +113,21 @@ a name that states an ion beside the bare metal's registry number — openLCA's
 number it was not believed on named in `basis_value`
 ([#380](https://github.com/brightway-labs/brightway-flows/issues/380)).
 
+When the substance is an element or one of its ions, `counterparts` lists the
+flows of its ions, or of its element and sibling ions, in the same
+compartment, each with its identifier, label, unit and how many
+characterisation factors it carries. BAFU reports metals as the element and
+the openLCA LCIA package reports them as the ion, so BAFU's `Mercury` to air
+lands on `Mercury` and the package's `Mercury II` on `Mercury(2+)`, and
+neither row's answer used to say the other flow existed
+([#379](https://github.com/brightway-labs/brightway-flows/issues/379)). Now
+the first answer carries `Mercury(2+)` in air as its `ion` counterpart and the
+second carries `Mercury` as its `element`; on the build of 21 October 2026
+each says the other carries six factors. The relation is the `ion_of` link
+the build records on every ion substance it tied to its element — the same
+one the element page of the web app draws — read, not recorded again, and a
+substance with no such link carries none.
+
 When it did not, `selector_reason` says why, and `candidates` names every
 substance the row could have been, with what each is called. That is what a
 `multiple-flow-object-candidates` answer is for. A row carrying 7732-18-5 and a

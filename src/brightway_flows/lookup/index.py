@@ -48,7 +48,8 @@ from __future__ import annotations
 
 import sqlite3
 
-from dataclasses import dataclass
+from collections.abc import Mapping
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -366,6 +367,69 @@ def _read_build_stamp(
         merged_lists=merged,
         flow_object_count=flow_object_count,
         elementary_flow_count=elementary_flow_count,
+    )
+
+
+@dataclass(frozen=True)
+class CounterpartIndex:
+    """The element/ion relation the build records, read for the answer (#379).
+
+    `flow_layers.ions` writes ``properties.relationships`` on every ion
+    substance it could tie to its element -- ``relationship_type = "ion_of"``
+    beside the element's ``parent_element_flow_object_id`` -- and the web
+    app's element page already reads it.  Nothing is recorded here; the two
+    maps below are that one relation read both ways, so a lookup that lands
+    BAFU's `Mercury` on the metal can say that `Mercury(2+)` has a flow in the
+    same compartment, and the other way round for openLCA's `Mercury II`.
+
+    ``factor_counts`` is `elementary_flows.lcia_factor_count` for every active
+    flow, so the answer can say whether a counterpart carries factors: the
+    question #379 was asked about is an element flow with none beside an ion
+    flow with twelve.
+    """
+
+    element_of_ion: Mapping[str, str] = field(default_factory=dict)
+    ions_of_element: Mapping[str, tuple[str, ...]] = field(default_factory=dict)
+    factor_counts: Mapping[str, int] = field(default_factory=dict)
+
+
+def load_counterpart_index(db_path: Path) -> CounterpartIndex:
+    """Read the `ion_of` relation and the factor counts out of a build.
+
+    Two small reads, ``mode=ro`` like :func:`load_lookup_index`: the
+    relationships of the flow objects that carry one, and the factor count of
+    every active flow.  A build older than the ions layer's relationship
+    record has no ``ion_of`` rows and gets an empty index, which answers with
+    no counterparts rather than failing.
+    """
+    connection = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+    try:
+        element_of_ion: dict[str, str] = {}
+        ions: dict[str, list[str]] = {}
+        for flow_object_id, properties_json in connection.execute(
+            "SELECT flow_object_id, properties_json FROM flow_objects "
+            "WHERE properties_json LIKE '%\"ion_of\"%' ORDER BY rowid"
+        ):
+            properties = orjson.loads(properties_json) if properties_json else {}
+            relationships = properties.get("relationships") or {}
+            element = str(relationships.get("parent_element_flow_object_id") or "")
+            if relationships.get("relationship_type") != "ion_of" or not element:
+                continue
+            element_of_ion[str(flow_object_id)] = element
+            ions.setdefault(element, []).append(str(flow_object_id))
+        factor_counts = {
+            str(uuid): int(count or 0)
+            for uuid, count in connection.execute(
+                "SELECT uuid, lcia_factor_count FROM elementary_flows "
+                "WHERE is_deprecated = 0"
+            )
+        }
+    finally:
+        connection.close()
+    return CounterpartIndex(
+        element_of_ion=element_of_ion,
+        ions_of_element={element: tuple(members) for element, members in ions.items()},
+        factor_counts=factor_counts,
     )
 
 
