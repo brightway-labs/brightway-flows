@@ -801,6 +801,20 @@
       "field": "cas_numbers",
       "remove_value": "7440-50-8",
       "comment": "BAFU ships `Copper ion` on three rows -- emissions to air `high. pop.`, emissions to air `unspecified` and emissions to water `unspecified` -- and this one, the `high. pop.` row, is the only one that carries a registry number: 7440-50-8, which is copper the *metal*. The name says ion and the number says metal, and the name is the half that is right: BAFU ships plain `Copper` under 7440-50-8 in this very compartment, so read as the metal this row is a second BAFU name for a substance BAFU already lists once, which no vendor does on purpose. The other two `Copper ion` rows carry no number and land on `Copper, Ion`, the ion of unstated charge that ecoinvent's fourteen numberless `Copper ion` rows also reach; this row landed on `Copper` beside BAFU's own `Copper` row, so one BAFU name was two substances depending on the subcompartment, and the row whose name is most explicit about being an ion was the one published as the metal.\n\nRemoved rather than replaced, unlike #146's five `X II` rows, because the name states no charge to write a number for: `Copper ion` is the generic ion, the spelling ecoinvent deleted the number from on purpose (merge/species.py), and picking a charge here would be the reinterpretation that rule refuses. With the number gone the row is looked up by its name like its two siblings and joins them. Read off BAFU's own archive: all 38 exchanges naming this row write 7440-50-8, the one `unspecified` air exchange and the ten `unspecified` water exchanges write nothing -- so this is BAFU stating the metal's number consistently on one ion row, not a stray exchange, and it is worth reporting to them. Matched on the uuid because the name names two other rows that are already right. (#183)"
+    },
+    {
+      "match": {
+        "name": "Fenpropimorph",
+        "cas_numbers": "67306-03-0"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "67306-03-0"
+      ],
+      "new_value": [
+        "67564-91-4"
+      ],
+      "comment": "BAFU ships its one `Fenpropimorph` row, agricultural soil, under 67306-03-0. 67306-03-0 is fenpropimorph with its stereochemistry unstated -- 4-[3-[4-(1,1-dimethylethyl)phenyl]-2-methylpropyl]-2,6-dimethylmorpholine, the Merck Index's parent entry -- and 67564-91-4 is the cis form, (+/-)-cis-4-[3-(4-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine: the morpholine ring's two methyls on one side, the (2R,6S) arrangement, with the side chain's third stereocentre left racemic. The fungicide sold as an active ingredient (Corbel, Mistral) is the cis form, so in an inventory the two numbers describe one substance, and 67564-91-4 is the one suppliers and the JRC use; the older number turns up in older sources and LCA databases. EF 3.1 put that number on a second, uncharacterised copy of the substance, and on the five-list build of `main` at 3f827d6 (21 October 2026) this row reached it on `basis=cas` -- `08a91e70-3ddc-11dd-93c1-0050c2490048`, no factors -- while the characterised flow in the same compartment carries four. EF's copy is renumbered in `ef-3.1-manual-fixes.json` and joined onto the characterised entry; this row is renumbered with it, as ecoinvent 3.8's is, so it follows the current number there. The EC number it was enriched with, 266-639-4, is the older number's and is read again from the new one. (#201)"
     }
   ]
 }

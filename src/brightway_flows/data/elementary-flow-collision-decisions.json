@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Rulings that two live flows sharing a flow object, a context and a unit are one flow. Keyed on that triple -- the same key `pipeline/collisions.py` gives the `elementary-flow-collision` queue item -- so a decision survives the next build and does not have to be rewritten when the source list publishes the same duplication again.\n\nA ruling names its survivor. Deduplication would sort for one, by factor count and then by identifier, and the queue reports that same sort as `deduplication_would_keep`; a sort is not a decision, and where the two rows differ in what they carry -- one holds the characterisation, the other holds the identifier a source list maps onto -- the choice has to be made rather than fallen into.\n\nThirty-three of the rulings here are one substance EF 3.1 published twice in one context, once under a chemical name and once under an industry designation or a second spelling, and in eight of the nine it is this project's own identification (#19, #35) that put the two rows on one flow object: supplying the number one of the two rows was missing is what made the duplication visible. The factor sets are nested in every case, so no ruling here loses a factor -- but they are not all decided by the factors. In twenty-eight the survivor is simply the row that holds the characterisation, and the merge gives one to a row that had none. The five carbon tetrachloride rulings are the case the paragraph above describes and this file had not yet met (#105): the two sets are equal, so the sort falls through to the identifier and picks the row carrying no registry number, no EC number and no synonyms, which is also the row no other list maps onto. What decides instead is that ecoinvent 3.8 and 3.12 both reach the `CFC-10` rows, in every one of the five contexts, and nothing at all reaches the rows EF ships bare. What is *not* here is as deliberate: a collision whose two rows may be two substances gets no ruling, and stays two flows. `Nitrogen, organic bound` against `dinitrogen` was that case in four water contexts, and it is the one that shows why refusing to rule is not the same as settling it: the two rows went on sharing a flow object, so the organic-bound rows were still published under nitrogen gas's name and structure. What settled it was taking the registry number off them at source, in `ef-3.1-manual-fixes.json` and each ecoinvent fixes file, which removes the four collisions rather than ruling on them (#57).\n\nThe other four are the renewable energy resources (#73), and they are a different case in two ways. Neither row carries an identifier of any kind, so nothing this project could supply would have put the pair on one flow object: a curated merge group in `flow-object-overrides.json` does that, and without it these rulings apply to nothing. And neither row carries a characterisation factor, so the survivor cannot be chosen by what it holds. It is chosen by what other lists use -- ecoinvent 3.8, ecoinvent 3.12 and BAFU all publish the `converted` name and their correspondence tables map onto that row, while the legacy `primary energy from ...` name is carried by EF alone. That is a weaker kind of evidence than a factor set, and it is why the reasoning is written on each ruling rather than left to the pattern.\n\nOnly `merge` is understood. A collision judged to be two distinct flows needs no entry: that is what the pipeline already does.\n\nThirteen more rulings, and seven corrections, come from #106. Nine of the thirteen are the carbon tetrachloride case again -- hexafluoroethane as `HFC-116` against `PFC-116` in four air compartments, 1,1,1-trichloroethane as `HCFC-140` against `Methyl chloroform` in four, and beryllium and thallium each published twice under their own name in one. In all nine the factor sets tie, so deduplication's sort would decide on the identifier, and in three of them it would keep the row carrying no EC number, no synonyms and no incoming mapping.\n\nThe corrections are a different kind of thing and worth reading before writing another ruling. Seven rulings named the context `envi-air-hist15me`, and the flows they name are not in it. EF 3.1 calls one compartment `Emissions to non-urban air or from high stacks` and the project maps that whole phrase to rural medium stack under 150 metres, so a ruling written from the second half of EF's own name for the compartment keys on a collision that does not exist and applies to nothing. Four of the seven were collapsed anyway, by deduplication, because their rows happened to agree on every field; three were not, and they are the three #106 reports as compartments the earlier decisions missed. `apply_collision_rulings` now tells a ruling that names a compartment its flows are not in from one whose collision is simply outside a bounded run, and says which it is.\n\nWhat is still not here is two pairs that look exactly like the nine and are not duplicates. Borate against borax is repaired at source instead, by taking borax's registry number off the rows EF names `Borate`, because the two are an ion and a salt of it. Water against water from evapotranspiration stays two flows because EF split them deliberately and says so on the row.\n\nEight more come from #185, and they are the first rulings written because a *source row* could not be placed rather than because a duplicate was noticed. EF 3.1 ships two hydrofluoroethers twice in each of four air compartments, once under the chemical name and once under the industry designation, with the same registry number on both: trifluoromethoxymethane as `Methyl trifluoromethyl ether` and `HFE-143a`, and 1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane as `HFE-569sf2` and `n-HFE-7200`. Stepwise 2006 has a row for each, and on the four-list build of 29 August 2026 they were the only two unplaced rows in 22,005: a standing collision is exactly what a row cannot be placed onto, so both were tied and published nowhere, and each list's row for those substances would have failed the same way. The first four are decided by the factor, as twenty-eight of the rulings above are. The second four are the carbon tetrachloride case again -- 60.7 on both sides -- and are decided by what the rows carry: twelve synonyms, EF's ILCD note and eleven contexts against a bare row with four.",
+  "description": "Rulings that two live flows sharing a flow object, a context and a unit are one flow. Keyed on that triple -- the same key `pipeline/collisions.py` gives the `elementary-flow-collision` queue item -- so a decision survives the next build and does not have to be rewritten when the source list publishes the same duplication again.\n\nA ruling names its survivor. Deduplication would sort for one, by factor count and then by identifier, and the queue reports that same sort as `deduplication_would_keep`; a sort is not a decision, and where the two rows differ in what they carry -- one holds the characterisation, the other holds the identifier a source list maps onto -- the choice has to be made rather than fallen into.\n\nThirty-three of the rulings here are one substance EF 3.1 published twice in one context, once under a chemical name and once under an industry designation or a second spelling, and in eight of the nine it is this project's own identification (#19, #35) that put the two rows on one flow object: supplying the number one of the two rows was missing is what made the duplication visible. The factor sets are nested in every case, so no ruling here loses a factor -- but they are not all decided by the factors. In twenty-eight the survivor is simply the row that holds the characterisation, and the merge gives one to a row that had none. The five carbon tetrachloride rulings are the case the paragraph above describes and this file had not yet met (#105): the two sets are equal, so the sort falls through to the identifier and picks the row carrying no registry number, no EC number and no synonyms, which is also the row no other list maps onto. What decides instead is that ecoinvent 3.8 and 3.12 both reach the `CFC-10` rows, in every one of the five contexts, and nothing at all reaches the rows EF ships bare. What is *not* here is as deliberate: a collision whose two rows may be two substances gets no ruling, and stays two flows. `Nitrogen, organic bound` against `dinitrogen` was that case in four water contexts, and it is the one that shows why refusing to rule is not the same as settling it: the two rows went on sharing a flow object, so the organic-bound rows were still published under nitrogen gas's name and structure. What settled it was taking the registry number off them at source, in `ef-3.1-manual-fixes.json` and each ecoinvent fixes file, which removes the four collisions rather than ruling on them (#57).\n\nThe other four are the renewable energy resources (#73), and they are a different case in two ways. Neither row carries an identifier of any kind, so nothing this project could supply would have put the pair on one flow object: a curated merge group in `flow-object-overrides.json` does that, and without it these rulings apply to nothing. And neither row carries a characterisation factor, so the survivor cannot be chosen by what it holds. It is chosen by what other lists use -- ecoinvent 3.8, ecoinvent 3.12 and BAFU all publish the `converted` name and their correspondence tables map onto that row, while the legacy `primary energy from ...` name is carried by EF alone. That is a weaker kind of evidence than a factor set, and it is why the reasoning is written on each ruling rather than left to the pattern.\n\nOnly `merge` is understood. A collision judged to be two distinct flows needs no entry: that is what the pipeline already does.\n\nThirteen more rulings, and seven corrections, come from #106. Nine of the thirteen are the carbon tetrachloride case again -- hexafluoroethane as `HFC-116` against `PFC-116` in four air compartments, 1,1,1-trichloroethane as `HCFC-140` against `Methyl chloroform` in four, and beryllium and thallium each published twice under their own name in one. In all nine the factor sets tie, so deduplication's sort would decide on the identifier, and in three of them it would keep the row carrying no EC number, no synonyms and no incoming mapping.\n\nThe corrections are a different kind of thing and worth reading before writing another ruling. Seven rulings named the context `envi-air-hist15me`, and the flows they name are not in it. EF 3.1 calls one compartment `Emissions to non-urban air or from high stacks` and the project maps that whole phrase to rural medium stack under 150 metres, so a ruling written from the second half of EF's own name for the compartment keys on a collision that does not exist and applies to nothing. Four of the seven were collapsed anyway, by deduplication, because their rows happened to agree on every field; three were not, and they are the three #106 reports as compartments the earlier decisions missed. `apply_collision_rulings` now tells a ruling that names a compartment its flows are not in from one whose collision is simply outside a bounded run, and says which it is.\n\nWhat is still not here is two pairs that look exactly like the nine and are not duplicates. Borate against borax is repaired at source instead, by taking borax's registry number off the rows EF names `Borate`, because the two are an ion and a salt of it. Water against water from evapotranspiration stays two flows because EF split them deliberately and says so on the row.\n\nEight more come from #185, and they are the first rulings written because a *source row* could not be placed rather than because a duplicate was noticed. EF 3.1 ships two hydrofluoroethers twice in each of four air compartments, once under the chemical name and once under the industry designation, with the same registry number on both: trifluoromethoxymethane as `Methyl trifluoromethyl ether` and `HFE-143a`, and 1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane as `HFE-569sf2` and `n-HFE-7200`. Stepwise 2006 has a row for each, and on the four-list build of 29 August 2026 they were the only two unplaced rows in 22,005: a standing collision is exactly what a row cannot be placed onto, so both were tied and published nowhere, and each list's row for those substances would have failed the same way. The first four are decided by the factor, as twenty-eight of the rulings above are. The second four are the carbon tetrachloride case again -- 60.7 on both sides -- and are decided by what the rows carry: twelve synonyms, EF's ILCD note and eleven contexts against a bare row with four.\n\nTwelve more come from #201, and they are #130's first decision taken: EF 3.1 publishes fenpropimorph twice, under its systematic name with 67564-91-4, the cis form the fungicide is sold as, and as `fenpropimorph` with 67306-03-0, the same skeleton with its stereochemistry unstated. `ef-3.1-manual-fixes.json` gives the second entry the current number, which puts both on one flow object in the twelve compartments they share. Ten are decided by the factor -- four on the systematic row, none on the other, measured on the build of 3f827d6 -- and the two long-term compartments, where EF characterises neither, by what the rows carry: the EC number, the name the substance is published under, and the twelve siblings that survive beside them.",
   "decisions": [
     {
       "flow_object_id": "fo-f3ac0f842abf5525",
@@ -841,6 +841,186 @@
         "n-HFE-7200"
       ],
       "comment": "Unspecified air, kilograms. EF 3.1 publishes 1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane twice here, both rows in kilograms, both carrying 163702-05-4 and both carrying Climate change 60.7: as `n-HFE-7200`, with no synonyms and four air contexts and nothing else; and as `HFE-569sf2`, with twelve synonyms -- `1-ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane`, `HFE-7200`, `Ethyl Nonafluorobutyl Ether`, `Ether, nonafluorobutane ethyl-` -- EF's ILCD note, and eleven contexts across air, soil and water. PubChem's CID 206000 is 163702-05-4 and lists `HFE-7200`, `NOVEC HFE 7200` and `HFE-569sf2 (7200)` among its synonyms, so the designation and the IPCC code are two names for one substance.\n\nThe factor sets are equal, which makes this the carbon tetrachloride case (#105) rather than the ordinary one: deduplication's sort would fall through to the identifier and decide nothing about the chemistry. What decides is what the rows carry and what reaches them. `HFE-569sf2` survives: it holds the registry number's whole synonym set and EF's note, it is the row EF publishes in soil and water as well as air, and one of its synonyms -- `Ether, nonafluorobutane ethyl-` -- is the head of Stepwise 2006's own name for the row this ruling unblocks. `n-HFE-7200` carries the same number and the same factor and nothing else.\n\nWhat is not settled here is EF's separate `HFE-7200` row, which carries 163702-06-5 and no factor. PubChem's CID 205999 is that number and it is ethyl perfluoroisobutyl ether -- a different molecule, the branched isomer -- so that row and `i-HFE-7200` are #19's question and not this one.\n\nUntil this ruling the collision stood: Stepwise 2006's `Ether, nonafluorobutane ethyl-, HFE569sf2 (HFE-7200)` was tied between the two rows (`tied-elementary-candidates`) and published nowhere, on the four-list build of 29 August 2026 one of only two unplaced rows in 22,005. (#185)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-aicrhe",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "d2e841d1-9017-4963-94e1-9b097ab839d8",
+      "merged_elementary_flow_ids": [
+        "3e4d77b8-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in air at aircraft cruise height: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. The systematic row survives because it holds the factors: four on the build of 3f827d6, against none. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "a5c66ed4-b43b-4699-a4c9-3f75a3cd06b6",
+      "merged_elementary_flow_ids": [
+        "3e4d9e90-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in urban air close to ground: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. The systematic row survives because it holds the factors: four on the build of 3f827d6, against none. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "6d0476f1-d563-4b27-b904-6227450446ae",
+      "merged_elementary_flow_ids": [
+        "3e4d77b7-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in long-term air: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. Neither row carries a factor here, so the survivor is the row whose entry carries EC 266-719-9 and survives in every other compartment, so the substance is not split by compartment over which of two empty rows was kept. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "ee348e6f-c9e8-441f-a39b-6be61c4546e5",
+      "merged_elementary_flow_ids": [
+        "3e4d77b9-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in non-urban air or from high stacks: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. The systematic row survives because it holds the factors: four on the build of 3f827d6, against none. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "05e8247a-bce2-4944-ab2d-30e5d3b82d13",
+      "merged_elementary_flow_ids": [
+        "3e4d77b6-6556-11dd-ad8b-0800200c9a66"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in unspecified air: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. The systematic row survives because it holds the factors: four on the build of 3f827d6, against none. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "75e0992d-54b5-4d5a-84c7-0a5b9d10685c",
+      "merged_elementary_flow_ids": [
+        "08a91e70-3ddc-11dd-93c1-0050c2490048"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in agricultural soil: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. The systematic row survives because it holds the factors: four on the build of 3f827d6, against none. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-noag",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "30b6493a-1c3c-40f7-8db7-4ebcbed0c150",
+      "merged_elementary_flow_ids": [
+        "fe0acd60-3ddc-11dd-a4af-0050c2490048"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in non-agricultural soil: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. The systematic row survives because it holds the factors: four on the build of 3f827d6, against none. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "cfa1da15-9cdd-4c47-af4d-cacd233455de",
+      "merged_elementary_flow_ids": [
+        "fe0acd60-3ddc-11dd-a4ab-0050c2490048"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in unspecified soil: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. The systematic row survives because it holds the factors: four on the build of 3f827d6, against none. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lote",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "63703b40-bab1-4276-a8d8-db24f59d3f33",
+      "merged_elementary_flow_ids": [
+        "fe0acd60-3ddc-11dd-a4ad-0050c2490048"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in long-term water: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. Neither row carries a factor here, so the survivor is the row whose entry carries EC 266-719-9 and survives in every other compartment, so the substance is not split by compartment over which of two empty rows was kept. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "537335bf-e8df-4065-9b0d-718d1dd87952",
+      "merged_elementary_flow_ids": [
+        "fe0acd60-3ddc-11dd-a4b0-0050c2490048"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in sea water: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. The systematic row survives because it holds the factors: four on the build of 3f827d6, against none. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "0dda29fa-2144-4748-a235-2187207dc1e6",
+      "merged_elementary_flow_ids": [
+        "fe0acd60-3ddc-11dd-a4ac-0050c2490048"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in fresh water: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. The systematic row survives because it holds the factors: four on the build of 3f827d6, against none. (#201)"
+    },
+    {
+      "flow_object_id": "fo-0a775037c8a2bc7a",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unkn",
+      "unit": "kg",
+      "decision": "merge",
+      "survivor_elementary_flow_id": "77161647-ec8f-44bd-9bae-ad865755d790",
+      "merged_elementary_flow_ids": [
+        "fe0acd60-3ddc-11dd-a4ae-0050c2490048"
+      ],
+      "names": [
+        "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine",
+        "fenpropimorph"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice in unspecified water: as `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4, and as `fenpropimorph` under 67306-03-0, the same skeleton with its stereochemistry unstated. The second row's number is rewritten to the first's in `ef-3.1-manual-fixes.json`, which is what makes this a collision. The systematic row survives because it holds the factors: four on the build of 3f827d6, against none. (#201)"
     }
   ]
 }

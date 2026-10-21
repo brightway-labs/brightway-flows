@@ -634,6 +634,20 @@
       "new_value": "m3",
       "conversion_factor": 0.001,
       "comment": "`Waste water` released by the kilogram to `Emissions to water`, rebased to cubic metres at fresh water's 1,000 kg per cubic metre: 0.001 m3 per kg, the factor #352 gave the water intakes of the same shape. The row reaches the `Waste water` flow, which this list publishes in cubic metres and which is created by the merge rather than taken from EF 3.1; a curated target in `agribalyse-3.2-match-overrides.json` can only name an EF 3.1 flow, and one naming a created flow leaves the row unmatched (`prepared-target-not-found`, found on a bounded build for #370). Rebasing the row's own unit is the other place a factor can be stated, as `bafu-2026-v1-manual-fixes.json` does for standing wood, and the mapping back to this row still states `kg` with the factor beside it. On the first five-list full build (2 September 2026, `944b274`) the row reached the same flow with no factor, so its kilograms were published as cubic metres. (#370)"
+    },
+    {
+      "match": {
+        "name": "Fenpropimorph",
+        "cas_numbers": "67306-03-0"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "67306-03-0"
+      ],
+      "new_value": [
+        "67564-91-4"
+      ],
+      "comment": "AGRIBALYSE ships five `Fenpropimorph` rows -- rural air, soil, agricultural soil, forestry soil and river water -- under 67306-03-0. 67306-03-0 is fenpropimorph with its stereochemistry unstated -- 4-[3-[4-(1,1-dimethylethyl)phenyl]-2-methylpropyl]-2,6-dimethylmorpholine, the Merck Index's parent entry -- and 67564-91-4 is the cis form, (+/-)-cis-4-[3-(4-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine: the morpholine ring's two methyls on one side, the (2R,6S) arrangement, with the side chain's third stereocentre left racemic. The fungicide sold as an active ingredient (Corbel, Mistral) is the cis form, so in an inventory the two numbers describe one substance, and 67564-91-4 is the one suppliers and the JRC use; the older number turns up in older sources and LCA databases. EF 3.1 put that number on a second, uncharacterised copy of the substance, and on the five-list build of `main` at 3f827d6 (21 October 2026) these rows reached it on `basis=cas`, three onto EF's stub flows and two onto flows the merge minted for the stub in forestry soil and river water, none with a factor. EF's copy is renumbered in `ef-3.1-manual-fixes.json` and joined onto the characterised entry; these rows are renumbered with it, as ecoinvent 3.8's row is, so they follow the current number there. (#201)"
     }
   ]
 }

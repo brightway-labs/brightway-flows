@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 publishes fenpropimorph twice. Thirteen rows carry its systematic name, 67564-91-4 and EC 266-719-9, and eleven of them are characterised; twelve rows named `fenpropimorph` carry 67306-03-0, no EC number and no factor at all. Two numbers looked like two substances, so on the five-list build of `main` at 3f827d6 (run 20261021T1801397624190000) the list published two substances called `Fenpropimorph`: 14 flows with factors, and 14 without. BAFU's one row and AGRIBALYSE's five carry the older number, and every one of them reached the copy with no factors -- three onto EF's stub flows, two onto flows the merge minted for the stub -- while ecoinvent's rows reached the characterised copy.\n\nThe two numbers are one fungicide. 67306-03-0 is fenpropimorph with its stereochemistry unstated, the Merck Index's parent entry; 67564-91-4 is the cis form, the two ring methyls on one side with the side chain's stereocentre left racemic, which is the active ingredient as sold. 67564-91-4 is the current number. #130 left joining the two entries as an open decision; this is that decision, taken the way #110 took borax's: the older number is rewritten to the current one on EF's rows and on each merged list's, ecoinvent 3.8's having been already, and the twelve compartments the two entries then share are ruled in the characterised row's favour.",
+  "expectations": [
+    {
+      "id": "0201-bafu-fenpropimorph-reaches-the-characterised-flow",
+      "issue": 201,
+      "title": "BAFU's `Fenpropimorph` in agricultural soil reaches the flow EF characterises",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "2fd843ed-3de9-5205-8953-40983400f137"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_uuid": "75e0992d-54b5-4d5a-84c7-0a5b9d10685c",
+        "target_characterised": true
+      },
+      "comment": "The row the issue's population turns on. On the build of 3f827d6 it reached `08a91e70-3ddc-11dd-93c1-0050c2490048` on 67306-03-0: EF's `fenpropimorph` in agricultural soil, no factors. The target here is EF's systematic row in the same compartment, four factors on that build. `basis: cas` because the current number is what should place it, not a name."
+    },
+    {
+      "id": "0201-one-substance-is-called-fenpropimorph",
+      "issue": 201,
+      "title": "One substance is published as `Fenpropimorph`",
+      "subject": {
+        "kind": "substance",
+        "label": "Fenpropimorph"
+      },
+      "expect": {
+        "count": 1,
+        "cas": "67564-91-4"
+      },
+      "comment": "Two on the build of 3f827d6, one under each number, 14 flows each."
+    },
+    {
+      "id": "0201-no-substance-is-published-under-the-older-number",
+      "issue": 201,
+      "title": "No substance is published under 67306-03-0",
+      "subject": {
+        "kind": "substance",
+        "cas": "67306-03-0"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "One substance publishes one number, so the join leaves nothing under the older number. Here so that a fix which only re-routed the merged rows -- #130's third option -- would fail: the stub would still be published, and so would its number."
+    },
+    {
+      "id": "0201-every-merged-fenpropimorph-row-reaches-one-substance",
+      "issue": 201,
+      "title": "Every merged list's `Fenpropimorph` rows reach one substance",
+      "subject": {
+        "kind": "source_row",
+        "name": "Fenpropimorph"
+      },
+      "expect": {
+        "same_substance": true
+      },
+      "comment": "ecoinvent's, BAFU's and AGRIBALYSE's rows together. Two substances on the build of 3f827d6: ecoinvent's on the characterised copy, BAFU's and AGRIBALYSE's on the stub."
+    },
+    {
+      "id": "0201-the-stubs-identifier-still-resolves",
+      "issue": 201,
+      "title": "EF's `fenpropimorph` flow in agricultural soil is deprecated onto the characterised one",
+      "subject": {
+        "kind": "flow",
+        "uuid": "08a91e70-3ddc-11dd-93c1-0050c2490048",
+        "include_deprecated": true
+      },
+      "expect": {
+        "deprecated": true,
+        "replaced_by": "75e0992d-54b5-4d5a-84c7-0a5b9d10685c"
+      },
+      "comment": "**The guard on the join.** EF's identifier is one a consumer may have pinned, so the merged flow is kept as a deprecated record pointing at its survivor rather than dropped. Selected by the compartment the issue's BAFU row is in; the eleven other rulings have the same shape."
+    }
+  ]
+}

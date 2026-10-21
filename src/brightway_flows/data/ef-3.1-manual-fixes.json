@@ -2134,6 +2134,19 @@
       "new_value": "silicon tetrafluoride",
       "retain_original_as_synonym": true,
       "comment": "`Silicium` is the Latin name for the element, and EF 3.1 is the only list here that uses it for SiF4. CAS Common Chemistry publishes 7783-61-1 as `Silicon tetrafluoride`; PubChem's CID 24556 gives `tetrafluorosilane` as the IUPAC preferred name and carries `Silicon tetrafluoride` among its synonyms; ChEBI has no record of the compound at all, and the only `silicium` in its 224,571 nodes is a foreign-language synonym of the element itself (CHEBI:27573, beside `Silizium` and `silicio`). ecoinvent, BAFU and AGRIBALYSE 3.2 all write `Silicon tetrafluoride`. That is three contributing lists and the registry against one spelling, which is what §6 of the conventions settles by taking the name the other lists use.\n\nThe rename rule cannot reach this one: `cc_chebi_agreement` requires Common Chemistry and ChEBI to agree, and ChEBI has nothing to agree with, so the label stayed as `bootstrap_labels` wrote it from EF's own name field and never came up for a ruling. The build has been reporting the difference on the `commonchem-cas-name-differences` queue, one row per flow, for as long as the queue has existed (#187).\n\nEF's spelling is retained as a synonym, so an inventory keyed on `Silicium Tetrafluoride` still finds the substance. `Tetrafluorosilane` and `Silicon tetrafluoride` are already alternative labels on the object, written by `consensus_match` from the CAS lookup, so no synonym needs adding."
+    },
+    {
+      "match": {
+        "name": "fenpropimorph"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "67306-03-0"
+      ],
+      "new_value": [
+        "67564-91-4"
+      ],
+      "comment": "EF 3.1 publishes fenpropimorph twice: thirteen rows named `cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine` under 67564-91-4 and EC 266-719-9, eleven of them characterised, and twelve named `fenpropimorph` under 67306-03-0, with no EC number and no factor at all. 67306-03-0 is fenpropimorph with its stereochemistry unstated -- 4-[3-[4-(1,1-dimethylethyl)phenyl]-2-methylpropyl]-2,6-dimethylmorpholine, the Merck Index's parent entry -- and 67564-91-4 is the cis form, (+/-)-cis-4-[3-(4-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine: the morpholine ring's two methyls on one side, the (2R,6S) arrangement, with the side chain's third stereocentre left racemic. The fungicide sold as an active ingredient (Corbel, Mistral) is the cis form, so in an inventory the two numbers describe one substance, and 67564-91-4 is the one suppliers and the JRC use; the older number turns up in older sources and LCA databases. Two numbers looked like two substances, so the build published two `Fenpropimorph` substances, one characterised and one not, and BAFU's and AGRIBALYSE's rows -- which carry the older number -- reached the one with no factors (#201; #130's first decision, taken here). With the current number the twelve rows share the characterised entry's flow object, the duplicate-entry outcome `HFE-143a` and `PFC-1114` already have, and every compartment the two entries share is ruled in `elementary-flow-collision-decisions.json` in the characterised row's favour. The same correction ecoinvent 3.8's fixes make to its own row, and the same shape as #110's superseded borax number: one number is published per substance, so the older one is rewritten rather than kept beside it. Matched on the name rather than the number, because the base list applies its fixes twice (#237) and a criterion on the field being changed matches nothing the second time."
     }
   ]
 }
