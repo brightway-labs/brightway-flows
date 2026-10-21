@@ -65,6 +65,16 @@ Two things follow. Supply every CAS and EC number you have. And supply every
 name you have — the list is searched under all of a row's names at once, so a
 synonym you know is another chance to match, and costs nothing.
 
+**Send the registry number as you have it.** A number padded with zeros to a
+fixed width — `000108-90-7`, which is how the openLCA LCIA package writes
+51,173 of its 55,630 numbers and how SimaPro exports write theirs — is read as
+`108-90-7` before anything looks it up, for every caller and without any flag,
+because that is how every list's adapter reads its own numbers. The answer
+then lists `registry-number-padding` among its `preparation_steps`
+([#375](https://github.com/brightway-labs/brightway-flows/issues/375)). Values
+that are not a registry number at all — an EC number written without its
+hyphens, `2025884` — are left as sent, for the check-digit step to report.
+
 **Write the unit and the place in their own fields, not in the name.** SimaPro
 lists flows in one flat column, so a list with that lineage often carries them in
 the name instead — `Wood, unspecified, standing/m3`, `Water, AE`. Say

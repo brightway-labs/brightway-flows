@@ -59,7 +59,7 @@ from typing import Any, Iterator
 import orjson
 import structlog
 
-from brightway_flows.integrations.ecoinvent import normalize_cas_number
+from brightway_flows.domain.registry_numbers import normalize_cas_number
 from brightway_flows.integrations.stepwise import parse_substance_comment
 from brightway_flows.sources import SourceList
 

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "description": "openLCA's LCIA package writes its registry numbers zero-padded to six digits -- `000108-90-7` on 51,173 of its 55,630 numbers -- and a lookup query carrying such a number found nothing, because the index holds `108-90-7` (#375). Every list's adapter already read its numbers through one normaliser, now `domain.registry_numbers.normalize_cas_number`, and the EF 3.1 adapter joins them; a query's number goes through the same function as its first preparation step, for every caller, and the answer says `registry-number-padding`. That half is the lookup's and is held by tests/test_lookup_matcher.py. What a build can be asked is that the package's padded numbers reach the substances they name: the issue's own example rows, placed by their number.",
+  "expectations": [
+    {
+      "id": "0375-pronamide-is-propyzamide-by-its-unpadded-number",
+      "issue": 375,
+      "title": "openLCA's `Pronamide` rows, written with 023950-58-5, reach propyzamide by the number 23950-58-5",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "cas": "23950-58-5"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "same_substance": true,
+        "target_cas": "23950-58-5"
+      },
+      "comment": "The package writes `023950-58-5`; the adapter reads `23950-58-5` and the rows reach the one substance carrying it. Held so the adapter never stops unpadding."
+    },
+    {
+      "id": "0375-chlorobenzene-by-its-unpadded-number",
+      "issue": 375,
+      "title": "openLCA's `Benzene, chloro-` rows, written with 000108-90-7, reach chlorobenzene by the number 108-90-7",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "cas": "108-90-7"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "same_substance": true,
+        "target_name": "Chlorobenzene"
+      },
+      "comment": "Sixteen flows and 1,628 factors on the issue's measure, the largest unplaced name when the padding was not read."
+    }
+  ]
+}

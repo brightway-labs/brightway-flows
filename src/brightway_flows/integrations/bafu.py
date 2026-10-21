@@ -18,7 +18,7 @@ import orjson
 import structlog
 from lxml import etree
 
-from brightway_flows.integrations.ecoinvent import normalize_cas_number
+from brightway_flows.domain.registry_numbers import normalize_cas_number
 from brightway_flows.simapro_names import (
     canonical_geography_code,
     split_geography_suffix,

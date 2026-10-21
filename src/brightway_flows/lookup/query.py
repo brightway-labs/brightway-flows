@@ -48,12 +48,14 @@ from brightway_flows.context_mapping import (
 from brightway_flows.domain.flow import Flow, ProvidedValues
 from brightway_flows.domain.units import build_units_index, resolve_unit_notation
 from brightway_flows.merge.matching import _source_labels
+from brightway_flows.domain.registry_numbers import normalize_cas_number
 from brightway_flows.merge.species import element_number_set_aside
 from brightway_flows.merge.state import SourceRow
 from brightway_flows.pipeline.engine import apply_transformers
 from brightway_flows.filesystem import SIMAPRO_LINEAGE_FIXES_FILEPATH
 from brightway_flows.manual_fixes import UNIT_CONVERSION_KEY, apply_manual_fixes
 from brightway_flows.simapro_names import (
+    PADDING_STEP,
     LINEAGE_FIX_STEP,
     PreparedRow,
     prepare_row_for_matching,
@@ -308,10 +310,22 @@ def prepare_query(query: FlowQuery) -> PreparedQuery:
     occupation or transformation according to what the name starts with, and a
     name still carrying `/m2a` is not a name those rules were written against.
     """
+    # First, and for every caller: a registry number sent zero-padded is the
+    # same number every adapter reads unpadded, and an index keyed on
+    # `108-90-7` never finds `000108-90-7` (#375).  openLCA's package writes
+    # 51,173 of its 55,630 numbers that way.
+    padding: tuple[str, ...] = ()
+    unpadded = normalize_cas_number(query.cas)
+    if unpadded != query.cas.strip():
+        query = replace(query, cas=unpadded)
+        padding = (PADDING_STEP,)
+
     if not query.simapro_origin:
-        return PreparedQuery(query, PreparedRow(name=query.name.strip()))
+        return PreparedQuery(query, PreparedRow(name=query.name.strip(), steps=padding))
 
     preparation = prepare_row_for_matching(query.name, query.unit)
+    if padding:
+        preparation = replace(preparation, steps=(*padding, *preparation.steps))
     prepared = query
     if preparation.steps:
         synonyms = [

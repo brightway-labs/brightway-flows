@@ -54,7 +54,7 @@ import orjson
 import structlog
 
 from brightway_flows.download import download as download_file
-from brightway_flows.integrations.ecoinvent import normalize_cas_number
+from brightway_flows.domain.registry_numbers import normalize_cas_number
 from brightway_flows.sources import SourceList
 
 logger = structlog.get_logger(__name__)

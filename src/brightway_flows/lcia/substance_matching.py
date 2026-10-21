@@ -74,7 +74,7 @@ from brightway_flows.context_mapping import (
 )
 from brightway_flows.domain.units import canonical_unit
 from brightway_flows.domain.vocabulary import CHEMINF_CAS_REGISTRY_NUMBER
-from brightway_flows.integrations.ecoinvent import normalize_cas_number
+from brightway_flows.domain.registry_numbers import normalize_cas_number
 from brightway_flows.lcia.conversion import UnitCrossing
 from brightway_flows.lcia.matching import MergeTarget
 from brightway_flows.lcia.regionalised_names import (

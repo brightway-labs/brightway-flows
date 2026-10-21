@@ -8,22 +8,11 @@ from ecoinvent_interface import EcoinventRelease, ReleaseType, Settings
 
 from brightway_flows.filesystem import DATA_DIR
 from brightway_flows.sources import SourceList, source_flows_path
+from brightway_flows.domain.registry_numbers import normalize_cas_number
 from brightway_flows.transformers.unit_normalization import (
     build_units_index,
     resolve_unit_notation,
 )
-
-
-def normalize_cas_number(value: str) -> str:
-    """Normalize CAS by stripping leading zeros in the first segment."""
-    parts = value.split("-")
-    if len(parts) != 3:
-        return value
-    first, second, third = parts
-    if not (first.isdigit() and second.isdigit() and third.isdigit()):
-        return value
-    first = first.lstrip("0") or "0"
-    return f"{first}-{second}-{third}"
 
 
 def _mapping_file_for_version(version: str) -> str | None:

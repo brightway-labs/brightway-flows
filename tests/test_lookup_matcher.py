@@ -456,6 +456,30 @@ class PreparingTheCallersRowTestCase(_Matcher):
         self.assertEqual(prepared.query.name, "Occupation, traffic area, rail network")
 
 
+class ThePaddedNumberTestCase(_Matcher):
+    """A registry number sent zero-padded is the number every adapter reads
+    unpadded (#375): openLCA writes `000071-43-2`, the index holds `71-43-2`,
+    and the query is read the way the package's own row was."""
+
+    def test_a_padded_number_is_read_unpadded(self):
+        answer = self.matcher.match(FlowQuery(name="Pronamide", context=AIR_WORDS, cas="000071-43-2", unit="kg"))
+        self.assertTrue(answer.matched)
+        self.assertEqual((answer.pref_label, answer.basis, answer.basis_value), ("Benzene", "cas", "71-43-2"))
+        self.assertEqual(answer.preparation_steps, ("registry-number-padding",))
+
+    def test_the_step_is_not_reported_for_an_unpadded_number(self):
+        answer = self.matcher.match(FlowQuery(name="Pronamide", context=AIR_WORDS, cas="71-43-2", unit="kg"))
+        self.assertEqual((answer.pref_label, answer.basis), ("Benzene", "cas"))
+        self.assertEqual(answer.preparation_steps, ())
+
+    def test_it_runs_without_the_simapro_flag_and_before_its_steps(self):
+        answer = self.matcher.match(FlowQuery(
+            name="Benzene/kg", context=AIR_WORDS, cas="000071-43-2", unit="kg", simapro_origin=True,
+        ))
+        self.assertEqual(answer.pref_label, "Benzene")
+        self.assertEqual(answer.preparation_steps[0], "registry-number-padding")
+
+
 class TheOfflineEnrichmentTestCase(_Matcher):
     """§3.6: six steps of the chain, in chain order, offline.
 

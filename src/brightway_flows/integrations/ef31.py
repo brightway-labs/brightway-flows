@@ -26,6 +26,7 @@ from brightway_flows.filesystem import EF31_ZIP_FILEPATH
 from brightway_flows.integrations.chebi import load_chebi_index
 from brightway_flows.pipeline import normalize
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
+from brightway_flows.domain.registry_numbers import normalize_cas_number
 
 if TYPE_CHECKING:  # `sources` reads the pipeline normaliser, which reads this.
     from brightway_flows.sources import SourceList
@@ -672,7 +673,9 @@ def extract_flow_data(
     )
 
     cas_elem = ds_info.find("flow:CASNumber", NAMESPACES)
-    cas_numbers: list[str] = [cas_elem.text] if cas_elem is not None and cas_elem.text else []
+    cas_numbers: list[str] = (
+        [normalize_cas_number(cas_elem.text)] if cas_elem is not None and cas_elem.text else []
+    )
 
     ec_elem = ds_info.find("common:other/ecn:ECNumber", NAMESPACES)
     ec_numbers: list[str] = [ec_elem.text] if ec_elem is not None and ec_elem.text else []

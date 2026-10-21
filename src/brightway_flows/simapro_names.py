@@ -791,7 +791,13 @@ def unit_suffix_rewrites(
 #: (`simapro-lineage-manual-fixes.json`) applied to a lookup query, reported
 #: here because a caller reads one tuple to learn what was done to their row.
 LINEAGE_FIX_STEP = "lineage-fix"
-PREPARATION_STEPS: tuple[str, ...] = ("unit-suffix", "geography", LINEAGE_FIX_STEP)
+#: A registry number sent zero-padded, `000108-90-7`, read as `108-90-7`
+#: (`domain.registry_numbers`, #375).  Not a SimaPro habit and not gated on
+#: the flag: every adapter reads its numbers this way, so a query is too.
+PADDING_STEP = "registry-number-padding"
+PREPARATION_STEPS: tuple[str, ...] = (
+    PADDING_STEP, "unit-suffix", "geography", LINEAGE_FIX_STEP
+)
 
 
 @dataclass(frozen=True)
