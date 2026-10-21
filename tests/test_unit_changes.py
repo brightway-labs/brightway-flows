@@ -39,6 +39,8 @@ class Match:
     source_unit: str = "kg"
     target_unit: str = "kg"
     target_elementary_flow_id: str = "t-1"
+    #: The factor the mapping published for the pair, as the match records it.
+    conversion_factor: float | None = None
 
 
 def _find(matches, allowed=frozenset()):
@@ -65,18 +67,42 @@ class DisagreementIsReportedTestCase(unittest.TestCase):
 
 
 class AConvertedPairIsNotAMismatchTestCase(unittest.TestCase):
-    """A pair `units.json` converts has its factor published on the mapping,
-    so it is not a row measured in something nothing says how to convert
-    (#393)."""
+    """A pair `units.json` converts, whose mapping publishes the factor, is not
+    a row measured in something nothing says how to convert (#393)."""
 
     def test_becquerels_on_a_kilobecquerel_flow_are_not_reported(self):
-        self.assertEqual(_find([Match(source_unit="Bq", target_unit="kBq")]), set())
+        matches = [Match(source_unit="Bq", target_unit="kBq", conversion_factor=0.001)]
+        self.assertEqual(_find(matches), set())
 
     def test_kilowatt_hours_on_a_megajoule_flow_are_not_reported(self):
-        self.assertEqual(_find([Match(source_unit="kWh", target_unit="MJ")]), set())
+        matches = [Match(source_unit="kWh", target_unit="MJ", conversion_factor=3.6)]
+        self.assertEqual(_find(matches), set())
 
     def test_a_crossing_of_quantity_kinds_still_is(self):
         self.assertEqual(_find([Match(source_unit="kg", target_unit="MJ")]), {"s-1"})
+
+    def test_a_stated_factor_does_not_excuse_a_crossing(self):
+        """The other half: the allowlist is what accepts a mass onto an
+        energy, and a factor on the mapping does not stand in for it."""
+        matches = [Match(source_unit="kg", target_unit="MJ", conversion_factor=9.41)]
+        self.assertEqual(_find(matches), {"s-1"})
+
+
+class AConvertiblePairWithNoFactorIsAMismatchTestCase(unittest.TestCase):
+    """The check reads the factor off the match rather than assuming one from
+    `units.json` (#413).
+
+    56 of BAFU's becquerel rows created their kilobecquerel flow by a route
+    that published no factor, and the measure read 0 for all 159 because it
+    asked whether a factor *could* be published.
+    """
+
+    def test_becquerels_on_a_kilobecquerel_flow_with_no_factor_are_reported(self):
+        self.assertEqual(_find([Match(source_unit="Bq", target_unit="kBq")]), {"s-1"})
+
+    def test_an_allowlisted_pair_with_no_factor_is_not(self):
+        matches = [Match(source_unit="Bq", target_unit="kBq")]
+        self.assertEqual(_find(matches, allowed={("s-1", "t-1")}), set())
 
 
 class BothSidesAreCanonicalisedTestCase(unittest.TestCase):

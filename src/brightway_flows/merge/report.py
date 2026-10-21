@@ -151,6 +151,16 @@ class AlgorithmMatch(SerialisableRecord):
     matching_method: str
     algorithm_details: dict[str, Any]
     provenance: dict[str, Any]
+    #: The factor the mapping publishes for the pair, and the reasoning a
+    #: curated one came with, as on `PreparedMatch`.  The factor is what
+    #: `find_unit_mismatches` reads, so a route that withholds one is reported
+    #: rather than assumed converted (#413).
+    conversion_factor: float | None = None
+    conversion_comment: str | None = None
+
+    _OMIT_IF_NONE: ClassVar[frozenset[str]] = frozenset({
+        "conversion_factor", "conversion_comment",
+    })
 
 
 @dataclass
