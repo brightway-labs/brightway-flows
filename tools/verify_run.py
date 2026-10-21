@@ -149,7 +149,21 @@ VOLATILE_KEYS = frozenset({
     # inputs changes -- without this line every comparison would fail, and the
     # tool would stop being able to tell a real difference from a clock tick.
     "dcterms:created",
+    # Which build a published file came from, in `lcia-factors.json.gz`'s
+    # `stats`.  The two runs compared here are of two commits by design, so
+    # the commit always differs; `build_revision_dirty` is not masked, because
+    # a run from a modified tree is a difference worth seeing.
+    "build_run_id",
+    "build_revision",
 })
+
+#: `owl:versionInfo` is a source list's own version on its scheme and the build
+#: on the consensus scheme (`PipelineRun.describe`), so it is masked by value
+#: rather than by key: the run and the commit go, and the `, with uncommitted
+#: changes` that may follow them stays, for the same reason
+#: `build_revision_dirty` is not in `VOLATILE_KEYS`.
+VERSION_INFO_KEY = "owl:versionInfo"
+BUILD_NAME = re.compile(r"^run [^,]*(?:, commit [^,]*)?")
 
 #: Columns holding an AUTOINCREMENT rowid, which depends on insertion order
 #: rather than content.  Dropped before rows are sorted; duplicate rows still
@@ -227,7 +241,12 @@ def scrub(value: Any, data_dir: str) -> Any:
     """
     if isinstance(value, dict):
         return {
-            key: PLACEHOLDER if key in VOLATILE_KEYS else scrub(item, data_dir)
+            key: (
+                PLACEHOLDER if key in VOLATILE_KEYS
+                else BUILD_NAME.sub(PLACEHOLDER, item)
+                if key == VERSION_INFO_KEY and isinstance(item, str)
+                else scrub(item, data_dir)
+            )
             for key, item in value.items()
         }
     if isinstance(value, list):

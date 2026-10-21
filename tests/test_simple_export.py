@@ -21,6 +21,8 @@ from pathlib import Path
 import orjson
 
 from brightway_flows.pipeline.exporting import build_simple_export, write_simple_export
+from brightway_flows.pipeline.review_records import PipelineRun
+from brightway_flows.pipeline.review_tables import create_review_tables
 
 #: The shape written for a flow that came from EF 3.1.
 FLOW_SHAPED = {
@@ -93,6 +95,46 @@ class SimpleExportTestCase(unittest.TestCase):
         self.assertEqual(write_simple_export(self.db, out), 1)
         self.assertTrue(out.exists())
         self.assertEqual(self.read(out)["flows"][0]["identifier"], "u-1")
+
+    def test_the_consensus_scheme_names_the_build(self):
+        """`owl:versionInfo` on our scheme is the run and the commit that made
+        the file, read from `pipeline_runs`."""
+        build_db(self.db, [FLOW_SHAPED])
+        conn = sqlite3.connect(self.db)
+        create_review_tables(conn)
+        conn.executemany(
+            "INSERT INTO pipeline_runs (run_id, timestamp, schema_version, git_commit, git_dirty) "
+            "VALUES (?, ?, 1, ?, ?)",
+            [
+                ("run-old", "2026-10-19T00:00:00+00:00", "1" * 40, 0),
+                ("run-new", "2026-10-20T00:00:00+00:00", "2" * 40, 1),
+            ],
+        )
+        conn.commit()
+        conn.close()
+        (consensus, *_sources) = build_simple_export(self.db).to_dict()["concept_schemes"]
+        self.assertEqual(
+            consensus["owl:versionInfo"],
+            f"run run-new, commit {'2' * 40}, with uncommitted changes",
+        )
+
+    def test_the_run_writing_the_export_names_itself_before_its_row_exists(self):
+        """The transform writes the export before `pipeline_runs`, so it hands
+        its own run over rather than reading back a table not yet written."""
+        build_db(self.db, [FLOW_SHAPED])
+        run = PipelineRun(
+            run_id="run-live", timestamp="2026-10-20T00:00:00+00:00", schema_version=1,
+            git_commit="3" * 40,
+        )
+        out = self.root / "harmonised-flows-simple.json.gz"
+        write_simple_export(self.db, out, run=run)
+        (consensus, *_sources) = self.read(out)["concept_schemes"]
+        self.assertEqual(consensus["owl:versionInfo"], f"run run-live, commit {'3' * 40}")
+
+    def test_a_database_without_runs_publishes_an_empty_version(self):
+        build_db(self.db, [FLOW_SHAPED])
+        (consensus, *_sources) = build_simple_export(self.db).to_dict()["concept_schemes"]
+        self.assertEqual(consensus["owl:versionInfo"], "")
 
     def test_both_record_shapes_resolve_an_identifier(self):
         """One column, two shapes: `uuid` for EF flows, `elementary_flow_id`

@@ -167,11 +167,10 @@ from brightway_flows.pipeline.review_records import (
     ReviewQueueItem,
     Severity,
 )
-from brightway_flows.pipeline.review_tables import replace_queue_items
+from brightway_flows.pipeline.review_tables import read_pipeline_run, replace_queue_items
 from brightway_flows.sources import SourceList
 from brightway_flows.lcia.store import (
     CharacterisationRun,
-    build_run_id,
     finish_run,
     write_characterisation,
 )
@@ -1077,10 +1076,13 @@ def characterise(
         )
     _check_every_list_is_read()
 
+    # Read once: the table's `build_run_id` and the files' build stamp are one
+    # fact about one row.
+    build = read_pipeline_run(db_path)
     run = CharacterisationRun(
         run_id=uuid4().hex,
         started_at=datetime.now(timezone.utc).isoformat(),
-        build_run_id=build_run_id(db_path),
+        build_run_id=build.run_id if build else None,
     )
     logger.info(
         "characterise_started",
@@ -1171,6 +1173,15 @@ def characterise(
 
     for queue, items in queues.items():
         replace_queue_items(db_path, queue=queue, items=items)
+
+    # Which build this characterises, so the files name the commit they came
+    # from.  In `stats` itself, so `lcia_runs.stats_json` and the files hold
+    # the same dict and a reader checking one against the other finds no
+    # extra keys.  Not this run's own id: characterising one build twice has
+    # to write the same bytes, and that id is new every time.
+    stats["build_run_id"] = build.run_id if build else ""
+    stats["build_revision"] = build.git_commit if build else ""
+    stats["build_revision_dirty"] = build.git_dirty if build else False
 
     write_characterisation(
         db_path,

@@ -1089,10 +1089,16 @@ def _connect_readonly(db_path: Path) -> sqlite3.Connection:
 
 
 def read_pipeline_run(db_path: Path) -> PipelineRun | None:
-    """The run that wrote this database, or None if it holds no review tables."""
+    """The run that wrote this database, or None if it holds no review tables.
+
+    The latest, where a database holds more than one: the same row every
+    other reader of `pipeline_runs` picks.
+    """
     connection = _connect_readonly(db_path)
     try:
-        row = connection.execute("SELECT * FROM pipeline_runs LIMIT 1").fetchone()
+        row = connection.execute(
+            "SELECT * FROM pipeline_runs ORDER BY timestamp DESC LIMIT 1"
+        ).fetchone()
     except sqlite3.OperationalError:
         return None
     finally:

@@ -117,6 +117,25 @@ class PipelineRun(SerialisableRecord):
     git_commit: str = ""
     git_dirty: bool = False
 
+    def describe(self) -> str:
+        """``run <id>, commit <sha>``, and whether the tree was modified.
+
+        What a published file says about the build that made it -- the
+        consensus scheme's `owl:versionInfo` in `harmonised-flows-simple.json.gz`
+        -- so that a reader holding the file alone can find the code.  Release
+        1.0.0 published nothing, and it took downloading the 3.7 GB database to
+        learn that it was built from a commit no longer in the repository.
+
+        A run that recorded no commit -- a database older than the column --
+        names the run alone, the way the factor file publishes its
+        ``build_revision`` as empty, rather than a word like ``unknown`` that
+        reads as a value.
+        """
+        text = f"run {self.run_id}"
+        if self.git_commit:
+            text += f", commit {self.git_commit}"
+        return text + (", with uncommitted changes" if self.git_dirty else "")
+
 
 @dataclass
 class RunStat(SerialisableRecord):

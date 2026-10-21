@@ -220,6 +220,34 @@ class NoiseIsIgnoredTestCase(HarnessTestCase):
         self.assertIn("<volatile>", canonical)
         self.assertNotIn("generated-in-a", canonical)
 
+    def test_the_build_named_in_a_published_file_is_masked(self):
+        """The two runs compared are of two commits, so the commit a file names
+        always differs. A source list's own version does not and is kept, and
+        so is whether the tree was modified, which is a difference worth
+        seeing. The mask is on `owl:versionInfo`, not on every string."""
+        schemes = [
+            {"owl:versionInfo": "run r-1, commit 1111111, with uncommitted changes"},
+            {"owl:versionInfo": "run r-2"},
+            {"owl:versionInfo": "3.12"},
+        ]
+        stats = {"build_run_id": "r-1", "build_revision": "1111111", "build_revision_dirty": False}
+        note = {"comment": "run 3, commit abc was the one"}
+        self.assertEqual(
+            verify_run.scrub({"concept_schemes": schemes, "stats": stats, "note": note}, "/nowhere"),
+            {
+                "concept_schemes": [
+                    {"owl:versionInfo": "<volatile>, with uncommitted changes"},
+                    {"owl:versionInfo": "<volatile>"},
+                    {"owl:versionInfo": "3.12"},
+                ],
+                "stats": {
+                    "build_run_id": "<volatile>", "build_revision": "<volatile>",
+                    "build_revision_dirty": False,
+                },
+                "note": note,
+            },
+        )
+
     def test_volatile_sqlite_columns_are_masked(self):
         left = self.snapshot(self.build_data_dir("a"))
         text = (left / "consensus-flows.sqlite3" / "runs.tsv").read_text()

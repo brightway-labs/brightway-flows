@@ -17,6 +17,7 @@ from brightway_flows.domain.vocabulary import (
     ecoinvent_source_scheme,
     scheme_for_flow_iri,
 )
+from brightway_flows.pipeline.review_records import PipelineRun
 from brightway_flows.sources import excluded_source_flows, known_source_lists
 from brightway_flows.pipeline.correspondences import (
     CONSENSUS_SCHEME_IRI,
@@ -288,6 +289,32 @@ class ProvenanceTestCase(unittest.TestCase):
         payload = source.to_dict()
         self.assertNotIn("dcterms:created", payload)
         self.assertNotIn("dcterms:creator", payload)
+
+    def test_the_consensus_scheme_names_its_build_and_a_source_scheme_its_version(self):
+        """`owl:versionInfo` is the vendor's version on a source scheme, and the
+        build on ours, which release 1.0.0 published empty."""
+        stamp = "run 20261020T1155136231560000, commit 327a5c0beb7c1a36e06bf5724995678e38fe557b"
+        schemes, _correspondences, _counts = build_correspondences(
+            [flow(association(f"{EF31}s1", f"{CONSENSUS}t1"))],
+            created=self.STAMP, version_info=stamp,
+        )
+        consensus = next(s for s in schemes if s.jsonld_id == CONSENSUS_SCHEME_IRI)
+        self.assertEqual(consensus.to_dict()["owl:versionInfo"], stamp)
+        source = next(s for s in schemes if s.jsonld_id != CONSENSUS_SCHEME_IRI)
+        self.assertEqual(source.version_info, "3.1")
+
+    def test_the_build_is_described_with_its_state(self):
+        def run(**fields):
+            return PipelineRun(run_id="r1", timestamp="t", schema_version=1, **fields)
+
+        self.assertEqual(run(git_commit="abc").describe(), "run r1, commit abc")
+        self.assertEqual(
+            run(git_commit="abc", git_dirty=True).describe(),
+            "run r1, commit abc, with uncommitted changes",
+        )
+        # No commit recorded: the run alone, not a word that reads as a value.
+        self.assertEqual(run().describe(), "run r1")
+        self.assertEqual(run(git_dirty=True).describe(), "run r1, with uncommitted changes")
 
     def test_every_correspondence_carries_both(self):
         _schemes, correspondences, _counts = self._build()
