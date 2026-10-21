@@ -243,10 +243,12 @@ def _diff_categories(
     deltas = _diff_records(
         EntityKind.IMPACT_CATEGORY, before.categories_by_id, after.categories_by_id, held
     )
-    # A category a renamed one becomes arrives by that update, not by a create.
+    # A category a renamed one becomes arrives by that update, not by a
+    # create -- where there is a row to update.  A rename whose old id only
+    # factors name writes no update, so its target is created like any other.
     moved_to = {
         fate.replaced_by
-        for fate in fates.values()
+        for fate in held.values()
         if fate.fate is Fate.REPLACED and fate.replaced_by not in before.categories_by_id
     }
     deltas = [

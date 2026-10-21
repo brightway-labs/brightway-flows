@@ -118,9 +118,14 @@ def _category_rows(snapshot: ReleaseSnapshot) -> list[dict[str, Any]]:
 
 
 def _factor_rows(snapshot: ReleaseSnapshot) -> list[dict[str, Any]]:
+    """The factor table as a consumer loaded it from `lcia-factors.json.gz`.
+
+    In the file's own spelling -- no place is ``null``, not the ``""`` the
+    snapshot keys on -- or the replay would match a source the consumer's
+    rows never carry.
+    """
     return [
-        {**dict(zip(FACTOR_KEYS, key)), "amount": factor.amount}
-        for key, factor in sorted(snapshot.factors_by_key.items())
+        factor.published_fields() for _key, factor in sorted(snapshot.factors_by_key.items())
     ]
 
 

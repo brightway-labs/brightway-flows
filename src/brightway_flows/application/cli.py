@@ -968,18 +968,18 @@ def release_snapshot(
     from brightway_flows.releases.snapshot import SnapshotError
     from brightway_flows.releases.version import ReleaseVersionError
 
-    from brightway_flows.releases.snapshot import read_stamp
-
     database = database or CONSENSUS_DB_FILEPATH
     try:
         named = named_version(version) if version else None
-        if read_stamp(database, version=named).revision_dirty and not allow_dirty:
+        # Built before the gate: the build reads only, and writing is the one
+        # side effect, so one read of the stamp answers both.
+        snapshot = build_snapshot(database, version=named)
+        if snapshot.stamp.revision_dirty and not allow_dirty:
             raise ReleaseVersionError(
                 f"{database} was built from a tree with uncommitted changes, so its "
                 "commit does not say what built it; build a release from a clean "
                 "tree, or pass --allow-dirty to record one already published"
             )
-        snapshot = build_snapshot(database, version=named)
     except (ReleaseVersionError, SnapshotError) as error:
         typer.echo(f"error: {error}", err=True)
         raise typer.Exit(code=2) from error
@@ -1042,10 +1042,6 @@ def release_snapshot_upgrade(
 
     Reads the two files; writes one.
     """
-    import gzip
-
-    import orjson
-
     from brightway_flows.releases import snapshot_path, write_snapshot
     from brightway_flows.releases.snapshot import (
         SnapshotError,
@@ -1054,12 +1050,10 @@ def release_snapshot_upgrade(
     )
 
     try:
-        raw = factors.read_bytes()
-        document = orjson.loads(gzip.decompress(raw) if raw[:2] == b"\x1f\x8b" else raw)
         upgraded = upgrade_snapshot(
-            read_snapshot_payload(snapshot), document, source=str(snapshot)
+            read_snapshot_payload(snapshot), read_snapshot_payload(factors), source=str(snapshot)
         )
-    except (SnapshotError, orjson.JSONDecodeError) as error:
+    except SnapshotError as error:
         typer.echo(f"error: {error}", err=True)
         raise typer.Exit(code=2) from error
     path = write_snapshot(upgraded, output or snapshot_path(upgraded.stamp.version))
@@ -1196,9 +1190,24 @@ def release_migrations(
         **{f"{entity}.{kind}": n for (entity, kind), n in counts.items() if n},
     )
 
+    from randonneur.errors import (
+        ConflictingConversionFactors,
+        MultipleTransformations,
+        UnmappedData,
+        WrongGraphContext,
+    )
+
     from brightway_flows.releases.replay import replay_migration
 
-    report = replay_migration(before, after, diff, output or RELEASES_DIR / "migrations")
+    try:
+        report = replay_migration(before, after, diff, output or RELEASES_DIR / "migrations")
+    except (
+        ConflictingConversionFactors, MultipleTransformations, UnmappedData, WrongGraphContext,
+        SnapshotError,
+    ) as error:
+        # The files are written and reported above; what failed is applying them.
+        typer.echo(f"error: randonneur cannot apply the files: {error}", err=True)
+        raise typer.Exit(code=3) from error
     typer.echo("Applied with randonneur to the earlier release, against the later one:")
     for line in report.lines():
         typer.echo(f"  {line}")

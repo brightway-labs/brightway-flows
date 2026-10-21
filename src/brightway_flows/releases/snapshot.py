@@ -298,6 +298,27 @@ class SnapshotFactor(SerialisableRecord):
     def key_text(key: tuple[str, str, str]) -> str:
         return "|".join(key)
 
+    @staticmethod
+    def published_triple(key: tuple[str, str, str]) -> dict[str, str | None]:
+        """The triple as ``lcia-factors.json.gz`` spells it.
+
+        The snapshot and the ``lcia_characterization_factors`` table spell
+        no place as ``""``, so that a key is three strings; the published
+        file writes ``null``.  randonneur matches a source field by its exact
+        value, so a migration entry has to use the file's spelling or it
+        matches nothing a consumer loaded from it.
+        """
+        category, flow, geography = key
+        return {
+            "impact_category_id": category,
+            "elementary_flow_uuid": flow,
+            "geography": geography or None,
+        }
+
+    def published_fields(self) -> dict[str, Any]:
+        """The row as the factor file publishes it: the triple and the amount."""
+        return {**self.published_triple(self.key), "amount": self.amount}
+
 
 @dataclass
 class SnapshotImpactCategory(SerialisableRecord):
@@ -703,15 +724,31 @@ def upgrade_snapshot(payload: dict[str, Any], factors_document: dict[str, Any], 
             f"{source}: schema_version {version!r} is not one this upgrades "
             f"(it upgrades {UPGRADABLE_SNAPSHOT_SCHEMA_VERSION})"
         )
+    if not isinstance(factors_document, dict):
+        raise SnapshotError(
+            f"{source}: the factor file is not a JSON object with `impact_categories` "
+            "and `characterization_factors`"
+        )
     categories = [
         SnapshotImpactCategory.from_dict(row)
         for row in factors_document.get("impact_categories") or ()
     ]
     by_id = {category.id: category for category in categories}
-    published = {
-        (str(row["impact_category_id"]), str(row["elementary_flow_uuid"]), str(row.get("geography") or "")): row["amount"]
-        for row in factors_document.get("characterization_factors") or ()
-    }
+    # Keyed by triple, and a triple published twice is refused here rather
+    # than collapsed, so that the count below is the file's row count.
+    published: dict[tuple[str, str, str], Any] = {}
+    for row in factors_document.get("characterization_factors") or ():
+        if not isinstance(row, dict):
+            raise SnapshotError(f"{source}: the factor file has a factor that is not an object")
+        key = (
+            str(row["impact_category_id"]), str(row["elementary_flow_uuid"]),
+            str(row.get("geography") or ""),
+        )
+        if key in published:
+            raise SnapshotError(
+                f"{source}: the factor file publishes {SnapshotFactor.key_text(key)} twice"
+            )
+        published[key] = row["amount"]
     upgraded = ReleaseSnapshot.from_dict(
         {**payload, "schema_version": RELEASE_SNAPSHOT_SCHEMA_VERSION}, source=source
     )
@@ -747,13 +784,20 @@ def upgrade_snapshot(payload: dict[str, Any], factors_document: dict[str, Any], 
 
 
 def read_snapshot_payload(path: Path) -> dict[str, Any]:
-    """A snapshot file's JSON, gzipped or not, without reading it as a release."""
+    """A file's JSON, gzipped or not, without reading it as a release.
+
+    A snapshot, or the factor file a release published: anything that
+    cannot be read or parsed is a `SnapshotError` naming the file.
+    """
     try:
         raw = path.read_bytes()
     except OSError as error:
         raise SnapshotError(f"{path}: {error}") from error
     if raw[:2] == b"\x1f\x8b":
-        raw = gzip.decompress(raw)
+        try:
+            raw = gzip.decompress(raw)
+        except (OSError, EOFError) as error:
+            raise SnapshotError(f"{path}: {error}") from error
     try:
         return orjson.loads(raw)
     except orjson.JSONDecodeError as error:

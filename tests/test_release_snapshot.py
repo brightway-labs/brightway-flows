@@ -18,7 +18,9 @@ from pathlib import Path
 
 import jsonschema
 import orjson
+from typer.testing import CliRunner
 
+from brightway_flows.application.cli import app
 from brightway_flows.domain.schema import (
     SchemaVersionError,
     release_migration_unresolved_schema,
@@ -35,6 +37,7 @@ from brightway_flows.pipeline.sqlite import _SCHEMA as FLOW_SCHEMA
 from brightway_flows.releases.diff import diff_releases
 from brightway_flows.releases.randonneur_files import unresolved_report
 from brightway_flows.releases.snapshot import (
+    read_snapshot_payload,
     RELEASE_SNAPSHOT_SCHEMA_VERSION,
     SnapshotError,
     build_snapshot,
@@ -315,6 +318,12 @@ class LoadingTestCase(unittest.TestCase):
         with self.assertRaises(SnapshotError):
             load_snapshot(self.root / "nowhere.json.gz")
 
+    def test_a_truncated_gzip_file_says_so(self):
+        path = self.root / "cut.json.gz"
+        path.write_bytes(gzip.compress(orjson.dumps({"schema_version": 1, "stamp": {}}))[:12])
+        with self.assertRaisesRegex(SnapshotError, "cut.json.gz"):
+            read_snapshot_payload(path)
+
     def test_a_plain_json_snapshot_is_read_too(self):
         path = self.root / "plain.json"
         path.write_bytes(orjson.dumps({
@@ -367,6 +376,16 @@ class UpgradeTestCase(unittest.TestCase):
         with self.assertRaisesRegex(SnapshotError, "publishes 3 factors"):
             upgrade_snapshot(self.payload, self.document)
 
+    def test_a_factor_file_listing_a_factor_twice_is_refused(self):
+        rows = self.document["characterization_factors"]
+        rows.append(dict(rows[0]))
+        with self.assertRaisesRegex(SnapshotError, "twice"):
+            upgrade_snapshot(self.payload, self.document)
+
+    def test_a_factor_file_that_is_not_an_object_is_refused(self):
+        with self.assertRaisesRegex(SnapshotError, "not a JSON object"):
+            upgrade_snapshot(self.payload, [])
+
     def test_a_category_named_differently_is_refused(self):
         self.document["impact_categories"][0]["implemented_by"] = "Somebody else"
         with self.assertRaises(SnapshotError):
@@ -375,6 +394,39 @@ class UpgradeTestCase(unittest.TestCase):
     def test_a_current_snapshot_is_not_upgraded(self):
         with self.assertRaises(SnapshotError):
             upgrade_snapshot({**self.payload, "schema_version": 2}, self.document)
+
+
+class UpgradeCommandTestCase(unittest.TestCase):
+    """`release-snapshot-upgrade` reads the factor file the way it reads the
+    snapshot, so a file it cannot read is `error:` and exit 2."""
+
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.root = Path(tmp.name)
+        self.snapshot = self.root / "1.0.0.json.gz"
+        self.snapshot.write_bytes(gzip.compress(orjson.dumps({"schema_version": 1, "stamp": {}})))
+
+    def _invoke(self, factors: Path):
+        return CliRunner().invoke(app, [
+            "release-snapshot-upgrade", "--snapshot", str(self.snapshot),
+            "--factors", str(factors), "--output", str(self.root / "out.json.gz"),
+        ])
+
+    def test_a_factor_file_that_is_not_gzip_exits_2(self):
+        factors = self.root / "lcia-factors.json.gz"
+        factors.write_bytes(b"\x1f\x8bnot gzip at all")
+        result = self._invoke(factors)
+        self.assertEqual(result.exit_code, 2, result.output)
+        self.assertIn("error:", result.output)
+        self.assertNotIn("Traceback", result.output)
+
+    def test_a_factor_file_that_is_not_an_object_exits_2(self):
+        factors = self.root / "lcia-factors.json"
+        factors.write_bytes(b"[]")
+        result = self._invoke(factors)
+        self.assertEqual(result.exit_code, 2, result.output)
+        self.assertIn("not a JSON object", result.output)
 
 
 class VersionTestCase(unittest.TestCase):

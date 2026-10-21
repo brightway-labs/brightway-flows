@@ -48,6 +48,7 @@ from brightway_flows.releases.rulings import EntityKind
 from brightway_flows.releases.snapshot import (
     FACTOR_KEYS,
     SnapshotElementaryFlow,
+    SnapshotFactor,
     SnapshotFlowObject,
     SnapshotImpactCategory,
 )
@@ -161,9 +162,15 @@ GRAPH_CONTEXTS: dict[EntityKind, list[str]] = {
 _MOVED_BY_UPDATE = frozenset({EntityKind.IMPACT_CATEGORY, EntityKind.FACTOR})
 
 
-def _factor_triple(delta: Delta) -> dict[str, str]:
+def _factor_triple(delta: Delta) -> dict[str, str | None]:
+    """The factor's key as the published file spells it: no place is ``null``.
+
+    A source is matched by randonneur on the exact value of each field, so
+    the ``""`` the snapshot keys on would match nothing in a table loaded
+    from `lcia-factors.json.gz`.
+    """
     category, flow, geography = delta.identifier.split("|", 2)
-    return {"impact_category_id": category, "elementary_flow_uuid": flow, "geography": geography}
+    return SnapshotFactor.published_triple((category, flow, geography))
 
 
 def _source(entity: EntityKind, delta: Delta) -> dict[str, Any]:
@@ -175,7 +182,10 @@ def _source(entity: EntityKind, delta: Delta) -> dict[str, Any]:
 def _create_target(entity: EntityKind, delta: Delta) -> dict[str, Any]:
     payload = dict(delta.after or {})
     if entity is EntityKind.FACTOR:
-        return {key: payload[key] for key in (*FACTOR_KEYS, "amount")}
+        return {
+            **SnapshotFactor.published_triple(tuple(payload[key] for key in FACTOR_KEYS)),
+            "amount": payload["amount"],
+        }
     return {KEY_FIELDS[entity]: delta.identifier, **payload}
 
 
@@ -245,7 +255,8 @@ def _description(diff: ReleaseDiff, entity: EntityKind) -> str:
         + {
             EntityKind.FACTOR: (
                 "A factor whose flow was replaced or whose category was renamed is "
-                "an `update` that sets the new identifier."
+                "an `update` that sets the new identifier. A factor stated for no "
+                "place has `geography` null, as the factor file publishes it."
             ),
             EntityKind.IMPACT_CATEGORY: (
                 "A renamed category is an `update` that sets its new id. A field in "

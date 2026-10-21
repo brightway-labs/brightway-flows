@@ -373,12 +373,19 @@ def align_impact_categories(
     """
     fates: dict[str, IdentifierFate] = {}
     labels = _category_labels(before)
-    live_after = set(_category_labels(after))
+    #: The ids the after release publishes a row for: what a rename or a
+    #: ruling may send a category to, since the diff reads that row's fields.
+    published_after = set(after.categories_by_id)
+    #: And the ids still in use there at all.  An id a factor names without a
+    #: row has not vanished; a consumer has no row of it to change either.
+    in_use_after = published_after | {
+        factor.impact_category_id for factor in after.characterization_factors
+    }
     for category_id, label in sorted(labels.items()):
-        if category_id in live_after:
+        if category_id in in_use_after:
             continue
         target = retired.get(category_id)
-        if target is not None and target in live_after:
+        if target is not None and target in published_after:
             fates[category_id] = IdentifierFate(
                 category_id, Fate.REPLACED, FateReason.IMPLEMENTATION_RENAMED, replaced_by=target,
                 comment=f"{label}: published under a new implementation slug, which changed its id",
@@ -388,7 +395,7 @@ def align_impact_categories(
             category_id, Fate.UNRESOLVED, FateReason.CATEGORY_GONE,
             comment=f"the after release publishes no category {label}",
         )
-    _apply_rulings(fates, rulings, entity=EntityKind.IMPACT_CATEGORY, live_after=live_after)
+    _apply_rulings(fates, rulings, entity=EntityKind.IMPACT_CATEGORY, live_after=published_after)
     return fates
 
 

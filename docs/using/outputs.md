@@ -319,13 +319,15 @@ release 1.0.0 this list published its own numbers under the implementer name
 since a category's identifier is made from that name, all 44 of those
 categories have new identifiers. The migration does not delete your 345,997
 rows of them and create them again. Each is an `update` that finds the row by
-the old category identifier and writes the new one:
+the old category identifier and writes the new one. A factor stated for no
+place has `geography` `null`, exactly as `lcia-factors.json.gz` publishes it,
+because randonneur matches a row on the value it holds:
 
 ```json
 {
   "source": {"impact_category_id": "04fc7359-0ad8-5d49-901a-9e1d7ec81b54",
              "elementary_flow_uuid": "00fdc4bc-724b-4993-ad43-c70df533b092",
-             "geography": ""},
+             "geography": null},
   "target": {"impact_category_id": "5b9a371d-cdc1-57fe-8a41-002e1a245c37"},
   "comment": "EF / Resource use, fossils (brightway-flows): its category was renamed"
 }
@@ -377,18 +379,11 @@ looked, by a ruling in `release-migration-rulings.json`; the next run of
 `release-migrations` writes the answer into the files.
 
 What one looks like: from release 1.0.0 to the build of `main` at `327a5c0`
-on 2026-10-20, which merged the same five lists, the migration is
-
-| | created | updated | replaced | deleted |
-|---|---:|---:|---:|---:|
-| Substances | 2 | 142 | 2 | 0 |
-| Flows | 28 | 1,718 | 6 | 0 |
-| Impact categories | 0 | 0 | 44 | 0 |
-| Factors | 133 | 0 | 345,997 | 0 |
-
-with nothing unresolved. The 44 categories and their 345,997 factors are the
-renaming above. A snapshot diffed against itself writes five files with no
-entries.
+on 2026-10-20, which merged the same five lists, `impact-categories.json`
+holds the 44 updates of the renaming above and nothing else,
+`characterization-factors.json` holds their 345,997 updates and 133 `create`
+entries for factors that build added, and nothing is unresolved. A snapshot
+diffed against itself writes five files with no entries.
 
 Two things a migration is not: a diff of every field — provenance,
 `source_refs` and pipeline bookkeeping never reach your database and are not
