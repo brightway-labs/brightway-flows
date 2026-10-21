@@ -17,7 +17,7 @@ branch is reading it -- would be silent.
     uv run python tools/refresh_base_build.py --ref origin/main
 
 It exits 0 where the stored build answers for this branch, having copied the
-44 MB a comparison reads into `base-builds/<commit>.sqlite3`; 1 where a build is
+144 MB a comparison reads into `base-builds/<commit>.sqlite3`; 1 where a build is
 needed and `--build` was not given; 2 where it was asked to publish something it
 cannot stand behind, or where the build it made is not the whole of what the
 shared directory is supposed to hold.
@@ -58,13 +58,18 @@ than something this enforces.
 
 ## What is copied is an extract, not a build
 
-A comparison reads almost none of a 2.0 GB database: `merge_outcomes` whole --
-31 MB, `detail_json` and every scored candidate included -- plus two columns of
-`flow_objects`, six of `elementary_flows`, and the two run headers.  Extracted,
-that is 44 MB, which `compare_merge_outcomes.py` reads as though it were the
+A comparison reads almost none of a 3.8 GB database: `merge_outcomes` whole --
+115 MB, `detail_json` and every scored candidate included -- plus two columns of
+`flow_objects`, six of `elementary_flows`, the two run headers, and every link
+in `elementary_flow_sources` with its metadata cut to the unit and the published
+conversion factor (16 MB, #418).  Extracted, that is 144 MB on the five-list
+build of 0876891, which `compare_merge_outcomes.py` reads as though it were the
 build.  So a copy is taken per commit rather than per branch, ten of them cost
 less than one build, and a question asked after `main` has moved on is still
 answerable.
+
+An extract taken before a table joined that list is taken again the next time
+the shared build is that commit, rather than kept because its name matches.
 
 What an extract cannot do is `assess`, or be served: those want the whole
 database, and the whole database is what the shared directory holds for the
@@ -122,7 +127,7 @@ DEFAULT_SOURCES: tuple[str, ...] = (
     "agribalyse-3.2",
 )
 
-#: How many extracts to keep.  At 44 MB each, ten is smaller than one build, and
+#: How many extracts to keep.  At 144 MB each, ten is smaller than one build, and
 #: the bound is here because an archive nobody prunes is a disk that fills
 #: quietly.
 DEFAULT_KEEP = 10
@@ -153,6 +158,21 @@ EXTRACT_TABLES: dict[str, str] = {
     ),
     "pipeline_runs": "select * from pipeline_runs",
     "merge_run_inputs": "select * from merge_run_inputs",
+    # Every link, with its metadata cut to the three keys the comparison reads
+    # -- the unit and the published factor with its basis -- rather than the
+    # provenance and merge details around them.  Every link and not only those
+    # with a factor, because a factor withheld is what #413 was (#418).
+    # `json_patch` onto `{}` drops the keys a link does not have, which is all
+    # three on the base list's own 94,049 links.
+    "elementary_flow_sources": (
+        "select list_name, list_version, source_flow_uuid, elementary_flow_uuid,"
+        " source_flow_name, json_patch('{}', json_object("
+        "'unit', json_extract(source_metadata_json, '$.unit'),"
+        " 'qudt:conversionMultiplier',"
+        " json_extract(source_metadata_json, '$.\"qudt:conversionMultiplier\"'),"
+        " 'conversion_basis', json_extract(source_metadata_json, '$.conversion_basis')"
+        ")) as source_metadata_json from elementary_flow_sources"
+    ),
 }
 
 #: Tables an older build may not have, which are absent rather than wrong.
@@ -441,10 +461,31 @@ def human(size: int) -> str:
     return f"{size / 1e6:.0f} MB"
 
 
+def is_short(extract_path: Path) -> bool:
+    """Whether an archived extract lacks a table this version would copy.
+
+    An extract taken before `elementary_flow_sources` joined `EXTRACT_TABLES`
+    cannot say whether a conversion changed (#418).  Taken again while the
+    shared build is still that commit, it can.
+    """
+    return bool(set(EXTRACT_TABLES) - OPTIONAL_TABLES - existing_tables(extract_path))
+
+
+def existing_tables(database: Path) -> set[str]:
+    connection = sqlite3.connect(f"file:{database}?mode=ro", uri=True)
+    try:
+        return {
+            row[0]
+            for row in connection.execute("select name from sqlite_master where type='table'")
+        }
+    finally:
+        connection.close()
+
+
 def publish(shared: Path, commit: str, keep: int) -> Path:
     database = shared / "consensus-flows.sqlite3"
     destination = archived_path(shared, commit)
-    if destination.exists():
+    if destination.exists() and not is_short(destination):
         print(f"\nBefore side  {destination}  ({human(destination.stat().st_size)}, already copied)")
         return destination
     extract(database, destination)

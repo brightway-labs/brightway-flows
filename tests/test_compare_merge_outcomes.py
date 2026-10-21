@@ -24,6 +24,8 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+import orjson
+
 
 def _load_tool():
     """`tools/` is not a package; the tool is a script, loaded here by path."""
@@ -72,6 +74,12 @@ TABLES = (
     CREATE TABLE elementary_flows (
         uuid TEXT, pref_label_value TEXT, unit TEXT, context_display TEXT,
         lcia_factor_count INTEGER, is_deprecated INTEGER
+    )
+    """,
+    """
+    CREATE TABLE elementary_flow_sources (
+        elementary_flow_uuid TEXT, list_name TEXT, list_version TEXT,
+        source_flow_uuid TEXT, source_flow_name TEXT, source_metadata_json TEXT
     )
     """,
 )
@@ -333,6 +341,122 @@ class OneUuidInTwoVersionsTestCase(unittest.TestCase):
         self.assertEqual(
             {key[0] for key in tool.Build(self.before).outcomes}, {"ecoinvent"}
         )
+
+
+def _mapping(connection, uuid, name, factor=None, *, list_name="bafu", flow="flow-kbq"):
+    """One link, in becquerels, publishing *factor* or nothing."""
+    metadata = {"unit": "Bq", "provenance": {"prov:wasGeneratedBy": "merge_bafu"}}
+    if factor is not None:
+        metadata["qudt:conversionMultiplier"] = factor
+        metadata["conversion_basis"] = "unit-table"
+    connection.execute(
+        "INSERT INTO elementary_flow_sources (elementary_flow_uuid, list_name,"
+        " list_version, source_flow_uuid, source_flow_name, source_metadata_json)"
+        " VALUES (?, ?, '2026-v1', ?, ?, ?)",
+        (flow, list_name, uuid, name, orjson.dumps(metadata).decode()),
+    )
+
+
+class ConversionTestCase(unittest.TestCase):
+    """A mapping that keeps its flow and changes its factor (#418).
+
+    #416 gave 56 BAFU becquerel mappings the unit table's 0.001, and the
+    comparison of the two builds read `ROWS DECIDED DIFFERENTLY: 0`: no row had
+    moved, so nothing it compared had changed.  The regression #413 fixed was
+    the same shape the other way, a factor withheld.
+    """
+
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        root = Path(self.directory.name)
+        self.before = write_build(root / "before.sqlite3", EARLIER)
+        self.after = write_build(root / "after.sqlite3", LATER)
+        for path in (self.before, self.after):
+            connection = sqlite3.connect(path)
+            connection.execute(
+                "INSERT INTO elementary_flows (uuid, pref_label_value, unit)"
+                " VALUES ('flow-kbq', 'Antimony-122', 'kBq')"
+            )
+            connection.commit()
+            connection.close()
+
+    def _fill(self, path, mappings):
+        connection = sqlite3.connect(path)
+        for mapping in mappings:
+            _mapping(connection, *mapping[:3], **mapping[3] if len(mapping) > 3 else {})
+        connection.commit()
+        connection.close()
+
+    def run_tool(self, *extra):
+        argv = ["compare_merge_outcomes.py", str(self.before), str(self.after), *extra]
+        printed: list[str] = []
+
+        def record(*values, **_keywords):
+            printed.append(" ".join(str(value) for value in values))
+
+        with (
+            mock.patch.object(sys, "argv", argv),
+            mock.patch.object(tool, "_known", return_value=True),
+            mock.patch.object(tool, "_is_ancestor", return_value=True),
+            mock.patch.object(tool, "_subject", return_value="a commit"),
+            mock.patch("builtins.print", record),
+        ):
+            code = tool.main()
+        return code, "\n".join(printed)
+
+    def test_a_factor_gained_on_an_unmoved_row_is_reported(self):
+        self._fill(self.before, [("u1", "Antimony-122"), ("u2", "Cesium-137", 0.001)])
+        self._fill(self.after, [("u1", "Antimony-122", 0.001), ("u2", "Cesium-137", 0.001)])
+        code, output = self.run_tool()
+        self.assertEqual(code, 0)
+        self.assertIn("ROWS DECIDED DIFFERENTLY: 0", output)
+        self.assertIn("mappings publishing a factor        1 -> 2", output)
+        self.assertIn("MAPPINGS WHOSE CONVERSION CHANGED: 1", output)
+        self.assertRegex(
+            output, r"1  bafu +Bq -> kBq +none +-> 0.001 unit-table"
+        )
+
+    def test_a_factor_withheld_is_reported(self):
+        """#413's shape: the route stopped publishing what it had."""
+        self._fill(self.before, [("u1", "Antimony-122", 0.001)])
+        self._fill(self.after, [("u1", "Antimony-122")])
+        _code, output = self.run_tool()
+        self.assertIn("MAPPINGS WHOSE CONVERSION CHANGED: 1", output)
+        self.assertRegex(output, r"0.001 unit-table +-> none")
+
+    def test_detail_names_every_mapping(self):
+        self._fill(self.before, [("u1", "Antimony-122")])
+        self._fill(self.after, [("u1", "Antimony-122", 0.001)])
+        _code, output = self.run_tool("--detail")
+        self.assertIn("EVERY MAPPING WHOSE CONVERSION CHANGED", output)
+        self.assertIn("bafu 2026-v1  Antimony-122  [Bq]", output)
+        self.assertIn("'Antimony-122'", output)
+
+    def test_the_list_filter_applies(self):
+        self._fill(self.before, [("u1", "Antimony-122", None, {"list_name": "ecoinvent"})])
+        self._fill(self.after, [("u1", "Antimony-122", 0.001, {"list_name": "ecoinvent"})])
+        _code, output = self.run_tool("--list", "bafu")
+        self.assertIn("MAPPINGS WHOSE CONVERSION CHANGED: 0", output)
+
+    def test_an_unchanged_pair_is_not_reported(self):
+        self._fill(self.before, [("u1", "Antimony-122", 0.001)])
+        self._fill(self.after, [("u1", "Antimony-122", 0.001)])
+        _code, output = self.run_tool()
+        self.assertIn("MAPPINGS WHOSE CONVERSION CHANGED: 0", output)
+
+    def test_an_archive_without_the_table_says_it_cannot_answer(self):
+        """Not zero: an extract taken before #418 has no factors to compare,
+        and reading that as "none published" would report every one as new."""
+        connection = sqlite3.connect(self.before)
+        connection.execute("DROP TABLE elementary_flow_sources")
+        connection.commit()
+        connection.close()
+        self._fill(self.after, [("u1", "Antimony-122", 0.001)])
+        self.assertIsNone(tool.Build(self.before).conversions)
+        _code, output = self.run_tool()
+        self.assertIn("the before build carries no elementary_flow_sources", output)
+        self.assertNotIn("MAPPINGS WHOSE CONVERSION CHANGED", output)
 
 
 if __name__ == "__main__":
