@@ -569,6 +569,11 @@ A row whose own unit is not the one the flow states, and that nothing converts,
 is flagged `has_unit_mismatch` on its merge outcome. That means on a creation
 exactly what it means on a match: this source row is measured in something
 other than the flow it landed on, and no published factor says by how much.
+Any published factor clears it — the unit table's 0.001 from becquerels to
+kilobecquerels, or a curated 9.76 MJ per kilogram of peat — and on a match, so
+does an entry in `unit-change-allowlist.json` accepting a pair that has no
+factor, such as Stepwise's `Coal, brown` in kilograms on brown coal in
+megajoules.
 Which of the two situations produced it is the outcome's own `outcome` column.
 A group whose units share no reference unit is left as it arrived and reported,
 because choosing there would be picking rather than deciding.

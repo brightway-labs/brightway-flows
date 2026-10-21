@@ -67,8 +67,9 @@ class DisagreementIsReportedTestCase(unittest.TestCase):
 
 
 class AConvertedPairIsNotAMismatchTestCase(unittest.TestCase):
-    """A pair `units.json` converts, whose mapping publishes the factor, is not
-    a row measured in something nothing says how to convert (#393)."""
+    """A pair whose mapping publishes a factor is not a row measured in
+    something nothing says how to convert (#393), whoever stated the factor
+    (#417)."""
 
     def test_becquerels_on_a_kilobecquerel_flow_are_not_reported(self):
         matches = [Match(source_unit="Bq", target_unit="kBq", conversion_factor=0.001)]
@@ -78,14 +79,19 @@ class AConvertedPairIsNotAMismatchTestCase(unittest.TestCase):
         matches = [Match(source_unit="kWh", target_unit="MJ", conversion_factor=3.6)]
         self.assertEqual(_find(matches), set())
 
-    def test_a_crossing_of_quantity_kinds_still_is(self):
+    def test_a_crossing_of_quantity_kinds_with_no_factor_still_is(self):
         self.assertEqual(_find([Match(source_unit="kg", target_unit="MJ")]), {"s-1"})
 
-    def test_a_stated_factor_does_not_excuse_a_crossing(self):
-        """The other half: the allowlist is what accepts a mass onto an
-        energy, and a factor on the mapping does not stand in for it."""
+    def test_a_curated_factor_across_quantity_kinds_is_not_reported(self):
+        """A kilogram on a megajoule flow whose override states 9.41 MJ/kg.
+
+        The flag is read as "no published factor says by how much", and a
+        created flow's rows are flagged by exactly that, so a curated factor
+        that missed the allowlist would otherwise be reported on a match and
+        not on a creation (#417).  Whether the crossing was ruled on is the
+        other guard's question; see `UnrecordedCrossingTestCase`."""
         matches = [Match(source_unit="kg", target_unit="MJ", conversion_factor=9.41)]
-        self.assertEqual(_find(matches), {"s-1"})
+        self.assertEqual(_find(matches), set())
 
 
 class AConvertiblePairWithNoFactorIsAMismatchTestCase(unittest.TestCase):
@@ -354,6 +360,17 @@ class UnrecordedCrossingTestCase(unittest.TestCase):
                 [Match(source_unit="kg", target_unit="MJ")], allowed={("s-1", "t-1")}
             ),
             [],
+        )
+
+    def test_a_published_factor_does_not_record_a_crossing(self):
+        """The half of #417 that did not move: a factor says how much, not
+        that somebody reviewed a mass becoming an energy, so a crossing with
+        a factor and no entry is still asked for one."""
+        self.assertEqual(
+            self._report([
+                Match(source_unit="kg", target_unit="MJ", conversion_factor=9.41)
+            ]),
+            [("s-1", "t-1")],
         )
 
     def test_a_scale_change_is_never_reported(self):
