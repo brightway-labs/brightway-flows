@@ -26,6 +26,12 @@ kept their UUIDs, so ``identifiers_from: "jrc"`` is on their row and
 :func:`_check` holds every category to it.  A release that mints its own stops
 the run instead of filing its factors under nothing.
 
+An implementation that was published under another slug says so in
+``previous_slugs``.  Ours was ``consensus-flow-list`` in release 1.0.0, and a
+category's id is a hash of an IRI the slug is a segment of, so all 44 of our
+categories took new ids when it became ``brightway-flows``.  The old slug is
+what lets a migration from 1.0.0 say which new category each old id is.
+
 Registered as a **vocabulary** rather than a ruling: nobody is overruling the
 pipeline here.  This is what the words mean, in the same sense that
 ``units.json`` says what a kilogram is (rule 12).
@@ -211,6 +217,12 @@ class MethodImplementation:
     #: and :func:`_check` says so out loud -- a package that mints its own is a
     #: join that has to be written before the row can change.
     identifiers_from: str = ""
+    #: Slugs this implementation was published under before, newest last.  A
+    #: category's id is a hash of an IRI the slug is a segment of, so a renamed
+    #: slug moved every one of its categories, and a migration from a release
+    #: published under the old one has to be able to work out where each went
+    #: (`lcia.categories.retired_impact_category_ids`).
+    previous_slugs: tuple[str, ...] = ()
 
     @property
     def ours(self) -> bool:
@@ -633,7 +645,18 @@ def _implementation(entry: Any, *, path: Path) -> MethodImplementation:
         source=str(entry.get("source") or ""),
         release=str(entry.get("release") or ""),
         identifiers_from=str(entry.get("identifiers_from") or ""),
+        previous_slugs=_previous_slugs(entry, path=path),
     )
+
+
+def _previous_slugs(entry: dict[str, Any], *, path: Path) -> tuple[str, ...]:
+    raw = entry.get("previous_slugs") or []
+    if not isinstance(raw, list) or not all(isinstance(slug, str) and slug.strip() for slug in raw):
+        raise ValueError(
+            f"{path.name}: the implementation {entry.get('slug')!r} states "
+            f"`previous_slugs` that are not a list of slugs."
+        )
+    return tuple(slug.strip() for slug in raw)
 
 
 def _factors(entry: Any, *, slug: Any, path: Path) -> FactorSpec:
@@ -790,6 +813,17 @@ def _check(method: LCIAMethodDefinition, *, path: Path) -> None:
             f"{path.name}: the consensus implementation decides, and it is the "
             f"thing being decided."
         )
+    current = {row.slug for row in method.implementations}
+    retired: set[str] = set()
+    for implementation in method.implementations:
+        for slug in implementation.previous_slugs:
+            if slug in current or slug in retired:
+                raise ValueError(
+                    f"{path.name}: {implementation.slug!r} was once published as "
+                    f"{slug!r}, which another implementation of the method is or "
+                    f"was published as, so an old category id would name two."
+                )
+            retired.add(slug)
     for implementation in method.implementations:
         borrowed = implementation.identifiers_from
         if borrowed:

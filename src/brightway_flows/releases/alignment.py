@@ -29,6 +29,11 @@ is not something to publish; it raises.
 A substance follows its flows: a vanished ``flow_object_id`` whose live flows
 all resolved to flows of one surviving substance became that substance.
 
+An impact category has no source rows, and needs none: its id is a hash of
+its IRI, so the only way it moves is an implementation published under a new
+slug, and the method file says which slugs were used before.  1.0.0's 44
+categories of ours are the case.
+
 A ruling in ``release-migration-rulings.json`` answers an unresolved
 identifier, and only one: a ruling that finds no open question is stale and
 refused (see `releases/rulings.py`).
@@ -85,6 +90,9 @@ class FateReason(StrEnum):
     ROWS_GONE = "source-rows-gone"
     #: A curator ruled it, in `release-migration-rulings.json`.
     RULING = "ruling"
+    #: An impact category whose implementation was published under another
+    #: slug, and whose id the old slug mints.
+    IMPLEMENTATION_RENAMED = "implementation-renamed"
     # -- unresolved from here on --
     #: A redirect the export tells a consumer to refuse.
     REFUSED_REDIRECT = "refused-redirect"
@@ -100,6 +108,9 @@ class FateReason(StrEnum):
     OBJECT_SPLIT = "object-split"
     #: A substance one of whose flows is itself unresolved.
     FLOWS_UNRESOLVED = "flows-unresolved"
+    #: An impact category the after release does not publish, and no renamed
+    #: implementation accounts for.
+    CATEGORY_GONE = "category-gone"
 
 
 @dataclass(frozen=True)
@@ -341,6 +352,69 @@ def align_flow_objects(
         fates, rulings, entity=EntityKind.FLOW_OBJECT, live_after=set(after.objects_by_id)
     )
     return fates
+
+
+def align_impact_categories(
+    before: ReleaseSnapshot,
+    after: ReleaseSnapshot,
+    *,
+    retired: dict[str, str],
+    rulings: tuple[MigrationRuling, ...] = (),
+) -> dict[str, IdentifierFate]:
+    """The fate of every impact category *before* publishes and *after* does not.
+
+    A category's id is a hash of its IRI, so it moves only when the IRI does,
+    and the one way that has happened is an implementation published under a
+    new slug.  *retired* is every id an old slug minted and the id it is now
+    (`lcia.categories.retired_impact_category_ids`): a vanished id it names,
+    whose new id the after release publishes, became that category.  Anything
+    else is a category the method no longer has, which is a decision about
+    the method, so it is unresolved rather than deleted.
+    """
+    fates: dict[str, IdentifierFate] = {}
+    labels = _category_labels(before)
+    #: The ids the after release publishes a row for: what a rename or a
+    #: ruling may send a category to, since the diff reads that row's fields.
+    published_after = set(after.categories_by_id)
+    #: And the ids still in use there at all.  An id a factor names without a
+    #: row has not vanished; a consumer has no row of it to change either.
+    in_use_after = published_after | {
+        factor.impact_category_id for factor in after.characterization_factors
+    }
+    for category_id, label in sorted(labels.items()):
+        if category_id in in_use_after:
+            continue
+        target = retired.get(category_id)
+        if target is not None and target in published_after:
+            fates[category_id] = IdentifierFate(
+                category_id, Fate.REPLACED, FateReason.IMPLEMENTATION_RENAMED, replaced_by=target,
+                comment=f"{label}: published under a new implementation slug, which changed its id",
+            )
+            continue
+        fates[category_id] = IdentifierFate(
+            category_id, Fate.UNRESOLVED, FateReason.CATEGORY_GONE,
+            comment=f"the after release publishes no category {label}",
+        )
+    _apply_rulings(fates, rulings, entity=EntityKind.IMPACT_CATEGORY, live_after=published_after)
+    return fates
+
+
+def _category_labels(snapshot: ReleaseSnapshot) -> dict[str, str]:
+    """Every category id a snapshot names, with what a person calls it.
+
+    The published categories, and any id a factor names that they do not:
+    a factor's category is followed by its id whether or not the snapshot
+    carries the category's row.
+    """
+    labels = {
+        factor.impact_category_id: f"{factor.method} / {factor.category} ({factor.implemented_by})"
+        for factor in snapshot.characterization_factors
+    }
+    labels.update({
+        category_id: f"{category.method.get('name', '')} / {category.name} ({category.implemented_by})"
+        for category_id, category in snapshot.categories_by_id.items()
+    })
+    return labels
 
 
 def check_minted_identifiers(

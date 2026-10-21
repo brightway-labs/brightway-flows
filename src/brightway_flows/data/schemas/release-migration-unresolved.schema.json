@@ -17,6 +17,7 @@
       "enum": [
         "flow-object",
         "elementary-flow",
+        "impact-category",
         "characterization-factor"
       ],
       "title": "EntityKind",

@@ -379,6 +379,114 @@
       },
       "type": "array"
     },
+    "impact_categories": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "area_of_protection": {
+            "default": "",
+            "title": "Area Of Protection",
+            "type": "string"
+          },
+          "category_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Category Group"
+          },
+          "description": {
+            "default": "",
+            "title": "Description",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "implemented_by": {
+            "default": "",
+            "title": "Implemented By",
+            "type": "string"
+          },
+          "indicator": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Indicator"
+          },
+          "meta": {
+            "additionalProperties": true,
+            "title": "Meta",
+            "type": "object"
+          },
+          "method": {
+            "additionalProperties": true,
+            "title": "Method",
+            "type": "object"
+          },
+          "midpoint_endpoint": {
+            "default": "",
+            "title": "Midpoint Endpoint",
+            "type": "string"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "timeframe": {
+            "default": "",
+            "title": "Timeframe",
+            "type": "string"
+          },
+          "uncertainty_cutoff": {
+            "default": "",
+            "title": "Uncertainty Cutoff",
+            "type": "string"
+          },
+          "unit_iri": {
+            "default": "",
+            "title": "Unit Iri",
+            "type": "string"
+          },
+          "version": {
+            "default": "",
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "area_of_protection",
+          "category_group",
+          "description",
+          "id",
+          "implemented_by",
+          "indicator",
+          "meta",
+          "method",
+          "midpoint_endpoint",
+          "name",
+          "timeframe",
+          "uncertainty_cutoff",
+          "unit_iri",
+          "version"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
     "redirects": {
       "items": {
         "additionalProperties": false,
@@ -413,7 +521,7 @@
       "type": "array"
     },
     "schema_version": {
-      "const": 1,
+      "const": 2,
       "type": "integer"
     },
     "source_rows": {
@@ -542,6 +650,7 @@
     "flow_objects",
     "elementary_flows",
     "redirects",
+    "impact_categories",
     "characterization_factors",
     "source_rows"
   ],

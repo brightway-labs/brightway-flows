@@ -7,18 +7,18 @@ delete it -- or, where the alignment could not answer, nothing yet.  The
 randonneur files are written from these records (`releases/randonneur_files.py`),
 and so is the unresolved report.
 
-Two orderings matter.  **Factors follow flows**: the factor file is stated
-against the *after* release's flow identifiers, on the assumption that the
-consumer applies the flow migration first.  A before-side factor of a flow
-that was replaced is translated to the survivor's key before the two sides
-are compared, so a renamed flow's factors are updates rather than a deletion
-and a creation; where the survivor already carried a factor in that category,
-the translated one is redundant and dropped, because the survivor's own row
-is the one the update speaks to.  A factor of an unresolved flow is
-unresolved with it, and so is every factor of an impact category the after
-release no longer publishes -- a category is a method as one implementer
-rendered it, and its disappearance is a decision about the method, not a
-row to delete.
+**A factor follows its flow and its category.**  The factor file is stated
+against the identifiers the *before* release published, because those are
+what a consumer's method table holds.  A factor whose flow was replaced, or
+whose category was renamed, is the same factor under a new key: it is
+`replaced`, and the file writes it as an ``update`` that matches the old
+triple and sets the new one (randonneur cannot apply ``replace`` to a node).
+Where the consumer already holds a row under the new key -- two flows merged,
+and the survivor carried its own factor -- the moved one is redundant and
+deleted, so the table does not end with two rows for one triple.  A factor of
+an unresolved flow or category is unresolved with it.  A category the after
+release no longer publishes is a method as one implementer rendered it, and
+its disappearance is a decision about the method, not a row to delete.
 
 **Entries are sorted by identifier**, so two runs over the same pair write
 the same bytes, and a snapshot diffed against itself writes nothing.
@@ -38,6 +38,7 @@ from brightway_flows.releases.alignment import (
     IdentifierFate,
     align_elementary_flows,
     align_flow_objects,
+    align_impact_categories,
     check_minted_identifiers,
     check_source_lists,
 )
@@ -49,10 +50,15 @@ from brightway_flows.releases.rulings import (
     rulings_for,
 )
 from brightway_flows.releases.snapshot import (
+    FACTOR_KEYS,
     ReleaseSnapshot,
     ReleaseStamp,
     SnapshotFactor,
 )
+
+#: Why a factor or a category was deleted though the after release publishes
+#: its successor: the consumer already holds a row under the successor's key.
+MERGED_INTO_HELD = "merged-into-held-row"
 
 
 class DeltaKind(StrEnum):
@@ -101,6 +107,7 @@ class ReleaseDiff:
     after: ReleaseStamp
     flow_objects: list[Delta] = field(default_factory=list)
     elementary_flows: list[Delta] = field(default_factory=list)
+    impact_categories: list[Delta] = field(default_factory=list)
     factors: list[Delta] = field(default_factory=list)
     #: How many source-row answers the minted-identifier arithmetic checked.
     minted_identifiers_checked: int = 0
@@ -110,6 +117,7 @@ class ReleaseDiff:
         return {
             EntityKind.FLOW_OBJECT: self.flow_objects,
             EntityKind.ELEMENTARY_FLOW: self.elementary_flows,
+            EntityKind.IMPACT_CATEGORY: self.impact_categories,
             EntityKind.FACTOR: self.factors,
         }
 
@@ -215,88 +223,167 @@ def _factor_payload(factor: SnapshotFactor) -> dict[str, Any]:
     return factor.to_dict()
 
 
+def _label(factor: SnapshotFactor) -> str:
+    return f"{factor.method} / {factor.category} ({factor.implemented_by})"
+
+
+def _diff_categories(
+    before: ReleaseSnapshot, after: ReleaseSnapshot, fates: dict[str, IdentifierFate]
+) -> list[Delta]:
+    """Created, updated and the fates, for the impact categories.
+
+    A renamed category is the same row under a new id, so its delta carries
+    the new id and every published field that moved with it; the file writes
+    it as an ``update`` that sets the id.  Where the consumer already holds the
+    new id, the old row is a duplicate of it, and is deleted instead.
+    """
+    # A category only a factor names has no row for a consumer to change; its
+    # fate still moves the factors.
+    held = {key: fate for key, fate in fates.items() if key in before.categories_by_id}
+    deltas = _diff_records(
+        EntityKind.IMPACT_CATEGORY, before.categories_by_id, after.categories_by_id, held
+    )
+    # A category a renamed one becomes arrives by that update, not by a
+    # create -- where there is a row to update.  A rename whose old id only
+    # factors name writes no update, so its target is created like any other.
+    moved_to = {
+        fate.replaced_by
+        for fate in held.values()
+        if fate.fate is Fate.REPLACED and fate.replaced_by not in before.categories_by_id
+    }
+    deltas = [
+        delta for delta in deltas
+        if not (delta.kind is DeltaKind.CREATED and delta.identifier in moved_to)
+    ]
+    for delta in deltas:
+        if delta.kind is not DeltaKind.REPLACED or delta.replaced_by is None:
+            continue
+        if delta.replaced_by in before.categories_by_id:
+            delta.kind = DeltaKind.DELETED
+            delta.reason = MERGED_INTO_HELD
+            delta.comment = f"{delta.comment}; the before release already published {delta.replaced_by}"
+            continue
+        old = before.categories_by_id[delta.identifier].published_fields()
+        new = after.categories_by_id[delta.replaced_by].published_fields()
+        changed = _changed_fields(old, new)
+        delta.changed_fields = ["id", *changed]
+        delta.before = {"id": delta.identifier, **{key: old.get(key) for key in changed}}
+        delta.after = {"id": delta.replaced_by, **{key: new.get(key) for key in changed}}
+    return deltas
+
+
 def _diff_factors(
     before: ReleaseSnapshot,
     after: ReleaseSnapshot,
     flow_fates: dict[str, IdentifierFate],
+    category_fates: dict[str, IdentifierFate],
     rulings: tuple[MigrationRuling, ...],
 ) -> list[Delta]:
-    after_categories = {factor.impact_category_id for factor in after.characterization_factors}
-    before_keys = set(before.factors_by_key)
-    translated: dict[tuple[str, str, str], SnapshotFactor] = {}
+    before_keys = before.factors_by_key
+    after_keys = after.factors_by_key
+    #: Before-side factors whose key the after release still uses.
+    kept: dict[tuple[str, str, str], SnapshotFactor] = {}
+    #: New key -> the before-side key and factor that moved to it.
+    moved: dict[tuple[str, str, str], tuple[tuple[str, str, str], SnapshotFactor]] = {}
     deltas: list[Delta] = []
 
-    for key, factor in before.factors_by_key.items():
-        fate = flow_fates.get(factor.elementary_flow_uuid)
-        if fate is not None and fate.fate is Fate.UNRESOLVED:
-            deltas.append(Delta(
-                entity=EntityKind.FACTOR, kind=DeltaKind.UNRESOLVED,
-                identifier=SnapshotFactor.key_text(key), reason="flow-unresolved",
-                candidates=list(fate.candidates),
-                comment=f"its flow {factor.elementary_flow_uuid} is unresolved: {fate.comment}",
-                before=_factor_payload(factor),
-            ))
-            continue
-        if fate is not None and fate.fate is Fate.DELETED:
-            deltas.append(Delta(
-                entity=EntityKind.FACTOR, kind=DeltaKind.DELETED,
-                identifier=SnapshotFactor.key_text(key), reason="flow-deleted",
-                comment=f"its flow {factor.elementary_flow_uuid} is deleted: {fate.comment}",
-                before=_factor_payload(factor),
-            ))
-            continue
-        if factor.impact_category_id not in after_categories:
-            # Asked after the flow's fate: a deleted flow's factor is deleted
-            # whatever became of the category.
-            deltas.append(Delta(
-                entity=EntityKind.FACTOR, kind=DeltaKind.UNRESOLVED,
-                identifier=SnapshotFactor.key_text(key), reason="category-gone",
-                comment=(
-                    f"the after release publishes no factor under "
-                    f"{factor.method} / {factor.category} ({factor.implemented_by})"
-                ),
-                before=_factor_payload(factor),
-            ))
-            continue
-        if fate is None:
-            translated[key] = factor
-            continue
-        new_key = (factor.impact_category_id, fate.replaced_by or "", factor.geography)
-        if new_key in before_keys and fate.replaced_by in before.live_flows:
-            # The survivor carried its own factor here; the update on that
-            # row is what the consumer applies, and this one is redundant.
-            continue
-        if new_key in translated:
-            continue  # two flows merged into one survivor: one factor suffices
-        translated[new_key] = factor
+    def closed(kind: DeltaKind, key: tuple[str, str, str], factor: SnapshotFactor, reason: str,
+               comment: str, candidates: tuple[str, ...] = ()) -> None:
+        deltas.append(Delta(
+            entity=EntityKind.FACTOR, kind=kind, identifier=SnapshotFactor.key_text(key),
+            reason=reason, candidates=list(candidates), comment=comment,
+            before=_factor_payload(factor),
+        ))
 
-    after_keys = after.factors_by_key
-    for key in sorted(set(after_keys) - set(translated)):
+    # A factor whose flow did not move is visited first, so that where a
+    # merged flow's factor lands on its survivor's key, the survivor's own
+    # factor is the one kept.
+    ordered = sorted(
+        before_keys.items(),
+        key=lambda item: (item[1].elementary_flow_uuid in flow_fates, item[0]),
+    )
+    for key, factor in ordered:
+        flow_fate = flow_fates.get(factor.elementary_flow_uuid)
+        category_fate = category_fates.get(factor.impact_category_id)
+        if flow_fate is not None and flow_fate.fate is Fate.UNRESOLVED:
+            closed(DeltaKind.UNRESOLVED, key, factor, "flow-unresolved",
+                   f"its flow {factor.elementary_flow_uuid} is unresolved: {flow_fate.comment}",
+                   flow_fate.candidates)
+            continue
+        if flow_fate is not None and flow_fate.fate is Fate.DELETED:
+            closed(DeltaKind.DELETED, key, factor, "flow-deleted",
+                   f"its flow {factor.elementary_flow_uuid} is deleted: {flow_fate.comment}")
+            continue
+        # Asked after the flow's fate: a deleted flow's factor is deleted
+        # whatever became of the category.
+        if category_fate is not None and category_fate.fate is Fate.UNRESOLVED:
+            closed(DeltaKind.UNRESOLVED, key, factor, category_fate.reason.value,
+                   category_fate.comment, category_fate.candidates)
+            continue
+        if category_fate is not None and category_fate.fate is Fate.DELETED:
+            closed(DeltaKind.DELETED, key, factor, "category-deleted",
+                   f"its category is deleted: {category_fate.comment}")
+            continue
+        new_key = (
+            category_fate.replaced_by if category_fate else factor.impact_category_id,
+            flow_fate.replaced_by if flow_fate else factor.elementary_flow_uuid,
+            factor.geography,
+        )
+        if new_key == key:
+            kept[key] = factor
+            continue
+        if new_key in before_keys or new_key in moved:
+            closed(DeltaKind.DELETED, key, factor, MERGED_INTO_HELD,
+                   f"{_label(factor)}: it moves to {SnapshotFactor.key_text(new_key)}, "
+                   "where the consumer already holds a factor")
+            continue
+        moved[new_key] = (key, factor)
+
+    for key in sorted(set(after_keys) - set(kept) - set(moved)):
         factor = after_keys[key]
         deltas.append(Delta(
             entity=EntityKind.FACTOR, kind=DeltaKind.CREATED,
             identifier=SnapshotFactor.key_text(key), reason="new-in-after",
-            comment=f"{factor.method} / {factor.category} ({factor.implemented_by})",
-            after=_factor_payload(factor),
+            comment=_label(factor), after=_factor_payload(factor),
         ))
-    for key in sorted(set(translated) & set(after_keys)):
-        old, new = translated[key], after_keys[key]
-        if old.amount == new.amount:
+    for key in sorted(kept):
+        old = kept[key]
+        new = after_keys.get(key)
+        if new is None:
+            closed(DeltaKind.DELETED, key, old, "gone-in-after",
+                   f"{_label(old)}: no factor in the after release")
+        elif old.amount != new.amount:
+            deltas.append(Delta(
+                entity=EntityKind.FACTOR, kind=DeltaKind.UPDATED,
+                identifier=SnapshotFactor.key_text(key), reason="fields-changed",
+                changed_fields=["amount"],
+                comment=f"{_label(new)}: amount {old.amount!r} -> {new.amount!r}",
+                before={"amount": old.amount}, after={"amount": new.amount},
+            ))
+    for new_key in sorted(moved):
+        old_key, old = moved[new_key]
+        new = after_keys.get(new_key)
+        if new is None:
+            closed(DeltaKind.DELETED, old_key, old, "gone-in-after",
+                   f"{_label(old)}: no factor under {SnapshotFactor.key_text(new_key)} in the after release")
             continue
+        changed = [name for name, was, now in zip(FACTOR_KEYS, old_key, new_key) if was != now]
+        before_fields = {name: was for name, was in zip(FACTOR_KEYS, old_key) if name in changed}
+        after_fields = {name: now for name, now in zip(FACTOR_KEYS, new_key) if name in changed}
+        if old.amount != new.amount:
+            changed.append("amount")
+            before_fields["amount"], after_fields["amount"] = old.amount, new.amount
+        moves = " and ".join(
+            {"impact_category_id": "its category was renamed",
+             "elementary_flow_uuid": "its flow was replaced"}[name]
+            for name in changed if name in ("impact_category_id", "elementary_flow_uuid")
+        )
         deltas.append(Delta(
-            entity=EntityKind.FACTOR, kind=DeltaKind.UPDATED,
-            identifier=SnapshotFactor.key_text(key), reason="fields-changed",
-            changed_fields=["amount"],
-            comment=f"{new.method} / {new.category} ({new.implemented_by}): amount {old.amount!r} -> {new.amount!r}",
-            before={"amount": old.amount}, after={"amount": new.amount},
-        ))
-    for key in sorted(set(translated) - set(after_keys)):
-        old = translated[key]
-        deltas.append(Delta(
-            entity=EntityKind.FACTOR, kind=DeltaKind.DELETED,
-            identifier=SnapshotFactor.key_text(key), reason="gone-in-after",
-            comment=f"{old.method} / {old.category} ({old.implemented_by}): no factor in the after release",
-            before=_factor_payload(old),
+            entity=EntityKind.FACTOR, kind=DeltaKind.REPLACED,
+            identifier=SnapshotFactor.key_text(old_key), reason="key-moved",
+            replaced_by=SnapshotFactor.key_text(new_key), changed_fields=changed,
+            comment=f"{_label(new)}: {moves}",
+            before=before_fields, after=after_fields,
         ))
 
     for ruling in rulings:
@@ -331,19 +418,30 @@ def diff_releases(
     *,
     rulings: tuple[MigrationRuling, ...] = (),
     allow_different_sources: bool = False,
+    retired_categories: dict[str, str] | None = None,
 ) -> ReleaseDiff:
     """Every change between two releases.
 
     *rulings* is the whole rulings file; only those naming this pair apply.
+    *retired_categories* maps a category id an old implementation slug minted
+    to the id it is now; by default every one the method files declare
+    (`lcia.categories.retired_impact_category_ids`).
 
     :raises AlignmentError: for two snapshots that cannot be compared, or an
         alignment that contradicts the minted-identifier arithmetic.
     :raises MigrationRulingError: for a ruling that answers no open question.
     """
+    if retired_categories is None:
+        from brightway_flows.lcia.categories import retired_impact_category_ids
+
+        retired_categories = retired_impact_category_ids()
     check_source_lists(before, after, allow_different_sources=allow_different_sources)
     pair = rulings_for(rulings, before.stamp.version, after.stamp.version)
     flow_fates = align_elementary_flows(before, after, rulings=pair)
     object_fates = align_flow_objects(before, after, flow_fates, rulings=pair)
+    category_fates = align_impact_categories(
+        before, after, retired=retired_categories, rulings=pair
+    )
     checked = check_minted_identifiers(before, after, flow_fates, object_fates)
 
     flows = _diff_records(
@@ -352,12 +450,14 @@ def diff_releases(
     objects = _diff_records(
         EntityKind.FLOW_OBJECT, before.objects_by_id, after.objects_by_id, object_fates
     )
-    factors = _diff_factors(before, after, flow_fates, pair)
+    categories = _diff_categories(before, after, category_fates)
+    factors = _diff_factors(before, after, flow_fates, category_fates, pair)
     return ReleaseDiff(
         before=before.stamp,
         after=after.stamp,
         flow_objects=objects,
         elementary_flows=flows,
+        impact_categories=categories,
         factors=factors,
         minted_identifiers_checked=checked,
     )

@@ -45,6 +45,7 @@ Both are published, so both are pinned by ``tests/test_impact_categories.py``.
 
 from __future__ import annotations
 
+import dataclasses
 import uuid
 from functools import lru_cache
 
@@ -274,3 +275,35 @@ def published_impact_categories() -> tuple[ImpactCategory, ...]:
         for implementation in method.implementations
         for category in impact_categories_for(method.slug, implementation.slug)
     )
+
+
+@lru_cache(maxsize=None)
+def retired_impact_category_ids() -> dict[str, str]:
+    """Every category id an earlier slug minted, and the id it is now.
+
+    An implementation's ``previous_slugs`` say what it was published as, so the
+    IRI each of its categories had then is the IRI it has now with the old
+    segment, and the old id is the hash of that.  Release 1.0.0 published our
+    44 categories under ``consensus-flow-list``; this is how a migration from
+    it knows which category published today under ``brightway-flows`` each of
+    its ids is.
+
+    :raises ValueError: where an old id is also a live one, which would make
+        one identifier mean two categories.
+    """
+    retired: dict[str, str] = {}
+    for method in lcia_methods():
+        for implementation in method.implementations:
+            for slug in implementation.previous_slugs:
+                earlier = dataclasses.replace(implementation, slug=slug)
+                for definition in method.categories:
+                    old = impact_category_id(impact_category_iri(method, definition, earlier))
+                    new = impact_category_id(impact_category_iri(method, definition, implementation))
+                    retired[str(old)] = str(new)
+    live = {str(category.id) for category in published_impact_categories()}
+    clash = sorted(set(retired) & live)
+    if clash:
+        raise ValueError(
+            f"{len(clash)} retired category ids are live ones too, starting with {clash[0]}"
+        )
+    return retired

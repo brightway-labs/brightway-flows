@@ -364,23 +364,45 @@ uv run brightway-flows contexts \
 ## Recording a release, and writing the migration to the next one
 
 A build drops and recreates its tables, so nothing in a database says what
-the release before it published. When a build is a release, record it:
+the release before it published. When a build is a release, build it from a
+clean tree, tag the commit, and record it:
 
 ```bash
-git tag 1.0.0                       # the commit the build was made from
+git status --short                  # must print nothing
+git tag 1.1.0                       # the commit the build is made from
 uv run brightway-flows build --source ecoinvent-3.12 --source ecoinvent-3.8 \
     --source bafu-2026-v1 --source stepwise-2006-1.09 --source agribalyse-3.2
 uv run brightway-flows characterise
 uv run brightway-flows release-snapshot
 ```
 
-The snapshot goes to `releases/1.0.0.json.gz` in the data directory: the
-published fields of every substance and flow, the redirects, the factors, and
-the source rows that let the next release's identifiers be matched to this
-one's. The build's commit is named by its git tag; a build of an untagged
-commit is a *development* build, named by `git describe` and marked `-dev`,
-and a build from a modified tree is refused. `--version` names a build by
-hand, for one made from an exported tree.
+The snapshot goes to `releases/1.1.0.json.gz` in the data directory: the
+published fields of every substance, flow and impact category, the redirects,
+the factors, and the source rows that let the next release's identifiers be
+matched to this one's. The build's commit is named by its git tag; a build of
+an untagged commit is a *development* build, named by `git describe` and
+marked `-dev`. A build from a tree with uncommitted changes is refused,
+because its commit does not say what built it; `--version` names a build by
+hand, and `--allow-dirty` records one that was published that way anyway.
+
+**Release 1.0.0 is that case.** It was built on 2026-09-20 from commit
+`50543d9` with uncommitted changes, and that commit is not in the repository,
+so it has no tag and cannot be rebuilt. It is recorded from the database
+published with it on [Zenodo](https://doi.org/10.5281/zenodo.22857950):
+
+```bash
+uv run brightway-flows release-snapshot --database consensus-flows.sqlite3 \
+    --version 1.0.0 --allow-dirty
+```
+
+A snapshot written before impact categories were recorded is refused with
+the command that upgrades it, which reads the categories from that release's
+own `lcia-factors.json.gz` and checks every factor against it:
+
+```bash
+uv run brightway-flows release-snapshot-upgrade --snapshot 1.0.0.json.gz \
+    --factors lcia-factors.json.gz
+```
 
 When the next release is built, write what changed:
 
@@ -388,27 +410,35 @@ When the next release is built, write what changed:
 uv run brightway-flows release-migrations --from 1.0.0 --to 1.1.0
 ```
 
-`--from` and `--to` take a recorded version, a snapshot file, or — for `--to`
-— a build's `consensus-flows.sqlite3`, which is snapshotted without being
-recorded (`--to-version` names it). The four files go under
+`--from` and `--to` take a recorded version, a snapshot file, or a build's
+`consensus-flows.sqlite3`, which is snapshotted without being recorded
+(`--to-version` names it on the `--to` side). The five files go under
 `releases/migrations/1.0.0__1.1.0/`; what they hold and how a consumer
 applies them is in [Which output do I need?](../using/outputs.md#releasesmigrationsfrom__to-moving-a-database-from-one-release-to-the-next).
 The two releases must have merged the same source lists;
 `--allow-different-sources` lets the run proceed with every row of a list
 only one side merged left unresolved rather than deleted.
 
-The `unresolved.json` it writes is the worklist. A split, a unit change or a
-refused redirect is answered in `release-migration-rulings.json`, naming the
-pair of releases, the entity and the identifier; run `release-migrations`
-again and the ruling is in the files. A ruling that names an identifier the
-pair did not leave unresolved is refused as stale.
+The command then applies the files with randonneur to the earlier release,
+as a consumer is told to, and compares the result with the later release
+table by table. A row missing, left over, different or written twice exits
+with status 3 and names the rows; that is a defect in the migration, not in
+either release.
+
+The `unresolved.json` it writes is the worklist. A split, a unit change, a
+refused redirect or an impact category that is gone is answered in
+`release-migration-rulings.json`, naming the pair of releases, the entity and
+the identifier; run `release-migrations` again and the ruling is in the
+files. A ruling that names an identifier the pair did not leave unresolved is
+refused as stale.
 
 ## All commands
 
 | Command | Purpose |
 |---|---|
 | `release-snapshot` | Record what this build publishes, named by the git tag on its commit, for `release-migrations` to read |
-| `release-migrations` | Write the randonneur migrations — substances, flows, factors — from one recorded release to the next, and the list of what could not be resolved |
+| `release-snapshot-upgrade` | Bring a snapshot written in an earlier format up to this one, from the factor file its release published |
+| `release-migrations` | Write the randonneur migrations — substances, flows, impact categories, factors — from one recorded release to the next, check them by applying them, and list what could not be resolved |
 | `fetch-source <key>` | Fetch one source list's flows, whichever list it is |
 | `fetch-lcia <key>` | Fetch one source list's characterisation factors |
 | `download` | Download the EF 3.1 ZIP |

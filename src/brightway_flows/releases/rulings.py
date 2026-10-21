@@ -46,7 +46,13 @@ class EntityKind(StrEnum):
 
     FLOW_OBJECT = "flow-object"
     ELEMENTARY_FLOW = "elementary-flow"
+    IMPACT_CATEGORY = "impact-category"
     FACTOR = "characterization-factor"
+
+    @property
+    def plural(self) -> str:
+        """For a table a person reads."""
+        return "impact-categories" if self is EntityKind.IMPACT_CATEGORY else f"{self.value}s"
 
 
 class RulingVerb(StrEnum):

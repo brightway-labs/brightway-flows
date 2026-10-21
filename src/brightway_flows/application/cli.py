@@ -936,6 +936,15 @@ def release_snapshot(
         "--output",
         help="Where to write. Defaults to <data dir>/releases/<version>.json.gz.",
     ),
+    allow_dirty: bool = typer.Option(
+        False,
+        "--allow-dirty",
+        help=(
+            "Record a build made from a tree with uncommitted changes, named with "
+            "--version. Only for a release already published that way, like 1.0.0: "
+            "nothing can rebuild either side of a migration from such a build."
+        ),
+    ),
 ) -> None:
     """Record what this build publishes, so a later release can say what changed.
 
@@ -961,9 +970,16 @@ def release_snapshot(
 
     database = database or CONSENSUS_DB_FILEPATH
     try:
-        snapshot = build_snapshot(
-            database, version=named_version(version) if version else None
-        )
+        named = named_version(version) if version else None
+        # Built before the gate: the build reads only, and writing is the one
+        # side effect, so one read of the stamp answers both.
+        snapshot = build_snapshot(database, version=named)
+        if snapshot.stamp.revision_dirty and not allow_dirty:
+            raise ReleaseVersionError(
+                f"{database} was built from a tree with uncommitted changes, so its "
+                "commit does not say what built it; build a release from a clean "
+                "tree, or pass --allow-dirty to record one already published"
+            )
     except (ReleaseVersionError, SnapshotError) as error:
         typer.echo(f"error: {error}", err=True)
         raise typer.Exit(code=2) from error
@@ -974,9 +990,15 @@ def release_snapshot(
         f"(commit {stamp.revision[:12] or 'unknown'}): "
         f"{len(snapshot.flow_objects)} substances, {len(snapshot.elementary_flows)} flows "
         f"({len(snapshot.redirects)} redirects), "
+        f"{len(snapshot.impact_categories)} impact categories, "
         f"{len(snapshot.characterization_factors)} factors, "
         f"{len(snapshot.source_rows)} source rows."
     )
+    if stamp.revision_dirty:
+        typer.echo(
+            "The build was made from a tree with uncommitted changes; the snapshot "
+            "records that in its stamp."
+        )
     if stamp.development:
         typer.echo(
             "This is a development build -- no tag names its commit -- so the "
@@ -993,6 +1015,54 @@ def release_snapshot(
         elementary_flows=len(snapshot.elementary_flows),
         characterization_factors=len(snapshot.characterization_factors),
     )
+
+
+@app.command("release-snapshot-upgrade")
+def release_snapshot_upgrade(
+    snapshot: Path = typer.Option(
+        ..., "--snapshot", exists=True, dir_okay=False,
+        help="A snapshot written in an earlier format.",
+    ),
+    factors: Path = typer.Option(
+        ..., "--factors", exists=True, dir_okay=False,
+        help="The lcia-factors.json.gz that release published.",
+    ),
+    output: Path | None = typer.Option(
+        None,
+        "--output",
+        help="Where to write. Defaults to <data dir>/releases/<version>.json.gz.",
+    ),
+) -> None:
+    """Bring a snapshot written in an earlier format up to this one.
+
+    Format 1 held a release's factors but not its impact categories, which
+    are in the factor file the release published.  The factor file has to be
+    that release's: every factor in the snapshot must be in it, with the same
+    amount, under a category of the same method, name and implementer.
+
+    Reads the two files; writes one.
+    """
+    from brightway_flows.releases import snapshot_path, write_snapshot
+    from brightway_flows.releases.snapshot import (
+        SnapshotError,
+        read_snapshot_payload,
+        upgrade_snapshot,
+    )
+
+    try:
+        upgraded = upgrade_snapshot(
+            read_snapshot_payload(snapshot), read_snapshot_payload(factors), source=str(snapshot)
+        )
+    except SnapshotError as error:
+        typer.echo(f"error: {error}", err=True)
+        raise typer.Exit(code=2) from error
+    path = write_snapshot(upgraded, output or snapshot_path(upgraded.stamp.version))
+    typer.echo(
+        f"Upgraded {upgraded.stamp.randonneur_id}: {len(upgraded.impact_categories)} "
+        f"impact categories from {factors.name}, every one of its "
+        f"{len(upgraded.characterization_factors)} factors matched."
+    )
+    typer.echo(f"Wrote {path}")
 
 
 def _release_side(text: str, *, version: str | None):
@@ -1024,7 +1094,10 @@ def release_migrations(
     from_release: str = typer.Option(
         ...,
         "--from",
-        help="The earlier release: a version recorded with release-snapshot, or a snapshot file.",
+        help=(
+            "The earlier release: a version recorded with release-snapshot, a "
+            "snapshot file, or a published consensus-flows.sqlite3."
+        ),
     ),
     to_release: str = typer.Option(
         ...,
@@ -1053,14 +1126,19 @@ def release_migrations(
 ) -> None:
     """Write the randonneur migrations from one release to the next.
 
-    Three files, for a consumer who loaded the earlier release into their own
-    database: the substances, the flows, and the characterisation factors,
-    each as `create`, `update`, `replace` and `delete` entries.  A fourth,
-    `unresolved.json`, lists what the migration could not decide -- a flow
-    whose source rows split, a unit that changed, a redirect the export tells
-    a consumer to refuse -- for a ruling in `release-migration-rulings.json`.
+    Four files, for a consumer who loaded the earlier release into their own
+    database: the substances, the flows, the impact categories and the
+    characterisation factors, each as `create`, `update`, `replace` and
+    `delete` entries.  A fifth, `unresolved.json`, lists what the migration
+    could not decide -- a flow whose source rows split, a unit that changed,
+    a redirect the export tells a consumer to refuse -- for a ruling in
+    `release-migration-rulings.json`.
 
-    Reads only.
+    The files are then applied with randonneur to the earlier release, the
+    way a consumer is told to apply them, and the result compared with the
+    later release; a mismatch exits 3.
+
+    Reads the two releases; writes the files.
     """
     from brightway_flows.filesystem import RELEASES_DIR
     from brightway_flows.releases import (
@@ -1095,7 +1173,7 @@ def release_migrations(
     typer.echo(header)
     for entity in EntityKind:
         row = "".join(f"{counts[(entity.value, kind.value)]:>12}" for kind in DeltaKind)
-        typer.echo(f"{entity.value + 's':28}{row}")
+        typer.echo(f"{entity.plural:28}{row}")
     if diff.minted_identifiers_checked:
         typer.echo(
             f"{diff.minted_identifiers_checked} source-row answers agreed with the "
@@ -1111,6 +1189,31 @@ def release_migrations(
         unresolved=len(diff.unresolved),
         **{f"{entity}.{kind}": n for (entity, kind), n in counts.items() if n},
     )
+
+    from randonneur.errors import (
+        ConflictingConversionFactors,
+        MultipleTransformations,
+        UnmappedData,
+        WrongGraphContext,
+    )
+
+    from brightway_flows.releases.replay import replay_migration
+
+    try:
+        report = replay_migration(before, after, diff, output or RELEASES_DIR / "migrations")
+    except (
+        ConflictingConversionFactors, MultipleTransformations, UnmappedData, WrongGraphContext,
+        SnapshotError,
+    ) as error:
+        # The files are written and reported above; what failed is applying them.
+        typer.echo(f"error: randonneur cannot apply the files: {error}", err=True)
+        raise typer.Exit(code=3) from error
+    typer.echo("Applied with randonneur to the earlier release, against the later one:")
+    for line in report.lines():
+        typer.echo(f"  {line}")
+    if not report.ok:
+        typer.echo("error: the files do not migrate the earlier release to the later one", err=True)
+        raise typer.Exit(code=3)
 
 
 def main() -> None:

@@ -280,7 +280,7 @@ substance to another after a registry number was corrected, and revalues a
 hundred factors. Reloading the whole list loses every link you made. What you
 want is the list of what changed, in a form your database can apply.
 
-That is what `release-migrations` writes: three files in
+That is what `release-migrations` writes: four files in
 [randonneur's](https://github.com/brightway-lca/randonneur) format, one for
 each kind of thing your database holds, each a datapackage naming the two
 releases (`source_id`, `target_id`), saying where each field is read from
@@ -290,37 +290,78 @@ releases (`source_id`, `target_id`), saying where each field is read from
 |---|---|---|
 | `flow-objects.json` | The substances: the `flow_objects` table | `create`, `update`, `replace`, `delete` |
 | `elementary-flows.json` | The flows: `flows` in `harmonised-flows-simple.json.gz` | `create`, `update`, `replace`, `delete` |
+| `impact-categories.json` | The impact categories: `impact_categories` in `lcia-factors.json.gz` | `create`, `update`, `delete` |
 | `characterization-factors.json` | The factors: `characterization_factors` in `lcia-factors.json.gz` | `create`, `update`, `delete` |
+
+Every entry names a row by the identifier the release *you hold* gave it, so
+the four files can be applied in any order.
 
 An `update` names the identifier and carries the whole new value of every
 field that changed — a longer synonym list arrives complete, not as the one
 label that was added, because randonneur overwrites a nested value rather
-than merging into it. A `replace` says an identifier you hold is now another
-one, with a `conversion_factor` of `1.0` where the unit is the same; the
-export's own `redirects` are the first thing it is written from, and a
-context-collapse redirect, which the export tells you to refuse, is *not*
-written as a `replace`. A `delete` is a flow whose source rows reach nothing
-in the later release, or one whose source row this list withdrew.
+than merging into it.
+
+A `replace` says a flow or a substance you hold is now another one, with a
+`conversion_factor` of `1.0` where the unit is the same; the export's own
+`redirects` are the first thing it is written from, and a context-collapse
+redirect, which the export tells you to refuse, is *not* written as a
+`replace`. randonneur applies a `replace` to the exchanges of an inventory
+and not to a table of flows, so the same flow is also listed under `delete`:
+the old row leaves your flow table, and the flow it became is either one you
+already hold or arrives under `create`.
+
+A `delete` is otherwise a flow whose source rows reach nothing in the later
+release, or one whose source row this list withdrew.
+
+**A factor keeps its row when its flow or its category is renamed.** In
+release 1.0.0 this list published its own numbers under the implementer name
+`consensus-flow-list`; later releases publish them as `brightway-flows`, and
+since a category's identifier is made from that name, all 44 of those
+categories have new identifiers. The migration does not delete your 345,997
+rows of them and create them again. Each is an `update` that finds the row by
+the old category identifier and writes the new one. A factor stated for no
+place has `geography` `null`, exactly as `lcia-factors.json.gz` publishes it,
+because randonneur matches a row on the value it holds:
+
+```json
+{
+  "source": {"impact_category_id": "04fc7359-0ad8-5d49-901a-9e1d7ec81b54",
+             "elementary_flow_uuid": "00fdc4bc-724b-4993-ad43-c70df533b092",
+             "geography": null},
+  "target": {"impact_category_id": "5b9a371d-cdc1-57fe-8a41-002e1a245c37"},
+  "comment": "EF / Resource use, fossils (brightway-flows): its category was renamed"
+}
+```
+
+The category itself is an `update` of the same kind in
+`impact-categories.json`. A factor of a flow that was merged into another is
+moved onto the survivor in the same way, or deleted if you already hold the
+survivor's own factor in that category.
 
 ```python
 import randonneur as rn
 
+nodes = rn.MigrationConfig(verbs=["update", "delete", "create"])
+
 flows = rn.Datapackage.from_json("elementary-flows.json")
 # Your flow table, one dict per flow keyed by `identifier`:
-rn.migrate_nodes(my_flows, flows.data, rn.MigrationConfig(verbs=["update", "delete", "create"]))
+rn.migrate_nodes(my_flows, flows.data, nodes)
 # Your inventories, exchanges under an "edges" key:
 rn.migrate_edges(my_processes, flows.data, rn.MigrationConfig(verbs=["replace"]))
 
+categories = rn.Datapackage.from_json("impact-categories.json")
+rn.migrate_nodes(my_categories, categories.data, nodes)
+
 factors = rn.Datapackage.from_json("characterization-factors.json")
-rn.migrate_nodes(my_method_rows, factors.data, rn.MigrationConfig(verbs=["update", "delete", "create"]))
+rn.migrate_nodes(my_method_rows, factors.data, nodes)
 ```
 
-**Apply the flows before the factors.** The factor file is stated against
-the *later* release's flow identifiers: a factor of a flow that was replaced
-is written as an `update` on the survivor, not as a deletion and a creation,
-and that is only right once your method rows name the survivor.
+`release-migrations` does exactly this to the earlier release before it
+finishes — every table, plus an inventory with one exchange of every flow —
+and refuses to finish unless the result is the later release, row for row,
+apart from what it reports as unresolved.
 
-A fourth file, `unresolved.json`, is not a migration. It lists every
+A fifth file, `unresolved.json`, is not a migration. It lists every
 identifier of the earlier release the migration could not decide, with the
 candidates and the reason:
 
@@ -330,19 +371,19 @@ candidates and the reason:
 | `unit-change` | One flow, published in another unit; the conversion is not something to guess |
 | `refused-redirect` | The export redirects it with a reason (`context-collapse`, `unclassified`) it tells you to refuse |
 | `list-not-merged` | Its source rows belong to a list only the earlier release merged |
-| `category-gone` | A factor of an impact category the later release does not publish |
+| `category-gone` | An impact category the later release does not publish, under any implementer name it has used, and every factor of it |
 
-Nothing in the three migrations mentions an unresolved identifier, so a
+Nothing in the four migrations mentions an unresolved identifier, so a
 database you migrate keeps it as it was. Each is answered, once somebody has
 looked, by a ruling in `release-migration-rulings.json`; the next run of
 `release-migrations` writes the answer into the files.
 
-What one looks like: between the build of 2026-09-02 at `944b274` and the
-build of the same day at `f8867d1`, which signed Stepwise 2006's numbers onto
-23 metal ions, the migration is 637 factors created, 13 flows and one
-substance updated (a synonym list and a molecular formula), no identifier
-replaced or deleted, and nothing unresolved. A snapshot diffed against itself
-writes four files with no entries.
+What one looks like: from release 1.0.0 to the build of `main` at `327a5c0`
+on 2026-10-20, which merged the same five lists, `impact-categories.json`
+holds the 44 updates of the renaming above and nothing else,
+`characterization-factors.json` holds their 345,997 updates and 133 `create`
+entries for factors that build added, and nothing is unresolved. A snapshot
+diffed against itself writes five files with no entries.
 
 Two things a migration is not: a diff of every field — provenance,
 `source_refs` and pipeline bookkeeping never reach your database and are not

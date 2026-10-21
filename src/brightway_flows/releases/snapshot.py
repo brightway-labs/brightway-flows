@@ -29,6 +29,16 @@ the compartment, and a substance regrouped by a corrected CAS number takes a
 new one -- but the vendor row that reached it does not.  ``(list, version,
 source uuid)`` is the same key `tools/compare_merge_outcomes.py` aligns on,
 version included (#317).
+
+**The impact categories are kept whole.**  A consumer's method table holds
+categories as well as factors, and a category can be renamed -- release 1.0.0
+published ours under the slug ``consensus-flow-list``, which changed every
+one of their ids when it became ``brightway-flows``.  Format 2 carries each
+category as ``lcia-factors.json.gz`` publishes it.  A format-1 snapshot has
+only the factors, and is refused with the command that upgrades it from the
+release's published factor file (:func:`upgrade_snapshot`): the categories are
+in that file and nowhere else, and a migration that guessed them from the
+factors would be stating fields it never read.
 """
 
 from __future__ import annotations
@@ -74,7 +84,10 @@ from brightway_flows.pipeline.sqlite import (
 from brightway_flows.releases.version import ReleaseVersion, release_version
 
 #: This file's own format version, checked where it is read (rule 13).
-RELEASE_SNAPSHOT_SCHEMA_VERSION = 1
+#: 2 added ``impact_categories``; `upgrade_snapshot` reads a 1.
+RELEASE_SNAPSHOT_SCHEMA_VERSION = 2
+#: The format a snapshot can be upgraded from.
+UPGRADABLE_SNAPSHOT_SCHEMA_VERSION = 1
 
 #: The published-flow keys a migration never states: both are functions of
 #: the identifier, and a consumer's database keys on the identifier.
@@ -256,6 +269,10 @@ class SnapshotRedirect(SerialisableRecord):
         )
 
 
+#: The three fields a factor is identified by, in the order of `SnapshotFactor.key`.
+FACTOR_KEYS = ("impact_category_id", "elementary_flow_uuid", "geography")
+
+
 @dataclass
 class SnapshotFactor(SerialisableRecord):
     """One characterisation factor, by the triple that identifies it.
@@ -281,6 +298,63 @@ class SnapshotFactor(SerialisableRecord):
     def key_text(key: tuple[str, str, str]) -> str:
         return "|".join(key)
 
+    @staticmethod
+    def published_triple(key: tuple[str, str, str]) -> dict[str, str | None]:
+        """The triple as ``lcia-factors.json.gz`` spells it.
+
+        The snapshot and the ``lcia_characterization_factors`` table spell
+        no place as ``""``, so that a key is three strings; the published
+        file writes ``null``.  randonneur matches a source field by its exact
+        value, so a migration entry has to use the file's spelling or it
+        matches nothing a consumer loaded from it.
+        """
+        category, flow, geography = key
+        return {
+            "impact_category_id": category,
+            "elementary_flow_uuid": flow,
+            "geography": geography or None,
+        }
+
+    def published_fields(self) -> dict[str, Any]:
+        """The row as the factor file publishes it: the triple and the amount."""
+        return {**self.published_triple(self.key), "amount": self.amount}
+
+
+@dataclass
+class SnapshotImpactCategory(SerialisableRecord):
+    """One impact category as ``lcia-factors.json.gz`` publishes it.
+
+    The published row less its factors, which the snapshot holds by their
+    triple.  ``method`` is the published method object -- its id, name and
+    meta -- because that is what a consumer's table holds beside the category.
+    """
+
+    id: str
+    method: dict[str, Any] = field(default_factory=dict)
+    name: str = ""
+    version: str = ""
+    area_of_protection: str = ""
+    implemented_by: str = ""
+    unit_iri: str = ""
+    description: str = ""
+    indicator: str | None = None
+    category_group: str | None = None
+    midpoint_endpoint: str = ""
+    uncertainty_cutoff: str = ""
+    timeframe: str = ""
+    meta: dict[str, Any] = field(default_factory=dict)
+
+    @classmethod
+    def published_keys(cls) -> tuple[str, ...]:
+        """Every serialised key, identifier first."""
+        return tuple(f.name for f in fields(cls))
+
+    def published_fields(self) -> dict[str, Any]:
+        """What a consumer's table holds for this category, less its id."""
+        out = self.to_dict()
+        out.pop("id", None)
+        return out
+
 
 @dataclass
 class SnapshotSourceRow(SerialisableRecord):
@@ -305,6 +379,7 @@ class ReleaseSnapshot:
     flow_objects: list[SnapshotFlowObject] = field(default_factory=list)
     elementary_flows: list[SnapshotElementaryFlow] = field(default_factory=list)
     redirects: list[SnapshotRedirect] = field(default_factory=list)
+    impact_categories: list[SnapshotImpactCategory] = field(default_factory=list)
     characterization_factors: list[SnapshotFactor] = field(default_factory=list)
     source_rows: list[SnapshotSourceRow] = field(default_factory=list)
 
@@ -312,6 +387,7 @@ class ReleaseSnapshot:
         "flow_objects": SnapshotFlowObject,
         "elementary_flows": SnapshotElementaryFlow,
         "redirects": SnapshotRedirect,
+        "impact_categories": SnapshotImpactCategory,
         "characterization_factors": SnapshotFactor,
         "source_rows": SnapshotSourceRow,
     }
@@ -331,6 +407,12 @@ class ReleaseSnapshot:
         if not isinstance(payload, dict):
             raise SnapshotError(f"{source}: expected an object")
         version = payload.get("schema_version")
+        if version == UPGRADABLE_SNAPSHOT_SCHEMA_VERSION:
+            raise SchemaVersionError(
+                f"{source}: schema_version {version} holds no impact categories; "
+                f"upgrade it with `brightway-flows release-snapshot-upgrade "
+                f"--snapshot {source} --factors <that release's lcia-factors.json.gz>`"
+            )
         if version != RELEASE_SNAPSHOT_SCHEMA_VERSION:
             raise SchemaVersionError(
                 f"{source}: schema_version {version!r} is not supported; this "
@@ -368,6 +450,10 @@ class ReleaseSnapshot:
     @cached_property
     def redirects_by_identifier(self) -> dict[str, SnapshotRedirect]:
         return {row.identifier: row for row in self.redirects}
+
+    @cached_property
+    def categories_by_id(self) -> dict[str, SnapshotImpactCategory]:
+        return {category.id: category for category in self.impact_categories}
 
     @cached_property
     def factors_by_key(self) -> dict[tuple[str, str, str], SnapshotFactor]:
@@ -515,6 +601,45 @@ def _read_factors(connection: sqlite3.Connection) -> list[SnapshotFactor]:
     ]
 
 
+def _read_categories(connection: sqlite3.Connection) -> list[SnapshotImpactCategory]:
+    """Every category, in the shape `ImpactCategory.to_dict` publishes it."""
+    if not _table_exists(connection, "lcia_impact_categories"):
+        return []
+    rows = connection.execute(
+        "SELECT c.id, m.id, m.name, m.meta_json, c.name, c.version, c.area_of_protection, "
+        "c.implemented_by, c.unit_iri, c.description, c.indicator, c.category_group, "
+        "c.midpoint_endpoint, c.uncertainty_cutoff, c.timeframe, c.meta_json "
+        "FROM lcia_impact_categories c JOIN lcia_methods m ON m.id = c.method_id "
+        "ORDER BY c.id"
+    )
+    return [
+        SnapshotImpactCategory(
+            id=str(category_id),
+            method={
+                "id": str(method_id), "name": str(method_name or ""),
+                "meta": orjson.loads(method_meta) if method_meta else {},
+            },
+            name=str(name or ""),
+            version=str(version or ""),
+            area_of_protection=str(area or ""),
+            implemented_by=str(implemented_by or ""),
+            unit_iri=str(unit_iri or ""),
+            description=str(description or ""),
+            indicator=indicator,
+            category_group=category_group,
+            midpoint_endpoint=str(midpoint or ""),
+            uncertainty_cutoff=str(cutoff or ""),
+            timeframe=str(timeframe or ""),
+            meta=orjson.loads(meta) if meta else {},
+        )
+        for (
+            category_id, method_id, method_name, method_meta, name, version, area,
+            implemented_by, unit_iri, description, indicator, category_group,
+            midpoint, cutoff, timeframe, meta,
+        ) in rows
+    ]
+
+
 def _read_source_rows(connection: sqlite3.Connection) -> list[SnapshotSourceRow]:
     rows = connection.execute(
         "SELECT list_name, list_version, source_flow_uuid, elementary_flow_uuid "
@@ -563,6 +688,7 @@ def build_snapshot(db_path: Path, *, version: ReleaseVersion | None = None) -> R
 
     with closing(sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)) as connection:
         objects = _read_flow_objects(connection)
+        categories = _read_categories(connection)
         factors = _read_factors(connection)
         source_rows = _read_source_rows(connection)
 
@@ -572,9 +698,110 @@ def build_snapshot(db_path: Path, *, version: ReleaseVersion | None = None) -> R
         flow_objects=objects,
         elementary_flows=flows,
         redirects=sorted(by_identifier.values(), key=lambda row: row.identifier),
+        impact_categories=categories,
         characterization_factors=factors,
         source_rows=source_rows,
     )
+
+
+def upgrade_snapshot(payload: dict[str, Any], factors_document: dict[str, Any], *, source: str = "snapshot") -> ReleaseSnapshot:
+    """A format-1 snapshot, given the categories its release published.
+
+    *factors_document* is that release's ``lcia-factors.json.gz``, loaded.
+    It has to be the same release's: every factor the snapshot holds must be
+    in it with the same amount, under a category it publishes with the method,
+    name and implementer the snapshot's factor names, and the file may hold no
+    factor the snapshot does not.  Anything else is a different release, and
+    upgrading with it would graft one release's categories onto another's
+    factors.
+
+    :raises SnapshotError: for a payload that is not format 1, or a factor
+        file that is not the same release's.
+    """
+    if not isinstance(payload, dict) or payload.get("schema_version") != UPGRADABLE_SNAPSHOT_SCHEMA_VERSION:
+        version = payload.get("schema_version") if isinstance(payload, dict) else None
+        raise SnapshotError(
+            f"{source}: schema_version {version!r} is not one this upgrades "
+            f"(it upgrades {UPGRADABLE_SNAPSHOT_SCHEMA_VERSION})"
+        )
+    if not isinstance(factors_document, dict):
+        raise SnapshotError(
+            f"{source}: the factor file is not a JSON object with `impact_categories` "
+            "and `characterization_factors`"
+        )
+    categories = [
+        SnapshotImpactCategory.from_dict(row)
+        for row in factors_document.get("impact_categories") or ()
+    ]
+    by_id = {category.id: category for category in categories}
+    # Keyed by triple, and a triple published twice is refused here rather
+    # than collapsed, so that the count below is the file's row count.
+    published: dict[tuple[str, str, str], Any] = {}
+    for row in factors_document.get("characterization_factors") or ():
+        if not isinstance(row, dict):
+            raise SnapshotError(f"{source}: the factor file has a factor that is not an object")
+        key = (
+            str(row["impact_category_id"]), str(row["elementary_flow_uuid"]),
+            str(row.get("geography") or ""),
+        )
+        if key in published:
+            raise SnapshotError(
+                f"{source}: the factor file publishes {SnapshotFactor.key_text(key)} twice"
+            )
+        published[key] = row["amount"]
+    upgraded = ReleaseSnapshot.from_dict(
+        {**payload, "schema_version": RELEASE_SNAPSHOT_SCHEMA_VERSION}, source=source
+    )
+    for factor in upgraded.characterization_factors:
+        category = by_id.get(factor.impact_category_id)
+        if category is None:
+            raise SnapshotError(
+                f"{source}: the factor file publishes no category {factor.impact_category_id}, "
+                "which the snapshot's factors name; it is not the same release's"
+            )
+        if (category.method.get("name"), category.name, category.implemented_by) != (
+            factor.method, factor.category, factor.implemented_by
+        ):
+            raise SnapshotError(
+                f"{source}: category {factor.impact_category_id} is "
+                f"{category.method.get('name')} / {category.name} ({category.implemented_by}) "
+                f"in the factor file and {factor.method} / {factor.category} "
+                f"({factor.implemented_by}) in the snapshot"
+            )
+        if published.get(factor.key) != factor.amount:
+            raise SnapshotError(
+                f"{source}: factor {SnapshotFactor.key_text(factor.key)} is "
+                f"{factor.amount!r} in the snapshot and {published.get(factor.key)!r} "
+                "in the factor file"
+            )
+    if len(published) != len(upgraded.characterization_factors):
+        raise SnapshotError(
+            f"{source}: the factor file publishes {len(published)} factors and the "
+            f"snapshot holds {len(upgraded.characterization_factors)}"
+        )
+    upgraded.impact_categories = sorted(categories, key=lambda category: category.id)
+    return upgraded
+
+
+def read_snapshot_payload(path: Path) -> dict[str, Any]:
+    """A file's JSON, gzipped or not, without reading it as a release.
+
+    A snapshot, or the factor file a release published: anything that
+    cannot be read or parsed is a `SnapshotError` naming the file.
+    """
+    try:
+        raw = path.read_bytes()
+    except OSError as error:
+        raise SnapshotError(f"{path}: {error}") from error
+    if raw[:2] == b"\x1f\x8b":
+        try:
+            raw = gzip.decompress(raw)
+        except (OSError, EOFError) as error:
+            raise SnapshotError(f"{path}: {error}") from error
+    try:
+        return orjson.loads(raw)
+    except orjson.JSONDecodeError as error:
+        raise SnapshotError(f"{path}: {error}") from error
 
 
 # -- files ---------------------------------------------------------------------
@@ -594,14 +821,4 @@ def write_snapshot(snapshot: ReleaseSnapshot, path: Path) -> Path:
 
 def load_snapshot(path: Path) -> ReleaseSnapshot:
     """Read a snapshot, refusing one this code cannot read."""
-    try:
-        raw = path.read_bytes()
-    except OSError as error:
-        raise SnapshotError(f"{path}: {error}") from error
-    if raw[:2] == b"\x1f\x8b":
-        raw = gzip.decompress(raw)
-    try:
-        payload = orjson.loads(raw)
-    except orjson.JSONDecodeError as error:
-        raise SnapshotError(f"{path}: {error}") from error
-    return ReleaseSnapshot.from_dict(payload, source=str(path))
+    return ReleaseSnapshot.from_dict(read_snapshot_payload(path), source=str(path))

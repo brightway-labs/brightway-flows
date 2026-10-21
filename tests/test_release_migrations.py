@@ -13,19 +13,24 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from randonneur import Datapackage, MigrationConfig, migrate_edges, migrate_nodes
+from randonneur.errors import ConflictingConversionFactors
+from typer.testing import CliRunner
 
+from brightway_flows.application.cli import app
 from brightway_flows.domain.elementary_flow import minted_elementary_flow_id
 from brightway_flows.domain.vocabulary import CHEMINF_CAS_REGISTRY_NUMBER
 from brightway_flows.releases.alignment import AlignmentError, Fate, FateReason
-from brightway_flows.releases.diff import Delta, DeltaKind, diff_releases
+from brightway_flows.releases.diff import MERGED_INTO_HELD, Delta, DeltaKind, diff_releases
 from brightway_flows.releases.randonneur_files import (
     MAPPINGS,
     UNRESOLVED_REPORT_SCHEMA_VERSION,
     entries,
     write_migration_files,
 )
+from brightway_flows.releases.replay import replay_migration
 from brightway_flows.releases.rulings import (
     EntityKind,
     MigrationRuling,
@@ -33,12 +38,14 @@ from brightway_flows.releases.rulings import (
     RulingVerb,
 )
 from brightway_flows.releases.snapshot import (
+    write_snapshot,
     RELEASE_SNAPSHOT_SCHEMA_VERSION,
     ReleaseSnapshot,
     ReleaseStamp,
     SnapshotElementaryFlow,
     SnapshotFactor,
     SnapshotFlowObject,
+    SnapshotImpactCategory,
     SnapshotRedirect,
     SnapshotSourceRow,
 )
@@ -92,8 +99,17 @@ def _redirect(identifier: str, replaced_by: str | None, reason: str) -> Snapshot
     return SnapshotRedirect(identifier=identifier, reason=reason, replaced_by_identifier=replaced_by)
 
 
+def _category(identifier: str, *, implemented_by: str = "JRC", iri: str = "") -> SnapshotImpactCategory:
+    return SnapshotImpactCategory(
+        id=identifier, method={"id": "m-ef", "name": "EF", "meta": {}}, name="Climate change",
+        version="3.1", area_of_protection="climate", implemented_by=implemented_by,
+        unit_iri="https://example.org/kgco2", description="", midpoint_endpoint="midpoint",
+        uncertainty_cutoff="all", timeframe="long", meta={"iri": iri or f"https://example.org/{identifier}"},
+    )
+
+
 def _snapshot(
-    version: str, flows=(), objects=(), factors=(), rows=(), redirects=(),
+    version: str, flows=(), objects=(), factors=(), rows=(), redirects=(), categories=(),
     lists: tuple[str, ...] = ("ecoinvent-3.12",),
 ) -> ReleaseSnapshot:
     stamp = ReleaseStamp(
@@ -104,7 +120,8 @@ def _snapshot(
     return ReleaseSnapshot(
         schema_version=RELEASE_SNAPSHOT_SCHEMA_VERSION, stamp=stamp,
         flow_objects=list(objects), elementary_flows=list(flows), redirects=list(redirects),
-        characterization_factors=list(factors), source_rows=list(rows),
+        impact_categories=list(categories), characterization_factors=list(factors),
+        source_rows=list(rows),
     )
 
 
@@ -250,8 +267,12 @@ class SourceRowTestCase(unittest.TestCase):
         self.assertEqual(flow.reason, FateReason.SOURCE_ROWS.value)
         obj = _by(diff.flow_objects, "fo-old")
         self.assertEqual((obj.kind, obj.replaced_by), (DeltaKind.REPLACED, "fo-new"))
-        # The factor follows the flow: the same amount under the new key is no change.
-        self.assertEqual(diff.factors, [])
+        # The factor follows the flow: the same amount under a new key, which
+        # is what the consumer's row has to be moved to.
+        (factor,) = diff.factors
+        self.assertEqual((factor.kind, factor.identifier), (DeltaKind.REPLACED, _key(old_flow)))
+        self.assertEqual(factor.replaced_by, _key(new_flow))
+        self.assertEqual(factor.after, {"elementary_flow_uuid": new_flow})
         self.assertEqual(diff.minted_identifiers_checked, 1)
 
     def test_a_split_is_unresolved_and_takes_its_factors_and_substance_with_it(self):
@@ -328,7 +349,8 @@ class SourceRowTestCase(unittest.TestCase):
 
     def test_a_merge_into_a_surviving_flow_keeps_the_survivors_factor(self):
         """Two flows became one: the survivor's own factor row is the one the
-        consumer keeps, and the merged flow's is not a second update on it."""
+        consumer keeps, and the merged flow's row is deleted rather than moved
+        onto a key the consumer already holds."""
         before = _snapshot(
             "1.0.0", flows=[_flow("f1", "fo-1"), _flow("f2", "fo-1")],
             factors=[_factor("f1", 1.0), _factor("f2", 2.0)],
@@ -340,7 +362,9 @@ class SourceRowTestCase(unittest.TestCase):
         )
         diff = diff_releases(before, after)
         self.assertEqual(_by(diff.elementary_flows, "f1").replaced_by, "f2")
-        self.assertEqual(diff.factors, [])
+        (factor,) = diff.factors
+        self.assertEqual((factor.kind, factor.identifier), (DeltaKind.DELETED, _key("f1")))
+        self.assertEqual(factor.reason, MERGED_INTO_HELD)
 
     def test_a_vanished_impact_category_leaves_its_factors_unresolved(self):
         flows = [_flow("f1", "fo-1")]
@@ -376,8 +400,11 @@ class RulingTestCase(unittest.TestCase):
         flow = _by(diff.elementary_flows, "f1")
         self.assertEqual((flow.kind, flow.replaced_by, flow.reason), (DeltaKind.REPLACED, "f2", "ruling"))
         self.assertEqual(flow.comment, "the curator says")
-        # Translated to f2, whose factor is unchanged; f3's is new.
-        self.assertEqual([d.identifier for d in diff.factors], [_key("f3")])
+        # f1's factor moves to f2 at the same amount; f3's is new.
+        self.assertEqual(
+            [(d.identifier, d.kind) for d in diff.factors],
+            [(_key("f1"), DeltaKind.REPLACED), (_key("f3"), DeltaKind.CREATED)],
+        )
         self.assertEqual(diff.unresolved, [])
 
     def test_a_ruling_about_another_pair_is_ignored(self):
@@ -402,6 +429,89 @@ class RulingTestCase(unittest.TestCase):
         )
         self.assertEqual(_by(diff.elementary_flows, "f1").kind, DeltaKind.DELETED)
         self.assertEqual(_by(diff.factors, _key("f1")).kind, DeltaKind.DELETED)
+
+
+class ImpactCategoryTestCase(unittest.TestCase):
+    """A category moves only when an implementation is published under a new
+    slug, and the method file says which slugs were used before."""
+
+    OLD, NEW = "c-old", "c-new"
+
+    def _pair(self, *, held_new: bool = False):
+        flows = [_flow("f1", "fo-1"), _flow("f2", "fo-1", context=WATER)]
+        before_categories = [_category(self.OLD, implemented_by="consensus-flow-list")]
+        before_factors = [_factor("f1", 1.0, category=self.OLD), _factor("f2", 2.0, category=self.OLD)]
+        if held_new:
+            before_categories.append(_category(self.NEW, implemented_by="brightway-flows"))
+            before_factors.append(_factor("f1", 1.0, category=self.NEW))
+        before = _snapshot(
+            "1.0.0", flows=flows, categories=before_categories, factors=before_factors,
+        )
+        after = _snapshot(
+            "1.1.0", flows=flows,
+            categories=[_category(self.NEW, implemented_by="brightway-flows")],
+            factors=[_factor("f1", 1.0, category=self.NEW), _factor("f2", 2.5, category=self.NEW)],
+        )
+        return before, after
+
+    def test_a_renamed_category_is_followed_with_its_factors(self):
+        before, after = self._pair()
+        diff = diff_releases(before, after, retired_categories={self.OLD: self.NEW})
+        (category,) = diff.impact_categories
+        self.assertEqual((category.kind, category.replaced_by), (DeltaKind.REPLACED, self.NEW))
+        self.assertEqual(category.reason, FateReason.IMPLEMENTATION_RENAMED.value)
+        self.assertEqual(category.changed_fields, ["id", "implemented_by", "meta"])
+        self.assertEqual(category.after["id"], self.NEW)
+        factors = {d.identifier: d for d in diff.factors}
+        self.assertEqual(set(factors), {_key("f1", self.OLD), _key("f2", self.OLD)})
+        self.assertEqual(factors[_key("f1", self.OLD)].after, {"impact_category_id": self.NEW})
+        self.assertEqual(
+            factors[_key("f2", self.OLD)].after, {"impact_category_id": self.NEW, "amount": 2.5}
+        )
+        self.assertEqual(diff.unresolved, [])
+
+    def test_a_category_no_old_slug_accounts_for_is_unresolved(self):
+        before, after = self._pair()
+        diff = diff_releases(before, after, retired_categories={})
+        (category,) = [d for d in diff.impact_categories if d.identifier == self.OLD]
+        self.assertEqual((category.kind, category.reason), (DeltaKind.UNRESOLVED, "category-gone"))
+        self.assertEqual(
+            {d.reason for d in diff.factors if d.kind is DeltaKind.UNRESOLVED}, {"category-gone"}
+        )
+
+    def test_a_category_renamed_onto_one_the_consumer_holds_is_deleted(self):
+        before, after = self._pair(held_new=True)
+        diff = diff_releases(before, after, retired_categories={self.OLD: self.NEW})
+        (category,) = diff.impact_categories
+        self.assertEqual((category.kind, category.reason), (DeltaKind.DELETED, MERGED_INTO_HELD))
+        kinds = {d.identifier: d.kind for d in diff.factors}
+        # f1's old row is a duplicate of the one held under the new id; f2's moves.
+        self.assertEqual(kinds[_key("f1", self.OLD)], DeltaKind.DELETED)
+        self.assertEqual(kinds[_key("f2", self.OLD)], DeltaKind.REPLACED)
+
+    def test_a_ruling_can_follow_a_category(self):
+        before, after = self._pair()
+        ruling = MigrationRuling(
+            from_version="1.0.0", to_version="1.1.0", entity=EntityKind.IMPACT_CATEGORY,
+            identifier=self.OLD, verb=RulingVerb.REPLACE, replaced_by=self.NEW,
+            comment="the same category under another implementer",
+        )
+        diff = diff_releases(before, after, rulings=(ruling,), retired_categories={})
+        (category,) = diff.impact_categories
+        self.assertEqual((category.kind, category.reason), (DeltaKind.REPLACED, "ruling"))
+
+    def test_a_rename_replays_to_the_after_release(self):
+        before, after = self._pair()
+        diff = diff_releases(before, after, retired_categories={self.OLD: self.NEW})
+        with tempfile.TemporaryDirectory() as tmp:
+            write_migration_files(diff, Path(tmp))
+            report = replay_migration(before, after, diff, Path(tmp))
+            package = Datapackage.from_json(Path(tmp) / "1.0.0__1.1.0" / "impact-categories.json")
+        self.assertTrue(report.ok, report.lines())
+        (update,) = package.data["update"]
+        self.assertEqual(update["source"], {"id": self.OLD})
+        self.assertEqual(update["target"]["id"], self.NEW)
+        self.assertNotIn("create", package.data)
 
 
 class RandonneurFilesTestCase(unittest.TestCase):
@@ -449,12 +559,16 @@ class RandonneurFilesTestCase(unittest.TestCase):
         self.assertEqual(package.graph_context, ["nodes", "edges"])
         self.assertEqual(
             {verb: len(rows) for verb, rows in package.data.items()},
-            {"create": 3, "update": 1, "replace": 1},
+            {"create": 3, "update": 1, "replace": 1, "delete": 1},
         )
         (replace,) = package.data["replace"]
         self.assertEqual(replace["source"], {"identifier": "f3"})
         self.assertEqual(replace["target"], {"identifier": "f5"})
         self.assertEqual(replace["conversion_factor"], 1.0)
+        # The replace is for an inventory; the delete takes f3 out of a flow
+        # list, where randonneur cannot apply a replace.
+        (delete,) = package.data["delete"]
+        self.assertEqual(delete["source"], {"identifier": "f3"})
         (update,) = package.data["update"]
         self.assertEqual(update, {
             "source": {"identifier": "f1"}, "target": {"prefLabel": "Cadmium(2+)"},
@@ -483,12 +597,11 @@ class RandonneurFilesTestCase(unittest.TestCase):
         expected = {
             f.identifier: f.published_fields() for f in self.after.live_flows.values()
         }
-        # f3 and f4 are the two the node migration does not touch: a replace is
-        # an edge verb, and a split is unresolved.
         for identifier, fields in expected.items():
-            if identifier in ("f3",):
-                continue
             self.assertEqual({k: v for k, v in by_id[identifier].items() if k != "identifier"}, fields, identifier)
+        # f3 was replaced, so it is gone from the list; f4 split, so it is
+        # unresolved and left as it was.
+        self.assertEqual(set(by_id) - set(expected), {"f4"})
 
     def test_randonneur_applies_the_replace_to_a_consumer_inventory(self):
         package = Datapackage.from_json(self.files.elementary_flows)
@@ -497,16 +610,49 @@ class RandonneurFilesTestCase(unittest.TestCase):
         (edge,) = inventory[0]["edges"]
         self.assertEqual((edge["identifier"], edge["amount"]), ("f5", 2.0))
 
-    def test_the_factor_file_is_stated_against_the_after_identifiers(self):
+    def test_the_factor_file_is_stated_against_the_before_identifiers(self):
         package = Datapackage.from_json(self.files.characterization_factors)
         verbs = {verb: rows for verb, rows in package.data.items()}
-        self.assertEqual([r["source"]["elementary_flow_uuid"] for r in verbs["update"]], ["f1"])
-        self.assertEqual(verbs["update"][0]["target"], {"amount": 1.5})
+        updates = {r["source"]["elementary_flow_uuid"]: r["target"] for r in verbs["update"]}
+        # f1 revalued; f3's factor moved onto f3's survivor, f5, at the same amount.
+        self.assertEqual(updates, {"f1": {"amount": 1.5}, "f3": {"elementary_flow_uuid": "f5"}})
         self.assertEqual([r["target"]["elementary_flow_uuid"] for r in verbs["create"]], ["f6"])
-        self.assertNotIn("delete", verbs)  # f3's factor moved to f5, unchanged
-        method = [{"impact_category_id": CATEGORY, "elementary_flow_uuid": "f1", "geography": "", "amount": 1.0}]
-        migrate_nodes(method, package.data, MigrationConfig(verbs=["update", "create", "delete"]))
-        self.assertEqual({row["elementary_flow_uuid"]: row["amount"] for row in method}, {"f1": 1.5, "f6": 6.0})
+        self.assertNotIn("delete", verbs)
+        # The rows as `lcia-factors.json.gz` publishes them: no place is null.
+        method = [
+            {"impact_category_id": CATEGORY, "elementary_flow_uuid": flow, "geography": None, "amount": amount}
+            for flow, amount in (("f1", 1.0), ("f2", 2.0), ("f3", 3.0))
+        ]
+        migrate_nodes(method, package.data, MigrationConfig(verbs=["update", "delete", "create"]))
+        self.assertEqual(
+            {row["elementary_flow_uuid"]: row["amount"] for row in method},
+            {"f1": 1.5, "f2": 2.0, "f5": 3.0, "f6": 6.0},
+        )
+
+    def test_the_whole_migration_replays_to_the_after_release(self):
+        report = replay_migration(self.before, self.after, self.diff, self.root)
+        self.assertTrue(report.ok, report.lines())
+        flows = {entity.entity: entity for entity in report.entities}[EntityKind.ELEMENTARY_FLOW]
+        self.assertEqual(flows.left_unresolved, 1)  # f4, the split
+
+    def test_a_file_that_misses_a_change_fails_the_replay(self):
+        path = self.files.characterization_factors
+        payload = json.loads(path.read_text())
+        payload["update"] = [row for row in payload["update"] if row["source"]["elementary_flow_uuid"] != "f3"]
+        path.write_text(json.dumps(payload))
+        report = replay_migration(self.before, self.after, self.diff, self.root)
+        self.assertFalse(report.ok)
+        factors = {entity.entity: entity for entity in report.entities}[EntityKind.FACTOR]
+        self.assertEqual((factors.missing, factors.unexpected), ([_key("f5")], [_key("f3")]))
+
+    def test_a_file_that_creates_a_row_twice_fails_the_replay(self):
+        path = self.files.characterization_factors
+        payload = json.loads(path.read_text())
+        payload["create"] = payload["create"] * 2
+        path.write_text(json.dumps(payload))
+        report = replay_migration(self.before, self.after, self.diff, self.root)
+        factors = {entity.entity: entity for entity in report.entities}[EntityKind.FACTOR]
+        self.assertEqual(factors.duplicated, [_key("f6")])
 
     def test_the_substance_file_replaces_and_deletes(self):
         package = Datapackage.from_json(self.files.flow_objects)
@@ -541,3 +687,132 @@ class FateTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CategoryWithoutARowTestCase(unittest.TestCase):
+    """A category id only factors name has no row for a consumer to change,
+    and a rename can only go to a category the after release has a row for."""
+
+    OLD, NEW = "c-old", "c-new"
+
+    def test_a_rename_whose_old_id_only_factors_name_creates_the_new_row(self):
+        flows = [_flow("f1", "fo-1")]
+        before = _snapshot("1.0.0", flows=flows, factors=[_factor("f1", 1.0, category=self.OLD)])
+        after = _snapshot(
+            "1.1.0", flows=flows,
+            categories=[_category(self.NEW, implemented_by="brightway-flows")],
+            factors=[_factor("f1", 1.0, category=self.NEW)],
+        )
+        diff = diff_releases(before, after, retired_categories={self.OLD: self.NEW})
+        # No row of c-old to update, so c-new arrives the only way it can.
+        (created,) = diff.impact_categories
+        self.assertEqual((created.kind, created.identifier), (DeltaKind.CREATED, self.NEW))
+        (factor,) = diff.factors
+        self.assertEqual(
+            (factor.kind, factor.after), (DeltaKind.REPLACED, {"impact_category_id": self.NEW})
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            write_migration_files(diff, Path(tmp))
+            report = replay_migration(before, after, diff, Path(tmp))
+        self.assertTrue(report.ok, report.lines())
+
+    def _pair_with_no_row_for_the_new_id(self):
+        flows = [_flow("f1", "fo-1")]
+        before = _snapshot(
+            "1.0.0", flows=flows,
+            categories=[_category(self.OLD, implemented_by="consensus-flow-list")],
+            factors=[_factor("f1", 1.0, category=self.OLD)],
+        )
+        after = _snapshot("1.1.0", flows=flows, factors=[_factor("f1", 1.0, category=self.NEW)])
+        return before, after
+
+    def test_a_rename_onto_an_id_the_after_release_publishes_no_row_for_is_unresolved(self):
+        before, after = self._pair_with_no_row_for_the_new_id()
+        diff = diff_releases(before, after, retired_categories={self.OLD: self.NEW})
+        (category,) = diff.impact_categories
+        self.assertEqual((category.kind, category.reason), (DeltaKind.UNRESOLVED, "category-gone"))
+        self.assertEqual(_by(diff.factors, _key("f1", self.OLD)).kind, DeltaKind.UNRESOLVED)
+
+    def test_a_ruling_naming_an_id_the_after_release_publishes_no_row_for_is_refused(self):
+        before, after = self._pair_with_no_row_for_the_new_id()
+        ruling = MigrationRuling(
+            from_version="1.0.0", to_version="1.1.0", entity=EntityKind.IMPACT_CATEGORY,
+            identifier=self.OLD, verb=RulingVerb.REPLACE, replaced_by=self.NEW,
+            comment="the same category under another implementer",
+        )
+        with self.assertRaisesRegex(MigrationRulingError, "does not publish"):
+            diff_releases(before, after, rulings=(ruling,), retired_categories={})
+
+
+class PublishedGeographyTestCase(unittest.TestCase):
+    """`lcia-factors.json.gz` publishes a factor with no place as ``null``,
+    and the snapshot keys it as ``""``.  randonneur matches a source on the
+    value a row holds, so the files have to say what the file says."""
+
+    OLD, NEW = "c-old", "c-new"
+
+    def test_a_factor_with_no_place_is_moved_in_a_table_loaded_from_the_factor_file(self):
+        flows = [_flow("f1", "fo-1"), _flow("f2", "fo-1", context=WATER)]
+        before = _snapshot(
+            "1.0.0", flows=flows,
+            categories=[_category(self.OLD, implemented_by="consensus-flow-list")],
+            factors=[
+                _factor("f1", 1.0, category=self.OLD),
+                _factor("f1", 2.0, category=self.OLD, geography="CH"),
+            ],
+        )
+        after = _snapshot(
+            "1.1.0", flows=flows,
+            categories=[_category(self.NEW, implemented_by="brightway-flows")],
+            factors=[
+                _factor("f1", 1.0, category=self.NEW),
+                _factor("f1", 2.0, category=self.NEW, geography="CH"),
+                _factor("f2", 3.0, category=self.NEW),
+            ],
+        )
+        diff = diff_releases(before, after, retired_categories={self.OLD: self.NEW})
+        with tempfile.TemporaryDirectory() as tmp:
+            write_migration_files(diff, Path(tmp))
+            package = Datapackage.from_json(
+                Path(tmp) / "1.0.0__1.1.0" / "characterization-factors.json"
+            )
+        sources = {
+            (entry["source"]["elementary_flow_uuid"], entry["source"]["geography"])
+            for entry in package.data["update"]
+        }
+        self.assertEqual(sources, {("f1", None), ("f1", "CH")})
+        (create,) = package.data["create"]
+        self.assertIsNone(create["target"]["geography"])
+        # The rows as a consumer loaded them from the published file.
+        table = [
+            {"impact_category_id": self.OLD, "elementary_flow_uuid": "f1", "geography": None, "amount": 1.0},
+            {"impact_category_id": self.OLD, "elementary_flow_uuid": "f1", "geography": "CH", "amount": 2.0},
+        ]
+        migrate_nodes(table, package.data, MigrationConfig(verbs=["update", "delete", "create"]))
+        self.assertEqual([row["impact_category_id"] for row in table], [self.NEW] * 3)
+
+
+class ReleaseMigrationsCommandTestCase(unittest.TestCase):
+    """The files are written and reported before they are applied; a file
+    randonneur refuses is exit 3 with its message, not a traceback."""
+
+    def test_a_file_randonneur_refuses_exits_3(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_snapshot(_snapshot("1.0.0", flows=[_flow("f1", "fo-1")]), root / "before.json.gz")
+            write_snapshot(_snapshot("1.1.0", flows=[_flow("f1", "fo-1")]), root / "after.json.gz")
+            with mock.patch(
+                "brightway_flows.releases.replay.replay_migration",
+                side_effect=ConflictingConversionFactors("two factors for one source"),
+            ):
+                result = CliRunner().invoke(app, [
+                    "release-migrations",
+                    "--from", str(root / "before.json.gz"),
+                    "--to", str(root / "after.json.gz"),
+                    "--output", str(root / "out"),
+                ])
+            written = sorted(path.name for path in (root / "out" / "1.0.0__1.1.0").iterdir())
+        self.assertEqual(result.exit_code, 3, result.output)
+        self.assertIn("randonneur cannot apply the files: two factors for one source", result.output)
+        self.assertNotIn("Traceback", result.output)
+        self.assertIn("characterization-factors.json", written)
