@@ -21,6 +21,28 @@ That commit is no longer in the repository, so the changes made between that
 build and 22 September 2026 are not itemised here. The migration from 1.0.0
 covers them along with everything else.
 
+### The migration from 1.0.0
+
+`1.0.0__1.1.0.zip` moves a database that loaded 1.0.0 to 1.1.0. On the trial
+build of 1.1.0 (commit `15d733d`, run `20261021T2030219167640000`) it holds:
+
+| | Created | Updated | Replaced | Deleted | Left for a person |
+|---|---:|---:|---:|---:|---:|
+| Substances | 2 | 143 | 3 | 0 | 0 |
+| Flows | 31 | 1,729 | 22 | 0 | 0 |
+| Impact categories | 0 | 44 | 0 | 0 | 0 |
+| Factors | 139 | 345,997 | 0 | 0 | 0 |
+
+Each replaced substance or flow is also listed under `delete` in its file, so
+that it leaves your list of flows. It is counted once here, as replaced. The
+44 updated categories and 345,997 updated factors are the renaming described
+in the next section. Once the migration is applied, a database
+holds 1.1.0's 8,159 substances, 97,827 flows, 138 impact categories and
+727,074 factors, and every one of 1.0.0's 97,818 flows in an inventory points
+at a flow 1.1.0 publishes. That was checked by applying the files to 1.0.0
+with randonneur and comparing the result with 1.1.0, table by table. Nothing
+is left unresolved.
+
 ### If you hold 1.0.0
 
 - **Our own impact categories have new identifiers.** 1.0.0 published our
