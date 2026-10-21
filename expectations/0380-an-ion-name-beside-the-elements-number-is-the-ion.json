@@ -1,557 +1,454 @@
 {
   "schema_version": 1,
-  "description": "openLCA 2.8.2 names metal ions with a Stock numeral or the generic marker -- `Cadmium II`, `Arsenic V`, `Copper Ion` -- and writes the bare metal's registry number on 339 of those rows under 29 names: 7440-43-9 on `Cadmium II`, 7439-92-1 on `Lead II`. The number route runs before the name route, so on the six-list build of 21 October 2026 (commit 931ed30) every one of them reached the metal, while the sibling rows carrying the ion's own number reached the ion: `Cadmium II` was two substances depending on which number came with it, and the lookup read the name three ways (#380). The merge now sets a bare element's number aside where the row's name states an ion (`merge.species.element_number_set_aside`), the row is placed by its name through the ion naming standard, and the mapping's basis reads `label+element-number-set-aside` with the number. The lookup prepares a query the same way. One claim per name; the two substance claims hold the numbers apart.",
+  "description": "openLCA 2.8.2 names metal ions with a Stock numeral or the generic marker -- `Cadmium II`, `Arsenic V`, `Copper Ion` -- and writes the bare metal's registry number on 339 of those rows under 29 names: 7440-43-9 on `Cadmium II`, 7439-92-1 on `Lead II`. The number route runs before the name route, so on the six-list build of 21 October 2026 (commit 931ed30) every one of them reached the metal, while the sibling rows carrying the ion's own number reached the ion: `Cadmium II` was two substances depending on which number came with it, and the lookup read the name three ways (#380). The merge now sets a bare element's number aside where the row's name states an ion (`merge.species.element_number_set_aside`), the row is placed by its name through the ion naming standard, and the mapping's basis reads `label+element-number-set-aside` with the number. The lookup prepares a query the same way. One claim per name, on a row that shipped the metal's number -- the record's own `cas` is empty once the number is set aside, so a selector on the number would find nothing; the two substance claims hold cadmium's numbers apart. Twenty-four rows that carry EF 3.1's own uuids for the elements GreenDelta renamed stay on EF's flows by uuid (#347) and are outside the rule.",
   "expectations": [
     {
       "id": "0380-openlca-aluminium-iii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 10 `Aluminium III` rows under 7429-90-5 reach `Aluminium(3+)` with the number set aside",
+      "title": "openLCA's `Aluminium III` under the metal's number reaches `Aluminium(3+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Aluminium III",
-        "cas": "7429-90-5"
+        "uuid": "0305b169-255d-4041-8f5d-6e095bcb6358"
       },
       "expect": {
-        "row_count": 10,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Aluminium(3+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Aluminium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 10 `Aluminium III` rows that shipped the metal's number; all 10 reach `Aluminium(3+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 23 rows, 13 by the ion's own number reach the ion as well."
     },
     {
       "id": "0380-openlca-antimony-ion-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 12 `Antimony Ion` rows under 7440-36-0 reach `Antimony, ion` with the number set aside",
+      "title": "openLCA's `Antimony Ion` under the metal's number reaches `Antimony, ion` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Antimony Ion",
-        "cas": "7440-36-0"
+        "uuid": "0084f973-7133-4d7a-9009-fa46c1f7460c"
       },
       "expect": {
-        "row_count": 12,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Antimony, ion"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 12 rows reached `Antimony` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 12 `Antimony Ion` rows that shipped the metal's number; all 12 reach `Antimony, ion` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 25 rows, 13 by name reach the ion as well."
     },
     {
       "id": "0380-openlca-arsenic-ion-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 16 `Arsenic Ion` rows under 7440-38-2 reach `Arsenic, ion` with the number set aside",
+      "title": "openLCA's `Arsenic Ion` under the metal's number reaches `Arsenic, ion` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Arsenic Ion",
-        "cas": "7440-38-2"
+        "uuid": "007d4ecd-0831-4984-b5e2-814d129c932b"
       },
       "expect": {
-        "row_count": 16,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Arsenic, ion"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 16 rows reached `Arsenic` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 15 `Arsenic Ion` rows that shipped the metal's number; all 15 reach `Arsenic, ion` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 45 rows, 16 by the ion's own number and 13 by name reach the ion as well. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-barium-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 10 `Barium II` rows under 7440-39-3 reach `Barium(2+)` with the number set aside",
+      "title": "openLCA's `Barium II` under the metal's number reaches `Barium(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Barium II",
-        "cas": "7440-39-3"
+        "uuid": "0ee08c3a-1553-4637-8f17-c486c115ef2b"
       },
       "expect": {
-        "row_count": 10,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Barium(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Barium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 10 `Barium II` rows that shipped the metal's number; all 10 reach `Barium(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 23 rows, 13 by the ion's own number reach the ion as well."
     },
     {
       "id": "0380-openlca-beryllium-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 10 `Beryllium II` rows under 7440-41-7 reach `Beryllium(2+)` with the number set aside",
+      "title": "openLCA's `Beryllium II` under the metal's number reaches `Beryllium(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Beryllium II",
-        "cas": "7440-41-7"
+        "uuid": "04512c78-0228-4291-8c4d-7e64b6ad670c"
       },
       "expect": {
-        "row_count": 10,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Beryllium(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Beryllium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 10 `Beryllium II` rows that shipped the metal's number; all 10 reach `Beryllium(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number."
     },
     {
       "id": "0380-openlca-cadmium-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 18 `Cadmium II` rows under 7440-43-9 reach `Cadmium(2+)` with the number set aside",
+      "title": "openLCA's `Cadmium II` under the metal's number reaches `Cadmium(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Cadmium II",
-        "cas": "7440-43-9"
+        "uuid": "0c5da324-34a7-4e38-98e5-18a8625a2b7c"
       },
       "expect": {
-        "row_count": 18,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Cadmium(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 18 rows reached `Cadmium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 17 `Cadmium II` rows that shipped the metal's number; all 17 reach `Cadmium(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 38 rows, 20 by the ion's own number reach the ion as well. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-caesium-i-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 4 `Caesium I` rows under 7440-46-2 reach `Caesium(1+)` with the number set aside",
+      "title": "openLCA's `Caesium I` under the metal's number reaches `Caesium(1+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Caesium I",
-        "cas": "7440-46-2"
+        "uuid": "59570d74-fac9-446d-88a7-5c5b0a6139a7"
       },
       "expect": {
-        "row_count": 4,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Caesium(1+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 4 rows reached `Cesium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 4 `Caesium I` rows that shipped the metal's number; all 4 reach `Caesium(1+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number."
     },
     {
       "id": "0380-openlca-calcium-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 7 `Calcium II` rows under 7440-70-2 reach `Calcium(2+)` with the number set aside",
+      "title": "openLCA's `Calcium II` under the metal's number reaches `Calcium(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Calcium II",
-        "cas": "7440-70-2"
+        "uuid": "15fd8f0f-c3c2-4f63-b8d0-86793a22aacd"
       },
       "expect": {
-        "row_count": 7,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Calcium(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 7 rows reached `Calcium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 7 `Calcium II` rows that shipped the metal's number; all 7 reach `Calcium(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number."
     },
     {
       "id": "0380-openlca-chromium-iii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 16 `Chromium III` rows under 7440-47-3 reach `Chromium(3+)` with the number set aside",
+      "title": "openLCA's `Chromium III` under the metal's number reaches `Chromium(3+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Chromium III",
-        "cas": "7440-47-3"
+        "uuid": "0264738d-175c-4a9f-bc9b-1970eba444de"
       },
       "expect": {
-        "row_count": 16,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Chromium(3+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 16 rows reached `Chromium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 14 `Chromium III` rows that shipped the metal's number; all 14 reach `Chromium(3+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 56 rows, 36 by the ion's own number and 2 by name reach the ion as well. 2 rows of the name carry EF 3.1's own uuid for the element GreenDelta renamed and stay on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-cobalt-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 10 `Cobalt II` rows under 7440-48-4 reach `Cobalt(2+)` with the number set aside",
+      "title": "openLCA's `Cobalt II` under the metal's number reaches `Cobalt(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Cobalt II",
-        "cas": "7440-48-4"
+        "uuid": "0bd9a952-58ff-42d9-9e02-2d76dff6d120"
       },
       "expect": {
-        "row_count": 10,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Cobalt(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Cobalt` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 10 `Cobalt II` rows that shipped the metal's number; all 10 reach `Cobalt(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 23 rows, 13 by the ion's own number reach the ion as well."
     },
     {
       "id": "0380-openlca-copper-ion-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 18 `Copper Ion` rows under 7440-50-8 reach `Copper, ion` with the number set aside",
+      "title": "openLCA's `Copper Ion` under the metal's number reaches `Copper, ion` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Copper Ion",
-        "cas": "7440-50-8"
+        "uuid": "00946913-24e1-4db7-ab0f-940016ce2343"
       },
       "expect": {
-        "row_count": 18,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Copper, ion"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 18 rows reached `Copper` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 16 `Copper Ion` rows that shipped the metal's number; all 16 reach `Copper, ion` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 36 rows, 18 by name reach the ion as well. 2 rows of the name carry EF 3.1's own uuid for the element GreenDelta renamed and stay on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-iron-ion-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 9 `Iron Ion` rows under 7439-89-6 reach `Iron, ion` with the number set aside",
+      "title": "openLCA's `Iron Ion` under the metal's number reaches `Iron, ion` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Iron Ion",
-        "cas": "7439-89-6"
+        "uuid": "0dc0bbb0-1141-4dff-b6a2-8bd5368e14af"
       },
       "expect": {
-        "row_count": 9,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Iron, ion"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 9 rows reached `Iron` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 7 `Iron Ion` rows that shipped the metal's number; all 7 reach `Iron, ion` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 24 rows, 15 by name reach the ion as well. 2 rows of the name carry EF 3.1's own uuid for the element GreenDelta renamed and stay on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-lead-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 15 `Lead II` rows under 7439-92-1 reach `Lead(2+)` with the number set aside",
+      "title": "openLCA's `Lead II` under the metal's number reaches `Lead(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Lead II",
-        "cas": "7439-92-1"
+        "uuid": "10e3b9bc-648f-4321-be48-5df740b07e04"
       },
       "expect": {
-        "row_count": 15,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Lead(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 15 rows reached `Lead` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 14 `Lead II` rows that shipped the metal's number; all 14 reach `Lead(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-lithium-i-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 8 `Lithium I` rows under 7439-93-2 reach `Lithium(1+)` with the number set aside",
+      "title": "openLCA's `Lithium I` under the metal's number reaches `Lithium(1+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Lithium I",
-        "cas": "7439-93-2"
+        "uuid": "2096b14d-663a-4501-9cd2-f6811dfd37a4"
       },
       "expect": {
-        "row_count": 8,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Lithium(1+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 8 rows reached `Lithium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 8 `Lithium I` rows that shipped the metal's number; all 8 reach `Lithium(1+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 16 rows, 7 by the ion's own number and 1 by name reach the ion as well."
     },
     {
       "id": "0380-openlca-manganese-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 10 `Manganese II` rows under 7439-96-5 reach `Manganese(2+)` with the number set aside",
+      "title": "openLCA's `Manganese II` under the metal's number reaches `Manganese(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Manganese II",
-        "cas": "7439-96-5"
+        "uuid": "2737dccb-d7b8-4002-a3f5-1ab6e1c6515e"
       },
       "expect": {
-        "row_count": 10,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Manganese(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Manganese` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 9 `Manganese II` rows that shipped the metal's number; all 9 reach `Manganese(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-mercury-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 12 `Mercury II` rows under 7439-97-6 reach `Mercury(2+)` with the number set aside",
+      "title": "openLCA's `Mercury II` under the metal's number reaches `Mercury(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Mercury II",
-        "cas": "7439-97-6"
+        "uuid": "154f63d2-0300-3667-b374-9cd550201cc6"
       },
       "expect": {
-        "row_count": 12,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Mercury(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 12 rows reached `Mercury` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 11 `Mercury II` rows that shipped the metal's number; all 11 reach `Mercury(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 26 rows, 14 by the ion's own number reach the ion as well. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-molybdenum-vi-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 24 `Molybdenum VI` rows under 7439-98-7 reach `Molybdenum(6+)` with the number set aside",
+      "title": "openLCA's `Molybdenum VI` under the metal's number reaches `Molybdenum(6+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Molybdenum VI",
-        "cas": "7439-98-7"
+        "uuid": "142907e3-8285-4fd6-bef8-8101cb43e147"
       },
       "expect": {
-        "row_count": 24,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Molybdenum(6+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 24 rows reached `Molybdenum` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 23 `Molybdenum VI` rows that shipped the metal's number; all 23 reach `Molybdenum(6+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-nickel-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 17 `Nickel II` rows under 7440-02-0 reach `Nickel(2+)` with the number set aside",
+      "title": "openLCA's `Nickel II` under the metal's number reaches `Nickel(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Nickel II",
-        "cas": "7440-02-0"
+        "uuid": "093b5695-c6be-4f8f-b2db-fadfc90d98c3"
       },
       "expect": {
-        "row_count": 17,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Nickel(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 17 rows reached `Nickel` by the number. The number is the metal's; the name says the ion."
-    },
-    {
-      "id": "0380-openlca-palladium-ii-is-the-ion",
-      "issue": 380,
-      "title": "openLCA's 1 `Palladium II` rows under 7440-05-3 reach `Palladium(2+)` with the number set aside",
-      "subject": {
-        "kind": "source_row",
-        "list": "openlca",
-        "name": "Palladium II",
-        "cas": "7440-05-3"
-      },
-      "expect": {
-        "row_count": 1,
-        "outcome": "matched",
-        "basis": "label+element-number-set-aside",
-        "same_substance": true,
-        "target_name": "Palladium(2+)"
-      },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 1 rows reached `Palladium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 15 `Nickel II` rows that shipped the metal's number; all 15 reach `Nickel(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 38 rows, 21 by the ion's own number reach the ion as well. 2 rows of the name carry EF 3.1's own uuid for the element GreenDelta renamed and stay on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-potassium-i-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 2 `Potassium I` rows under 7440-09-7 reach `Potassium(1+)` with the number set aside",
+      "title": "openLCA's `Potassium I` under the metal's number reaches `Potassium(1+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Potassium I",
-        "cas": "7440-09-7"
+        "uuid": "38a037a3-47a7-4df7-a986-84e60f50f62e"
       },
       "expect": {
-        "row_count": 2,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Potassium(1+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 2 rows reached `Potassium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 2 `Potassium I` rows that shipped the metal's number; all 2 reach `Potassium(1+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number."
     },
     {
       "id": "0380-openlca-rhodium-iii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 2 `Rhodium III` rows under 7440-16-6 reach `Rhodium(3+)` with the number set aside",
+      "title": "openLCA's `Rhodium III` under the metal's number reaches `Rhodium(3+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Rhodium III",
-        "cas": "7440-16-6"
+        "uuid": "0f8f6c8b-518f-4fb9-92cb-c2668d661428"
       },
       "expect": {
-        "row_count": 2,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Rhodium(3+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 2 rows reached `Rhodium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 1 `Rhodium III` rows that shipped the metal's number; all 1 reach `Rhodium(3+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-selenium-iv-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 13 `Selenium IV` rows under 7782-49-2 reach `Selenium(4+)` with the number set aside",
+      "title": "openLCA's `Selenium IV` under the metal's number reaches `Selenium(4+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Selenium IV",
-        "cas": "7782-49-2"
+        "uuid": "1fc9d052-d530-432a-a821-b592f9827707"
       },
       "expect": {
-        "row_count": 13,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Selenium(4+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 13 rows reached `Selenium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 13 `Selenium IV` rows that shipped the metal's number; all 13 reach `Selenium(4+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 27 rows, 14 by the ion's own number reach the ion as well."
     },
     {
       "id": "0380-openlca-silver-i-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 14 `Silver I` rows under 7440-22-4 reach `Silver(1+)` with the number set aside",
+      "title": "openLCA's `Silver I` under the metal's number reaches `Silver(1+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Silver I",
-        "cas": "7440-22-4"
+        "uuid": "108a082e-3772-4a76-ac4b-659ffc001e53"
       },
       "expect": {
-        "row_count": 14,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Silver(1+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 14 rows reached `Silver` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 13 `Silver I` rows that shipped the metal's number; all 13 reach `Silver(1+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-strontium-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 12 `Strontium II` rows under 7440-24-6 reach `Strontium(2+)` with the number set aside",
+      "title": "openLCA's `Strontium II` under the metal's number reaches `Strontium(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Strontium II",
-        "cas": "7440-24-6"
+        "uuid": "070f9c6e-584d-40ed-8b07-6b1f7f75dd3f"
       },
       "expect": {
-        "row_count": 12,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Strontium(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 12 rows reached `Strontium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 12 `Strontium II` rows that shipped the metal's number; all 12 reach `Strontium(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number."
     },
     {
       "id": "0380-openlca-thallium-i-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 12 `Thallium I` rows under 7440-28-0 reach `Thallium(1+)` with the number set aside",
+      "title": "openLCA's `Thallium I` under the metal's number reaches `Thallium(1+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Thallium I",
-        "cas": "7440-28-0"
+        "uuid": "235b399e-3d90-38d0-8784-260a985b56b4"
       },
       "expect": {
-        "row_count": 12,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Thallium(1+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 12 rows reached `Thallium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 12 `Thallium I` rows that shipped the metal's number; all 12 reach `Thallium(1+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number."
     },
     {
       "id": "0380-openlca-tin-ion-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 16 `Tin Ion` rows under 7440-31-5 reach `Tin, ion` with the number set aside",
+      "title": "openLCA's `Tin Ion` under the metal's number reaches `Tin, ion` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Tin Ion",
-        "cas": "7440-31-5"
+        "uuid": "066fe0d8-92d7-417c-8d3a-9ae8755258c8"
       },
       "expect": {
-        "row_count": 16,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Tin, ion"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 16 rows reached `Tin` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 14 `Tin Ion` rows that shipped the metal's number; all 14 reach `Tin, ion` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 35 rows, 6 by the ion's own number and 13 by name reach the ion as well. 2 rows of the name carry EF 3.1's own uuid for the element GreenDelta renamed and stay on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-titanium-ion-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 10 `Titanium Ion` rows under 7440-32-6 reach `Titanium, ion` with the number set aside",
+      "title": "openLCA's `Titanium Ion` under the metal's number reaches `Titanium, ion` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Titanium Ion",
-        "cas": "7440-32-6"
+        "uuid": "4f1ad6d5-6c88-3da1-843c-6d75c86e320f"
       },
       "expect": {
-        "row_count": 10,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Titanium, ion"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 10 rows reached `Titanium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 8 `Titanium Ion` rows that shipped the metal's number; all 8 reach `Titanium, ion` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 26 rows, 2 by the ion's own number and 14 by name reach the ion as well. 2 rows of the name carry EF 3.1's own uuid for the element GreenDelta renamed and stay on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-vanadium-v-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 13 `Vanadium V` rows under 7440-62-2 reach `Vanadium(5+)` with the number set aside",
+      "title": "openLCA's `Vanadium V` under the metal's number reaches `Vanadium(5+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Vanadium V",
-        "cas": "7440-62-2"
+        "uuid": "0dbc8bdf-90bd-4196-a995-70b86bc0c362"
       },
       "expect": {
-        "row_count": 13,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Vanadium(5+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 13 rows reached `Vanadium` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 12 `Vanadium V` rows that shipped the metal's number; all 12 reach `Vanadium(5+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 29 rows, 13 by the ion's own number and 3 by name reach the ion as well. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-openlca-zinc-ii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's 18 `Zinc II` rows under 7440-66-6 reach `Zinc(2+)` with the number set aside",
+      "title": "openLCA's `Zinc II` under the metal's number reaches `Zinc(2+)` with the number set aside",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "name": "Zinc II",
-        "cas": "7440-66-6"
+        "uuid": "0cd569dd-0b37-3397-9b58-f7304cc5c283"
       },
       "expect": {
-        "row_count": 18,
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
-        "same_substance": true,
         "target_name": "Zinc(2+)"
       },
-      "comment": "On the six-list build of 21 October 2026 (commit 931ed30) the 18 rows reached `Zinc` by the number. The number is the metal's; the name says the ion."
+      "comment": "One of the 16 `Zinc II` rows that shipped the metal's number; all 16 reach `Zinc(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 2 rows of the name carry EF 3.1's own uuid for the element GreenDelta renamed and stay on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
     },
     {
       "id": "0380-cadmium-keeps-one-number",

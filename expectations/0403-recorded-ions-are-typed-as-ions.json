@@ -28,9 +28,9 @@
       "expect": {
         "exists": true,
         "flow_type": "AtomCation",
-        "flow_count": 1
+        "flow_count": 2
       },
-      "comment": "One ecoinvent 3.12 `Rhodium III` row to air, created, and AGRIBALYSE's `Rhodium (III)` on it by number. The charge is 3, which is the one of the four that is not 2: a rule that read the record but hard-wired the commonest charge would pass palladium and rhenium and fail here."
+      "comment": "One ecoinvent 3.12 `Rhodium III` row to air, created, and AGRIBALYSE's `Rhodium (III)` on it by number. The charge is 3, which is the one of the four that is not 2: a rule that read the record but hard-wired the commonest charge would pass palladium and rhenium and fail here.\n\nTwo flows since #380 (six-list build of 21 October 2026, commit 7a5a1b6): openLCA's `Rhodium III` row under the metal's number, 7440-16-6, is read as the ion and lands in a compartment of its own. The type is the claim; the count moved with the rows."
     },
     {
       "id": "0403-rhenium-2-is-a-cation",
