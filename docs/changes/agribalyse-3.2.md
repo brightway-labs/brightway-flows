@@ -129,6 +129,7 @@ number is left alone.
 |---|---|---|---|
 | `Lithium (I)` | 7439-93-2 | 17341-24-1 | the element's number on the lithium(1+) ion; six rows, which reached bare `Lithium` while ecoinvent's `Lithium I` reached the ion ([#198](https://github.com/brightway-labs/brightway-flows/issues/198)) |
 | `Potassium (I)` | 7440-09-7 | 24203-36-9 | the element's number on the potassium(1+) ion; twelve rows, the same shape |
+| `Fenpropimorph` | 67306-03-0 | 67564-91-4 | the same fungicide under its current number; five rows, which reached EF 3.1's uncharacterised second copy of the substance and now reach the characterised one ([#201](https://github.com/brightway-labs/brightway-flows/issues/201)) |
 | `Antimony, ion` | 7440-36-0 | removed | the element's number on a generic ion, which no number names; eleven rows, which reached bare `Antimony` and now reach the numberless `Antimony, Ion` ecoinvent's rows minted (#198) |
 | `Chromium, ion` | 7440-47-3 | removed | the same; thirteen rows, which mint `Chromium, Ion` beside the charged chromium ions, since no list publishes a generic one |
 | `Copper, ion` | 7440-50-8 | removed | the same; fifteen rows, now on `Copper, Ion` |
