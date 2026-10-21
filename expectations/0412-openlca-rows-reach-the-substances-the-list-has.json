@@ -327,7 +327,7 @@
     {
       "id": "0412-no-water-row-is-published-in-kilograms",
       "issue": 412,
-      "title": "No openLCA `Water` or `Waste water` row arrives in kilograms",
+      "title": "No openLCA water row arrives in kilograms",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
@@ -337,7 +337,7 @@
       "expect": {
         "row_count": 0
       },
-      "comment": "The fifty rows the package measures by mass -- `Waste water`, `Water`, and the 29 `Water, ...` names -- are rewritten to cubic metres before the merge reads them, so no such row arrives in kilograms; `0409-bafu-waste-water-is-published-in-cubic-metres` says the flows are cubic metres. `name_contains: Water`, capitalised, because the merge table title-cases names and the kept kilogram rows whose names merely contain `water` -- `Magnesium, 0.13% In Water`, `Thermally Polluted Water` -- are not water."
+      "comment": "The 52 rows the package measures by mass -- `Waste water`, `Water`, the 29 `Water, ...` names, `Thermally polluted water` and `Chemically polluted water` -- are rewritten to cubic metres before the merge reads them, so no such row arrives in kilograms; `0409-bafu-waste-water-is-published-in-cubic-metres` says the flows are cubic metres. `name_contains: Water`, capitalised, because the merge table title-cases names and the kept kilogram rows whose names merely contain `water` -- `Magnesium, 0.13% In Water` -- are not water. Unmet on the six-list build of 20 October 2026 (merge run `0c16f168`) with a count of 2: the first fifty rewrites took the names beginning `Water` and `Waste water` and missed the two ending in `polluted water`."
     },
     {
       "id": "0412-waste-water-in-kilograms-reaches-the-cubic-metre-flow",
@@ -354,6 +354,40 @@
         "target_unit": "m3"
       },
       "comment": "The row in water, unspecified. On the build of 20 October 2026 it published a kilogram `Waste water` flow (0409) and its GreenDelta factor was a unit crossing."
+    },
+    {
+      "id": "0412-thermally-polluted-water-is-cooling-water-in-cubic-metres",
+      "issue": 412,
+      "title": "openLCA's `Thermally polluted water` reaches the cubic-metre cooling-water flow as cooling water",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "00437a54-1662-3785-8f9d-69a9d5169cdc"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "material",
+        "target_name": "Cooling water",
+        "target_unit": "m3"
+      },
+      "comment": "`water-flow-materials.json` reads the row as returned cooling water, warm rather than contaminated, and the merge placed it on the cubic-metre `Cooling water` flow in water, unspecified, from the first build; shipped in kilograms it was a unit crossing there (six-list build of 20 October 2026, merge run `0c16f168`)."
+    },
+    {
+      "id": "0412-chemically-polluted-water-is-contaminated-water-in-cubic-metres",
+      "issue": 412,
+      "title": "openLCA's `Chemically polluted water` publishes contaminated water in cubic metres",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "85cc4ef6-5fa2-3a1e-809d-3502836bf657"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "material",
+        "target_name": "Contaminated water",
+        "target_unit": "m3"
+      },
+      "comment": "Read as contaminated water, as BAFU's row of the same name is. BAFU's is filed in a river, this one in water, unspecified, so it is the only row on its flow; on the six-list build of 20 October 2026 (merge run `0c16f168`) that flow was published in kilograms."
     },
     {
       "id": "0412-hg-02-is-the-ether",

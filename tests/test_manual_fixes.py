@@ -1415,14 +1415,17 @@ class OpenLcaCopiesTheOtherListsCorrectionsTestCase(unittest.TestCase):
         return [
             r for r in rows.values()
             if r["uuid"] not in refused
-            and r.get("name", "").lower().startswith(("water", "waste water"))
+            and (
+                r.get("name", "").lower().startswith(("water", "waste water"))
+                or r.get("name", "").lower().endswith("polluted water")
+            )
             and r.get("context", [""])[0] != "Waste"
         ]
 
     def test_no_kept_water_row_is_measured_in_kilograms_any_more(self):
         shipped_kg = [r for r in self._water(self.shipped) if r["unit"] == "kg"]
-        self.assertEqual(len(shipped_kg), 50)
-        self.assertEqual(len({r["name"] for r in shipped_kg}), 31)
+        self.assertEqual(len(shipped_kg), 52)
+        self.assertEqual(len({r["name"] for r in shipped_kg}), 33)
         left = [r for r in self._water(self.fixed) if r["unit"] == "kg"]
         self.assertEqual(left, [])
 

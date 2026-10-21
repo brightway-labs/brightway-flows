@@ -193,18 +193,24 @@ of them use words the other lists don't, and each was read as follows:
 ## Water measured by mass
 
 Liquid water is published in cubic metres throughout this list, and the
-package measures 50 of its kept water rows by mass, under 31 names — `Waste
+package measures 52 of its kept water rows by mass, under 33 names — `Waste
 water`, `Water` emitted to a river, `Water, cooling, well`, `Water, process,
-unspecified natural origin/kg` — beside cubic-metre rows of the same kinds of
-water. `openlca-2.8.2-manual-fixes.json` rewrites every one of them to cubic
-metres at 0.001 m³ per kg, as `bafu-2026-v1-manual-fixes.json` did for BAFU's
-sixteen ([#78](https://github.com/brightway-labs/brightway-flows/issues/78)),
-and the density is published on each row's concept association, so a factor
-the package states per kilogram is converted by the same number. On the first
+unspecified natural origin/kg`, `Thermally polluted water` — beside cubic-metre
+rows of the same kinds of water. `openlca-2.8.2-manual-fixes.json` rewrites
+every one of them to cubic metres at 0.001 m³ per kg, as
+`bafu-2026-v1-manual-fixes.json` did for BAFU's sixteen
+([#78](https://github.com/brightway-labs/brightway-flows/issues/78)), and the
+density is published on each row's concept association, so a factor the
+package states per kilogram is converted by the same number. On the first
 build that merged the list (20 October 2026) the two `Waste water` rows had
 published a kilogram flow beside the cubic-metre one and ten of the package's
-own factors were unit crossings. The four names ending in `/kg` keep the
-package's spelling; the unit field is what the build reads.
+own factors were unit crossings. The first fifty rewrites took the names
+beginning `Water` and `Waste water` and missed the two ending in `polluted
+water`: on the six-list build of 20 October 2026 `Thermally polluted water`
+was a kilogram row on the cubic-metre `Cooling water` flow, and `Chemically
+polluted water` published a kilogram `Contaminated water` flow in water,
+unspecified, beside BAFU's cubic-metre one in a river. The four names ending in
+`/kg` keep the package's spelling; the unit field is what the build reads.
 
 ## Rows sent to a curated target
 
