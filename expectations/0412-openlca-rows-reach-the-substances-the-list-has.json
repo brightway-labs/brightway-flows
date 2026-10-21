@@ -245,7 +245,7 @@
     {
       "id": "0412-plain-carbon-dioxide-in-air-is-fossil",
       "issue": 412,
-      "title": "openLCA's six plain `Carbon dioxide` rows reach two substances, fossil carbon dioxide and biogenic uptake",
+      "title": "openLCA's eleven `Carbon dioxide` rows reach fossil carbon dioxide, biogenic uptake, and -- for ecoinvent's five copies -- what ecoinvent's rows reach",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
@@ -253,10 +253,10 @@
       },
       "expect": {
         "outcome": "matched",
-        "row_count": 6,
-        "substance_count": 2
+        "row_count": 11,
+        "substance_count": 3
       },
-      "comment": "Five air rows, which every method in the package scores as fossil, and one resource row scored as uptake. On the build of 20 October 2026 (merge run `76b3ec8f`) all six reached EF's carbon dioxide of unstated origin and minted its long-term air flow again (0669, 0914); the next claim names the air row's substance."
+      "comment": "Names match case-insensitively, so `Carbon dioxide` selects eleven rows: GreenDelta's six title-cased `Carbon Dioxide` rows, which every method in the package scores as fossil (five air rows) or as uptake (the resource row) and which `openlca-2.8.2-match-overrides.json` sends to EF's fossil flows and biogenic uptake, and five lower-case `Carbon dioxide` rows that are ecoinvent's own rows under ecoinvent's uuids (78eb1859, cc6a1abb, e1c597cc, e4e9febc, e8787b5e), which reach EF's carbon dioxide of unstated origin exactly as ecoinvent's do (0669 is that question, and it is ecoinvent's). On the build of 20 October 2026 (merge run `76b3ec8f`) the six plain rows also reached carbon dioxide of unstated origin and minted its long-term air flow again (0914); the six per-row claims below name each row's target. Measured on the six-list build of 21 October 2026 (commit 32ae26c)."
     },
     {
       "id": "0412-the-air-unspecified-row-is-fossil",
@@ -273,6 +273,70 @@
         "target_name": "Carbon Dioxide (fossil)"
       },
       "comment": "One of the five; the other four are its siblings in rural, urban, long-term and cruise-height air, each with the fossil flow of its own compartment as target."
+    },
+    {
+      "id": "0412-the-urban-air-row-is-fossil",
+      "issue": 412,
+      "title": "The plain `Carbon dioxide` row in high population density reaches fossil carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "643975a8-03da-44bb-873f-4fe8e7740fe6"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "08a91e70-3ddc-11dd-9c12-0050c2490048",
+        "target_name": "Carbon Dioxide (fossil)"
+      },
+      "comment": "GreenDelta's row in `Emission to air / high population density`, scored as fossil by every method in the package; its target is EF's fossil flow in urban air."
+    },
+    {
+      "id": "0412-the-rural-air-row-is-fossil",
+      "issue": 412,
+      "title": "The plain `Carbon dioxide` row in low population density reaches fossil carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "7ae371a9-8532-11e0-9d78-0800200c9a66"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "08a91e70-3ddc-11dd-9c13-0050c2490048",
+        "target_name": "Carbon Dioxide (fossil)"
+      },
+      "comment": "GreenDelta's row in `Emission to air / low population density`, scored as fossil by every method in the package; its target is EF's fossil flow in rural air."
+    },
+    {
+      "id": "0412-the-long-term-air-row-is-fossil",
+      "issue": 412,
+      "title": "The plain `Carbon dioxide` row in low population density, long-term reaches fossil carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "53487f42-0668-400b-be1f-19f3dd46709c"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "08a91e70-3ddc-11dd-923e-0050c2490048",
+        "target_name": "Carbon Dioxide (fossil)"
+      },
+      "comment": "GreenDelta's row in `Emission to air / low population density, long-term`, scored as fossil by every method in the package; its target is EF's fossil flow in long-term air."
+    },
+    {
+      "id": "0412-the-cruise-height-row-is-fossil",
+      "issue": 412,
+      "title": "The plain `Carbon dioxide` row in lower stratosphere + upper troposphere reaches fossil carbon dioxide",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "f8b49a6e-fac7-4373-97fb-8ddf3bbb27f5"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "08a91e70-3ddc-11dd-9c14-0050c2490048",
+        "target_name": "Carbon Dioxide (fossil)"
+      },
+      "comment": "GreenDelta's row in `Emission to air / lower stratosphere + upper troposphere`, scored as fossil by every method in the package; its target is EF's fossil flow in aircraft cruise height."
     },
     {
       "id": "0412-carbon-dioxide-as-a-resource-is-uptake",
@@ -327,7 +391,7 @@
     {
       "id": "0412-no-water-row-is-published-in-kilograms",
       "issue": 412,
-      "title": "No openLCA water row arrives in kilograms",
+      "title": "The only openLCA kilogram rows named for water are the three dissolved-element rows",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
@@ -335,9 +399,26 @@
         "unit": "kg"
       },
       "expect": {
-        "row_count": 0
+        "row_count": 3
       },
-      "comment": "The 52 rows the package measures by mass -- `Waste water`, `Water`, the 29 `Water, ...` names, `Thermally polluted water` and `Chemically polluted water` -- are rewritten to cubic metres before the merge reads them, so no such row arrives in kilograms; `0409-bafu-waste-water-is-published-in-cubic-metres` says the flows are cubic metres. `name_contains: Water`, capitalised, because the merge table title-cases names and the kept kilogram rows whose names merely contain `water` -- `Magnesium, 0.13% In Water` -- are not water. Unmet on the six-list build of 20 October 2026 (merge run `0c16f168`) with a count of 2: the first fifty rewrites took the names beginning `Water` and `Waste water` and missed the two ending in `polluted water`."
+      "comment": "The 52 rows the package measures water by mass -- `Waste water`, `Water`, the 29 `Water, ...` names, `Thermally polluted water` and `Chemically polluted water` -- are rewritten to cubic metres before the merge reads them, so none arrives in kilograms; `0409-bafu-waste-water-is-published-in-cubic-metres` says the flows are cubic metres. Names match case-insensitively, and the three kilogram rows whose names still contain `water` are `Magnesium, 0.13% in water` (two rows) and `Bromine, 0.0023% in water`: an element dissolved in water, reaching magnesium and bromine by registry number, measured as the element in kilograms. The next claim pins them. On the six-list build of 20 October 2026 (merge run `0c16f168`) the count was five: the first fifty rewrites took the names beginning `Water` and `Waste water` and missed the two ending in `polluted water`."
+    },
+    {
+      "id": "0412-the-kilogram-rows-named-for-water-are-dissolved-elements",
+      "issue": 412,
+      "title": "The three kilogram rows named `… in water` are magnesium and bromine dissolved in water",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name_contains": "% in water",
+        "unit": "kg"
+      },
+      "expect": {
+        "outcome": "matched",
+        "row_count": 3,
+        "substance_count": 2
+      },
+      "comment": "`Magnesium, 0.13% in water` in `Resource / in ground` and `Resource / in water`, and `Bromine, 0.0023% in water` in `Resource / in water`: the mass is the element's, and each reaches its element by registry number. Together with the previous claim this says every kilogram row named for water is one of these three."
     },
     {
       "id": "0412-waste-water-in-kilograms-reaches-the-cubic-metre-flow",

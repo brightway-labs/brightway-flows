@@ -234,7 +234,7 @@ class FetchedListTestCase(unittest.TestCase):
             ],
         )
 
-    def test_the_refused_rows_are_waste_black_carbon_and_located_rows(self):
+    def test_the_refused_rows_are_waste_black_carbon_located_rows_and_gamma_chlordane(self):
         import re
 
         from brightway_flows.additional_flows import load_excluded_source_flows
@@ -275,18 +275,24 @@ class FetchedListTestCase(unittest.TestCase):
             uuid for uuid, record in refused.items()
             if record.reason.startswith("An indicator encoded as a flow")
         }
+        # The four `Chlordane, gamma-` rows, refused as Stepwise's additions
+        # refuse the same isomer (#412).
+        chlordane = {
+            row["uuid"] for row in self.rows if row["name"] == "Chlordane, gamma-"
+        }
         self.assertEqual(
             (
                 len(waste), len(black_carbon), len(country_land), len(located),
-                len(stress_class), len(indicator),
+                len(stress_class), len(indicator), len(chlordane),
             ),
-            (186, 13, 433, 5_773, 11, 11),
+            (186, 13, 433, 5_773, 11, 11, 4),
         )
         self.assertEqual(
             set(refused),
-            waste | black_carbon | country_land | located | stress_class | indicator,
+            waste | black_carbon | country_land | located | stress_class | indicator
+            | chlordane,
         )
-        self.assertEqual(len(self.source.load_flows()), 61_211 - 6_427)
+        self.assertEqual(len(self.source.load_flows()), 61_211 - 6_431)
 
     def test_no_kept_row_names_a_place_the_package_locates(self):
         """`Nitrogen, NO` is nitrogen emitted in Norway (`NO = Norway`)."""
