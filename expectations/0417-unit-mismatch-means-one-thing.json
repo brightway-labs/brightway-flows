@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "description": "`has_unit_mismatch` flags a source row measured in something other than the flow it landed on, with no published factor saying by how much. A created flow's rows were flagged by that definition. A matched row was flagged unless the factor was one `units.json` gives, so a curated factor across quantity kinds (a kilogram on a megajoule flow at 9.41 MJ/kg) cleared the flag only if `unit-change-allowlist.json` also named the pair. A curated crossing that missed the allowlist would have been reported on one route and not the other. Now any published factor clears the flag on both routes. Whether a crossing was ruled on is a separate question, answered by `merge.unit_crossings_unrecorded` (`0805-every-quantity-kind-crossing-is-recorded.json`). BAFU 2026 v1 and ecoinvent 3.8 are held at nothing by `0393-unit-table-factors-are-published.json`; this file holds the other three lists there.",
+  "expectations": [
+    {
+      "id": "0417-agribalyse-no-unconverted-unit-mismatch",
+      "issue": 417,
+      "title": "No AGRIBALYSE 3.2 row lands on a flow in another unit without a published factor or an allowlist entry",
+      "subject": {
+        "kind": "measure",
+        "key": "merge.agribalyse-3.2.unit_mismatch"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "0 in `expectations/baseline.json`, from the five-list build of 0876891, before this change as well as after it. Every curated crossing had an allowlist entry then, so the two definitions gave the same count. The change is to the definition, and it is pinned by `AConvertedPairIsNotAMismatchTestCase` in `tests/test_unit_changes.py`. This holds the measure where the definition puts it."
+    },
+    {
+      "id": "0417-ecoinvent-312-no-unconverted-unit-mismatch",
+      "issue": 417,
+      "title": "The same holds for ecoinvent 3.12",
+      "subject": {
+        "kind": "measure",
+        "key": "merge.ecoinvent-3.12.unit_mismatch"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "0 in `expectations/baseline.json`, from the five-list build of 0876891, before and after this change."
+    },
+    {
+      "id": "0417-stepwise-no-unconverted-unit-mismatch",
+      "issue": 417,
+      "title": "The same holds for Stepwise 2006",
+      "subject": {
+        "kind": "measure",
+        "key": "merge.stepwise-2006-1.09.unit_mismatch"
+      },
+      "expect": {
+        "at_most": 0
+      },
+      "comment": "0 in `expectations/baseline.json`, from the five-list build of 0876891, before and after this change. Stepwise's fossil carriers in kilograms on megajoule flows publish no factor and are accepted by `unit-change-allowlist.json`, which still clears the flag on a match."
+    }
+  ]
+}

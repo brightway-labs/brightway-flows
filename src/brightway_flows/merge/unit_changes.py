@@ -19,17 +19,25 @@ elementary flow record stores, and comparing raw notations reports `m2.a`
 against `m2*a` as a disagreement.
 
 **It reports; it never raises and never converts.**  What it reports is a
-pair nothing converts.  A becquerel row on a kilobecquerel flow is two
-spellings of one scale, and the mapping publishes the factor `units.json` gives
-between them (`merge.conversions.conversion_to_publish`), so it is not reported
-here (#393) -- as long as the match says the factor was published, which is
-read rather than assumed (#413).  A dimension change is
-usually an error but not always: EF 3.1 accounts fossil energy carriers by
-energy content on purpose, so ecoinvent's `Coal, brown` in kg maps onto brown
-coal in MJ and that mapping is right.  Those decisions live in
-`unit-change-allowlist.json`, each with a comment, because an entry there
+pair nothing converts: the mapping publishes no factor between the two units.
+Any published factor settles it, wherever the factor came from.  A becquerel
+row on a kilobecquerel flow is two spellings of one scale, and the mapping
+publishes the factor `units.json` gives between them
+(`merge.conversions.conversion_to_publish`), so it is not reported here (#393);
+nor is a kilogram of peat on a megajoule flow whose override states 9.76 MJ/kg.
+Whether a factor was published is read off the match rather than assumed
+(#413).  That is the definition a created flow's rows are flagged by too, so
+`has_unit_mismatch` means one thing on both routes (#417).
+
+A dimension change with no factor is usually an error but not always: EF 3.1
+accounts fossil energy carriers by energy content on purpose, so Stepwise's
+`Coal, brown` in kg maps onto brown coal in MJ, and that mapping is right
+although nothing says how many megajoules a kilogram is.  Those decisions live
+in `unit-change-allowlist.json`, each with a comment, because an entry there
 asserts that a dimensionally impossible mapping is nonetheless correct and that
-assertion needs its reasoning attached.
+assertion needs its reasoning attached.  Every crossing of quantity kinds needs
+an entry, factor or not, but that is :func:`report_unrecorded_crossings`'s
+question and its own measure, not this flag's.
 
 **A mismatch annotates a match; it does not replace one.**  This runs as a pass
 over the matches the merge already made, and sets `has_unit_mismatch` on the
@@ -170,11 +178,11 @@ def find_unit_mismatches(
 
     A row with either unit missing is not reported: an absent unit is its own
     problem and is not evidence that the two sides disagree.  Nor is a pair
-    `units.json` converts whose mapping publishes a factor, which the match
-    records as `conversion_factor`.  Read off the match rather than assumed from
-    the unit table: it was assumed until #413, and 56 BAFU becquerel rows whose
-    route published nothing read as converted.  A published factor excuses only
-    such a pair; a mass onto an energy is still the allowlist's to accept.
+    whose mapping publishes a factor, which the match records as
+    `conversion_factor`, whether the factor is the unit table's or a curated
+    one across quantity kinds (#417).  Read off the match rather than assumed
+    from the unit table: it was assumed until #413, and 56 BAFU becquerel rows
+    whose route published nothing read as converted.
     """
     mismatched: set[str] = set()
     for row in matches:
@@ -182,10 +190,7 @@ def find_unit_mismatches(
         target_unit = canonical_unit(str(row.target_unit or ""), units_index)
         if not source_unit or not target_unit or source_unit == target_unit:
             continue
-        if (
-            row.conversion_factor is not None
-            and unit_table_factor(source_unit, target_unit) is not None
-        ):
+        if row.conversion_factor is not None:
             continue
         target_id = str(row.target_elementary_flow_id or "")
         if (row.source_uuid, target_id) in allowed:
