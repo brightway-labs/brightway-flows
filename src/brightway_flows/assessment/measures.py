@@ -369,6 +369,8 @@ def _recorded_name_measures(decisions: RecordedDecisions) -> list[MeasureValue]:
     key; the gap between the last two is the residue nothing arbitrates.  A
     fourth counts the stored decisions whose place the build never wrote down
     and the index had to re-derive -- zero once #361's field is in the build.
+    A fifth counts the keys only a vendor's shipped spelling reaches, where the
+    merge recorded an enriched name instead (#376).
     *decisions* is the enclosing matcher's own copy, so the index is built at
     most once per assessment.
     """
@@ -378,6 +380,7 @@ def _recorded_name_measures(decisions: RecordedDecisions) -> list[MeasureValue]:
             decisions.conflicted_context_keys,
             decisions.arbitrable_context_keys,
             decisions.resolved_without_recorded_context,
+            decisions.shipped_name_context_keys,
         )
     except sqlite3.OperationalError as error:  # a build without the tables
         logger.info("recorded_name_measures_skipped", reason=str(error))
@@ -411,6 +414,13 @@ def _recorded_name_measures(decisions: RecordedDecisions) -> list[MeasureValue]:
             counts[3],
             "lookup: stored decisions whose place had to be re-derived",
             Direction.LOWER,
+            "lookup",
+        ),
+        MeasureValue(
+            "lookup.recorded_name.shipped_name_context_keys",
+            counts[4],
+            "lookup: name-and-place keys only the vendor's shipped name reaches",
+            Direction.HIGHER,
             "lookup",
         ),
     ]

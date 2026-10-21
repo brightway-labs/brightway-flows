@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "description": "BAFU's ecoSpold 1 export puts the CAS number on the exchange, not on the flow, and many exchanges leave it off. So the same BAFU flow reaches a caller of the lookup with its number and without it. Where the build placed the row by its number, the row asked again without it found nothing: `t-Butylamine` in `emissions to air / high. pop.` reached `tert-Butylamine` with 75-64-9 and `no-flow-object-candidate` without it, though the build holds that very row in that very place.\n\nThe recorded-by-name index was keyed on `merge_outcomes.source_name`, the name the merge settled on after enrichment -- `tert-Butylamine` -- and not on the name the vendor shipped, which the published mapping (`elementary_flow_sources.source_flow_name`) keeps and which is what a caller holding the vendor's inventory has. The fix keys each decision under both, at the decision's own place.\n\nMeasured on the five-list build of `main` at 3f827d6 (run 20261021T1801397624190000), asking every placed row of the three SimaPro-shaped lists by its shipped name with no CAS or EC number, `recorded_by_name=True` and its own `source_label`: BAFU 2026 v1 declined 73 of 2,679 before and 22 after; AGRIBALYSE 3.2 263 of 5,485 and 16; Stepwise 2006 395 of 6,055 and 8. Rows answered with a flow the build did not choose fell from 17 to 6, and the six were all wrong before the change as well -- a shipped name added no wrong answer. The index gained 2,653 keys only a shipped name reaches, and 25 more disagreements, which decline.",
+  "expectations": [
+    {
+      "id": "0376-shipped-names-are-keys-of-the-recorded-index",
+      "issue": 376,
+      "title": "The recorded-by-name index answers to the name the vendor shipped, not only the one the merge settled on",
+      "subject": {
+        "kind": "measure",
+        "key": "lookup.recorded_name.shipped_name_context_keys",
+        "value_when_absent": 0
+      },
+      "expect": {
+        "at_least": 2000
+      },
+      "comment": "2,653 name-and-place keys on the build of 3f827d6 are reachable only under a shipped spelling, because no merged name at that place is the same -- `t-Butylamine` beside `tert-Butylamine`, `Chromium VI` beside `Chromium(6+)`, `Magnesite` beside `Magnesium carbonate`. Absent, and so 0, before the fix. The floor is set below the measurement with room for a build's drift; what the count stands for row by row is held by `tests/test_lookup_recorded.py`, which asks for #376's own row against the real build."
+    }
+  ]
+}

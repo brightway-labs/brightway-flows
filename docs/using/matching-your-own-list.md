@@ -379,6 +379,15 @@ recorded row of that dimension agrees, and if it could not be read at all,
 only where the name has one recorded flow everywhere. It never crosses a
 boundary you named.
 
+The name can be the one the vendor wrote or the one the build settled on.
+BAFU ships `t-Butylamine`; the build identified it by its CAS number and
+records it as `tert-Butylamine`. A BAFU exchange that leaves the number off
+still says `t-Butylamine`, and finds the decision made for that row in that
+compartment. On the build of 21 October 2026 (`main` at 3f827d6), 2,653
+name-and-place keys are reachable only under a vendor's own spelling, and
+asking every BAFU row by that spelling without its number leaves 22 of 2,679
+unanswered.
+
 Forty-two keys hold two flows, and those are genuine disagreements —
 `Carbon dioxide` in unspecified air is fossil carbon to BAFU and Stepwise and
 land-use-change carbon to ecoinvent, because ecoinvent spells fossil out as
