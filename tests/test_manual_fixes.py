@@ -416,6 +416,85 @@ class FluoresceinIsTheSodiumSaltTestCase(unittest.TestCase):
         self.assertEqual(orjson.dumps(self._fixed(flows)), once)
 
 
+class FenpropimorphIsOneSubstanceTestCase(unittest.TestCase):
+    """#201, asked of the shipped files rather than of a fixture.
+
+    EF 3.1 ships fenpropimorph under its systematic name with 67564-91-4, the
+    cis form the fungicide is sold as, and again as `fenpropimorph` with
+    67306-03-0, the same skeleton with the stereochemistry unstated.  The older
+    number is rewritten on EF's rows and on each merged list's, and the twelve
+    compartments the two entries then share are ruled in the systematic row's
+    favour.  Both halves are asserted: the older number moves, and a row
+    already carrying the current one is not touched.
+    """
+
+    OLD = "67306-03-0"
+    NEW = "67564-91-4"
+    SYSTEMATIC = "cis-4-[3-(p-tert-butylphenyl)-2-methylpropyl]-2,6-dimethylmorpholine"
+
+    def _ef(self, flows):
+        apply_manual_fixes(flows, MANUAL_FIXES_FILEPATH, label="EF 3.1", quiet=True)
+        return flows
+
+    def _merged(self, key, flow):
+        source = known_source_lists().get(key)
+        if source is None:
+            raise unittest.SkipTest(f"{key} is not registered")
+        apply_manual_fixes([flow], source.manual_fixes_path, label=key, quiet=True)
+        return flow
+
+    def test_efs_stub_takes_the_current_number(self):
+        stub = _flow("u-1", "fenpropimorph", self.OLD, None)
+        self._ef([stub])
+        self.assertEqual(stub["cas_numbers"], [self.NEW])
+
+    def test_efs_characterised_entry_is_untouched(self):
+        """The other half: the fix is not a rule about the word."""
+        entry = _flow("u-2", self.SYSTEMATIC, self.NEW, "266-719-9")
+        self._ef([entry])
+        self.assertEqual(entry["cas_numbers"], [self.NEW])
+        self.assertEqual(entry["ec_numbers"], ["266-719-9"])
+
+    def test_applying_twice_changes_nothing_further(self):
+        """The base list applies its fixes at extract and again on read (#237)."""
+        flows = [_flow("u-3", "fenpropimorph", self.OLD, None)]
+        once = orjson.dumps(self._ef(flows))
+        self.assertEqual(orjson.dumps(self._ef(flows)), once)
+
+    def test_each_merged_lists_row_follows_the_number(self):
+        for key in ("bafu-2026-v1", "agribalyse-3.2"):
+            with self.subTest(list=key):
+                row = self._merged(key, {
+                    "uuid": "u-4", "name": "Fenpropimorph", "context": ["Emissions to soil"],
+                    "unit": "kg", "cas_numbers": [self.OLD],
+                })
+                self.assertEqual(row["cas_numbers"], [self.NEW])
+
+    def test_a_merged_row_carrying_another_number_is_left_alone(self):
+        for key in ("bafu-2026-v1", "agribalyse-3.2"):
+            with self.subTest(list=key):
+                row = self._merged(key, {
+                    "uuid": "u-5", "name": "Fenpropimorph", "context": ["Emissions to soil"],
+                    "unit": "kg", "cas_numbers": ["1-2-3"],
+                })
+                self.assertEqual(row["cas_numbers"], ["1-2-3"])
+
+    def test_every_shared_compartment_is_ruled_for_the_systematic_row(self):
+        """Twelve compartments hold both entries once they share an object;
+        a compartment left unruled would publish two live fenpropimorph flows
+        in it, which is the collision a source row cannot be placed onto."""
+        from brightway_flows.pipeline.collision_decisions import load_collision_rulings
+
+        rulings = [
+            ruling for ruling in load_collision_rulings().values()
+            if "fenpropimorph" in ruling.names
+        ]
+        self.assertEqual(len(rulings), 12)
+        self.assertEqual(len({ruling.context_iri for ruling in rulings}), 12)
+        self.assertEqual(len({ruling.flow_object_id for ruling in rulings}), 1)
+        self.assertTrue(all(ruling.names[0] == self.SYSTEMATIC for ruling in rulings))
+
+
 class PenteneMixtureIsNotOnePenteneTestCase(unittest.TestCase):
     """#157, asked of the shipped file rather than of a fixture.
 
