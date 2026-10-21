@@ -295,7 +295,9 @@ That is what `release-migrations` writes: four files in
 [randonneur's](https://github.com/brightway-lca/randonneur) format, one for
 each kind of thing your database holds, each a datapackage naming the two
 releases (`source_id`, `target_id`), saying where each field is read from
-(`mapping`), and listing the changes under four verbs.
+(`mapping`), and listing the changes under four verbs. A release's Zenodo
+record carries them as one zip, `1.0.0__1.1.0.zip` for 1.1.0, which unpacks
+to the folder this section is named for.
 
 | File | What it migrates | Verbs |
 |---|---|---|
@@ -401,6 +403,12 @@ Two things a migration is not: a diff of every field — provenance,
 compared — and a promise between development builds. A build of a commit no
 tag names is written as `brightway-flows-<git describe>-dev`, which is
 reproducible but is not a release.
+
+A `replace` moves your exchanges onto a flow; it does not say the two flows
+were characterised alike. Read
+[what a migration does not promise](../reference/limitations.md#what-a-migration-between-two-releases-does-not-promise)
+before applying one, and [what changed in each release](releases.md) for why
+the rows in it moved.
 
 ### `consensus-flows.sqlite3` — everything else
 

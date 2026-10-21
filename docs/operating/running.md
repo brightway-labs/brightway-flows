@@ -404,6 +404,22 @@ uv run brightway-flows release-snapshot-upgrade --snapshot 1.0.0.json.gz \
     --factors lcia-factors.json.gz
 ```
 
+**A change to the snapshot format comes with its upgrade.** 1.0.0 cannot be
+rebuilt, so its snapshot is the only way a migration can start from it, and
+the same is true of any release whose inputs have since been fetched again.
+A change to what a snapshot records raises its format number, and the same
+change extends `release-snapshot-upgrade` to bring every earlier snapshot up
+from the files that release published: format 2 added impact categories, and
+reads 1.0.0's from its own `lcia-factors.json.gz`. A format change needing
+something no published file holds would leave the earlier releases unable to
+start a migration. Decide what happens to them, in an issue, before making
+it.
+
+**Keep the snapshot outside the data directory.** The data directory holds
+builds, and a refresh or a deleted worktree takes it away. Keep every
+release's snapshot in one folder of its own, upload it with the release, and
+hand it to `release-migrations` by path.
+
 When the next release is built, write what changed:
 
 ```bash
@@ -423,7 +439,9 @@ The command then applies the files with randonneur to the earlier release,
 as a consumer is told to, and compares the result with the later release
 table by table. A row missing, left over, different or written twice exits
 with status 3 and names the rows; that is a defect in the migration, not in
-either release.
+either release. Only when every table matches does it zip the five files
+into `releases/migrations/1.0.0__1.1.0.zip`, which unpacks to the folder and
+is the file to upload; a run that fails removes the zip an earlier run left.
 
 The `unresolved.json` it writes is the worklist. A split, a unit change, a
 refused redirect or an impact category that is gone is answered in
@@ -431,6 +449,25 @@ refused redirect or an impact category that is gone is answered in
 the identifier; run `release-migrations` again and the ruling is in the
 files. A ruling that names an identifier the pair did not leave unresolved is
 refused as stale.
+
+### Publishing a release
+
+1. On a branch, set `version` in `pyproject.toml` to the release, run
+   `uv lock`, and add the release to
+   [What changed in each release](../using/releases.md), and merge it.
+2. From a clean tree of `main`, tag the commit, build, characterise and record
+   the snapshot as above.
+3. Write the migration from the previous release, answer everything in
+   `unresolved.json`, and add what it holds to the release's section of the
+   notes.
+4. Upload a new version of the
+   [Zenodo record](https://doi.org/10.5281/zenodo.22857950):
+   `harmonised-flows-simple.json.gz`, `lcia-factors.json.gz`,
+   `lcia-differences.json` and `consensus-flows.sqlite3` as before, the
+   release's snapshot, the zip of the migration from the previous release
+   (`1.0.0__1.1.0.zip` for 1.1.0), and the release's notes as the version's
+   description.
+5. Push the tag.
 
 ## All commands
 

@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 from unittest import mock
 
@@ -28,6 +29,7 @@ from brightway_flows.releases.randonneur_files import (
     MAPPINGS,
     UNRESOLVED_REPORT_SCHEMA_VERSION,
     entries,
+    write_migration_archive,
     write_migration_files,
 )
 from brightway_flows.releases.replay import replay_migration
@@ -667,6 +669,22 @@ class RandonneurFilesTestCase(unittest.TestCase):
         second = {p.name: p.read_bytes() for p in (*again.migrations, again.unresolved)}
         self.assertEqual(first, second)
 
+    def test_the_archive_holds_the_five_files_under_their_directory(self):
+        archive = write_migration_archive(self.files)
+        self.assertEqual(archive, self.root / "1.0.0__1.1.0.zip")
+        with zipfile.ZipFile(archive) as bundle:
+            members = {name: bundle.read(name) for name in bundle.namelist()}
+        on_disk = {
+            f"1.0.0__1.1.0/{path.name}": path.read_bytes()
+            for path in (*self.files.migrations, self.files.unresolved)
+        }
+        self.assertEqual(members, on_disk)
+
+    def test_zipping_twice_gives_the_same_bytes(self):
+        first = write_migration_archive(self.files).read_bytes()
+        again = write_migration_archive(write_migration_files(self.diff, self.root))
+        self.assertEqual(first, again.read_bytes())
+
     def test_every_published_key_is_in_the_mapping(self):
         """`Datapackage.add_data` refuses a key the mapping does not name, so a
         create carrying every published field proves the mapping is complete."""
@@ -794,13 +812,43 @@ class PublishedGeographyTestCase(unittest.TestCase):
 
 class ReleaseMigrationsCommandTestCase(unittest.TestCase):
     """The files are written and reported before they are applied; a file
-    randonneur refuses is exit 3 with its message, not a traceback."""
+    randonneur refuses is exit 3 with its message, not a traceback.  The
+    archive is written only once they apply."""
+
+    def test_files_that_apply_are_zipped_beside_their_directory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_snapshot(_snapshot("1.0.0", flows=[_flow("f1", "fo-1")]), root / "before.json.gz")
+            write_snapshot(
+                _snapshot("1.1.0", flows=[_flow("f1", "fo-1", label="Cadmium(2+)")]),
+                root / "after.json.gz",
+            )
+            result = CliRunner().invoke(app, [
+                "release-migrations",
+                "--from", str(root / "before.json.gz"),
+                "--to", str(root / "after.json.gz"),
+                "--output", str(root / "out"),
+            ])
+            archive = root / "out" / "1.0.0__1.1.0.zip"
+            with zipfile.ZipFile(archive) as bundle:
+                members = sorted(bundle.namelist())
+        self.assertEqual(result.exit_code, 0, result.output)
+        self.assertIn(f"Wrote {archive}", result.output)
+        self.assertEqual(members, sorted([
+            "1.0.0__1.1.0/flow-objects.json",
+            "1.0.0__1.1.0/elementary-flows.json",
+            "1.0.0__1.1.0/impact-categories.json",
+            "1.0.0__1.1.0/characterization-factors.json",
+            "1.0.0__1.1.0/unresolved.json",
+        ]))
 
     def test_a_file_randonneur_refuses_exits_3(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             write_snapshot(_snapshot("1.0.0", flows=[_flow("f1", "fo-1")]), root / "before.json.gz")
             write_snapshot(_snapshot("1.1.0", flows=[_flow("f1", "fo-1")]), root / "after.json.gz")
+            (root / "out").mkdir()
+            (root / "out" / "1.0.0__1.1.0.zip").write_bytes(b"an earlier run's archive")
             with mock.patch(
                 "brightway_flows.releases.replay.replay_migration",
                 side_effect=ConflictingConversionFactors("two factors for one source"),
@@ -812,7 +860,9 @@ class ReleaseMigrationsCommandTestCase(unittest.TestCase):
                     "--output", str(root / "out"),
                 ])
             written = sorted(path.name for path in (root / "out" / "1.0.0__1.1.0").iterdir())
+            archived = (root / "out" / "1.0.0__1.1.0.zip").exists()
         self.assertEqual(result.exit_code, 3, result.output)
+        self.assertFalse(archived)
         self.assertIn("randonneur cannot apply the files: two factors for one source", result.output)
         self.assertNotIn("Traceback", result.output)
         self.assertIn("characterization-factors.json", written)

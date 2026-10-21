@@ -17,6 +17,8 @@ change; `randonneur_files` writes the records in randonneur's format;
 from brightway_flows.releases.diff import Delta, DeltaKind, ReleaseDiff, diff_releases
 from brightway_flows.releases.randonneur_files import (
     MigrationFiles,
+    migration_archive_path,
+    write_migration_archive,
     write_migration_files,
 )
 from brightway_flows.releases.replay import ReplayReport, replay_migration
@@ -59,11 +61,13 @@ __all__ = [
     "diff_releases",
     "load_release_migration_rulings",
     "load_snapshot",
+    "migration_archive_path",
     "named_version",
     "release_version",
     "replay_migration",
     "snapshot_path",
     "upgrade_snapshot",
+    "write_migration_archive",
     "write_migration_files",
     "write_snapshot",
 ]
