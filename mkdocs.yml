@@ -88,6 +88,7 @@ nav:
       - Recipes: using/recipes.md
       - Matching your own list: using/matching-your-own-list.md
       - Scoring a dataset two ways: using/scores.md
+      - What changed in each release: using/releases.md
   - Operating the pipeline:
       - Installation: operating/install.md
       - Running a transform: operating/running.md

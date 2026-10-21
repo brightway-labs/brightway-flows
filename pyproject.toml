@@ -1,6 +1,6 @@
 [project]
 name = "brightway-flows"
-version = "1.0.0"
+version = "1.1.0"
 description = "Elementary flow list which supports expression in multiple systems"
 readme = "README.md"
 # The code is AGPL; the data the package ships is ODbL, which `LICENSE-DATA`

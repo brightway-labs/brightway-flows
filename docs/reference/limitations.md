@@ -1736,7 +1736,17 @@ and not an addition.
 `release-migrations` writes, for a consumer who loaded one release, the
 randonneur files that move their database to the next (see [Which output do
 I need?](../using/outputs.md#releasesmigrationsfrom__to-moving-a-database-from-one-release-to-the-next)).
-Four things it deliberately leaves to a person.
+Five things it deliberately leaves to a person.
+
+**A replace is not a promise that the factors agreed.** When two flows of
+chloroform in air turn out to be one, the migration replaces the deprecated
+flow with the survivor, and your exchanges are characterised by the survivor's
+factors from then on. Those need not be the factors the deprecated flow had.
+On the 2026-08-12 build, 68 of the 183 factors carried by deprecated flows
+differed from the survivor's for the same method
+([what a redirect's reason promises](#what-a-redirects-reason-does-and-does-not-promise)).
+A score that moves after a migration may be this, and the two releases'
+`lcia-factors.json.gz` say by how much.
 
 **A split is not answered.** A flow whose source rows now land on several
 flows — the eleven ecoinvent `Water` rows that became water vapour in air and

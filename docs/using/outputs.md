@@ -402,6 +402,12 @@ compared — and a promise between development builds. A build of a commit no
 tag names is written as `brightway-flows-<git describe>-dev`, which is
 reproducible but is not a release.
 
+A `replace` moves your exchanges onto a flow; it does not say the two flows
+were characterised alike. Read
+[what a migration does not promise](../reference/limitations.md#what-a-migration-between-two-releases-does-not-promise)
+before applying one, and [what changed in each release](releases.md) for why
+the rows in it moved.
+
 ### `consensus-flows.sqlite3` — everything else
 
 The two layers, the change log, the PROV-O trail, the decision queues and the
