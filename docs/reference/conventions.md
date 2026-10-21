@@ -460,9 +460,13 @@ suite while broken in four places, because no test exercised the SQLite writer.
   one data-changing change being in flight at a time, which is a decision about
   sequencing rather than something the tool enforces.
 - **The archive is an extract, not a build.** A comparison reads almost none of
-  a 2.0 GB database: `merge_outcomes` whole — 31 MB, `detail_json` and every
+  a 3.8 GB database: `merge_outcomes` whole — 115 MB, `detail_json` and every
   scored candidate included — plus two columns of `flow_objects`, six of
-  `elementary_flows`, and the two run headers. Extracted, that is **44 MB**, and
+  `elementary_flows`, the two run headers, and every link in
+  `elementary_flow_sources` with its metadata cut to the unit and the published
+  conversion factor, so a factor gained or withheld on a row that did not move
+  is seen (#418). Extracted, that is **144 MB** on the five-list build of
+  `0876891`, and
   `compare_merge_outcomes.py` reads it as though it were the build, so the
   refresh keeps ten commits under `base-builds/` for less than one build costs
   and a question asked after `main` has moved on is still answerable. What an

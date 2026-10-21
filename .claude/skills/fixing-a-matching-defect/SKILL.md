@@ -39,7 +39,7 @@ anything, ask whether what is stored answers for this branch:
 
     uv run python tools/refresh_base_build.py
 
-It exits 0 having copied the 44 MB a comparison reads into
+It exits 0 having copied the 144 MB a comparison reads into
 `base-builds/<commit>.sqlite3`, and that is the whole beginning of an
 investigation done in a second rather than in the ten minutes or more a build
 that merges a source list takes. It exits 1 with the reason when what is stored
@@ -141,7 +141,7 @@ the named rows can move.
 The before side does not have to be built again if you already have one — and
 step 2 already asked. `compare_merge_outcomes.py` takes `base` for "where this
 branch left `main`", looks it up in the archive step 2 copied it into, and reads
-the 44 MB extract as though it were the build:
+the 144 MB extract as though it were the build:
 
     uv run python tools/compare_merge_outcomes.py \
         base $BRIGHTWAY_FLOWS_DATA_DIR/consensus-flows.sqlite3
@@ -179,6 +179,12 @@ What the diff has to show:
 - **what happened to characterisation.** A flow whose factor count changed, or
   whose deprecation changed, is a published number changing. Say so, or say
   plainly that none did.
+- **what happened to the conversion factors.** `MAPPINGS WHOSE CONVERSION
+  CHANGED` counts the rows that kept their flow and gained, lost or changed the
+  `qudt:conversionMultiplier` their mapping publishes, which no count above can
+  see (#418). Against an archive extracted before that, it says it cannot
+  answer; rerun `refresh_base_build.py` while the shared build is that commit,
+  or compare against the whole database.
 
 ## 7. Everything else, then record
 

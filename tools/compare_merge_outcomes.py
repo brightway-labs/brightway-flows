@@ -13,9 +13,14 @@ every such change, so it stops being retyped here.
 The before side may be *named* rather than found: `base` is where this branch
 left `main`, and any commit-ish is that commit, both resolved against the
 archive `tools/refresh_base_build.py` keeps.  The archive holds extracts rather
-than whole builds -- the tables below and nothing else, 44 MB against 2.0 GB --
-which this reads as though they were builds, because they hold every column it
-asks for.
+than whole builds -- the tables below and nothing else, 144 MB against 3.8 GB on
+the five-list build of 0876891 -- which this reads as though they were builds,
+because they hold every column it asks for.
+
+A row that reaches the same flow and gains or loses its conversion factor has
+not moved, so the outcome comparison cannot see it.  That is #416's whole
+effect, and the shape of the regression #413 fixed, so the factor each mapping
+publishes is compared on its own, from `elementary_flow_sources` (#418).
 
     uv run python tools/compare_merge_outcomes.py base .data/consensus-flows.sqlite3
 
@@ -79,6 +84,18 @@ OUTCOME_COLUMNS = (
     "basis, has_unit_mismatch"
 )
 
+#: What a mapping publishes about its units, read out of the metadata
+#: `elementary_flow_sources` keeps per link.  Not `merge_outcomes`: a row can
+#: reach the same flow and gain or lose its factor, which is no decision having
+#: moved, so the outcome comparison above cannot see it (#418).
+CONVERSION_COLUMNS = (
+    "list_name, list_version, source_flow_uuid, elementary_flow_uuid, "
+    "source_flow_name, "
+    "json_extract(source_metadata_json, '$.unit') as source_unit, "
+    "json_extract(source_metadata_json, '$.\"qudt:conversionMultiplier\"') as multiplier, "
+    "json_extract(source_metadata_json, '$.conversion_basis') as basis"
+)
+
 
 class Build:
     """One build's database, read-only, with the views this needs."""
@@ -135,6 +152,29 @@ class Build:
                 "select uuid, pref_label_value, unit, context_display,"
                 " lcia_factor_count, is_deprecated from elementary_flows"
             )
+        }
+
+    @property
+    def conversions(self) -> dict[tuple[str, str, str, str], sqlite3.Row] | None:
+        """Every mapping's published factor, or None where the build cannot say.
+
+        Keyed by `(list, version, source uuid, elementary flow)`, the link
+        `elementary_flow_sources` is unique on.  None is an archive extracted
+        before #418, which carries no `elementary_flow_sources`: reading it as
+        "no factors" would report every published factor as new.
+        """
+        try:
+            rows = self._rows(
+                f"select {CONVERSION_COLUMNS} from elementary_flow_sources"
+            )
+        except sqlite3.OperationalError:
+            return None
+        return {
+            (
+                row["list_name"], row["list_version"],
+                row["source_flow_uuid"], row["elementary_flow_uuid"],
+            ): row
+            for row in rows
         }
 
     @property
@@ -425,6 +465,93 @@ def _print_published(before: Build, after: Build) -> None:
     print()
 
 
+def _conversion(row: sqlite3.Row | None) -> str:
+    """A mapping's factor and where it came from, or `none`."""
+    if row is None or row["multiplier"] is None:
+        return "none"
+    return f"{row['multiplier']} {row['basis'] or '?'}"
+
+
+def _print_conversions(
+    before: Build, after: Build, lists: set[str] | None, detail: bool
+) -> None:
+    """Mappings that kept their flow and changed the factor they publish.
+
+    #416's whole effect -- 56 BAFU becquerel mappings gaining 0.001 -- moved no
+    decision and no factor count, so everything above read zero.  So did the
+    regression #413 fixed, one route withholding a multiplier: only the
+    multiplier itself moved.
+    """
+    print("CONVERSIONS PUBLISHED ON EACH MAPPING")
+    b, a = before.conversions, after.conversions
+    missing = [label for label, rows in (("before", b), ("after", a)) if rows is None]
+    if b is None or a is None:
+        print(
+            f"  !! the {' and '.join(missing)} build carries no elementary_flow_sources"
+            " -- an archive extracted before #418 -- so this cannot say whether a"
+            "\n     conversion changed.  Compare against the whole database, or"
+            " re-run tools/refresh_base_build.py\n     while the shared build is"
+            " still that commit, which extracts it again."
+        )
+        print()
+        return
+
+    def wanted(key: tuple[str, str, str, str]) -> bool:
+        return not lists or key[0] in lists
+
+    def multiplied(rows: dict[tuple[str, str, str, str], sqlite3.Row]) -> set:
+        return {
+            key for key, row in rows.items()
+            if wanted(key) and row["multiplier"] is not None
+        }
+
+    print(f"  mappings publishing a factor  {len(multiplied(b)):>7} -> {len(multiplied(a))}")
+    print(
+        f"  ...on a link only in the before build: {len(multiplied(b) - set(a))},"
+        f" only in the after build: {len(multiplied(a) - set(b))}"
+        "  (rows that moved, above)"
+    )
+
+    changed = [
+        (key, b[key], a[key])
+        for key in sorted(set(b) & set(a))
+        if wanted(key)
+        and (b[key]["multiplier"], b[key]["basis"]) != (a[key]["multiplier"], a[key]["basis"])
+    ]
+    print(f"MAPPINGS WHOSE CONVERSION CHANGED: {len(changed)}")
+    flows = after.flows
+    shape = collections.Counter(
+        (
+            key[0],
+            aa["source_unit"] or "-",
+            flows.get(key[3], ("-", "-"))[1] or "-",
+            _conversion(bb),
+            _conversion(aa),
+        )
+        for key, bb, aa in changed
+    )
+    for (name, source_unit, target_unit, was, now), count in sorted(
+        shape.items(), key=lambda item: (-item[1], item[0])
+    ):
+        print(
+            f"  {count:6}  {name:12} {source_unit:>6} -> {target_unit:6}"
+            f"  {was:24} -> {now}"
+        )
+    print()
+
+    if not detail or not changed:
+        return
+    print("EVERY MAPPING WHOSE CONVERSION CHANGED")
+    for key, bb, aa in changed:
+        flow = flows.get(key[3], ("-", "-", "-", 0, 0))
+        print(
+            f"  {key[0]} {key[1]}  {aa['source_flow_name']}  [{aa['source_unit']}]\n"
+            f"      onto  {flow[0]!r} {flow[2]} [{flow[1]}]\n"
+            f"      {_conversion(bb)} -> {_conversion(aa)}"
+        )
+    print()
+
+
 def _archive_dir() -> Path:
     """Where `tools/refresh_base_build.py` keeps its extracts.
 
@@ -519,6 +646,7 @@ def main() -> int:
 
     _print_outcome_counts(before, after, lists)
     _print_moved(before, after, lists, args.detail)
+    _print_conversions(before, after, lists, args.detail)
     _print_published(before, after)
     return 0
 

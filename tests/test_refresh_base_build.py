@@ -24,6 +24,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import orjson
+
 
 def _load(name: str):
     """`tools/` is not a package; a tool is a script, loaded here by path."""
@@ -69,7 +71,23 @@ TABLES = (
         lcia_factor_count INTEGER, is_deprecated INTEGER, payload_json TEXT
     )
     """,
+    """
+    CREATE TABLE elementary_flow_sources (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, elementary_flow_uuid TEXT,
+        list_name TEXT, list_version TEXT, source_flow_uuid TEXT,
+        source_flow_name TEXT, source_metadata_json TEXT
+    )
+    """,
     "CREATE TABLE changelog (entry TEXT)",
+)
+
+#: A link's metadata as a build writes it: the three keys a comparison reads,
+#: and the provenance and merge detail around them that it does not.
+LINK_METADATA = (
+    '{"unit": "kg", "qudt:conversionMultiplier": 0.001,'
+    ' "conversion_basis": "curated",'
+    ' "provenance": {"prov:wasGeneratedBy": "merge_bafu"},'
+    ' "merge_details": {"scored_candidates": []}}'
 )
 
 
@@ -107,6 +125,17 @@ def write_build(
     connection.execute(
         "INSERT INTO flow_objects (flow_object_id, pref_label_value, synonyms_json)"
         " VALUES ('o1', 'Water', '[]')"
+    )
+    connection.execute(
+        "INSERT INTO elementary_flow_sources (elementary_flow_uuid, list_name,"
+        " list_version, source_flow_uuid, source_flow_name, source_metadata_json)"
+        " VALUES ('f1', 'bafu', '2026-v1', 'u1', 'Water', ?)",
+        (LINK_METADATA,),
+    )
+    connection.execute(
+        "INSERT INTO elementary_flow_sources (elementary_flow_uuid, list_name,"
+        " list_version, source_flow_uuid, source_flow_name, source_metadata_json)"
+        " VALUES ('f1', 'EF', '3.1', 'f1', 'Lake water', '{\"original_context\": []}')"
     )
     connection.execute("INSERT INTO changelog (entry) VALUES ('a change')")
     connection.commit()
@@ -182,6 +211,23 @@ class ExtractTestCase(TempCase):
         self.assertNotIn("payload_json", columns(self.destination, "elementary_flows"))
         self.assertNotIn("synonyms_json", columns(self.destination, "flow_objects"))
 
+    def test_a_links_metadata_is_cut_to_what_the_comparison_reads(self):
+        """The unit and the factor with its basis; not the provenance and
+        merge detail, and no keys for a link that has none of the three."""
+        tool.extract(self.database, self.destination)
+        connection = sqlite3.connect(self.destination)
+        try:
+            metadata = dict(connection.execute(
+                "select list_name, source_metadata_json from elementary_flow_sources"
+            ))
+        finally:
+            connection.close()
+        self.assertEqual(
+            orjson.loads(metadata["bafu"]),
+            {"unit": "kg", "qudt:conversionMultiplier": 0.001, "conversion_basis": "curated"},
+        )
+        self.assertEqual(orjson.loads(metadata["EF"]), {})
+
     def test_it_keeps_the_detail_a_defect_is_read_out_of(self):
         # `merge_outcomes` is carried whole: `detail_json` is every candidate the
         # selector scored, which is what step 2 of the skill reads.
@@ -218,6 +264,19 @@ class ExtractTestCase(TempCase):
         # Keyed by list version as well as list, so the extract has to carry
         # `list_version` for the comparison to read it at all (#317).
         self.assertIn(("bafu", "2026-v1", "u1"), build.outcomes)
+        # And it reads the published factor out of the narrowed metadata as it
+        # would out of the whole of it (#418).
+        whole = compare.Build(self.database).conversions
+        cut = build.conversions
+        key = ("bafu", "2026-v1", "u1", "f1")
+        self.assertEqual(
+            (cut[key]["source_unit"], cut[key]["multiplier"], cut[key]["basis"]),
+            ("kg", 0.001, "curated"),
+        )
+        self.assertEqual(
+            {k: tuple(row) for k, row in cut.items()},
+            {k: tuple(row) for k, row in whole.items()},
+        )
 
 
 class PruneTestCase(TempCase):
@@ -316,6 +375,27 @@ class PublishTestCase(TempCase):
         first = tool.publish(self.shared, COMMIT, keep=10)
         stamped = first.stat().st_mtime_ns
         self.assertEqual(tool.publish(self.shared, COMMIT, keep=10).stat().st_mtime_ns, stamped)
+
+    def test_an_archive_taken_before_a_table_joined_is_taken_again(self):
+        """An extract from before #418 has no `elementary_flow_sources`, and
+        the comparison says it cannot answer.  While the shared build is still
+        that commit, publishing again is what fixes it."""
+        write_build(self.shared / "consensus-flows.sqlite3", COMMIT)
+        first = tool.publish(self.shared, COMMIT, keep=10)
+        connection = sqlite3.connect(first)
+        connection.execute("DROP TABLE elementary_flow_sources")
+        connection.commit()
+        connection.close()
+        self.assertTrue(tool.is_short(first))
+        again = tool.publish(self.shared, COMMIT, keep=10)
+        self.assertIn("elementary_flow_sources", tables(again))
+        self.assertFalse(tool.is_short(again))
+
+    def test_an_archive_without_only_an_optional_table_is_not_short(self):
+        database = write_build(self.shared / "old.sqlite3", with_inputs=False)
+        destination = tool.archived_path(self.shared, OTHER)
+        tool.extract(database, destination)
+        self.assertFalse(tool.is_short(destination))
 
 
 class ResolveBeforeTestCase(TempCase):
@@ -474,7 +554,10 @@ class DefaultsTestCase(unittest.TestCase):
         # Kept honest by hand rather than by import: the comparison spells its
         # queries inline, and an extract missing one of them fails only when
         # somebody runs it against an archived build.
-        for table in ("merge_outcomes", "flow_objects", "elementary_flows", "pipeline_runs"):
+        for table in (
+            "merge_outcomes", "flow_objects", "elementary_flows", "pipeline_runs",
+            "elementary_flow_sources",
+        ):
             self.assertIn(table, tool.EXTRACT_TABLES)
 
     def test_the_sources_are_what_a_comparison_needs_both_sides_to_have(self):
