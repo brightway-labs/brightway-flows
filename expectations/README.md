@@ -140,7 +140,7 @@ call that fine; `same_substance` catches it.
 `substance_id`, `substance_cas`.
 
 **About a `substance`**: `exists`, `count`, `label`, `cas`, `flow_count`,
-`has_payload`, `flow_type`, `roles`.
+`has_payload`, `flow_type`, `roles`, `iupac_name`.
 
 `flow_type` is what the substance *is*: `NeutralMolecule`, `MonoatomicIon`,
 `Material`, `Isotope`, or `unclassified` for one the typing rules could not
@@ -156,6 +156,13 @@ the ones the substance publishes, so `{"roles": "insecticide"}` asks that it is
 an insecticide, not that it is only an insecticide. Write the label, in ChEBI's
 own spelling and lower case; the match is exact, because a role label is a
 vocabulary term and not a name a vendor recapitalises.
+
+`iupac_name` is a name the substance publishes as its IUPAC name. EF 3.1 spells
+2,3,4,5-tetrachlorobenzoyl chloride both with and without its last space, and
+`{"iupac_name": "2,3,4,5-tetrachlorobenzoyl chloride"}` asks that the spaced
+spelling is among the IUPAC names published, not that it is the only one. The
+match is exact, capitals and spaces included, because which spelling is
+published is the whole question (#415).
 
 **About a `factor`**: `exists`, `count`, and `amount` — the number itself.
 

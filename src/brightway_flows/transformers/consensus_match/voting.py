@@ -78,6 +78,17 @@ class ConsensusVotes:
         return unique_winner(votes), votes
 
     def name_from_cas(self, cas: str) -> tuple[str | None, dict[str, set[str]]]:
+        """The name a quorum of sources gives *cas*, spelled as the first gave it.
+
+        Votes are counted on `normalize`d names, so one source's two spellings
+        of a name -- PubChem files 42221-52-3 as both
+        `2,3,4,5-tetrachlorobenzoyl chloride` and
+        `2,3,4,5-tetrachlorobenzoylchloride` -- are one candidate, and which
+        spelling it is proposed under is whichever is met first.  The EC,
+        PubChem and Common Chemistry names are sets, so they are read sorted:
+        in set order that was each process's hash seed, and two builds of one
+        commit published different names for the substance (#415).
+        """
         votes: dict[str, set[str]] = defaultdict(set)
         representative: dict[str, str] = {}
 
@@ -87,15 +98,15 @@ class ConsensusVotes:
                 key = normalize(rec["label"])
                 votes[key].add("chebi")
                 representative.setdefault(key, rec["label"])
-        for name in self.indexes.ec_names_by_cas.get(cas, set()):
+        for name in sorted(self.indexes.ec_names_by_cas.get(cas, set())):
             key = normalize(name)
             votes[key].add("ec_inventory")
             representative.setdefault(key, name)
-        for name in self.indexes.pubchem_names_by_cas.get(cas, set()):
+        for name in sorted(self.indexes.pubchem_names_by_cas.get(cas, set())):
             key = normalize(name)
             votes[key].add("pubchem")
             representative.setdefault(key, name)
-        for name in self.lookups.names_for_cas(cas):
+        for name in sorted(self.lookups.names_for_cas(cas)):
             key = normalize(name)
             votes[key].add("common_chemistry")
             representative.setdefault(key, name)

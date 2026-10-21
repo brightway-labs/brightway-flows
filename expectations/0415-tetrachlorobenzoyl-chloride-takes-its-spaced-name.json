@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "description": "Two builds of the same code published different IUPAC names and synonyms for 2,3,4,5-tetrachlorobenzoyl chloride (CAS 42221-52-3). See #415.\n\nEF 3.1 ships the substance on 26 rows, in 13 contexts: in each, one row spelled `2,3,4,5-tetrachlorobenzoyl chloride` and one spelled `2,3,4,5-tetrachlorobenzoylchloride`. `preferred-label-decisions.json` approves renaming the run-together spelling to the spaced one, and refuses the reverse (#110, #313). Consensus matching proposes the rename from a vote among PubChem, Common Chemistry, ChEBI and the EC inventory, and the vote compares names with case and spaces folded away, so PubChem's two spellings are one vote. The spelling the vote then proposes was whichever of the two came first out of a Python set -- an order that changes with each process's hash seed, 20 seeds to 20 over 40. When the spaced spelling came first the approved rename was made and EF's run-together spelling kept as a synonym; when the run-together one came first the proposal was refused and nothing changed. The vote now reads each source's names in sorted order, and a space sorts before a letter.\n\nMeasured on the five-list build of `main` at 1f2a24d (run `20261021T0746548129760000`): the substance publishes `2,3,4,5-tetrachlorobenzoyl Chloride` and `2,3,4,5-tetrachlorobenzoylchloride` as its IUPAC names, as release 1.0.0 does. The builds #415 lists from 1006375 and from #414's branch published `2,3,4,5-tetrachlorobenzoyl chloride` as the second. A static scan of the same build found ten more registry numbers whose proposed spelling depended on set order, all differing only in capitals (`Metosulam` against `metosulam`); a rename does not compare case, so none of those changes a published label.",
+  "expectations": [
+    {
+      "id": "0415-tetrachlorobenzoyl-chloride-spaced-iupac-name",
+      "issue": 415,
+      "title": "2,3,4,5-tetrachlorobenzoyl chloride publishes its IUPAC name with the space, on every build",
+      "subject": {
+        "kind": "substance",
+        "label": "2,3,4,5-tetrachlorobenzoyl chloride"
+      },
+      "expect": {
+        "exists": true,
+        "flow_count": 13,
+        "iupac_name": "2,3,4,5-tetrachlorobenzoyl chloride"
+      },
+      "comment": "Unmet on the build of 1f2a24d, whose IUPAC names are `2,3,4,5-tetrachlorobenzoyl Chloride` and `2,3,4,5-tetrachlorobenzoylchloride`. The second is the name OPSIN was handed from the thirteen rows EF spelled without the space, which were not renamed because the vote happened to propose their own spelling. Compared exactly, so the capitalised first name does not satisfy it. `flow_count` is 13 because each context's pair is one flow and its deprecated duplicate."
+    }
+  ]
+}

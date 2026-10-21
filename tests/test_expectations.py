@@ -114,7 +114,7 @@ class ExpectationFilesTestCase(unittest.TestCase):
             "substance": {
                 "id", "label", "cas", "ec", "flow_count", "has_payload",
                 "flow_type", "alt_label", "roles",
-                "inchikey_count", "formula_count",
+                "inchikey_count", "formula_count", "iupac_name",
             },
             "factor": {
                 "flow_uuid", "flow_name", "substance_cas", "context_display",

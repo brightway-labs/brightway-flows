@@ -29,6 +29,7 @@ from brightway_flows.assessment.expectations import Expectation
 from brightway_flows.assessment.measures import Direction
 from brightway_flows.domain.vocabulary import (
     CHEMINF_CAS_REGISTRY_NUMBER,
+    CHEMROF_IUPAC_NAME,
     RDFS_LABEL_CURIE,
     RO_HAS_ROLE_IRI,
 )
@@ -172,6 +173,18 @@ def build_fixture(path: Path) -> None:
                 {"@value": "HFC-116", "@language": "en"},
                 {"@value": "Perfluoroethane", "@language": "en"},
             ]),
+            "fo-hexafluoroethane",
+        ),
+    )
+    # The one object carrying IUPAC names, one of them capitalised, so that an
+    # exact match can be told from a case-folded one.
+    connection.execute(
+        "UPDATE flow_objects SET properties_json = ? WHERE flow_object_id = ?",
+        (
+            json.dumps({CHEMROF_IUPAC_NAME: {
+                "@id": CHEMROF_IUPAC_NAME,
+                "@value": ["Hexafluoroethane", "1,1,1,2,2,2-hexafluoroethane"],
+            }}),
             "fo-hexafluoroethane",
         ),
     )
@@ -459,6 +472,31 @@ class AssessmentTestCase(unittest.TestCase):
     def test_a_substance_with_no_alternative_labels_is_unmet_not_unresolved(self):
         (result,) = self.grade(expectation(
             "e", "substance", {"label": "Silver-110"}, {"alt_label": "Silver-110m"},
+        ))
+        self.assertIs(result.status, Status.UNMET)
+
+    def test_a_substance_can_be_asked_for_one_of_its_iupac_names(self):
+        (result,) = self.grade(expectation(
+            "e", "substance", {"cas": "76-16-4"},
+            {"iupac_name": "1,1,1,2,2,2-hexafluoroethane"},
+        ))
+        self.assertIs(result.status, Status.MET)
+
+    def test_an_iupac_name_is_matched_exactly(self):
+        """#415 is two builds publishing a name that differs by one space, and
+        the substance's other IUPAC name differs from it by one capital.  A
+        case-folded match could not say which spelling it was claiming."""
+        (result,) = self.grade(expectation(
+            "e", "substance", {"cas": "76-16-4"}, {"iupac_name": "hexafluoroethane"},
+        ))
+        self.assertIs(result.status, Status.UNMET)
+        self.assertEqual(
+            result.claims[0].actual, ["Hexafluoroethane", "1,1,1,2,2,2-hexafluoroethane"]
+        )
+
+    def test_a_substance_with_no_iupac_name_is_unmet_not_unresolved(self):
+        (result,) = self.grade(expectation(
+            "e", "substance", {"label": "Silver-110"}, {"iupac_name": "silver"},
         ))
         self.assertIs(result.status, Status.UNMET)
 

@@ -202,6 +202,12 @@ SUBJECT_CLAIMS: dict[str, frozenset[str]] = {
         # list's own spelling of a name is exactly what varies between
         # releases -- EF 3.1 ships `HFC-23` and `hfc-23` for one substance.
         "alt_label",
+        # A name the substance publishes as `chemrof:IUPAC_name`, met when the
+        # named string is among them and compared exactly, case included.  #415
+        # is one substance publishing a different second IUPAC name from two
+        # builds of the same code, and a claim that folded case could not say
+        # which of `…benzoyl Chloride` and `…benzoyl chloride` it meant.
+        "iupac_name",
         # What the substance is *used for*, as a published `RO:0000087` role
         # label.  A separate question from what it *is*, which is `cas` and
         # `label`: the whole of #206 is that a herbicide had nowhere to say so
