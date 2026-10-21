@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "description": "BAFU ships `Antimony-122` released to rivers in becquerels. This list publishes radionuclides in kilobecquerels, as EF 3.1 does, so a becquerel amount on the flow is a thousand times too large unless the mapping says to multiply it by 0.001. #393 made the mapping say so, with `conversion_basis` `unit-table`, for a row that lands on a flow already there. A row whose substance is known and whose compartment has no flow yet creates that flow, and that route still published the becquerel and nothing beside it. On the full five-list build of `72bdad5` (20 October 2026, the build this change was measured against), 56 of BAFU's 159 becquerel rows on kilobecquerel flows were in that state; the other 103 carried the factor -- 102 found their flow already created, and one is on a flow the merge created for a row with no substance. The issue found the same 56 and 103 on the build of `327a5c0`. `merge.bafu-2026-v1.unit_mismatch` read 0 throughout, because the check assumed any pair `units.json` converts had its factor published, and it now asks the mapping.",
+  "expectations": [
+    {
+      "id": "0413-antimony-122-in-river-water-converts-from-becquerels",
+      "issue": 413,
+      "title": "BAFU's Antimony-122 to rivers, in Bq, publishes 0.001 onto the kBq flow it creates",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "0d0cad12-5d62-5ddb-bda8-0c0691ef17eb"
+      },
+      "expect": {
+        "outcome": "algorithm",
+        "target_name": "Antimony-122",
+        "target_unit": "kBq",
+        "conversion_factor": 0.001,
+        "unit_mismatch": false
+      },
+      "comment": "The issue's example row. The substance exists and the river had no Antimony-122 flow, so this row is the one that creates it (`selector_reason` `new-elementary-flow-created`), in kilobecquerels. On the build of `72bdad5` the mapping stated `unit: Bq` and no multiplier, and `has_unit_mismatch` was 0. `unit_mismatch: false` is the other half: with the factor published the row is not a mismatch, and if a later change withholds the factor again the check now reports it rather than reading zero."
+    }
+  ]
+}

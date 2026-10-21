@@ -22,7 +22,8 @@ against `m2*a` as a disagreement.
 pair nothing converts.  A becquerel row on a kilobecquerel flow is two
 spellings of one scale, and the mapping publishes the factor `units.json` gives
 between them (`merge.conversions.conversion_to_publish`), so it is not reported
-here (#393).  A dimension change is
+here (#393) -- as long as the match says the factor was published, which is
+read rather than assumed (#413).  A dimension change is
 usually an error but not always: EF 3.1 accounts fossil energy carriers by
 energy content on purpose, so ecoinvent's `Coal, brown` in kg maps onto brown
 coal in MJ and that mapping is right.  Those decisions live in
@@ -169,7 +170,11 @@ def find_unit_mismatches(
 
     A row with either unit missing is not reported: an absent unit is its own
     problem and is not evidence that the two sides disagree.  Nor is a pair
-    `units.json` converts, because the mapping publishes that factor.
+    `units.json` converts whose mapping publishes a factor, which the match
+    records as `conversion_factor`.  Read off the match rather than assumed from
+    the unit table: it was assumed until #413, and 56 BAFU becquerel rows whose
+    route published nothing read as converted.  A published factor excuses only
+    such a pair; a mass onto an energy is still the allowlist's to accept.
     """
     mismatched: set[str] = set()
     for row in matches:
@@ -177,7 +182,10 @@ def find_unit_mismatches(
         target_unit = canonical_unit(str(row.target_unit or ""), units_index)
         if not source_unit or not target_unit or source_unit == target_unit:
             continue
-        if unit_table_factor(source_unit, target_unit) is not None:
+        if (
+            row.conversion_factor is not None
+            and unit_table_factor(source_unit, target_unit) is not None
+        ):
             continue
         target_id = str(row.target_elementary_flow_id or "")
         if (row.source_uuid, target_id) in allowed:

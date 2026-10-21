@@ -80,7 +80,11 @@ from brightway_flows.domain.vocabulary import (
     QUDT_CONVERSION_MULTIPLIER_CURIE,
     XKOS_SOURCE_CONCEPT_CURIE,
 )
-from brightway_flows.domain.units import unit_table_factor
+from brightway_flows.domain.units import (
+    CONVERSION_BASIS_KEY,
+    ConversionBasis,
+    unit_table_factor,
+)
 from brightway_flows.merge.conversions import (
     UnitConversion,
     conversion_from_prepared_rows,
@@ -662,7 +666,55 @@ class AlgorithmicRouteTestCase(unittest.TestCase):
         )
 
 
-class NewContextRouteTestCase(unittest.TestCase):
+class NewContextRouteMixin:
+    """Drives `_add_flow_in_missing_context` for one row of one list.
+
+    `_create` returns the flow the row minted and the accumulator it went
+    into, so a test can read the mapping off the flow and the match record off
+    the accumulator.
+    """
+
+    RIVER = "https://vocab.brightway.one/flow-contexts/envi-wate-rive"
+    LIST_NAME: str
+    LIST_VERSION: str
+    SUBSTANCE: str
+
+    def _create(self, *, conversion, unit):
+        accumulator = MergeAccumulator()
+        indexes = mock.Mock()
+        indexes.source.list_name = self.LIST_NAME
+        indexes.source.list_version = self.LIST_VERSION
+        indexes.source.key = f"{self.LIST_NAME}-{self.LIST_VERSION}"
+        indexes.source.merge_activity = f"merge_{self.LIST_NAME}"
+        indexes.source.match_overrides_path = None
+        indexes.source.algorithm_addition_source = self.LIST_NAME
+        indexes.source.flow_iri_prefix = "https://example.invalid/flow/"
+        indexes.mapping_file = ""
+        indexes.context_expectations.resolve.return_value = self.RIVER
+        indexes.consensus_context_strings = {}
+        indexes.flow_objects_by_id = {}
+        indexes.flow_object_label_by_id = {"fo-1": self.SUBSTANCE}
+        created = _add_flow_in_missing_context(
+            row=SourceRow(
+                uuid="s-1", name=self.SUBSTANCE, synonyms=[], labels=[],
+                context=["Emissions to water", "river"], context_iri="",
+                context_normalized=(), unit=unit, unit_iri="", cas="", ec="",
+                conversion=conversion,
+            ),
+            match=MatchAttempt(
+                flow_object_id="fo-1", candidates=[], selected=None,
+                selector_reason="no-candidate-in-context", selector_details={},
+                basis="label", basis_value=self.SUBSTANCE,
+            ),
+            indexes=indexes,
+            accumulator=accumulator,
+        )
+        self.assertTrue(created)
+        (flow,) = accumulator.by_elem_id.values()
+        return flow, accumulator
+
+
+class NewContextRouteTestCase(NewContextRouteMixin, unittest.TestCase):
     """A rebased row that creates its context's flow still states the vendor's
     unit and the fix's factor (#370).
 
@@ -673,44 +725,12 @@ class NewContextRouteTestCase(unittest.TestCase):
     published as cubic metres.
     """
 
-    RIVER = "https://vocab.brightway.one/flow-contexts/envi-wate-rive"
-
-    def _create(self, *, conversion, unit="m3"):
-        accumulator = MergeAccumulator()
-        indexes = mock.Mock()
-        indexes.source.list_name = "agribalyse"
-        indexes.source.list_version = "3.2"
-        indexes.source.key = "agribalyse-3.2"
-        indexes.source.merge_activity = "merge_agribalyse"
-        indexes.source.match_overrides_path = None
-        indexes.source.algorithm_addition_source = "agribalyse"
-        indexes.source.flow_iri_prefix = "https://example.invalid/flow/"
-        indexes.mapping_file = ""
-        indexes.context_expectations.resolve.return_value = self.RIVER
-        indexes.consensus_context_strings = {}
-        indexes.flow_objects_by_id = {}
-        indexes.flow_object_label_by_id = {"fo-1": "Water"}
-        created = _add_flow_in_missing_context(
-            row=SourceRow(
-                uuid="s-1", name="Water", synonyms=[], labels=[],
-                context=["Emissions to water", "river"], context_iri="",
-                context_normalized=(), unit=unit, unit_iri="", cas="", ec="",
-                conversion=conversion,
-            ),
-            match=MatchAttempt(
-                flow_object_id="fo-1", candidates=[], selected=None,
-                selector_reason="no-candidate-in-context", selector_details={},
-                basis="material", basis_value="water",
-            ),
-            indexes=indexes,
-            accumulator=accumulator,
-        )
-        self.assertTrue(created)
-        (flow,) = accumulator.by_elem_id.values()
-        return flow
+    LIST_NAME = "agribalyse"
+    LIST_VERSION = "3.2"
+    SUBSTANCE = "Water"
 
     def test_the_mapping_states_the_vendors_unit_and_the_factor(self):
-        flow = self._create(conversion=UnitConversion(0.001, "kg", "m3"))
+        flow, _ = self._create(conversion=UnitConversion(0.001, "kg", "m3"), unit="m3")
         self.assertEqual(flow.unit, "m3")
         metadata = flow.source_refs[0]["source_metadata"]
         self.assertEqual(metadata["unit"], "kg")
@@ -720,11 +740,71 @@ class NewContextRouteTestCase(unittest.TestCase):
 
     def test_a_row_no_fix_rebased_is_published_as_before(self):
         """The other half: no factor appears where no fix stated one."""
-        flow = self._create(conversion=None)
+        flow, _ = self._create(conversion=None, unit="m3")
         metadata = flow.source_refs[0]["source_metadata"]
         self.assertEqual(metadata["unit"], "m3")
         self.assertNotIn(QUDT_CONVERSION_MULTIPLIER_CURIE, metadata)
         self.assertNotIn(QUDT_CONVERSION_MULTIPLIER_CURIE, flow.concept_associations[0])
+
+    def test_the_match_record_carries_the_fixs_reasoning(self):
+        """A curated factor's comment reaches the stored decision, as it does
+        on a prepared match."""
+        _, accumulator = self._create(
+            conversion=UnitConversion(0.001, "kg", "m3", comment="water's density"),
+            unit="m3",
+        )
+        (match,) = accumulator.algorithm_matches
+        self.assertEqual(match.conversion_factor, 0.001)
+        self.assertEqual(match.conversion_comment, "water's density")
+
+
+class NewContextUnitTableTestCase(NewContextRouteMixin, unittest.TestCase):
+    """A becquerel row that creates its context's kilobecquerel flow publishes
+    the unit table's 0.001, as a row finding that flow already there does
+    (#413).
+
+    BAFU's `Antimony-122` released to rivers, in becquerels, is the first row
+    to need a river flow for the substance, so it creates one in kilobecquerels
+    -- the unit this list publishes activity in.  This route published the
+    becquerel and no factor, while the 103 BAFU rows that found their flow
+    already created carried 0.001.
+    """
+
+    LIST_NAME = "bafu"
+    LIST_VERSION = "2026-v1"
+    SUBSTANCE = "Antimony-122"
+
+    def test_the_mapping_publishes_the_unit_tables_factor(self):
+        flow, _ = self._create(conversion=None, unit="Bq")
+        self.assertEqual(flow.unit, "kBq")
+        metadata = flow.source_refs[0]["source_metadata"]
+        self.assertEqual(metadata["unit"], "Bq")
+        self.assertEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 0.001)
+        self.assertEqual(metadata[CONVERSION_BASIS_KEY], ConversionBasis.UNIT_TABLE)
+        association = flow.concept_associations[0]
+        self.assertEqual(association[QUDT_CONVERSION_MULTIPLIER_CURIE], 0.001)
+        self.assertEqual(
+            association[CONVERSION_BASIS_KEY], ConversionBasis.UNIT_TABLE
+        )
+
+    def test_the_match_record_carries_the_factor(self):
+        """What `find_unit_mismatches` reads, so the measure counts the row as
+        converted because the mapping says so rather than because it could
+        have.  No comment: the unit table states no reasoning."""
+        _, accumulator = self._create(conversion=None, unit="Bq")
+        (match,) = accumulator.algorithm_matches
+        self.assertEqual(match.conversion_factor, 0.001)
+        self.assertIsNone(match.conversion_comment)
+
+    def test_a_row_in_the_published_unit_carries_none(self):
+        """The other half: a kilobecquerel row on its kilobecquerel flow has
+        nothing to convert."""
+        flow, accumulator = self._create(conversion=None, unit="kBq")
+        self.assertNotIn(
+            QUDT_CONVERSION_MULTIPLIER_CURIE, flow.source_refs[0]["source_metadata"]
+        )
+        (match,) = accumulator.algorithm_matches
+        self.assertIsNone(match.conversion_factor)
 
 
 class ReachesTheExportTestCase(unittest.TestCase):

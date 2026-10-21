@@ -251,36 +251,33 @@ def _add_flow_in_missing_context(
     # kilobecquerel flow beside EF 3.1's 954 kilobecquerel flows, rather than
     # whichever spelling reached this line first becoming the published unit
     # (#142).  The row keeps its own unit on its source ref and its concept
-    # association, and no multiplier is published for the difference:
-    # `units.json` already converts between two spellings of one scale.
+    # association.
     published = published_unit_for([row.unit] if row.unit else [])
     stated_unit = published or row.unit
     stated_unit_iri = unit_iri_for(published) if published else row.unit_iri
 
-    # A row a manual fix rebased is still the vendor's: the mapping states the
-    # unit it shipped and the factor the fix gave, as every other route does.
-    # Before #370 this route stated the rebased unit as the vendor's and no
-    # factor, so AGRIBALYSE's river `Water`, rebased from kilograms, would have
-    # told a consumer their kilograms were cubic metres.  Only a fix's factor:
-    # the unit table's, between two spellings of one scale, is the paragraph
-    # above's to decline.
+    # The mapping states the vendor's unit and whatever converts it to the
+    # flow's, as every other route does: a fix's factor where one rebased the
+    # row (#370), and otherwise the unit table's between two spellings of one
+    # scale.  Before #413 this route published only the first, so the 56 BAFU
+    # becquerel rows that each created their kilobecquerel flow stated `Bq` and
+    # nothing beside it, while the 103 that found the flow already there
+    # carried 0.001.
     new_elem_id = minted_elementary_flow_id(match.flow_object_id, harmonised_iri)
-    conversion = None
-    if row.conversion is not None:
-        if not row.conversion.holds_between(
-            source_unit=row.provenance_unit, target_unit=stated_unit
-        ):
-            _log_conversion_dropped(
-                row=row,
-                conversion=row.conversion,
-                target_unit=stated_unit,
-                target_elementary_flow_id=new_elem_id,
-                route="new_elementary_flow",
-                source_key=indexes.source.key,
-            )
-        conversion = _conversion_to_publish(
-            row.conversion, row=row, target_unit=stated_unit, indexes=indexes
+    if row.conversion is not None and not row.conversion.holds_between(
+        source_unit=row.provenance_unit, target_unit=stated_unit
+    ):
+        _log_conversion_dropped(
+            row=row,
+            conversion=row.conversion,
+            target_unit=stated_unit,
+            target_elementary_flow_id=new_elem_id,
+            route="new_elementary_flow",
+            source_key=indexes.source.key,
         )
+    conversion = _conversion_to_publish(
+        row.conversion, row=row, target_unit=stated_unit, indexes=indexes
+    )
     conversion_metadata = conversion.to_metadata() if conversion else {}
 
     context_strings = indexes.consensus_context_strings.get(harmonised_iri, row.context)
@@ -376,6 +373,8 @@ def _add_flow_in_missing_context(
         matching_method=matching_method,
         algorithm_details=match.selector_details,
         provenance=provenance,
+        conversion_factor=conversion.factor if conversion else None,
+        conversion_comment=(conversion.comment or None) if conversion else None,
     ))
     return True
 
@@ -878,6 +877,8 @@ def record_algorithmic_match(
         matching_method="algorithm",
         algorithm_details=match.selector_details,
         provenance=provenance,
+        conversion_factor=published.factor if published else None,
+        conversion_comment=(published.comment or None) if published else None,
     ))
 
 
