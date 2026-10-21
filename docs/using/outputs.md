@@ -295,7 +295,9 @@ That is what `release-migrations` writes: four files in
 [randonneur's](https://github.com/brightway-lca/randonneur) format, one for
 each kind of thing your database holds, each a datapackage naming the two
 releases (`source_id`, `target_id`), saying where each field is read from
-(`mapping`), and listing the changes under four verbs.
+(`mapping`), and listing the changes under four verbs. A release's Zenodo
+record carries them as one zip, `1.0.0__1.1.0.zip` for 1.1.0, which unpacks
+to the folder this section is named for.
 
 | File | What it migrates | Verbs |
 |---|---|---|

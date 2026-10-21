@@ -1136,9 +1136,11 @@ def release_migrations(
 
     The files are then applied with randonneur to the earlier release, the
     way a consumer is told to apply them, and the result compared with the
-    later release; a mismatch exits 3.
+    later release; a mismatch exits 3.  Only once they apply are the five
+    zipped beside their directory as `<from>__<to>.zip`, the one file to
+    upload with the release.
 
-    Reads the two releases; writes the files.
+    Reads the two releases; writes the files and the archive.
     """
     from brightway_flows.filesystem import RELEASES_DIR
     from brightway_flows.releases import (
@@ -1146,6 +1148,8 @@ def release_migrations(
         EntityKind,
         diff_releases,
         load_release_migration_rulings,
+        migration_archive_path,
+        write_migration_archive,
         write_migration_files,
     )
     from brightway_flows.releases.alignment import AlignmentError
@@ -1167,6 +1171,8 @@ def release_migrations(
         raise typer.Exit(code=2) from error
 
     files = write_migration_files(diff, output or RELEASES_DIR / "migrations")
+    # An archive left by an earlier run would outlive files that no longer apply.
+    migration_archive_path(files).unlink(missing_ok=True)
     counts = diff.counts()
     typer.echo(f"{diff.before.randonneur_id} -> {diff.after.randonneur_id}")
     header = f"{'':28}" + "".join(f"{kind.value:>12}" for kind in DeltaKind)
@@ -1214,6 +1220,7 @@ def release_migrations(
     if not report.ok:
         typer.echo("error: the files do not migrate the earlier release to the later one", err=True)
         raise typer.Exit(code=3)
+    typer.echo(f"Wrote {write_migration_archive(files)}")
 
 
 def main() -> None:

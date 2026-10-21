@@ -439,7 +439,9 @@ The command then applies the files with randonneur to the earlier release,
 as a consumer is told to, and compares the result with the later release
 table by table. A row missing, left over, different or written twice exits
 with status 3 and names the rows; that is a defect in the migration, not in
-either release.
+either release. Only when every table matches does it zip the five files
+into `releases/migrations/1.0.0__1.1.0.zip`, which unpacks to the folder and
+is the file to upload; a run that fails removes the zip an earlier run left.
 
 The `unresolved.json` it writes is the worklist. A split, a unit change, a
 refused redirect or an impact category that is gone is answered in
@@ -462,9 +464,9 @@ refused as stale.
    [Zenodo record](https://doi.org/10.5281/zenodo.22857950):
    `harmonised-flows-simple.json.gz`, `lcia-factors.json.gz`,
    `lcia-differences.json` and `consensus-flows.sqlite3` as before, the
-   release's snapshot, the migration folder from the previous release as one
-   archive, and the release's notes as the version's description. 1.1.0 also
-   carries `1.0.0.json.gz`, which 1.0.0's record does not.
+   release's snapshot, the zip of the migration from the previous release
+   (`1.0.0__1.1.0.zip` for 1.1.0), and the release's notes as the version's
+   description.
 5. Push the tag.
 
 ## All commands

@@ -36,11 +36,9 @@ covers them along with everything else.
   `lcia-factors.json.gz` it is `stats`. Each names the build run and the
   commit ([#414](https://github.com/brightway-labs/brightway-flows/pull/414)).
   1.0.0's files name neither.
-- **The release carries its own record.** The Zenodo record holds:
-  - this release's snapshot, `1.1.0.json.gz`;
-  - 1.0.0's snapshot, `1.0.0.json.gz`, which was made from the database
-    published with 1.0.0;
-  - the migration from 1.0.0 to 1.1.0.
+- **The release carries its own record.** Besides the usual files, the
+  Zenodo record holds this release's snapshot, `1.1.0.json.gz`, and
+  `1.0.0__1.1.0.zip`, the migration from 1.0.0 to 1.1.0.
 
 ### Substances and their names
 

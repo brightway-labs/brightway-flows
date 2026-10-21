@@ -35,6 +35,7 @@ every list is sorted.
 
 from __future__ import annotations
 
+import zipfile
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -74,6 +75,11 @@ FILE_NAMES: dict[EntityKind, str] = {
     EntityKind.FACTOR: "characterization-factors.json",
 }
 UNRESOLVED_FILE_NAME = "unresolved.json"
+
+#: The time every member of the archive is stamped with.  A member's own
+#: modification time would make two archives of one migration differ, and the
+#: files already carry the after release's timestamp as ``created``.
+ARCHIVE_MEMBER_TIME = (1980, 1, 1, 0, 0, 0)
 
 
 def _jsonpath(prefix: str, key: str) -> str:
@@ -376,3 +382,26 @@ def write_migration_files(diff: ReleaseDiff, output_dir: Path) -> MigrationFiles
         characterization_factors=paths[EntityKind.FACTOR],
         unresolved=unresolved,
     )
+
+
+def migration_archive_path(files: MigrationFiles) -> Path:
+    """Where `write_migration_archive` puts the zip: beside the directory."""
+    return files.directory.with_name(f"{files.directory.name}.zip")
+
+
+def write_migration_archive(files: MigrationFiles) -> Path:
+    """Zip the five files beside their directory, as ``<from>__<to>.zip``.
+
+    One file to upload with the release rather than a folder.  The members sit
+    under ``<from>__<to>/`` so the archive unpacks to the directory it was
+    made from, and are written in a fixed order with a fixed time, so one
+    migration always zips to the same bytes.
+    """
+    directory = files.directory
+    archive = migration_archive_path(files)
+    with zipfile.ZipFile(archive, "w") as bundle:
+        for path in (*files.migrations, files.unresolved):
+            member = zipfile.ZipInfo(f"{directory.name}/{path.name}", ARCHIVE_MEMBER_TIME)
+            member.compress_type = zipfile.ZIP_DEFLATED
+            bundle.writestr(member, path.read_bytes())
+    return archive
