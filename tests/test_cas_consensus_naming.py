@@ -419,5 +419,71 @@ class QualifiedFlowNamingTestCase(unittest.TestCase):
         pass
 
 
+# ---------------------------------------------------------------------------
+# Two spellings of one vote (#415)
+# ---------------------------------------------------------------------------
+
+_TCBC_CAS = "42221-52-3"
+_SPACED = "2,3,4,5-tetrachlorobenzoyl chloride"
+_CLOSED_UP = "2,3,4,5-tetrachlorobenzoylchloride"
+
+
+class _IteratesInOrder(set):
+    """A set that yields its members in a stated order.
+
+    A real set yields them in an order fixed by each process's hash seed, which
+    is what #415 was: the same build publishing either spelling.  This states
+    the order, so a test can put each spelling first in turn.
+    """
+
+    def __init__(self, ordered):
+        super().__init__(ordered)
+        self._ordered = list(ordered)
+
+    def __iter__(self):
+        return iter(self._ordered)
+
+
+class TwoSpellingsOfOneVoteTestCase(unittest.TestCase):
+    """PubChem files 2,3,4,5-tetrachlorobenzoyl chloride under both of EF 3.1's
+    spellings, and the vote folds spaces, so the two are one candidate.  Which
+    spelling that candidate is proposed under decides whether the curated rename
+    applies -- `preferred-label-decisions.json` approves closing toward the
+    space and refuses the reverse -- so it cannot depend on set order."""
+
+    def _votes(self, pubchem_order):
+        t = _make_transformer()
+        t.indexes.pubchem_names_by_cas = defaultdict(
+            set, {_TCBC_CAS: _IteratesInOrder(pubchem_order)}
+        )
+        t.lookups.commonchem_cache["detail_by_cas"][_TCBC_CAS] = {
+            "name": "2,3,4,5-Tetrachlorobenzoyl chloride",
+            "synonyms": ["Benzoyl chloride, 2,3,4,5-tetrachloro-"],
+        }
+        return t
+
+    def test_the_spaced_spelling_is_proposed_whichever_comes_first(self):
+        for order in ([_SPACED, _CLOSED_UP], [_CLOSED_UP, _SPACED]):
+            with self.subTest(first=order[0]):
+                name, _ = self._votes(order).votes.name_from_cas(_TCBC_CAS)
+                self.assertEqual(name, _SPACED)
+
+    def test_a_lone_spelling_is_proposed_as_written(self):
+        """Ordering picks between spellings; it does not respell the only one."""
+        name, _ = self._votes([_CLOSED_UP]).votes.name_from_cas(_TCBC_CAS)
+        self.assertEqual(name, _CLOSED_UP)
+
+    def test_the_curators_approved_the_direction_the_ordering_picks(self):
+        """Sorting puts the space first; the ruling has to agree, or the vote
+        would be deterministic and refused on every build instead of half."""
+        gate = self._votes([_SPACED]).gate
+        self.assertTrue(gate.approves(
+            "u", _CLOSED_UP, _SPACED, rule="multi_source_consensus", cas=_TCBC_CAS,
+        ))
+        self.assertFalse(gate.approves(
+            "u", _SPACED, _CLOSED_UP, rule="multi_source_consensus", cas=_TCBC_CAS,
+        ))
+
+
 if __name__ == "__main__":
     unittest.main()

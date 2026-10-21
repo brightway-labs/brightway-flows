@@ -55,6 +55,7 @@ from brightway_flows.domain.vocabulary import (
     CHEMINF_CAS_REGISTRY_NUMBER,
     CHEMINF_EC_NUMBER,
     CHEMROF_INCHI2D_KEY_STRING,
+    CHEMROF_IUPAC_NAME,
     CHEMROF_MOLECULAR_FORMULA,
     RDFS_LABEL_CURIE,
     RO_HAS_ROLE_IRI,
@@ -595,6 +596,9 @@ def _resolve_substances(
             "formula_count": _property_value_count(
                 _load(row["properties_json"], {}), CHEMROF_MOLECULAR_FORMULA
             ),
+            "iupac_name": _property_values(
+                _load(row["properties_json"], {}), CHEMROF_IUPAC_NAME
+            ),
         })
     return resolved
 
@@ -696,6 +700,18 @@ def _property_value_count(properties: Any, iri: str) -> int:
     if isinstance(raw, list):
         return len([v for v in raw if str(v).strip()])
     return 1 if str(raw or "").strip() else 0
+
+
+def _property_values(properties: Any, iri: str) -> list[str]:
+    """The strings a substance publishes for one property, in published order."""
+    if not isinstance(properties, dict):
+        return []
+    entry = properties.get(iri)
+    if not isinstance(entry, dict):
+        return []
+    raw = entry.get("@value")
+    values = raw if isinstance(raw, list) else [raw]
+    return [str(v).strip() for v in values if str(v or "").strip()]
 
 
 def _alt_label_values(payload: Any) -> list[str]:
@@ -821,7 +837,14 @@ _CASE_INSENSITIVE = frozenset({
 #: varies -- EF 3.1 ships `HFC-23` and `hfc-23` for one substance, so an
 #: expectation that named one spelling would fail on the release that shipped
 #: the other.
-_MEMBERSHIP = frozenset({"target_cas", "substance_cas", "cas", "roles", "alt_label"})
+#:
+#: `iupac_name` is exact, with `roles`: it is the string a structure parser was
+#: handed and published, and #415 is two builds of one substance publishing
+#: `2,3,4,5-tetrachlorobenzoyl chloride` and `2,3,4,5-tetrachlorobenzoylchloride`
+#: -- a difference a case-folding match would hide only by luck of the spacing.
+_MEMBERSHIP = frozenset({
+    "target_cas", "substance_cas", "cas", "roles", "alt_label", "iupac_name",
+})
 
 #: Claim name -> the fact it reads, where the two differ.
 _FACT_FOR_CLAIM: dict[str, str] = {
