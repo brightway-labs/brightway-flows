@@ -135,6 +135,7 @@ number is left alone.
 | `Iron, ion` | 7439-89-6 | removed | the same; twelve rows, now on `Iron, Ion` |
 | `Tin, ion` | 7440-31-5 | removed | the same; twelve rows, now on `Tin, Ion` |
 | `Titanium, ion` | 7440-32-6 | removed | the same; twelve rows, now on EF 3.1's own `Titanium, ion` |
+| `Arsenic, ion` | 17428-41-0 | removed | pentavalent arsenic's number on a generic ion, the same mistake with a charge picked rather than the element; thirteen rows, which reached `Arsenic(5+)` and now reach the numberless `Arsenic, ion` ecoinvent's and BAFU's rows reach ([#202](https://github.com/brightway-labs/brightway-flows/issues/202)) |
 
 The file holds the earlier corrections too — `Vanadium (V)` and `Arsenic (V)`
 under the wrong ions' numbers, and the bare graded-ore rows given their
