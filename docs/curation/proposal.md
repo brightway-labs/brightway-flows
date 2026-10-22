@@ -5,16 +5,22 @@ Status: proposed workflow for maintainer review.
 ## Purpose
 
 An engineer importing BAFU radiation exchanges finds a quantity recorded in Bq
-where the receiving flow uses kBq. Matching the flow's identity does not establish
-that its amount was converted. The engineer needs the original unit evidence,
-the proposed conversion, the code that applies it and a measured check of how
-often it runs. A reviewer must also see which source and code revision the check
-actually covers, and what remains unverified.
+where the receiving flow uses kBq — the 159 pairs BAFU 2026 v1 ships twice,
+recorded in [Units and the conditions of
+measurement](../findings/units.md#the-rest-of-the-class-per-source-list) and in
+[what was changed in BAFU 2026 v1](../changes/bafu-2026-v1.md). Matching the
+flow's identity does not establish that its amount was converted. The engineer
+needs the original unit evidence, the proposed conversion, the code that
+applies it and a measured check of how often it runs. A reviewer must also see
+which source and code revision the check actually covers, and what remains
+unverified.
 
-Keep Checks as overall quality control. Add a navigable response to what those
-checks and contributors find: finding → proposals → applicable correction
-modules, with evidence, authorship, dates, decision history, validation and
-revision-specific sign-off visible together.
+The response proposed here is a navigable path from what Checks and
+contributors find to the proposals and the correction modules that answer it,
+with evidence, authorship, dates, decision history, validation and
+revision-specific sign-off visible together; the
+[decision record](../adr/0001-connect-curation-evidence.md) states the
+boundary with Checks.
 
 ## Included in this design
 

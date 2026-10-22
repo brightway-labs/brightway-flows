@@ -189,6 +189,7 @@ class AgentsRuleReferenceTestCase(unittest.TestCase):
     #: any file cites; add to it when a new citation is written.
     EXPECTED = {
         3: "extra",           # merge/additions.py, merge/datastores.py
+        15: "shortlists",     # docs/concepts/glossary.md, the two meanings of curation
         17: "provenance",     # tests/test_curated_object_names.py
         22: "bounded",        # tools/verify_run.py
         32: "branch",         # tests/test_architecture_structure.py

@@ -1,11 +1,11 @@
 # What we have found
 
-For the review workflow connecting these observations to proposals, executable
-modules and revision-specific sign-off, open [Curation](/curation/).
-The [finding-class records](/curation/?view=classes&document=findings/index)
-index the articles below; [registered individual cases](/curation/?view=individual&document=findings/index)
-retain their own proposals, implementation evidence and review history.
-Registration in that index does not replace the decisions documented here.
+The review application's Curation section connects these observations to
+proposals, the code that would correct them and revision-specific sign-off; [From
+findings to reviewed corrections](../curation/index.md) says how. One
+finding-class record there indexes each page below, and individual cases keep
+their own proposals, implementation evidence and review history. Registration
+there does not replace the decisions documented here.
 
 Harmonising several flow lists means reading them against each other, and against
 the chemical registries, one substance at a time. That work turns up errors. A

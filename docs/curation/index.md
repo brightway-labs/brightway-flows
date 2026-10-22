@@ -1,8 +1,11 @@
 # Follow a correction from observation to use
 
-A kilogram of baddeleyite is not a kilogram of zirconium. The source observation,
-the proposal to preserve its conversion, the code that applies it and the checks
-that exercise that code answer different questions. **Curation** connects them.
+A kilogram of baddeleyite is not a kilogram of zirconium — the worked example
+in [A kilogram of ore is not a kilogram of
+metal](../findings/units.md#a-kilogram-of-ore-is-not-a-kilogram-of-metal). The
+source observation, the proposal to preserve its conversion, the code that
+applies it and the checks that exercise that code answer different questions.
+**Curation**, a section of the review application, connects them.
 
 Open [Curation](/curation/) to search cases, sort them, group by collection, stage or source,
 and inspect each case's evidence, people, proposals, modules and validation.
@@ -74,16 +77,25 @@ does not automatically change the shared register.
 
 ## Four linked records
 
-1. **Finding:** what was observed, in which source or build, by whom, and why the
-   evidence supports it. A source-data finding and a processing defect remain distinct.
-   The source-findings articles cover the former; Curation can track either.
+1. **Finding or processing defect:** what was observed, in which source or
+   build, by whom, and why the evidence supports it. A *finding* is an error in
+   the source data, in the sense of [What we have found](../findings/index.md);
+   a mistake in this project's own processing is a *processing defect*, and the
+   register marks it so. Curation tracks both; only the first kind belongs in the
+   findings pages.
 2. **Proposal:** an issue, discussion or PR describing a possible response.
-   Rejected alternatives stay attached to the case.
+   Rejected alternatives stay attached to the case. The claim itself is stated
+   as data, one file per issue in `expectations/`, and graded against the build
+   by `brightway-flows assess` — the proposal record points at that file rather
+   than restating it. Changing where the merge puts a row follows the
+   fixing-a-matching-defect procedure in `.claude/skills/`.
 3. **Module:** the code and decision files applying the change, pinned to a
    revision and connected to its tests. Cases and modules can have several links
    in either direction.
 4. **Validation and review:** executed checks with their scope, and named
    sign-offs tied to the exact revision. Release adoption has its own evidence.
+   A validation receipt here is what `brightway-flows assess` or a test run
+   produced on a named revision, not a sentence saying that it passed.
 
 Checks remains overall quality control. Its observations and the existing
 decision queues link into cases; an empty check or closed issue is not proof
