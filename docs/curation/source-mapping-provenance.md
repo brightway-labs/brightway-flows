@@ -1,13 +1,17 @@
 # Follow each mapping back to its original row
 
+This page is about captured evidence — retained files, their hashes and row
+coordinates — not about the PROV records [How provenance is
+recorded](../deciding/provenance.md) describes.
+
 Two placeholder rows can both carry `placeholder_code="nan"` while proposing
 different substances. They are two original assertions with missing flow
-identifiers. The provenance ledger preserves both rows and their coordinates;
+identifiers. The captured-evidence ledger preserves both rows and their coordinates;
 it never overwrites them into one mapping or supplies a guessed flow identity.
 
-Open [original mapping provenance](/curation/mappings/) or the
-[quarantined placeholder rows](/curation/mappings/?source=inhouse-placeholder&status=quarantined).
-The [missing-identifier case](/curation/cases/placeholder-missing-source-identifiers)
+In the review application, open the original-mapping ledger under Curation, or
+its quarantined placeholder rows.
+The missing-identifier case (case `placeholder-missing-source-identifiers`)
 groups the original records around the recovery question. The rows themselves
 remain separate evidence records, rather than thousands of new findings.
 
@@ -84,10 +88,10 @@ name-only targets are never assigned an identifier automatically.
 
 ## Check recovered placeholder definitions against their generation
 
-The [original classification](/curation/evidence/placeholder-original-v2?pointer=%2Fmetadata)
+The original classification (evidence `placeholder-original-v2`, at `/metadata`)
 reports 1,590 placeholders and −27 unmatched entries. The retained March 2026
 classification contains 1,617 mapping records, each with a distinct literal
-name/category description. The [count finding](/curation/cases/placeholder-negative-unmatched-count)
+name/category description. The count finding (case `placeholder-negative-unmatched-count`)
 retains the original metadata and the source routine that subtracts the mapped
 descriptions from the reported population. The audit flags the inconsistency;
 it does not choose a replacement population.
@@ -98,7 +102,7 @@ name/category/unit candidate for each of the 1,194 rows whose original code is
 known original identifiers, and 132 classification descriptions absent from the
 export. The candidate CAS fields are blank for all 1,194 missing-code records.
 These counts describe the retained
-[14 October source comparison](/curation/evidence/placeholder-source-identity-comparison),
+14 October source comparison (evidence `placeholder-source-identity-comparison`),
 not a newly qualified common source generation. The later May classification
 has a separate population and timestamp; it cannot silently fill the March
 identity gap.
@@ -106,7 +110,7 @@ identity gap.
 The captured classifier can stringify an empty spreadsheet code as `nan`.
 This is a possible mechanism identified in original source text, without a
 receipt proving which workbook and native export produced the March result.
-The [lineage census](/curation/evidence/placeholder-source-metadata-census)
+The lineage census (evidence `placeholder-source-metadata-census`)
 records these limits. All original rows and values remain; candidate codes
 stay supplementary evidence and the missing identifiers remain quarantined.
 
@@ -114,10 +118,10 @@ Original artifact hashes and row pointers identify these comparisons. Each
 record digest belongs to its declared procedure: different representations
 of the same row can have different digests. Use the original artifact and
 coordinate to follow a record between the comparison and mapping ledger.
-The [captured procedure](/curation/evidence/placeholder-source-lineage-procedure)
+The captured procedure (evidence `placeholder-source-lineage-procedure`)
 retains the exact comparison convention.
 
-The [retained declared input workbook comparison](/curation/evidence/placeholder-input-workbook-comparison)
+The retained declared input workbook comparison (evidence `placeholder-input-workbook-comparison`)
 adds cell coordinates for the missing codes. Each of the 1,194 `nan` records
 has a literal name/category/unit candidate with an empty code cell in that
 workbook. Its full 1,642-row population and code values correspond to the later
@@ -136,7 +140,7 @@ identifier substitution or the proposed substance mapping.
 
 ## Reading historical aliases
 
-[Historical alias traces](/curation/mappings/?kind=aliases) preserve a pointer
+Historical alias traces preserve a pointer
 and digest for each original result, every recoverable original registry
 membership, and links to source assertions with matching identifiers. Each
 member has a readable original record. Missing definitions and invalid
@@ -150,7 +154,7 @@ execution ancestry and applicability remain unqualified; no legacy alias is
 promoted into a newly accepted identity by this ledger.
 
 Existing Curation cases with matching original identifiers link to these traces
-in their provenance panel. The selected FEDEFL cases bind to their precise
+in their captured-evidence panel. The selected FEDEFL cases bind to their precise
 original CSV row. Trace associations are pinned to the original case identity;
 a changed case cannot inherit the earlier trace unnoticed. Source custody and
 mapping applicability retain separate labels and gaps.
@@ -158,17 +162,17 @@ mapping applicability retain separate labels and gaps.
 ### Keep source findings in the persistent case history
 
 The missing-placeholder-identifier finding and the two consumer method metadata
-findings also have a [private Workbench intake receipt](/curation/evidence/workbench-source-case-receiving).
+findings also have a private Workbench intake receipt (evidence `workbench-source-case-receiving`).
 It exercises the existing case ledger with the exact Curation IDs and
-[original attributed records](/curation/evidence/workbench-source-case-original-register).
+original attributed records (evidence `workbench-source-case-original-register`).
 Reporting authorship and ownership stay separate: an unassigned case remains
 explicitly unassigned. An empty source-reference list keeps missing source-flow
 identities unresolved.
 
-The [mapping receiving check](/curation/evidence/workbench-source-mapping-receiving)
+The mapping receiving check (evidence `workbench-source-mapping-receiving`)
 reproduces the complete original row and alias populations and checks that
 quarantined rows supply neither identifier candidates nor alias support.
-The [persistent history](/curation/evidence/workbench-source-case-ledger)
+The persistent history (evidence `workbench-source-case-ledger`)
 retains the earlier contribution events and adds observations. Exact retries
 leave its bytes unchanged; no intake observation grants scientific approval,
 changes a method or records consumer adoption.
@@ -178,19 +182,19 @@ receipt. References point to retained generations, so later edits to the live
 Curation register do not replace the earlier evidence. The lowercase-ID reader
 change was merged in [Workbench !531](https://gitlab.com/eos-lci/lci-workbench/-/merge_requests/531).
 The original private intake retains its reviewed candidate pin. A separate
-[merged-reader check](/curation/evidence/workbench-case-id-merged-history)
+merged-reader check (evidence `workbench-case-id-merged-history`)
 replays the complete private history through the exact merged source: every
 case ID, prior event and rendered history remains unchanged. This verifies the
 reader; the shared case ledger and scientific consumer bundle are not activated.
 
-The [later placeholder intake](/curation/evidence/workbench-placeholder-source-receiving)
+The later placeholder intake (evidence `workbench-placeholder-source-receiving`)
 adds the negative-count finding and the retained worksheet observation to the
-same [private history](/curation/evidence/workbench-placeholder-source-ledger).
+same private history (evidence `workbench-placeholder-source-ledger`).
 The earlier definitions and events remain unchanged. The original attributed
 case record is frozen with each intake; new observations leave ownership,
 scientific approval and consumer adoption unresolved.
 
-The [complete case census intake](/curation/evidence/workbench-all-cases-receiving)
+The complete case census intake (evidence `workbench-all-cases-receiving`)
 also preserves every registered Curation case in the private Workbench history.
 Each keeps its exact ID, original reported state, attribution and a pointer to
 the frozen complete case record. Original mapping and factor payloads remain
@@ -224,8 +228,8 @@ uv run python tools/verify_method_profile_sources.py \
 The receipt retains each profile pointer, original coordinate and row digest,
 plus the verifier source, dependency lock and parser versions. Output must be
 new; failed verification produces no completion marker. The
-[retained JRC profile](/curation/evidence/jrc-provider-original-profile) and
-[original-row verification](/curation/evidence/jrc-provider-source-verification)
+retained JRC profile (evidence `jrc-provider-original-profile`) and
+original-row verification (evidence `jrc-provider-source-verification`)
 remain dated source evidence. The consumer preflight must recheck its supplied
 input bytes before any use.
 
@@ -240,12 +244,12 @@ execution ancestry remains unknown.
 The September `v2026.09.02.23` Agribalyse payload's BAFU IPCC method retains
 40 distinct native factors while its original metadata reports 16. Its standard
 IPCC method retains 226 factors but no impact-unit key. These are separate
-[count](/curation/cases/agribalyse-ipcc-bafu-factor-count) and
-[unit](/curation/cases/agribalyse-ipcc-standard-unit) findings, linked to the
+count (case `agribalyse-ipcc-bafu-factor-count`) and
+unit (case `agribalyse-ipcc-standard-unit`) findings, linked to the
 exact original method records. They do not establish a numerical-impact defect.
 
 The metadata describes copying from Agribalyse 3.2 and a BAFU rebuild. The
-[source-lineage review](/curation/evidence/agribalyse-ipcc-source-lineage) preserves
+source-lineage review (evidence `agribalyse-ipcc-source-lineage`) preserves
 those declarations, tracked possible execution paths and their limits. A
 matching packaged archive cannot choose the historical provider route. The
 audit reports actual entries, distinct native keys, recorded units and missing

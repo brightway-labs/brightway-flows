@@ -20,7 +20,7 @@ sign-off, advances a lifecycle stage or applies a correction.
 
 ## Original execution evidence
 
-For the saved lookup candidate `f77270f6bee3649fcf2ca3196455200022670b64`,
+For the saved lookup candidate `f77270f6`,
 the original requests, results, command manifest and completion marker were
 received and rehashed. All 2,679 source queries and saved results reconcile
 one-to-one, including exact query equality. There are 2,678 known quantity
@@ -57,7 +57,7 @@ copied into the review evidence.
 
 The original validator, cross-validation code, tests, input ledger, source
 credits and reports were recovered as exact Git blobs at Workbench revision
-`4bec1691c938db6ec61a8c7e667e10c5307827c7`. Each of the 19 matching mechanisms
+`4bec1691`. Each of the 19 matching mechanisms
 now has a count of archived cluster records carrying its tag and original
 examples where present, from the separately pinned mapping created on
 24 August. Tags overlap; those counts are neither independent pair counts nor
@@ -88,14 +88,14 @@ quantity interpretation and scientific acceptance remain separate questions.
 
 ## Reviewing locally
 
-Start with the updated [lookup conversion case](/curation/cases/lookup-quantity),
-[observation preservation case](/curation/cases/wb-bafu-observation-bridge),
-[mine-gas case](/curation/cases/cf-bafu-mine-gas-volume), or
-[mineral quantity policy](/curation/cases/policy-09).
+Start with the updated lookup conversion case (case `lookup-quantity`),
+observation preservation case (case `wb-bafu-observation-bridge`),
+mine-gas case (case `cf-bafu-mine-gas-volume`), or
+mineral quantity policy (case `policy-09`).
 
-Use [partially supported cases](/curation/?view=all&claim=partial) to review
+Use partially supported cases to review
 remaining description gaps, and
-[conflicting descriptions](/curation/?view=all&claim=conflicting) for the
+conflicting descriptions for the
 superseded mine-gas statement. Each updated case shows recovered evidence,
 current source comparison, specific remaining questions and the earlier
 comparison. The original register record is unchanged.

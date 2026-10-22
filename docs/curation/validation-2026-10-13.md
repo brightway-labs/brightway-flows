@@ -2,7 +2,7 @@
 
 This receipt was produced by the local Curation development run using CPython
 3.14.7 and the locked development dependencies. It checks existing correction
-code at `19d6cc6268e59e18fcbb47bfec0f440fb0f6a353`.
+code at `19d6cc62`.
 
 | Area | Test files | Distinct tests passing |
 |---|---|---:|

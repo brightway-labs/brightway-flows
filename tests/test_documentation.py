@@ -47,14 +47,13 @@ import json
 import re
 import unittest
 from pathlib import Path
-from urllib.parse import urlsplit
 
 import typer
 
 from brightway_flows.application.cli import app
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 from brightway_flows.transformers import DEFAULT_TRANSFORMERS
-from brightway_flows.webapps.app import create_app, documentation
+from brightway_flows.webapps.app import documentation
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
@@ -192,6 +191,7 @@ class AgentsRuleReferenceTestCase(unittest.TestCase):
         15: "shortlists",     # docs/concepts/glossary.md, the two meanings of curation
         17: "provenance",     # tests/test_curated_object_names.py
         22: "bounded",        # tools/verify_run.py
+        30: "count",          # tests/test_documentation.py, CurationRegisterCountTestCase
         32: "branch",         # tests/test_architecture_structure.py
         35: "names",          # data/ef-3.1-manual-fixes.json, three citations
     }
@@ -255,17 +255,6 @@ class AgentsRuleReferenceTestCase(unittest.TestCase):
 
 
 class LinkTestCase(unittest.TestCase):
-    @staticmethod
-    @functools.cache
-    def web_routes():
-        """Root-relative application links must match a real Flask route.
-
-        Evidence IDs depend on the selected register. Their existence and
-        source locators are checked by its provenance audit, separately from
-        documentation files and route spelling.
-        """
-        return create_app(database_path=ROOT / ".data/nonexistent-link-check.sqlite3", docs_path=DOCS).url_map.bind("localhost")
-
     def test_every_relative_link_resolves(self):
         for page in PAGES:
             for target in _LINK.findall(page.read_text()):
@@ -275,21 +264,10 @@ class LinkTestCase(unittest.TestCase):
                 if not path:
                     continue
                 with self.subTest(page=page_id(page), target=target):
-                    if target.startswith("/"):
-                        self.web_routes().match(urlsplit(target).path, method="GET")
-                        continue
                     self.assertTrue(
                         (page.parent / path).resolve().exists(),
                         f"{page.relative_to(ROOT)} links to {target}",
                     )
-
-    def test_application_links_reject_misspelled_routes(self):
-        from werkzeug.exceptions import NotFound
-
-        with self.assertRaises(NotFound):
-            self.web_routes().match("/curation/misspelled-evidence/a-source", method="GET")
-        with self.assertRaises(NotFound):
-            self.web_routes().match("/private-evidence.json", method="GET")
 
     def test_every_link_to_a_section_names_a_heading_that_is_there(self):
         """A fragment matching no heading opens the page at the top (#373).
@@ -326,6 +304,38 @@ class LinkTestCase(unittest.TestCase):
             relative = page.relative_to(DOCS).as_posix()
             with self.subTest(page=relative):
                 self.assertIn(relative, nav)
+
+
+class CurationRegisterCountTestCase(unittest.TestCase):
+    """`docs/curation/index.md` states how many cases the public register holds.
+
+    The count is copied out of `docs/curation/register.json`, so it gets a case
+    here (AGENTS.md 30): the number of cases, how many of them are finding-class
+    records, and that there is one such record per page of `docs/findings/`.
+    """
+
+    REGISTER = DOCS / "curation" / "register.json"
+    PAGE = DOCS / "curation" / "index.md"
+    _SENTENCE = re.compile(
+        r"holds (\d+)\s+cases: (\d+) finding-class records, one for each page of "
+        r"\[What we have\s+found\]\([^)]*\), and (\d+) individual cases",
+    )
+
+    def test_the_counts_on_the_page_are_the_registers(self):
+        cases = json.loads(self.REGISTER.read_text())["cases"]
+        classes = [c for c in cases if c["origin"] == "finding-class"]
+        match = self._SENTENCE.search(self.PAGE.read_text())
+        self.assertIsNotNone(match, "index.md no longer states the register's counts")
+        total, class_count, individual = (int(g) for g in match.groups())
+        self.assertEqual(total, len(cases))
+        self.assertEqual(class_count, len(classes))
+        self.assertEqual(individual, len(cases) - len(classes))
+
+    def test_one_finding_class_record_per_findings_page(self):
+        cases = json.loads(self.REGISTER.read_text())["cases"]
+        classes = [c for c in cases if c["origin"] == "finding-class"]
+        pages = [p for p in (DOCS / "findings").glob("*.md") if p.name != "index.md"]
+        self.assertEqual(len(classes), len(pages))
 
 
 class CommandTestCase(unittest.TestCase):

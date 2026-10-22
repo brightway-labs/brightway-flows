@@ -49,7 +49,7 @@ Historical input generations and scientific applicability remain unqualified.
 The `jrc-provider-source-verification-20261014-v2` receiving reproduces 6,501
 distinct original workbook rows across 8,045 profile references. Every one of
 the 2,823 factors in `jrc-default-profiles-v2` has a literal value in its original
-factor rows. The [Agribalyse provider-byte receipt](/curation/evidence/agribalyse-provider-byte-receiving)
+factor rows. The Agribalyse provider-byte receipt (evidence `agribalyse-provider-byte-receiving`)
 also rechecks twenty exact Git inputs and supplies the exact retained workbook
 for the thirty-two EF builder method identifiers. This closes the earlier
 workbook custody gap. The two additional historical IPCC methods, selected
@@ -103,7 +103,7 @@ URL, retrieval time, status, size and SHA-256 in the local capture manifest.
 
 ## How to receive everything without repeating the old architecture
 
-Keep Chris's consensus substance/context decisions at the centre. Receive
+Keep this project's consensus substance and context decisions at the centre. Receive
 GLAD, DDS, FEDEFL, HESTIA and partner mappings as **attributed source assertions**
 with versioned evidence and an explicit disposition. A source assertion can
 corroborate, disagree, remain unresolved or propose a change; correlated bridges
@@ -125,7 +125,7 @@ An unresolved link remains visible and prevents the corresponding completion
 claim. Keep checks scoped to their actual population and distinguish explicit
 zero, missing factor, unknown identity, unsupported method and held policy.
 
-### Provenance for each proposed mapping
+### Captured evidence for each proposed mapping
 
 For example, the titanium decision must cite the original TiO₂ observation,
 the exact upstream correspondence carrying 0.599, the target titanium flow,
@@ -146,23 +146,23 @@ Every mapping decision needs the following evidence beside its outcome:
 Store this beside the **individual assertion and resulting decision**, with
 stable references to shared artifacts. Do not duplicate a source workbook for
 every row or reduce several inherited bridges to a list of independent votes.
-Field-level substance/context provenance and the complete correspondence must
+Field-level substance and context PROV records and the complete correspondence must
 remain available even when a compact export serves downstream consumers.
 
 The current candidate readers authenticate pinned artifacts and require
 nonempty evidence references. In particular, the inspected method projector
 checks evidence strings and derivation fields; it does **not** independently
 dereference and qualify every cited provider row or policy. Its structural
-validation therefore cannot be presented as complete scientific provenance.
+validation therefore cannot be presented as complete captured evidence.
 Receiving needs to verify those references against the retained source manifest,
 original rows and applicability evidence before that decision becomes accepted.
-Keep historical decisions with incomplete provenance as historical or held
+Keep historical decisions with incomplete captured evidence as historical or held
 records; never manufacture missing references, reviewers or dates.
 
 The integrated project still needs a complete, versioned inventory connecting
 all of these artifacts and their generations. Curation evidence documents and
 statistics can link it; the current case count is not that inventory. The compact
-flow export deliberately omits much full provenance and method detail, so it
+flow export deliberately omits most PROV records and method detail, so it
 cannot be the sole custody artifact. Retain the matching rich export/SQLite,
 original inputs, complete factor outputs and release receipts.
 
@@ -203,15 +203,15 @@ evidence bundle and is supplied through that consumer's curation register.
 It contains the captured public bytes, six recovered original inputs, the source
 audit, independently rehashed result receipts and the read-only reproduction
 scripts. `published-capture.json` has SHA-256
-`fb820332283609e7caa38fb910515bbbbadc8c6c1f0e3f777855685cd4e9e0ac`.
-The [live capture manifest](/curation/evidence/workbench-published-capture),
-[published-claim assessment](/curation/evidence/workbench-published-assessment)
-and [factor preservation assessment](/curation/evidence/workbench-result-preservation-assessment)
+`fb8203322836…`.
+The live capture manifest (evidence `workbench-published-capture`),
+published-claim assessment (evidence `workbench-published-assessment`)
+and factor preservation assessment (evidence `workbench-result-preservation-assessment`)
 are registered for local review, alongside the three source audit receipts.
 Public captures are observations of the served page, not an atomic provider
 build. Restricted mapping and inventory evidence stays in local custody.
 
-The inspected Curation source starts at `618d6cfa8b5f09888adaef94bee805b10b6fd9c8`;
-the Workbench consumer source is `03fd243f76aa886f971148efc217dc5c61ddf6c6`.
-The canonical Workbench is at `c08c4fd497a4c47d5f507a627eea1afc71459c06` with
+The inspected Curation source starts at `618d6cfa`;
+the Workbench consumer source is `03fd243f`.
+The canonical Workbench is at `c08c4fd4` with
 existing local changes; inspected code is separately hash-pinned.

@@ -1,5 +1,12 @@
 # Issue tracker
 
+!!! note "For developers"
+
+    This page is about where this project's issues and pull requests live and
+    how a contributor reads them from a checkout. It is only useful if you are
+    changing the code or the documentation. To understand or use the data,
+    start at [Why this exists](../concepts/why.md).
+
 Issues and pull requests for this project live in
 `brightway-labs/brightway-flows` on GitHub. Use `gh` with an explicit
 `--repo brightway-labs/brightway-flows` when reading a referenced issue or PR.

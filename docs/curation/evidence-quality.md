@@ -1,12 +1,14 @@
-# Evidence quality and provenance
+# Evidence quality and source capture
 
 A recorded titanium factor matches JRC worksheet row 156706. That establishes
 where its numerical value came from. Applying it to an ilmenite inventory still
 requires evidence that the inventory amount represents the titanium quantity
 expected by the method. The review record needs both facts.
 
-Curation shows **source capture**, **scientific basis**, **reproduction** and
-**scientific review** separately. A source record matched by the audit can still
+Curation shows **source capture** — the retained file, its hash and the row a
+claim points at, which the pages here call captured evidence rather than
+provenance — **scientific basis**, **reproduction** and **scientific review**
+separately. A source record matched by the audit can still
 have unresolved scientific questions. A historical report saying “fixed” is a
 reported claim until its inputs and execution can be reproduced.
 

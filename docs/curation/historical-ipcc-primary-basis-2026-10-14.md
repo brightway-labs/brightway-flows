@@ -13,13 +13,12 @@ historical execution, reviewer signoff or consumer adoption.
 
 ## The original assertions
 
-The private retained `historical-ipcc-additions.py` has SHA-256
-`9ea30ff7d690bdccff94a7bc8c6bb462733a6ab9e237be5a023e971a6bb4a7c1`.
-Lines 14-16 select `IPCC 2021 / climate change / GWP100 - BAFU`, project
-`bafu_fresh` and database `bafu_biosphere`. Lines 21-29 contain the assertions
-below, in that order. The retained snapshot revision is
-`4bec1691c938db6ec61a8c7e667e10c5307827c7`; this identifies a snapshot,
-not the introduction or execution of its code.
+The private retained `historical-ipcc-additions.py` (in the evidence bundle as
+`historical-ipcc-additions`, with its digest) selects, at lines 14-16, the
+method `IPCC 2021 / climate change / GWP100 - BAFU`, the project `bafu_fresh`
+and the database `bafu_biosphere`. Lines 21-29 contain the assertions below, in
+that order. The retained snapshot revision is `4bec1691`; this identifies a
+snapshot, not the introduction or execution of its code.
 
 The source searches by exact name, prefers only the broad compartment, then
 falls back to the first name match (lines 33-44). A hint-code mismatch produces
@@ -115,21 +114,22 @@ IPCC returned 403; successful direct HTTPS retrieval supplied the retained final
 PDF. No source text was taken from draft search snippets.
 
 PDF indices below are **zero-based**; printed pages are taken from the actual
-page images. Table headers, captions and relevant footnotes were visually
+page images. The SHA-256 of each retained file is recorded in the private
+capture, not repeated here. Table headers, captions and relevant footnotes were visually
 checked, after text extraction located the pages. Original references and
 rendered page captures are retained privately in
 `ipcc-primary-basis-20261014`; no source PDF or factor export is added to Git.
 
-| Reference | SHA-256 of retained bytes | Visually inspected locator |
-|---|---|---|
-| Canonical AR6 Chapter 7 PDF | `470d2662fdd212421617a32c684e8106a4221a7235bdfff40a278eff02febfa9` | Index 91 / p.1014, Section 7.6.1.3; index 94 / p.1017, Table 7.15 and Box 7.3 |
-| Canonical ecoinvent v3.9 implementation, dated 2022.10.13 | `64450f7e3f5549b5feda225e4d7de7a60a49217dab42e91f6cc6a88d3369c84b` | Index 22 / p.23, Table 7; index 25 / p.26, Section 7.4.6.2 and Table 10 |
-| Final AR6 Chapter 7 supplement | `4290518ef9418a4157ddb9481e589131eeb110614c3aa7b62641d3241d39ce58` | Index 15 / p.16, Table 7.SM.7 header, HCFC-31 and methane footnote; index 20 / p.21, continuing header and PFC-41-12 |
-| Final AR5 Chapter 8 | `9709d70802b4a78fe372f6a949d4d2af7bf31c38c1f666783d5b188702dc2836` | Index 80 / p.739, Table 8.A.3 including kg-N basis and notes; index 81 / p.740, Tables 8.A.4-5 including kg-C basis and notes |
-| ecoinvent v3.10 implementation, dated 2023.11.28 | `d956b314051c6a9e2944dd35f8e9c9b76f2402b8d0b5aeb3b90c282911bbb59a` | Index 18 / p.19, stock-retention policy; index 27 / p.28, Table 7; index 31 / p.32, Table 10 and limitations |
-| ecoinvent v3.11 implementation, dated 2024.11.19 | `6c7e0ff88921fbb81f29c22ac055c17956fecdc98936bbb9033effca19103542` | Text inspected pp.27-30 for named variants; numerical correction taken from the live errata below |
-| ecoinvent v3.11 page, captured 14 October 2026 | `45d38b26e9d29f397802174e764642f2a8049a7600e3b321b8c6b96a7b9b3958` | Known Issues / LCIA Issues / non-fossil methane and CO; full variant-table column labels inspected |
-| ecoinvent IPCC guidance, captured 14 October 2026 | `a6cebe2ab158f6119263e70d840498fc749a40e30358dcb0d3b9abc4e2b0bdef` | Available Impact Categories; biogenic-carbon guidance |
+| Reference | Visually inspected locator |
+|---|---|
+| Canonical AR6 Chapter 7 PDF | Index 91 / p.1014, Section 7.6.1.3; index 94 / p.1017, Table 7.15 and Box 7.3 |
+| Canonical ecoinvent v3.9 implementation, dated 2022.10.13 | Index 22 / p.23, Table 7; index 25 / p.26, Section 7.4.6.2 and Table 10 |
+| Final AR6 Chapter 7 supplement | Index 15 / p.16, Table 7.SM.7 header, HCFC-31 and methane footnote; index 20 / p.21, continuing header and PFC-41-12 |
+| Final AR5 Chapter 8 | Index 80 / p.739, Table 8.A.3 including kg-N basis and notes; index 81 / p.740, Tables 8.A.4-5 including kg-C basis and notes |
+| ecoinvent v3.10 implementation, dated 2023.11.28 | Index 18 / p.19, stock-retention policy; index 27 / p.28, Table 7; index 31 / p.32, Table 10 and limitations |
+| ecoinvent v3.11 implementation, dated 2024.11.19 | Text inspected pp.27-30 for named variants; numerical correction taken from the live errata below |
+| ecoinvent v3.11 page, captured 14 October 2026 | Known Issues / LCIA Issues / non-fossil methane and CO; full variant-table column labels inspected |
+| ecoinvent IPCC guidance, captured 14 October 2026 | Available Impact Categories; biogenic-carbon guidance |
 
 The implementation reports are first-party descriptions of ecoinvent's
 choices. They corroborate those implementations; they do not establish BAFU's

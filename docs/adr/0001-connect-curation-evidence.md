@@ -3,6 +3,14 @@ status: proposed
 ---
 # Connect curation evidence without introducing a second decision engine
 
+!!! note "For developers"
+
+    This page is a decision record about the review application's structure
+    and is only useful if you are changing it. To understand or use the data,
+    start at [Why this exists](../concepts/why.md); to follow a correction
+    through the Curation section, start at [From findings to reviewed
+    corrections](../curation/index.md).
+
 Keep Checks as build quality control and add a Curation register connecting
 findings, proposals and the existing executable modules. GitHub remains the
 discussion and review surface; the application reads a versioned register and

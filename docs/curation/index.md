@@ -7,7 +7,7 @@ source observation, the proposal to preserve its conversion, the code that
 applies it and the checks that exercise that code answer different questions.
 **Curation**, a section of the review application, connects them.
 
-Open [Curation](/curation/) to search cases, sort them, group by collection, stage or source,
+Open Curation to search cases, sort them, group by collection, stage or source,
 and inspect each case's evidence, people, proposals, modules and validation.
 The module catalogue reads the existing ruling register and transformer chain;
 it does not create another correction engine.
@@ -149,6 +149,16 @@ where a value came from and what is still missing before anyone could accept it.
 
 ## Reading the local preview
 
+The register in this repository, `docs/curation/register.json`, holds 18
+cases: 13 finding-class records, one for each page of [What we have
+found](../findings/index.md), and 5 individual cases chosen as public
+examples. Those are the only counts on these pages that come from this
+repository. Every other count in the dated reports — records in a bundle,
+observations, aliases, matched rows — is read from the receipt or register
+snapshot the sentence names, in a private evidence bundle that is not a build
+of this list; nothing here checks them, so read each as that receipt's
+measurement on its date.
+
 The initial register contains selected public examples and the existing finding
 classes. It is explicitly an incomplete migration, not an inventory of every
 historic decision. GitHub status and authorship have a retrieval date. Existing
@@ -176,7 +186,7 @@ not advance it through scientific review, create a test result or establish
 consumer adoption. A migration receipt, when supplied, documents coverage,
 duplicate handling and exclusions.
 
-See [Evidence quality and provenance](evidence-quality.md) for source checks,
+See [Evidence quality and source capture](evidence-quality.md) for source checks,
 claim-specific gaps and what to contribute before scientific receiving.
 
 ## Run and review locally
@@ -213,7 +223,7 @@ projection.
 The [Workbench capability assessment](workbench-capability-assessment-2026-10-13.md)
 compares retained sources and results with the published biosphere page and
 records what remains before the integrated project can replace that alignment.
-The [original mapping provenance checks](source-mapping-provenance.md) now
+The [original mapping source-capture checks](source-mapping-provenance.md) now
 reproduce complete retained source rows, quarantine missing identifiers, and
 link each historical alias to its original result and registry members.
 

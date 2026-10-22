@@ -121,4 +121,4 @@ nav:
       - Architecture (developers): reference/architecture.md
       - Conventions (developers): reference/conventions.md
       - Data model (developers): reference/data-model.md
-      - Issue tracker (contributors): agents/issue-tracker.md
+      - Issue tracker (developers): agents/issue-tracker.md
