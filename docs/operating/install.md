@@ -106,7 +106,9 @@ archive contains. Four things are deliberately outside it:
   fetched cache should not be mistakable for a build that never ran.
 - `EF-v3.1.zip`. It is 200 MB, and one `brightway-flows download` away from
   a public URL; carrying it would triple the archive to save a request nobody
-  is rate-limiting.
+  is rate-limiting. When the JRC's site does not answer, `download` reads the
+  same archive from `https://files.brightway.dev/EF-v3.1.zip` instead and
+  checks that it is the copy the project holds (SHA-256 `18763515…afb27`).
 
 Nothing in the archive expires on its own, exactly as nothing in the data
 directory does. `chebi --force` and the other refresh flags are still how a

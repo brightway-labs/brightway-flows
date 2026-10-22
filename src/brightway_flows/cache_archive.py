@@ -136,7 +136,8 @@ CACHED_FILES: tuple[CachedFile, ...] = (
     ),
     # `EF-v3.1.zip` is not here.  It is 200 MB -- three quarters of the archive
     # -- for one unauthenticated GET from a URL this project already holds
-    # (`integrations.ef31.EF31_URL`), which `download` makes on request.  The
+    # (`integrations.ef31.EF31_URL`, with `EF31_BACKUP_URL` behind it), which
+    # `download` makes on request.  The
     # archive is for what is slow to re-fetch, and a single public download is
     # not that.
     #
