@@ -11,6 +11,8 @@ you would notice.
 
 ## 1.1.0 — 2026-10-21
 
+Published on [Zenodo](https://doi.org/10.5281/zenodo.23554066).
+
 Built from the same five lists as 1.0.0: ecoinvent 3.12, ecoinvent 3.8,
 BAFU 2026 v1, Stepwise 2006 1.09 and AGRIBALYSE 3.2. A count below comes from
 the full build its pull request was measured on. That pull request names the
@@ -59,8 +61,9 @@ is left unresolved.
   commit ([#414](https://github.com/brightway-labs/brightway-flows/pull/414)).
   1.0.0's files name neither.
 - **The release carries its own record.** Besides the usual files, the
-  Zenodo record holds this release's snapshot, `1.1.0.json.gz`, and
-  `1.0.0__1.1.0.zip`, the migration from 1.0.0 to 1.1.0.
+  [Zenodo record](https://doi.org/10.5281/zenodo.23554066) holds this
+  release's snapshot, `release-snapshot.json.gz`, and `1.0.0__1.1.0.zip`, the
+  migration from 1.0.0 to 1.1.0.
 
 ### Substances and their names
 

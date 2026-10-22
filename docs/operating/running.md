@@ -461,13 +461,34 @@ refused as stale.
    `unresolved.json`, and add what it holds to the release's section of the
    notes.
 4. Upload a new version of the
-   [Zenodo record](https://doi.org/10.5281/zenodo.22857950):
+   [Zenodo record](https://doi.org/10.5281/zenodo.22857949):
    `harmonised-flows-simple.json.gz`, `lcia-factors.json.gz`,
    `lcia-differences.json` and `consensus-flows.sqlite3` as before, the
-   release's snapshot, the zip of the migration from the previous release
-   (`1.0.0__1.1.0.zip` for 1.1.0), and the release's notes as the version's
-   description.
+   release's snapshot renamed to `release-snapshot.json.gz`, the zip of the
+   migration from the previous release (`1.0.0__1.1.0.zip` for 1.1.0), and
+   the release's notes as the version's description.
 5. Push the tag.
+6. Point the website at the new Zenodo version. Its homepage, masthead,
+   Download page and citation do not read the version from `pyproject.toml`
+   or from the build; they read it from
+   `src/brightway_flows/webapps/app/publication.py`, which still names the
+   previous release until it is changed. On a branch, set there:
+   - `version` and `previous_version`, which also name the migration's row
+     and file on Download;
+   - `release_date`, the day the Zenodo version was published;
+   - `doi`, the new version's own DOI (`10.5281/zenodo.23554066` for 1.1.0,
+     <https://zenodo.org/records/23554066>), which every Download link and
+     every citation format uses;
+   - `checksums`, the SHA-256 of each of the six uploaded files, computed
+     from the files as uploaded. Zenodo shows only an MD5, and a rebuild does
+     not reproduce the bytes.
+
+   Then change the release's numbers in `tests/test_publication.py`,
+   `tests/test_webapp_download_about.py`, `tests/test_webapp_home.py` and
+   `tests/test_webapp_navigation.py`, the DOI badge at the top of
+   `README.md`, and the Zenodo link in the release's section of
+   [What changed in each release](../using/releases.md). Merge it, and
+   `git pull` on the web server.
 
 ## All commands
 

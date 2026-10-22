@@ -6,7 +6,7 @@ date, the DOI, the checksums -- are `publication.py`'s, read through
 it wrote and how big they are. How the run that produced them went is
 `/run/`'s to say -- this page links there once instead of repeating it.
 
-All four artifacts, the database included and without a condition on it:
+Every release artifact, the database included and without a condition on it:
 decision 8 came back that it may be published (#200), and a release that
 offered three derived exports while withholding the file they were derived
 from would offer the reader less than it has.

@@ -64,13 +64,13 @@ def index():
 
 @blueprint.route("/download/<key>")
 def download(key: str):
-    """One of the four files the build publishes.
+    """One of the files the build publishes.
 
     Sent with `conditional=True`, so a range request is answered and an
     interrupted 2.3 GB download can be resumed rather than started again.  A
     key this application does not know, or a file this build did not write, is a
     404: the page does not link to either, and a hand-typed URL should not be
-    answered with an empty file.  The database is one of the four, with no
+    answered with an empty file.  The database is one of them, with no
     condition on it: decision 8 came back that it may be published (#200).
     """
     found = _found(key)
