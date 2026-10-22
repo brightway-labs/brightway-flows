@@ -27,8 +27,7 @@ uv run --python 3.14.7 --frozen pytest -q \
   tests/test_water_conversion_survives_the_split.py::IdentitySurvivesTheSplitTestCase::test_an_elementary_flow_keeps_its_identifier_when_its_object_moves
 ```
 
-These focused checks do not demonstrate a full same-input build, scientific
-approval, or inclusion in a published release. PR #387 has a different revision
-and was not executed by this run; its reported checks remain linked to that PR.
-The optional published SQLite snapshot used by the local website is historical
-display data, not an output of these tests.
+PR #387 has a different revision and was not executed by this run; its
+reported checks remain linked to that PR. The optional published SQLite snapshot
+used by the local website is historical display data, not an output of these
+tests.

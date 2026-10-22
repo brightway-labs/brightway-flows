@@ -214,6 +214,4 @@ build. Restricted mapping and inventory evidence stays in local custody.
 The inspected Curation source starts at `618d6cfa8b5f09888adaef94bee805b10b6fd9c8`;
 the Workbench consumer source is `03fd243f76aa886f971148efc217dc5c61ddf6c6`.
 The canonical Workbench is at `c08c4fd497a4c47d5f507a627eea1afc71459c06` with
-existing local changes; inspected code is separately hash-pinned. This audit
-does not modify that checkout, execute scientific builds, change shared stores,
-adopt candidates or alter the published page.
+existing local changes; inspected code is separately hash-pinned.

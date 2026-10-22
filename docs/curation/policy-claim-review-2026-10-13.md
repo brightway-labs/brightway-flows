@@ -1,10 +1,34 @@
-# Method-policy claim review, 13 October 2026
+# Method-policy review, 13 October 2026
 
-Cooling water provides a useful distinction: the source really does record a local zero convention and an unmeasured evaporation limitation. In contrast, the inherited sentence that a missing factor must remain absent is a requirement for migration; the historical registrar actually fills missing sibling factors. This review preserves the intended rules while identifying what the retained code does today at its pinned historical revision.
+Cooling water provides a useful distinction: the source really does record a
+local zero convention and an unmeasured evaporation limitation. In contrast, the
+inherited sentence that a missing factor must remain absent is a requirement for
+migration; the historical registrar actually fills missing sibling factors. This
+review preserves the intended rules while identifying what the retained code
+does today at its pinned historical revision.
 
-The 13 descriptions were compared with preserved Workbench sources at `4bec1691c938db6ec61a8c7e667e10c5307827c7`, candidate-projector code at `1aa303f9e1a3afff27894b30695ef79f1848fccc`, and candidate documentation at `03fd243f76aa886f971148efc217dc5c61ddf6c6`. The structured receipt is `policy-claim-review.json` in the local migration bundle. It pins the exact inherited summary and every cited source with SHA-256.
+Two passes were made on 13 October 2026, and this page records both. The first
+compared the 13 inherited policy descriptions with preserved Workbench sources
+at revision `4bec1691`, candidate-projector code at `1aa303f9` and candidate
+documentation at `03fd243f`; its receipt is `policy-claim-review.json` in the
+local evidence bundle, and it pins the exact inherited summary and every cited
+source by SHA-256. The second, recorded at 20:36 UTC the same day, went back to
+the original provider files, mapping decisions, calibration history and
+application observations for twelve of the thirteen (policy-06 was already
+supported within its scope); its receipt is `policy-original-evidence-recovery.json`,
+with the provider comparison procedure
+`original-evidence-provider-check-procedure.py`. Under each policy below, the
+comparison comes first and the recovery follows it. No claim text or earlier
+receipt was rewritten by the second pass.
 
-**Support means support for the precise description, not scientific approval.** One bounded preservation claim is supported; 12 are partially supported. No case received scientific sign-off, no method or inventory was changed, and no scientific build ran. A normative requirement is not marked false just because historical code fails to meet it.
+**Support means support for the precise description, not scientific approval.**
+After both passes, one bounded preservation claim is supported and 12 are
+partially supported. The recovery narrowed what is still open rather than
+changing a verdict: 29 GLAM workbooks have two-source byte identity, 4,924
+retained regional and fallback water values have exact provider rows, three
+AWARE tables reproduce from the pinned original workbook, and the JRC resource
+quantities have their original flow-property rows. A normative requirement is
+not marked false because historical code fails to meet it.
 
 | Case | Support | Main distinction |
 |---|---|---|
@@ -22,6 +46,10 @@ The 13 descriptions were compared with preserved Workbench sources at `4bec1691c
 | `policy-12` | partial | The named method families have heterogeneous historical provenance. The register does not establish a single set of scientifically accepted provider versions and policies, and AWARE is not evidenced by the preserved Workbench extraction code. |
 | `policy-13` | partial | Existing code supports project-local key resolution and a separate differential-gate policy. Neither establishes full numerical or served-inventory validation for this migration. |
 
+## What the recovery changed in the evidence picture
+
+The upstream BAFU mapping already carries explicit conversions. Its two TiO2 mappings declare 0.599 kg Ti per kg TiO2; fossil mappings declare energy factors, with some values different from the historical Workbench calibration. The Workbench derivative omitted multiplier and match-relation fields. The preserved upstream SQLite has matching explicit associations but a different run identity from the Workbench 22 September JSON pin, so equivalence to that exact export remains unproved. This is evidence to investigate application, not proof that a factor was applied twice or permission to change a served result. [Pinned upstream decisions](https://github.com/brightway-labs/brightway-flows/blob/19d6cc6268e59e18fcbb47bfec0f440fb0f6a353/src/brightway_flows/data/bafu-2026-v1-match-overrides.json), [original associations](/curation/evidence/original-evidence-upstream-quantity-associations), [historical derivative](/curation/evidence/original-evidence-historical-quantity-extract).
+
 ## policy-01: JRC headline versus organic/inorganic sub-method priority
 
 **Inherited claim:** Keep the selected implementation and row provenance from `JrcUuidIndex`/the provider reader. A profile must not mix competing implementations by arbitrary first match.
@@ -30,9 +58,18 @@ The 13 descriptions were compared with preserved Workbench sources at `4bec1691c
 
 At Workbench 4bec1691c938db6ec61a8c7e667e10c5307827c7, JrcUuidIndex keys by EF UUID, location and category and stores the winning method name internally. Its add() selects a headline over a non-headline; otherwise the first value remains. The name index separately prefers unspecified contexts. At the later 03fd243f76aa886f971148efc217dc5c61ddf6c6 documentation pin, the candidate profile requires provider implementation/revision and one factor per target/category/location. These are contract requirements, not a received real provider profile.
 
-**Evidence still needed:** Preserve the actual winner and every competing method row, including original method UUID, context, worksheet locator and source hash. Define and review a deterministic tie policy when more than one non-headline candidate remains. The historical overlay sidecar omits the selected method identity and row locator; our JRC source check recovers those for 292 amendments but does not establish the full provider or a scientific choice between alternatives.
+**Evidence still needed after the comparison:** Preserve the actual winner and every competing method row, including original method UUID, context, worksheet locator and source hash. Define and review a deterministic tie policy when more than one non-headline candidate remains. The historical overlay sidecar omits the selected method identity and row locator; our JRC source check recovers those for 292 amendments but does not establish the full provider or a scientific choice between alternatives.
 
-Sources: [overlay-producer](/curation/evidence/overlay-producer?line=107&end=170), [ef31-producer](/curation/evidence/ef31-producer?line=104&end=109), [ef31-producer](/curation/evidence/ef31-producer?line=882&end=1015), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=19&end=41), [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check?pointer=%2Fselection_policy).
+**Recovered original evidence**
+
+- **provider-row corroboration:** The pinned JRC workbook contains distinct headline and inorganic human-toxicity implementations. For arsenic in unspecified air, cancer rows 27094 and 159924 each carry 4.3981e-05 but distinct method names; non-cancer rows 46899 and 159184 each carry 0.0024884. Row equality for these examples does not collapse implementation identity. The receipt retains source UUID, implementation, context, location and source row.
+
+**Still required**
+
+- **selection policy:** Which exact implementation and tie disposition was selected for every emitted category/flow, beyond the 292 previously checked amendment rows? Next evidence: Full per-factor provider-row and competing-row selection ledger from the accepted projection.
+- **application:** Does the registered/served profile use the same selected provider rows? Next evidence: Factor-value and quantity readback bound to the accepted profile and receiving project.
+
+Sources: [overlay-producer](/curation/evidence/overlay-producer?line=107&end=170), [ef31-producer](/curation/evidence/ef31-producer?line=104&end=109), [ef31-producer](/curation/evidence/ef31-producer?line=882&end=1015), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=19&end=41), [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check?pointer=%2Fselection_policy); recovery: [original-evidence-provider-row-checks](/curation/evidence/original-evidence-provider-row-checks), [original-evidence-provider-check-procedure](/curation/evidence/original-evidence-provider-check-procedure), [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check), [overlay-producer](/curation/evidence/overlay-producer).
 
 ## policy-02: Compartment restrictions and the sub-compartment coverage repair
 
@@ -42,9 +79,18 @@ Sources: [overlay-producer](/curation/evidence/overlay-producer?line=107&end=170
 
 The BAFU producer restricts allowed top compartments. The biosphere3 bridge first selects the mapped sub-compartment and otherwise records an unspecified-context fallback. At the same 4bec1691 pin, register_methods.py groups nodes by name and top compartment, then copies a factor to siblings with setdefault; this can fill a missing sub-compartment factor after source production. The later candidate projector instead requires context/unit equality and exact provider selection.
 
-**Evidence still needed:** The receipt must distinguish a source factor, an explicitly reviewed context carry and a registrar-created sibling factor. Capture every native code added by registration, its donor code, source/target contexts and policy; compare the registered result against the intended provider. Determine which historical carries should remain permitted. Source-file coverage alone cannot establish that a missing source factor stays absent in the served project.
+**Evidence still needed after the comparison:** The receipt must distinguish a source factor, an explicitly reviewed context carry and a registrar-created sibling factor. Capture every native code added by registration, its donor code, source/target contexts and policy; compare the registered result against the intended provider. Determine which historical carries should remain permitted. Source-file coverage alone cannot establish that a missing source factor stays absent in the served project.
 
-Sources: [ef31-producer](/curation/evidence/ef31-producer?line=152&end=167), [ef31-producer](/curation/evidence/ef31-producer?line=1331&end=1421), [bio3-producer](/curation/evidence/bio3-producer?line=280&end=305), [method-registration](/curation/evidence/method-registration?line=113&end=165), [module-source-f6274f266738a9c2](/curation/evidence/module-source-f6274f266738a9c2?line=167&end=189).
+**Recovered original evidence**
+
+- **provider-row corroboration:** Original JRC arsenic cancer factors differ by soil context: agricultural row 9311 is 5.6899e-05, non-agricultural row 9316 is 1.8035e-05, unspecified row 9320 is 3.7467e-05. These are concrete counterexamples to treating same substance/top compartment as sufficient evidence for interchangeable factors. Provider contexts and units are now retained in the recovery receipt.
+
+**Still required**
+
+- **application:** Which sibling values were copied by the historical registration step, and do all consumed native codes have their own justified factor/context disposition? Next evidence: Original full registration input/output with donor code, target code, context and accepted source row; no live re-registration was performed.
+- **scientific applicability:** Is any subcompartment default scientifically accepted for each missing context? Next evidence: Method-owned default or a reviewed case disposition, separate from code matching.
+
+Sources: [ef31-producer](/curation/evidence/ef31-producer?line=152&end=167), [ef31-producer](/curation/evidence/ef31-producer?line=1331&end=1421), [bio3-producer](/curation/evidence/bio3-producer?line=280&end=305), [method-registration](/curation/evidence/method-registration?line=113&end=165), [module-source-f6274f266738a9c2](/curation/evidence/module-source-f6274f266738a9c2?line=167&end=189); recovery: [original-evidence-provider-row-checks](/curation/evidence/original-evidence-provider-row-checks), [method-registration](/curation/evidence/method-registration), [bio3-producer](/curation/evidence/bio3-producer).
 
 ## policy-03: Regional emission factors
 
@@ -54,9 +100,18 @@ Sources: [ef31-producer](/curation/evidence/ef31-producer?line=152&end=167), [ef
 
 The 4bec1691 producer recognizes regional category slugs, parses a location suffix and tries that location before __none__. The overlay also prefers a located row when available, otherwise retains the default and records the chosen location_key. The candidate projector source at 1aa303f9e1a3afff27894b30695ef79f1848fccc uses an exact (target, category, selected location) key; no default-region fallback appears on that path.
 
-**Evidence still needed:** A real provider profile and application need an explicit policy for each regional-to-default selection, including requested location, selected location and why a default is permitted. Reconcile the historical implicit fallbacks against those decisions; the candidate code contract and historical sidecar do not by themselves prove scientific acceptance or current consumer use.
+**Evidence still needed after the comparison:** A real provider profile and application need an explicit policy for each regional-to-default selection, including requested location, selected location and why a default is permitted. Reconcile the historical implicit fallbacks against those decisions; the candidate code contract and historical sidecar do not by themselves prove scientific acceptance or current consumer use.
 
-Sources: [ef31-producer](/curation/evidence/ef31-producer?line=118&end=126), [ef31-producer](/curation/evidence/ef31-producer?line=1102&end=1110), [ef31-producer](/curation/evidence/ef31-producer?line=1199&end=1221), [overlay-producer](/curation/evidence/overlay-producer?line=228&end=268), [module-source-f6274f266738a9c2](/curation/evidence/module-source-f6274f266738a9c2?line=155&end=189), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=57&end=67).
+**Recovered original evidence**
+
+- **provider-row corroboration:** JRC sulfur dioxide acidification row 613 is 0.494 for CH and row 624 is 1.31 with no location. Both use source UUID fe0acd60-3ddc-11dd-ac48-0050c2490048 and air/unspecified. The recovered provider rows prove that regional selection materially changes the value.
+
+**Still required**
+
+- **regional application:** Which absent-region cases intentionally use the unlocated default, and where is that choice recorded per factor? Next evidence: Historical and candidate emission application records including requested location, selected location, rule and source row.
+- **adoption:** Who accepted this fallback for the intended application? Next evidence: Recorded scoped decision, not a matching aggregate benchmark.
+
+Sources: [ef31-producer](/curation/evidence/ef31-producer?line=118&end=126), [ef31-producer](/curation/evidence/ef31-producer?line=1102&end=1110), [ef31-producer](/curation/evidence/ef31-producer?line=1199&end=1221), [overlay-producer](/curation/evidence/overlay-producer?line=228&end=268), [module-source-f6274f266738a9c2](/curation/evidence/module-source-f6274f266738a9c2?line=155&end=189), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=57&end=67); recovery: [original-evidence-provider-row-checks](/curation/evidence/original-evidence-provider-row-checks), [ef31-producer](/curation/evidence/ef31-producer), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection).
 
 ## policy-04: Land class mapping, occupation and transformation from/to
 
@@ -66,9 +121,18 @@ Sources: [ef31-producer](/curation/evidence/ef31-producer?line=118&end=126), [ef
 
 At 4bec1691, parse_bafu_land retains the kind and parses location; the same resolver serves all three kinds. land_cf selects the corresponding JRC value and keeps an explicit zero before trying GLO. LAND_CLASS_SYNONYMS contains interpretations such as organic pasture to intensive pasture and the resolver can remove trailing qualifiers. The generic result file records a code-to-factor value, not the complete original class and selected policy.
 
-**Evidence still needed:** Attach an explicit land-class decision for each generalization, preserving the original qualified class, selected class, geography and exact factor row. Verify paired from/to coverage, signs and amounts on a pinned input generation; using one resolver does not prove all source class/kind combinations have a factor or that a pair actually occurs in inventories. Recover the evidence for intensity/organic-class interpretations and identify default-location applications.
+**Evidence still needed after the comparison:** Attach an explicit land-class decision for each generalization, preserving the original qualified class, selected class, geography and exact factor row. Verify paired from/to coverage, signs and amounts on a pinned input generation; using one resolver does not prove all source class/kind combinations have a factor or that a pair actually occurs in inventories. Recover the evidence for intensity/organic-class interpretations and identify default-location applications.
 
-Sources: [ef31-producer](/curation/evidence/ef31-producer?line=393&end=575), [ef31-producer](/curation/evidence/ef31-producer?line=1068&end=1080), [ef31-producer](/curation/evidence/ef31-producer?line=1224&end=1237), [ef31-producer](/curation/evidence/ef31-producer?line=1295&end=1305), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=19&end=41).
+**Recovered original evidence**
+
+- **provider-row corroboration:** Recovered 171 original JRC Land use rows for GLO/unlocated selections, with source property rows and signs. Example row 119164 is arable at 50.191; the provider evidence is distinct from the local class-synonym policy. Retained original EF benchmark baseline has land_use median 1.00031 over 11,661 comparisons, but contains no source input hash or per-flow class decisions.
+
+**Still required**
+
+- **class interpretation:** Which original evidence permits each BAFU class synonym, qualifier stripping and organic/extensive-to-intensive fallback? Next evidence: Source land-class definitions plus a named reviewed decision for each non-exact mapping.
+- **sign and geography application:** Were paired from/to signs and geography preserved for all consumed flows, including absent-country defaults and published zero factors? Next evidence: Per-native-code source-row and quantity ledger, followed by the same-input numerical comparison.
+
+Sources: [ef31-producer](/curation/evidence/ef31-producer?line=393&end=575), [ef31-producer](/curation/evidence/ef31-producer?line=1068&end=1080), [ef31-producer](/curation/evidence/ef31-producer?line=1224&end=1237), [ef31-producer](/curation/evidence/ef31-producer?line=1295&end=1305), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=19&end=41); recovery: [original-evidence-provider-row-checks](/curation/evidence/original-evidence-provider-row-checks), [original-evidence-ef31-oracle-baseline](/curation/evidence/original-evidence-ef31-oracle-baseline), [ef31-producer](/curation/evidence/ef31-producer).
 
 ## policy-05: Water class mapping and withdrawal/return distinction
 
@@ -78,9 +142,19 @@ Sources: [ef31-producer](/curation/evidence/ef31-producer?line=393&end=575), [ef
 
 At 4bec1691, WATER_CLASS_MAP maps embodied water to generic water, and rebuild_all allows resource/unknown-compartment water plus any name containing embodied. The GLAM bridge instead requires the natural resource compartment and explicitly explains why returns, evaporation and embodied water are not credited. The pinned JRC workbook corroborates opposite intake/return factors for cooling and turbine water; these rows are distinct resources/emissions with input/output directions.
 
-**Evidence still needed:** Review and name the method-specific physical boundary: withdrawal, consumption, return, evaporation and embodied water. For each class, retain the original flow definition, direction, unit, receiving context and application policy. The presence of an embodied label or a shared substance identity is insufficient evidence of resource withdrawal, and the JRC intake/return pair does not establish the treatment of every source inventory.
+**Evidence still needed after the comparison:** Review and name the method-specific physical boundary: withdrawal, consumption, return, evaporation and embodied water. For each class, retain the original flow definition, direction, unit, receiving context and application policy. The presence of an embodied label or a shared substance identity is insufficient evidence of resource withdrawal, and the JRC intake/return pair does not establish the treatment of every source inventory.
 
-Sources: [ef31-producer](/curation/evidence/ef31-producer?line=592&end=617), [ef31-producer](/curation/evidence/ef31-producer?line=1307&end=1330), [glam-producer](/curation/evidence/glam-producer?line=200&end=241), [water-method-note](/curation/evidence/water-method-note), [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check?pointer=%2Fwater_reference_rows).
+**Recovered original evidence**
+
+- **original application observations:** Recovered existing water-balance receipts rather than repeating their prose: the eos_base receipt contains 2,554 ecoinvent 3.6 cooling activities, 2,297 with a return, and median return/cooling 0.9865521480160593 when recomputed from its saved rows. A BAFU census record for process 212792 records equal recorded saltwater intake and generic return, with no freshwater intake. These demonstrate why direction and origin matter; the receipts lack execution code/store hashes.
+- **current implementation scope:** Pinned water-tributary code 6b2da9b7 retains roles for withdrawals, pass-through, returns, evaporation and excluded flows and per-activity consumption handling. This is a distinct method application from the historical EF/GLAM withdrawal policy.
+
+**Still required**
+
+- **scientific applicability:** How should each method treat embodied water, freshwater return, saltwater return, evaporation and pass-through for each source convention? Next evidence: Provider definitions and a scoped application decision with a measured per-activity balance; shared substance identity alone is insufficient.
+- **current receiving evidence:** Is the current receiving store census clean under the intended two-sided method? Next evidence: Current code/input-bound census and per-root result; the recovered 9 October census is transition_clean=false, with 2,040 roots over balance.
+
+Sources: [ef31-producer](/curation/evidence/ef31-producer?line=592&end=617), [ef31-producer](/curation/evidence/ef31-producer?line=1307&end=1330), [glam-producer](/curation/evidence/glam-producer?line=200&end=241), [water-method-note](/curation/evidence/water-method-note), [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check?pointer=%2Fwater_reference_rows); recovery: [original-evidence-water-receipt-summary](/curation/evidence/original-evidence-water-receipt-summary), [original-evidence-water-census-20261009](/curation/evidence/original-evidence-water-census-20261009), [original-evidence-water-emitter](/curation/evidence/original-evidence-water-emitter), [original-evidence-water-bafu-roles](/curation/evidence/original-evidence-water-bafu-roles), [original-evidence-water-bio3-roles](/curation/evidence/original-evidence-water-bio3-roles).
 
 ## policy-06: Cooling/turbine water net-zero convention
 
@@ -90,7 +164,7 @@ Sources: [ef31-producer](/curation/evidence/ef31-producer?line=592&end=617), [ef
 
 The 4bec1691 producer emits a literal 0.0 and a net_zero_turbine_cooling declaration for the cooling/turbine classes. Its preserved method note calls this a lower bound when cooling evaporation is not separately inventoried and says that error has not been measured. The note explicitly states GLAM inherits the local rule. Our prior scan of the hash-pinned JRC workbook records the positive and negative global intake/return pair rows.
 
-**Evidence still needed:** Scientific acceptance still needs an inventory census of linked intake, returns and evaporation, technology-specific evaporation evidence and a documented applicability decision. Measure the lower-bound error on the intended method and consumer. Do not treat balanced JRC pair arithmetic or agreement with an aggregate benchmark as proof that all cooling withdrawals are physically returned.
+**Evidence still needed after the comparison:** Scientific acceptance still needs an inventory census of linked intake, returns and evaporation, technology-specific evaporation evidence and a documented applicability decision. Measure the lower-bound error on the intended method and consumer. Do not treat balanced JRC pair arithmetic or agreement with an aggregate benchmark as proof that all cooling withdrawals are physically returned.
 
 Sources: [ef31-producer](/curation/evidence/ef31-producer?line=574&end=617), [ef31-producer](/curation/evidence/ef31-producer?line=1307&end=1319), [water-method-note](/curation/evidence/water-method-note), [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check?pointer=%2Fwater_reference_rows).
 
@@ -102,9 +176,20 @@ Sources: [ef31-producer](/curation/evidence/ef31-producer?line=574&end=617), [ef
 
 At 4bec1691, bridge_water_bafu uses the explicit country row when available, otherwise GLO with a recorded fallback reason; a published zero is preserved because the lookup tests None. It records counts and separate regional, default-fallback, net-zero, unmapped-class and unknown-unit outcomes. workbench-inputs identifies the GLAM beta version and experimental ecotoxicity caveat. The sidecar itself contains producer/rule/method records but no full provider-file digest/version binding; cooling/turbine zeroing is inherited from the EF local rule.
 
-**Evidence still needed:** Bind each method application to the exact provider release, file hash, method implementation and regional row. Keep region-less use separate from failed-region fallback, including the actual default factor. Preserve beta/experimental metadata through projection and registration. Decide whether the local EF net-zero convention is appropriate under each GLAM water method; historical reuse does not supply independent GLAM justification.
+**Evidence still needed after the comparison:** Bind each method application to the exact provider release, file hash, method implementation and regional row. Keep region-less use separate from failed-region fallback, including the actual default factor. Preserve beta/experimental metadata through projection and registration. Decide whether the local EF net-zero convention is appropriate under each GLAM water method; historical reuse does not supply independent GLAM justification.
 
-Sources: [glam-producer](/curation/evidence/glam-producer?line=188&end=299), [glam-water-applications](/curation/evidence/glam-water-applications), [workbench-inputs](/curation/evidence/workbench-inputs?line=98&end=125), [water-method-note](/curation/evidence/water-method-note), [method-registration](/curation/evidence/method-registration?line=88&end=105).
+**Recovered original evidence**
+
+- **provider-release identity:** All 29 local GLAM workbooks match both the historical GLAM_CHECKSUMS SHA-256 entries and the publisher MD5 values in Zenodo record 20630461, version 1.1.2026.06.24beta.
+- **provider-row corroboration:** All 4,924 explicitly recorded regional/GLO-fallback water assignments match an original provider row exactly: 1,231 per method. EQ damage has 802 regional/429 fallback; EQ midpoint 952/279; HH damage 932/299; HH midpoint 952/279. Every match retains workbook hash, sheet, row, method, flow class, location and unit. Each method separately has 8 regionless assignments and 503 local policy zeros; those are not counted among the 4,924 checks.
+
+**Still required**
+
+- **policy versus provider:** Are the 503 pass-through zeros per method and country→GLO fallback choices accepted for this application? Next evidence: Explicit application decision plus inventory evidence; source CF equality only establishes the selected provider values.
+- **complete application coverage:** What are the exact source and receiving rows for the eight regionless assignments per method and all rejected/unmapped classes? Next evidence: Complete code-level application census including deliberate absences and quantity conversions.
+- **scientific scope:** Have beta/experimental implementation caveats been reviewed for each adopted category? Next evidence: Method-specific scope review; file identity does not approve experimental methods.
+
+Sources: [glam-producer](/curation/evidence/glam-producer?line=188&end=299), [glam-water-applications](/curation/evidence/glam-water-applications), [workbench-inputs](/curation/evidence/workbench-inputs?line=98&end=125), [water-method-note](/curation/evidence/water-method-note), [method-registration](/curation/evidence/method-registration?line=88&end=105); recovery: [original-evidence-provider-row-checks](/curation/evidence/original-evidence-provider-row-checks), [original-evidence-glam-checksums](/curation/evidence/original-evidence-glam-checksums), [original-evidence-glam-extraction-manifest](/curation/evidence/original-evidence-glam-extraction-manifest), [original-evidence-zenodo-20630461](/curation/evidence/original-evidence-zenodo-20630461), [glam-water-applications](/curation/evidence/glam-water-applications).
 
 ## policy-08: Fossil resource heating values, density and composition
 
@@ -114,9 +199,22 @@ Sources: [glam-producer](/curation/evidence/glam-producer?line=188&end=299), [gl
 
 At 4bec1691, fossil_resource_cf parses explicit MJ/GJ density text or returns hard-coded defaults; the adjacent comment says selected defaults were recalibrated to BAFU implied densities. The historical overlay subsequently assigns raw JRC values by UUID and carries no quantity multiplier field. The candidate projector source at 1aa303f9e1a3afff27894b30695ef79f1848fccc composes native-to-source and source-to-consensus multipliers, then multiplies the factor once while leaving inventory quantities unchanged.
 
-**Evidence still needed:** Recover source-flow quantity definitions, actual importer conversion ledgers and the calibration dataset/rationale for the defaults. Check whether the recorded source correspondence already includes heating value, density or composition, and separately verify native units. Establish parity on real pinned observations before adoption. This inspection does not demonstrate an actual historical double-conversion occurrence; neither does source code alone prove the current pipeline applies every required conversion exactly once.
+**Evidence still needed after the comparison:** Recover source-flow quantity definitions, actual importer conversion ledgers and the calibration dataset/rationale for the defaults. Check whether the recorded source correspondence already includes heating value, density or composition, and separately verify native units. Establish parity on real pinned observations before adoption. This inspection does not demonstrate an actual historical double-conversion occurrence; neither does source code alone prove the current pipeline applies every required conversion exactly once.
 
-Sources: [ef31-producer](/curation/evidence/ef31-producer?line=682&end=780), [ef31-producer](/curation/evidence/ef31-producer?line=1392&end=1401), [overlay-producer](/curation/evidence/overlay-producer?line=65&end=75), [overlay-producer](/curation/evidence/overlay-producer?line=246&end=268), [module-source-f6274f266738a9c2](/curation/evidence/module-source-f6274f266738a9c2?line=140&end=189), [current-consensus-quantity-application](/curation/evidence/current-consensus-quantity-application?line=48&end=67).
+**Recovered original evidence**
+
+- **target source quantity:** JRC original flow-property rows 40003/44950/57844/70708/75246/92612 declare brown coal/crude oil/hard coal/natural gas/peat/uranium as Net calorific value, MJ; CF rows 156658–156663 are 1 per native MJ.
+- **upstream conversion:** The pinned upstream BAFU overrides at 19d6cc6268e59e18fcbb47bfec0f440fb0f6a353 explicitly state kg/m3→MJ factors: oil 43.1, hard coal 18.01, brown coal 9.41, natural gas 36, peat 9.76, uranium 560000. Exact local upstream concept associations independently retain these numbers. They are original mapping decisions, not independently validated calorific measurements. The historical Workbench derivative exposes source/target unit changes but drops conversion/match fields.
+- **historical calibration:** Original commit 832a46ae states BAFU-output calibration of oil 45.8→43.3, hard coal 30.7→18.5, brown coal 9.9→9.5 and gas 40.3→36. Its AI coauthor trailer is retained. This explains the different local constants; benchmark fit does not establish the physical quantity.
+- **source quantity example:** The inspected original BAFU XML process 68bb95fd-1526-388c-a01a-50b8d99534b1 has Oil, crude, Coal, hard and Coal, brown quantities in kg. The source quantities are not MJ merely because the target is MJ.
+
+**Still required**
+
+- **historical full pin:** Did the exact 22 September source JSON export carry these same conversion values before the Workbench derivative omitted them? Next evidence: Recover original full export with SHA-256 22b1b5f0b2e34a9840f3ee34f656adc4f47ad72b7e53c0e548f6924d1834129f; the local SQLite has a different recorded run identity.
+- **physical derivation:** What original supplier/calorific evidence supports each adopted NCV, particularly where upstream and local calibration differ? Next evidence: Actual referenced provider table or source-dataset energy evidence; recovered upstream comments are not measurement validation.
+- **application:** For each real consumed native quantity, is conversion applied exactly once before the MJ-based factor? Next evidence: Conversion ledger and same-input source→projection→registered→served value receipt. No duplicate application is asserted without that evidence.
+
+Sources: [ef31-producer](/curation/evidence/ef31-producer?line=682&end=780), [ef31-producer](/curation/evidence/ef31-producer?line=1392&end=1401), [overlay-producer](/curation/evidence/overlay-producer?line=65&end=75), [overlay-producer](/curation/evidence/overlay-producer?line=246&end=268), [module-source-f6274f266738a9c2](/curation/evidence/module-source-f6274f266738a9c2?line=140&end=189), [current-consensus-quantity-application](/curation/evidence/current-consensus-quantity-application?line=48&end=67); recovery: [original-evidence-provider-row-checks](/curation/evidence/original-evidence-provider-row-checks), [original-evidence-upstream-bafu-overrides](/curation/evidence/original-evidence-upstream-bafu-overrides), [original-evidence-upstream-quantity-associations](/curation/evidence/original-evidence-upstream-quantity-associations), [original-evidence-historical-quantity-extract](/curation/evidence/original-evidence-historical-quantity-extract), [original-evidence-bafu-quantity-example](/curation/evidence/original-evidence-bafu-quantity-example), [original-evidence-fossil-calibration-commit](/curation/evidence/original-evidence-fossil-calibration-commit), [original-evidence-workbench-consensus-run](/curation/evidence/original-evidence-workbench-consensus-run).
 
 ## policy-09: Mineral-resource leading-element treatment
 
@@ -126,9 +224,26 @@ Sources: [ef31-producer](/curation/evidence/ef31-producer?line=682&end=780), [ef
 
 At 4bec1691, mineral_resource_cf selects the first comma-separated name component and uses its JRC mineral factor when an ore/grade tail is present. Its comment asserts amounts are kilograms of the leading element and cites aggregate BAFU agreement, but provides no per-flow defining document. The independently checked titanium amendments match the JRC titanium value; that numerical agreement does not resolve whether each BAFU TiO2-labelled source amount is titanium, TiO2 or another basis.
 
-**Evidence still needed:** For each ore family, attach the source flow/property definition, native amount basis and correspondence multiplier, plus a worked dimensional derivation. Distinguish elementary element mass, compound mass and ore mass. Only then establish that neither ore grade nor stoichiometry is omitted or counted twice. A JRC row for the bare element confirms the selected factor, not the source quantity interpretation.
+**Evidence still needed after the comparison:** For each ore family, attach the source flow/property definition, native amount basis and correspondence multiplier, plus a worked dimensional derivation. Distinguish elementary element mass, compound mass and ore mass. Only then establish that neither ore grade nor stoichiometry is omitted or counted twice. A JRC row for the bare element confirms the selected factor, not the source quantity interpretation.
 
-Sources: [ef31-producer](/curation/evidence/ef31-producer?line=718&end=742), [ef31-producer](/curation/evidence/ef31-producer?line=1403&end=1410), [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check?pointer=%2Fchecks%2F0), [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check?pointer=%2Fchecks%2F1).
+The later [titanium application trace](titanium-quantity-application-2026-10-13.md)
+receives the current quantities and processed factors. It finds zero applications
+of 0.599 in the selected historical path, while scientific interpretation and a
+qualified quantity-aware replacement remain open. The earlier questions below
+are preserved as the record of this recovery stage.
+
+**Recovered original evidence**
+
+- **original quantity evidence:** The source BAFU XML explicitly names TiO2, 54% in ilmenite, 2.6% in crude ore, CAS 13463-67-7, unit kg, with an empty generalComment. JRC row 156706 is titanium 2.79e-08; source property row 89298 is titanium, Mass/kg. Neither equal unit labels nor a leading-element name proves equal mass bases.
+- **original upstream decision:** Pinned upstream BAFU overrides for source UUIDs 52b760ca-3444-564a-a215-271d4af41250 and 73746710-2506-50d1-811a-521b48526172 explicitly require conversion_factor 0.599, cite rulings #118/#141 and state TiO2→elemental Ti. The recovered local upstream associations mark these broadMatch with qudt:conversionMultiplier 0.599. Historical Workbench derived rows retain the target but omit both conversion and match qualification.
+- **historical rationale:** Commit 7d169b0f records the leading-element policy and BAFU aggregate agreement, with an AI coauthor. It establishes origin of the local rule, not that every ore/compound quantity is elemental mass. This is a concrete unresolved conflict for wb-factor-af8bc1926a017bd6 and wb-factor-cacf7c5e1102cf6c.
+
+**Still required**
+
+- **binding/application:** Are the two TiO2 quantities converted by 0.599 exactly once in the accepted flow correspondence and actual factor application? Next evidence: Exact pinned full correspondence plus receiving quantity ledger for the two native BAFU codes; do not silently change their existing factors from this audit.
+- **scientific applicability:** Which remaining mineral flows represent elemental, compound or ore mass, and what derivation applies to each? Next evidence: Original flow-property/source documentation and a case-level reviewed quantity decision; aggregate agreement cannot settle each identity.
+
+Sources: [ef31-producer](/curation/evidence/ef31-producer?line=718&end=742), [ef31-producer](/curation/evidence/ef31-producer?line=1403&end=1410), [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check?pointer=%2Fchecks%2F0), [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check?pointer=%2Fchecks%2F1); recovery: [original-evidence-provider-row-checks](/curation/evidence/original-evidence-provider-row-checks), [original-evidence-upstream-bafu-overrides](/curation/evidence/original-evidence-upstream-bafu-overrides), [original-evidence-upstream-quantity-associations](/curation/evidence/original-evidence-upstream-quantity-associations), [original-evidence-historical-quantity-extract](/curation/evidence/original-evidence-historical-quantity-extract), [original-evidence-bafu-quantity-example](/curation/evidence/original-evidence-bafu-quantity-example), [original-evidence-mineral-leading-commit](/curation/evidence/original-evidence-mineral-leading-commit).
 
 ## policy-10: Particulate and sulfur-oxide defaults
 
@@ -138,9 +253,19 @@ Sources: [ef31-producer](/curation/evidence/ef31-producer?line=718&end=742), [ef
 
 At 4bec1691, particulate_air_cf applies a size-class factor across spatial variants, uses PM10 as a proxy for the 2.5–10 micrometre fraction, returns zero for non-air particles and large particles, and assigns a PM2.5 default to remaining particulate names. particulate_sox_air_cf applies one non-urban/high-stack sulfur-dioxide factor across sulfur-oxide names. The source comment traces that context choice to inference from BAFU results, not a source-row subcompartment declaration.
 
-**Evidence still needed:** Record the exact JRC row and its unit/context separately from each local proxy. Recover evidence for coarse-fraction substitution, bare-PM interpretation and the shared SOx quantity basis; retain explicit non-characterization separately from a measured physical zero. Compare exact source contexts and compound quantities with consensus results, using scoped exceptions rather than promoting name-family rules into universal equivalence. The benchmark-inferred non-urban choice still needs a documented scientific decision.
+**Evidence still needed after the comparison:** Record the exact JRC row and its unit/context separately from each local proxy. Recover evidence for coarse-fraction substitution, bare-PM interpretation and the shared SOx quantity basis; retain explicit non-characterization separately from a measured physical zero. Compare exact source contexts and compound quantities with consensus results, using scoped exceptions rather than promoting name-family rules into universal equivalence. The benchmark-inferred non-urban choice still needs a documented scientific decision.
 
-Sources: [ef31-producer](/curation/evidence/ef31-producer?line=784&end=877), [ef31-producer](/curation/evidence/ef31-producer?line=1374&end=1390), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=31&end=41).
+**Recovered original evidence**
+
+- **provider-row corroboration:** Recovered original PM rows: PM2.5 unspecified 2.38497e-04 (2559), non-urban/high-stack 3.01757e-06 (2562); PM10 unspecified 5.48544e-05 (2555), non-urban/high-stack 6.94042e-07 (2558). Sulfur dioxide unspecified is 8e-06 (3415, long-term; other exact contexts retained), non-urban/high-stack 9.9e-07 (3489). These source values corroborate constants, not the choice of a context.
+- **original rejected hypothesis:** Commit e1653988 records that switching PM to non-urban/high-stack worsened its BAFU comparison to −88.5%, and restored the unspecified default. The preserved text records the historical hypothesis and reversal; its asserted cause remains unproved without the original diagnostic inputs/results.
+
+**Still required**
+
+- **calibration history:** Where are the original 28 single-flow SO2 product calculations and failed PM diagnostic outputs with exact source/input identities? Next evidence: Recover row-level calibration files or archived original run output; current code comments and git messages alone do not reproduce them.
+- **scientific applicability:** What method/source evidence authorises PM size-bin proxies and the SOx chosen context/quantity convention? Next evidence: Category and source-flow definition with exact source row and reviewed treatment of unsupported bins/context.
+
+Sources: [ef31-producer](/curation/evidence/ef31-producer?line=784&end=877), [ef31-producer](/curation/evidence/ef31-producer?line=1374&end=1390), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=31&end=41); recovery: [original-evidence-provider-row-checks](/curation/evidence/original-evidence-provider-row-checks), [original-evidence-pm-reversal-commit](/curation/evidence/original-evidence-pm-reversal-commit), [original-evidence-ef31-oracle-baseline](/curation/evidence/original-evidence-ef31-oracle-baseline), [ef31-producer](/curation/evidence/ef31-producer).
 
 ## policy-11: Climate extensions and unqualified carbon treatment
 
@@ -150,9 +275,19 @@ Sources: [ef31-producer](/curation/evidence/ef31-producer?line=784&end=877), [ef
 
 At 4bec1691, the BAFU extension maps land-transformation CO2 to +1, soil/biomass-stock CO2 to -1, delayed fossil CO2 correction to +1 and unqualified CO2 to +1 as a conservative fossil default. Extensions fill previously uncharacterized codes and are listed separately. The biosphere3 bridge explicitly selects a land-use-change variant for a from-stock qualifier. These are concrete implementation choices, not independent scientific approvals; the sidecars identify affected codes but do not contain all source definitions and decision evidence.
 
-**Evidence still needed:** Bind each extension to its original source flow, direction, quantity and method definition, including the treatment of stock changes and delayed emissions. Retain the bare-carbon fossil assumption as an explicit scoped exception with justification and removal conditions. Verify no context or qualifier is lost in normalization, overlay, registration or consumption; a preserved name and numeric sign alone do not prove the inventory semantics.
+**Evidence still needed after the comparison:** Bind each extension to its original source flow, direction, quantity and method definition, including the treatment of stock changes and delayed emissions. Retain the bare-carbon fossil assumption as an explicit scoped exception with justification and removal conditions. Verify no context or qualifier is lost in normalization, overlay, registration or consumption; a preserved name and numeric sign alone do not prove the inventory semantics.
 
-Sources: [ef31-producer](/curation/evidence/ef31-producer?line=1239&end=1260), [ef31-producer](/curation/evidence/ef31-producer?line=1448&end=1465), [bafu-climate-extensions](/curation/evidence/bafu-climate-extensions), [bio3-climate-extensions](/curation/evidence/bio3-climate-extensions), [bio3-producer](/curation/evidence/bio3-producer?line=15&end=40), [bio3-producer](/curation/evidence/bio3-producer?line=267&end=277).
+**Recovered original evidence**
+
+- **provider scientific scope:** Recovered original JRC climate rows distinguish fossil CO2 emission 1 (1121–1126), fossil uptake 0 (160403/160689), biogenic CO2 0 (1114–1120), and land-use-change CO2 with opposite input/output signs (2547/2548). This corroborates the need to retain physical direction and category; it does not authorise stock/delay/bare-CO2 extensions.
+- **upstream decision trail:** The pinned upstream BAFU override file retains distinct decisions for unqualified CO2 and source-specific carbon meanings. The original BAFU/bio3 extension sidecars continue to identify four codes each. These are maintained as local extension coverage, not relabelled as JRC-exact.
+
+**Still required**
+
+- **scientific extension basis:** What original method authority and inventory convention support each stock, delayed-emission, land-transformation and bare-CO2 extension value? Next evidence: Per-code source definition, sign/quantity rationale, primary method reference and scoped review.
+- **receiving coverage:** Do the accepted profile and consuming inventories preserve all extension codes and their separate dispositions? Next evidence: Code/quantity/value coverage receipt spanning producer, registered factors and served inventory.
+
+Sources: [ef31-producer](/curation/evidence/ef31-producer?line=1239&end=1260), [ef31-producer](/curation/evidence/ef31-producer?line=1448&end=1465), [bafu-climate-extensions](/curation/evidence/bafu-climate-extensions), [bio3-climate-extensions](/curation/evidence/bio3-climate-extensions), [bio3-producer](/curation/evidence/bio3-producer?line=15&end=40), [bio3-producer](/curation/evidence/bio3-producer?line=267&end=277); recovery: [original-evidence-provider-row-checks](/curation/evidence/original-evidence-provider-row-checks), [original-evidence-upstream-bafu-overrides](/curation/evidence/original-evidence-upstream-bafu-overrides), [bafu-climate-extensions](/curation/evidence/bafu-climate-extensions), [bio3-climate-extensions](/curation/evidence/bio3-climate-extensions).
 
 ## policy-12: IPCC, ILCD, GLAM, ecological-scarcity and AWARE implementations
 
@@ -162,9 +297,21 @@ Sources: [ef31-producer](/curation/evidence/ef31-producer?line=1239&end=1260), [
 
 At 4bec1691, IPCC and ILCD are extracted from existing Brightway methods, while GLAM has a named beta release. Ecological-scarcity extraction tries two 2021 names and then a 2013 fallback, returns only code-to-value factors and can merge land factors inferred from published product totals. The preserved UBP note contains a later update correcting its earlier conclusion and reporting 13 added land factors. Nine IPCC additions are separately retained as historical local rules. The water note refers the AWARE convention to the water tributary rather than declaring it settled.
 
-**Evidence still needed:** Create one reviewed provider record per family/version, carrying actual selected method tuple, source-file identity, factor/flow units, regional policy and declared local modifications. Recover the original IPCC/ILCD import sources and the UBP supplement derivation, including the later correction; distinguish an original provider factor from an inferred supplement. Obtain the AWARE owner/version/application evidence from its own project. Missing from the candidate profile must remain unsupported, and should not be described as retirement or a zero method.
+**Evidence still needed after the comparison:** Create one reviewed provider record per family/version, carrying actual selected method tuple, source-file identity, factor/flow units, regional policy and declared local modifications. Recover the original IPCC/ILCD import sources and the UBP supplement derivation, including the later correction; distinguish an original provider factor from an inferred supplement. Obtain the AWARE owner/version/application evidence from its own project. Missing from the candidate profile must remain unsupported, and should not be described as retirement or a zero method.
 
-Sources: [export-producer](/curation/evidence/export-producer?line=414&end=527), [export-producer](/curation/evidence/export-producer?line=1044&end=1046), [historical-ipcc-additions](/curation/evidence/historical-ipcc-additions?line=14&end=30), [workbench-inputs](/curation/evidence/workbench-inputs?line=98&end=125), [policy-ubp-validation](/curation/evidence/policy-ubp-validation), [water-method-note](/curation/evidence/water-method-note), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=31&end=41).
+**Recovered original evidence**
+
+- **AWARE original provider tables:** Downloaded the exact original AWARE2.0 country workbook from Zenodo 15133241 (v1.0.0); provider MD5 15a9326a27bf5686019bbf3fe3ae7936 matches, SHA-256 b8481b0fac18864a9854e785007c5e21f9594f8735c5678d7ebdffb1ed9b15c6. With the pinned reader, annual and monthly 519-location JSON tables and the 540-location monthly water-demand table reproduce exactly. This corroborates the committed table values, not all CF resolution/application policies or newest release adoption.
+- **UBP original history:** Recovered original UBP validation report from commit 6ca04d10: 11,837 comparisons, median 0.9115205298114746 and 87.41574950942751% within 2x. This is the pre-supplement run, not proof of the later 13 inferred land factors. The exact 13-value land supplement says factors were backed out from product totals; original per-factor product/mass/residual derivation is not present there.
+- **method identity:** Recovered historical extraction metadata and original GLAM release pins. The original records distinguish source extract, locally inferred supplement and newer water application. A family label cannot imply all are the same provider-approved method.
+
+**Still required**
+
+- **provider-specific independence:** Where are the complete accepted IPCC/ILCD/UBP provider versions, original factor tables and registration manifests for each retained method? Next evidence: Individual provider input/version/quantity ledgers; the historical exporter names live Brightway sources but does not provide all original provider bytes.
+- **UBP calibration:** Which product, observed land mass, known-factor subtraction and residual justifies each of the 13 supplemented factors? Next evidence: Original calibration dataset and script/output for each value, plus explicit scientific review; do not count the pre-supplement validation as validation of those additions.
+- **AWARE applicability:** Which variant, region, source water basis and fallback is adopted for each actual use? Next evidence: Application row/quantity evidence and scoped method decision; provider table roundtrip does not establish consumption accounting.
+
+Sources: [export-producer](/curation/evidence/export-producer?line=414&end=527), [export-producer](/curation/evidence/export-producer?line=1044&end=1046), [historical-ipcc-additions](/curation/evidence/historical-ipcc-additions?line=14&end=30), [workbench-inputs](/curation/evidence/workbench-inputs?line=98&end=125), [policy-ubp-validation](/curation/evidence/policy-ubp-validation), [water-method-note](/curation/evidence/water-method-note), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=31&end=41); recovery: [original-evidence-provider-row-checks](/curation/evidence/original-evidence-provider-row-checks), [original-evidence-zenodo-15133241](/curation/evidence/original-evidence-zenodo-15133241), [original-evidence-aware-provider-reader](/curation/evidence/original-evidence-aware-provider-reader), [original-evidence-ubp-original-validation](/curation/evidence/original-evidence-ubp-original-validation), [original-evidence-ubp-land-supplement](/curation/evidence/original-evidence-ubp-land-supplement), [original-evidence-workbench-extraction-meta](/curation/evidence/original-evidence-workbench-extraction-meta), [original-evidence-water-registry-manifest](/curation/evidence/original-evidence-water-registry-manifest).
 
 ## policy-13: Method registration and served-code checks
 
@@ -174,9 +321,20 @@ Sources: [export-producer](/curation/evidence/export-producer?line=414&end=527),
 
 At 4bec1691, the registrar resolves native codes to project IDs, refuses empty/all-zero resolved sets and reads a written method back through assert_registrable. That gate checks key reachability and requested database presence; it is not numerical equality or complete inventory coverage. The differential ADR explicitly allows an already-poor baseline and judges transitions. The candidate projection documentation independently lists actual provider receiving, numerical comparison, registration and served-graph validation as outstanding.
 
-**Evidence still needed:** Retain separate receipts for source factors, registered keys/values and the actual served inventory generation. Compare every intended factor and any sibling factors introduced by registration, not just counts or nonempty resolution. Record the baseline and standing findings for differential acceptance. A passing structural registration or non-regression gate must not be promoted to scientific correctness, current consumer adoption or complete coverage.
+**Evidence still needed after the comparison:** Retain separate receipts for source factors, registered keys/values and the actual served inventory generation. Compare every intended factor and any sibling factors introduced by registration, not just counts or nonempty resolution. Record the baseline and standing findings for differential acceptance. A passing structural registration or non-regression gate must not be promoted to scientific correctness, current consumer adoption or complete coverage.
 
-Sources: [method-registration](/curation/evidence/method-registration?line=113&end=165), [method-registration](/curation/evidence/method-registration?line=180&end=238), [policy-method-gate](/curation/evidence/policy-method-gate?line=65&end=127), [policy-differential-gate](/curation/evidence/policy-differential-gate), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=69&end=88).
+**Recovered original evidence**
+
+- **receiving project identity:** Recovered BAFU build manifest dated 2026-09-29T04:50:42+00:00, importer 0.1.10, content_sha256 045764a2d8589109f51f38cb49086468243ca4d6c99230ba059d263942dea61b. It records release/raw identities, corrections and measured counts. The catalogue contract says content identity covers no method; this manifest is not an EF/GLAM factor-value readback.
+- **application observations:** The independently preserved 9 October EDB_BAFU water census is not clean (2,040 roots exceed balance). The EF oracle baseline retains per-category aggregate ratios, including PM 1.868154 and freshwater ecotoxicity 2.799344; these are historical accepted comparison baselines, not universal accuracy or current application receipts.
+
+**Still required**
+
+- **registered factors:** Do receiving methods contain the exact intended factor values, conversions and native-flow keys after registration? Next evidence: Complete project-local value/key readback bound to the actual source/profile and code generation.
+- **served inventory:** Does the intended served graph consume the same flows/quantities and satisfy the specific acceptance test? Next evidence: Current inventory/store identity plus served factor and quantity census; recovered historic build identity and differential tolerance do not establish this.
+- **acceptance:** Who accepted the stated comparison scope and unresolved scientific limitations? Next evidence: Scoped reviewer/sign-off record; no approval is fabricated by this recovery.
+
+Sources: [method-registration](/curation/evidence/method-registration?line=113&end=165), [method-registration](/curation/evidence/method-registration?line=180&end=238), [policy-method-gate](/curation/evidence/policy-method-gate?line=65&end=127), [policy-differential-gate](/curation/evidence/policy-differential-gate), [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection?line=69&end=88); recovery: [original-evidence-bafu-build-manifest](/curation/evidence/original-evidence-bafu-build-manifest), [original-evidence-bafu-release](/curation/evidence/original-evidence-bafu-release), [original-evidence-water-census-20261009](/curation/evidence/original-evidence-water-census-20261009), [original-evidence-ef31-oracle-baseline](/curation/evidence/original-evidence-ef31-oracle-baseline), [policy-differential-gate](/curation/evidence/policy-differential-gate), [policy-method-gate](/curation/evidence/policy-method-gate), [method-registration](/curation/evidence/method-registration).
 
 ## Review limits
 
@@ -184,28 +342,16 @@ This review inspected source content and previously preserved method evidence. T
 
 The UBP method note is especially important to retain whole: its later update corrects the earlier assertion that the land gap should not be filled using product totals. The review records that chronology without making the older prose disappear or accepting the inferred factors as independently published provider data. The candidate profile and projection code are contracts; they do not authenticate real provider inputs merely by accepting their schema.
 
-No new external scientific literature was researched. The shared literature workflow and canonical library were checked in the preceding source audit; original physical-policy evidence still needs targeted recovery under that workflow.
+The first pass researched no new external scientific literature; the shared literature workflow and canonical library had been checked in the preceding source audit, and original physical-policy evidence still needs targeted recovery under that workflow. The second pass recovered provider files, not literature.
 
-## Source pins
+The source index in the receipt binds each cited new artifact to its SHA-256. Git copies retain exact revision and path; provider records retain immutable release URLs. The numerical provider check reads original Excel cells using openpyxl; it imports only the pinned pure AWARE reader functions, and performs no registration or LCA. Its GLAM check corroborates recorded CF values at the chosen class/location, not correctness of that class/location choice. Regionless and local-zero dispositions are explicitly outside that comparison.
 
-| Document | SHA-256 |
-|---|---|
-| [bafu-climate-extensions](/curation/evidence/bafu-climate-extensions) | `3ccb4d7a45ce1b45a593545c421e1d507a31f4830009fba9f263e959f2f37581` |
-| [bio3-climate-extensions](/curation/evidence/bio3-climate-extensions) | `cb7b7942ca01173b5b83594f137c9df652a12c628857401a26bfd0921fc2c496` |
-| [bio3-producer](/curation/evidence/bio3-producer) | `8f0560b8fcebae4be7d134d9df5a77c5be8c0ee78be9b8310b16f25255e57937` |
-| [current-consensus-method-projection](/curation/evidence/current-consensus-method-projection) | `8f2c49ddd8f7b59e5772c9d86a8ccb104d74bab23bd2ac8712e2630a96213507` |
-| [current-consensus-quantity-application](/curation/evidence/current-consensus-quantity-application) | `3174c4ceddfcbf10eaa512a9bcb72d26b35aafb7de705dd7dd893f1b3cede4d1` |
-| [ef31-producer](/curation/evidence/ef31-producer) | `4028da655cd3f2df6aae20ac7fd48cbb984f4de853ad8c3e0ca3ba6a86585649` |
-| [export-producer](/curation/evidence/export-producer) | `bf4a191760fc56bd0b2367f12c8da15ec1440d790eabba633e86f57b013938ff` |
-| [glam-producer](/curation/evidence/glam-producer) | `e79583dc7c76d37d19cb7d35c2b68e8e8e3f04808234b4537ae1886cbe6fce51` |
-| [glam-water-applications](/curation/evidence/glam-water-applications) | `a595f6b347966a505e93f48213358546669fc3959ce7e6d0ae6295335e59f99b` |
-| [historical-ipcc-additions](/curation/evidence/historical-ipcc-additions) | `9ea30ff7d690bdccff94a7bc8c6bb462733a6ab9e237be5a023e971a6bb4a7c1` |
-| [jrc-factor-source-check](/curation/evidence/jrc-factor-source-check) | `77f18c1535e7de3d3ddf80ed80b67428c95c3581125431556222bc89542e4c29` |
-| [method-registration](/curation/evidence/method-registration) | `d3ca323fd660fb3d74dd8ff2b8d9080c94965abeb7db5e3112ec9e276922f518` |
-| [module-source-f6274f266738a9c2](/curation/evidence/module-source-f6274f266738a9c2) | `94535b0224f2d23e11daf4ec18771a7b76b53cfdcb8c66610088fd8f40fb47d5` |
-| [overlay-producer](/curation/evidence/overlay-producer) | `145afb3d2901945236d06c0860ad1ed5ba0096aad7ea16a9e1d3455c276dffed` |
-| [policy-differential-gate](/curation/evidence/policy-differential-gate) | `f763b03de49f7eeeb5d8ac29f3268e283de7b93001e77c0e3e7f14c4e01d5e04` |
-| [policy-method-gate](/curation/evidence/policy-method-gate) | `439c99fc4c137be08545c1bbdf374d7ec65ffcf9e1eeb155158710016d2d8dbb` |
-| [policy-ubp-validation](/curation/evidence/policy-ubp-validation) | `b440e6eb3ff2e03ec2ede41de6bb74dc11149f6a25e64315ad805a9649c053b9` |
-| [water-method-note](/curation/evidence/water-method-note) | `5d8b87685123d245d5c97a9e0a18e47fefda65f34d57779a1e713c0f04952a6e` |
-| [workbench-inputs](/curation/evidence/workbench-inputs) | `09b14d40708e887c2a11857b11b2a2ee450cbb1eaea1bd77520b4a6c86a16b19` |
+Historical receipts establish what was recorded at that time. They do not become current acceptance evidence because their files were recovered. The 9 October water census explicitly records failure of the transition criterion. Catalogue manifest identity also excludes method values; it cannot substitute for an LCIA readback.
+
+The canonical shared literature guide and source-value knowledge context were loaded. Library queries and published-catalog/MR checks are retained in the receipt. The original AWARE workbook/API were recovered from [Zenodo 15133241](https://zenodo.org/records/15133241); its metadata identifies [the method paper](https://doi.org/10.1111/jiec.70023). No claim of having read or scientifically validated that paper is made. The GLAM provider record is [Zenodo 20630461](https://zenodo.org/records/20630461). Central library acquisition remains a separate task if those scientific claims are to be adopted.
+
+Raw BAFU XML and workbooks and private inventory corpora were not copied into Git; local selected-source excerpts remain subject to BAFU terms.
+
+Every source the two passes cite is pinned by SHA-256 in the two receipts named
+above; the evidence identifiers in the `Sources` lines are the names those
+receipts use.

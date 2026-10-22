@@ -21,8 +21,7 @@ Validation on 13 October 2026:
   catalogue search and navigation from a proposed destination to its paginated
   cases. The existing application typography and colours are retained.
 
-These checks verify the read-only representation. No scientific correction was
-executed, no source pipeline was altered and no build or approval was inferred.
-Test source, an execution receipt, a scientific review and release adoption
-remain separate evidence. The register states its source baseline; the displayed
-published database has its own historical run.
+These checks verify the read-only representation. Test source, an execution
+receipt, a scientific review and release adoption remain separate evidence. The
+register states its source baseline; the displayed published database has its
+own historical run.

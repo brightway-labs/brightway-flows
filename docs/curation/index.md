@@ -138,6 +138,15 @@ cover. Recorded external implementation versions retain their case evidence and
 any preserved test sources. Execution receipts, sign-off and adoption stay with
 the case and revision. Recency alone cannot establish the best scientific version.
 
+## What every dated report under this heading is, and is not
+
+The pages dated 13 and 14 October 2026 in this section are readings of
+retained sources by a coding agent, each bound to a receipt in the local
+evidence bundle. None of them carries a scientific sign-off, none changed a
+method, an inventory or a published list, and none ran a build of this list.
+Each says that once here rather than at its own end. What they establish is
+where a value came from and what is still missing before anyone could accept it.
+
 ## Reading the local preview
 
 The initial register contains selected public examples and the existing finding
@@ -190,14 +199,17 @@ To also inspect flows and quality checks, pass `--database` with a published
 Brightway Flows SQLite snapshot. That snapshot's run is separate from the
 source baseline inspected by Curation.
 
-The [description-source comparison](validation-2026-10-13-claims.md) records
-the follow-through on inherited claims and recovered numerical receipts.
-The later [original evidence recovery](original-evidence-recovery-2026-10-13.md)
-preserves those comparisons and adds verified receiving results, provider rows
-and the remaining questions to individual cases.
-The [titanium quantity trace](titanium-quantity-application-2026-10-13.md)
-follows original amounts through import, registered and processed factors,
-and the newer quantity-aware projection mechanism.
+The [source capture and description
+comparison](validation-2026-10-13-source-capture.md) records what the local
+bundle could show about its own sources and the follow-through on inherited
+claims. The later [original evidence
+recovery](original-evidence-recovery-2026-10-13.md) preserves those comparisons
+and adds verified receiving results, provider rows and the remaining questions
+to individual cases. [TiO₂ to
+titanium](titanium-quantity-application-2026-10-13.md) follows the two BAFU
+titanium-dioxide amounts from the original XML through import, registered and
+processed factors on the external Workbench path, and the newer quantity-aware
+projection.
 The [Workbench capability assessment](workbench-capability-assessment-2026-10-13.md)
 compares retained sources and results with the published biosphere page and
 records what remains before the integrated project can replace that alignment.

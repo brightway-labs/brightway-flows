@@ -73,24 +73,21 @@ nav:
       - A factor that is not this substance's: findings/factors.md
       - Flows that are not substances at all: findings/not-substances.md
   - Curation:
-      - Evidence quality and provenance: curation/evidence-quality.md
       - From findings to reviewed corrections: curation/index.md
+      - Evidence quality and source capture: curation/evidence-quality.md
       - Curation design proposal: curation/proposal.md
       - Source evidence audit, 13 October 2026: curation/source-evidence-audit-2026-10-13.md
-      - Method policy comparisons, 13 October 2026: curation/policy-claim-review-2026-10-13.md
-      - Original evidence recovery, 13 October 2026: curation/original-evidence-recovery-2026-10-13.md
-      - Policy evidence recovery, 13 October 2026: curation/policy-original-evidence-recovery-2026-10-13.md
-      - Titanium quantity application, 13 October 2026: curation/titanium-quantity-application-2026-10-13.md
-      - Titanium catalog quantity trace, 13 October 2026: curation/titanium-catalog-quantity-trace-2026-10-13.md
+      - Method-policy review, 13 October 2026: curation/policy-claim-review-2026-10-13.md
+      - Original evidence recovered, 13 October 2026: curation/original-evidence-recovery-2026-10-13.md
+      - TiO₂ to titanium, 13 October 2026: curation/titanium-quantity-application-2026-10-13.md
       - Workbench capability assessment, 13 October 2026: curation/workbench-capability-assessment-2026-10-13.md
       - Eight-source migration coverage, 13 October 2026: curation/eight-source-migration-coverage-2026-10-13.md
-      - Original mapping provenance checks: curation/source-mapping-provenance.md
+      - Follow each mapping back to its original row: curation/source-mapping-provenance.md
       - Historical IPCC primary sources, 14 October 2026: curation/historical-ipcc-primary-basis-2026-10-14.md
       - Focused correction checks, 13 October 2026: curation/validation-2026-10-13.md
       - Module inventory checks, 13 October 2026: curation/validation-2026-10-13-modules.md
-      - Provenance checks, 13 October 2026: curation/validation-2026-10-13-provenance.md
-      - Description comparisons, 13 October 2026: curation/validation-2026-10-13-claims.md
-      - Connect curation evidence (ADR): adr/0001-connect-curation-evidence.md
+      - Source capture and description comparison, 13 October 2026: curation/validation-2026-10-13-source-capture.md
+      - Connect curation evidence (ADR, developers): adr/0001-connect-curation-evidence.md
   - What was changed in each source:
       - Overview: changes/index.md
       - EF 3.1: changes/ef-3.1.md

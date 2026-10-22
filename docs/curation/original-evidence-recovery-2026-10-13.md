@@ -81,8 +81,8 @@ retirement still need evidence before historical scoring can be accepted.
 
 ## Method policies
 
-The [policy recovery report](policy-original-evidence-recovery-2026-10-13.md)
-records the original provider tables, resource quantity descriptors,
+The [method-policy review](policy-claim-review-2026-10-13.md), in its recovery
+paragraphs, records the original provider tables, resource quantity descriptors,
 calibration history and application limits. Source-value reproduction,
 quantity interpretation and scientific acceptance remain separate questions.
 
@@ -106,18 +106,3 @@ Its source hashes bind every new citation and its previous comparison.
 case preservation checks and application verification. Original source files,
 private mappings and restricted inventories remain in the local evidence
 bundle, outside repository publication.
-
-## Verification
-
-The local application checks passed for all 39 updated case pages, current
-description-state filters, both recovery reports and 39 linked evidence routes.
-The selected test suite passed 201 tests and 1,722 subtests; the three browser
-triage-state tests and the required lint checks also passed. Documentation
-navigation includes the recovery reports and earlier Curation records. Root
-application links are checked against actual server routes, with unknown routes
-rejected; selected evidence IDs and locators are checked by the register audit
-and the local receiving verification.
-
-Browser visual automation was unavailable because of its URL policy, so these
-results establish application behavior and link receiving, without a new
-visual inspection. The preview remains available on port 5188.
