@@ -22,6 +22,8 @@ from pathlib import Path
 
 from pydantic import TypeAdapter
 
+from brightway_flows.sources import base_source_label
+
 from .curation import Digest, Identifier, Link, RecordedAt, _Record
 
 PROCEDURE_PATHS = {
@@ -367,7 +369,7 @@ def assertion(artifact: Artifact, locator: str, row: dict) -> Assertion:
                 "matched_ef31_uuid",
                 "matched_ef31_name",
                 "matched_ef31_categories",
-                "EF 3.1",
+                base_source_label(),
             ),
             ("matched_bio3_code", "matched_bio3_name", "matched_bio3_categories", None),
         ]:
@@ -390,7 +392,7 @@ def assertion(artifact: Artifact, locator: str, row: dict) -> Assertion:
             row.get("unit"),
         )
         for prefix, version in [
-            ("matched_ef", "EF 3.1"),
+            ("matched_ef", base_source_label()),
             ("matched_ecoinvent", "ecoinvent 3.9.1"),
         ]:
             if row.get(prefix + "_name"):
