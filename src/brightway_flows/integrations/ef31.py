@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 from collections import defaultdict
 from io import BytesIO
@@ -32,6 +33,23 @@ if TYPE_CHECKING:  # `sources` reads the pipeline normaliser, which reads this.
 logger = structlog.get_logger(__name__)
 
 EF31_URL = "https://eplca.jrc.ec.europa.eu/permalink/EF3_1/EF-v3.1.zip"
+
+#: This project's copy of the same archive, read when the JRC does not serve
+#: it.  On 22 October 2026 the JRC's site was down for maintenance and answered
+#: every request with a 403, and a build that had to extract EF 3.1 could not
+#: start until it came back.
+EF31_BACKUP_URL = "https://files.brightway.dev/EF-v3.1.zip"
+
+#: The archive the backup holds.  A download from the backup must be these
+#: bytes.  One from the JRC that differs is logged and kept: the JRC republishes
+#: under the same permalink, and a new release is a new artifact to read, not a
+#: failure -- but the log says the build did not read the archive the backup
+#: holds.
+EF31_SHA256 = "18763515dd93fabaa7f46b019de30cd521b2036a75a348e5824eeec2225afb27"
+
+
+class EF31ArchiveError(RuntimeError):
+    """The backup served something other than the archive it holds."""
 
 #: Corrections to the vendor data, applied at extraction so that nothing
 #: downstream ever sees the uncorrected value.  Read by the generic
@@ -75,11 +93,17 @@ ELEMENT_NAME_ALIASES: dict[str, str] = {
 # ---------------------------------------------------------------------------
 
 
-def download_ef31(url: str = EF31_URL, force: bool = False) -> Path:
+def download_ef31(
+    url: str = EF31_URL,
+    force: bool = False,
+    backup_url: str | None = EF31_BACKUP_URL,
+) -> Path:
     """Download the EF 3.1 ZIP archive to the platformdirs data directory.
 
     Returns the path to the downloaded file.  Skips downloading if the file
-    already exists unless *force* is ``True``.
+    already exists unless *force* is ``True``.  Where *url* does not answer, the
+    archive is read from *backup_url* instead, and must be the archive
+    :data:`EF31_SHA256` names.
 
     Parameters
     ----------
@@ -87,6 +111,13 @@ def download_ef31(url: str = EF31_URL, force: bool = False) -> Path:
         URL of the ZIP archive.
     force : bool
         Re-download even if the file already exists.
+    backup_url : str or None
+        Where to read the archive when *url* fails.  ``None`` reads *url* only.
+
+    Raises
+    ------
+    EF31ArchiveError
+        If the backup served an archive with another digest.
     """
     dest = EF31_ZIP_FILEPATH
 
@@ -94,13 +125,50 @@ def download_ef31(url: str = EF31_URL, force: bool = False) -> Path:
         logger.info("already downloaded EF 3.1 source data", path=str(dest))
         return dest
 
-    logger.info("downloading EF 3.1 source data", url=url, destination=str(dest))
+    # Written beside the archive and renamed into place, so a download that
+    # stops part-way leaves nothing a later run would take for the archive.
+    partial = dest.with_suffix(".zip.part")
+    try:
+        _stream(url, partial)
+    except httpx.HTTPError as error:
+        partial.unlink(missing_ok=True)
+        if backup_url is None:
+            raise
+        logger.warning(
+            "EF 3.1 source unavailable, reading the backup",
+            url=url,
+            error=str(error),
+            backup_url=backup_url,
+        )
+        _stream(backup_url, partial)
+        received = _digest(partial)
+        if received != EF31_SHA256:
+            partial.unlink(missing_ok=True)
+            raise EF31ArchiveError(
+                f"{backup_url} served an archive with digest {received}, not "
+                f"the {EF31_SHA256} it holds."
+            ) from error
+    else:
+        received = _digest(partial)
+        if received != EF31_SHA256:
+            logger.warning(
+                "EF 3.1 archive differs from the backup",
+                url=url,
+                sha256=received,
+                backup_sha256=EF31_SHA256,
+            )
 
+    partial.replace(dest)
+    return dest
+
+
+def _stream(url: str, destination: Path) -> None:
+    logger.info("downloading EF 3.1 source data", url=url, destination=str(destination))
     with httpx.stream("GET", url, follow_redirects=True, timeout=120) as response:
         response.raise_for_status()
         total = int(response.headers.get("content-length", 0))
 
-        with dest.open("wb") as f, tqdm(
+        with destination.open("wb") as f, tqdm(
             total=total or None,
             unit="B",
             unit_scale=True,
@@ -110,7 +178,14 @@ def download_ef31(url: str = EF31_URL, force: bool = False) -> Path:
                 f.write(chunk)
                 progress.update(len(chunk))
 
-    return dest
+
+def _digest(path: Path) -> str:
+    """The archive's SHA-256."""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 # ---------------------------------------------------------------------------
