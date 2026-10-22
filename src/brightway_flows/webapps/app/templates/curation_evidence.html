@@ -1,0 +1,12 @@
+{% extends "curation_shell.html" %}
+{% set page_title = document.title ~ " · Evidence" %}
+{% block curation_content %}<p><a href="{{ url_for('curation.evidence',document_id=document.id,download=1) }}">Download complete verified source</a></p>
+<a class="curation-back" href="/curation/">← Curation</a>
+<header class="curation-heading"><div><p class="curation-eyebrow">Preserved source evidence</p><h1>{{ document.title }}</h1><p>{{ document.generation }}</p></div></header>
+<section class="curation-panel"><dl class="curation-facts"><dt>File SHA-256</dt><dd><code>{{ document.sha256 }}</code></dd>{% if pointer %}<dt>Record pointer</dt><dd><code>{{ pointer }}</code></dd>{% endif %}<dt>Displayed lines</dt><dd>{{ start }}–{{ [end,total_lines]|min }} of {{ total_lines }}</dd></dl>
+{% if document.origin_url %}<p><a href="{{ document.origin_url }}">Original source reference ↗</a></p>{% endif %}
+<p class="curation-caption">The snapshot hash was checked before display. This preserves the source's claims; it does not turn them into a new approval or validation result.</p>
+<pre class="curation-evidence-text">{% for number,line in lines %}<span id="L{{ number }}"><a href="#L{{ number }}" class="curation-line-number">{{ number }}</a> {{ line }}</span>
+{% endfor %}</pre>
+{% if end < total_lines %}<a href="{{ url_for('curation.evidence',document_id=document.id,pointer=pointer,line=end+1) }}">Next lines →</a>{% endif %}</section>
+{% endblock %}

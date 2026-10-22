@@ -184,6 +184,7 @@ class ProjectDocsTestCase(unittest.TestCase):
                 "How a flow is decided",
                 "How a factor is decided",
                 "What we have found",
+                "Curation",
                 "What was changed in each source",
                 "Using the data",
                 "Operating the pipeline",

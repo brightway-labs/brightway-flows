@@ -1,0 +1,11 @@
+<header class="curation-browser-heading">
+  <div><h1>Curation</h1><p>From a shared finding to a reviewed correction.</p></div>
+  <div class="curation-reading-links"><a href="/docs/findings/index">Source findings →</a><a href="/docs/curation/index">Workflow guide →</a></div>
+</header>
+<nav class="curation-view-switcher" aria-label="Curation workspace" hx-boost="true">
+  {% if workspace_counts.packages %}<a href="{{ packages_url }}"{% if browser_view == 'packages' %} aria-current="page"{% endif %}><strong>Review packages <span class="curation-nav-count">{{ "{:,}".format(workspace_counts.packages) }}</span></strong><span>Shared questions & triage</span></a>{% endif %}
+  <a href="{{ cases_url }}"{% if browser_view == 'cases' %} aria-current="page"{% endif %}><strong>Cases <span class="curation-nav-count">{{ "{:,}".format(workspace_counts.cases) }}</span></strong><span>{{ "{:,}".format(workspace_counts.individual) }} individual · {{ workspace_counts.classes }} finding classes</span></a>
+  <a href="{{ modules_url }}"{% if browser_view == 'modules' %} aria-current="page"{% endif %}><strong>Modules <span class="curation-nav-count">{{ "{:,}".format(workspace_counts.modules) }}</span></strong><span>Code, versions & inputs</span></a>
+</nav>
+
+{% include "curation_audit_summary.html" %}

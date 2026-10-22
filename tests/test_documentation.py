@@ -188,8 +188,10 @@ class AgentsRuleReferenceTestCase(unittest.TestCase):
     #: any file cites; add to it when a new citation is written.
     EXPECTED = {
         3: "extra",           # merge/additions.py, merge/datastores.py
+        15: "shortlists",     # docs/concepts/glossary.md, the two meanings of curation
         17: "provenance",     # tests/test_curated_object_names.py
         22: "bounded",        # tools/verify_run.py
+        30: "count",          # tests/test_documentation.py, CurationRegisterCountTestCase
         32: "branch",         # tests/test_architecture_structure.py
         35: "names",          # data/ef-3.1-manual-fixes.json, three citations
     }
@@ -302,6 +304,38 @@ class LinkTestCase(unittest.TestCase):
             relative = page.relative_to(DOCS).as_posix()
             with self.subTest(page=relative):
                 self.assertIn(relative, nav)
+
+
+class CurationRegisterCountTestCase(unittest.TestCase):
+    """`docs/curation/index.md` states how many cases the public register holds.
+
+    The count is copied out of `docs/curation/register.json`, so it gets a case
+    here (AGENTS.md 30): the number of cases, how many of them are finding-class
+    records, and that there is one such record per page of `docs/findings/`.
+    """
+
+    REGISTER = DOCS / "curation" / "register.json"
+    PAGE = DOCS / "curation" / "index.md"
+    _SENTENCE = re.compile(
+        r"holds (\d+)\s+cases: (\d+) finding-class records, one for each page of "
+        r"\[What we have\s+found\]\([^)]*\), and (\d+) individual cases",
+    )
+
+    def test_the_counts_on_the_page_are_the_registers(self):
+        cases = json.loads(self.REGISTER.read_text())["cases"]
+        classes = [c for c in cases if c["origin"] == "finding-class"]
+        match = self._SENTENCE.search(self.PAGE.read_text())
+        self.assertIsNotNone(match, "index.md no longer states the register's counts")
+        total, class_count, individual = (int(g) for g in match.groups())
+        self.assertEqual(total, len(cases))
+        self.assertEqual(class_count, len(classes))
+        self.assertEqual(individual, len(cases) - len(classes))
+
+    def test_one_finding_class_record_per_findings_page(self):
+        cases = json.loads(self.REGISTER.read_text())["cases"]
+        classes = [c for c in cases if c["origin"] == "finding-class"]
+        pages = [p for p in (DOCS / "findings").glob("*.md") if p.name != "index.md"]
+        self.assertEqual(len(classes), len(pages))
 
 
 class CommandTestCase(unittest.TestCase):
