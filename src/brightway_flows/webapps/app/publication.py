@@ -93,7 +93,14 @@ PUBLICATION = Publication(
     # uploaded files themselves, not off a build: a rebuild of the same commit
     # does not reproduce these bytes, and what a reader downloads is the
     # archived file.  Zenodo shows only an MD5.
-    checksums={},
+    checksums={
+        "snapshot": "7072cc8e67dc0e85b0d8d75bfcf307e929b4c1f20b24f0c786a8f2336b5e6bd6",
+        "flows": "47850016a251ca00d4f806f305293eaa735e3cb59219ea2a27ef7ceb12028271",
+        "factors": "a5972f7b09de42cb402b378a623b679206b47b05437329c7984e61f70d2e518e",
+        "differences": "aff0cdbf6be6af44ed361af169e408dc2548b31b637514d2491b1efd3f0b6b6c",
+        "migration": "98b6ab821ea4e3922e3c5b9d6f981a8daa7d0bd296b07e7cf54d06165c147f28",
+        "database": "e04211d17a93d75c004ac9f582efddb567ed282ea2a40c80b686c8dc920b1433",
+    },
     # Both licences are written as SPDX identifiers rather than as titles: the
     # `CITATION.cff` block on Download quotes `data_licence` straight into its
     # `license:` field, which is an SPDX identifier there, and the footer and
