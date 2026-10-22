@@ -1,6 +1,6 @@
 # brightway-flows
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22857950.svg)](https://doi.org/10.5281/zenodo.22857950)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23554066.svg)](https://doi.org/10.5281/zenodo.23554066)
 
 A toolchain for building a **consensus elementary flow list** for sustainability
 analysis: one identity per substance, one controlled vocabulary of contexts, and

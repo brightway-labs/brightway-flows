@@ -14,7 +14,7 @@
   says all of that, and saying it twice was the page's clutter. What is left
   points there in one line at the end.  The SQLite database is a row in the
   Files list rather than a card of its own: decision 8 came back that it may
-  be published, and it is one of the four files a release offers.
+  be published, and it is one of the files a release offers.
 
   The concept-DOI line is gone with the field behind it: this release has a
   DOI of its own and no concept DOI to point at (#200).
@@ -75,16 +75,23 @@
           {% endif %}
           <div class="release-files__meta">
             <span class="mono">{{ file.filename }}</span>
-            <span aria-hidden="true">·</span>
+            {% if file.exists or not publication.doi %}<span aria-hidden="true">·</span>{% endif %}
             {# A file the build did not write keeps its row (§4): an absence
-               shown as an absence, as on `/run/`. #}
-            <span{% if not file.exists %} class="muted"{% endif %}>{% if file.exists %}{{ file.readable_size }}{% else %}Not in this build{% endif %}</span>
+               shown as an absence, as on `/run/` -- until the release has a
+               DOI, when the row is the archived file and this build's copy,
+               or the lack of one, is beside the point. #}
+            {% if file.exists %}
+            <span>{{ file.readable_size }}</span>
+            {% elif not publication.doi %}
+            <span class="muted">Not in this build</span>
+            {% endif %}
             <button class="button release__copy" type="button" data-copy-value="{{ checksum_copy_value }}" hidden>Copy SHA-256</button>
           </div>
         </div>
         {# The build's own file until the release has a DOI; then the
-           archived release, so everyone downloads the same bytes. #}
-        {% if file.exists %}
+           archived release, so everyone downloads the same bytes -- including
+           the snapshot and the migration, which a server's build seldom has. #}
+        {% if publication.doi or file.exists %}
         <a class="release-files__download{% if loop.first %} release-files__download--primary{% endif %}"
            href="{% if publication.doi %}https://doi.org/{{ publication.doi }}{% else %}{{ url_for('overview.download', key=file.key) }}{% endif %}">Download<span class="visually-hidden"> {{ file.title }}</span></a>
         {% endif %}

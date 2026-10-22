@@ -30,10 +30,13 @@ class Maintainer:
     role: str
 
 
-#: The three JSON artifacts a release checksums, plus the database.  Keyed the
+#: Every file a release uploads to Zenodo: the snapshot, the three JSON
+#: exports, the migration from the release before and the database.  Keyed the
 #: same way `artifacts.ARTIFACTS` is, so the Download page can look a checksum
 #: up by the same key it already has.
-CHECKSUM_ARTIFACT_KEYS: tuple[str, ...] = ("flows", "factors", "differences", "database")
+CHECKSUM_ARTIFACT_KEYS: tuple[str, ...] = (
+    "snapshot", "flows", "factors", "differences", "migration", "database",
+)
 
 
 @dataclass(frozen=True)
@@ -45,6 +48,9 @@ class Publication:
 
     # From the first Zenodo release. (plan §8)
     version: str | None = None
+    #: The release the migration on Download starts from: it names the file,
+    #: `<previous_version>__<version>.zip`.
+    previous_version: str | None = None
     release_date: str | None = None
     doi: str | None = None
     #: SHA-256, one per `CHECKSUM_ARTIFACT_KEYS` entry.  Absent keys are
@@ -77,20 +83,17 @@ class Publication:
 #: What is set here is decided; what is left out is still waiting on the first
 #: Zenodo release, on legal, or on Brightway Labs (#200).
 PUBLICATION = Publication(
-    # The first release.
-    version="1.0",
-    release_date="2026-09-22",
-    doi="10.5281/zenodo.22857950",
-    # SHA-256 of the four files of the 1.0 release, as they were archived.
-    # Read off the release files themselves, not off a build: a rebuild of the
-    # same commit does not reproduce these bytes, and what a reader downloads
-    # is the archived file.
-    checksums={
-        "flows": "07a35d2da36fe5b18515fb956757434c785da78186a1e6254b99abfa29ae5b46",
-        "factors": "2e820ff0c1d86d8920c06d4f4fa8c1df644f51f88ac699612439a4b7095a6d2a",
-        "differences": "bbe57a44745c743317361c61d3ca8b5e44ddc233bad8a62c7bd05f1312dae563",
-        "database": "20cfe2b604d66778e2816befe1e79d99d9135c376debda5358d460879486ddc0",
-    },
+    # The latest release.  Every value here is the Zenodo record's, and moves
+    # with each release: `docs/operating/running.md`, "Publishing a release".
+    version="1.1.0",
+    previous_version="1.0.0",
+    release_date="2026-10-21",
+    doi="10.5281/zenodo.23554066",
+    # SHA-256 of each file uploaded to the Zenodo record, read off the
+    # uploaded files themselves, not off a build: a rebuild of the same commit
+    # does not reproduce these bytes, and what a reader downloads is the
+    # archived file.  Zenodo shows only an MD5.
+    checksums={},
     # Both licences are written as SPDX identifiers rather than as titles: the
     # `CITATION.cff` block on Download quotes `data_licence` straight into its
     # `license:` field, which is an SPDX identifier there, and the footer and

@@ -22,7 +22,12 @@ from unittest import mock
 from test_webapp_controls import _AppTestCase
 
 from brightway_flows.webapps.app import create_app
-from brightway_flows.webapps.app.publication import PUBLICATION, Maintainer, Publication
+from brightway_flows.webapps.app.publication import (
+    CHECKSUM_ARTIFACT_KEYS,
+    PUBLICATION,
+    Maintainer,
+    Publication,
+)
 
 _DECIDED = dataclasses.replace(
     PUBLICATION,
@@ -103,23 +108,26 @@ class DownloadWithoutDatabaseTestCase(_NoDatabaseTestCase):
 
     def test_the_release_is_decided_and_no_chip_is_left_on_the_page(self):
         """#200's "done when" for this page: version, date, DOI, licence,
-        source-list terms and four checksums, and no amber chip anywhere."""
+        source-list terms and a checksum per file, and no amber chip anywhere."""
         body = self.body("/download/")
-        self.assertIn("Latest release · 1.0 · Released 2026-09-22", body)
-        self.assertIn("10.5281/zenodo.22857950", body)
+        self.assertIn("Latest release · 1.1.0 · Released 2026-10-21", body)
+        self.assertIn("10.5281/zenodo.23554066", body)
         self.assertIn("ODbL-1.0", body)
         self.assertNotIn('class="placeholder"', body)
 
     def test_each_file_carries_the_checksum_of_the_released_file(self):
         body = self.body("/download/")
-        for checksum in (
-            "07a35d2da36fe5b18515fb956757434c785da78186a1e6254b99abfa29ae5b46",
-            "2e820ff0c1d86d8920c06d4f4fa8c1df644f51f88ac699612439a4b7095a6d2a",
-            "bbe57a44745c743317361c61d3ca8b5e44ddc233bad8a62c7bd05f1312dae563",
-            "20cfe2b604d66778e2816befe1e79d99d9135c376debda5358d460879486ddc0",
-        ):
-            with self.subTest(checksum=checksum[:8]):
-                self.assertIn(checksum, body)
+        for key in CHECKSUM_ARTIFACT_KEYS:
+            with self.subTest(key=key):
+                self.assertIn(f'data-copy-value="{PUBLICATION.checksum(key)}"', body)
+
+    def test_no_file_carries_a_checksum_of_release_1_0(self):
+        """1.0's four checksums were on this page until 1.1.0; any of them
+        left beside a 1.1.0 file would be a checksum that cannot match."""
+        body = self.body("/download/")
+        for checksum in ("07a35d2d", "2e820ff0", "bbe57a44", "20cfe2b6"):
+            with self.subTest(checksum=checksum):
+                self.assertNotIn(checksum, body)
 
     def test_the_concept_doi_line_is_gone(self):
         """There is no concept DOI to point at, so the line that named one
@@ -140,21 +148,33 @@ class DownloadWithoutDatabaseTestCase(_NoDatabaseTestCase):
             with self.subTest(gone=gone):
                 self.assertNotIn(gone, body)
 
-    def test_every_file_a_release_offers_is_listed_with_the_database_last(self):
-        """Decision 8 decided (#200): the database is a release file too, and
-        it is last so that "Start here" stays on the harmonised flows."""
+    def test_every_file_a_release_offers_is_listed_snapshot_first_database_last(self):
+        """Every file in the Zenodo record, in its order.  The snapshot is
+        "Start here"; the database is last (decision 8, #200)."""
         body = self.body("/download/")
         found = [body.index(filename) for filename in
-                 ("harmonised-flows-simple.json.gz", "lcia-factors.json.gz",
-                  "lcia-differences.json", "consensus-flows.sqlite3")]
+                 ("release-snapshot.json.gz", "harmonised-flows-simple.json.gz",
+                  "lcia-factors.json.gz", "lcia-differences.json",
+                  "1.0.0__1.1.0.zip", "consensus-flows.sqlite3")]
         self.assertEqual(found, sorted(found))
         # The chip sits in the first row, between its title and its file name.
-        self.assertLess(body.index("Harmonised flows"), body.index("Start here"))
+        self.assertLess(body.index("Release snapshot"), body.index("Start here"))
         self.assertLess(body.index("Start here"), found[0])
+        self.assertIn("Migration from 1.0.0", body)
 
-    def test_a_file_the_build_did_not_write_keeps_its_row(self):
+    def test_a_file_the_build_did_not_write_still_links_to_the_release(self):
+        """A server seldom has the snapshot or the migration in its own
+        build; the row is the archived file once there is a DOI."""
         body = self.body("/download/")
-        self.assertEqual(body.count("Not in this build"), 4)
+        self.assertNotIn("Not in this build", body)
+        self.assertEqual(body.count('href="https://doi.org/10.5281/zenodo.23554066"'), 6)
+        self.assertNotIn("/run/download/", body)
+
+    def test_a_file_the_build_did_not_write_keeps_its_row_before_a_doi(self):
+        with mock.patch("brightway_flows.webapps.app.PUBLICATION",
+                        dataclasses.replace(PUBLICATION, doi=None)):
+            body = self.body("/download/")
+        self.assertEqual(body.count("Not in this build"), 6)
         self.assertNotIn("/run/download/flows", body)
 
     def test_a_written_file_is_a_download_with_its_size(self):
@@ -162,10 +182,9 @@ class DownloadWithoutDatabaseTestCase(_NoDatabaseTestCase):
         not this build's own copy of the file."""
         (self.data_dir / "lcia-differences.json").write_bytes(b"x" * 2_500)
         body = self.body("/download/")
-        self.assertIn('href="https://doi.org/10.5281/zenodo.22857950"', body)
+        self.assertIn('href="https://doi.org/10.5281/zenodo.23554066"', body)
         self.assertNotIn("/run/download/differences", body)
         self.assertIn("2.5 kB", body)
-        self.assertEqual(body.count("Not in this build"), 3)
 
     def test_every_citation_format_is_on_the_page_without_scripts(self):
         body = self.body("/download/")
@@ -211,7 +230,7 @@ class DownloadWithDatabaseTestCase(_AppTestCase):
         everything came for (#200)."""
         body = self.body("/download/")
         self.assertIn("consensus-flows.sqlite3", body)
-        self.assertIn('href="https://doi.org/10.5281/zenodo.22857950"', body)
+        self.assertIn('href="https://doi.org/10.5281/zenodo.23554066"', body)
 
     def test_the_database_row_says_how_big_the_download_is(self):
         """A reader decides whether to start a multi-gigabyte download before

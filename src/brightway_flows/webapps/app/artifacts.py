@@ -19,6 +19,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from brightway_flows.filesystem import CONSENSUS_DB_FILEPATH, DATA_DIR
+from brightway_flows.webapps.app.publication import PUBLICATION
 
 #: What each downloadable artifact is, keyed by the slug its URL uses.
 #:
@@ -60,19 +61,37 @@ ARTIFACTS: tuple[tuple[str, str, str, str], ...] = (
         "Where two implementations of one method disagree, and where one "
         "skips a context of a substance the other characterises.",
     ),
+    (
+        "snapshot",
+        "Release snapshot",
+        "release-snapshot.json.gz",
+        "The release in one file: every substance, flow and impact category "
+        "it publishes, the factors, the redirects from retired flows, and the "
+        "source rows each flow was matched from.",
+    ),
+    (
+        "migration",
+        f"Migration from {PUBLICATION.previous_version}",
+        f"{PUBLICATION.previous_version}__{PUBLICATION.version}.zip",
+        f"What changed since {PUBLICATION.previous_version}, as four "
+        "randonneur files that move a database holding that release onto "
+        "this one without reloading it.",
+    ),
 )
 
 
 #: The artifacts a release offers on `/download/`, in the Download board's
-#: order: the three exports a reader parses, and then the database, which is
-#: the whole build in one file.  Decision 8 came back that the database may be
-#: published (#200), so it is a release artifact like the other three and
-#: nothing gates it.
+#: order: the snapshot, which is the whole release in one file and the page's
+#: "Start here"; the three exports a reader parses; the migration from the
+#: release before; and then the database, which is the whole build in one
+#: file.  Decision 8 came back that the database may be published (#200), so
+#: it is a release artifact like the others and nothing gates it.
 #:
-#: Last rather than first, although it holds everything the other three hold:
-#: the first row is the page's "Start here", and a multi-gigabyte download is
-#: not where somebody meeting the list should start.
-RELEASE_KEYS: tuple[str, ...] = ("flows", "factors", "differences", "database")
+#: The database is last although it holds everything the others hold: a
+#: multi-gigabyte download is not where somebody meeting the list should start.
+RELEASE_KEYS: tuple[str, ...] = (
+    "snapshot", "flows", "factors", "differences", "migration", "database",
+)
 
 
 def _path(key: str, filename: str, *, data_dir: Path, database_path: Path) -> Path:
@@ -89,7 +108,15 @@ def _path(key: str, filename: str, *, data_dir: Path, database_path: Path) -> Pa
     reading: offering a download of a different build from the one every other
     page describes would be worse than offering none.
     """
-    return Path(database_path) if key == "database" else Path(data_dir) / filename
+    if key == "database":
+        return Path(database_path)
+    # `release-snapshot` and `release-migrations` write under `releases/`,
+    # the snapshot named by its version rather than by the name Zenodo gives it.
+    if key == "snapshot":
+        return Path(data_dir) / "releases" / f"{PUBLICATION.version}.json.gz"
+    if key == "migration":
+        return Path(data_dir) / "releases" / "migrations" / filename
+    return Path(data_dir) / filename
 
 
 @dataclass
@@ -166,7 +193,7 @@ def available(
 ) -> list[Artifact]:
     """Every artifact, whether or not the build wrote it.
 
-    All four, including the missing ones.  A build that has not been
+    All of them, including the missing ones.  A build that has not been
     characterised has no factor file, and "this run did not produce it" is a
     thing the page should say -- an absence shown as an absence is how a reader
     finds out that `characterise` has not been run, and a list that quietly

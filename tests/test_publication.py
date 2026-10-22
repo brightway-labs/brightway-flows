@@ -31,6 +31,7 @@ from brightway_flows.webapps.app.publication import (
 
 _FULLY_DECIDED = Publication(
     version="v1.0.0",
+    previous_version="v0.9.0",
     release_date="2026-11-01",
     doi="10.5281/zenodo.1234567",
     checksums={key: "0" * 64 for key in CHECKSUM_ARTIFACT_KEYS},
@@ -75,10 +76,11 @@ class DecidedFactsTestCase(unittest.TestCase):
     reported it has been removed.
     """
 
-    def test_the_first_release_is_1_0_on_2026_09_22(self):
-        self.assertEqual(PUBLICATION.version, "1.0")
-        self.assertEqual(PUBLICATION.release_date, "2026-09-22")
-        self.assertEqual(PUBLICATION.doi, "10.5281/zenodo.22857950")
+    def test_the_latest_release_is_1_1_0_on_2026_10_21(self):
+        self.assertEqual(PUBLICATION.version, "1.1.0")
+        self.assertEqual(PUBLICATION.previous_version, "1.0.0")
+        self.assertEqual(PUBLICATION.release_date, "2026-10-21")
+        self.assertEqual(PUBLICATION.doi, "10.5281/zenodo.23554066")
 
     def test_every_released_file_has_a_sha_256(self):
         """Read off the archived files, so each is 64 hexadecimal digits and

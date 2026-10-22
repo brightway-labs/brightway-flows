@@ -432,10 +432,10 @@ class HomePageTestCase(_HomeTestCase):
         self.assertIn("[v1.0.0]", hero)
 
     def test_the_hero_carries_the_decided_version(self):
-        """#200: the first release is 1.0."""
+        """The latest release, 1.1.0 (`publication.py`)."""
         body = self.body()
         hero = body[body.index('class="home__hero"'):body.index('class="home-lookup"')]
-        self.assertIn('<span class="mono">1.0</span>', hero)
+        self.assertIn('<span class="mono">1.1.0</span>', hero)
         self.assertNotIn("[v1.0.0]", hero)
 
     def test_a_decided_fact_replaces_its_placeholder(self):

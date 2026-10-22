@@ -281,6 +281,21 @@ signed, 24 over the two chromium states after, and 168 over 15 for EF 3.1.
 Whether an ion takes its element's number is a signed entry in the method's
 adoptions file, never a rule that reads the count.
 
+### `release-snapshot.json.gz` — one release in one file
+
+Each release from 1.1.0 on has a snapshot in its Zenodo record. One gzipped
+JSON file holds what the release publishes: every substance and flow, with
+its label, synonyms, registry numbers, context and unit; the impact
+categories and their factors; and the retired flows, each pointing at the
+flow that replaced it. It also lists every source row that reached a flow, by
+its list, the list's version and the row's own UUID, so an ecoinvent 3.12
+exchange can be followed to its flow without matching names. Provenance and
+pipeline bookkeeping are left out. For the full history of a
+flow, use [`consensus-flows.sqlite3`](#consensus-flowssqlite3-everything-else).
+
+In the data directory, `brightway-flows release-snapshot` writes it as
+`releases/<version>.json.gz`; it is renamed when it is uploaded.
+
 ### `releases/migrations/<from>__<to>/` — moving a database from one release to the next
 
 Suppose you loaded a release of this list into your own database — a

@@ -85,9 +85,9 @@ class NoDatabaseTestCase(unittest.TestCase):
         self.assertRegex(body, r'<nav[^>]*id="mobile-menu"[^>]*hidden')
 
     def test_the_masthead_carries_the_release_version(self):
-        """Decided as 1.0 (#200); it was the chip until then, and any
-        publication that has not decided one draws the chip again."""
-        self.assertIn('<span class="masthead__version">1.0</span>', self.body("/docs/"))
+        """The latest release, 1.1.0; it was the chip until 1.0 was decided
+        (#200), and any publication that has not decided one draws it again."""
+        self.assertIn('<span class="masthead__version">1.1.0</span>', self.body("/docs/"))
 
     def test_the_version_is_a_placeholder_until_it_is_decided(self):
         with mock.patch("brightway_flows.webapps.app.PUBLICATION", Publication()):
