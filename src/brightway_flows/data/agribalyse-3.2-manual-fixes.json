@@ -177,6 +177,15 @@
     },
     {
       "match": {
+        "name": "Chromium, ion",
+        "cas_numbers": "7440-47-3"
+      },
+      "field": "cas_numbers",
+      "remove_value": "7440-47-3",
+      "comment": "7440-47-3 is the registry number for chromium the element, and the row is an ion of it with the charge deliberately unstated: `Chromium, ion`, 13 rows. A generic ion name is its own substance and no number can name it, which is why ecoinvent deleted the element's number from its own `Chromium ion` rows between 3.8 and 3.9.1 (plans/retire-prepared-correspondence.md §3a) and why picking a charge for one would be a reinterpretation. AGRIBALYSE, whose flow list is SimaPro's copy of EF 3.1's, kept the element's number, and a stated number outranks a name: on the build of 2 September 2026 (b445ff6) the rows reached bare `Chromium`. With the number off, the name reaches nothing yet: no list publishes a generic chromium ion, so the rows mint `Chromium, Ion` beside `Chromium(3+)` and `Chromium(6+)`, numberless like its five siblings. AGRIBALYSE's bare `Chromium` rows keep the element's number. (#198) Kept when the #380 rule retired the other generic-ion fixes on 23 October 2026: the rule sets the number aside in the merge, but enrichment has already read it, and with the metal's names on the row and no `Chromium, ion` to reach, the merge refuses to mint the ion and leaves all 13 rows unmatched (six-list build of commit b614108). Removed here, before enrichment, the rows mint it as before."
+    },
+    {
+      "match": {
         "name": "Arsenic, ion",
         "cas_numbers": "17428-41-0"
       },

@@ -101,7 +101,7 @@
     {
       "id": "0934-agribalyse-lithium-i-is-the-ion",
       "issue": 934,
-      "title": "AGRIBALYSE's six `Lithium (I)` rows reach `Lithium(1+)` by number",
+      "title": "AGRIBALYSE's six `Lithium (I)` rows reach `Lithium(1+)` by name, the metal's number set aside",
       "subject": {
         "kind": "source_row",
         "list": "agribalyse",
@@ -110,29 +110,29 @@
       "expect": {
         "row_count": 6,
         "outcome": "algorithm",
-        "basis": "cas",
+        "basis": "label+element-number-set-aside",
         "target_name": "Lithium(1+)",
         "target_cas": "17341-24-1"
       },
-      "comment": "AGRIBALYSE ships the name with the element's number 7439-93-2, and on the build of 2 September 2026 the six rows reached bare `Lithium`. `agribalyse-3.2-manual-fixes.json` replaces the number with the ion's, 17341-24-1, the number ecoinvent's `Lithium I` rows carry to the same substance."
+      "comment": "AGRIBALYSE ships the name with the element's number 7439-93-2, and on the build of 2 September 2026 the six rows reached bare `Lithium`. `agribalyse-3.2-manual-fixes.json` replaces the number with the ion's, 17341-24-1, the number ecoinvent's `Lithium I` rows carry to the same substance.\n\nRestated 23 October 2026: the manual fix that rewrote this number was retired, because the #380 rule decides the same rows -- an ion name beside the bare element's number has the number set aside and is placed by its name. The rows land where they did; on the six-list build of 23 October 2026 (commit b614108) the basis reads `label+element-number-set-aside`. The claim used to pin `basis: cas` so that a change reading the ion off the name would fail here; that change is now the rule, ruled on by the project owner, and the basis claimed is the one it records. Selected by the name the build records, `Lithium (I)`, since the corrected number it was selected by is no longer on the rows."
     },
     {
       "id": "0934-agribalyse-potassium-i-is-the-ion",
       "issue": 934,
-      "title": "AGRIBALYSE's twelve `Potassium (I)` rows reach `Potassium(1+)` by number",
+      "title": "AGRIBALYSE's twelve `Potassium (I)` rows reach `Potassium(1+)` by name, the metal's number set aside",
       "subject": {
         "kind": "source_row",
         "list": "agribalyse",
-        "cas": "24203-36-9"
+        "name": "Potassium (I)"
       },
       "expect": {
         "row_count": 12,
         "outcome": "algorithm",
-        "basis": "cas",
+        "basis": "label+element-number-set-aside",
         "target_name": "Potassium(1+)",
         "target_cas": "24203-36-9"
       },
-      "comment": "Shipped with the element's 7440-09-7; the twelve rows reached bare `Potassium` on the build of 2 September 2026. Corrected to 24203-36-9, the number on ecoinvent's `Potassium I` rows. Selected by the corrected number rather than the vendor's spelling: once the rows reach the substance the build records them under its name, `Potassium(1+)`, and the spelling `Potassium (I)` is no longer findable, the shape #190's palladium claim already notes."
+      "comment": "Shipped with the element's 7440-09-7; the twelve rows reached bare `Potassium` on the build of 2 September 2026. Corrected to 24203-36-9, the number on ecoinvent's `Potassium I` rows. Selected by the corrected number rather than the vendor's spelling: once the rows reach the substance the build records them under its name, `Potassium(1+)`, and the spelling `Potassium (I)` is no longer findable, the shape #190's palladium claim already notes.\n\nRestated 23 October 2026: the manual fix that rewrote this number was retired, because the #380 rule decides the same rows -- an ion name beside the bare element's number has the number set aside and is placed by its name. The rows land where they did; on the six-list build of 23 October 2026 (commit b614108) the basis reads `label+element-number-set-aside`. The claim used to pin `basis: cas` so that a change reading the ion off the name would fail here; that change is now the rule, ruled on by the project owner, and the basis claimed is the one it records. Selected by the name the build records, `Potassium (I)`, since the corrected number it was selected by is no longer on the rows."
     },
     {
       "id": "0934-ecoinvent-3-12-strontium-ii-is-the-ion",
@@ -216,10 +216,10 @@
       "expect": {
         "row_count": 11,
         "outcome": "algorithm",
-        "basis": "label",
+        "basis": "label+element-number-set-aside",
         "target_name": "Antimony, Ion"
       },
-      "comment": "The worked example of the five that reach a generic ion the list already holds; copper, iron, tin and titanium have the same shape and are held below by count. On the build of 2 September 2026 the eleven reached bare `Antimony` on 7440-36-0."
+      "comment": "The worked example of the five that reach a generic ion the list already holds; copper, iron, tin and titanium have the same shape and are held below by count. On the build of 2 September 2026 the eleven reached bare `Antimony` on 7440-36-0.\n\nRestated 23 October 2026: the manual fix that rewrote this number was retired, because the #380 rule decides the same rows -- an ion name beside the bare element's number has the number set aside and is placed by its name. The rows land where they did; on the six-list build of 23 October 2026 (commit b614108) the basis reads `label+element-number-set-aside`. The claim used to pin `basis: label` so that a change reading the ion off the name would fail here; that change is now the rule, ruled on by the project owner, and the basis claimed is the one it records."
     },
     {
       "id": "0934-agribalyse-copper-ion",

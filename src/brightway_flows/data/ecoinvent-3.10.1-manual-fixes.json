@@ -13,6 +13,24 @@
     },
     {
       "match": {
+        "name": "Strontium II"
+      },
+      "field": "cas_number",
+      "original_value": "7440-24-6",
+      "new_value": "22537-39-9",
+      "comment": "7440-24-6 is the registry number for strontium the *metal*; the strontium(2+) ion's own is 22537-39-9. ecoinvent names these rows `Strontium II`, thirteen rows, one per emission context, and registers every one of them as the metal, the slip `Molybdenum VI` above made in 3.10.1 (#181). Every other Roman-numeral metal in the release carries the ion's number. The name is the half that is right: the vendor's history says so (3.8 and 3.9.1 shipped the same uuids as the bare element with the element's number, and this release names the ion again, still under the element's number), and the ruling on #198 is that a name stating a charge is the vendor's statement of what the flow is. What the wrong number cost: a registry number outranks a name, so on the build of 2 September 2026 (b445ff6) the rows were published as `Strontium`, the element, while `Strontium(2+)`, the substance EF 3.1's `strontium (ii)` rows already make under 22537-39-9 and AGRIBALYSE's twelve `Strontium(2+)` rows reach -- one vendor name on two substances, decided by which number each vendor typed. With the ion's number the rows reach Strontium(2+). Matched on the name with the element's number as the guard, so a row already carrying the ion's number, or any other, is left alone; ecoinvent's bare `Strontium` resource row keeps the element's number, because a bare name is the element. 3.8's bare rows follow this release's corrected identity through `ecoinvent-canonical-identities.json`, which is derived from the fixed rows, so no entry is needed in 3.8's own file. (#198)"
+    },
+    {
+      "match": {
+        "name": "Caesium I"
+      },
+      "field": "cas_number",
+      "original_value": "7440-46-2",
+      "new_value": "18459-37-5",
+      "comment": "7440-46-2 is the registry number for caesium the *metal*; the caesium(1+) ion's own is 18459-37-5. ecoinvent names these rows `Caesium I`, five rows, one per water context, and registers every one of them as the metal, the slip `Molybdenum VI` above made in 3.10.1 (#181). Every other Roman-numeral metal in the release carries the ion's number. The name is the half that is right: the vendor's history says so (3.8 and 3.9.1 shipped the same uuids as the bare element with the element's number, and this release names the ion again, still under the element's number), and the ruling on #198 is that a name stating a charge is the vendor's statement of what the flow is. What the wrong number cost: a registry number outranks a name, so on the build of 2 September 2026 (b445ff6) the rows were published as `Cesium`, the element, while `Cesium(1+)`, the substance EF 3.1's `cesium (i)` rows already make under 18459-37-5 and AGRIBALYSE's three `Cesium (I)` rows reach -- one vendor name on two substances, decided by which number each vendor typed. With the ion's number the rows reach Cesium(1+). Matched on the name with the element's number as the guard, so a row already carrying the ion's number, or any other, is left alone; ecoinvent's bare `Cesium` resource row keeps the element's number, because a bare name is the element. 3.8's bare rows follow this release's corrected identity through `ecoinvent-canonical-identities.json`, which is derived from the fixed rows, so no entry is needed in 3.8's own file. (#198)"
+    },
+    {
+      "match": {
         "name": "Silver-110"
       },
       "field": "name",
@@ -150,6 +168,15 @@
       "new_value": "Peat, horticulture",
       "retain_original_as_synonym": true,
       "comment": "The same flow as ecoinvent 3.12's, which 3.10.1 ships under the name `Peat`, and the same correction -- made on every version that ships this uuid, because a correction applied to one and not another leaves the merge two lists that disagree about what a substance is (#26). EF 3.1 ships two peat flows and they are two substances. `peat` is a `Non-renewable energy resource from ground`, measured in megajoules, and carries the `Resource use, fossils` factor of 1.0 -- that is peat burned as a fuel, counted by its energy content. This one is a `Renewable material resource from biosphere`, measured in kilograms, and carries no factor: it is peat dug and sold as a growing medium, counted by its mass. A mass of horticultural peat and a megajoule of fuel peat are not one substance measured two ways, and the list said they were only because both were called some form of `peat`.\n\nWhat that cost: ecoinvent's kilogram row reached the megajoule flow, so the match recorded a unit crossing and the ecoinvent Centre's own factor for it -- `Resource use, fossils`, 9.76 per kilogram, which is peat's calorific value -- stopped being published, because 9.76 per kilogram is wrong by an order of magnitude on a flow measured in megajoules. Named for what it is used for rather than where it is found, because `Peat, in ground` says where and the question here is which of the two peats this is. The vendor's own spelling is retained as an alternative label: an inventory written against these lists holds no other string for it. (#89)"
+    },
+    {
+      "match": {
+        "name": "Molybdenum VI"
+      },
+      "field": "cas_number",
+      "original_value": "7439-98-7",
+      "new_value": "16065-87-5",
+      "comment": "7439-98-7 is the registry number for molybdenum the *metal*; the hexavalent ion's own is 16065-87-5. ecoinvent names its dissolved molybdenum `Molybdenum VI` on thirteen rows -- one per emission context -- writes the formula `Mo+6` on them and the synonyms `Molybdenum (+6)` and `Molybdenum ion`, and registers every one of them as the metal. Every other metal ion in the release carries the ion's number (`Chromium VI` 18540-29-9, `Zinc II` 23713-49-7), and so did these rows: 3.9.1 shipped the same thirteen uuids under the same name with 16065-87-5, and 3.10.1 is where the number changed to the metal's while the name, the formula and the synonyms stayed. The name is the half that is right, and the vendor's own earlier release says so.\n\nWhat the wrong number cost: a registry number outranks a name, so on the 2026-08-29 build of 54b0f9d all thirteen rows were published as `Molybdenum`, the element, beside ecoinvent's own `Molybdenum` resource row and BAFU's fourteen elemental rows -- while the one 3.8 row 3.12 no longer carries, `697e8ecf` in the stratosphere, is decided by 3.9.1's number and was published as `Molybdenum(6+)`. Fourteen rows of one vendor name, two substances, decided by which release last shipped the row. With the ion's number the thirteen reach EF 3.1's `molybdenum (vi)`, which EF publishes in all thirteen contexts, and 3.8's rows -- which 3.8 names plain `Molybdenum` under the metal's number and which `ecoinvent-canonical-identities.json` reads as this release's `Molybdenum VI` -- follow, because that file is derived from the corrected rows.\n\nStated in 3.10.1, 3.11 and 3.12, the releases that ship the metal's number on this name; 3.9.1 ships the ion's already and 3.8 does not use the name. Matched on the name because the number is the field being changed (#237); `original_value` records what the vendor wrote and keeps the second pass a quiet no-op. The same shape as EF's `vanadium (v)` (#49) and BAFU's `Cadmium II` (#146). Worth reporting to ecoinvent: 3.9.1 had the ion's number and the later releases lost it. (#181)"
     },
     {
       "match": {

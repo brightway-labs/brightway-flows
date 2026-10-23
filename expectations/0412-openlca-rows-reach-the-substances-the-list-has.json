@@ -127,12 +127,12 @@
       },
       "expect": {
         "outcome": "matched",
-        "row_count": 29,
+        "row_count": 27,
         "substance_count": {
           "at_most": 2
         }
       },
-      "comment": "29 rows: twelve carry 22537-31-1 and reach `Vanadium(5+)` by number; fourteen carry 7440-62-2, the element's number, and reach `Vanadium` by it -- the package writes the element's number on many of its ion names (#380), and a number is a ruling's question, not this rule's; the three in ground water, long-term ground water and a river (a3178646, c2e2b45b, 7b8e28ba) carry none, and on the build of 20 October 2026 minted a third substance, a second `Vanadium(5+)`, on which `characterise` then stopped. `substance_count` at most 2: the element and the ion, and a third is the defect coming back."
+      "comment": "29 rows: twelve carry 22537-31-1 and reach `Vanadium(5+)` by number; fourteen carry 7440-62-2, the element's number, and reach `Vanadium` by it -- the package writes the element's number on many of its ion names (#380), and a number is a ruling's question, not this rule's; the three in ground water, long-term ground water and a river (a3178646, c2e2b45b, 7b8e28ba) carry none, and on the build of 20 October 2026 minted a third substance, a second `Vanadium(5+)`, on which `characterise` then stopped. `substance_count` at most 2: the element and the ion, and a third is the defect coming back.\n\nRestated 23 October 2026: a resource in the ground is now read as its element (`+ground-resource-is-element`), so the openLCA ground-resource rows of this name no longer reach the ion, and their flows in `Resource → Ground` are gone. The build records those two rows under the element's name, `Vanadium`, so the name selects 27 of the 29."
     },
     {
       "id": "0412-the-river-row-reaches-it-by-the-standards-spelling",
@@ -204,12 +204,12 @@
       },
       "expect": {
         "outcome": "matched",
-        "row_count": 26,
+        "row_count": 24,
         "substance_count": {
           "at_most": 2
         }
       },
-      "comment": "26 rows: nine carry titanium's own number 7440-32-6 and reach the element, as ecoinvent's rows of that number do (#380); two carry 22541-75-9 and reach `Titanium, ion` by it, and one spelled `Titanium, Ion` reaches it by the label; the fourteen with no number minted a second `Titanium, ion` on the build of 20 October 2026, a third substance. `substance_count` at most 2, so a third target is the defect coming back; the row below says which substance the numberless ones reach."
+      "comment": "26 rows: nine carry titanium's own number 7440-32-6 and reach the element, as ecoinvent's rows of that number do (#380); two carry 22541-75-9 and reach `Titanium, ion` by it, and one spelled `Titanium, Ion` reaches it by the label; the fourteen with no number minted a second `Titanium, ion` on the build of 20 October 2026, a third substance. `substance_count` at most 2, so a third target is the defect coming back; the row below says which substance the numberless ones reach.\n\nRestated 23 October 2026: a resource in the ground is now read as its element (`+ground-resource-is-element`), so the openLCA ground-resource rows of this name no longer reach the ion, and their flows in `Resource → Ground` are gone. The build records those two rows under the element's name, `Titanium`, so the name selects 24 of the 26."
     },
     {
       "id": "0412-the-titanium-river-row-reaches-the-ion-by-its-spelling",

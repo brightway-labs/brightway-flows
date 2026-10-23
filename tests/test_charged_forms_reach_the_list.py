@@ -19,8 +19,9 @@ fact the source list did not state.
 #146 adds the third population: five rows -- `Cadmium II`, `Zinc II`, `Mercury
 II`, `Lead II`, `Nickel II` -- that state a charge *and* a number, and the two
 contradict each other, because BAFU wrote the metal's number beside the ion's
-name.  Those fixes replace a stated value, which is a stronger claim, and the
-class for them says why it is still the right one.
+name.  Those fixes replaced a stated value, which is a stronger claim, and the
+class for them says why it is still the right one -- now decided by the #380
+rule rather than a fix.
 """
 
 from __future__ import annotations
@@ -30,6 +31,8 @@ import unittest
 import orjson
 
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
+from brightway_flows.merge.species import element_number_set_aside
+from brightway_flows.merge.state import SourceRow
 
 FIXES = PACKAGE_DATA_DIR / "bafu-2026-v1-manual-fixes.json"
 
@@ -151,29 +154,32 @@ class AStatedNumberThatContradictsTheNameIsReplaced(unittest.TestCase):
     argument (the spelling goes unread *because* the number is missing) does
     not cover this; the argument here is that the name and the number
     contradict each other and the name is the half that is right, which is
-    the EF `vanadium (v)` precedent (#49).  `original_value` is what makes
-    that a recorded replacement rather than a silent one.
+    the EF `vanadium (v)` precedent (#49).
+
+    Until 23 October 2026 each was a fix in BAFU's file replacing the number.
+    The #380 rule now sets the metal's number aside on any list's ion name
+    (`merge.species.element_number_set_aside`), so the fixes were retired and
+    what is tested is that the rule, not a fix, decides these rows.
     """
 
     def setUp(self):
         self.fixes = _by_name()
 
-    def test_each_of_the_five_has_exactly_one_fix(self):
+    def test_no_fix_replaces_the_number_any_more(self):
         for name in NUMBER_CONTRADICTS_THE_NAME:
             with self.subTest(name=name):
-                self.assertEqual(
-                    len(self.fixes.get(name, [])), 1,
-                    f"{name} needs one registry-number fix and no more",
-                )
+                self.assertEqual(self.fixes.get(name, []), [])
 
-    def test_the_fix_records_what_bafu_wrote_and_what_the_name_implies(self):
-        for name, (metal, ion) in NUMBER_CONTRADICTS_THE_NAME.items():
+    def test_the_rule_sets_the_metals_number_aside(self):
+        for name, (metal, _ion) in NUMBER_CONTRADICTS_THE_NAME.items():
             with self.subTest(name=name):
-                fix = self.fixes[name][0]
-                self.assertEqual(fix["field"], "cas_numbers")
-                # Not `null`: this overrules a stated number, and says so.
-                self.assertEqual(fix["original_value"], [metal])
-                self.assertEqual(fix["new_value"], [ion])
+                row = element_number_set_aside(SourceRow(
+                    uuid="u-1", name=name, synonyms=[], labels=[name],
+                    context=["emissions to air", "high. pop."], context_iri="",
+                    context_normalized=(), unit="kg", unit_iri="", cas=metal, ec="",
+                ))
+                self.assertEqual((row.cas, row.number_set_aside), ("", metal))
+                self.assertEqual(row.labels[0], f"{name.split()[0]}(2+)")
 
     def test_the_replacement_is_a_different_substance_not_a_vintage(self):
         # A vintage correction (borax, mecoprop) swaps two numbers for one
@@ -184,11 +190,6 @@ class AStatedNumberThatContradictsTheNameIsReplaced(unittest.TestCase):
         self.assertEqual(len(set(metals)), 5)
         self.assertEqual(len(set(ions)), 5)
         self.assertFalse(set(metals) & set(ions))
-
-    def test_each_states_its_reasoning(self):
-        for name in NUMBER_CONTRADICTS_THE_NAME:
-            with self.subTest(name=name):
-                self.assertTrue(self.fixes[name][0].get("comment", "").strip())
 
     def test_no_plain_element_row_is_moved_onto_the_ion(self):
         # `Cadmium II` is corrected onto the ion; no row named `Cadmium` is.

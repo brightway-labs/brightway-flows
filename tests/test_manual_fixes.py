@@ -36,6 +36,8 @@ from brightway_flows.manual_fixes import (
     UNIT_CONVERSION_KEY,
     apply_manual_fixes,
 )
+from brightway_flows.merge.species import element_number_set_aside
+from brightway_flows.merge.state import SourceRow
 from brightway_flows.pipeline.loading import _normalize_input_flow_record
 from brightway_flows.sources import (
     PACKAGE_DATA_DIR,
@@ -62,6 +64,14 @@ def _flow(uuid, name, cas, ec):
         "ec_numbers": [ec] if ec else [],
     }
 
+
+
+def _source_row(name, cas):
+    """A row as the merge's ion rule reads it (`merge/rows.py`)."""
+    return SourceRow(
+        uuid="u-1", name=name, synonyms=[], labels=[name], context=["water"],
+        context_iri="", context_normalized=(), unit="kg", unit_iri="", cas=cas, ec="",
+    )
 
 class RemovingAValueFromAListFieldTestCase(unittest.TestCase):
     """`remove_value`, the operation the mixture case needs.
@@ -2446,23 +2456,32 @@ class AgribalyseSiblingNumbersTestCase(unittest.TestCase):
     REPLACED = {
         "Vanadium (V)": ("15121-26-3", "22537-31-1"),
         "Arsenic (V)": ("61805-96-7", "17428-41-0"),
-        # The element's number on a name that states a charge (#198): the
-        # rows reached bare lithium and potassium while ecoinvent's `Lithium
-        # I` and `Potassium I` reached the ions.
-        "Lithium (I)": ("7439-93-2", "17341-24-1"),
-        "Potassium (I)": ("7440-09-7", "24203-36-9"),
+    }
+
+    #: Vendor spelling -> the element's number written on an ion's name, which
+    #: this file corrected until 23 October 2026 (#198).  The #380 rule now
+    #: sets that number aside on any list's ion name, so no fix touches these:
+    #: `Lithium (I)` and `Potassium (I)` reached bare lithium and potassium
+    #: while ecoinvent's `Lithium I` and `Potassium I` reached the ions, and
+    #: the generic ions reached the bare elements.
+    RULE_DECIDES = {
+        "Lithium (I)": "7439-93-2",
+        "Potassium (I)": "7440-09-7",
+        "Antimony, ion": "7440-36-0",
+        "Copper, ion": "7440-50-8",
+        "Iron, ion": "7439-89-6",
+        "Tin, ion": "7440-31-5",
+        "Titanium, ion": "7440-32-6",
     }
 
     #: Vendor spelling -> the element's number the fix takes off a generic ion
     #: name (#198): a name saying `Ion` without a charge is its own substance
     #: and no number names it, as ecoinvent's own 3.9.1 deletion says.
     REMOVED = {
-        "Antimony, ion": "7440-36-0",
+        # Kept when the #380 rule retired its siblings: no list publishes a
+        # generic chromium ion for the rows to reach, and the metal's number,
+        # read by enrichment before the merge, would stop them minting one.
         "Chromium, ion": "7440-47-3",
-        "Copper, ion": "7440-50-8",
-        "Iron, ion": "7439-89-6",
-        "Tin, ion": "7440-31-5",
-        "Titanium, ion": "7440-32-6",
         # Not the element's number but pentavalent arsenic's (#202): the rows
         # reached `Arsenic(5+)` while ecoinvent's and BAFU's `Arsenic, ion`
         # reached the generic ion. A charge picked for a generic name is the
@@ -2503,6 +2522,18 @@ class AgribalyseSiblingNumbersTestCase(unittest.TestCase):
                 flow = self._apply(self._row(vendor, cas_numbers=[element_cas]))
                 self.assertEqual(flow["cas_numbers"], [])
                 self.assertEqual(flow["name"], vendor)
+
+    def test_no_fix_touches_a_name_the_rule_decides(self):
+        for vendor, element_cas in sorted(self.RULE_DECIDES.items()):
+            with self.subTest(vendor=vendor):
+                flow = self._apply(self._row(vendor, cas_numbers=[element_cas]))
+                self.assertEqual(flow["cas_numbers"], [element_cas])
+
+    def test_the_rule_sets_the_elements_number_aside(self):
+        for vendor, element_cas in sorted(self.RULE_DECIDES.items()):
+            with self.subTest(vendor=vendor):
+                row = element_number_set_aside(_source_row(vendor, element_cas))
+                self.assertEqual((row.cas, row.number_set_aside), ("", element_cas))
 
     def test_a_generic_ion_carrying_another_number_is_left_alone(self):
         """The deletion is pinned to the element's number: a generic ion row
@@ -2552,7 +2583,7 @@ class AgribalyseSiblingNumbersTestCase(unittest.TestCase):
         if not source.flows_path.exists():
             raise unittest.SkipTest("AGRIBALYSE 3.2 is not extracted here")
         shipped = {row["name"] for row in orjson.loads(source.flows_path.read_bytes())}
-        for vendor in sorted({*self.NUMBERS, *self.REPLACED, *self.REMOVED, "Palladium-234m"}):
+        for vendor in sorted({*self.NUMBERS, *self.REPLACED, *self.REMOVED, *self.RULE_DECIDES, "Palladium-234m"}):
             with self.subTest(vendor=vendor):
                 self.assertIn(vendor, shipped)
         pa = [row for row in orjson.loads(source.flows_path.read_bytes()) if row["name"] == "Palladium-234m"]

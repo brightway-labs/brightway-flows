@@ -127,20 +127,15 @@ number is left alone.
 
 | AGRIBALYSE name | number shipped | corrected to | which is |
 |---|---|---|---|
-| `Lithium (I)` | 7439-93-2 | 17341-24-1 | the element's number on the lithium(1+) ion; six rows, which reached bare `Lithium` while ecoinvent's `Lithium I` reached the ion ([#198](https://github.com/brightway-labs/brightway-flows/issues/198)) |
-| `Potassium (I)` | 7440-09-7 | 24203-36-9 | the element's number on the potassium(1+) ion; twelve rows, the same shape |
 | `Fenpropimorph` | 67306-03-0 | 67564-91-4 | the same fungicide under its current number; five rows, which reached EF 3.1's uncharacterised second copy of the substance and now reach the characterised one ([#201](https://github.com/brightway-labs/brightway-flows/issues/201)) |
-| `Antimony, ion` | 7440-36-0 | removed | the element's number on a generic ion, which no number names; eleven rows, which reached bare `Antimony` and now reach the numberless `Antimony, Ion` ecoinvent's rows minted (#198) |
 | `Chromium, ion` | 7440-47-3 | removed | the same; thirteen rows, which mint `Chromium, Ion` beside the charged chromium ions, since no list publishes a generic one |
-| `Copper, ion` | 7440-50-8 | removed | the same; fifteen rows, now on `Copper, Ion` |
-| `Iron, ion` | 7439-89-6 | removed | the same; twelve rows, now on `Iron, Ion` |
-| `Tin, ion` | 7440-31-5 | removed | the same; twelve rows, now on `Tin, Ion` |
-| `Titanium, ion` | 7440-32-6 | removed | the same; twelve rows, now on EF 3.1's own `Titanium, ion` |
 | `Arsenic, ion` | 17428-41-0 | removed | pentavalent arsenic's number on a generic ion, the same mistake with a charge picked rather than the element; thirteen rows, which reached `Arsenic(5+)` and now reach the numberless `Arsenic, ion` ecoinvent's and BAFU's rows reach ([#202](https://github.com/brightway-labs/brightway-flows/issues/202)) |
 
 The file holds the earlier corrections too — `Vanadium (V)` and `Arsenic (V)`
 under the wrong ions' numbers, and the bare graded-ore rows given their
 elements' numbers (#190).
+
+Seven more names carried the element's number on an ion and were corrected here until 23 October 2026: `Lithium (I)` and `Potassium (I)` (18 rows), and the generic `Antimony, ion`, `Copper, ion`, `Iron, ion`, `Tin, ion` and `Titanium, ion` (62 rows). The merge now sets the element's number aside on any row whose name states an ion and reads the name ([the rule](../deciding/merging.md#an-ion-name-beside-the-bare-elements-number-is-the-ion), [#380](https://github.com/brightway-labs/brightway-flows/issues/380)), so the rows reach the same ions without a fix. `Chromium, ion` keeps its fix: no list publishes a generic chromium ion for its rows to reach, and the metal's number, read by enrichment before the merge, would give them the metal's names and stop them minting one.
 
 ## Curated targets
 

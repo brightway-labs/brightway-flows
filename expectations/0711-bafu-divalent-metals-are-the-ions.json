@@ -5,7 +5,7 @@
     {
       "id": "0711-bafu-cadmium-ii-is-the-ion",
       "issue": 711,
-      "title": "BAFU's Cadmium II reaches cadmium(2+) by its corrected number",
+      "title": "BAFU's Cadmium II reaches cadmium(2+) by its name, the metal's number set aside",
       "subject": {
         "kind": "source_row",
         "list": "bafu",
@@ -13,16 +13,16 @@
       },
       "expect": {
         "outcome": "algorithm",
-        "basis": "cas",
+        "basis": "label+element-number-set-aside",
         "target_name": "Cadmium(2+)",
         "target_cas": "22537-48-0"
       },
-      "comment": "The worked example. Before: `algorithm` on `basis: cas` too -- but on 7440-43-9, landing on `Cadmium`, the same flow BAFU's plain `Cadmium` row in this compartment reaches. `basis: cas` is claimed so that a later change reaching the ion by reading the roman numeral off the name would fail here: the number is corrected, the name is not interpreted.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Cadmium II` in BAFU's own file either way."
+      "comment": "The worked example. Before: `algorithm` on `basis: cas` too -- but on 7440-43-9, landing on `Cadmium`, the same flow BAFU's plain `Cadmium` row in this compartment reaches. `basis: cas` is claimed so that a later change reaching the ion by reading the roman numeral off the name would fail here: the number is corrected, the name is not interpreted.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Cadmium II` in BAFU's own file either way.\n\nRestated 23 October 2026: the manual fix that rewrote this number was retired, because the #380 rule decides the same rows -- an ion name beside the bare element's number has the number set aside and is placed by its name. The rows land where they did; on the six-list build of 23 October 2026 (commit b614108) the basis reads `label+element-number-set-aside`. The claim used to pin `basis: cas` so that a change reading the ion off the name would fail here; that change is now the rule, ruled on by the project owner, and the basis claimed is the one it records."
     },
     {
       "id": "0711-bafu-zinc-ii-is-the-ion",
       "issue": 711,
-      "title": "BAFU's Zinc II reaches zinc(2+) by its corrected number",
+      "title": "BAFU's Zinc II reaches zinc(2+) by its name, the metal's number set aside",
       "subject": {
         "kind": "source_row",
         "list": "bafu",
@@ -30,16 +30,16 @@
       },
       "expect": {
         "outcome": "algorithm",
-        "basis": "cas",
+        "basis": "label+element-number-set-aside",
         "target_name": "Zinc(2+)",
         "target_cas": "23713-49-7"
       },
-      "comment": "Same shape: 7440-66-6 is zinc the metal, and ecoinvent's fourteen `Zinc II` rows carry 23713-49-7.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Zinc II` in BAFU's own file either way."
+      "comment": "Same shape: 7440-66-6 is zinc the metal, and ecoinvent's fourteen `Zinc II` rows carry 23713-49-7.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Zinc II` in BAFU's own file either way.\n\nRestated 23 October 2026: the manual fix that rewrote this number was retired, because the #380 rule decides the same rows -- an ion name beside the bare element's number has the number set aside and is placed by its name. The rows land where they did; on the six-list build of 23 October 2026 (commit b614108) the basis reads `label+element-number-set-aside`. The claim used to pin `basis: cas` so that a change reading the ion off the name would fail here; that change is now the rule, ruled on by the project owner, and the basis claimed is the one it records."
     },
     {
       "id": "0711-bafu-mercury-ii-is-the-ion",
       "issue": 711,
-      "title": "BAFU's Mercury II reaches mercury(2+) by its corrected number",
+      "title": "BAFU's Mercury II reaches mercury(2+) by its name, the metal's number set aside",
       "subject": {
         "kind": "source_row",
         "list": "bafu",
@@ -47,16 +47,16 @@
       },
       "expect": {
         "outcome": "algorithm",
-        "basis": "cas",
+        "basis": "label+element-number-set-aside",
         "target_name": "Mercury(2+)",
         "target_cas": "14302-87-5"
       },
-      "comment": "Same shape: 7439-97-6 is mercury the metal, and ecoinvent's fourteen `Mercury II` rows carry 14302-87-5. Mercury is the one of the five where the metal and the ion are least alike in the environment -- elemental mercury is a vapour that travels, the ion is what deposits -- so publishing the ion's emission as the metal's was the most consequential of the five.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Mercury II` in BAFU's own file either way."
+      "comment": "Same shape: 7439-97-6 is mercury the metal, and ecoinvent's fourteen `Mercury II` rows carry 14302-87-5. Mercury is the one of the five where the metal and the ion are least alike in the environment -- elemental mercury is a vapour that travels, the ion is what deposits -- so publishing the ion's emission as the metal's was the most consequential of the five.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Mercury II` in BAFU's own file either way.\n\nRestated 23 October 2026: the manual fix that rewrote this number was retired, because the #380 rule decides the same rows -- an ion name beside the bare element's number has the number set aside and is placed by its name. The rows land where they did; on the six-list build of 23 October 2026 (commit b614108) the basis reads `label+element-number-set-aside`. The claim used to pin `basis: cas` so that a change reading the ion off the name would fail here; that change is now the rule, ruled on by the project owner, and the basis claimed is the one it records."
     },
     {
       "id": "0711-bafu-lead-ii-is-the-ion",
       "issue": 711,
-      "title": "BAFU's Lead II reaches lead(2+) by its corrected number",
+      "title": "BAFU's Lead II reaches lead(2+) by its name, the metal's number set aside",
       "subject": {
         "kind": "source_row",
         "list": "bafu",
@@ -64,16 +64,16 @@
       },
       "expect": {
         "outcome": "algorithm",
-        "basis": "cas",
+        "basis": "label+element-number-set-aside",
         "target_name": "Lead(2+)",
         "target_cas": "14280-50-3"
       },
-      "comment": "Same shape: 7439-92-1 is lead the metal, and ecoinvent's fourteen `Lead II` rows carry 14280-50-3.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Lead II` in BAFU's own file either way."
+      "comment": "Same shape: 7439-92-1 is lead the metal, and ecoinvent's fourteen `Lead II` rows carry 14280-50-3.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Lead II` in BAFU's own file either way.\n\nRestated 23 October 2026: the manual fix that rewrote this number was retired, because the #380 rule decides the same rows -- an ion name beside the bare element's number has the number set aside and is placed by its name. The rows land where they did; on the six-list build of 23 October 2026 (commit b614108) the basis reads `label+element-number-set-aside`. The claim used to pin `basis: cas` so that a change reading the ion off the name would fail here; that change is now the rule, ruled on by the project owner, and the basis claimed is the one it records."
     },
     {
       "id": "0711-bafu-nickel-ii-is-the-ion",
       "issue": 711,
-      "title": "BAFU's Nickel II reaches nickel(2+) by its corrected number",
+      "title": "BAFU's Nickel II reaches nickel(2+) by its name, the metal's number set aside",
       "subject": {
         "kind": "source_row",
         "list": "bafu",
@@ -81,11 +81,11 @@
       },
       "expect": {
         "outcome": "algorithm",
-        "basis": "cas",
+        "basis": "label+element-number-set-aside",
         "target_name": "Nickel(2+)",
         "target_cas": "14701-22-5"
       },
-      "comment": "Same shape: 7440-02-0 is nickel the metal, and ecoinvent's fourteen `Nickel II` rows carry 14701-22-5.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Nickel II` in BAFU's own file either way."
+      "comment": "Same shape: 7440-02-0 is nickel the metal, and ecoinvent's fourteen `Nickel II` rows carry 14701-22-5.\n\nSelected by uuid rather than by name, because the build does not record this row under the name BAFU wrote once the number is corrected: `Zinc II` and `Lead II` come back as `Zinc(2+)` and `Lead(2+)` (the charge-normalised spelling), as `Calcium II` did after #127, while the other three keep their names. The row is `Nickel II` in BAFU's own file either way.\n\nRestated 23 October 2026: the manual fix that rewrote this number was retired, because the #380 rule decides the same rows -- an ion name beside the bare element's number has the number set aside and is placed by its name. The rows land where they did; on the six-list build of 23 October 2026 (commit b614108) the basis reads `label+element-number-set-aside`. The claim used to pin `basis: cas` so that a change reading the ion off the name would fail here; that change is now the rule, ruled on by the project owner, and the basis claimed is the one it records."
     },
     {
       "id": "0711-bafu-plain-cadmium-stays-the-metal",

@@ -263,14 +263,24 @@ The rule fires on exactly that pair and nothing else. A bare `Lead` under
 an ion name under the ion's own number is read by the number, and an ion name
 under some third number — `Vanadium V` under vanadium pentoxide's — is the
 disagreement the label rule judges. Before it, the same pair was corrected
-row by row in the lists' own fixes: BAFU's six
+row by row in the lists' own fixes, and the rule agrees with every one of them.
+Thirteen were removed on 23 October 2026, and their rows reach the same ions by
+the rule: BAFU's six
 ([#146](https://github.com/brightway-labs/brightway-flows/issues/146),
-[#183](https://github.com/brightway-labs/brightway-flows/issues/183)),
-AGRIBALYSE's `Lithium (I)`, `Potassium (I)` and six `X, ion` names, and
-ecoinvent's `Strontium II`, `Caesium I` and `Molybdenum VI` in 3.10.1, 3.11 and
-3.12 ([#198](https://github.com/brightway-labs/brightway-flows/issues/198)).
-The rule agrees with every one of them, so those 23 fixes were removed on
-23 October 2026, and the rows are now placed by the rule.
+[#183](https://github.com/brightway-labs/brightway-flows/issues/183)) and
+AGRIBALYSE's `Lithium (I)`, `Potassium (I)` and five generic `X, ion` names
+([#198](https://github.com/brightway-labs/brightway-flows/issues/198)).
+Two kinds stay. AGRIBALYSE's `Chromium, ion` keeps its fix because no list
+publishes a generic chromium ion for its rows to reach: enrichment, which runs
+before the merge, reads the metal's number and gives the rows the metal's
+names, and the merge then refuses to mint the ion. And ecoinvent's
+`Strontium II`, `Caesium I` and `Molybdenum VI` keep theirs in 3.10.1, 3.11
+and 3.12, because the same corrected numbers are what
+`ecoinvent-canonical-identities.json` is derived from: without them that file
+would carry the metal's number as ecoinvent's newest statement, and would
+read 3.8's bare `Strontium`, `Caesium` and `Molybdenum` as the ions, which
+[#398](https://github.com/brightway-labs/brightway-flows/issues/398) ruled
+they are not.
 
 ### A metal taken from the ground is the element
 

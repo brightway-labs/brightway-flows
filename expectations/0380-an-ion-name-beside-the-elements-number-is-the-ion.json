@@ -9,14 +9,14 @@
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "uuid": "0305b169-255d-4041-8f5d-6e095bcb6358"
+        "uuid": "4b1f4151-6a6e-3cf5-a468-1e08799fc2c4"
       },
       "expect": {
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
         "target_name": "Aluminium(3+)"
       },
-      "comment": "One of the 10 `Aluminium III` rows that shipped the metal's number; all 10 reach `Aluminium(3+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 23 rows, 13 by the ion's own number reach the ion as well."
+      "comment": "One of the 10 `Aluminium III` rows that shipped the metal's number; all 10 reach `Aluminium(3+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 23 rows, 13 by the ion's own number reach the ion as well.\n\nRestated 23 October 2026: a resource in the ground is now read as its element (`+ground-resource-is-element`), so the openLCA ground-resource rows of this name no longer reach the ion, and their flows in `Resource → Ground` are gone. The row this claim sampled was one of them, so it now samples an emission row; on the six-list build of 23 October 2026 (commit b614108) 8 `Aluminium III` rows reach the ion with the number set aside, and 2 taken from the ground reach the element."
     },
     {
       "id": "0380-openlca-antimony-ion-is-the-ion",
@@ -153,14 +153,14 @@
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "uuid": "0bd9a952-58ff-42d9-9e02-2d76dff6d120"
+        "uuid": "2a44ba5c-8591-44fb-b487-93c4e40bbce2"
       },
       "expect": {
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
         "target_name": "Cobalt(2+)"
       },
-      "comment": "One of the 10 `Cobalt II` rows that shipped the metal's number; all 10 reach `Cobalt(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 23 rows, 13 by the ion's own number reach the ion as well."
+      "comment": "One of the 10 `Cobalt II` rows that shipped the metal's number; all 10 reach `Cobalt(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. Of the name's 23 rows, 13 by the ion's own number reach the ion as well.\n\nRestated 23 October 2026: a resource in the ground is now read as its element (`+ground-resource-is-element`), so the openLCA ground-resource rows of this name no longer reach the ion, and their flows in `Resource → Ground` are gone. The row this claim sampled was one of them, so it now samples an emission row; on the six-list build of 23 October 2026 (commit b614108) 8 `Cobalt II` rows reach the ion with the number set aside, and 2 taken from the ground reach the element."
     },
     {
       "id": "0380-openlca-copper-ion-is-the-ion",
@@ -201,14 +201,14 @@
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "uuid": "10e3b9bc-648f-4321-be48-5df740b07e04"
+        "uuid": "1a002089-bf1f-497c-a4d8-336542f7b38d"
       },
       "expect": {
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
         "target_name": "Lead(2+)"
       },
-      "comment": "One of the 14 `Lead II` rows that shipped the metal's number; all 14 reach `Lead(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
+      "comment": "One of the 14 `Lead II` rows that shipped the metal's number; all 14 reach `Lead(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed.\n\nRestated 23 October 2026: a resource in the ground is now read as its element (`+ground-resource-is-element`), so the openLCA ground-resource rows of this name no longer reach the ion, and their flows in `Resource → Ground` are gone. The row this claim sampled was one of them, so it now samples an emission row; on the six-list build of 23 October 2026 (commit b614108) 13 `Lead II` rows reach the ion with the number set aside, and 1 taken from the ground reaches the element."
     },
     {
       "id": "0380-openlca-lithium-i-is-the-ion",
@@ -233,14 +233,14 @@
       "subject": {
         "kind": "source_row",
         "list": "openlca",
-        "uuid": "2737dccb-d7b8-4002-a3f5-1ab6e1c6515e"
+        "uuid": "42053ffb-9284-49cb-88f9-33ac5c77be4a"
       },
       "expect": {
         "outcome": "matched",
         "basis": "label+element-number-set-aside",
         "target_name": "Manganese(2+)"
       },
-      "comment": "One of the 9 `Manganese II` rows that shipped the metal's number; all 9 reach `Manganese(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
+      "comment": "One of the 9 `Manganese II` rows that shipped the metal's number; all 9 reach `Manganese(2+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed.\n\nRestated 23 October 2026: a resource in the ground is now read as its element (`+ground-resource-is-element`), so the openLCA ground-resource rows of this name no longer reach the ion, and their flows in `Resource → Ground` are gone. The row this claim sampled was one of them, so it now samples an emission row; on the six-list build of 23 October 2026 (commit b614108) 8 `Manganese II` rows reach the ion with the number set aside, and 1 taken from the ground reaches the element."
     },
     {
       "id": "0380-openlca-mercury-ii-is-the-ion",
@@ -293,7 +293,7 @@
     {
       "id": "0380-openlca-potassium-i-is-the-ion",
       "issue": 380,
-      "title": "openLCA's `Potassium I` under the metal's number reaches `Potassium(1+)` with the number set aside",
+      "title": "openLCA's `Potassium I` taken from the ground reaches `Potassium`",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
@@ -301,15 +301,15 @@
       },
       "expect": {
         "outcome": "matched",
-        "basis": "label+element-number-set-aside",
-        "target_name": "Potassium(1+)"
+        "basis": "cas+ground-resource-is-element",
+        "target_name": "Potassium"
       },
-      "comment": "One of the 2 `Potassium I` rows that shipped the metal's number; all 2 reach `Potassium(1+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number."
+      "comment": "One of the 2 `Potassium I` rows that shipped the metal's number; all 2 reach `Potassium(1+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number.\n\nRestated 23 October 2026: a resource in the ground is now read as its element (`+ground-resource-is-element`), so the openLCA ground-resource rows of this name no longer reach the ion, and their flows in `Resource → Ground` are gone. Every row of this name that shipped the metal's number is a resource in the ground, so the claim now states the ground rule: the row reaches `Potassium` by the metal's own number."
     },
     {
       "id": "0380-openlca-rhodium-iii-is-the-ion",
       "issue": 380,
-      "title": "openLCA's `Rhodium III` under the metal's number reaches `Rhodium(3+)` with the number set aside",
+      "title": "openLCA's `Rhodium III` taken from the ground reaches `Rhodium`",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
@@ -317,10 +317,10 @@
       },
       "expect": {
         "outcome": "matched",
-        "basis": "label+element-number-set-aside",
-        "target_name": "Rhodium(3+)"
+        "basis": "cas+ground-resource-is-element",
+        "target_name": "Rhodium"
       },
-      "comment": "One of the 1 `Rhodium III` rows that shipped the metal's number; all 1 reach `Rhodium(3+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed."
+      "comment": "One of the 1 `Rhodium III` rows that shipped the metal's number; all 1 reach `Rhodium(3+)` with the basis `label+element-number-set-aside` on the six-list build of 21 October 2026 (commit 7a5a1b6), where on the build before it (commit 931ed30) they reached the metal by the number. 1 row of the name carries EF 3.1's own uuid for the element GreenDelta renamed and stays on EF's flow by that uuid (#347); the rule does not reach a row a uuid has already placed.\n\nRestated 23 October 2026: a resource in the ground is now read as its element (`+ground-resource-is-element`), so the openLCA ground-resource rows of this name no longer reach the ion, and their flows in `Resource → Ground` are gone. Every row of this name that shipped the metal's number is a resource in the ground, so the claim now states the ground rule: the row reaches `Rhodium` by the metal's own number."
     },
     {
       "id": "0380-openlca-selenium-iv-is-the-ion",
