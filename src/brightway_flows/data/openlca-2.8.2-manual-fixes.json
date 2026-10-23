@@ -617,9 +617,9 @@
       ],
       "new_value": [
         "Resource",
-        "unspecified"
+        "in ground"
       ],
-      "comment": "No other list ships `Energy, from hydrogen`, and the package files it twice: `Resource / unspecified` and `Resource / in water`, neither with a factor in any EF 3.1 category. On the six-list build of 22 October 2026 (commit 5a343f5) that minted the substance in two places, `Resource → Ground` (where this list reads the package's unspecified resources) and `Resource → Water`. The energy content of hydrogen is not drawn from a water body, so this row joins its sibling."
+      "comment": "No other list ships `Energy, from hydrogen`, and the package files it twice: `Resource / unspecified` and `Resource / in water`, neither with a factor in any EF 3.1 category. On the six-list build of 22 October 2026 (commit 5a343f5) that minted the substance in two places, `Resource → Ground` (where this list reads the package's unspecified resources) and `Resource → Water`. The energy content of hydrogen is not drawn from a water body, so this row is filed in the ground, where its sibling is read. Filed `in ground` rather than `unspecified`: the package's unspecified resources are each read by a rule of their own (#381), and a row moved into that compartment has none."
     }
   ]
 }
