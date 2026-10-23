@@ -263,13 +263,33 @@ The rule fires on exactly that pair and nothing else. A bare `Lead` under
 an ion name under the ion's own number is read by the number, and an ion name
 under some third number — `Vanadium V` under vanadium pentoxide's — is the
 disagreement the label rule judges. Before it, the same pair was corrected
-row by row in the lists' own fixes: BAFU's three
+row by row in the lists' own fixes: BAFU's six
 ([#146](https://github.com/brightway-labs/brightway-flows/issues/146),
 [#183](https://github.com/brightway-labs/brightway-flows/issues/183)),
-AGRIBALYSE's `Lithium (I)` and `Potassium (I)` and ecoinvent 3.12's
-`Strontium II` and `Caesium I`
-([#198](https://github.com/brightway-labs/brightway-flows/issues/198)).
-Those fixes stand and the rule agrees with every one of them.
+AGRIBALYSE's `Lithium (I)`, `Potassium (I)` and six `X, ion` names, and
+ecoinvent's `Strontium II`, `Caesium I` and `Molybdenum VI` in 3.10.1, 3.11 and
+3.12 ([#198](https://github.com/brightway-labs/brightway-flows/issues/198)).
+The rule agrees with every one of them, so those 23 fixes were removed on
+23 October 2026, and the rows are now placed by the rule.
+
+### A metal taken from the ground is the element
+
+openLCA 2.8.2 files `Potassium I`, `Manganese II`, `Cadmium II` and 32 more
+ion names as resources taken from the ground. The rule above read them as the
+ions, and published 26 ion flows in `Resource → Ground` that only those rows
+fed. EF 3.1 has no ion among its ground resources, and GreenDelta scores each
+of these rows in `Resource use, minerals and metals` exactly as the JRC scores
+the element: `Potassium I` 1.6e-8, and `Potassium` in the ground 1.6e-8.
+What is mined is the element.
+
+So a row filed as a resource in the ground whose name is in the element/ion
+family is matched as the element, whatever its name or number says about
+charge. The ion's spellings leave its labels; a number that is not the
+element's is set aside, as for openLCA's `Sodium`, which carries the sodium
+ion's number. The mapping's `basis` ends in `+ground-resource-is-element`.
+Emissions keep the ion their name states, and so do resources taken from
+water: ecoinvent ships dissolved `Potassium I` and `Sodium I` there under the
+ion's own number, and means the dissolved ion.
 
 ## Then the EC number
 

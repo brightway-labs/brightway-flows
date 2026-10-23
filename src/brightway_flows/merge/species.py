@@ -249,6 +249,69 @@ def element_number_set_aside(row: "SourceRow") -> "SourceRow":
     return replace(row, cas="", ec="", labels=labels, number_set_aside=row.cas)
 
 
+#: What the mapping's `basis` ends with when a resource in the ground was read
+#: as its element (:func:`ground_resource_is_the_element`).
+GROUND_RESOURCE_ELEMENT_BASIS = "ground-resource-is-element"
+
+
+def is_ground_resource(row: "SourceRow") -> bool:
+    """Whether *row* is filed as a resource taken from the ground."""
+    parts = [str(part).strip().lower() for part in list(row.context_normalized or ())[:2]]
+    return parts == ["resource", "ground"]
+
+
+def ground_resource_is_the_element(row: "SourceRow") -> "SourceRow":
+    """*row* read as its element where it is a metal taken from the ground.
+
+    A resource in the ground is never an ion: what is mined is the element,
+    whatever the name says about charge (ruled 23 October 2026).  openLCA 2.8.2
+    ships `Potassium I`, `Manganese II` and 33 more ion names as resources in
+    the ground, and GreenDelta scores each in `Resource use, minerals and
+    metals` exactly as the JRC scores the element -- `Potassium I` 1.6e-8,
+    `Potassium` 1.6e-8 -- while EF 3.1 has no ion among its ground resources.
+    Read as ions, they minted 26 ion flows in the ground that only openLCA fed
+    (#380).  Its `Sodium` ships the sodium ion's number, and reached the ion
+    the same way.
+
+    Matching evidence only, as :func:`element_number_set_aside`: the name the
+    row is matched under becomes the element, the ion's spellings leave its
+    labels, and a number that is not the element's is set aside.  What the
+    vendor shipped stays on ``shipped_name``.  Resources taken from water are
+    not covered: ecoinvent ships dissolved `Potassium I` and `Sodium I` there
+    under the ion's own number, and means the ion.
+    """
+    if not is_ground_resource(row):
+        return row
+    species = parse_species(row.name)
+    if species is None:
+        return row
+    element_cas = ELEMENT_CAS.get(species.element, "")
+    cas = (row.cas or "").strip()
+    if species.kind == "bare" and cas in ("", element_cas):
+        return row
+    element = species.element
+    labels = [element, *[
+        label for label in row.labels
+        if label != element and not _names_an_ion(label)
+    ]]
+    kept = cas == element_cas
+    return replace(
+        row,
+        name=element,
+        shipped_name=row.shipped_name or row.name,
+        labels=labels,
+        cas=cas if kept else "",
+        ec=row.ec if kept else "",
+        number_set_aside="" if kept else cas,
+        read_as_element=True,
+    )
+
+
+def _names_an_ion(label: str) -> bool:
+    species = parse_species(label)
+    return species is not None and species.kind != "bare"
+
+
 def species_object_label(species: SpeciesName) -> str:
     """The label this list spells *species* with.
 

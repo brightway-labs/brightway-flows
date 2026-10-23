@@ -1156,7 +1156,7 @@ def resolve_flow_object(
         if candidate_ids:
             basis = "label"
             basis_value = "; ".join(sorted(set(labels_used))[:3])
-            if row.number_set_aside:
+            if row.number_set_aside and not row.read_as_element:
                 # The row's name states an ion and its number was the bare
                 # element's, so the number was set aside before this route
                 # ran (`merge.species.element_number_set_aside`, #380).  Said
@@ -1255,7 +1255,7 @@ def resolve_flow_object(
         unmatched_basis: dict[str, str] = {}
         if refused and refused == label_hits:
             unmatched_basis = {"basis": ION_ELEMENT_REFUSED_BASIS}
-        elif row.number_set_aside:
+        elif row.number_set_aside and not row.read_as_element:
             # Nothing is called what the ion is, so the row mints it -- with no
             # number, since the one it shipped was the element's (#380).
             unmatched_basis = {"basis": ELEMENT_NUMBER_SET_ASIDE_BASIS}

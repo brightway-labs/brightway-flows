@@ -24,6 +24,7 @@ from brightway_flows.sources import resolve_source_list
 from brightway_flows.merge.species import (
     ELEMENT_NUMBER_SET_ASIDE_BASIS,
     element_number_set_aside,
+    ground_resource_is_the_element,
 )
 from brightway_flows.merge.state import MergeAccumulator, MergeIndexes, SourceRow
 
@@ -424,6 +425,20 @@ class TheElementsNumberOnAnIonNameTestCase(unittest.TestCase):
         row = element_number_set_aside(_row("Cadmium II", cas="22537-48-0"))
         resolution = _resolve(row, self._indexes())
         self.assertEqual((resolution.flow_object_id, resolution.basis), (self.CADMIUM_ION, "cas"))
+
+    def test_taken_from_the_ground_the_row_reaches_the_metal(self):
+        """A resource in the ground is never an ion (ruled 23 October 2026):
+        both rules run, and the metal's number reaches the metal."""
+        row = dataclasses.replace(_row("Cadmium II", cas="7440-43-9"), context_normalized=("Resource", "Ground"))
+        row = element_number_set_aside(ground_resource_is_the_element(row))
+        resolution = _resolve(row, self._indexes())
+        self.assertEqual((resolution.flow_object_id, resolution.basis), (self.CADMIUM, "cas"))
+
+    def test_taken_from_the_ground_under_the_ions_number_the_row_reaches_the_metal(self):
+        row = dataclasses.replace(_row("Cadmium II", cas="22537-48-0"), context_normalized=("Resource", "Ground"))
+        row = element_number_set_aside(ground_resource_is_the_element(row))
+        resolution = _resolve(row, self._indexes())
+        self.assertEqual(resolution.flow_object_id, self.CADMIUM)
 
     def test_with_no_ion_to_reach_the_row_mints_one_and_says_why(self):
         row = element_number_set_aside(_row("Cadmium II", cas="7440-43-9"))

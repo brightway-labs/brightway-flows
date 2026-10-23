@@ -479,6 +479,145 @@
         "label": "Cadmium(2+)"
       },
       "comment": "Where openLCA's 38 `Cadmium II` rows meet ecoinvent's 19 and BAFU's one."
+    },
+    {
+      "id": "0380-openlca-potassium-i-from-the-ground-is-the-metal",
+      "issue": 380,
+      "title": "openLCA's `Potassium I` taken from the ground reaches `Potassium`, not `Potassium(1+)`",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "38a037a3-47a7-4df7-a986-84e60f50f62e"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Potassium",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "A metal taken from the ground is the element, whatever its name says about charge. GreenDelta scores this row 1.6e-08 in `Resource use, minerals and metals`, which is exactly what the JRC states for `Potassium` in the ground, and EF 3.1 has no ion among its ground resources. On the six-list build of 22 October 2026 (commit 5a343f5) the #380 rule sent it to `Potassium(1+)` in `Resource → Ground`, a flow only openLCA's rows fed; 35 openLCA rows were placed that way. Ruled by the project owner on 23 October 2026: a resource in the ground is never an ion. Resources in water are not covered, because ecoinvent ships dissolved ions there under the ion's own number."
+    },
+    {
+      "id": "0380-openlca-cadmium-ii-from-the-ground-is-the-metal",
+      "issue": 380,
+      "title": "openLCA's `Cadmium II` taken from the ground reaches `Cadmium`, not `Cadmium(2+)`",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "fb3fed88-dc84-4f40-be2d-757a002bcfa5"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Cadmium",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "A metal taken from the ground is the element, whatever its name says about charge. GreenDelta scores this row 0.157 in `Resource use, minerals and metals`, which is exactly what the JRC states for `Cadmium` in the ground, and EF 3.1 has no ion among its ground resources. On the six-list build of 22 October 2026 (commit 5a343f5) the #380 rule sent it to `Cadmium(2+)` in `Resource → Ground`, a flow only openLCA's rows fed; 35 openLCA rows were placed that way. Ruled by the project owner on 23 October 2026: a resource in the ground is never an ion. Resources in water are not covered, because ecoinvent ships dissolved ions there under the ion's own number."
+    },
+    {
+      "id": "0380-openlca-manganese-ii-from-the-ground-is-the-metal",
+      "issue": 380,
+      "title": "openLCA's `Manganese II` taken from the ground reaches `Manganese`, not `Manganese(2+)`",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "2737dccb-d7b8-4002-a3f5-1ab6e1c6515e"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Manganese",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "A metal taken from the ground is the element, whatever its name says about charge. GreenDelta scores this row 2.54e-06 in `Resource use, minerals and metals`, which is exactly what the JRC states for `Manganese` in the ground, and EF 3.1 has no ion among its ground resources. On the six-list build of 22 October 2026 (commit 5a343f5) the #380 rule sent it to `Manganese(2+)` in `Resource → Ground`, a flow only openLCA's rows fed; 35 openLCA rows were placed that way. Ruled by the project owner on 23 October 2026: a resource in the ground is never an ion. Resources in water are not covered, because ecoinvent ships dissolved ions there under the ion's own number."
+    },
+    {
+      "id": "0380-no-potassium-1plus-in-the-ground",
+      "issue": 380,
+      "title": "No `Potassium(1+)` flow is published as a resource in the ground",
+      "subject": {
+        "kind": "flow",
+        "name": "Potassium(1+)",
+        "context_display": "Resource → Ground"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "On the six-list build of 22 October 2026 (commit 5a343f5) one was, fed only by openLCA rows the #380 rule placed there (or, for sodium, by the ion's number on a row named `Sodium`)."
+    },
+    {
+      "id": "0380-no-sodium-1plus-in-the-ground",
+      "issue": 380,
+      "title": "No `Sodium(1+)` flow is published as a resource in the ground",
+      "subject": {
+        "kind": "flow",
+        "name": "Sodium(1+)",
+        "context_display": "Resource → Ground"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "On the six-list build of 22 October 2026 (commit 5a343f5) one was, fed only by openLCA rows the #380 rule placed there (or, for sodium, by the ion's number on a row named `Sodium`)."
+    },
+    {
+      "id": "0380-no-manganese-2plus-in-the-ground",
+      "issue": 380,
+      "title": "No `Manganese(2+)` flow is published as a resource in the ground",
+      "subject": {
+        "kind": "flow",
+        "name": "Manganese(2+)",
+        "context_display": "Resource → Ground"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "On the six-list build of 22 October 2026 (commit 5a343f5) one was, fed only by openLCA rows the #380 rule placed there (or, for sodium, by the ion's number on a row named `Sodium`)."
+    },
+    {
+      "id": "0380-no-cadmium-2plus-in-the-ground",
+      "issue": 380,
+      "title": "No `Cadmium(2+)` flow is published as a resource in the ground",
+      "subject": {
+        "kind": "flow",
+        "name": "Cadmium(2+)",
+        "context_display": "Resource → Ground"
+      },
+      "expect": {
+        "count": 0
+      },
+      "comment": "On the six-list build of 22 October 2026 (commit 5a343f5) one was, fed only by openLCA rows the #380 rule placed there (or, for sodium, by the ion's number on a row named `Sodium`)."
+    },
+    {
+      "id": "0380-openlca-sodium-from-the-ground-is-the-metal",
+      "issue": 380,
+      "title": "openLCA's `Sodium` taken from the ground reaches `Sodium`, though it ships the ion's number",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "9e4dae0a-e9a5-4ebe-aed7-3a383fcfe391"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Sodium",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "Ships 17341-25-2, the sodium ion's number, under the bare name and filed as a resource. On the six-list build of 22 October 2026 (commit 5a343f5) the number route sent it to `Sodium(1+)` in the ground, beside ecoinvent's dissolved `Sodium I` in water: one of the seven substances `0450-no-substance-is-published-in-two-places` counted."
+    },
+    {
+      "id": "0380-the-emission-is-still-the-ion",
+      "issue": 380,
+      "title": "openLCA's `Cadmium II` emitted to agricultural soil under the metal's number still reaches `Cadmium(2+)`",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Cadmium II",
+        "context": [
+          "Emission to soil",
+          "agricultural"
+        ]
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Cadmium(2+)"
+      },
+      "comment": "The other half of the ground-resource rule: only resources in the ground are read as the element. An emission keeps the ion its name states."
     }
   ]
 }

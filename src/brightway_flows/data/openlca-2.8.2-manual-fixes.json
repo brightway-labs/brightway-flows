@@ -556,6 +556,70 @@
         "172912-75-3"
       ],
       "comment": "`Ethane, tribromofluoro-` is EF 3.1's `Tribromofluoroethane`, 172912-75-3. One of six rows the package ships under Stepwise 2006's SimaPro spelling -- the parent in front, the substituents after the comma -- with no registry number. Stepwise's rows of these exact names reach EF 3.1's substances through the SimaPro name rewriting that runs for SimaPro-shaped lists only (#285), and a package that copies the spelling without the number gets neither, so on the six-list build of 20 October 2026 with the first corrections (merge run `0c16f168`) each minted a substance of its own under the SimaPro name, which the read-only lookup then chose for Stepwise's rows. The number is the one Stepwise's row reaches EF's substance under; the package's own factor on the row is that substance's GWP."
+    },
+    {
+      "match": {
+        "uuid": "1b8d1b13-8538-11e0-9d78-0800200c9a66",
+        "name": "Nitrogen"
+      },
+      "field": "context",
+      "original_value": [
+        "Resource",
+        "in ground"
+      ],
+      "new_value": [
+        "Resource",
+        "in air"
+      ],
+      "comment": "Nitrogen as a resource is taken from the air: EF 3.1, ecoinvent, BAFU and AGRIBALYSE all file it there, and so does the package's own `Resource / unspecified` row. This row alone files it in the ground, with dinitrogen's number and no factor in any EF 3.1 category, and on the six-list build of 22 October 2026 (commit 5a343f5) it published dinitrogen in `Resource → Ground` beside the air flow everyone else reaches (`0450-no-substance-is-published-in-two-places`)."
+    },
+    {
+      "match": {
+        "uuid": "393cd19a-9b02-4b51-8127-dd348619d81e",
+        "name": "Helium"
+      },
+      "field": "context",
+      "original_value": [
+        "Resource",
+        "in air"
+      ],
+      "new_value": [
+        "Resource",
+        "in ground"
+      ],
+      "comment": "Helium is extracted from natural gas: EF 3.1, ecoinvent, BAFU and the package's three other helium rows take it from the ground. This row alone files it in the air, with no factor in any EF 3.1 category, and on the six-list build of 22 October 2026 (commit 5a343f5) it published helium in `Resource → Air` beside the ground flow (`0450-no-substance-is-published-in-two-places`)."
+    },
+    {
+      "match": {
+        "uuid": "adf02c21-da6a-32ba-9c75-038c952270db",
+        "name": "Energy, from peat"
+      },
+      "field": "context",
+      "original_value": [
+        "Resource",
+        "biotic"
+      ],
+      "new_value": [
+        "Resource",
+        "in ground"
+      ],
+      "comment": "The megajoule fuel peat, which this list publishes in `Resource → Ground` (`0450-peat-is-only-a-ground-resource`); the package's other two `Energy, from peat` rows already reach it there. GreenDelta scores this row 1.0 in `Resource use, fossils`, as it scores the fuel. Filed biotic, on the six-list build of 22 October 2026 (commit 5a343f5) it published a biotic megajoule peat that carried that factor while the ground flow carried the JRC's -- the split `0450-no-split-has-the-factors-on-one-side` counts, and `0856-the-fuel-peat-has-no-biotic-copy`. The kilogram `Peat` row was re-filed the same way above."
+    },
+    {
+      "match": {
+        "uuid": "75625969-b305-3a79-a8cb-b69adf1ce153",
+        "name": "Energy, from hydrogen"
+      },
+      "field": "context",
+      "original_value": [
+        "Resource",
+        "in water"
+      ],
+      "new_value": [
+        "Resource",
+        "unspecified"
+      ],
+      "comment": "No other list ships `Energy, from hydrogen`, and the package files it twice: `Resource / unspecified` and `Resource / in water`, neither with a factor in any EF 3.1 category. On the six-list build of 22 October 2026 (commit 5a343f5) that minted the substance in two places, `Resource → Ground` (where this list reads the package's unspecified resources) and `Resource → Water`. The energy content of hydrogen is not drawn from a water body, so this row joins its sibling."
     }
   ]
 }

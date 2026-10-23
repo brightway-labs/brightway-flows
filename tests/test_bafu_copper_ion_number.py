@@ -1,15 +1,17 @@
-"""BAFU's one numbered `Copper ion` row loses the metal's number.
+"""BAFU's one numbered `Copper ion` row has the metal's number set aside.
 
 #183.  BAFU ships `Copper ion` three times and writes 7440-50-8 -- copper the
 metal -- on the `high. pop.` air row alone.  The name says ion, the number says
 metal, and BAFU ships plain `Copper` under the same number in the same
 compartment, so the number is the half that is wrong.  The other two rows carry
-no number and land by name on `Copper, Ion`; with the number removed this one
+no number and land by name on `Copper, Ion`; with the number set aside this one
 joins them.
 
-Two halves.  The number comes off the one row, and BAFU's plain `Copper` rows,
-which carry the same number and mean the metal, are not touched -- the fix is
-keyed on the uuid, and this is what says so if it is ever loosened to the name.
+This was a manual fix keyed on the row's uuid until the #380 rule, which sets
+the bare element's number aside on every list's ion names, made it redundant
+(removed 23 October 2026).  Two halves still: the number is set aside on the
+one row, and BAFU's plain `Copper` rows, which carry the same number and mean
+the metal, are not touched.
 """
 
 from __future__ import annotations
@@ -19,6 +21,8 @@ import unittest
 
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 from brightway_flows.manual_fixes import apply_manual_fixes
+from brightway_flows.merge.species import element_number_set_aside
+from brightway_flows.merge.state import SourceRow
 
 FIXES = PACKAGE_DATA_DIR / "bafu-2026-v1-manual-fixes.json"
 
@@ -61,14 +65,29 @@ def _fixed():
     return {row["uuid"]: row for row in rows}
 
 
-class CopperIonNumberTestCase(unittest.TestCase):
-    def test_the_metal_number_comes_off_the_ion_row(self):
-        self.assertEqual(_fixed()[COPPER_ION_HIGH_POP]["cas_numbers"], [])
+def _matched(row):
+    """The row as the merge's ion rule reads it (`merge/rows.py`)."""
+    numbers = row.get("cas_numbers") or []
+    return element_number_set_aside(SourceRow(
+        uuid=row["uuid"], name=row["name"], synonyms=[], labels=[row["name"]],
+        context=row["context"], context_iri="", context_normalized=(),
+        unit=row["unit"], unit_iri="", cas=numbers[0] if numbers else "", ec="",
+    ))
 
-    def test_the_row_then_reads_as_carrying_no_number(self):
-        """`merge/rows.py` reads `cas_numbers[0]`; an empty list is no number,
-        which is what its two siblings ship and what puts it on the name."""
-        self.assertFalse(_fixed()[COPPER_ION_HIGH_POP]["cas_numbers"])
+
+class CopperIonNumberTestCase(unittest.TestCase):
+    def test_no_fix_rewrites_the_ion_row(self):
+        """The rule decides it now; a fix as well would be two statements of one ruling."""
+        self.assertEqual(_fixed()[COPPER_ION_HIGH_POP]["cas_numbers"], [COPPER_METAL])
+
+    def test_the_metal_number_is_set_aside_on_the_ion_row(self):
+        row = _matched(_fixed()[COPPER_ION_HIGH_POP])
+        self.assertEqual((row.cas, row.number_set_aside), ("", COPPER_METAL))
+        self.assertEqual(row.labels[0], "Copper, ion")
+
+    def test_the_plain_copper_row_is_matched_by_the_metal_number(self):
+        row = _matched(_fixed()[COPPER_HIGH_POP])
+        self.assertEqual((row.cas, row.number_set_aside), (COPPER_METAL, ""))
 
     def test_the_plain_copper_row_keeps_the_metal_number(self):
         self.assertEqual(_fixed()[COPPER_HIGH_POP]["cas_numbers"], [COPPER_METAL])

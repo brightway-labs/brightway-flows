@@ -49,7 +49,10 @@ from brightway_flows.domain.flow import Flow, ProvidedValues
 from brightway_flows.domain.units import build_units_index, resolve_unit_notation
 from brightway_flows.merge.matching import _source_labels
 from brightway_flows.domain.registry_numbers import normalize_cas_number
-from brightway_flows.merge.species import element_number_set_aside
+from brightway_flows.merge.species import (
+    element_number_set_aside,
+    ground_resource_is_the_element,
+)
 from brightway_flows.merge.state import SourceRow
 from brightway_flows.pipeline.engine import apply_transformers
 from brightway_flows.filesystem import SIMAPRO_LINEAGE_FIXES_FILEPATH
@@ -681,8 +684,10 @@ def source_row(
 
     # A name that states an ion beside the bare element's own number is read
     # as the ion here exactly as the merge reads it (#380), so a caller holding
-    # openLCA's `Cadmium II` under 7440-43-9 gets the answer the build gave it.
-    return element_number_set_aside(SourceRow(
+    # openLCA's `Cadmium II` under 7440-43-9 gets the answer the build gave it;
+    # and a metal taken from the ground is read as the element, as the merge
+    # reads it.
+    return element_number_set_aside(ground_resource_is_the_element(SourceRow(
         uuid=QUERY_UUID,
         name=flow_label_value(flow) or (flow.provided.name or ""),
         synonyms=list(flow.provided.synonyms),
@@ -694,7 +699,7 @@ def source_row(
         unit_iri=unit_iri,
         cas=str(flow.cas_numbers[0] if flow.cas_numbers else "").strip(),
         ec=str(flow.ec_numbers[0] if flow.ec_numbers else "").strip(),
-    ))
+    )))
 
 
 def units_index() -> dict[str, Any]:

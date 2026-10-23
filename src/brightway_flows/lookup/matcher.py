@@ -673,6 +673,8 @@ class FlowMatcher:
         details["flow_object_candidate_count"] = 1
         if row.number_set_aside:
             details["number_set_aside"] = row.number_set_aside
+        if row.read_as_element:
+            details["read_as_element"] = True
         details["source_context_original"] = list(row.context)
         details["source_context_normalized"] = list(context.strings)
         details["source_context_used_for_matching"] = selector_context

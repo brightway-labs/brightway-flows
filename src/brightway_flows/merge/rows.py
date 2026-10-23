@@ -76,8 +76,10 @@ from brightway_flows.merge.report import (
     UnmatchedRow,
 )
 from brightway_flows.merge.species import (
+    GROUND_RESOURCE_ELEMENT_BASIS,
     canonicalized_for_matching,
     element_number_set_aside,
+    ground_resource_is_the_element,
 )
 from brightway_flows.merge.state import (
     MatchAttempt,
@@ -1060,9 +1062,12 @@ def match_source_rows(
             parsed_row = canonicalized_for_matching(
                 parsed_row, indexes.canonical_identities
             )
-        # Every list: a name that states an ion beside the bare element's own
-        # number is the ion, and the number is set aside (#380).
-        parsed_row = element_number_set_aside(parsed_row)
+        # Every list: a metal taken from the ground is the element, whatever
+        # its name or number says about charge; and elsewhere, a name that
+        # states an ion beside the bare element's own number is the ion, and
+        # the number is set aside (#380).  The first runs first, and leaves a
+        # bare name the second does not touch.
+        parsed_row = element_number_set_aside(ground_resource_is_the_element(parsed_row))
 
         prepared_rows = admitted_prepared_rows(
             prepared_by_source_uuid.get(source_uuid, []),
@@ -1132,7 +1137,11 @@ def match_source_rows(
             selected=selected,
             selector_reason=selector_reason,
             selector_details=selector_details,
-            basis=resolution.basis,
+            basis=(
+                "+".join(filter(None, (resolution.basis, GROUND_RESOURCE_ELEMENT_BASIS)))
+                if parsed_row.read_as_element
+                else resolution.basis
+            ),
             basis_value=resolution.basis_value,
         )
         if selected is None:

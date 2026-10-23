@@ -439,6 +439,69 @@
         "target_unit": "MJ"
       },
       "comment": "EF 3.1 accounts fossil and nuclear energy carriers by energy content rather than by mass, deliberately: the target carries `Resource use, fossils`, which is defined per megajoule, and BAFU records the same extraction as a mass. The substance is the same and only the quantity basis differs.\n\n`unit_mismatch: False` is the claim, and it is the one worth making. A kilogram row reaching a megajoule flow *with a stated conversion* is not a unit crossing the merge has to report -- the factor resolves it, and the row lands carrying the conversion rather than carrying a disagreement. 9.76 MJ/kg, the IPCC 2006 Guidelines Vol. 2 Table 1.2 default for peat, stated in `bafu-2026-v1-match-overrides.json` and published as `qudt:conversionMultiplier`. Without it the row would land on a per-megajoule factor as though one kilogram were one megajoule, understating peat by about a factor of ten -- which is what an unconverted crossing means and why #78 counts them.\n\nSo this claim fails in both directions that matter: if the conversion is dropped the row starts reporting a mismatch, and if the row is sent somewhere else `target_name` and `target_unit` catch it."
+    },
+    {
+      "id": "0450-openlca-nitrogen-in-the-ground-is-from-air",
+      "issue": 450,
+      "title": "openLCA's `Nitrogen` filed in `Resource / in ground` reaches `Dinitrogen` in `Resource → Air`",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "1b8d1b13-8538-11e0-9d78-0800200c9a66"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Dinitrogen",
+        "target_context_display": "Resource → Air"
+      },
+      "comment": "Every other list -- EF, ecoinvent, BAFU and AGRIBALYSE -- takes nitrogen from the air, and so does openLCA's own `Resource / unspecified` row. Filed in the ground, this row alone published dinitrogen in a second place. Re-filed in `openlca-2.8.2-manual-fixes.json`; on the six-list build of 22 October 2026 (commit 5a343f5) it was in two places."
+    },
+    {
+      "id": "0450-openlca-helium-in-air-is-from-the-ground",
+      "issue": 450,
+      "title": "openLCA's `Helium` filed in `Resource / in air` reaches `Helium` in `Resource → Ground`",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "393cd19a-9b02-4b51-8127-dd348619d81e"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Helium",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "Helium is extracted from natural gas; EF, ecoinvent, BAFU and openLCA's other three helium rows take it from the ground. Filed in air, this row alone published helium in a second place. Re-filed in `openlca-2.8.2-manual-fixes.json`; on the six-list build of 22 October 2026 (commit 5a343f5) it was in two places."
+    },
+    {
+      "id": "0450-openlca-biotic-peat-energy-is-the-ground-fuel",
+      "issue": 450,
+      "title": "openLCA's `Energy, from peat` filed in `Resource / biotic` reaches `Peat` in `Resource → Ground`",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "adf02c21-da6a-32ba-9c75-038c952270db"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Peat",
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "The megajoule fuel peat is a ground resource (`0450-peat-is-only-a-ground-resource`); openLCA's other two `Energy, from peat` rows already reach it. This row alone published it as biotic, carrying GreenDelta's 1.0 in `Resource use, fossils` -- the split with the factors on one side. Also `0856-the-fuel-peat-has-no-biotic-copy`. Re-filed in `openlca-2.8.2-manual-fixes.json`; on the six-list build of 22 October 2026 (commit 5a343f5) it was in two places."
+    },
+    {
+      "id": "0450-openlca-hydrogen-energy-is-one-flow",
+      "issue": 450,
+      "title": "openLCA's two `Energy, from hydrogen` rows reach one flow, in the ground",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "name": "Energy, from hydrogen"
+      },
+      "expect": {
+        "target_count": 1,
+        "target_context_display": "Resource → Ground"
+      },
+      "comment": "No other list ships it. openLCA files one row `Resource / unspecified` and one `Resource / in water`; on the six-list build of 22 October 2026 (commit 5a343f5) that published the substance in two places. The water filing is re-filed into the ground, where the list's unspecified resources are read."
     }
   ]
 }

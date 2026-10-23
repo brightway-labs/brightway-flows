@@ -305,71 +305,6 @@
     },
     {
       "match": {
-        "name": "Cadmium II"
-      },
-      "field": "cas_numbers",
-      "original_value": [
-        "7440-43-9"
-      ],
-      "new_value": [
-        "22537-48-0"
-      ],
-      "comment": "BAFU ships one `Cadmium II` row -- emissions to air, high population, kg -- and gives it 7440-43-9, the registry number for cadmium the metal. The name states the +2 oxidation state and the number contradicts it, and the name is the half that is right. BAFU uses the roman numeral the way every list here does -- its `Chromium III` carries the trivalent ion's own 16065-83-1 and lands on `Chromium(3+)` -- and it ships a plain `Cadmium` row under 7440-43-9 in this very compartment, so read as the metal this row is a second name for a substance BAFU already lists once, which no vendor does on purpose. ecoinvent ships the same name fourteen times under 22537-48-0, the number for the cadmium(2+) ion, and those rows reach `Cadmium(2+)`; this row reached `Cadmium` instead, so one name was two substances depending on which list wrote it. The number is read off the substance the list already publishes and ecoinvent's rows already reach, not typed from memory.\n\nThis replaces a number the vendor stated rather than filling a blank, which is a stronger claim than #127's fills and the shape the EF `vanadium (v)` correction already uses (15121-26-3, the divalent ion, replaced by 22537-31-1; #49): `original_value` records what BAFU wrote, and keeps the second pass over the fixes a quiet no-op rather than a stale-fix warning. Matched on the name because the number is the field being changed (#237). (#146)"
-    },
-    {
-      "match": {
-        "name": "Zinc II"
-      },
-      "field": "cas_numbers",
-      "original_value": [
-        "7440-66-6"
-      ],
-      "new_value": [
-        "23713-49-7"
-      ],
-      "comment": "BAFU ships one `Zinc II` row -- emissions to air, high population, kg -- and gives it 7440-66-6, the registry number for zinc the metal. The name states the +2 oxidation state and the number contradicts it, and the name is the half that is right. BAFU uses the roman numeral the way every list here does -- its `Chromium III` carries the trivalent ion's own 16065-83-1 and lands on `Chromium(3+)` -- and it ships a plain `Zinc` row under 7440-66-6 in this very compartment, so read as the metal this row is a second name for a substance BAFU already lists once, which no vendor does on purpose. ecoinvent ships the same name fourteen times under 23713-49-7, the number for the zinc(2+) ion, and those rows reach `Zinc(2+)`; this row reached `Zinc` instead, so one name was two substances depending on which list wrote it. The number is read off the substance the list already publishes and ecoinvent's rows already reach, not typed from memory.\n\nThis replaces a number the vendor stated rather than filling a blank, which is a stronger claim than #127's fills and the shape the EF `vanadium (v)` correction already uses (15121-26-3, the divalent ion, replaced by 22537-31-1; #49): `original_value` records what BAFU wrote, and keeps the second pass over the fixes a quiet no-op rather than a stale-fix warning. Matched on the name because the number is the field being changed (#237). (#146)"
-    },
-    {
-      "match": {
-        "name": "Mercury II"
-      },
-      "field": "cas_numbers",
-      "original_value": [
-        "7439-97-6"
-      ],
-      "new_value": [
-        "14302-87-5"
-      ],
-      "comment": "BAFU ships one `Mercury II` row -- emissions to air, high population, kg -- and gives it 7439-97-6, the registry number for mercury the metal. The name states the +2 oxidation state and the number contradicts it, and the name is the half that is right. BAFU uses the roman numeral the way every list here does -- its `Chromium III` carries the trivalent ion's own 16065-83-1 and lands on `Chromium(3+)` -- and it ships a plain `Mercury` row under 7439-97-6 in this very compartment, so read as the metal this row is a second name for a substance BAFU already lists once, which no vendor does on purpose. ecoinvent ships the same name fourteen times under 14302-87-5, the number for the mercury(2+) ion, and those rows reach `Mercury(2+)`; this row reached `Mercury` instead, so one name was two substances depending on which list wrote it. The number is read off the substance the list already publishes and ecoinvent's rows already reach, not typed from memory.\n\nThis replaces a number the vendor stated rather than filling a blank, which is a stronger claim than #127's fills and the shape the EF `vanadium (v)` correction already uses (15121-26-3, the divalent ion, replaced by 22537-31-1; #49): `original_value` records what BAFU wrote, and keeps the second pass over the fixes a quiet no-op rather than a stale-fix warning. Matched on the name because the number is the field being changed (#237). (#146)"
-    },
-    {
-      "match": {
-        "name": "Lead II"
-      },
-      "field": "cas_numbers",
-      "original_value": [
-        "7439-92-1"
-      ],
-      "new_value": [
-        "14280-50-3"
-      ],
-      "comment": "BAFU ships one `Lead II` row -- emissions to air, high population, kg -- and gives it 7439-92-1, the registry number for lead the metal. The name states the +2 oxidation state and the number contradicts it, and the name is the half that is right. BAFU uses the roman numeral the way every list here does -- its `Chromium III` carries the trivalent ion's own 16065-83-1 and lands on `Chromium(3+)` -- and it ships a plain `Lead` row under 7439-92-1 in this very compartment, so read as the metal this row is a second name for a substance BAFU already lists once, which no vendor does on purpose. ecoinvent ships the same name fourteen times under 14280-50-3, the number for the lead(2+) ion, and those rows reach `Lead(2+)`; this row reached `Lead` instead, so one name was two substances depending on which list wrote it. The number is read off the substance the list already publishes and ecoinvent's rows already reach, not typed from memory.\n\nThis replaces a number the vendor stated rather than filling a blank, which is a stronger claim than #127's fills and the shape the EF `vanadium (v)` correction already uses (15121-26-3, the divalent ion, replaced by 22537-31-1; #49): `original_value` records what BAFU wrote, and keeps the second pass over the fixes a quiet no-op rather than a stale-fix warning. Matched on the name because the number is the field being changed (#237). (#146)"
-    },
-    {
-      "match": {
-        "name": "Nickel II"
-      },
-      "field": "cas_numbers",
-      "original_value": [
-        "7440-02-0"
-      ],
-      "new_value": [
-        "14701-22-5"
-      ],
-      "comment": "BAFU ships one `Nickel II` row -- emissions to air, high population, kg -- and gives it 7440-02-0, the registry number for nickel the metal. The name states the +2 oxidation state and the number contradicts it, and the name is the half that is right. BAFU uses the roman numeral the way every list here does -- its `Chromium III` carries the trivalent ion's own 16065-83-1 and lands on `Chromium(3+)` -- and it ships a plain `Nickel` row under 7440-02-0 in this very compartment, so read as the metal this row is a second name for a substance BAFU already lists once, which no vendor does on purpose. ecoinvent ships the same name fourteen times under 14701-22-5, the number for the nickel(2+) ion, and those rows reach `Nickel(2+)`; this row reached `Nickel` instead, so one name was two substances depending on which list wrote it. The number is read off the substance the list already publishes and ecoinvent's rows already reach, not typed from memory.\n\nThis replaces a number the vendor stated rather than filling a blank, which is a stronger claim than #127's fills and the shape the EF `vanadium (v)` correction already uses (15121-26-3, the divalent ion, replaced by 22537-31-1; #49): `original_value` records what BAFU wrote, and keeps the second pass over the fixes a quiet no-op rather than a stale-fix warning. Matched on the name because the number is the field being changed (#237). (#146)"
-    },
-    {
-      "match": {
         "name": "Carbon dioxide, biogenic"
       },
       "field": "cas_numbers",
@@ -792,15 +727,6 @@
         "7440-66-6"
       ],
       "comment": "BAFU ships `Zinc` in fifteen compartments and means the metal in all of them: thirteen of those rows carry 7440-66-6 alone and reach `Zinc`. This one -- emissions to water, `unspecified` -- carries 23713-49-7 as well, the number for the ion, and the merge reads the first of a row's numbers. The five-digit ionic numbers sort before 7439- and 7440-, so this row reached `Zinc(2+)` while the thirteen beside it reached the element, and one emission of zinc to water was two substances depending on which subcompartment it was written in.\n\nThe two numbers are not two statements BAFU made about this flow. The extraction unions the `CASNumber` of every exchange naming the flow, and BAFU's processes disagree: **159 exchanges write 7440-66-6, 3 write 23713-49-7, and 14 write no number at all**. Keeping the element's number is reading what BAFU wrote rather than overruling it, and it is the choice the extractor was written to expect -- it keeps both numbers on purpose so that a fix here can make it (`integrations/bafu.py`).\n\nThis is #146 in a mirror. There BAFU wrote the metal's number beside a name that states the ion and the name was the half that was right; here BAFU writes the ion's number beside a name that states the element, and the row carries the element's number too -- so this chooses between the row's own two numbers rather than reading a name over a number, and BAFU's own `Zinc II`, which #146 gave 23713-49-7, is untouched. `original_value` records the pair as shipped, which keeps the second pass over the fixes a quiet no-op rather than a stale-fix warning (#237); matched on the uuid because the name names thirteen other rows that are already right. (#168)"
-    },
-    {
-      "match": {
-        "uuid": "32892430-739d-5fde-9a96-441ecc8153f0",
-        "name": "Copper ion"
-      },
-      "field": "cas_numbers",
-      "remove_value": "7440-50-8",
-      "comment": "BAFU ships `Copper ion` on three rows -- emissions to air `high. pop.`, emissions to air `unspecified` and emissions to water `unspecified` -- and this one, the `high. pop.` row, is the only one that carries a registry number: 7440-50-8, which is copper the *metal*. The name says ion and the number says metal, and the name is the half that is right: BAFU ships plain `Copper` under 7440-50-8 in this very compartment, so read as the metal this row is a second BAFU name for a substance BAFU already lists once, which no vendor does on purpose. The other two `Copper ion` rows carry no number and land on `Copper, Ion`, the ion of unstated charge that ecoinvent's fourteen numberless `Copper ion` rows also reach; this row landed on `Copper` beside BAFU's own `Copper` row, so one BAFU name was two substances depending on the subcompartment, and the row whose name is most explicit about being an ion was the one published as the metal.\n\nRemoved rather than replaced, unlike #146's five `X II` rows, because the name states no charge to write a number for: `Copper ion` is the generic ion, the spelling ecoinvent deleted the number from on purpose (merge/species.py), and picking a charge here would be the reinterpretation that rule refuses. With the number gone the row is looked up by its name like its two siblings and joins them. Read off BAFU's own archive: all 38 exchanges naming this row write 7440-50-8, the one `unspecified` air exchange and the ten `unspecified` water exchanges write nothing -- so this is BAFU stating the metal's number consistently on one ion row, not a stray exchange, and it is worth reporting to them. Matched on the uuid because the name names two other rows that are already right. (#183)"
     },
     {
       "match": {

@@ -147,10 +147,16 @@ class SourceRow:
     shipped_name: str = ""
     #: The registry number the row shipped and the merge set aside, because the
     #: row's name states an ion and the number is the bare element's own
-    #: (`merge.species.element_number_set_aside`, #380).  Empty for every other
+    #: (`merge.species.element_number_set_aside`, #380), or because the row is
+    #: a resource in the ground and the number is not its element's
+    #: (`merge.species.ground_resource_is_the_element`).  Empty for every other
     #: row.  `cas` is then empty too: the number is kept here for the record
     #: and consulted by nothing.
     number_set_aside: str = ""
+    #: True where the row is a resource in the ground whose name or number
+    #: stated an ion, and is matched as the element
+    #: (`merge.species.ground_resource_is_the_element`).  Said in the basis.
+    read_as_element: bool = False
 
     @property
     def vendor_name(self) -> str:

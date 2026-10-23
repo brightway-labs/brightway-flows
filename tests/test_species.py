@@ -30,6 +30,7 @@ from brightway_flows.merge.species import (
     _canonical_element,
     canonicalized_for_matching,
     element_number_set_aside,
+    ground_resource_is_the_element,
     load_canonical_identities,
     number_is_the_bare_elements,
     parse_species,
@@ -308,6 +309,80 @@ class ElementNumberSetAsideTestCase(unittest.TestCase):
         for element in sorted(ELEMENTS):
             with self.subTest(element=element):
                 self.assertIn(_canonical_element(element), ELEMENT_CAS)
+
+
+GROUND = ("Resource", "Ground")
+
+
+class GroundResourceIsTheElementTestCase(unittest.TestCase):
+    """A metal taken from the ground is the element, whatever its name or
+    number says about charge (#380, ruled 23 October 2026).  openLCA 2.8.2
+    ships `Potassium I` and `Manganese II` as resources in the ground, and
+    GreenDelta scores each exactly as the JRC scores the element; EF 3.1 has
+    no ion among its ground resources.  The #380 rule had read them as the
+    ion, minting 26 ion flows in the ground that only openLCA fed."""
+
+    def test_an_ion_name_under_the_elements_number_is_the_element(self):
+        out = ground_resource_is_the_element(_row(
+            name="Potassium I", cas="7440-09-7", ec="231-119-8",
+            labels=["Potassium I", "Potassium(1+)"], context_normalized=GROUND))
+        self.assertEqual((out.name, out.cas, out.ec, out.number_set_aside),
+                         ("Potassium", "7440-09-7", "231-119-8", ""))
+        self.assertEqual(out.labels, ["Potassium"])
+        self.assertTrue(out.read_as_element)
+        self.assertEqual(out.shipped_name, "Potassium I")
+
+    def test_the_ions_own_number_is_set_aside(self):
+        out = ground_resource_is_the_element(_row(
+            name="Cadmium II", cas="22537-48-0", ec="245-073-1",
+            labels=["Cadmium II"], context_normalized=GROUND))
+        self.assertEqual((out.name, out.cas, out.ec, out.number_set_aside),
+                         ("Cadmium", "", "", "22537-48-0"))
+
+    def test_a_numberless_ion_name_is_the_element(self):
+        out = ground_resource_is_the_element(_row(
+            name="Vanadium V", cas="", labels=["Vanadium V"], context_normalized=GROUND))
+        self.assertEqual((out.name, out.cas, out.labels), ("Vanadium", "", ["Vanadium"]))
+
+    def test_the_generic_marker_is_the_element(self):
+        out = ground_resource_is_the_element(_row(
+            name="Copper Ion", cas="7440-50-8", labels=["Copper Ion"], context_normalized=GROUND))
+        self.assertEqual((out.name, out.labels), ("Copper", ["Copper"]))
+
+    def test_a_bare_name_under_an_ions_number_is_the_element(self):
+        """openLCA's `Sodium` ships 17341-25-2, the sodium ion's number."""
+        out = ground_resource_is_the_element(_row(
+            name="Sodium", cas="17341-25-2", labels=["Sodium"], context_normalized=GROUND))
+        self.assertEqual((out.name, out.cas, out.number_set_aside), ("Sodium", "", "17341-25-2"))
+        self.assertTrue(out.read_as_element)
+
+    def test_a_bare_name_under_its_own_number_is_left_alone(self):
+        row = _row(name="Sodium", cas="7440-23-5", labels=["Sodium"], context_normalized=GROUND)
+        self.assertIs(ground_resource_is_the_element(row), row)
+
+    def test_a_name_outside_the_family_is_left_alone(self):
+        row = _row(name="Granite", cas="", labels=["Granite"], context_normalized=GROUND)
+        self.assertIs(ground_resource_is_the_element(row), row)
+
+    def test_an_emission_keeps_its_ion(self):
+        """The other half: only resources in the ground are read as the element."""
+        row = _row(name="Cadmium II", cas="22537-48-0", labels=["Cadmium II"],
+                   context_normalized=("Environmental", "Ground", "Agricultural"))
+        self.assertIs(ground_resource_is_the_element(row), row)
+
+    def test_a_dissolved_ion_taken_from_water_keeps_its_ion(self):
+        """ecoinvent's `Potassium I` taken from water ships the ion's own
+        number and means the dissolved ion; the rule is for the ground only."""
+        row = _row(name="Potassium I", cas="24203-36-9", labels=["Potassium I"],
+                   context_normalized=("Resource", "Water"))
+        self.assertIs(ground_resource_is_the_element(row), row)
+
+    def test_the_ion_rule_then_leaves_the_element_alone(self):
+        """The two rules run in turn; once the ground rule has read the row as
+        the element, the #380 rule finds a bare name and does nothing."""
+        out = element_number_set_aside(ground_resource_is_the_element(_row(
+            name="Lead II", cas="7439-92-1", labels=["Lead II"], context_normalized=GROUND)))
+        self.assertEqual((out.name, out.cas, out.number_set_aside), ("Lead", "7439-92-1", ""))
 
 
 class RedefinitionTestCase(unittest.TestCase):
