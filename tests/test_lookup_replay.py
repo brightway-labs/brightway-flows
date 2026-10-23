@@ -214,6 +214,9 @@ class TheBucketsAreWhatTheyClaimTestCase(_Replay):
             "cas+label+preferred-name", "label+preferred-name",
             "simapro-name-pattern", "historical-name", "preferred-name", "",
             "label+element-number-set-aside",
+            # A resource in the ground read as its element: the name, the
+            # number and the compartment are all the query's own.
+            "cas+ground-resource-is-element", "label+ground-resource-is-element",
         }
         unexpected = sorted(
             {o.basis for o in self.outcomes if bucket_of(o) == EVIDENCE} - allowed
