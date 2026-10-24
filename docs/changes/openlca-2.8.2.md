@@ -212,9 +212,29 @@ polluted water` published a kilogram `Contaminated water` flow in water,
 unspecified, beside BAFU's cubic-metre one in a river. The four names ending in
 `/kg` keep the package's spelling; the unit field is what the build reads.
 
+## Carbon released when land changes use
+
+ecoinvent books the carbon released when land changes use as `Carbon dioxide,
+from soil or biomass stock`, and the same for carbon monoxide and methane. The
+package ships 17 of these rows, under ecoinvent's uuids and names. ecoinvent's
+own rows reach EF 3.1's `(land use change)` flow of each gas through
+ecoinvent's table, where EF states +1 kg CO2-eq for carbon dioxide. Nothing read
+the phrase on the package's copies, so on the six-list build of 23 October
+2026 (commit 5802a4c) the twelve with a registry number reached the plain gas,
+and the carbon dioxide rows created four carbon dioxide emissions of unstated
+origin in air, which no method characterises. GreenDelta's own +1 for the same
+uuids sat on the land-use-change flows, so the release scored zero through the
+package's rows and +1 through ecoinvent's.
+
+`from soil or biomass stock` is now read as land use change, as BAFU's `land
+transformation` and AGRIBALYSE's `peat oxidation` are, and every one of the 17
+rows reaches the flow ecoinvent's row of the same uuid reaches
+([#435](https://github.com/brightway-labs/brightway-flows/issues/435)). The
+capture, `to soil or biomass stock`, keeps its own reading.
+
 ## Rows sent to a curated target
 
-`openlca-2.8.2-match-overrides.json` names the flow for 29 rows the merge
+`openlca-2.8.2-match-overrides.json` names the flow for 30 rows the merge
 placed wrongly on the first build, each row citing what the package's own
 characterisation factors say it means — the evidence a method package carries
 where an inventory database carries exchanges
@@ -249,6 +269,12 @@ where an inventory database carries exchanges
   spelling; the two rows that are EF's own flows reach it by uuid, and the
   sixteen others minted a second bucket. Each goes to EF's flow in its own
   compartment, or to the flow BAFU's or ecoinvent's row already added there.
+- **`Carbon dioxide, in air`.** ecoinvent's uptake row, under ecoinvent's
+  uuid, goes to EF's biogenic uptake from air, where ecoinvent's own copy,
+  BAFU's three and AGRIBALYSE's two go. `in air` is a compartment, not an
+  origin, so no rule can read it; as shipped, the row created a plain carbon
+  dioxide resource in air that nothing else fed
+  ([#435](https://github.com/brightway-labs/brightway-flows/issues/435)).
 
 One row is kept where the first build put it: the bare `Carbon` in
 `Resource / in ground` (7440-44-0) is scored by the Crustal Scarcity Indicator
@@ -409,6 +435,7 @@ those is ruled on yet.
 | Tribromomethane | `Emission to air / unspecified` | none → 75-25-2 | bromoform, which the package ships twenty times under that name with the number; this one row carries the systematic name alone and bromoform's factor (0.25). As shipped, it minted a second substance |
 | Helium, in natural gas, in ground | `Resource / in ground` | none → 7440-59-7 | ecoinvent's `Helium, in natural gas` under ecoinvent's uuid, copied without the number ecoinvent's table reaches helium with. As shipped, it minted a substance named for a compartment |
 | Propane, Dibromopentafluoro- and five more | `Emission to air / unspecified` | none → 431-78-7, 453-00-9, 460-86-6, 666-25-1, 421-90-9, 172912-75-3 | six rows under Stepwise 2006's SimaPro spellings, copied without the numbers Stepwise's rows reach EF's substances under; the SimaPro name rewriting runs for SimaPro-shaped lists only. As shipped, each minted a substance under the SimaPro name and the lookup sent Stepwise's rows to it |
+| Carbon dioxide, Carbon monoxide and Methane, from soil or biomass stock | air: indoor, and cruise height for the last two | none → 124-38-9, 630-08-0, 74-82-8 | ecoinvent's land-use-change releases under ecoinvent's uuids; the package writes the gas's number on its other rows of these names and leaves it off these five. With it, the phrase is read as land-use change and the rows reach EF's `(land use change)` flow of the gas, as ecoinvent's do; as shipped, each created a `..., From Soil Or Biomass Stock` flow no method characterises ([#435](https://github.com/brightway-labs/brightway-flows/issues/435)) |
 
 One synonym is restored rather than a number corrected: the agricultural-soil
 `Epoxiconazole` row (135319-73-2, ecoinvent's uuid) is the one of the package's

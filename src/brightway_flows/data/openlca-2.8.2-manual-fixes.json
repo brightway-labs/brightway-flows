@@ -620,6 +620,36 @@
         "in ground"
       ],
       "comment": "No other list ships `Energy, from hydrogen`, and the package files it twice: `Resource / unspecified` and `Resource / in water`, neither with a factor in any EF 3.1 category. On the six-list build of 22 October 2026 (commit 5a343f5) that minted the substance in two places, `Resource → Ground` (where this list reads the package's unspecified resources) and `Resource → Water`. The energy content of hydrogen is not drawn from a water body, so this row is filed in the ground, where its sibling is read. Filed `in ground` rather than `unspecified`: the package's unspecified resources are each read by a rule of their own (#381), and a row moved into that compartment has none."
+    },
+    {
+      "match": {
+        "name": "Carbon dioxide, from soil or biomass stock"
+      },
+      "field": "cas_numbers",
+      "new_value": [
+        "124-38-9"
+      ],
+      "comment": "The carbon dioxide released when land changes use, under ecoinvent's uuids and name. 124-38-9 is the gas's own number, which the package writes on its other rows of this name and ecoinvent on all of its. Restored on the indoor row (5188df39), which ships without it: with the number, `from soil or biomass stock` is read as a land-use-change qualifier and narrows the candidates to EF's `(land use change)` flow of the gas; without it the qualified name is an unfamiliar one, and on the six-list build of 23 October 2026 (commit 5802a4c) these rows created `Carbon dioxide, From Soil Or Biomass Stock` flows that no method characterises. The same shape as BAFU's `Carbon dioxide, land transformation` (#136). Matched on the name, so the rows that already carry the number are unaffected. (#435)"
+    },
+    {
+      "match": {
+        "name": "Carbon monoxide, from soil or biomass stock"
+      },
+      "field": "cas_numbers",
+      "new_value": [
+        "630-08-0"
+      ],
+      "comment": "The carbon monoxide released when land changes use, under ecoinvent's uuids and name. 630-08-0 is the gas's own number, which the package writes on its other rows of this name and ecoinvent on all of its. Restored on the indoor and cruise-height rows (05f6e226, e1da7e11), which ship without it: with the number, `from soil or biomass stock` is read as a land-use-change qualifier and narrows the candidates to EF's `(land use change)` flow of the gas; without it the qualified name is an unfamiliar one, and on the six-list build of 23 October 2026 (commit 5802a4c) these rows created `Carbon monoxide, From Soil Or Biomass Stock` flows that no method characterises. The same shape as BAFU's `Carbon dioxide, land transformation` (#136). Matched on the name, so the rows that already carry the number are unaffected. (#435)"
+    },
+    {
+      "match": {
+        "name": "Methane, from soil or biomass stock"
+      },
+      "field": "cas_numbers",
+      "new_value": [
+        "74-82-8"
+      ],
+      "comment": "The methane released when land changes use, under ecoinvent's uuids and name. 74-82-8 is the gas's own number, which the package writes on its other rows of this name and ecoinvent on all of its. Restored on the indoor and cruise-height rows (288c4e8a, ef4566f0), which ship without it: with the number, `from soil or biomass stock` is read as a land-use-change qualifier and narrows the candidates to EF's `(land use change)` flow of the gas; without it the qualified name is an unfamiliar one, and on the six-list build of 23 October 2026 (commit 5802a4c) these rows created `Methane, From Soil Or Biomass Stock` flows that no method characterises. The same shape as BAFU's `Carbon dioxide, land transformation` (#136). Matched on the name, so the rows that already carry the number are unaffected. (#435)"
     }
   ]
 }

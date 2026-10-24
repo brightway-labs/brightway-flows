@@ -48,7 +48,8 @@ class SequestrationFromLandManagementTestCase(unittest.TestCase):
         )
 
     def test_the_release_side_is_not_claimed(self):
-        """`from` is the emission, and it has a flow of its own that means it."""
+        """`from` is the emission, and it has a flow of its own that means it:
+        land-use change, below."""
         for name in (
             "Carbon dioxide, from soil or biomass stock",
             "Carbon monoxide, from soil or biomass stock",
@@ -181,6 +182,48 @@ class PeatOxidationTestCase(unittest.TestCase):
     def test_the_phrase_is_read_as_a_phrase(self):
         """`oxidation` on its own says nothing about where carbon came from."""
         for name in ("Methane, oxidation of peat", "Carbon dioxide, oxidation"):
+            with self.subTest(name=name):
+                self.assertIsNone(detect_origin_qualifier(name))
+
+
+class FromSoilOrBiomassStockTestCase(unittest.TestCase):
+    """ecoinvent's spelling of a land conversion, read wherever it is shipped.
+
+    ecoinvent's own rows reach EF's `(land use change)` flows through its
+    correspondence table and never needed the phrase read.  openLCA ships 17
+    rows under ecoinvent's uuids and names, and with nothing reading it the
+    twelve with a registry number reached the plain gas (six-list build of
+    5802a4c, #435).
+    """
+
+    def test_the_three_names_it_exists_for(self):
+        for name in (
+            "Carbon dioxide, from soil or biomass stock",
+            "Carbon monoxide, from soil or biomass stock",
+            "Methane, from soil or biomass stock",
+        ):
+            with self.subTest(name=name):
+                self.assertEqual(detect_origin_qualifier(name), "land_use_change")
+
+    def test_it_is_case_insensitive(self):
+        self.assertEqual(
+            detect_origin_qualifier("Carbon Dioxide, From Soil Or Biomass Stock"),
+            "land_use_change",
+        )
+
+    def test_the_capture_is_still_sequestration(self):
+        """`to` is the other direction, and keeps its own qualifier."""
+        self.assertEqual(
+            detect_origin_qualifier("Carbon dioxide, to soil or biomass stock"),
+            "sequestration_from_land_management",
+        )
+
+    def test_the_balancing_flows_are_still_not_claimed(self):
+        for name in (
+            "Carbon, organic, in soil or biomass stock",
+            "Carbon, organic, increase in soil or biomass stock",
+            "Carbon, organic, decrease in soil or biomass stock",
+        ):
             with self.subTest(name=name):
                 self.assertIsNone(detect_origin_qualifier(name))
 

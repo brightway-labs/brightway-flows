@@ -338,6 +338,17 @@
       "target_uuid": "08a91e70-3ddc-11dd-97f8-0050c2490048",
       "target_name": "Calcium Sulfate",
       "comment": "Anhydrite is anhydrous calcium sulfate, and 14798-04-0 is its own registry number, which EF 3.1 does not carry: EF's `anhydrite` is 7778-18-9, the number of calcium sulfate the compound, and #597 reads the two as one substance, published as `Calcium Sulfate`, which ecoinvent 3.8's and AGRIBALYSE's anhydrite rows reach by name. The package's two rows carry the mineral's number and the bare name, which is an alternative label on a numbered substance and so refused, and on the six-list build of 20 October 2026 with the first corrections (merge run `0c16f168`) they minted a second substance, `Anhydrite`, which the lookup then chose for the other lists' rows. Filed under `Resource / land`, which the list's compartment rules read as a ground resource for a mineral."
+    },
+    {
+      "source_uuid": "cc6a1abb-b123-4ca6-8f16-38209df609be",
+      "source_name": "Carbon dioxide, in air",
+      "source_context": [
+        "Resource",
+        "in air"
+      ],
+      "target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e",
+      "target_name": "carbon dioxide (biogenic)",
+      "comment": "Atmospheric carbon dioxide taken up by growing biomass, shipped under ecoinvent's uuid and name. ecoinvent's row of this uuid reaches EF's biogenic uptake from air through its table, BAFU's three by override (#135) and AGRIBALYSE's two by rule, and the package's own unqualified resource row `Carbon dioxide` (8ffbf5bb) is sent here above. EF characterises it 0, and GreenDelta states no EF 3.1 factor for it. On the six-list build of 23 October 2026 (commit 5802a4c) it reached carbon dioxide by its number, `in air` being a compartment and not a qualifier, and created a plain `Carbon Dioxide` resource in air that nothing else fed. A curated target for the reason BAFU's is: no rule can read `in air` as an origin. (#435)"
     }
   ]
 }

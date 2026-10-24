@@ -149,6 +149,24 @@ _LAND_USE_CHANGE = re.compile(
 #: carries it; where the vocabulary has no flow to move a row to, the row is
 #: stated rather than derived.
 _PEAT_OXIDATION = re.compile(r"\bpeat[\s-]oxidation\b", re.IGNORECASE)
+#: ecoinvent's own spelling of the same release: `Carbon dioxide`, `Carbon
+#: monoxide` and `Methane, from soil or biomass stock`, which ecoinvent's
+#: correspondence table sends to EF's `(land use change)` flow of each gas.
+#: ecoinvent's rows never needed the phrase read, because the table answers
+#: them first.  openLCA LCIA Methods 2.8.2 ships seventeen of them under
+#: ecoinvent's uuids and names, with no table, and on the six-list build of
+#: 5802a4c the twelve carrying a registry number reached the plain gas -- four
+#: carbon dioxide emissions of unstated origin in air that nothing else fed and
+#: no method characterised -- while GreenDelta's +1 for the same uuids sat on
+#: the land-use-change flows (#435).
+#:
+#: Measured before adding: across EF 3.1, ecoinvent 3.8 and 3.12, BAFU
+#: 2026-v1, Stepwise 2006, AGRIBALYSE 3.2 and openLCA 2.8.2, the phrase occurs
+#: in the three names above and nowhere else -- ecoinvent's and openLCA's rows
+#: of them only.  `to soil or biomass stock` is the capture, and is read above.
+_FROM_SOIL_OR_BIOMASS_STOCK = re.compile(
+    r"\bfrom soil or biomass stock\b", re.IGNORECASE
+)
 _RESOURCE_CORRECTION = re.compile(r"\bresource[\s-]correction\b", re.IGNORECASE)
 #: ecoinvent's `Carbon dioxide, to soil or biomass stock`: carbon entering a
 #: long-lived land carbon pool.  Not land *use change* -- 102 of the 269
@@ -162,10 +180,10 @@ _RESOURCE_CORRECTION = re.compile(r"\bresource[\s-]correction\b", re.IGNORECASE)
 #: **`to` and not `from`, deliberately.** The release side, `Carbon dioxide, from
 #: soil or biomass stock`, reaches EF's own `carbon dioxide (land use change)` in
 #: air, where both implementations state +1 and the list publishes `agreed` --
-#: there is a flow there that means what it means, and moving it would turn two
-#: publishers concurring into one asserting.  There is no such flow for the
-#: capture.  So the direction is load-bearing here, and it is the only thing in
-#: the vendor's name that carries it.
+#: there is a flow there that means what it means, and the release is read as
+#: land-use change below so that every list's copy reaches it.  There is no such
+#: flow for the capture.  So the direction is load-bearing here, and it is the
+#: only thing in the vendor's name that carries it.
 #:
 #: Narrow on purpose, and measured: across EF 3.1, BAFU 2026-v1 and all five
 #: ecoinvent releases read here, `to soil or biomass stock` occurs in exactly one
@@ -237,7 +255,7 @@ QUALIFIER_CHECKS: list[tuple[str, list[re.Pattern[str]]]] = [
     # land concept first, and because a future `land use` spelling of a stock
     # flow must not silently become a land-use-change row.
     ("sequestration_from_land_management", [_TO_SOIL_OR_BIOMASS_STOCK]),
-    ("land_use_change",             [_LAND_USE_CHANGE, _PEAT_OXIDATION]),
+    ("land_use_change",             [_LAND_USE_CHANGE, _PEAT_OXIDATION, _FROM_SOIL_OR_BIOMASS_STOCK]),
     ("biogenic_resource_correction",[_RESOURCE_CORRECTION]),
     # Before the bare word, which also matches inside it.
     ("biogenic_100yr",              [_BIOGENIC_100YR]),

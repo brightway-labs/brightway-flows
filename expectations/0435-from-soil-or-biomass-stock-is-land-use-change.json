@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "description": "ecoinvent books carbon released when land changes use as `Carbon dioxide, from soil or biomass stock`, `Carbon monoxide, from soil or biomass stock` and `Methane, from soil or biomass stock`. Its correspondence table sends every one to EF 3.1's land-use-change flow of the same gas, where EF states +1 kg CO2-eq for carbon dioxide. openLCA LCIA Methods 2.8.2 ships seventeen of these rows under ecoinvent's own uuids and names -- five carbon dioxide, six carbon monoxide and six methane -- and nothing read the phrase on them. On the six-list build of 23 October 2026 (commit 5802a4c) the twelve with a registry number reached the plain gas by number and name, creating four carbon dioxide emission flows of unstated origin in air that nothing else feeds and no method characterises, and the five without one created `..., From Soil Or Biomass Stock` flows of their own. GreenDelta's factors for the same uuids meanwhile sat on the land-use-change flows, reached through ecoinvent's mapping, so an inventory mapped through openLCA's rows scored the release at zero where the same flow through ecoinvent's scored +1. `Carbon dioxide, in air`, the uptake row beside them (cc6a1abb), reached a plain carbon dioxide resource the merge created, where ecoinvent's row, BAFU's three and AGRIBALYSE's two reach EF's biogenic uptake. See #435 for the rows under ecoinvent uuids generally.",
+  "expectations": [
+    {
+      "id": "0435-openlca-carbon-dioxide-from-soil-high-population-density-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon dioxide, from soil or biomass stock` in high population density air (e8787b5e) reaches Carbon Dioxide (land Use Change) in Environmental → Air → Ground level → Urban (>1000 people/square mile)",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "e8787b5e-d927-446d-81a9-f56977bbfeb4"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "1bf31577-1939-49f0-9606-9c7b8fd3021c",
+        "target_name": "Carbon Dioxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Dioxide` in Environmental → Air → Ground level → Urban (>1000 people/square mile) (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-carbon-dioxide-from-soil-indoor-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon dioxide, from soil or biomass stock` in indoor air (5188df39) reaches Carbon Dioxide (land Use Change) in Environmental → Air → Indoor",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "5188df39-2bb8-4826-b469-fa9f86bacc09"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "2430229e-2303-478b-88ec-2129890fad44",
+        "target_name": "Carbon Dioxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Dioxide, From Soil Or Biomass Stock` in Environmental → Air → Indoor (created), a flow it created, that nothing else feeds. The row ships no registry number."
+    },
+    {
+      "id": "0435-openlca-carbon-dioxide-from-soil-low-population-density-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon dioxide, from soil or biomass stock` in low population density air (78eb1859) reaches Carbon Dioxide (land Use Change) in Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "78eb1859-abd9-44c6-9ce3-f3b5b33d619c"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "a03c5c88-dfaa-4a2a-9a5d-b6cfc55c5cd2",
+        "target_name": "Carbon Dioxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Dioxide` in Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile) (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-carbon-dioxide-from-soil-low-population-density-long-term-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon dioxide, from soil or biomass stock` in low population density, long-term air (e1c597cc) reaches Carbon Dioxide (land Use Change) in Environmental → Air → Long-term",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "e1c597cc-14cb-4ebb-af07-7a93a5b77d34"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "9bb0ea62-4dc5-4e50-a085-1683b103f1df",
+        "target_name": "Carbon Dioxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Dioxide` in Environmental → Air → Long-term (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-carbon-dioxide-from-soil-unspecified-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon dioxide, from soil or biomass stock` in unspecified air (e4e9febc) reaches Carbon Dioxide (land Use Change) in Environmental → Air → Unknown",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "e4e9febc-07c1-403d-8d3a-6707bb4d96e6"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "adcb79f3-89cf-45fb-b0b2-65558cb2af26",
+        "target_name": "Carbon Dioxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Dioxide` in Environmental → Air → Unknown (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-carbon-monoxide-from-soil-high-population-density-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon monoxide, from soil or biomass stock` in high population density air (51c58d09) reaches Carbon Monoxide (land Use Change) in Environmental → Air → Ground level → Urban (>1000 people/square mile)",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "51c58d09-0699-4d51-80b3-a1bb2b9313e4"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "577f5b6b-82d6-4dc6-9207-927f9a1b273d",
+        "target_name": "Carbon Monoxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Monoxide` in Environmental → Air → Ground level → Urban (>1000 people/square mile) (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-carbon-monoxide-from-soil-indoor-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon monoxide, from soil or biomass stock` in indoor air (05f6e226) reaches Carbon Monoxide (land Use Change) in Environmental → Air → Indoor",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "05f6e226-0593-46f5-a788-01fa306e66ad"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "59cfeed3-e2f1-42ca-9472-fc02bee2d0e3",
+        "target_name": "Carbon Monoxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Monoxide, From Soil Or Biomass Stock` in Environmental → Air → Indoor (created), a flow it created, that nothing else feeds. The row ships no registry number."
+    },
+    {
+      "id": "0435-openlca-carbon-monoxide-from-soil-low-population-density-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon monoxide, from soil or biomass stock` in low population density air (68b9b577) reaches Carbon Monoxide (land Use Change) in Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "68b9b577-90cf-49e4-88bb-a55d80f3ac5d"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "cfb825a8-709e-4d1b-9a6e-d500c6f66b77",
+        "target_name": "Carbon Monoxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Monoxide` in Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile) (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-carbon-monoxide-from-soil-low-population-density-long-term-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon monoxide, from soil or biomass stock` in low population density, long-term air (bd086aa3) reaches Carbon Monoxide (land Use Change) in Environmental → Air → Long-term",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "bd086aa3-312a-47af-a7b2-04fddbf8f01e"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "7126de37-7d78-48d1-819b-7c973fc63670",
+        "target_name": "Carbon Monoxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Monoxide` in Environmental → Air → Long-term (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-carbon-monoxide-from-soil-lower-stratosphere-upper-troposphere-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon monoxide, from soil or biomass stock` in lower stratosphere + upper troposphere air (e1da7e11) reaches Carbon Monoxide (land Use Change) in Environmental → Air → Aircraft cruise height",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "e1da7e11-cc2c-4ea2-a42a-bf558150014b"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "fa690678-920c-4f34-a407-d94e408ec11a",
+        "target_name": "Carbon Monoxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Monoxide, From Soil Or Biomass Stock` in Environmental → Air → Aircraft cruise height (created), a flow it created, that nothing else feeds. The row ships no registry number."
+    },
+    {
+      "id": "0435-openlca-carbon-monoxide-from-soil-unspecified-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Carbon monoxide, from soil or biomass stock` in unspecified air (69a6c884) reaches Carbon Monoxide (land Use Change) in Environmental → Air → Unknown",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "69a6c884-39be-444f-a67c-7436a5e66de2"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "8a313bb0-e251-11e6-bf01-fe55135034f3",
+        "target_name": "Carbon Monoxide (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Carbon Monoxide` in Environmental → Air → Unknown (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-methane-from-soil-high-population-density-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Methane, from soil or biomass stock` in high population density air (299c6564) reaches Methane (land Use Change) in Environmental → Air → Ground level → Urban (>1000 people/square mile)",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "299c6564-426e-48c3-b516-fdf301d12127"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "8fc2746f-02da-403d-8ab6-59159be34497",
+        "target_name": "Methane (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Methane` in Environmental → Air → Ground level → Urban (>1000 people/square mile) (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-methane-from-soil-indoor-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Methane, from soil or biomass stock` in indoor air (288c4e8a) reaches Methane (land Use Change) in Environmental → Air → Indoor",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "288c4e8a-d371-4bc1-b45b-c4b0cefd400e"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "5fab9188-642c-41b9-ae99-7eee2f48ba5b",
+        "target_name": "Methane (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Methane, From Soil Or Biomass Stock` in Environmental → Air → Indoor (created), a flow it created, that nothing else feeds. The row ships no registry number."
+    },
+    {
+      "id": "0435-openlca-methane-from-soil-low-population-density-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Methane, from soil or biomass stock` in low population density air (9541a975) reaches Methane (land Use Change) in Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "9541a975-800f-4fed-9edf-28f6e411a015"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "3c6837c5-1930-4979-8163-a4c726f0a8df",
+        "target_name": "Methane (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Methane` in Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile) (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-methane-from-soil-low-population-density-long-term-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Methane, from soil or biomass stock` in low population density, long-term air (f757365c) reaches Methane (land Use Change) in Environmental → Air → Long-term",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "f757365c-c6fd-41fe-ad32-3594ccd97ef0"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "2e2343b9-91ee-42b4-9188-41f75d2a4f2e",
+        "target_name": "Methane (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Methane` in Environmental → Air → Long-term (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-openlca-methane-from-soil-lower-stratosphere-upper-troposphere-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Methane, from soil or biomass stock` in lower stratosphere + upper troposphere air (ef4566f0) reaches Methane (land Use Change) in Environmental → Air → Aircraft cruise height",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "ef4566f0-60d5-4bbe-a2cb-7268a81fecd4"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "bf72358e-7245-4918-b014-e5aefe6a6b7e",
+        "target_name": "Methane (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Methane, From Soil Or Biomass Stock` in Environmental → Air → Aircraft cruise height (created), a flow it created, that nothing else feeds. The row ships no registry number."
+    },
+    {
+      "id": "0435-openlca-methane-from-soil-unspecified-is-land-use-change",
+      "issue": 435,
+      "title": "openLCA's `Methane, from soil or biomass stock` in unspecified air (7f0ba7c9) reaches Methane (land Use Change) in Environmental → Air → Unknown",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "7f0ba7c9-341e-413d-80f6-8753727d65d1"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "c714e1e3-8ece-4ab8-99c9-22a903d999ec",
+        "target_name": "Methane (land Use Change)"
+      },
+      "comment": "The flow ecoinvent's row of the same uuid reaches by its table. On the build of 5802a4c this row reached `Methane` in Environmental → Air → Unknown (`cas+label+preferred-name`)."
+    },
+    {
+      "id": "0435-ecoinvent-from-soil-rows-stay-on-land-use-change",
+      "issue": 435,
+      "title": "ecoinvent 3.12's rural `Carbon dioxide, from soil or biomass stock` (78eb1859) still reaches EF's carbon dioxide (land use change) by its table",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.12",
+        "uuid": "78eb1859-abd9-44c6-9ce3-f3b5b33d619c"
+      },
+      "expect": {
+        "outcome": "prepared",
+        "target_uuid": "a03c5c88-dfaa-4a2a-9a5d-b6cfc55c5cd2"
+      },
+      "comment": "The other half of the rule: ecoinvent's table already said this, and reading the phrase must leave the row where the table put it. Selected by uuid because the merge records the row under its enriched label, `Carbon dioxide`, which a name selector cannot tell from the plain gas."
+    },
+    {
+      "id": "0435-no-carbon-dioxide-from-soil-flow",
+      "issue": 435,
+      "title": "No flow is published as `Carbon Dioxide, From Soil Or Biomass Stock`",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon Dioxide, From Soil Or Biomass Stock"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "One indoor flow on the build of 5802a4c, created by openLCA's 5188df39. The carbon monoxide and methane spellings are the same question and are covered by the row claims above."
+    },
+    {
+      "id": "0435-no-carbon-dioxide-of-unstated-origin-in-air",
+      "issue": 435,
+      "title": "No carbon dioxide emission of unstated origin is published in unspecified air",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon Dioxide",
+        "context_display": "Environmental → Air → Unknown"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "EF 3.1 ships carbon dioxide of unstated origin in water and soil only. On the build of 5802a4c four such flows existed in air, one per compartment, each created by one openLCA from-soil row and carrying no factor. This one stands for the four."
+    },
+    {
+      "id": "0435-openlca-carbon-dioxide-in-air-is-biogenic-uptake",
+      "issue": 435,
+      "title": "openLCA's `Carbon dioxide, in air` resource reaches EF's biogenic uptake from air",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "cc6a1abb-b123-4ca6-8f16-38209df609be"
+      },
+      "expect": {
+        "outcome": "matched",
+        "target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e"
+      },
+      "comment": "Where ecoinvent's row of the same uuid goes by its table, BAFU's three by override (#135) and AGRIBALYSE's two by rule. On the build of 5802a4c it reached the number on `cas+label` and created a plain `Carbon Dioxide` resource in air."
+    },
+    {
+      "id": "0435-no-carbon-dioxide-resource-of-unstated-origin",
+      "issue": 435,
+      "title": "No carbon dioxide resource of unstated origin is published in air",
+      "subject": {
+        "kind": "flow",
+        "name": "Carbon Dioxide",
+        "context_display": "Resource → Air"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Created on the build of 5802a4c by cc6a1abb alone."
+    }
+  ]
+}
