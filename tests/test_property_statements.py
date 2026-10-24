@@ -67,7 +67,7 @@ ILCD_MASS = "93a60a56-a3c8-11da-a746-0800200b9a66"
 
 #: EF 3.1's `Uranium` resource flow, whose megajoule EF labels a net calorific
 #: value and the base list's statements file rules fission energy.
-EF_URANIUM = "fe0acd60-3ddc-11dd-a6fd-0050c2490048"
+EF_URANIUM = "3e4d2966-6556-11dd-ad8b-0800200c9a66"
 
 #: Statements per source list in the shipped files, by `list_name`.
 EXPECTED_STATEMENT_COUNTS = {
