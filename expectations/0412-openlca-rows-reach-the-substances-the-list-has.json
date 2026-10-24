@@ -245,7 +245,7 @@
     {
       "id": "0412-plain-carbon-dioxide-in-air-is-fossil",
       "issue": 412,
-      "title": "openLCA's eleven `Carbon dioxide` rows reach fossil carbon dioxide, biogenic uptake, and -- for ecoinvent's five copies -- what ecoinvent's rows reach",
+      "title": "openLCA's seven rows recorded as plain `Carbon dioxide` reach fossil carbon dioxide or biogenic uptake",
       "subject": {
         "kind": "source_row",
         "list": "openlca",
@@ -253,10 +253,10 @@
       },
       "expect": {
         "outcome": "matched",
-        "row_count": 11,
-        "substance_count": 3
+        "row_count": 7,
+        "substance_count": 2
       },
-      "comment": "Names match case-insensitively, so `Carbon dioxide` selects eleven rows: GreenDelta's six title-cased `Carbon Dioxide` rows, which every method in the package scores as fossil (five air rows) or as uptake (the resource row) and which `openlca-2.8.2-match-overrides.json` sends to EF's fossil flows and biogenic uptake, and five lower-case `Carbon dioxide` rows that are ecoinvent's own rows under ecoinvent's uuids (78eb1859, cc6a1abb, e1c597cc, e4e9febc, e8787b5e), which reach EF's carbon dioxide of unstated origin exactly as ecoinvent's do (0669 is that question, and it is ecoinvent's). On the build of 20 October 2026 (merge run `76b3ec8f`) the six plain rows also reached carbon dioxide of unstated origin and minted its long-term air flow again (0914); the six per-row claims below name each row's target. Measured on the six-list build of 21 October 2026 (commit 32ae26c)."
+      "comment": "Names match case-insensitively, and the name the merge records is the enriched label, so `Carbon dioxide` selects GreenDelta's six title-cased `Carbon Dioxide` rows and ecoinvent's `Carbon dioxide, in air` (cc6a1abb), which the package ships under ecoinvent's uuid. Every method in the package scores GreenDelta's five air rows as fossil and its resource row as uptake, and `openlca-2.8.2-match-overrides.json` sends them to EF's fossil flows and biogenic uptake; cc6a1abb goes to biogenic uptake by override too, where ecoinvent's own copy goes (0435). Restated on 24 October 2026, keeping the id: the claim said eleven rows and three substances, and explained the other five as ecoinvent's carbon dioxide rows reaching carbon dioxide of unstated origin exactly as ecoinvent's do. They were not: four were ecoinvent's `Carbon dioxide, from soil or biomass stock`, whose ecoinvent copies reach land-use-change carbon dioxide, and the fifth was cc6a1abb, whose ecoinvent copy reaches biogenic uptake. On the build of 5802a4c the openLCA copies had lost the qualifier and created plain carbon dioxide flows; on the build of 34984fd the four from-soil rows reach land-use-change carbon dioxide and are recorded under their own name (#435). On the build of 20 October 2026 (merge run `76b3ec8f`) the six plain rows also reached carbon dioxide of unstated origin and minted its long-term air flow again (0914); the per-row claims below name each row's target."
     },
     {
       "id": "0412-the-air-unspecified-row-is-fossil",

@@ -48,9 +48,12 @@ not be read at all is answered only where the name has one recorded flow
 everywhere.
 
 The one exception to declining is the caller who has *said which list they
-mean* (#359).  ``Carbon dioxide`` in unspecified air is fossil to BAFU and
-Stepwise and land-use change to ecoinvent -- ecoinvent spells fossil out and
-qualifies this variant by uuid alone -- and no rule derives an answer.  But a
+mean* (#359).  ``Phthalate, dioctyl-`` in unspecified water is DEHP to
+Stepwise, AGRIBALYSE and openLCA, which ship it as 117-81-7, and di-n-octyl
+phthalate to ecoinvent 3.8, which ships it as 117-84-0 -- and no rule derives
+an answer.  (#359's own example was ``Carbon dioxide`` in unspecified air, and
+it was an artefact: ecoinvent's row there is ``Carbon dioxide, from soil or
+biomass stock``, recorded under its enriched label until #435.)  But a
 caller whose ``source_label`` names a merged list has supplied the missing
 fact, so the named list's own recorded decision is used, reported as such,
 with the competing flows listed beside it.  34 of the 43 disagreements are

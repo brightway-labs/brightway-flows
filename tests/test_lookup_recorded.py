@@ -786,13 +786,47 @@ class AgainstARealBuildTestCase(unittest.TestCase):
         self.assertEqual(result.tier, TIER_RECORDED_BY_NAME)
         self.assertEqual(result.elementary_flow_id, recorded[0][0])
 
-    def test_the_lineage_settles_unqualified_carbon_dioxide(self):
-        """#359's own example: `Carbon dioxide` in unspecified air is fossil to
-        BAFU and Stepwise and land-use change to ecoinvent, so it declines --
-        unless the caller says their list is Stepwise-shaped, in which case
-        Stepwise's recorded ruling answers and the answer says so."""
+    def test_the_lineage_settles_dioctyl_phthalate(self):
+        """`Phthalate, dioctyl-` in unspecified water is two molecules: ecoinvent
+        3.8 ships it under 117-84-0, di-n-octyl phthalate, and Stepwise,
+        AGRIBALYSE and openLCA under 117-81-7, DEHP.  Asked without a number it
+        declines -- unless the caller says whose vocabulary their list speaks,
+        in which case that list's recorded ruling answers and the answer says
+        so."""
         matcher = FlowMatcher.from_results(CONSENSUS_DB_FILEPATH, recorded_by_name=True)
-        undecided = matcher.match(
+
+        def ask(source_label=""):
+            return matcher.match(
+                FlowQuery(
+                    name="Phthalate, dioctyl-",
+                    context=["Emissions to water", ""],
+                    unit="kg",
+                    simapro_origin=True,
+                    source_label=source_label,
+                )
+            )
+
+        self.assertEqual(ask().tier, TIER_ALGORITHM)
+        for label, expected in (
+            ("stepwise-2006-1.09", "Di-sec-octyl Phthalate"),
+            ("ecoinvent-3.8", "Bis(n-octyl) Phthalate"),
+        ):
+            with self.subTest(source_label=label):
+                ruled = ask(label)
+                self.assertEqual(ruled.tier, TIER_RECORDED_BY_NAME)
+                self.assertEqual(ruled.pref_label, expected)
+                self.assertEqual(ruled.selector_details["arbitrated_by_source_label"], label)
+                self.assertTrue(ruled.selector_details["recorded_alternatives"])
+
+    def test_plain_carbon_dioxide_in_unspecified_air_is_not_a_disagreement(self):
+        """This was #359's example of a disagreement, and it was an artefact.
+        ecoinvent's row there is `Carbon dioxide, from soil or biomass stock`,
+        recorded under its enriched label `Carbon dioxide` until the phrase was
+        read as land-use change (#435).  Every list that ships a plain
+        `Carbon dioxide` in unspecified air sends it to fossil carbon dioxide, so
+        the recorded name answers without a source label."""
+        matcher = FlowMatcher.from_results(CONSENSUS_DB_FILEPATH, recorded_by_name=True)
+        answer = matcher.match(
             FlowQuery(
                 name="Carbon dioxide",
                 context=["Emissions to air", ""],
@@ -801,23 +835,9 @@ class AgainstARealBuildTestCase(unittest.TestCase):
                 simapro_origin=True,
             )
         )
-        self.assertEqual(undecided.tier, TIER_ALGORITHM)
-        ruled = matcher.match(
-            FlowQuery(
-                name="Carbon dioxide",
-                context=["Emissions to air", ""],
-                unit="kg",
-                cas="124-38-9",
-                simapro_origin=True,
-                source_label="stepwise-2006-1.09",
-            )
-        )
-        self.assertEqual(ruled.tier, TIER_RECORDED_BY_NAME)
-        self.assertEqual(ruled.pref_label, "Carbon Dioxide (fossil)")
-        self.assertEqual(
-            ruled.selector_details["arbitrated_by_source_label"], "stepwise-2006-1.09"
-        )
-        self.assertTrue(ruled.selector_details["recorded_alternatives"])
+        self.assertEqual(answer.tier, TIER_RECORDED_BY_NAME)
+        self.assertEqual(answer.pref_label, "Carbon Dioxide (fossil)")
+        self.assertNotIn("arbitrated_by_source_label", answer.selector_details)
 
 
 if __name__ == "__main__":

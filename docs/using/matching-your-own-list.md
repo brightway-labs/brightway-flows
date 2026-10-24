@@ -426,18 +426,18 @@ asking every BAFU row by that spelling without its number leaves 22 of 2,679
 unanswered.
 
 Forty-two keys hold two flows, and those are genuine disagreements —
-`Carbon dioxide` in unspecified air is fossil carbon to BAFU and Stepwise and
-land-use-change carbon to ecoinvent, because ecoinvent spells fossil out as
-`Carbon dioxide, fossil` and marks this variant by identifier alone. A
-disagreement declines rather than being arbitrated — unless you have said
-whose vocabulary your list speaks, which is the one fact the tie is missing:
+`Phthalate, dioctyl-` in unspecified water is DEHP to Stepwise, AGRIBALYSE and
+openLCA, which register it 117-81-7, and di-n-octyl phthalate to ecoinvent
+3.8, which registers it 117-84-0. A disagreement declines rather than being
+arbitrated — unless you have said whose vocabulary your list speaks, which is
+the one fact the tie is missing:
 
 ```python
 answer = matcher.match(FlowQuery(
-    name="Carbon dioxide", context=["Emissions to air", ""], unit="kg",
-    cas="124-38-9", simapro_origin=True, source_label="stepwise-2006-1.09",
+    name="Phthalate, dioctyl-", context=["Emissions to water", ""], unit="kg",
+    simapro_origin=True, source_label="stepwise-2006-1.09",
 ))
-answer.pref_label                                          # 'Carbon Dioxide (fossil)'
+answer.pref_label                                          # 'Di-sec-octyl Phthalate'
 answer.selector_details["arbitrated_by_source_label"]      # 'stepwise-2006-1.09'
 answer.selector_details["recorded_alternatives"]           # what ecoinvent said instead
 ```
