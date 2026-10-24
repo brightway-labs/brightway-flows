@@ -16,6 +16,7 @@
     "manual_fixes": "agribalyse-3.2-manual-fixes.json",
     "manual_additions": null,
     "additional_flows": "agribalyse-3.2-additional-flows.json",
-    "match_overrides": "agribalyse-3.2-match-overrides.json"
+    "match_overrides": "agribalyse-3.2-match-overrides.json",
+    "property_statements": "agribalyse-3.2-property-statements.json"
   }
 }

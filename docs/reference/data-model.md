@@ -82,6 +82,7 @@ Key members:
 | `uuid`, `identifier`, `name`, `source` | Identity |
 | `cas_numbers`, `ec_numbers`, `synonyms` | Chemical identifiers |
 | `context`, `context_iri`, `unit`, `unit_iri` | Context and unit |
+| `property_statements` | What the source list states about one unit of the flow — a heating value, a density — as `PropertyStatement` records; `None` on the 94k flows that carry none. See `domain/property_statements.py` |
 | `prefLabel`, `altLabel` | Lang-tagged labels; see `domain/labels.py` |
 | `properties`, `references`, `concept_associations`, `skos_definition` | Enrichment |
 | `flow_object_id`, `source_refs`, `input_datasets` | Layering and source tracking |
@@ -300,6 +301,10 @@ applies to hold the next; these are the records between the two.
 | `Label` | `domain/labels.py` | One lang-tagged label with provenance |
 | `Provenance` | `domain/common.py` | Structured PROV record; use instead of free text |
 | `Classification` | `domain/flow_object.py` | A classification with resource URLs and per-value provenance |
+| `Quantity` | `domain/quantities.py` | One row of `quantities.json`: what a stated number measures — net or gross calorific value, fission energy, mass, volume, radioactivity — with ILCD's label, the vendors' spellings and the QUDT kind it matches or narrows |
+| `PropertyStatement` | `domain/property_statements.py` | "One `per_unit` of this flow is `value` `unit` of `quantity`", said by a vendor file, a method, the flow's name or a curator, with provenance. Carried on `Flow.property_statements`; the merge derives a mapping's `qudt:conversionMultiplier` from it (#407) |
+| `ConversionRule` | `domain/property_statements.py` | A list's ruling that one quantity converts onto a target of another: Stepwise's gross calorific values onto EF's net flows |
+| `PropertyStatements` | `property_statements.py` | One list's `<list>-property-statements.json`, resolved for one release: statements by source uuid, its conversion rules, and the reference quantities it rules for named flows |
 
 ## Writing a transformer
 

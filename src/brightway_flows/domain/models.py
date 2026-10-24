@@ -75,6 +75,10 @@ class HarmonisedFlow(BaseModel):
     synonyms: list[str] = Field(default_factory=list)
     lcia_methods: list[dict[str, Any]] = Field(default_factory=list)
     unit: str | None = None
+    # What the source list states about one unit of this flow; see
+    # `domain.property_statements`.  Declared at the same index as on `Flow`,
+    # whose field order mirrors this model's.
+    property_statements: list[dict[str, Any]] | None = None
 
     # ── Pipeline bookkeeping ─────────────────────────────────────────────────
     input_datasets: list[str] = Field(default_factory=list)

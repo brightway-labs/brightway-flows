@@ -397,12 +397,25 @@ class UnrecordedCrossingTestCase(unittest.TestCase):
 class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
     """Stepwise's twelve energy carriers, checked against the files not a build.
 
-    Each is listed in `unit-change-allowlist.json`, which accepts the crossing,
-    and carries its conversion in `stepwise-2006-match-overrides.json`, which
-    supplies the number.  Both halves are pinned because either alone is a
-    half-answer: an accepted crossing with no number publishes a mass on an
-    energy and leaves the reader to invent the factor, and a number with no
-    entry leaves the guard reporting a pair somebody has in fact answered.
+    Each is listed in `unit-change-allowlist.json`, which accepts the crossing;
+    reaches its target through `stepwise-2006-match-overrides.json`, which names
+    the flow and nothing about the number; and has its heating value stated in
+    `stepwise-2006-property-statements.json`, in megajoules per the unit the row
+    is measured in, which is what the merge derives the mapping's factor from
+    (#407).  All three are pinned because any one alone is a part-answer: an
+    accepted crossing with no number publishes a mass on an energy and leaves
+    the reader to invent the factor, a number with no entry leaves the guard
+    reporting a pair somebody has in fact answered, and a target with no
+    statement is a kilogram landing on a megajoule flow with nothing between.
+
+    The statements also say *which* heating value, which the override's bare
+    factor could not.  Stepwise's method counts its carriers by gross calorific
+    value, so hard coal, brown coal and crude oil are stated gross and a rule
+    in the same file says the gross value is what converts them onto EF 3.1's
+    net flows; the six gas rows whose names carry their own number agree with
+    the substance block's lower heating value, so they are net; peat and
+    `Gas, natural/m3` take the method's factor, which agrees with neither, so
+    their basis is unstated; uranium is fission energy.
     """
 
     #: Stepwise's energy carriers, and the EF 3.1 flow each reaches.
@@ -421,10 +434,27 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
         "26eeeb1c-17c9-539c-a654-3a995495c235": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
     }
 
+    #: What the statements file says of each: (quantity, megajoules, per unit).
+    #: The numbers are the ones the override rows carried before #407.
+    STATED = {
+        "7d86a5b7-c5d1-549b-aad3-29286a5e5346": ("gross-calorific-value", 19.1, "kg"),
+        "cede79a3-3e82-562b-ac7c-8f0483604f8b": ("gross-calorific-value", 9.9, "kg"),
+        "146c61d4-321a-53ef-b58e-35d53bc57de6": ("gross-calorific-value", 45.8, "kg"),
+        "b28ffb76-dac7-5bdc-9aa9-f3a00f1ce266": ("calorific-value", 9.9, "kg"),
+        "2a7ddb41-4644-5f68-a2ac-81cf18772938": ("fission-energy", 560000.0, "kg"),
+        "177b2fed-48df-5222-b7a7-be3b71a0e73c": ("calorific-value", 40.3, "m3"),
+        "bbc7d9ed-0d3a-541b-8ea4-9b80d7c93b66": ("net-calorific-value", 30.3, "kg"),
+        "1da85908-9de5-5f8c-ad12-c5c2031a675d": ("net-calorific-value", 46.8, "kg"),
+        "00e5682e-99d0-53ca-9142-8ddb8c14325a": ("net-calorific-value", 46.8, "kg"),
+        "3e88af6a-0f31-5fb7-a035-7a4577e02c9b": ("net-calorific-value", 35.0, "m3"),
+        "01aa0043-f4ce-5461-9eab-6f7725cecbf2": ("net-calorific-value", 35.0, "m3"),
+        "26eeeb1c-17c9-539c-a654-3a995495c235": ("net-calorific-value", 36.6, "m3"),
+    }
+
     #: The six whose *name* states what a unit of the gas is worth.  The name is
     #: the vendor's own assertion of the quantity -- the rule
     #: `simapro-lineage-manual-fixes.json` applies to `Uranium, 451 GJ per kg` --
-    #: so the factor and the name have to agree or one of them is wrong.
+    #: so the statement and the name have to agree or one of them is wrong.
     NAMED_IN_THE_NAME = {
         "bbc7d9ed-0d3a-541b-8ea4-9b80d7c93b66": 30.3,
         "1da85908-9de5-5f8c-ad12-c5c2031a675d": 46.8,
@@ -434,9 +464,17 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
         "26eeeb1c-17c9-539c-a654-3a995495c235": 36.6,
     }
 
+    #: The three the rule is for: stated gross, converting onto a net target.
+    GROSS = {
+        "7d86a5b7-c5d1-549b-aad3-29286a5e5346",
+        "cede79a3-3e82-562b-ac7c-8f0483604f8b",
+        "146c61d4-321a-53ef-b58e-35d53bc57de6",
+    }
+
     def setUp(self):
         from brightway_flows.filesystem import PACKAGE_DATA_DIR
         from brightway_flows.match_overrides import load_match_overrides
+        from brightway_flows.sources import known_source_lists
 
         self.allowed = load_unit_change_allowlist()
         self.overrides = {
@@ -445,6 +483,32 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
                 PACKAGE_DATA_DIR / "stepwise-2006-match-overrides.json"
             )
         }
+        # Through the list rather than the path, so the statements are resolved
+        # for the release the manifest declares and a number nobody checked
+        # against it is refused here rather than in a build.
+        self.source = known_source_lists()["stepwise-2006-1.09"]
+        self.statements = self.source.load_property_statements()
+
+    def _statement(self, source_uuid):
+        statements = self.statements.statements[source_uuid]
+        self.assertEqual(len(statements), 1, statements)
+        return statements[0]
+
+    def test_the_manifest_names_the_statements_file(self):
+        self.assertEqual(
+            self.source.property_statements_path.name,
+            "stepwise-2006-property-statements.json",
+        )
+
+    def test_the_statements_file_states_exactly_the_twelve_carriers(self):
+        """Twelve statements for twelve carriers and nothing else: a carrier
+        with no statement lands a kilogram on a megajoule flow with no number,
+        and a statement for a row that is not a carrier converts a row the
+        allowlist has not accepted."""
+        self.assertEqual(set(self.statements.statements), set(self.CARRIERS))
+        self.assertEqual(
+            sum(len(items) for items in self.statements.statements.values()), 12
+        )
 
     def test_every_carrier_crossing_is_accepted(self):
         for source_uuid, target in sorted(self.CARRIERS.items()):
@@ -452,14 +516,26 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
                 self.assertIn((source_uuid, target), self.allowed)
 
     def test_every_carrier_states_its_conversion(self):
+        """The override names the target and carries no factor -- the number
+        has one home -- and the statement is in megajoules per the unit the
+        row is measured in, a unit of another kind than the target's, so the
+        factor it derives for the pair is the stated value itself."""
+        from brightway_flows.domain.property_statements import factor_between
+
         for source_uuid, target in sorted(self.CARRIERS.items()):
             with self.subTest(flow=source_uuid):
                 override = self.overrides.get(source_uuid)
                 self.assertIsNotNone(override)
                 self.assertEqual(override.target_uuid, target)
-                self.assertIsNotNone(override.conversion_factor)
-                self.assertEqual(override.target_unit, "MJ")
-                self.assertTrue(crosses_quantity_kinds(override.source_unit, "MJ"))
+                self.assertFalse(override.converts)
+                quantity, value, per_unit = self.STATED[source_uuid]
+                statement = self._statement(source_uuid)
+                self.assertEqual(statement.quantity, quantity)
+                self.assertEqual(statement.value, value)
+                self.assertEqual(statement.unit, "MJ")
+                self.assertEqual(statement.per_unit, per_unit)
+                self.assertTrue(crosses_quantity_kinds(statement.per_unit, "MJ"))
+                self.assertEqual(factor_between(statement, per_unit, "MJ"), value)
 
     def test_a_factor_the_name_states_is_the_factor_the_row_carries(self):
         for source_uuid, stated in sorted(self.NAMED_IN_THE_NAME.items()):
@@ -467,7 +543,42 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
             with self.subTest(name=override.source_name):
                 printed = f"{stated:g}"
                 self.assertIn(printed, override.source_name)
-                self.assertEqual(override.conversion_factor, stated)
+                statement = self._statement(source_uuid)
+                self.assertEqual(statement.value, stated)
+                self.assertEqual(statement.quantity, "net-calorific-value")
+
+    def test_the_one_rule_converts_gross_onto_net(self):
+        """The file holds exactly one conversion rule, and it is the decision
+        the method forces: a Stepwise kilogram converts onto EF's
+        net-calorific-value flows by its gross value, because that is the
+        quantity Stepwise's own factors are stated in."""
+        self.assertEqual(len(self.statements.rules), 1)
+        rule = self.statements.rules[0]
+        self.assertEqual(rule.onto, "net-calorific-value")
+        self.assertEqual(rule.convert_by, "gross-calorific-value")
+        self.assertTrue(rule.comment.strip())
+
+    def test_the_rule_is_what_lets_a_gross_value_reach_a_net_target(self):
+        """`choose_statement` takes an exact quantity, then an unstated basis,
+        then what the rules say.  A gross value is neither of the first two
+        for a net target, so without the rule the three coal and oil rows
+        would convert nothing; with it they convert by the gross value, and
+        the mapping says so."""
+        from brightway_flows.domain.property_statements import choose_statement
+
+        for source_uuid in sorted(self.GROSS):
+            with self.subTest(flow=source_uuid):
+                statements = self.statements.statements[source_uuid]
+                self.assertIsNone(
+                    choose_statement(statements, target_quantity="net-calorific-value")
+                )
+                chosen = choose_statement(
+                    statements,
+                    target_quantity="net-calorific-value",
+                    rules=self.statements.rules,
+                )
+                self.assertIs(chosen, self._statement(source_uuid))
+                self.assertEqual(chosen.quantity, "gross-calorific-value")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "description": "What is stated about EF 3.1's own flows beyond what its ILCD flow properties say (#407). EF declares the quantity each of its flows is measured in through `flow-properties.json`, which `extract` writes from the ILCD flow datasets: every one of its 34 energy flows is net calorific value. Where that declaration is wrong, this file rules the flow's reference quantity, and the merge chooses a source flow's statement by the ruling rather than by EF's label.",
+  "reference_quantities": [
+    {
+      "flow_uuid": "fe0acd60-3ddc-11dd-a6fd-0050c2490048",
+      "flow_name": "uranium",
+      "quantity": "fission-energy",
+      "comment": "EF 3.1's flow dataset gives `uranium` the flow property `Net calorific value`, like every other energy resource. The 560,000 MJ a kilogram of natural uranium stands for is the energy extractable by fission, documented by ecoinvent as a gross fission energy content; it is not a heat of combustion, nothing is burnt, and a source flow's calorific value must never convert onto this flow. Ruled fission energy so that only a `fission-energy` statement reaches it."
+    }
+  ],
+  "statements": []
+}

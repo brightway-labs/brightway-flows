@@ -3,10 +3,19 @@
 On the first five-list build every one of these reached a flow measured in
 another unit with nothing on the mapping between the two: `Gas, natural/m3` on
 EF 3.1's megajoule `Natural Gas`, `Water` released by the kilogram on a
-cubic-metre flow.  Each now either carries its factor in
-`agribalyse-3.2-match-overrides.json` and is accepted in
+cubic-metre flow.  Each now either reaches its target through
+`agribalyse-3.2-match-overrides.json` with its number stated and is accepted in
 `unit-change-allowlist.json`, or -- argon-40 and manganese-55, stable isotopes
 with no activity -- is accepted with no number at all.
+
+Where the number is stated depends on what it is a fact about (#407).  A
+heating value, a specific activity or a density is a property of the flow --
+18.2 MJ of net calorific value per kilogram of AGRIBALYSE's hard coal -- and is
+written in `agribalyse-3.2-property-statements.json`, in the flow's own unit,
+for the merge to derive the mapping's factor from.  The three coal-mine off-gas
+rows are the exception: a cubic metre of mine gas at 1.0 standard cubic metres,
+and a kilogram at 1.254, are facts about the pair that no quantity of the flow
+expresses, so they keep their `conversion_factor` on the override row.
 
 The heating values are AGRIBALYSE's own, the net values its export's substance
 block states, which is the user's decision on #370; whether every list should
@@ -22,10 +31,12 @@ import unittest
 
 import orjson
 
+from brightway_flows.domain.property_statements import factor_between
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 from brightway_flows.integrations.agribalyse import _flow_uuid
 from brightway_flows.manual_fixes import apply_manual_fixes
 from brightway_flows.match_overrides import load_match_overrides
+from brightway_flows.sources import known_source_lists
 
 OVERRIDES_PATH = PACKAGE_DATA_DIR / "agribalyse-3.2-match-overrides.json"
 FIXES_PATH = PACKAGE_DATA_DIR / "agribalyse-3.2-manual-fixes.json"
@@ -61,6 +72,21 @@ CONVERTED = {
     "846692b1-2270-5a4d-92db-b1b078af8326": ("Water", "Emissions to water", "", "kg", "a3876d9b-a3e8-4680-861a-4e08642f1392", 0.001, "m3"),
 }
 
+#: The three whose factor is a fact about the pair and stays on the override:
+#: coal-mine gas from plain or from kilograms to standard cubic metres.
+PAIR_FACTS = {
+    "2e888763-5042-5f1f-af32-b0252d7584bf",
+    "6be68aec-e88a-51a6-a22a-b8e26d1c6947",
+    "3448032e-95f6-5eb3-a7a8-04141c3b95d1",
+}
+
+#: What the statement says each converted row's megajoules, kilobecquerels or
+#: cubic metres measure.  Heating values are the net ones the substance block
+#: states; uranium's megajoules are fission energy; a kilogram of water is a
+#: volume.
+QUANTITY_BY_TARGET_UNIT = {"MJ": "net-calorific-value", "kBq": "radioactivity", "m3": "volume"}
+FISSION = {"99a20ba5-1e0c-5e9b-8c23-18c6a935a905", "4328482b-3230-5bad-b039-2a40af37e3a5"}
+
 #: Released by mass onto a flow the merge creates rather than one EF 3.1 ships,
 #: which a curated target cannot name -- the row comes out unmatched,
 #: `prepared-target-not-found` -- so the row's own unit is rebased in the manual
@@ -93,9 +119,37 @@ class TheRowsTestCase(unittest.TestCase):
             override.source_uuid: override
             for override in load_match_overrides(OVERRIDES_PATH)
         }
+        # Through the list, so the statements are resolved for the release the
+        # manifest declares and an unchecked number is refused here.
+        self.statements = known_source_lists()["agribalyse-3.2"].load_property_statements()
 
     def test_there_are_the_twenty_six_the_issue_counted(self) -> None:
         self.assertEqual(len(CONVERTED) + len(REBASED) + len(INERT), 26)
+
+    def test_the_statements_file_states_twenty_nine_rows_eighteen_of_them_here(self) -> None:
+        """AGRIBALYSE states 29 properties: the eighteen converted rows here
+        that are not pair facts, the nine water densities of #352 that
+        `test_agribalyse_water_reaches_the_taxonomy.py` pins, and the two
+        self-naming energy rows of #354 that `test_agribalyse_match_overrides.py`
+        pins.  Counted here so that a statement added for a row nobody has
+        accepted, or dropped from one somebody has, is noticed."""
+        stated = set(self.statements.statements)
+        self.assertEqual(len(stated), 29)
+        self.assertEqual(
+            sum(len(items) for items in self.statements.statements.values()), 29
+        )
+        self.assertTrue(set(CONVERTED) - PAIR_FACTS <= stated)
+        self.assertEqual(len(set(CONVERTED) - PAIR_FACTS), 18)
+        self.assertEqual(PAIR_FACTS & stated, set())
+        self.assertEqual((set(REBASED) | set(INERT)) & stated, set())
+
+    def test_only_the_pair_facts_keep_a_factor_on_the_override(self) -> None:
+        """One number, one home: of the whole override file, the three
+        coal-mine gas rows are the only ones that still convert by themselves."""
+        self.assertEqual(
+            {uuid for uuid, override in self.by_uuid.items() if override.converts},
+            PAIR_FACTS,
+        )
 
     def test_every_row_names_the_flow_its_vendor_fields_derive(self) -> None:
         """An override naming a uuid AGRIBALYSE does not ship overrides
@@ -108,14 +162,32 @@ class TheRowsTestCase(unittest.TestCase):
                 self.assertEqual(_flow_uuid(name, compartment, sub, "kg"), uuid)
 
     def test_every_converted_row_states_its_target_factor_and_units(self) -> None:
+        """The target always comes off the override.  The factor comes off the
+        override for a pair fact and off the statement for everything else:
+        stated in the target's unit per the row's own, so that what
+        `factor_between` derives for the pair is the stated number itself."""
         for uuid, (name, _, _, unit, target, factor, target_unit) in CONVERTED.items():
             with self.subTest(name=name, uuid=uuid):
                 override = self.by_uuid[uuid]
                 self.assertEqual(override.target_uuid, target)
-                self.assertEqual(override.conversion_factor, factor)
-                self.assertEqual(override.source_unit, unit)
-                self.assertEqual(override.target_unit, target_unit)
                 self.assertTrue(override.comment.strip())
+                if uuid in PAIR_FACTS:
+                    self.assertEqual(override.conversion_factor, factor)
+                    self.assertEqual(override.source_unit, unit)
+                    self.assertEqual(override.target_unit, target_unit)
+                    continue
+                self.assertFalse(override.converts)
+                statements = self.statements.statements[uuid]
+                self.assertEqual(len(statements), 1)
+                statement = statements[0]
+                self.assertEqual(statement.per_unit, unit)
+                self.assertEqual(statement.unit, target_unit)
+                self.assertEqual(factor_between(statement, unit, target_unit), factor)
+                expected = (
+                    "fission-energy" if uuid in FISSION
+                    else QUANTITY_BY_TARGET_UNIT[target_unit]
+                )
+                self.assertEqual(statement.quantity, expected)
 
     def test_every_row_is_accepted_against_its_target(self) -> None:
         accepted = _accepted()

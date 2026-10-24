@@ -503,13 +503,20 @@ class TwoListsMeanTwoDifferentPeatsTestCase(unittest.TestCase):
 
     def test_both_kilogram_rows_state_the_same_conversion(self):
         """A mass reaching a flow measured in megajoules needs a number, and
-        the two rows are the same substance so it is the same number."""
+        the two rows are the same substance so it is the same number.  Since
+        #407 the number is a property statement about each row's peat in
+        `bafu-2026-v1-property-statements.json`, not a factor on the override."""
+        from brightway_flows.sources import known_source_lists
+
         rows = self.overrides()
+        stated = known_source_lists()["bafu-2026-v1"].load_property_statements()
         for uuid in (self.BAFU_BIOTIC_KG, self.BAFU_GROUND_KG):
             with self.subTest(uuid):
-                self.assertEqual(rows[uuid].source_unit, "kg")
-                self.assertEqual(rows[uuid].target_unit, "MJ")
-                self.assertEqual(rows[uuid].conversion_factor, self.MJ_PER_KG)
+                self.assertFalse(rows[uuid].converts)
+                (statement,) = stated.statements[uuid]
+                self.assertEqual(statement.per_unit, "kg")
+                self.assertEqual(statement.unit, "MJ")
+                self.assertEqual(statement.value, self.MJ_PER_KG)
 
     def test_the_two_targets_are_two_substances(self):
         self.assertNotEqual(self.PEAT_THE_MATERIAL, self.PEAT_THE_ENERGY_CARRIER)

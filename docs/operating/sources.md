@@ -368,6 +368,81 @@ decision, so skipping it carries the decision out, while a number nobody has
 seen before is an unanswered question, and applying the row and skipping it are
 both ways of publishing something unchecked.
 
+## Property statements
+
+A kilogram of AGRIBALYSE's `Coal, hard` lands on EF 3.1's `Hard Coal`, which is
+measured in megajoules, and the mapping has to say how many: 18.2, because the
+substance block at the end of AGRIBALYSE's export gives that coal a lower heating
+value of 18.2 MJ/kg. That is a fact about AGRIBALYSE's flow, not about the pair,
+and it is written down as one, in `agribalyse-3.2-property-statements.json`:
+
+```json
+{
+  "source_uuid": "73592c08-9e10-5388-91ea-2e90c3de5bc3",
+  "source_name": "Coal, hard",
+  "quantity": "net-calorific-value",
+  "value": 18.2,
+  "unit": "MJ",
+  "per_unit": "kg",
+  "stated_by": "curated",
+  "checked_against": ["3.2"],
+  "primary_source": ["AGB32_final.CSV, the substance block at the end of the export: `Lower heating value (LHV)`"],
+  "comment": "..."
+}
+```
+
+Read: one `per_unit` of this flow is `value` `unit` of `quantity`. The merge
+reads the statements onto the list's flows as it loads them and, when a row
+lands on a flow measured in another quantity, derives the mapping's
+`qudt:conversionMultiplier` from the statement whose quantity the target
+measures — EF's energy flows are net calorific value, so the net statement —
+and publishes it with `conversion_basis` `flow-property` and the quantity's IRI
+as `conversion_quantity`. Every list's manifest names its file under
+`inputs.property_statements`; `ecoinvent-property-statements.json` is shared by
+the five ecoinvent releases, as the overrides file is.
+
+The fields a statement has to say, and why:
+
+- **`quantity`** is a slug of `quantities.json`: `net-calorific-value`,
+  `gross-calorific-value`, `calorific-value` for a heat of combustion whose
+  source states no basis, `fission-energy` for a nuclear fuel, `mass`, `volume`,
+  `radioactivity`. A megajoule does not say which, and the difference between
+  Stepwise's 19.1 and AGRIBALYSE's 18.2 for the same coal is exactly net against
+  gross.
+- **`unit`** is a `units.json` unit of that quantity's kind, and **`per_unit`**
+  is the flow's own unit. The two must be of different kinds: `MJ` per `kg` is a
+  heating value, `kg` per `t` is what `units.json` already says, and a second
+  copy of a fact that has a home is one that can disagree with it. Write the
+  statement in the direction its mapping uses — AGRIBALYSE's cooling water is
+  `0.000976` m³ per kg, not `1024.6` kg per m³ — so the published number is the
+  stated number.
+- **`checked_against`** names the releases the number was read against, and
+  **`by_release`** restates it where a release differs: ecoinvent's crude oil
+  is `43.4` from 3.9.1 on and `{"3.8": {"value": 42.3}}`, and its natural gas
+  is per `sm3` with 3.8's `{"value": 34.5, "per_unit": "m3"}`. A release named in
+  neither is refused when that release is merged, naming the row to re-read,
+  as the override's `conversion_checked_against` is.
+- **`primary_source`** says where the number came from: the vendor's file and
+  section, the workbook, the IPCC table. **`stated_by`** says who: `vendor-flow`,
+  `vendor-method`, `flow-name` or `curated`. Every statement is `curated` until
+  the parsers read the vendor files themselves; BAFU's 18.01 says in its
+  primary source that it is ecoinvent's workbook figure, borrowed, and that is
+  what makes a borrowed number visible.
+
+Two rulings about quantities live in the same file. A **conversion rule** says
+which statement quantity converts onto a target of another: Stepwise's method
+states gross calorific values, so its file rules `gross-calorific-value` onto
+`net-calorific-value`, and its coal lands at 19.1 with the mapping saying so.
+A **reference quantity** corrects what a named flow's unit measures where the
+vendor's own flow property is wrong: EF 3.1 labels its `uranium` flow's
+megajoule a net calorific value, and `ef-3.1-property-statements.json` rules it
+`fission-energy`, so no heat of combustion ever converts onto it.
+
+An override row may still state a `conversion_factor`, for a pair fact no
+property of the flow expresses — titanium's share of its ore, mine gas at 1.0
+from plain to standard cubic metres — and a row stating one for a pair the
+list's statements already convert is refused at load.
+
 ## Adapters
 
 The manifest says where a list's flows live. The **adapter** is what puts them
