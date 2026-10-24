@@ -18,6 +18,7 @@ import orjson
 import structlog
 from lxml import etree
 
+from brightway_flows.downloads import FILES_BRIGHTWAY_DEV, PinnedFile
 from brightway_flows.integrations.ecoinvent import normalize_cas_number
 from brightway_flows.simapro_names import (
     canonical_geography_code,
@@ -26,6 +27,21 @@ from brightway_flows.simapro_names import (
 from brightway_flows.sources import SourceList
 
 logger = structlog.get_logger(__name__)
+
+#: This project's copy of each export, by ``list_version``.  BAFU hands the
+#: archive over rather than publishing it, so the copy is hosted here.
+#:
+#: Its bytes are not the archive the builds before #430 read
+#: (``ebaab567...26c7``): the 11,947 process files are the same, file for
+#: file, but sit in a folder named ``bafu-2026-v1/`` rather than ``ecoSpold
+#: files/``.  :func:`_elementary_exchanges` reads every ``.xml`` member in
+#: name order whatever folder holds it, so both give the same flows.
+BAFU_DOWNLOADS: dict[str, PinnedFile] = {
+    "2026-v1": PinnedFile(
+        urls=(f"{FILES_BRIGHTWAY_DEV}bafu-2026-v1-ecospold.zip",),
+        sha256="cbaeed4ae79c0be98709c854211cd72725d4f22f8b9b3fe334b7f343fca152f5",
+    ),
+}
 
 
 #: ecoSpold v1 files an exchange's role in an ``inputGroup`` or ``outputGroup``
@@ -206,20 +222,26 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
     """The :class:`~brightway_flows.sources.SourceAdapter` for BAFU.
 
     *force* is accepted because the protocol has it and re-reads the archive
-    either way: the whole cost is one pass over a 38 MB zip, so there is no
-    download to skip and nothing to cache.
+    either way: the whole cost is one pass over a 38 MB zip.  It does not
+    download the archive again: one placed by hand is not this tool's to
+    replace.
 
-    Unlike EF 3.1's, this adapter has nothing to download from.  BAFU hands the
-    archive over rather than publishing it at a stable URL, so a missing file is
-    a person's next action and the error says which file and where.
+    BAFU hands the archive over rather than publishing it at a stable URL, so
+    a missing file is downloaded from this project's copy of the export
+    (:data:`BAFU_DOWNLOADS`) and checked against its digest.  An export with no
+    copy is a person's next action, and the error says which file and where.
     """
     from brightway_flows.filesystem import bafu_ecospold_zip_path
 
     archive = bafu_ecospold_zip_path(source.list_version)
+    pinned = BAFU_DOWNLOADS.get(source.list_version)
+    if not archive.exists() and pinned is not None:
+        pinned.download(archive)
     if not archive.exists():
         raise FileNotFoundError(
-            f"BAFU's ecoSpold archive for {source.key} is not at {archive}. It is "
-            "not downloadable: obtain it from BAFU and place it there."
+            f"BAFU's ecoSpold archive for {source.key} is not at {archive}, and "
+            "this project hosts no copy of that export: obtain it from BAFU and "
+            "place it there."
         )
 
     records = extract_elementary_flows(

@@ -5,12 +5,11 @@ from __future__ import annotations
 from datetime import datetime
 from pathlib import Path
 
-import httpx
 import openpyxl
 import orjson
 import structlog
-from tqdm import tqdm
 
+from brightway_flows.downloads import PinnedFile
 from brightway_flows.filesystem import (
     GLAD_ILCD_TO_SIMAPRO_JSON_FILEPATH,
     GLAD_ILCD_TO_SIMAPRO_XLSX_FILEPATH,
@@ -18,36 +17,32 @@ from brightway_flows.filesystem import (
 
 logger = structlog.get_logger(__name__)
 
+#: The commit the builds' copy of the workbook is from.  It used to be read
+#: from the tip of ``master``, so a commit upstream changed what a fresh data
+#: directory read with no change here, and a renamed path stopped the build
+#: (#431).  Moving to a newer workbook is changing this and the digest below.
+GLAD_COMMIT = "124bef3d8c25b1f6fe478980502a115e0582c604"
+
 GLAD_ILCD_TO_SIMAPRO_URL = (
-    "https://github.com/One-Click-LCA/GLAD-ElementaryFlowResources/raw/refs/heads/master/"
-    "Mapping/Output/Mapped_files/"
-    "ILCD_EF3.1_TO_SimaProCSV_Professional10.2_SubstanceMappingsGLAD.xlsx?download="
+    "https://github.com/One-Click-LCA/GLAD-ElementaryFlowResources/raw/"
+    f"{GLAD_COMMIT}/Mapping/Output/Mapped_files/"
+    "ILCD_EF3.1_TO_SimaProCSV_Professional10.2_SubstanceMappingsGLAD.xlsx"
 )
+
+#: The workbook at :data:`GLAD_COMMIT`, which is the one every build has read.
+GLAD_ILCD_TO_SIMAPRO_SHA256 = (
+    "56062d1f9e22329012112474a59d42dcea13a3b9b362f7a2e7bcfa8aca60d45d"
+)
+
 
 def download_glad_ilcd_to_simapro(
     url: str = GLAD_ILCD_TO_SIMAPRO_URL,
     force: bool = False,
 ) -> Path:
-    """Download the GLAD ILCD-to-SimaPro workbook."""
-    dest = GLAD_ILCD_TO_SIMAPRO_XLSX_FILEPATH
-    if dest.exists() and not force:
-        logger.info("using_cached_glad_mapping_workbook", path=str(dest))
-        return dest
-
-    logger.info("downloading_glad_mapping_workbook", url=url, destination=str(dest))
-    with httpx.stream("GET", url, follow_redirects=True, timeout=120) as response:
-        response.raise_for_status()
-        total = int(response.headers.get("content-length", 0))
-        with dest.open("wb") as f, tqdm(
-            total=total or None,
-            unit="B",
-            unit_scale=True,
-            desc=str(dest),
-        ) as progress:
-            for chunk in response.iter_bytes(chunk_size=1024 * 64):
-                f.write(chunk)
-                progress.update(len(chunk))
-    return dest
+    """Download the GLAD ILCD-to-SimaPro workbook, checked against its digest."""
+    return PinnedFile(urls=(url,), sha256=GLAD_ILCD_TO_SIMAPRO_SHA256).download(
+        GLAD_ILCD_TO_SIMAPRO_XLSX_FILEPATH, force=force
+    )
 
 
 def _cell_text(value: object) -> str:

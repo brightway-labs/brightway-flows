@@ -24,10 +24,10 @@
 - `domain`: canonical domain models.
 - `transformers`: ETL transform stages.
 
-Thirteen modules sit at the top level rather than in a section: `sources`,
-`chem`, `simapro_names`, `cache_archive`, `context_mapping`, `match_overrides`,
-`manual_fixes`, `qualifiers`, `correspondence_contexts`, `additional_flows`,
-`filesystem` and `settings`. These are **not** legacy — this line used to say
+Fourteen modules sit at the top level rather than in a section: `sources`,
+`chem`, `simapro_names`, `cache_archive`, `downloads`, `context_mapping`,
+`match_overrides`, `manual_fixes`, `qualifiers`, `correspondence_contexts`,
+`additional_flows`, `data_dir`, `filesystem` and `settings`. These are **not** legacy — this line used to say
 they were, while `sources` was the most-imported module in the project (#92).
 They are cross-cutting: each is read by several sections and belongs to none.
 Put a new module in a section if one section owns it, and here only if more than

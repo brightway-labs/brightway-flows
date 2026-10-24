@@ -31,9 +31,10 @@ rate-limited so as not to overload the data providers.
 subsequent runs read from disk. Do not delete the caches to "start clean" — you
 will only re-download the same data over the same rate limits.
 
-**It can also be paid by somebody else.** If a machine somewhere already has
-the caches, `pack-cache` writes them into one archive and `fetch-cache` unpacks
-it here, which turns those hours into one download. See
+**It can also be paid by somebody else.** The project publishes the caches it
+has collected, and `fetch-cache` unpacks them here, which turns those hours
+into one 18 MB download. `pack-cache` writes your own into an archive for
+somebody else. See
 [Start from somebody else's caches](install.md#start-from-somebody-elses-caches).
 
 ## Step by step
@@ -111,10 +112,12 @@ uv run brightway-flows build --source ecoinvent-3.12
 uv run brightway-flows build --source ecoinvent-3.12 --source bafu-2026-v1
 ```
 
-Every list that can be merged needs something you have to obtain — an ecoinvent
-licence, or the BAFU archive, which BAFU hands over rather than publishing. That
-is why merging is asked for rather than opted out of: the base list on its own
-needs none of it, and it is the product. `--source` defaulted to
+Merging ecoinvent needs a licence you have to obtain. BAFU 2026 v1, Stepwise
+2006 1.09 and AGRIBALYSE 3.2 do not: their vendors hand the files over rather
+than publishing them, so `fetch-source` downloads the project's own copy from
+`files.brightway.dev` — and, for BAFU and AGRIBALYSE, checks that it is the
+copy every build has read. Merging is still asked for rather than opted out of: the
+base list on its own needs none of it, and it is the product. `--source` defaulted to
 `ecoinvent-3.12` until
 [#99](https://github.com/brightway-labs/brightway-flows/issues/99), which
 made the ordinary invocation of the ordinary command a build that could not

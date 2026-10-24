@@ -84,10 +84,9 @@ Then open <http://127.0.0.1:5000>.
 > do not delete the caches.
 
 Those caches move between machines, so the hours need only be paid once by
-anybody. Given an archive somebody published with `pack-cache`:
+anybody. The project publishes the ones it has:
 
 ```bash
-export BRIGHTWAY_FLOWS_CACHE_URL=https://example.org/brightway-flows-cache.tar.gz
 uv run brightway-flows fetch-cache        # then build as above
 ```
 

@@ -597,24 +597,13 @@ def build(
 def chebi(
     force: bool = typer.Option(False, "--force", "-f", help="Re-download even if the file exists."),
 ) -> None:
-    """Download ChEBI JSON (.gz) and report graph.nodes type statistics."""
+    """Download the pinned ChEBI release (.gz) and report graph.nodes type statistics."""
     import gzip
     from collections import Counter
 
-    import httpx
+    from brightway_flows.integrations.chebi import download_chebi
 
-    url = "https://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi.json.gz"
-
-    if CHEBI_JSON_GZ_FILEPATH.exists() and not force:
-        logger.info("using_cached_chebi", path=str(CHEBI_JSON_GZ_FILEPATH))
-    else:
-        logger.info("downloading_chebi", url=url, destination=str(CHEBI_JSON_GZ_FILEPATH))
-        with httpx.stream("GET", url, follow_redirects=True, timeout=300) as response:
-            response.raise_for_status()
-            with CHEBI_JSON_GZ_FILEPATH.open("wb") as f:
-                for chunk in response.iter_bytes(chunk_size=1024 * 64):
-                    f.write(chunk)
-        logger.info("saved_chebi", path=str(CHEBI_JSON_GZ_FILEPATH))
+    download_chebi(force=force)
 
     with gzip.open(CHEBI_JSON_GZ_FILEPATH, "rb") as f:
         data = orjson.loads(f.read())
@@ -655,8 +644,9 @@ def fetch_cache_command(
         "--url",
         help=(
             "Where the cache archive is published. Defaults to the "
-            "BRIGHTWAY_FLOWS_CACHE_URL environment variable. A local path "
-            "or a file:// URL is read where it lies."
+            "BRIGHTWAY_FLOWS_CACHE_URL environment variable, and that to the "
+            "archive this project publishes on files.brightway.dev. A local "
+            "path or a file:// URL is read where it lies."
         ),
     ),
     overwrite: bool = typer.Option(
@@ -672,9 +662,10 @@ def fetch_cache_command(
 
     The first run is several hours of rate-limited requests to PubChem, ChEBI,
     Common Chemistry, Wikidata and Wikipedia, and every answer is cached. This
-    is the way to start from somebody else's answers instead: point
-    `BRIGHTWAY_FLOWS_CACHE_URL` at an archive `pack-cache` wrote and run
-    this before `build`.
+    is the way to start from somebody else's answers instead: run this before
+    `build`, and it reads the archive this project publishes, checked against
+    its digest. `BRIGHTWAY_FLOWS_CACHE_URL` or `--url` points it at an archive
+    `pack-cache` wrote somewhere else.
 
     Only the files in `cache_archive.CACHED_FILES` are written, whatever the
     archive contains, so an archive fetched from elsewhere cannot write outside

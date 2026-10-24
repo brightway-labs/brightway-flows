@@ -59,6 +59,7 @@ from typing import Any, Iterator
 import orjson
 import structlog
 
+from brightway_flows.downloads import FILES_BRIGHTWAY_DEV, PinnedFile
 from brightway_flows.integrations.ecoinvent import normalize_cas_number
 from brightway_flows.integrations.stepwise import parse_substance_comment
 from brightway_flows.sources import SourceList
@@ -67,6 +68,19 @@ logger = structlog.get_logger(__name__)
 
 #: The header's own project name, checked rather than read.
 AGRIBALYSE_PROJECT_NAME = "AGRIBALYSE - unit"
+
+#: This project's copy of each release, by ``list_version``.  ADEME hands the
+#: export over rather than publishing it at a stable address, so the copy the
+#: builds read is hosted here, gzipped -- 91 MB rather than 507 MB -- and
+#: unpacked on download.  The digest is the unpacked file's, the same one a
+#: hand-placed copy has (#429).
+AGRIBALYSE_DOWNLOADS: dict[str, PinnedFile] = {
+    "3.2": PinnedFile(
+        urls=(f"{FILES_BRIGHTWAY_DEV}AGB32_final.CSV.gz",),
+        sha256="16e0ed2703de24fa236df6b63c3b388ab3939ed37e26a7073a734a1da2ed7e51",
+        gzipped=True,
+    ),
+}
 
 #: The per-process exchange block, and the trailing substance block that holds
 #: that compartment's units, registry numbers and comments.  The block names
@@ -230,11 +244,12 @@ def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]
 def fetch(source: SourceList, *, force: bool = False) -> Path:
     """The :class:`~brightway_flows.sources.SourceAdapter` for AGRIBALYSE.
 
-    *force* is accepted because the protocol has it and re-reads the export
-    either way: there is no download to skip.  Like BAFU's archive, the export
-    has no stable vendor URL -- ADEME distributes it on request -- so a
-    missing file is a person's next action and the error says which file and
-    where.
+    The export has no stable vendor URL -- ADEME distributes it on request --
+    so a missing file is downloaded from this project's copy of the release
+    (:data:`AGRIBALYSE_DOWNLOADS`) and checked against its digest.  A release
+    with no copy is a person's next action, and the error says which file and
+    where.  *force* re-reads the export but does not download it again: one
+    placed by hand is not this tool's to replace.
 
     The header's project name is checked, because it is the only claim the
     file makes about itself: a ``{processes}`` export states no release, so
@@ -245,11 +260,14 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
     from brightway_flows.filesystem import agribalyse_csv_path
 
     csv_path = agribalyse_csv_path(source.list_version)
+    pinned = AGRIBALYSE_DOWNLOADS.get(source.list_version)
+    if not csv_path.exists() and pinned is not None:
+        pinned.download(csv_path)
     if not csv_path.exists():
         raise FileNotFoundError(
-            f"AGRIBALYSE's SimaPro export for {source.key} is not at {csv_path}. "
-            "It has no stable download URL: obtain it from ADEME and place it "
-            "there."
+            f"AGRIBALYSE's SimaPro export for {source.key} is not at {csv_path}, "
+            "and this project hosts no copy of that release: obtain it from "
+            "ADEME and place it there."
         )
 
     parsed = _parsed(csv_path)

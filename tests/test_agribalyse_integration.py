@@ -149,12 +149,13 @@ class FetchTestCase(unittest.TestCase):
         self.assertIn("Some other database", str(ctx.exception))
 
     def test_a_missing_export_names_the_path_it_wanted(self):
+        """A release this project hosts no copy of is a person's next action."""
         with tempfile.TemporaryDirectory() as tmp:
-            missing = Path(tmp) / "AGB32_final.CSV"
+            missing = Path(tmp) / "AGB99_final.CSV"
             source = SourceList(
                 list_name="agribalyse",
-                list_version="3.2",
-                flows_path=Path(tmp) / "agribalyse-3.2.json",
+                list_version="9.9",
+                flows_path=Path(tmp) / "agribalyse-9.9.json",
             )
             with mock.patch(
                 "brightway_flows.filesystem.agribalyse_csv_path",
