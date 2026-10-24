@@ -33,6 +33,12 @@ from brightway_flows.domain.lcia.records import (
     flow_entries,
     stated_factors,
 )
+from brightway_flows.domain.property_statements import (
+    PROPERTY_STATEMENTS_SCHEMA,
+    PropertyStatement,
+    decode_statements,
+    encode_statements,
+)
 from brightway_flows.domain.records import (
     SerialisableRecord,
     UnknownRecordFieldError,
@@ -68,6 +74,7 @@ _OMIT_WHEN_NONE = frozenset({
     "roles",
     "name",
     "unit",
+    "property_statements",
     "prefLabel",
     "skos_definition",
     "owl_deprecated",
@@ -183,6 +190,12 @@ class Flow(SerialisableRecord):
     #: own issue (`plans/lcia-factors.md` §4.4, PR 8).
     lcia_methods: list[StatedFactor] = field(default_factory=list)
     unit: str | None = None
+    #: What the source list states about one unit of this flow -- a heating
+    #: value, a density, a specific activity -- as records; the merge derives
+    #: a mapping's `qudt:conversionMultiplier` from them (#407).  See
+    #: `domain.property_statements`.  None rather than [] because the 94k
+    #: records that carry none must serialise unchanged.
+    property_statements: list[PropertyStatement] | None = None
 
     # ── Layering and provenance of the record itself ─────────────────────────
     input_datasets: list[str] = field(default_factory=list)
@@ -282,7 +295,9 @@ class Flow(SerialisableRecord):
     _CODECS: ClassVar[dict[str, tuple[Any, Any]]] = {
         "context": (context_field_to_serialised, context_field_from_serialised),
         "lcia_methods": (flow_entries, stated_factors),
+        "property_statements": (encode_statements, decode_statements),
     }
     _SERIALISED_SCHEMAS: ClassVar[dict[str, Any]] = {
         "lcia_methods": FLOW_ENTRIES_SCHEMA,
+        "property_statements": PROPERTY_STATEMENTS_SCHEMA,
     }

@@ -14,6 +14,7 @@
   "inputs": {
     "flows": "ef-31-flows.json",
     "manual_fixes": "ef-3.1-manual-fixes.json",
-    "manual_additions": null
+    "manual_additions": null,
+    "property_statements": "ef-3.1-property-statements.json"
   }
 }

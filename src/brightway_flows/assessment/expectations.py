@@ -158,6 +158,12 @@ SUBJECT_CLAIMS: dict[str, frozenset[str]] = {
         # revised the value at 3.9 and rebuilt its oil datasets on it. A claim
         # phrased about the flow could not tell the two apart.
         "conversion_factor",
+        # Who stated that factor: `conversion_basis` on the same source
+        # reference -- `flow-property` since #407 for a number derived from a
+        # statement the list makes about its own flow, `curated` for one typed
+        # on an override row, `unit-table` for a change of scale.  A claim about
+        # the row for the same reason the factor is.
+        "conversion_basis",
         "row_count", "same_target", "distinct_targets", "target_count",
         "same_substance", "distinct_substances", "substance_count",
     }),

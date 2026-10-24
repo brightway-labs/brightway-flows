@@ -36,20 +36,28 @@ the point:
 - The **six MJ rows carry no factor**, and that is the finding rather than an
   omission.  Between two MJ rows there is nothing to convert, and
   `_validate_conversion` refuses a factor `units.json` already states.
-- The **nine mass and volume rows all carry one**, because there the units
-  really do cross quantity kinds.  Each pair is also accepted in
-  `unit-change-allowlist.json` -- this file supplies the number, that file
-  accepts the crossing.
+- The **ten mass and volume rows all convert**, because there the units really
+  do cross quantity kinds.  Since #407 the number is not on the override row:
+  it is a heating value of the flow, stated in
+  `bafu-2026-v1-property-statements.json` in the flow's own unit -- 18.01 MJ per
+  kilogram of `Coal, hard` -- and the merge derives the mapping's factor from
+  it.  Three files, three jobs: the override names the target, the statements
+  file supplies the number, `unit-change-allowlist.json` accepts the crossing.
+  An override row keeps a `conversion_factor` only for a pair fact no property
+  of the flow expresses, which here is the titanium ore's share of its metal.
 
 Where the numbers come from is not one source, and the test data records the
 value rather than the provenance, so it is worth stating here.  Every factor is
 the one this project already applies to ecoinvent's flow onto the same target, so
 that two source lists reaching one flow reach it by one conversion.  For hard
-coal, brown coal, crude oil, uranium and gas that is the EF 3.1 LCIA method as
-implemented by the ecoinvent Centre; only peat is an IPCC 2006 Table 1.2 value,
-and only because no ecoinvent association for peat has ever existed.  For the
-coals the two bases are far apart -- 18.01 against IPCC's 25.8 -- which is a
-question about the target flow rather than about these rows.
+coal, brown coal, uranium and gas that is the EF 3.1 LCIA method as implemented
+by the ecoinvent Centre; crude oil is BAFU's own, the ratio one of its datasets
+implies; only peat is an IPCC 2006 Table 1.2 value, and only because no
+ecoinvent association for peat has ever existed.  For the coals the two bases
+are far apart -- 18.01 against IPCC's 25.8 -- which is a question about the
+target flow rather than about these rows.  The statements file says which it
+is: the coals are a calorific value of unstated basis, peat and gas are net,
+uranium is fission energy.
 
 Five of these rows would otherwise be `created` or unmatched.  EF declares no kg
 flow for the coals and oil to match, so algorithmic matching mints a duplicate
@@ -69,6 +77,7 @@ matches once the registry number stops pointing both names at one flow, and its
 
 import unittest
 
+from brightway_flows.domain.property_statements import factor_between
 from brightway_flows.domain.units import (
     build_units_index,
     resolve_unit_notation,
@@ -76,10 +85,16 @@ from brightway_flows.domain.units import (
 )
 from brightway_flows.merge.unit_changes import canonical_unit
 from brightway_flows.match_overrides import apply_match_overrides, load_match_overrides
+from brightway_flows.property_statements import (
+    load_property_statements,
+    refuse_a_pair_stated_twice,
+)
 from brightway_flows.sources import PACKAGE_DATA_DIR, resolve_source_list
 
 OVERRIDES_FILE = "bafu-2026-v1-match-overrides.json"
 OVERRIDES_PATH = PACKAGE_DATA_DIR / OVERRIDES_FILE
+STATEMENTS_FILE = "bafu-2026-v1-property-statements.json"
+STATEMENTS_PATH = PACKAGE_DATA_DIR / STATEMENTS_FILE
 ALLOWLIST_PATH = PACKAGE_DATA_DIR / "unit-change-allowlist.json"
 
 HARD_COAL = "fe0acd60-3ddc-11dd-a6fc-0050c2490048"
@@ -104,8 +119,9 @@ ENERGY_ROWS = {
 }
 
 #: BAFU's mass and volume rows for those same carriers, and the factor that takes
-#: each one to the megajoule flow.  Uranium appears three times because BAFU files
-#: it in three compartments, each with its own uuid, and natural gas appears
+#: each one to the megajoule flow -- the heating value the statements file gives
+#: one unit of the flow, in megajoules.  Uranium appears three times because BAFU
+#: files it in three compartments, each with its own uuid, and natural gas appears
 #: twice, once per unit spelling.
 MASS_ROWS = {
     "d144bede-fdfa-580c-ad08-4fbaf0b35291": ("Coal, hard", HARD_COAL, 18.01),
@@ -139,9 +155,9 @@ COAL_MINE_OFF_GAS = {
     "4ffc062b-520e-5bf6-bc4d-3c16db9c1113",   # m3; still unmatched, waiting on #67
 }
 
-#: The natural gas row BAFU spells in `Nm3` rather than `m3`.  It states `sm3`,
-#: because that is what `Nm3` normalises to and the merge resolves a source unit
-#: before it builds the pair a factor is checked against.
+#: The natural gas row BAFU spells in `Nm3` rather than `m3`.  Its statement is
+#: per `sm3`, because that is what `Nm3` normalises to and the merge resolves a
+#: source unit before it asks the statement for the pair's factor.
 NM3_ROWS = {"99bbee18-e1d0-5600-82df-d0bfa91394c7"}
 
 #: Empty, and kept so that the assertion below stays an assertion about what
@@ -187,9 +203,10 @@ CARBON_DIOXIDE_ROWS = {
 #: density.  BAFU states the volume of sea water and EF 3.1 states its mass, so
 #: the pair crosses quantity kinds and `units.json` has no answer to defer to --
 #: and BAFU declares no correspondence table, so an override is the only place a
-#: factor for one of its rows can be written.  ecoinvent ships the same vendor
-#: name against the same target and carries the same 1025 kg/m3 from its own
-#: table; two lists shipping one row should not be treated differently (#78).
+#: target for one of its rows can be written, and the statements file the only
+#: place its density can.  ecoinvent ships the same vendor name against the same
+#: target and states the same 1025 kg/m3; two lists shipping one row should not
+#: be treated differently (#78).
 DENSITY_ROWS = {
     "44360b86-a3d8-5623-b211-44ec41853fcd": (
         "Water, salt, ocean", "172a3db9-6556-11dd-ad8b-0800200c9a66", 1025.0,
@@ -221,19 +238,32 @@ HYDROCARBON_ROWS = {
 }
 
 #: The unit each row is stated in.  Gas is by volume in two spellings, everything
-#: else by mass, and the guard refuses a factor whose pair it cannot check.
+#: else by mass, and a statement per another kind of unit does not answer for
+#: the row: `factor_between` scales the row's unit onto the statement's
+#: `per_unit` through `units.json`, which has no factor across kinds.
 MASS_ROW_UNITS = {
     uuid: ("sm3" if uuid in NM3_ROWS else "m3" if "Gas" in name else "kg")
     for uuid, (name, _, _) in MASS_ROWS.items()
 }
 
 
+def _one_statement(loaded, source_uuid):
+    """The flow's single statement.  Each BAFU row states one quantity; a
+    second would be a question `choose_statement` has to answer, and no row
+    here asks it."""
+    statements = loaded.statements[source_uuid]
+    assert len(statements) == 1, statements
+    return statements[0]
+
+
 class OverrideFileTestCase(unittest.TestCase):
-    """What the checked-in file says."""
+    """What the checked-in files say: the override file for the targets, the
+    statements file for the numbers."""
 
     def setUp(self):
         self.rows = load_match_overrides(OVERRIDES_PATH)
         self.by_source = {row.source_uuid: row for row in self.rows}
+        self.statements = load_property_statements(STATEMENTS_PATH)
 
     def test_every_carrier_has_a_target_in_both_units(self):
         self.assertEqual(
@@ -243,19 +273,44 @@ class OverrideFileTestCase(unittest.TestCase):
             | HYDROCARBON_ROWS,
         )
 
+    def test_the_statements_file_states_exactly_the_rows_that_cross(self):
+        """Eleven statements: the ten carriers by mass or volume and the one
+        density.  Every row of this file whose units cross quantity kinds
+        has its number here, and no row that does not cross has one -- an
+        energy row given a heating value would be a factor on a megajoule."""
+        self.assertEqual(
+            set(self.statements.statements), set(MASS_ROWS) | set(DENSITY_ROWS)
+        )
+        self.assertEqual(
+            sum(len(items) for items in self.statements.statements.values()), 11
+        )
+
+    def test_only_the_ore_rows_keep_a_factor_on_the_override(self):
+        """One number, one home.  A heating value or a density is a property of
+        the flow and lives in the statements file; what stays on an override
+        is a fact about the pair alone -- titanium's share of its oxide, which
+        no quantity of the ore expresses."""
+        self.assertEqual(
+            {row.source_uuid for row in self.rows if row.converts}, ORE_ROWS
+        )
+
     def test_the_density_row_states_its_pair_and_its_factor(self):
         """A density is checkable only against the units it is stated between,
-        so the row has to name both -- the merge refuses a factor whose pair it
-        cannot check against the mapping it builds."""
+        so the statement names both: 1025 kilograms of mass per cubic metre of
+        the flow, which `factor_between` reads for the m3-to-kg pair the merge
+        builds and for no other."""
         for source_uuid, (source_name, target_uuid, factor) in DENSITY_ROWS.items():
             with self.subTest(source_name):
                 row = self.by_source[source_uuid]
                 self.assertEqual(row.source_name, source_name)
                 self.assertEqual(row.target_uuid, target_uuid)
-                self.assertTrue(row.converts)
-                self.assertEqual(row.conversion_factor, factor)
-                self.assertEqual(row.source_unit, "m3")
-                self.assertEqual(row.target_unit, "kg")
+                self.assertFalse(row.converts)
+                statement = _one_statement(self.statements, source_uuid)
+                self.assertEqual(statement.quantity, "mass")
+                self.assertEqual(statement.per_unit, "m3")
+                self.assertEqual(statement.unit, "kg")
+                self.assertEqual(factor_between(statement, "m3", "kg"), factor)
+                self.assertIsNone(factor_between(statement, "kg", "MJ"))
 
     def test_every_row_in_this_file_is_an_energy_carrier_or_named_otherwise(self):
         """`NOT_A_CARRIER` is empty, and this is what would notice it filling.
@@ -288,12 +343,37 @@ class OverrideFileTestCase(unittest.TestCase):
                 self.assertEqual(self.by_source[source_uuid].target_uuid, target_uuid)
 
     def test_every_mass_row_states_its_factor_between_its_unit_and_mj(self):
+        """The override names the target and nothing about the number; the
+        statement gives the megajoules in one unit of the flow, per the unit
+        the row is measured in, and that is the factor the merge publishes."""
         for source_uuid, (source_name, _, factor) in MASS_ROWS.items():
             with self.subTest(f"{source_name} {source_uuid[:8]}"):
-                row = self.by_source[source_uuid]
-                self.assertEqual(row.conversion_factor, factor)
-                self.assertEqual(row.source_unit, MASS_ROW_UNITS[source_uuid])
-                self.assertEqual(row.target_unit, "MJ")
+                self.assertFalse(self.by_source[source_uuid].converts)
+                statement = _one_statement(self.statements, source_uuid)
+                self.assertEqual(statement.per_unit, MASS_ROW_UNITS[source_uuid])
+                self.assertEqual(statement.unit, "MJ")
+                self.assertEqual(
+                    factor_between(statement, MASS_ROW_UNITS[source_uuid], "MJ"),
+                    factor,
+                )
+
+    def test_each_statement_names_its_quantity(self):
+        """The basis the override's comment could only describe.  The coals
+        borrow a figure whose basis ecoinvent's workbook does not state; peat
+        is IPCC's net value and gas ecoinvent's; uranium's megajoules are not a
+        heat of combustion at all, and a fission energy converts only onto a
+        target ruled to measure one."""
+        expected = {
+            "Coal": "calorific-value",
+            "Oil": "calorific-value",
+            "Peat": "net-calorific-value",
+            "Gas": "net-calorific-value",
+            "Uranium": "fission-energy",
+        }
+        for source_uuid, (source_name, _, _) in MASS_ROWS.items():
+            with self.subTest(f"{source_name} {source_uuid[:8]}"):
+                statement = _one_statement(self.statements, source_uuid)
+                self.assertEqual(statement.quantity, expected[source_name.split(",")[0]])
 
     def test_the_two_groups_do_not_overlap(self):
         # A carrier stated in both units is two source flows, never one.
@@ -313,11 +393,12 @@ class OverrideFileTestCase(unittest.TestCase):
 
 
 class AllowlistTestCase(unittest.TestCase):
-    """A stated factor is not the same as an accepted dimension crossing.
+    """A stated heating value is not the same as an accepted dimension crossing.
 
-    The override file supplies the number; `unit-change-allowlist.json` is where
-    the kg-to-MJ crossing is accepted.  A mass row in one and not the other would
-    either convert without review or be reported as a defect every run.
+    The statements file supplies the number; `unit-change-allowlist.json` is
+    where the kg-to-MJ crossing is accepted.  A mass row in one and not the
+    other would either convert without review or be reported as a defect every
+    run.
     """
 
     def setUp(self):
@@ -327,18 +408,25 @@ class AllowlistTestCase(unittest.TestCase):
             (entry["source_uuid"], entry["target_elementary_flow_id"]): entry
             for entry in payload["accepted"]
         }
+        self.statements = load_property_statements(STATEMENTS_PATH)
 
     def test_every_mass_row_has_its_crossing_accepted(self):
         for source_uuid, (source_name, target_uuid, _) in MASS_ROWS.items():
             with self.subTest(f"{source_name} {source_uuid[:8]}"):
                 self.assertIn((source_uuid, target_uuid), self.accepted)
 
-    def test_each_accepted_pair_agrees_with_the_override_on_units(self):
+    def test_each_accepted_pair_agrees_with_the_statement_on_units(self):
+        """The crossing the allowlist accepts is the one the statement converts:
+        its `source_unit` is the unit the statement is per, its `target_unit`
+        the unit the statement is in.  An entry accepting `kg` to `MJ` beside a
+        statement per cubic metre would accept a crossing nothing converts."""
         for source_uuid, (source_name, target_uuid, _) in MASS_ROWS.items():
             with self.subTest(f"{source_name} {source_uuid[:8]}"):
                 entry = self.accepted[(source_uuid, target_uuid)]
+                statement = _one_statement(self.statements, source_uuid)
+                self.assertEqual(entry["source_unit"], statement.per_unit)
+                self.assertEqual(entry["target_unit"], statement.unit)
                 self.assertEqual(entry["source_unit"], MASS_ROW_UNITS[source_uuid])
-                self.assertEqual(entry["target_unit"], "MJ")
                 self.assertTrue(entry["comment"].strip())
 
     def test_no_energy_row_is_listed(self):
@@ -358,6 +446,10 @@ class ManifestTestCase(unittest.TestCase):
         self.assertIsNotNone(self.source.match_overrides_path)
         self.assertEqual(self.source.match_overrides_path.name, OVERRIDES_FILE)
 
+    def test_the_manifest_names_the_statements_file(self):
+        self.assertIsNotNone(self.source.property_statements_path)
+        self.assertEqual(self.source.property_statements_path.name, STATEMENTS_FILE)
+
     def test_the_file_is_on_disk(self):
         self.assertEqual(self.source.missing_curated_inputs(), [])
 
@@ -376,17 +468,35 @@ class ManifestTestCase(unittest.TestCase):
             with self.subTest(row["source"]["uuid"][:8]):
                 self.assertEqual(row["route"], "override")
 
-    def test_a_mass_row_carries_its_unit_so_the_factor_can_be_checked(self):
-        # `override_source_side` emits the source unit only where a conversion
-        # is stated, and the merge refuses a factor it cannot check against the
-        # pair it builds.
+    def test_a_mass_rows_number_reaches_the_merge_from_the_statements_file(self):
+        """The prepared row carries no factor and no unit -- `override_source_side`
+        emits a unit only where the override itself converts -- and the list's
+        statements, resolved for the release this manifest declares, give the
+        factor per the unit the merge will have resolved the row to.  Read
+        through the list rather than the path so that a release nobody checked
+        the number against is refused here, not in a build."""
         rows = {r["source"]["uuid"]: r for r in
                 apply_match_overrides([], self.source.match_overrides_path)}
+        loaded = self.source.load_property_statements()
         for source_uuid, (source_name, _, factor) in MASS_ROWS.items():
             with self.subTest(f"{source_name} {source_uuid[:8]}"):
                 row = rows[source_uuid]
-                self.assertEqual(row["conversion_factor"], factor)
-                self.assertEqual(row["source"]["unit"], MASS_ROW_UNITS[source_uuid])
+                self.assertNotIn("conversion_factor", row)
+                self.assertNotIn("unit", row["source"])
+                statement = _one_statement(loaded, source_uuid)
+                self.assertEqual(
+                    factor_between(statement, MASS_ROW_UNITS[source_uuid], "MJ"),
+                    factor,
+                )
+
+    def test_no_pair_is_stated_in_both_files(self):
+        """The guard `load_prepared_match_table` runs: an override factor for a
+        pair the statements file also converts is two copies that can disagree,
+        and the ore rows are the only factors left on the overrides."""
+        rows = apply_match_overrides([], self.source.match_overrides_path)
+        refuse_a_pair_stated_twice(
+            rows, self.source.load_property_statements(), label=self.source.key
+        )
 
     def test_applying_twice_is_applying_once(self):
         once = apply_match_overrides([], self.source.match_overrides_path)
@@ -413,28 +523,50 @@ class GasVolumeTestCase(unittest.TestCase):
     factor these rows share is only right while the unit table agrees the units
     are one.
 
+    The two rows are two statements, each per its own unit -- 36.0 MJ per m3
+    and 36.0 MJ per sm3 -- because a statement is about one unit of the flow as
+    the vendor measures it, and `units.json` keeps a cubic metre and a standard
+    cubic metre apart as two quantity kinds (#292), so neither statement would
+    answer for the other row.
+
     BAFU uses the spellings in different datasets -- 115 in Nm3 against 137 in
     m3 for natural gas, and none using both -- tracking the vintage of the data
     rather than a difference in what is measured.
     """
 
+    GAS_ROWS = {uuid for uuid, (name, _, _) in MASS_ROWS.items() if "Gas" in name}
+
     def setUp(self):
         self.rows = {r.source_uuid: r for r in load_match_overrides(OVERRIDES_PATH)}
+        self.statements = load_property_statements(STATEMENTS_PATH)
 
     def test_both_spellings_take_the_same_factor(self):
+        self.assertEqual(len(self.GAS_ROWS), 2)
         factors = {
-            self.rows[uuid].conversion_factor
-            for uuid, (name, _, _) in MASS_ROWS.items() if "Gas" in name
+            factor_between(
+                _one_statement(self.statements, uuid), MASS_ROW_UNITS[uuid], "MJ"
+            )
+            for uuid in self.GAS_ROWS
         }
         self.assertEqual(factors, {36.0})
 
     def test_the_nm3_row_is_stated_in_the_unit_it_normalises_to(self):
-        # A factor is refused unless it can be checked against the pair the merge
-        # builds, and the merge resolves the source unit first: BAFU ships `Nm3`,
-        # the merge sees `sm3`.
+        # The merge resolves the source unit before it asks the statement for
+        # the pair's factor: BAFU ships `Nm3`, the merge sees `sm3`, and a
+        # statement per plain cubic metre would not bridge the pair.
         for uuid in NM3_ROWS:
             with self.subTest(uuid[:8]):
-                self.assertEqual(self.rows[uuid].source_unit, "sm3")
+                statement = _one_statement(self.statements, uuid)
+                self.assertEqual(statement.per_unit, "sm3")
+                self.assertEqual(factor_between(statement, "sm3", "MJ"), 36.0)
+                self.assertIsNone(factor_between(statement, "m3", "MJ"))
+
+    def test_the_m3_row_is_stated_per_plain_cubic_metre(self):
+        for uuid in self.GAS_ROWS - NM3_ROWS:
+            with self.subTest(uuid[:8]):
+                statement = _one_statement(self.statements, uuid)
+                self.assertEqual(statement.per_unit, "m3")
+                self.assertIsNone(factor_between(statement, "sm3", "MJ"))
 
     def test_both_gas_rows_reach_natural_gas(self):
         targets = {

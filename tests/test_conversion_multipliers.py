@@ -1,4 +1,4 @@
-"""The unit conversions ecoinvent's correspondence tables state, and where they go.
+"""The unit conversions a mapping publishes, and where each number comes from.
 
 Nine ecoinvent flows do not mean, amount for amount, what the consensus flow
 they map onto means.  Six are measured in a different quantity -- four fossil
@@ -35,24 +35,36 @@ has one that says 1.0 and is wrong for an ore.
 **Every version, not one.**  In the table era 3.9.1, 3.10.1 and 3.11 read
 their tables from `randonneur_data` verbatim and 3.12 borrowed 3.11's, so they
 had the quantity conversions all along; 3.8's composed table dropped the field,
-so 3.8 published none.  The tables are retired (#141) and every conversion is
-stated once, in `ecoinvent-match-overrides.json`, reaching every version from
-there.  The sweep below is what keeps any from being lost again.
+so 3.8 published none.  The tables are retired (#141) and the numbers are
+stated once, reaching every version from one file.  Which file changed at
+#407: the heating values, the density and the fission energy are in
+`ecoinvent-property-statements.json`, each checked against the releases it
+holds for and restated where a release measured differently, and the ore share
+stays on its three rows of `ecoinvent-match-overrides.json`.  The sweep below
+is what keeps any from being lost again.
 
-**The factor stays on the mapping.**  It is a statement about a pair, not about
-either flow: 9.41 is not a fact about brown coal until it is 9.41 MJ per kg.  So
-it is published on the `xkos:ConceptAssociation` and never as a property of a
-consensus flow or a flow object, which is asserted against the record classes
-rather than against one run's output.
+**A statement is about the flow; a factor is about a pair.**  "One kilogram of
+this brown coal is 9.41 MJ of calorific value" is something ecoinvent says
+about its own flow, and since #407 it is kept as a property statement on that
+flow, with its quantity, its unit, who said it and where (`domain.property_statements`).
+9.41 is what a kilogram of it becomes on EF's `Brown Coal` in megajoules, and
+that number is published on the `xkos:ConceptAssociation` and never as a
+property of a consensus flow or a flow object -- asserted against the record
+classes rather than against one run's output.  The merge derives the second
+from the first when the pair's units bridge the statement
+(`merge.conversions.conversion_to_publish`), publishes it with basis
+`flow-property`, and names the quantity it came through.  An override row keeps
+a `conversion_factor` only for a pair fact no property of the flow expresses:
+the ore's share of its metal, mine gas from plain to standard cubic metres.
 
 **A redirected pair re-earns it.**  The merge can pair a source flow with a
-target the table did not name.  The factor follows only if the units it was
-stated between are still the units of the pair -- 36 MJ per standard cubic metre
-is not 36 MJ per cubic metre, and ecoinvent changed natural gas from one to the
-other at 3.9.  The same holds for a target rewritten in
-`ecoinvent-match-overrides.json`, which is where a factor could survive its own
-pair: the override drops whatever the table stated unless it states one itself,
-so an inherited number cannot outlive the mapping it was about.
+target the table did not name.  A curated factor follows only if the units it
+was stated between are still the units of the pair, and a statement converts
+only where its `per_unit` is the row's unit and its `unit` the target's -- 36
+MJ per standard cubic metre is not 36 MJ per cubic metre, and ecoinvent changed
+natural gas from one to the other at 3.9.  Which is also why the factor is
+derived at the point of mapping rather than copied from a file: a statement
+cannot outlive the unit it was made about.
 
 **What the merge accepts, the merge writes.**  The rule that admits a factor is
 in one place, and the three write sites do not get a second opinion.  They used
@@ -67,23 +79,34 @@ rather than about which file the row came from.
 """
 
 import unittest
+from collections import defaultdict
 from dataclasses import fields
 from unittest import mock
 
 import orjson
 
+from brightway_flows.domain.common import Provenance
 from brightway_flows.domain.context_registry import context_for_iri
 from brightway_flows.domain.elementary_flow import ElementaryFlow
 from brightway_flows.domain.flow_object import FlowObject
-from brightway_flows.domain.simple_flow import SimpleFlow
-from brightway_flows.domain.vocabulary import (
-    QUDT_CONVERSION_MULTIPLIER_CURIE,
-    XKOS_SOURCE_CONCEPT_CURIE,
+from brightway_flows.domain.property_statements import (
+    ConversionRule,
+    PropertyStatement,
+    StatementOrigin,
+    factor_between,
 )
+from brightway_flows.domain.simple_flow import SimpleFlow
 from brightway_flows.domain.units import (
     CONVERSION_BASIS_KEY,
+    CONVERSION_PROVENANCE_KEY,
+    CONVERSION_QUANTITY_KEY,
     ConversionBasis,
     unit_table_factor,
+)
+from brightway_flows.domain.vocabulary import (
+    QUANTITY_IRI_PREFIX,
+    QUDT_CONVERSION_MULTIPLIER_CURIE,
+    XKOS_SOURCE_CONCEPT_CURIE,
 )
 from brightway_flows.merge.conversions import (
     UnitConversion,
@@ -104,15 +127,23 @@ from brightway_flows.merge.state import (
     MergeAccumulator,
     SourceRow,
 )
+from brightway_flows.merge.unit_changes import (
+    find_unit_mismatches,
+    load_unit_change_allowlist,
+)
 from brightway_flows.sources import (
     PACKAGE_DATA_DIR,
     known_source_lists,
     load_prepared_match_table,
     resolve_source_list,
 )
+from brightway_flows.transformers.unit_normalization import build_units_index
 
 #: ecoinvent source flow uuid -> (factor, target uuid).  Stable from 3.8 to
 #: 3.12, which is what lets one table of expectations cover every version.
+#: The oracle for both homes: six of these are read off a property statement
+#: and three off an override row, and the number is the same whichever file
+#: states it.
 CONVERSIONS = {
     "024c9722-1e88-412b-8c4b-10c532be8dca": (9.41, "fe0acd60-3ddc-11dd-a6f9-0050c2490048"),
     "b6d0042d-0ef8-49ed-9162-a07ff1ccf750": (18.01, "fe0acd60-3ddc-11dd-a6fc-0050c2490048"),
@@ -139,6 +170,32 @@ CONVERSIONS_BY_RELEASE = {
     ("7c337428-fb1b-45c7-bbb2-2ee4d29e17ba", "3.8"): 34.5,
 }
 
+#: ecoinvent natural gas, the one flow whose vendor unit is a release's own.
+GAS = "7c337428-fb1b-45c7-bbb2-2ee4d29e17ba"
+
+#: The six flows whose factor is derived from a property statement -> (the
+#: vendor's unit for the flow, the target's unit).  The pair a statement has
+#: to bridge for the number in :data:`CONVERSIONS` to be the one published.
+UNIT_PAIRS = {
+    "024c9722-1e88-412b-8c4b-10c532be8dca": ("kg", "MJ"),
+    "b6d0042d-0ef8-49ed-9162-a07ff1ccf750": ("kg", "MJ"),
+    "88d06db9-59a1-4719-9174-afeb1fa4026a": ("kg", "MJ"),
+    GAS: ("sm3", "MJ"),
+    "2ba5e39b-adb6-4767-a51d-90c1cf32fe98": ("kg", "MJ"),
+    "629ffbca-ca71-4e4b-a006-ca9bdd9cd1df": ("m3", "kg"),
+}
+
+#: (source flow uuid, release) -> the unit pair where a release ships the flow
+#: in another unit.  One entry: 3.8 registers natural gas in plain cubic
+#: metres, and 34.5 is per cubic metre.
+UNIT_PAIRS_BY_RELEASE = {
+    (GAS, "3.8"): ("m3", "MJ"),
+}
+
+#: The flows :data:`UNIT_PAIRS` names: the half of :data:`CONVERSIONS` whose
+#: number is a fact about the flow.
+PROPERTY_STATED = frozenset(UNIT_PAIRS)
+
 #: BAFU source flow uuid -> (factor, target uuid).  BAFU carries the ore flow
 #: in ecoinvent 3.8's old spelling under its own uuids, and the same 0.599
 #: decision covers them -- stated in `bafu-2026-v1-match-overrides.json`,
@@ -155,17 +212,26 @@ BAFU_CONVERSIONS = {
 #: the merge walks the source flows -- so 3.8 is the release these decide for,
 #: and the override rows' own comments are where the reasoning reads back
 #: (the composed 3.8 table that used to restate them went to git history,
-#: #141's last follow-up).
+#: #141's last follow-up).  The half of :data:`CONVERSIONS` whose number is a
+#: fact about the pair, and so still on the override.
 ELEMENTAL_CONTENT = {
     "78cd4852-e7b9-4301-adf7-51e730b0356a",
     "90a94ea5-bca4-483d-a591-2e886c0ff47f",
     "ec0fa5ce-51b4-4792-a8e8-c4ee668eddc3",
 }
 
+#: How many override rows #407 moved onto a statement, by list.  The count a
+#: sweep over the statement files has to reach to be the sweep it claims.
+MOVED_ROWS = {"ecoinvent": 6, "bafu": 11, "stepwise": 12, "agribalyse": 29}
+
 
 def _source_uuid(row):
     side = row.get("source") or {}
     return str(side.get("uuid") or side.get("identifier") or "")
+
+
+def _target_uuid(row):
+    return str((row.get("target") or {}).get("uuid") or "")
 
 
 def _ecoinvent_keys():
@@ -175,62 +241,94 @@ def _ecoinvent_keys():
     )
 
 
-class RespelledUnitTestCase(unittest.TestCase):
-    """A factor stated for two spellings of one unit holds for each.
+def _lists_with_statements():
+    """Every registered list that has a property statements file, by key."""
+    return sorted(
+        (
+            source for source in known_source_lists().values()
+            if source.property_statements_path is not None
+        ),
+        key=lambda source: source.key,
+    )
 
-    ecoinvent registered natural gas in `m3` at 3.8 and `sm3` from 3.9.1
-    without restating any amount.  A factor checked against only the newest
-    spelling is silently dropped for the release shipping the older one --
-    a structlog warning and nothing else -- which is how 3.8's gas row lost
-    its 36.0 MJ in the first cut of #141, found by review on #336.
+
+def _one_statement(loaded, source_uuid):
+    """The one statement *loaded* makes about *source_uuid*."""
+    (statement,) = loaded.statements[source_uuid]
+    return statement
+
+
+def _quantity_iri(slug):
+    return f"{QUANTITY_IRI_PREFIX}{slug}"
+
+
+class RespelledUnitTestCase(unittest.TestCase):
+    """A measurement restated with its unit is read for the release that made it.
+
+    ecoinvent registered natural gas in `m3` at 3.8 and `sm3` from 3.9.1, and
+    restated the heating value in the same release: 34.5 MJ per cubic metre,
+    then 36.0 per standard cubic metre.  Until #407 the override row carried
+    one factor and a list of unit spellings it was said to hold for -- which is
+    how 3.8's gas first lost its factor altogether (the first cut of #141,
+    found by review on #336) and then was given a number its own workbook
+    never stated.  The statement file says each release's own: `per_unit:
+    sm3` for the default, and `by_release` putting 3.8 at 34.5 per `m3`.
+    `load_property_statements` resolves one or the other for the release it
+    is asked for and refuses nothing, because both are stated.
     """
 
-    GAS = "7c337428-fb1b-45c7-bbb2-2ee4d29e17ba"
+    def _gas(self, key):
+        loaded = resolve_source_list(key).load_property_statements()
+        return _one_statement(loaded, GAS)
 
-    def _gas_conversion(self, key):
-        rows = load_prepared_match_table(resolve_source_list(key))
-        row = next(r for r in rows if _source_uuid(r) == self.GAS)
-        return conversion_from_prepared_rows([row])
+    def test_3_8_reads_its_own_value_per_cubic_metre(self):
+        statement = self._gas("ecoinvent-3.8")
+        self.assertEqual(
+            (statement.value, statement.unit, statement.per_unit), (34.5, "MJ", "m3")
+        )
+        self.assertEqual(factor_between(statement, "m3", "MJ"), 34.5)
 
-    def test_the_factor_holds_for_both_spellings(self):
-        conversion = self._gas_conversion("ecoinvent-3.8")
-        self.assertIsNotNone(conversion)
-        for spelling in ("m3", "sm3"):
-            with self.subTest(spelling=spelling):
-                self.assertTrue(
-                    conversion.holds_between(
-                        source_unit=spelling, target_unit="MJ"
-                    )
-                )
+    def test_later_releases_read_the_standard_cubic_metre(self):
+        statement = self._gas("ecoinvent-3.12")
+        self.assertEqual(
+            (statement.value, statement.unit, statement.per_unit), (36.0, "MJ", "sm3")
+        )
+        self.assertEqual(factor_between(statement, "sm3", "MJ"), 36.0)
 
-    def test_the_factor_still_refuses_a_unit_it_was_not_stated_for(self):
-        # The half that stops the list form growing into "any unit at all":
-        # a spelling is a name for the same quantity, not a licence.
-        conversion = self._gas_conversion("ecoinvent-3.8")
-        self.assertFalse(
-            conversion.holds_between(source_unit="kg", target_unit="MJ")
-        )
-        self.assertFalse(
-            conversion.holds_between(source_unit="m3", target_unit="kg")
-        )
+    def test_a_standard_cubic_metre_is_not_a_cubic_metre(self):
+        """`sm3` and `m3` are two quantity kinds in `units.json` (#292), so a
+        statement per one answers nothing for a row in the other.  This is the
+        half that stops the release form growing into "any spelling at all":
+        3.8's row is in cubic metres and gets 3.8's number, and the 36.0 that
+        was read per standard cubic metre never reaches it."""
+        self.assertIsNone(factor_between(self._gas("ecoinvent-3.12"), "m3", "MJ"))
+        self.assertIsNone(factor_between(self._gas("ecoinvent-3.8"), "sm3", "MJ"))
 
-    def test_a_single_spelling_row_is_unchanged(self):
-        # Brown coal states one spelling, as every row did before this field
-        # existed; the ordinary case must read exactly as it always has.
-        rows = load_prepared_match_table(resolve_source_list("ecoinvent-3.8"))
-        row = next(
-            r
-            for r in rows
-            if _source_uuid(r) == "024c9722-1e88-412b-8c4b-10c532be8dca"
+    def test_the_statement_still_refuses_a_unit_it_was_not_stated_for(self):
+        # A heating value per cubic metre is not one per kilogram, and it does
+        # not convert a volume into a mass either way round.
+        statement = self._gas("ecoinvent-3.8")
+        self.assertIsNone(factor_between(statement, "kg", "MJ"))
+        self.assertIsNone(factor_between(statement, "m3", "kg"))
+
+    def test_a_statement_with_no_release_entry_reads_the_same_in_every_release(self):
+        # Brown coal states one number for all five releases, as every
+        # statement did before `by_release` existed; the ordinary case must
+        # read exactly as it always has.
+        brown = {
+            key: _one_statement(
+                resolve_source_list(key).load_property_statements(),
+                "024c9722-1e88-412b-8c4b-10c532be8dca",
+            )
+            for key in _ecoinvent_keys()
+        }
+        self.assertEqual(
+            {(s.value, s.unit, s.per_unit) for s in brown.values()},
+            {(9.41, "MJ", "kg")},
         )
-        self.assertNotIn("unit_alternates", row["source"])
-        conversion = conversion_from_prepared_rows([row])
-        self.assertTrue(
-            conversion.holds_between(source_unit="kg", target_unit="MJ")
-        )
-        self.assertFalse(
-            conversion.holds_between(source_unit="m3", target_unit="MJ")
-        )
+        statement = brown["ecoinvent-3.8"]
+        self.assertEqual(factor_between(statement, "kg", "MJ"), 9.41)
+        self.assertIsNone(factor_between(statement, "m3", "MJ"))
 
 
 class EveryVersionTestCase(unittest.TestCase):
@@ -238,29 +336,44 @@ class EveryVersionTestCase(unittest.TestCase):
         """The sweeps below are only a sweep if every version is in them."""
         self.assertEqual(len(_ecoinvent_keys()), 5)
 
+    def test_the_oracle_is_split_the_way_the_files_are(self):
+        """Three on the override, six on a statement, and nothing in both."""
+        self.assertEqual(ELEMENTAL_CONTENT | PROPERTY_STATED, set(CONVERSIONS))
+        self.assertFalse(ELEMENTAL_CONTENT & PROPERTY_STATED)
+
     def test_every_version_converts_the_same_flows_to_the_same_targets(self):
-        """Through the merge's own predicate, not a hand-rolled filter: what a
-        run publishes is what `conversion_from_prepared_rows` returns.
+        """Through the merge's own readers, not a hand-rolled filter: what a
+        run publishes for a pair fact is what `conversion_from_prepared_rows`
+        returns, and what it publishes for a property is what the list's
+        statements file loads for that release.
 
         Nine since #141: the tables that used to carry the six energy-content
-        factors are retired and the factors live on this project's own rows,
-        beside the three ore spellings.
+        factors are retired and the numbers live on this project's own rows.
+        Six of those rows are statements since #407, and the three ore
+        spellings are still override rows, because an ore's share of its metal
+        is a fact about the pair.
 
         *Which* flows convert and *where they go* is the same in every release,
-        because both are identity: a uuid names one flow in all of them. How
-        much a unit of one is worth is not, which is the next test."""
+        because both are identity: a uuid names one flow in all of them, and
+        the target is the override row's in both halves.  How much a unit of
+        one is worth is not, which is the next test."""
         for key in _ecoinvent_keys():
-            converting = {
+            source = resolve_source_list(key)
+            rows = {
                 _source_uuid(row): row
-                for row in load_prepared_match_table(resolve_source_list(key))
+                for row in load_prepared_match_table(source)
+            }
+            converting = {
+                uuid for uuid, row in rows.items()
                 if conversion_from_prepared_rows([row]) is not None
             }
+            stated = set(source.load_property_statements().statements)
             with self.subTest(key=key):
-                self.assertEqual(set(converting), set(CONVERSIONS))
+                self.assertEqual(converting, ELEMENTAL_CONTENT)
+                self.assertEqual(stated, PROPERTY_STATED)
             for source_uuid, (_, target_uuid) in CONVERSIONS.items():
                 with self.subTest(key=key, flow=source_uuid):
-                    row = converting[source_uuid]
-                    self.assertEqual(str(row["target"].get("uuid") or ""), target_uuid)
+                    self.assertEqual(_target_uuid(rows[source_uuid]), target_uuid)
 
     def test_each_version_converts_by_its_own_heating_value(self):
         """ecoinvent restated two of these numbers, so two releases disagree.
@@ -277,21 +390,34 @@ class EveryVersionTestCase(unittest.TestCase):
         release's own `LCIA Implementation` workbook, where a characterisation
         factor on a kilogram flow under an indicator defined per megajoule is
         the energy content. (#162)
+
+        Compared with `==` and not to a tolerance: the number the file states
+        is the number the mapping publishes, bit for bit, which is what
+        `factor_between` promises for a statement written in the direction its
+        mapping uses.  A tolerance here would let a rounding creep in unnoticed.
         """
         for key in _ecoinvent_keys():
-            release = resolve_source_list(key).list_version
-            converting = {
+            source = resolve_source_list(key)
+            release = source.list_version
+            loaded = source.load_property_statements()
+            rows = {
                 _source_uuid(row): row
-                for row in load_prepared_match_table(resolve_source_list(key))
-                if conversion_from_prepared_rows([row]) is not None
+                for row in load_prepared_match_table(source)
             }
             for source_uuid, (factor, _) in CONVERSIONS.items():
-                expected = CONVERSIONS_BY_RELEASE.get(
-                    (source_uuid, release), factor
-                )
+                expected = CONVERSIONS_BY_RELEASE.get((source_uuid, release), factor)
                 with self.subTest(key=key, flow=source_uuid):
+                    if source_uuid in ELEMENTAL_CONTENT:
+                        self.assertEqual(
+                            rows[source_uuid]["conversion_factor"], expected
+                        )
+                        continue
+                    source_unit, target_unit = UNIT_PAIRS_BY_RELEASE.get(
+                        (source_uuid, release), UNIT_PAIRS[source_uuid]
+                    )
+                    statement = _one_statement(loaded, source_uuid)
                     self.assertEqual(
-                        converting[source_uuid]["conversion_factor"], expected
+                        factor_between(statement, source_unit, target_unit), expected
                     )
 
     def test_every_converting_row_names_both_of_its_units(self):
@@ -299,7 +425,9 @@ class EveryVersionTestCase(unittest.TestCase):
 
         The pair is what makes it meaningful, and the merge refuses to carry a
         conversion onto a redirected target without both -- so a table that
-        states one is a table whose factors quietly stop travelling.
+        states one is a table whose factors quietly stop travelling.  A
+        statement names both by construction (`unit` and `per_unit` are
+        required fields), so this is about the rows that still state a factor.
         """
         for key in _ecoinvent_keys():
             for row in load_prepared_match_table(resolve_source_list(key)):
@@ -309,6 +437,22 @@ class EveryVersionTestCase(unittest.TestCase):
                     self.assertTrue(str((row.get("source") or {}).get("unit") or ""))
                     self.assertTrue(str((row.get("target") or {}).get("unit_name") or ""))
 
+    def test_a_moved_row_keeps_no_factor_on_its_override(self):
+        """One number, one home.
+
+        The 58 rows #407 moved kept their override -- it is what names the
+        target -- and lost their `conversion_factor`.  A row that grew one back
+        would be a second copy of the statement, able to disagree with it; the
+        loader refuses that only where the row also names its units, so the
+        file is read here as well.
+        """
+        for source in _lists_with_statements():
+            stated = source.load_property_statements().statements
+            for row in load_prepared_match_table(source):
+                if _source_uuid(row) not in stated:
+                    continue
+                with self.subTest(key=source.key, flow=_source_uuid(row)):
+                    self.assertNotIn("conversion_factor", row)
 
     def test_bafu_states_its_own_ore_conversions(self):
         """The two BAFU spellings of the ore flow convert, in BAFU's own file.
@@ -325,66 +469,163 @@ class EveryVersionTestCase(unittest.TestCase):
             )
             if conversion_from_prepared_rows([row]) is not None
         }
-        # Containment, not equality: BAFU's file carries its own energy-content
-        # rows too, and those have their own tests.  This one is about the two
-        # ore rows being in the file BAFU actually reads.
-        self.assertLessEqual(set(BAFU_CONVERSIONS), set(converting))
+        # Equality since #407: BAFU's energy-content rows are statements now,
+        # so the two ore rows are the only pair facts BAFU's override states.
+        self.assertEqual(set(BAFU_CONVERSIONS), set(converting))
         for source_uuid, (factor, target_uuid) in BAFU_CONVERSIONS.items():
             with self.subTest(flow=source_uuid):
                 row = converting[source_uuid]
                 self.assertEqual(row["conversion_factor"], factor)
-                self.assertEqual(
-                    str(row["target"].get("uuid") or ""), target_uuid
-                )
+                self.assertEqual(_target_uuid(row), target_uuid)
 
 
 class AllowlistAgreementTestCase(unittest.TestCase):
     """Two files describe these pairs from opposite sides; they must agree.
 
     `unit-change-allowlist.json` says a dimensionally impossible mapping was
-    reviewed and accepted; the conversion says by how much.  A pair with a
-    factor and no allowlist entry would be published *and* reported as an
-    unreviewed mismatch on the same run, which is two answers to one question.
+    reviewed and accepted, between which two units; the statement says by how
+    much, between which two units.  A pair with a factor and no allowlist entry
+    would be published *and* reported as an unreviewed mismatch on the same
+    run, which is two answers to one question; an entry whose units are not
+    the statement's would be a review of a pair that is not the one published.
+
+    Swept over every list's statements file rather than over the rows that
+    state a factor, because since #407 the rows that state a factor are the
+    ore rows, whose units agree and which the allowlist has no business with.
+    A sweep that read only those would pass over an empty set.  The target of
+    a statement's pair is read off the list's own override row, which every
+    stated flow has.
     """
 
     def _allowlisted(self):
+        """The allowlist's rows by pair, with the units each was reviewed between."""
         payload = orjson.loads(
             (PACKAGE_DATA_DIR / "unit-change-allowlist.json").read_bytes()
         )
         return {
-            str(row["source_uuid"]).strip(): row
+            (
+                str(row["source_uuid"]).strip(),
+                str(row["target_elementary_flow_id"]).strip(),
+            ): row
             for row in payload["accepted"]
             if str(row.get("comment") or "").strip()
         }
 
+    def _statement_pairs(self, source):
+        """(source uuid, statement, target uuid) for every statement *source* makes.
+
+        One per target the list's override names for the flow.  A statement
+        whose flow has no override row yields nothing, and the first test
+        below is what says that never happens.
+        """
+        loaded = source.load_property_statements()
+        targets = defaultdict(list)
+        for row in load_prepared_match_table(source):
+            if _source_uuid(row) in loaded.statements:
+                targets[_source_uuid(row)].append(_target_uuid(row))
+        return [
+            (source_uuid, statement, target_uuid)
+            for source_uuid, statements in loaded.statements.items()
+            for statement in statements
+            for target_uuid in targets[source_uuid]
+        ]
+
+    def test_every_stated_flow_has_an_override_naming_its_target(self):
+        """What makes the sweep a sweep: a statement is about a flow, and the
+        pair it converts is only known once the override says where the flow
+        goes.  The count is the 58 rows #407 moved, by list, so that a file
+        losing its rows reads as a loss rather than as fewer things to check."""
+        moved = defaultdict(set)
+        for source in _lists_with_statements():
+            loaded = source.load_property_statements()
+            pairs = self._statement_pairs(source)
+            with self.subTest(key=source.key):
+                self.assertEqual(
+                    {uuid for uuid, _, _ in pairs}, set(loaded.statements)
+                )
+            for source_uuid, _, target_uuid in pairs:
+                moved[source.list_name].add((source_uuid, target_uuid))
+        self.assertEqual({name: len(pairs) for name, pairs in moved.items()}, MOVED_ROWS)
+
     def test_every_conversion_across_units_is_allowlisted(self):
-        """Not the elemental ones: their units agree, so the guard never fires
-        and an entry asserting otherwise would describe nothing."""
-        allowlisted = self._allowlisted()
-        for row in load_prepared_match_table(resolve_source_list("ecoinvent-3.12")):
-            conversion = conversion_from_prepared_rows([row])
-            if conversion is None:
-                continue
-            if unit_table_factor(conversion.source_unit, conversion.target_unit) == 1.0:
-                continue
-            with self.subTest(flow=_source_uuid(row)):
-                self.assertIn(_source_uuid(row), allowlisted)
+        """Every statement's pair is on the allowlist, between the statement's
+        own units.
+
+        Not the elemental ones: their units agree, so the guard never fires
+        and an entry asserting otherwise would describe nothing.  ecoinvent's
+        natural gas is the one flow whose vendor unit is a release's own, so
+        its entry may name either of the units its statement is per across the
+        releases; every other statement is per one unit, and the entry names
+        that one.
+        """
+        allowed = load_unit_change_allowlist()
+        entries = self._allowlisted()
+        per_units = defaultdict(set)
+        pairs = []
+        for source in _lists_with_statements():
+            for source_uuid, statement, target_uuid in self._statement_pairs(source):
+                per_units[(source.list_name, source_uuid)].add(statement.per_unit)
+                pairs.append((source, source_uuid, statement, target_uuid))
+        self.assertTrue(pairs)
+        for source, source_uuid, statement, target_uuid in pairs:
+            with self.subTest(key=source.key, flow=source_uuid):
+                self.assertIn((source_uuid, target_uuid), allowed)
+                entry = entries[(source_uuid, target_uuid)]
+                self.assertIn(
+                    str(entry["source_unit"]),
+                    per_units[(source.list_name, source_uuid)],
+                )
+                self.assertEqual(str(entry["target_unit"]), statement.unit)
+
+    def test_every_pair_fact_across_units_is_allowlisted(self):
+        """The other home: a factor an override still states between two
+        units of different kinds -- AGRIBALYSE's coal-mine off-gas by the
+        kilogram onto a flow in standard cubic metres -- is a reviewed crossing
+        too.  The ore rows are skipped by the same rule as before: kilograms to
+        kilograms is 1.0 in the unit table and raises no mismatch to review."""
+        allowed = load_unit_change_allowlist()
+        checked = 0
+        for source in _lists_with_statements():
+            for row in load_prepared_match_table(source):
+                conversion = conversion_from_prepared_rows([row])
+                if conversion is None:
+                    continue
+                if unit_table_factor(conversion.source_unit, conversion.target_unit) == 1.0:
+                    continue
+                checked += 1
+                with self.subTest(key=source.key, flow=_source_uuid(row)):
+                    self.assertIn((_source_uuid(row), _target_uuid(row)), allowed)
+        # The three coal-mine off-gas rows of `agribalyse-3.2-match-overrides.json`.
+        self.assertEqual(checked, 3)
 
     def test_an_allowlisted_pair_with_a_factor_says_so(self):
         """The entries used to argue no factor could be had. Now one can, and
-        the reasoning has to say that rather than the opposite."""
-        allowlisted = self._allowlisted()
-        for row in load_prepared_match_table(resolve_source_list("ecoinvent-3.12")):
-            conversion = conversion_from_prepared_rows([row])
-            entry = allowlisted.get(_source_uuid(row))
-            if conversion is None or entry is None:
-                continue
-            with self.subTest(flow=_source_uuid(row)):
-                self.assertIn("qudt:conversionMultiplier", entry["comment"])
+        the reasoning has to say that rather than the opposite.
+
+        ecoinvent's six, as it always was: these are the entries written when
+        the tables still carried the factor and rewritten when #141 moved it,
+        so each names `qudt:conversionMultiplier` as where the number now
+        lives.  Read for one release, because the six statements and their
+        override rows are the same file for all five."""
+        entries = self._allowlisted()
+        pairs = self._statement_pairs(resolve_source_list("ecoinvent-3.12"))
+        self.assertEqual(len(pairs), MOVED_ROWS["ecoinvent"])
+        for source_uuid, _, target_uuid in pairs:
+            with self.subTest(flow=source_uuid):
+                self.assertIn(
+                    "qudt:conversionMultiplier",
+                    entries[(source_uuid, target_uuid)]["comment"],
+                )
 
 
 class NotOnTheFlowTestCase(unittest.TestCase):
-    """The factor is pairwise, so no published record may carry one."""
+    """The factor is pairwise, so no published record may carry one.
+
+    A statement is a fact about the flow and a factor a fact about a pair,
+    and this test guards the second: `Flow.property_statements` is the first,
+    and a `conversion_multiplier` on a consensus flow would be a pair's number
+    with one side missing.
+    """
 
     def test_no_record_class_has_a_conversion_field(self):
         for record in (SimpleFlow, ElementaryFlow, FlowObject):
@@ -480,18 +721,33 @@ class UnitTableTestCase(unittest.TestCase):
         self.assertTrue(states_more_than_the_unit_table("bushels", "MJ", 9.41))
 
     def test_every_published_conversion_says_more_than_the_unit_table(self):
-        """The nine are the nine for a reason."""
-        for key in _ecoinvent_keys():
-            for row in load_prepared_match_table(resolve_source_list(key)):
+        """The nine are the nine for a reason, whichever file states them.
+
+        For a pair fact, the units and the factor the override row states;
+        for a statement, the number read in the direction it is written -- so
+        much `unit` per one `per_unit` -- which is also what the loader
+        refuses when it is a unit-table fact with a second home.
+        """
+        for source in _lists_with_statements():
+            for row in load_prepared_match_table(source):
                 conversion = conversion_from_prepared_rows([row])
                 if conversion is None:
                     continue
-                with self.subTest(key=key, flow=_source_uuid(row)):
+                with self.subTest(key=source.key, flow=_source_uuid(row)):
                     self.assertTrue(states_more_than_the_unit_table(
                         conversion.source_unit,
                         conversion.target_unit,
                         conversion.factor,
                     ))
+            loaded = source.load_property_statements()
+            for source_uuid, statements in loaded.statements.items():
+                for statement in statements:
+                    with self.subTest(
+                        key=source.key, flow=source_uuid, quantity=statement.quantity
+                    ):
+                        self.assertTrue(states_more_than_the_unit_table(
+                            statement.per_unit, statement.unit, statement.value
+                        ))
 
 
 class SelectionTestCase(unittest.TestCase):
@@ -664,6 +920,264 @@ class AlgorithmicRouteTestCase(unittest.TestCase):
         self.assertNotIn(
             QUDT_CONVERSION_MULTIPLIER_CURIE, target_row.concept_associations[0]
         )
+
+
+def _statement(
+    quantity="calorific-value", value=9.41, unit="MJ", per_unit="kg",
+    comment="Brown coal's energy content, read off the workbook.",
+):
+    """A statement of the shape `load_property_statements` builds."""
+    return PropertyStatement(
+        quantity=quantity,
+        value=value,
+        unit=unit,
+        per_unit=per_unit,
+        stated_by=StatementOrigin.CURATED,
+        provenance=Provenance(
+            was_generated_by="property_statements",
+            was_attributed_to="brightway-flows",
+            had_primary_source=["ecoinvent's EF 3.1 LCIA Implementation workbook"],
+            was_derived_from="ecoinvent-property-statements.json",
+        ),
+        comment=comment,
+    )
+
+
+class FlowPropertyRouteTestCase(unittest.TestCase):
+    """A row with no curated factor converts by what its list states about it.
+
+    The route #407 added, driven through `record_algorithmic_match` the way
+    `AlgorithmicRouteTestCase` drives the curated one.  The row arrives in the
+    vendor's kilograms carrying its statements, the target is in megajoules,
+    and what the mapping publishes is the statement's own number with basis
+    `flow-property` and the quantity it came through.  The cases below are the
+    order `conversion_to_publish` resolves in -- curated factor, statement,
+    unit table -- and the two refusals that keep a statement from converting
+    the wrong thing: a unit it was not made about, and a quantity the target
+    does not measure.
+    """
+
+    def _record(
+        self, *, statements, unit="kg", target_unit="MJ", conversion=None,
+        reference_quantities=None, rules=(),
+    ):
+        target_row = ElementaryFlow(
+            elementary_flow_id="elem-1",
+            flow_object_id="fo-1",
+            source="EF 3.1",
+            context=context_for_iri(IN_GROUND),
+            context_iri=IN_GROUND,
+            unit=target_unit,
+            unit_iri="",
+            lcia_methods=[],
+            general_comment=None,
+        )
+        accumulator = MergeAccumulator()
+        accumulator.by_elem_id["elem-1"] = target_row
+        indexes = mock.Mock()
+        indexes.source.list_name = "ecoinvent"
+        indexes.source.list_version = "3.12"
+        indexes.source.key = "ecoinvent-3.12"
+        indexes.source.merge_activity = "merge_ecoinvent"
+        indexes.source.flow_iri_prefix = "https://example.invalid/flow/"
+        indexes.source.match_overrides_path = (
+            PACKAGE_DATA_DIR / "ecoinvent-match-overrides.json"
+        )
+        indexes.source.property_statements_path = (
+            PACKAGE_DATA_DIR / "ecoinvent-property-statements.json"
+        )
+        indexes.mapping_file = "table"
+        indexes.flow_object_label_by_id = {"fo-1": "Brown Coal"}
+        indexes.reference_quantities = dict(reference_quantities or {})
+        indexes.conversion_rules = tuple(rules)
+        record_algorithmic_match(
+            row=SourceRow(
+                uuid="s-1", name="Coal, brown", synonyms=[], labels=[],
+                context=["natural resource", "in ground"], context_iri="",
+                context_normalized=(), unit=unit, unit_iri="", cas="", ec="",
+                property_statements=tuple(statements),
+            ),
+            match=MatchAttempt(
+                flow_object_id="fo-1", candidates=[], selected=target_row,
+                selector_reason="single-candidate", selector_details={},
+                basis="label", basis_value="Coal, brown",
+            ),
+            indexes=indexes,
+            accumulator=accumulator,
+            conversion=conversion,
+        )
+        return target_row, accumulator
+
+    def _mismatches(self, accumulator):
+        """What `find_unit_mismatches` makes of the match, with nothing allowlisted."""
+        return find_unit_mismatches(
+            accumulator.algorithm_matches, units_index=build_units_index(), allowed=set()
+        )
+
+    def test_the_statement_is_the_published_multiplier(self):
+        target_row, accumulator = self._record(statements=[_statement()])
+        association = target_row.concept_associations[0]
+        self.assertEqual(association[QUDT_CONVERSION_MULTIPLIER_CURIE], 9.41)
+        self.assertEqual(association[CONVERSION_BASIS_KEY], ConversionBasis.FLOW_PROPERTY)
+        metadata = target_row.source_refs[0]["source_metadata"]
+        self.assertEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 9.41)
+        self.assertEqual(metadata[CONVERSION_BASIS_KEY], ConversionBasis.FLOW_PROPERTY)
+        (match,) = accumulator.algorithm_matches
+        self.assertEqual(match.conversion_factor, 9.41)
+        self.assertEqual(
+            match.conversion_comment, "Brown coal's energy content, read off the workbook."
+        )
+
+    def test_the_mapping_names_the_quantity_it_came_through(self):
+        """The fourth key a `flow-property` mapping carries, as the quantity's
+        IRI: how a reader tells a gross value landing on a net flow from a net
+        one.  With nothing in `reference_quantities`, a target in megajoules
+        is a calorific value of unstated basis, and the statement is too."""
+        target_row, _ = self._record(statements=[_statement()])
+        metadata = target_row.source_refs[0]["source_metadata"]
+        self.assertEqual(
+            metadata[CONVERSION_QUANTITY_KEY],
+            "https://vocab.brightway.one/quantity/calorific-value",
+        )
+        self.assertEqual(
+            target_row.concept_associations[0][CONVERSION_QUANTITY_KEY],
+            _quantity_iri("calorific-value"),
+        )
+
+    def test_the_provenance_names_the_file_and_the_statements_source(self):
+        """Where the number came from is published beside it: the list's
+        statements file, and what the statement itself cites."""
+        target_row, _ = self._record(statements=[_statement()])
+        metadata = target_row.source_refs[0]["source_metadata"]
+        provenance = Provenance.from_dict(metadata[CONVERSION_PROVENANCE_KEY])
+        self.assertEqual(provenance.was_derived_from, "ecoinvent-property-statements.json")
+        self.assertIn("ecoinvent-property-statements.json", provenance.had_primary_source)
+        self.assertIn(
+            "ecoinvent's EF 3.1 LCIA Implementation workbook", provenance.had_primary_source
+        )
+
+    def test_a_converted_pair_is_not_a_unit_mismatch(self):
+        """What `find_unit_mismatches` reads is the factor on the match, so a
+        kilogram row converted onto a megajoule flow is no longer reported as
+        a crossing nobody reviewed (#417)."""
+        _, accumulator = self._record(statements=[_statement()])
+        self.assertEqual(self._mismatches(accumulator), set())
+
+    def test_a_curated_factor_that_holds_comes_first(self):
+        """A pair fact outranks a flow fact.  Where an override states a
+        factor between the pair's units it is the curator's decision about
+        this pair, and the statement is not consulted."""
+        target_row, _ = self._record(
+            statements=[_statement()],
+            conversion=UnitConversion(9.5, "kg", "MJ", basis=ConversionBasis.CURATED),
+        )
+        metadata = target_row.source_refs[0]["source_metadata"]
+        self.assertEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 9.5)
+        self.assertEqual(metadata[CONVERSION_BASIS_KEY], ConversionBasis.CURATED)
+        self.assertNotIn(CONVERSION_QUANTITY_KEY, metadata)
+        association = target_row.concept_associations[0]
+        self.assertEqual(association[QUDT_CONVERSION_MULTIPLIER_CURIE], 9.5)
+        self.assertEqual(association[CONVERSION_BASIS_KEY], ConversionBasis.CURATED)
+
+    def test_a_curated_factor_that_no_longer_holds_yields_to_the_statement(self):
+        """The ore share was stated kilograms to kilograms; on a pair that is
+        kilograms to megajoules it says nothing, and the statement does."""
+        target_row, _ = self._record(
+            statements=[_statement()],
+            conversion=UnitConversion(0.599, "kg", "kg", basis=ConversionBasis.CURATED),
+        )
+        metadata = target_row.source_refs[0]["source_metadata"]
+        self.assertEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 9.41)
+        self.assertEqual(metadata[CONVERSION_BASIS_KEY], ConversionBasis.FLOW_PROPERTY)
+
+    def test_a_statement_per_standard_cubic_metre_converts_no_cubic_metre_row(self):
+        """36 MJ per standard cubic metre is not 36 MJ per cubic metre (#292).
+
+        The statement does not bridge the pair, the unit table has nothing
+        between a volume and an energy, so the mapping carries no factor and
+        the match is what it was before #407: a crossing for the allowlist to
+        answer for, or `has_unit_mismatch` to report.
+        """
+        target_row, accumulator = self._record(
+            statements=[_statement(quantity="net-calorific-value", value=36.0, per_unit="sm3")],
+            unit="m3",
+        )
+        metadata = target_row.source_refs[0]["source_metadata"]
+        self.assertNotIn(QUDT_CONVERSION_MULTIPLIER_CURIE, metadata)
+        self.assertNotIn(CONVERSION_QUANTITY_KEY, metadata)
+        self.assertNotIn(
+            QUDT_CONVERSION_MULTIPLIER_CURIE, target_row.concept_associations[0]
+        )
+        (match,) = accumulator.algorithm_matches
+        self.assertIsNone(match.conversion_factor)
+        self.assertEqual(self._mismatches(accumulator), {"s-1"})
+
+    def test_a_net_target_takes_the_net_statement_over_the_gross(self):
+        """AGRIBALYSE states both heating values for one coal.  The target's
+        reference quantity -- `Hard Coal` is net calorific value, by EF's own
+        flow property -- is what picks, and the mapping says which it took."""
+        target_row, _ = self._record(
+            statements=[
+                _statement(quantity="gross-calorific-value", value=19.1),
+                _statement(quantity="net-calorific-value", value=18.2),
+            ],
+            reference_quantities={"elem-1": "net-calorific-value"},
+        )
+        metadata = target_row.source_refs[0]["source_metadata"]
+        self.assertEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 18.2)
+        self.assertEqual(
+            metadata[CONVERSION_QUANTITY_KEY], _quantity_iri("net-calorific-value")
+        )
+
+    def test_a_gross_statement_converts_onto_a_net_target_only_by_a_rule(self):
+        """Stepwise states gross values and its method counts them.  A gross
+        value onto a net flow is a decision a person wrote down, in the list's
+        `conversion_rules`; without the rule the pair converts by nothing, and
+        with it the mapping publishes that it converted by the gross value."""
+        gross = _statement(quantity="gross-calorific-value", value=19.1)
+        net_target = {"elem-1": "net-calorific-value"}
+        target_row, accumulator = self._record(
+            statements=[gross], reference_quantities=net_target
+        )
+        self.assertNotIn(
+            QUDT_CONVERSION_MULTIPLIER_CURIE, target_row.source_refs[0]["source_metadata"]
+        )
+        self.assertEqual(self._mismatches(accumulator), {"s-1"})
+
+        rule = ConversionRule(
+            onto="net-calorific-value",
+            convert_by="gross-calorific-value",
+            comment="Stepwise 2006 accounts its energy carriers by gross calorific value.",
+        )
+        target_row, accumulator = self._record(
+            statements=[gross], reference_quantities=net_target, rules=[rule]
+        )
+        metadata = target_row.source_refs[0]["source_metadata"]
+        self.assertEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 19.1)
+        self.assertEqual(metadata[CONVERSION_BASIS_KEY], ConversionBasis.FLOW_PROPERTY)
+        self.assertEqual(
+            metadata[CONVERSION_QUANTITY_KEY], _quantity_iri("gross-calorific-value")
+        )
+        self.assertEqual(self._mismatches(accumulator), set())
+
+    def test_a_fission_energy_never_converts_onto_a_calorific_value(self):
+        """560,000 MJ per kilogram of uranium is not a heat of combustion.  A
+        target in megajoules that nobody has said more about is a calorific
+        value of unstated basis, and the fission energy does not convert onto
+        it; it converts only onto a target ruled `fission-energy`, which is
+        what the base list's statements file says of EF's `Uranium`."""
+        fission = _statement(quantity="fission-energy", value=560000.0)
+        target_row, _ = self._record(statements=[fission])
+        self.assertNotIn(
+            QUDT_CONVERSION_MULTIPLIER_CURIE, target_row.source_refs[0]["source_metadata"]
+        )
+
+        target_row, _ = self._record(
+            statements=[fission], reference_quantities={"elem-1": "fission-energy"}
+        )
+        metadata = target_row.source_refs[0]["source_metadata"]
+        self.assertEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 560000.0)
+        self.assertEqual(metadata[CONVERSION_QUANTITY_KEY], _quantity_iri("fission-energy"))
 
 
 class NewContextRouteMixin:
