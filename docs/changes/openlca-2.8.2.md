@@ -255,10 +255,13 @@ factor of a *different* EF flow, reaching one flow of ours.
   element's factors under arsenate's number. Their registry numbers are
   corrected below, and each row reaches the flow its factors belong to.
 - **Not settled yet.** Fenoxycarb is EF 3.1's own duplicate: EF ships it
-  twice, under 79127-80-3 and 72490-01-8, with factors about 740 times apart,
-  and GreenDelta copied both. It waits on
-  [#436](https://github.com/brightway-labs/brightway-flows/issues/436), which
-  settles the JRC's side. The rest need a curated ruling
+  twice, under 72490-01-8 and 79127-80-3, with factors about 740 times apart,
+  this list publishes both as substances, and GreenDelta copied both. The
+  package's 18 `Fenoxycarb` rows with no number carry the 79127-80-3 entry's
+  numbers and reach the 72490-01-8 substance by name. Which substance they
+  belong on waits on
+  [#130](https://github.com/brightway-labs/brightway-flows/issues/130), which
+  asks which entry EF's numbers describe. The rest need a curated ruling
   ([#439](https://github.com/brightway-labs/brightway-flows/issues/439)).
 
 ## Rows sent to a curated target
