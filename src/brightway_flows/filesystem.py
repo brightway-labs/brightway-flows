@@ -93,8 +93,8 @@ def bafu_ecospold_zip_path(list_version: str) -> Path:
     ``list_version`` has a hyphen: ``2026-v1`` is ``BAFU-2026 v1_ecoSpold
     v1.zip``.  The trailing ``ecoSpold v1`` is the file format, not the export.
 
-    Unlike EF 3.1's archive there is nothing to download this from; BAFU hands
-    it over, so it is placed here and the adapter says which path it wanted.
+    BAFU hands it over rather than publishing it, so the adapter downloads
+    this project's copy here when it is missing (`integrations.bafu`).
     """
     return DATA_DIR / f"BAFU-{list_version.replace('-', ' ')}_ecoSpold v1.zip"
 
@@ -122,8 +122,8 @@ def agribalyse_csv_path(list_version: str) -> Path:
     file itself states no release (a ``{processes}`` header names a project,
     not a version), so the filename is the version statement the way BAFU's
     archive name is.  Like BAFU's archive it has no stable vendor URL: ADEME
-    hands it over, so it is placed here and the adapter says which path it
-    wanted.
+    hands it over, so the adapter downloads this project's copy here when it
+    is missing (`integrations.agribalyse`).
     """
     return DATA_DIR / f"AGB{list_version.replace('.', '')}_final.CSV"
 

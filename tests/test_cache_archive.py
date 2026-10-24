@@ -22,16 +22,24 @@ whole unpack, and a cache stored as a symlink used to pack as an empty member
 that every receiver silently skipped. Both are pinned below.
 """
 
+import hashlib
 import io
 import os
 import tarfile
 import unittest
+from contextlib import contextmanager
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest import mock
 
+import httpx
+
+from brightway_flows import downloads
 from brightway_flows.cache_archive import (
     CACHE_URL_ENV_VAR,
     CACHED_FILES,
+    DEFAULT_CACHE_SHA256,
+    DEFAULT_CACHE_URL,
     MANIFEST_MAX_BYTES,
     MANIFEST_MEMBER_NAME,
     cache_url,
@@ -117,6 +125,19 @@ class RegistryTestCase(unittest.TestCase):
 
         self.assertNotIn(EF31_ZIP_FILEPATH.name, cached_file_names())
         self.assertTrue(EF31_URL.startswith("https://"))
+
+    def test_pinned_downloads_are_not_in_it(self):
+        """ChEBI and the GLAD workbook each have one pinned, checked download
+        (#431, #432); an archive would be a second route that checks nothing.
+        """
+        from brightway_flows.filesystem import (
+            CHEBI_JSON_GZ_FILEPATH,
+            GLAD_ILCD_TO_SIMAPRO_XLSX_FILEPATH,
+        )
+
+        for path in (CHEBI_JSON_GZ_FILEPATH, GLAD_ILCD_TO_SIMAPRO_XLSX_FILEPATH):
+            with self.subTest(name=path.name):
+                self.assertNotIn(path.name, cached_file_names())
 
     def test_every_entry_says_where_it_came_from(self):
         for entry in CACHED_FILES:
@@ -381,10 +402,42 @@ class UrlTestCase(unittest.TestCase):
         self.assertEqual(cache_url(), "https://example.invalid/cache.tar.gz")
         self.assertEqual(cache_url("https://other.invalid/x"), "https://other.invalid/x")
 
-    def test_no_url_anywhere_names_the_variable(self):
-        with self.assertRaises(ValueError) as raised:
-            fetch_cache()
-        self.assertIn(CACHE_URL_ENV_VAR, str(raised.exception))
+    def test_no_url_anywhere_is_the_published_archive(self):
+        """#433: a fresh data directory needs no URL to start from the caches."""
+        self.assertEqual(cache_url(), DEFAULT_CACHE_URL)
+
+    def test_the_published_archive_is_pinned_by_date_and_digest(self):
+        """An address that is never reused, so it always means the same bytes."""
+        self.assertRegex(
+            DEFAULT_CACHE_URL,
+            r"^https://files\.brightway\.dev/brightway-flows-cache-\d{4}-\d{2}-\d{2}\.tar\.gz$",
+        )
+        self.assertRegex(DEFAULT_CACHE_SHA256, r"^[0-9a-f]{64}$")
+
+    def test_the_published_archive_is_refused_with_other_bytes(self):
+        name = sorted(cached_file_names())[0]
+        with TemporaryDirectory() as source, TemporaryDirectory() as target:
+            source_dir, target_dir = Path(source), Path(target)
+            _write_caches(source_dir, [name])
+            archive = pack_cache(source_dir / "archive.tar.gz", data_dir=source_dir)
+            payload = archive.read_bytes()
+
+            @contextmanager
+            def stream(method, url, **kwargs):
+                yield httpx.Response(
+                    200, content=payload, request=httpx.Request(method, url)
+                )
+
+            with mock.patch.object(downloads.httpx, "stream", stream):
+                with self.assertRaises(downloads.DownloadDigestError):
+                    fetch_cache(data_dir=target_dir)
+                self.assertFalse((target_dir / name).exists())
+
+                with mock.patch(
+                    "brightway_flows.cache_archive.DEFAULT_CACHE_SHA256",
+                    hashlib.sha256(payload).hexdigest(),
+                ):
+                    self.assertEqual(fetch_cache(data_dir=target_dir).written, [name])
 
     def test_a_local_archive_is_unpacked_where_it_lies(self):
         """A shared drive, a USB stick, an artifact CI already downloaded."""

@@ -73,19 +73,38 @@ re-downloading them.
 ## Start from somebody else's caches
 
 The hours the first run costs are almost all rate-limited requests to PubChem,
-ChEBI, Common Chemistry, Wikidata and Wikipedia. Those answers are the same
-wherever they are fetched, so they can be moved between machines instead:
+Common Chemistry, Wikidata and Wikipedia. The project publishes the answers it
+has already collected, so a new machine can start from those:
 
 ```bash
-export BRIGHTWAY_FLOWS_CACHE_URL=https://example.org/brightway-flows-cache.tar.gz
 uv run brightway-flows fetch-cache
 ```
 
-`--url` passes the location instead, and a local path or a `file://` URL is
-read where it lies — a shared drive, a USB stick, an archive a CI job already
-downloaded. Caches the data directory already holds are kept rather than
-replaced, because they may contain lookups the archive predates; `--overwrite`
-replaces them.
+This downloads `brightway-flows-cache-2026-10-24.tar.gz` from
+`files.brightway.dev` (18 MB) and checks that it is the archive the project
+published (SHA-256 `b510aa67…c768`). It holds the PubChem, Common Chemistry,
+compound-profile, Wikipedia, Wikidata and isotope caches as they stood in the
+shared data directory on 24 October 2026.
+
+**Which archive a build starts from is a choice the code makes.** A cache
+records what a web service answered on the day it was asked, and PubChem or
+Wikidata may answer differently next month. So a published archive is never
+replaced: a newer one goes up under a new date, and moving to it is a change to
+`DEFAULT_CACHE_URL` and its digest in `cache_archive.py`, reviewed like any
+other. Two people running `fetch-cache` on the same commit get the same
+answers.
+
+This pins the answers to questions already asked. A build that meets a
+substance none of the caches has seen still asks the services for it, and
+those answers are today's.
+
+To read an archive from somewhere else, set `BRIGHTWAY_FLOWS_CACHE_URL` or pass
+`--url`. A local path or a `file://` URL is read where it lies — a shared
+drive, a USB stick, an archive a CI job already downloaded. An archive from
+anywhere but the default is not checked against a digest, because the project
+does not know one. Caches the data directory already holds are kept rather
+than replaced, because they may contain lookups the archive predates;
+`--overwrite` replaces them.
 
 To publish one from a machine that has done the work:
 
@@ -94,14 +113,16 @@ uv run brightway-flows pack-cache --list                 # what would go in
 uv run brightway-flows pack-cache -o /tmp/cache.tar.gz   # write it
 ```
 
-What is in the archive is a fixed list — the per-record web caches, the ChEBI
-dump, the GLAD workbook — and unpacking writes nothing else, whatever the
-archive contains. Four things are deliberately outside it:
+What is in the archive is a fixed list — the per-record web caches — and
+unpacking writes nothing else, whatever the archive contains. Five things are
+deliberately outside it:
 
 - `settings.json`, which holds the Common Chemistry API key. Archives get
   handed to other people.
-- The licensed source lists. ecoinvent's flows and BAFU's ecoSpold export
-  arrive under terms their licence holders set, so fetch those yourself.
+- The source lists. ecoinvent's flows arrive under terms the licence holder
+  sets, so fetch those yourself. BAFU's ecoSpold export and AGRIBALYSE's
+  SimaPro export are downloaded by `fetch-source` from the project's own copy
+  on `files.brightway.dev`, each checked against its digest.
 - Build outputs — `consensus-flows.sqlite3`, the layered artifacts, the logs. A
   fetched cache should not be mistakable for a build that never ran.
 - `EF-v3.1.zip`. It is 200 MB, and one `brightway-flows download` away from
@@ -109,11 +130,17 @@ archive contains. Four things are deliberately outside it:
   is rate-limiting. When the JRC's site does not answer, `download` reads the
   same archive from `https://files.brightway.dev/EF-v3.1.zip` instead and
   checks that it is the copy the project holds (SHA-256 `18763515…afb27`).
+- The ChEBI dump and the GLAD workbook. Each is one download of a fixed
+  version, checked against its digest: ChEBI release 250 from the EBI's
+  archive, and the GLAD workbook as of commit `124bef3` of
+  `One-Click-LCA/GLAD-ElementaryFlowResources`. `chebi` and
+  `ingest-glad-mapping` fetch them.
 
 Nothing in the archive expires on its own, exactly as nothing in the data
-directory does. `chebi --force` and the other refresh flags are still how a
-source is deliberately brought up to date; `pack-cache --list` and the
-`packed_at` the fetch logs are how you tell how old an archive is.
+directory does. `pack-cache --list` and the `packed_at` the fetch logs are how
+you tell how old an archive is. Moving to a newer ChEBI release or GLAD
+workbook is a change to the release or commit the code names, not a flag:
+`chebi --force` downloads release 250 again.
 
 ## Verify the installation
 

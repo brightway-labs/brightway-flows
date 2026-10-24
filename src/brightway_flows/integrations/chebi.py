@@ -7,10 +7,39 @@ import gzip
 from collections import defaultdict
 from typing import Any
 
+from pathlib import Path
+
 import orjson
 
+from brightway_flows.downloads import PinnedFile
 from brightway_flows.filesystem import CHEBI_JSON_GZ_FILEPATH
 from brightway_flows.pipeline import normalize
+
+#: The ChEBI release the builds read.  The dump used to be fetched from the
+#: EBI's ``ontology/`` folder, which holds whatever release is current, so a
+#: fresh data directory read a different ontology from every existing build
+#: and nothing said so (#432).  The EBI keeps each release under ``archive/``,
+#: so that address names one.  Moving to a newer release is changing this and
+#: the digest below.
+CHEBI_RELEASE = 250
+
+CHEBI_JSON_GZ_URL = (
+    "https://ftp.ebi.ac.uk/pub/databases/chebi/archive/"
+    f"rel{CHEBI_RELEASE}/ontology/chebi.json.gz"
+)
+
+#: ``chebi.json.gz`` of :data:`CHEBI_RELEASE`, dated 11 March 2026 in its own
+#: header, and the copy every build before #432 read.
+CHEBI_JSON_GZ_SHA256 = (
+    "69138c1545a07991af9361a050352ffa15e267baa9208acda58c6dedb753a186"
+)
+
+
+def download_chebi(*, force: bool = False) -> Path:
+    """The ChEBI dump of :data:`CHEBI_RELEASE`, downloaded unless it is here."""
+    return PinnedFile(urls=(CHEBI_JSON_GZ_URL,), sha256=CHEBI_JSON_GZ_SHA256).download(
+        CHEBI_JSON_GZ_FILEPATH, force=force
+    )
 
 XREF_URL_PREFIXES = {
     "chebi": "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:",

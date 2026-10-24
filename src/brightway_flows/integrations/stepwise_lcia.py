@@ -277,10 +277,8 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
     them, and for the same reason: an export that says it is a different release
     is a file to register rather than one to read under this list's key.
     """
-    from brightway_flows.filesystem import stepwise_csv_path
-
     assert source.lcia is not None
-    csv_path = download(stepwise_csv_path(source.list_version), force=force)
+    csv_path = download(source, force=force)
     blocks = _blocks(csv_path)
     method = _method_block(blocks)
     declared = _method_version(method)

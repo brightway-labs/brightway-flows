@@ -62,7 +62,8 @@ SHARED_PATTERNS: tuple[str, ...] = (
     "bafu-greendelta-lcia.zip",
     "Stepwise2006_v1.09.csv",
     # AGRIBALYSE's SimaPro process export, under the name ADEME circulates it
-    # as -- 507 MB, handed over rather than downloadable, like BAFU's archive.
+    # as -- 507 MB, and downloadable only from this project's gzipped copy, so
+    # a worktree links it rather than unpacking it again.
     "AGB32_final.CSV",
     "ILCD_*SubstanceMappingsGLAD.xlsx",
     # Public dumps.

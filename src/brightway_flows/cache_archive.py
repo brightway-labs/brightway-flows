@@ -10,8 +10,15 @@ that cost again from scratch for answers somebody already has.
 So the caches can be handed over.  :func:`pack_cache` writes the ones this
 machine holds into a single ``.tar.gz`` fit for uploading somewhere;
 :func:`fetch_cache` downloads such an archive and unpacks it into the data
-directory.  Point ``BRIGHTWAY_FLOWS_CACHE_URL`` at the upload and
-`fetch-cache` needs no argument.
+directory.  With no argument `fetch-cache` reads the archive this project
+publishes, :data:`DEFAULT_CACHE_URL`, and checks it against its digest;
+``BRIGHTWAY_FLOWS_CACHE_URL`` or ``--url`` points it at another one.
+
+Published archives are named for the day they were packed and never replaced
+(#433).  A cache answers what a web service said when it was asked, so the
+answers a build starts from are a version like any other input: moving to a
+newer archive is changing :data:`DEFAULT_CACHE_URL` and its digest, not
+something that happens because somebody uploaded one.
 
 What is in the archive is the list below and nothing else -- both when packing
 and when unpacking, so an archive from an untrusted place can only write files
@@ -25,12 +32,14 @@ this project would have downloaded anyway.  Deliberately absent:
 - Build outputs -- ``consensus-flows.sqlite3``, the layered artifacts, the
   RDKit and OPSIN logs.  Those are what a run *produces*; shipping them would
   make a fetched cache indistinguishable from a build that never happened.
+- The ChEBI dump and the GLAD workbook.  Each is one download of one pinned
+  release with its own digest (#431, #432), so carrying it here would be a
+  second, unchecked route to a file that already has a checked one.
 
 A cache is an answer that was true when it was fetched, so the archive carries
 a manifest saying when it was packed and how big each file was, and unpacking
 logs it.  Nothing expires on its own: the caches have no expiry during a normal
-run either, and `chebi --force` and the rest are still how a source is
-refreshed deliberately.
+run either.
 """
 
 from __future__ import annotations
@@ -51,13 +60,12 @@ import orjson
 import structlog
 from tqdm import tqdm
 
+from brightway_flows.downloads import FILES_BRIGHTWAY_DEV, download_pinned
 from brightway_flows.filesystem import (
-    CHEBI_JSON_GZ_FILEPATH,
     CHEMLIN_ISOTOPE_CACHE_FILEPATH,
     COMMONCHEMISTRY_CACHE_FILEPATH,
     COMPOUND_PROFILE_CACHE_FILEPATH,
     DATA_DIR,
-    GLAD_ILCD_TO_SIMAPRO_XLSX_FILEPATH,
     PUBCHEM_DATA_FILEPATH,
     PUBCHEM_ELEMENTS_CACHE_FILEPATH,
     WEB_LOOKUP_CACHE_FILEPATH,
@@ -66,9 +74,20 @@ from brightway_flows.filesystem import (
 
 logger = structlog.get_logger(__name__)
 
-#: Names the URL an archive is fetched from, so `fetch-cache` takes no argument
-#: on a machine that has been told where its team keeps one.
+#: Names the URL an archive is fetched from, for a machine that has been told
+#: where its team keeps one other than :data:`DEFAULT_CACHE_URL`.
 CACHE_URL_ENV_VAR = "BRIGHTWAY_FLOWS_CACHE_URL"
+
+#: The archive this project publishes, packed on 24 October 2026 from the
+#: caches in the shared data directory.  Never replaced at this address; a newer one
+#: is a new file and a change here.
+DEFAULT_CACHE_URL = f"{FILES_BRIGHTWAY_DEV}brightway-flows-cache-2026-10-24.tar.gz"
+
+#: The archive at :data:`DEFAULT_CACHE_URL`.  Checked when that is the archive
+#: fetched; an archive from anywhere else has no digest this project knows.
+DEFAULT_CACHE_SHA256 = (
+    "b510aa67f966698464a108426361d37ea8f00ddd7b8598608f8bd26ad448c768"
+)
 
 #: What `pack-cache` writes when it is not told where.
 DEFAULT_ARCHIVE_NAME = "brightway-flows-cache.tar.gz"
@@ -130,10 +149,6 @@ CACHED_FILES: tuple[CachedFile, ...] = (
         CHEMLIN_ISOTOPE_CACHE_FILEPATH.name,
         "ChemLIN isotope pages, parsed from HTML",
     ),
-    CachedFile(
-        CHEBI_JSON_GZ_FILEPATH.name,
-        "the ChEBI ontology dump from the EBI FTP server (~50 MB)",
-    ),
     # `EF-v3.1.zip` is not here.  It is 200 MB -- three quarters of the archive
     # -- for one unauthenticated GET from a URL this project already holds
     # (`integrations.ef31.EF31_URL`, with `EF31_BACKUP_URL` behind it), which
@@ -141,14 +156,11 @@ CACHED_FILES: tuple[CachedFile, ...] = (
     # archive is for what is slow to re-fetch, and a single public download is
     # not that.
     #
-    # The workbook, not the 99 MB JSON parsed out of it: `ingest-glad-mapping`
-    # skips the download when the workbook is already here, and parsing it is
-    # offline work.  Shipping both would grow the archive tenfold to save a
-    # step that needs no network.
-    CachedFile(
-        GLAD_ILCD_TO_SIMAPRO_XLSX_FILEPATH.name,
-        "the GLAD ILCD->SimaPro correspondence workbook (~11 MB)",
-    ),
+    # Nor are `chebi.json.gz` and the GLAD workbook, which were until #433.
+    # Each is now one download of a pinned release checked against its digest
+    # (`integrations.chebi.CHEBI_JSON_GZ_URL`, `integrations.glad_mapping`),
+    # and an archive is a route to the data directory that checks no digest
+    # per file.
 )
 
 
@@ -208,8 +220,8 @@ def pack_cache(
     manifest = orjson.dumps(_manifest(files, data_dir), option=orjson.OPT_INDENT_2)
     partial = destination.with_name(destination.name + ".part")
     try:
-        # `dereference` because a cache may be a symlink -- the ChEBI dump moved
-        # to a bigger disk, say.  Without it `tar.add` stores the link itself:
+        # `dereference` because a cache may be a symlink -- the PubChem cache
+        # moved to a bigger disk, say.  Without it `tar.add` stores the link itself:
         # a member of size 0 that every unpack skips as not-a-file, while this
         # side logs the real size it stat()ed through the link and reports
         # success.  The publisher would have no way to notice.
@@ -261,12 +273,12 @@ class UnpackedCache:
 def _member_name(raw: str) -> str:
     """A member's name as this project spells it.
 
-    GNU tar writes `tar czf archive.tar.gz .` members as `./chebi.json.gz`, and
+    GNU tar writes `tar czf archive.tar.gz .` members as `./pubchem-data.json`, and
     an archive that has been unpacked and repacked somewhere along the way is
     exactly the case the docs invite ("an artifact a CI job already
     downloaded").  Only a leading `./` is stripped: the returned name still has
     to appear in :data:`CACHED_FILES` verbatim, so this cannot turn
-    `../../evil/chebi.json.gz` into a name that matches.
+    `../../evil/pubchem-data.json` into a name that matches.
     """
     while raw.startswith("./"):
         raw = raw[2:]
@@ -292,9 +304,9 @@ def unpack_cache(
     fails gzip's end-of-stream check, and the `.part` file goes with it.  An
     *uncompressed* truncated tar is not caught -- `tarfile` pads a short member
     with zeros and reports the declared size -- and neither is a file altered
-    in place.  Contents are not verified at all here; only which names may be
-    written is.  A published checksum is what would close that, and there is
-    nowhere yet publishing one.
+    in place.  Contents are not verified here; only which names may be
+    written is.  :func:`fetch_cache` checks the archive this project publishes
+    against :data:`DEFAULT_CACHE_SHA256` before it reaches this.
     """
     data_dir.mkdir(parents=True, exist_ok=True)
     known = cached_file_names()
@@ -440,11 +452,11 @@ def _read_manifest(payload: bytes) -> ArchiveManifest:
     )
 
 
-def cache_url(url: str | None = None) -> str | None:
-    """*url* if given, else whatever ``BRIGHTWAY_FLOWS_CACHE_URL`` holds."""
+def cache_url(url: str | None = None) -> str:
+    """*url* if given, else ``BRIGHTWAY_FLOWS_CACHE_URL``, else the published one."""
     if url:
         return url
-    return os.environ.get(CACHE_URL_ENV_VAR) or None
+    return os.environ.get(CACHE_URL_ENV_VAR) or DEFAULT_CACHE_URL
 
 
 def _local_path(url: str) -> Path | None:
@@ -490,7 +502,9 @@ def fetch_cache(
 ) -> UnpackedCache:
     """Fetch a cache archive and unpack it into *data_dir*; report what it did.
 
-    *url* defaults to ``BRIGHTWAY_FLOWS_CACHE_URL``.  A local path or a
+    *url* defaults to ``BRIGHTWAY_FLOWS_CACHE_URL``, and that to
+    :data:`DEFAULT_CACHE_URL`, which must be the archive
+    :data:`DEFAULT_CACHE_SHA256` names.  A local path or a
     `file://` URL is unpacked where it lies; anything else is downloaded to a
     temporary file first and deleted afterwards, because the archive is a
     transport and keeping a second copy of the caches beside the caches is
@@ -502,12 +516,6 @@ def fetch_cache(
     place this project has already been told has room.
     """
     resolved = cache_url(url)
-    if not resolved:
-        raise ValueError(
-            "No cache archive URL. Pass one, or set "
-            f"{CACHE_URL_ENV_VAR} to where the archive is published."
-        )
-
     local = _local_path(resolved)
     if local is not None:
         if not local.is_file():
@@ -519,5 +527,9 @@ def fetch_cache(
 
     data_dir.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(prefix="cache-archive-", dir=data_dir) as tmp:
-        archive = download_cache_archive(resolved, Path(tmp) / DEFAULT_ARCHIVE_NAME)
+        destination = Path(tmp) / DEFAULT_ARCHIVE_NAME
+        if resolved == DEFAULT_CACHE_URL:
+            archive = download_pinned(destination, (resolved,), DEFAULT_CACHE_SHA256)
+        else:
+            archive = download_cache_archive(resolved, destination)
         return unpack_cache(archive, data_dir=data_dir, overwrite=overwrite)
