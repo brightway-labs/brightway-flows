@@ -63,6 +63,35 @@ implementation of a method:
   compartment. 57 flow-and-place pairs are two rows of the package stating two
   numbers, and neither is published.
 
+  **Where one of the two rows is the package's copy of an ecoinvent row, the
+  copy gives way.** The package ships some substances twice: once under
+  ecoinvent's uuid, carrying the number ecoinvent's own implementation states,
+  and once as a row of its own. The two numbers can differ by a factor of ten or
+  more, because ecoinvent's implementation and GreenDelta's attached the row to
+  *different* EF 3.1 flows:
+
+  | Flow of ours | The copy of ecoinvent's row | GreenDelta's own row | JRC |
+  |---|---|---|---|
+  | Paraquat, surface water | 17,533, EF's number for paraquat *dichloride* | 190,560, EF's number for paraquat | 190,560 |
+  | Fenpropimorph, agricultural soil | 31,264.9, EF's number for `Fungicides, unspecified` | 670.31 (`Fenpropimorph (cis)`), EF's number for fenpropimorph | 670.31 |
+  | MCPA, surface water | 6,268.4, EF's number for MCPA | 310.83, EF's number for MCPA-*sodium* | 6,268.4 |
+
+  (freshwater ecotoxicity, CTUe per kg, on the six-list build of 24 October
+  2026, commit 34984fd.)
+
+  The copy's number is already published, as the ecoinvent Centre's. So the
+  GreenDelta column publishes GreenDelta's own row, and the finding that reports
+  the two numbers still names both and says which gave way. This is a rule about
+  *whose row it is*, not about which number is right: in the MCPA row, GreenDelta's
+  own number is the salt's and the copy carries the acid's, so GreenDelta's
+  published factor disagrees with the JRC's, and the comparison between the two
+  implementations reports it. An inventory characterised with the published
+  consensus factor gets the JRC's number either way. Where every colliding row
+  is a copy, or where GreenDelta's own rows disagree among themselves, nothing is
+  published, as before. The lists whose rows give way are named in the
+  manifest, as `yields_in_a_collision`
+  ([#439](https://github.com/brightway-labs/brightway-flows/issues/439)).
+
   In the 2.8.0 copy, their flows were found two ways. Most take the same two hops as ecoinvent's,
   through whichever release has the flow: the package identifies flows by the
   **ecoinvent** UUID it was built against, declaring compatibility with

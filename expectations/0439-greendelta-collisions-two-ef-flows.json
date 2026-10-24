@@ -1,0 +1,426 @@
+{
+  "schema_version": 1,
+  "description": "GreenDelta's openLCA package can state two numbers for one flow of ours in one EF 3.1 category, and `lcia.collisions` then publishes neither: 79 such collisions on the six-list build of 34984fd. Traced against the JRC's own factors, most pairs are two rows each carrying the factor of a different EF flow. Two causes are settled here. Nine of the package's `difenzoquat` rows carry the cation's registry number 49866-87-7 and, in every category they state, the factors of EF's methylsulphate salt (43222-48-6), so they reached the cation beside the package's `1,2-Dimethyl-3,5-diphenyl-1H-pyrazolium` rows; 16 rows of `Arsenic ion` carry arsenate's 17428-41-0 and the element's factors, so they reached `Arsenic(5+)` beside `Arsenic V` while the package's other 26 `Arsenic ion` emissions reach the generic ion (one more is shipped under an EF 3.1 uuid and reaches that flow). And where one of the two rows is the package's copy of an ecoinvent row, under ecoinvent's uuid, the copy gives way: its number is ecoinvent's own, which is published as ecoinvent's implementation.",
+  "expectations": [
+    {
+      "id": "0439-difenzoquat-f6bee9aa-is-the-methylsulphate",
+      "issue": 439,
+      "title": "openLCA's `difenzoquat` in Emission to air/high population density reaches EF's difenzoquat methylsulphate",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "f6bee9aa-5859-443a-a881-44dbc4a51a27"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "1,2-dimethyl-3,5-diphenylpyrazolium Methylsulphate"
+      },
+      "comment": "Every GreenDelta factor on this row is EF's number for the methylsulphate salt (43222-48-6) in this compartment, where ecoinvent's and EF's own `Difenzoquat` rows carry the cation's. On the build of 34984fd it reached `Difenzoquat` in Environmental → Air → Ground level → Urban (>1000 people/square mile), the cation, by the cation's number 49866-87-7. The package's other eleven difenzoquat rows carry no factor, so nothing says they are the salt, and they stay on the cation their name and number name."
+    },
+    {
+      "id": "0439-difenzoquat-92958866-is-the-methylsulphate",
+      "issue": 439,
+      "title": "openLCA's `difenzoquat` in Emission to air/low population density reaches EF's difenzoquat methylsulphate",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "92958866-acd8-4f83-b015-0a568666f473"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "1,2-dimethyl-3,5-diphenylpyrazolium Methylsulphate"
+      },
+      "comment": "Every GreenDelta factor on this row is EF's number for the methylsulphate salt (43222-48-6) in this compartment, where ecoinvent's and EF's own `Difenzoquat` rows carry the cation's. On the build of 34984fd it reached `Difenzoquat` in Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile), the cation, by the cation's number 49866-87-7. The package's other eleven difenzoquat rows carry no factor, so nothing says they are the salt, and they stay on the cation their name and number name."
+    },
+    {
+      "id": "0439-difenzoquat-19e2cd6e-is-the-methylsulphate",
+      "issue": 439,
+      "title": "openLCA's `difenzoquat` in Emission to air/lower stratosphere + upper troposphere reaches EF's difenzoquat methylsulphate",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "19e2cd6e-ce12-4396-837d-ddb59850a469"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "1,2-dimethyl-3,5-diphenylpyrazolium Methylsulphate"
+      },
+      "comment": "Every GreenDelta factor on this row is EF's number for the methylsulphate salt (43222-48-6) in this compartment, where ecoinvent's and EF's own `Difenzoquat` rows carry the cation's. On the build of 34984fd it reached `Difenzoquat` in Environmental → Air → Aircraft cruise height, the cation, by the cation's number 49866-87-7. The package's other eleven difenzoquat rows carry no factor, so nothing says they are the salt, and they stay on the cation their name and number name."
+    },
+    {
+      "id": "0439-difenzoquat-f991b217-is-the-methylsulphate",
+      "issue": 439,
+      "title": "openLCA's `difenzoquat` in Emission to air/unspecified reaches EF's difenzoquat methylsulphate",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "f991b217-32ae-4099-9408-6a3fa45fee0b"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "1,2-dimethyl-3,5-diphenylpyrazolium Methylsulphate"
+      },
+      "comment": "Every GreenDelta factor on this row is EF's number for the methylsulphate salt (43222-48-6) in this compartment, where ecoinvent's and EF's own `Difenzoquat` rows carry the cation's. On the build of 34984fd it reached `Difenzoquat` in Environmental → Air → Unknown, the cation, by the cation's number 49866-87-7. The package's other eleven difenzoquat rows carry no factor, so nothing says they are the salt, and they stay on the cation their name and number name."
+    },
+    {
+      "id": "0439-difenzoquat-c77be982-is-the-methylsulphate",
+      "issue": 439,
+      "title": "openLCA's `difenzoquat` in Emission to soil/agricultural reaches EF's difenzoquat methylsulphate",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "c77be982-8a93-4255-bbe7-c0011d084c1e"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "1,2-dimethyl-3,5-diphenylpyrazolium Methylsulphate"
+      },
+      "comment": "Every GreenDelta factor on this row is EF's number for the methylsulphate salt (43222-48-6) in this compartment, where ecoinvent's and EF's own `Difenzoquat` rows carry the cation's. On the build of 34984fd it reached `Difenzoquat` in Environmental → Ground → Agricultural, the cation, by the cation's number 49866-87-7. The package's other eleven difenzoquat rows carry no factor, so nothing says they are the salt, and they stay on the cation their name and number name."
+    },
+    {
+      "id": "0439-difenzoquat-038f3634-is-the-methylsulphate",
+      "issue": 439,
+      "title": "openLCA's `difenzoquat` in Emission to soil/unspecified reaches EF's difenzoquat methylsulphate",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "038f3634-aaf3-4b64-b2d7-bcb17dd59d68"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "1,2-dimethyl-3,5-diphenylpyrazolium Methylsulphate"
+      },
+      "comment": "Every GreenDelta factor on this row is EF's number for the methylsulphate salt (43222-48-6) in this compartment, where ecoinvent's and EF's own `Difenzoquat` rows carry the cation's. On the build of 34984fd it reached `Difenzoquat` in Environmental → Ground → Unknown, the cation, by the cation's number 49866-87-7. The package's other eleven difenzoquat rows carry no factor, so nothing says they are the salt, and they stay on the cation their name and number name."
+    },
+    {
+      "id": "0439-difenzoquat-36b83b9d-is-the-methylsulphate",
+      "issue": 439,
+      "title": "openLCA's `difenzoquat` in Emission to water/fresh water reaches EF's difenzoquat methylsulphate",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "36b83b9d-4922-4ba3-b0b3-77191669fd76"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "1,2-dimethyl-3,5-diphenylpyrazolium Methylsulphate"
+      },
+      "comment": "Every GreenDelta factor on this row is EF's number for the methylsulphate salt (43222-48-6) in this compartment, where ecoinvent's and EF's own `Difenzoquat` rows carry the cation's. On the build of 34984fd it reached `Difenzoquat` in Environmental → Water → Surface water, the cation, by the cation's number 49866-87-7. The package's other eleven difenzoquat rows carry no factor, so nothing says they are the salt, and they stay on the cation their name and number name."
+    },
+    {
+      "id": "0439-difenzoquat-581270be-is-the-methylsulphate",
+      "issue": 439,
+      "title": "openLCA's `difenzoquat` in Emission to water/ocean reaches EF's difenzoquat methylsulphate",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "581270be-6454-4b75-a7d2-553c1e4a0cda"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "1,2-dimethyl-3,5-diphenylpyrazolium Methylsulphate"
+      },
+      "comment": "Every GreenDelta factor on this row is EF's number for the methylsulphate salt (43222-48-6) in this compartment, where ecoinvent's and EF's own `Difenzoquat` rows carry the cation's. On the build of 34984fd it reached `Difenzoquat` in Environmental → Water → Ocean, the cation, by the cation's number 49866-87-7. The package's other eleven difenzoquat rows carry no factor, so nothing says they are the salt, and they stay on the cation their name and number name."
+    },
+    {
+      "id": "0439-difenzoquat-c98c2f9d-is-the-methylsulphate",
+      "issue": 439,
+      "title": "openLCA's `difenzoquat` in Emission to water/unspecified reaches EF's difenzoquat methylsulphate",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "c98c2f9d-7276-4d00-94cf-900dd0a7d98e"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "1,2-dimethyl-3,5-diphenylpyrazolium Methylsulphate"
+      },
+      "comment": "Every GreenDelta factor on this row is EF's number for the methylsulphate salt (43222-48-6) in this compartment, where ecoinvent's and EF's own `Difenzoquat` rows carry the cation's. On the build of 34984fd it reached `Difenzoquat` in Environmental → Water → Unknown, the cation, by the cation's number 49866-87-7. The package's other eleven difenzoquat rows carry no factor, so nothing says they are the salt, and they stay on the cation their name and number name."
+    },
+    {
+      "id": "0439-arsenic-ion-1ef5b43a-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to air/high population density reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "1ef5b43a-c846-4942-ba9d-2d2686063eff"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-c67a294a-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to air/indoor reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "c67a294a-b7ba-33bc-a9c6-d43d6a0441a9"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-26da57a3-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to air/low population density reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "26da57a3-0cd5-4737-afe2-c1a950f971b1"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-ebaff3ef-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to air/low population density, long-term reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "ebaff3ef-9e70-4674-bf17-6273e1447246"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-538d2c16-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to air/lower stratosphere + upper troposphere reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "538d2c16-5f7d-498f-9782-168c70adcc20"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-7cee74fc-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to air/unspecified reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "7cee74fc-6c4b-47c0-b624-2d12d9ea0619"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-cef77e08-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to soil/agricultural reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "cef77e08-b1c6-4893-a8eb-be2ada072c7a"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-33e28042-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to soil/forestry reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "33e28042-7a6a-4b68-9923-2321cb738164"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-0e907e32-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to soil/industrial reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "0e907e32-c2f3-4cd6-a7e6-64363f82d635"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-3256d56f-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to soil/unspecified reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "3256d56f-4ca3-4680-8cc1-0f8748e71373"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-dca18eb9-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to water/fossil- reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "dca18eb9-ed7c-44e6-a571-7594440ad70e"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-670502ea-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to water/fresh water reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "670502ea-2788-438f-8d4d-779ade3290f3"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-b431a676-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to water/fresh water, long-term reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "b431a676-72d3-4886-997b-58a176505ca4"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-c0f8b131-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to water/lake reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "c0f8b131-19e5-4787-9c2d-142378b08c2a"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-32683258-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to water/river reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "32683258-85cc-46d5-858e-8424581a824c"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-arsenic-ion-08ba6a82-is-the-generic-ion",
+      "issue": 439,
+      "title": "openLCA's `Arsenic ion` in Emission to water/river, long-term reaches the generic arsenic ion",
+      "subject": {
+        "kind": "source_row",
+        "list": "openlca",
+        "uuid": "08ba6a82-89d5-4cc6-bc09-b2aa18f9eda2"
+      },
+      "expect": {
+        "outcome": "placed",
+        "target_name": "Arsenic, ion"
+      },
+      "comment": "On the build of 34984fd it reached `Arsenic(5+)` by arsenate's number 17428-41-0."
+    },
+    {
+      "id": "0439-greendelta-publishes-its-own-paraquat-row",
+      "issue": 439,
+      "title": "GreenDelta's freshwater-ecotoxicity factor for paraquat in surface water is its own row's, 190,560",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "fafd0232-2d04-483c-b8f4-0d8f76badb6d",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "190560"
+      },
+      "comment": "The package ships `Paraquat` to surface water under ecoinvent's uuid at 17,533, which is ecoinvent's own number because ecoinvent maps its row to EF's paraquat dichloride, and as its own fresh-water row at 190,560, EF's number for paraquat. Both reach this flow. On the build of 34984fd neither was published; the copy of ecoinvent's row now gives way, and ecoinvent's 17,533 is still published as ecoinvent's."
+    },
+    {
+      "id": "0439-greendelta-publishes-its-own-mcpa-row-against-the-jrc",
+      "issue": 439,
+      "title": "GreenDelta's freshwater-ecotoxicity factor for MCPA in surface water is its own row's, 310.83, which differs from the JRC's",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "fe0acd60-3ddc-11dd-af1a-0050c2490048",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "310.83"
+      },
+      "comment": "The case where giving way is a statement about whose row it is and not about which number is right. The copy of ecoinvent's MCPA row states 6,268.4, which is both ecoinvent's and the JRC's number; GreenDelta's own fresh-water row states 310.83, the JRC's number for MCPA-sodium. GreenDelta's column shows GreenDelta's own row, and the comparison against the JRC reports the difference."
+    },
+    {
+      "id": "0439-greendelta-difenzoquat-salt-in-air-is-82-861",
+      "issue": 439,
+      "title": "GreenDelta's freshwater-ecotoxicity factor on difenzoquat methylsulphate in unspecified air is 82.861, the JRC's number for the salt",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "5c26e672-5cca-456c-ad1d-20e46764da2b",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "82.861"
+      },
+      "comment": "The row's number, now on the flow it belongs to. On the build of 34984fd it collided with the pyrazolium row's 211.51 on the cation and neither was published."
+    }
+  ]
+}

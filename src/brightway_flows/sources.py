@@ -262,6 +262,16 @@ class LciaSpec:
     #: being two releases.  Empty for an implementation with an archive of its
     #: own, which is every other one.
     archive_of: str = ""
+    #: The lists in ``resolve_through`` whose rows give way, where one of them
+    #: and one of the implementation's own rows reach one flow and state numbers
+    #: too far apart to be one number.  GreenDelta's package ships some flows
+    #: twice: once under ecoinvent's uuid, carrying the number ecoinvent's own
+    #: implementation states because ecoinvent mapped its row to a different EF
+    #: 3.1 flow -- `Paraquat` to paraquat dichloride, `MCPA` to MCPA-sodium --
+    #: and once as its own row, carrying the number of the EF flow the merge
+    #: reaches.  The first number is already published, as ecoinvent's.  Empty
+    #: means no row gives way, and a collision publishes nothing (#439).
+    yields_in_a_collision: tuple[str, ...] = ()
 
     @classmethod
     def from_manifest(cls, payload: Any, *, path: Path) -> LciaSpec:
@@ -313,6 +323,21 @@ class LciaSpec:
                 f"{path.name}: lcia.archive_of must name the source list whose "
                 "archive the factors are read from, or be absent."
             )
+        yields = payload.get("yields_in_a_collision") or []
+        if not isinstance(yields, list) or not all(
+            isinstance(key, str) and key.strip() for key in yields
+        ):
+            raise ValueError(
+                f"{path.name}: lcia.yields_in_a_collision must be a list of source "
+                "list keys, or absent."
+            )
+        stray = {key.strip() for key in yields} - {key.strip() for key in through}
+        if stray:
+            raise ValueError(
+                f"{path.name}: lcia.yields_in_a_collision names {sorted(stray)}, "
+                "which lcia.resolve_through does not: a row can only give way "
+                "where it was resolved through that list."
+            )
         return cls(
             adapter=adapter.strip(),
             factors_path=DATA_DIR / factors.strip(),
@@ -320,6 +345,7 @@ class LciaSpec:
             implemented_by=(implemented_by or "").strip(),
             resolve_through=tuple(key.strip() for key in through),
             archive_of=(archive_of or "").strip(),
+            yields_in_a_collision=tuple(key.strip() for key in yields),
         )
 
 

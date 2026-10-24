@@ -367,12 +367,17 @@ def _transcribe(
     prefix = f"{method.slug}_{source.implementation.slug.replace('-', '_')}"
     findings: list[Finding] = []
     declined: dict[str, str] = {}
+    yielding: frozenset[str] = frozenset()
     if not source.flows_are_consensus:
         chain = _resolution_chain(source_list)
         index, via = chained_merge_targets(
             db_path, lists=chain, only=set(source.by_flow)
         )
         stats[f"{prefix}_source_flows_merged"] = len(index)
+        # The rows stated under another publisher's identifier, which give way
+        # to the implementation's own in a collision (#439).
+        gives_way = set(source_list.lcia.yields_in_a_collision) if source_list.lcia else set()
+        yielding = frozenset(uuid for uuid, key in via.items() if key in gives_way)
         # The second route, for the flows no identifier reaches: the substance
         # this list already publishes, in the compartment the factor is about
         # (#165). Only what the first route missed -- an identifier is the
@@ -428,6 +433,7 @@ def _transcribe(
             recorded_conversions(db_path) if conversions is None else conversions
         ),
         collision_rulings=collision_rulings,
+        yielding=yielding,
     )
     findings.extend(found)
     findings.extend(_declined_numbers(source, matched))
@@ -444,6 +450,10 @@ def _transcribe(
         stats[f"{prefix}_{finding.kind}"] = stats.get(
             f"{prefix}_{finding.kind}", 0
         ) + 1
+    if yielding:
+        stats[f"{prefix}_factor_collisions_settled_by_yielding"] = sum(
+            1 for finding in findings if "yielded" in (finding.context or {})
+        )
     return grouped, findings, matched
 
 

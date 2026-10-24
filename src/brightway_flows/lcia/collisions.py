@@ -21,11 +21,24 @@ between, it is evidence that our merge has put two substances on one flow. That 
 a claim about the matching, and the fix belongs there.
 
 The consensus implementation (§4.3) is where a curator may rule on the same 34, and
-where saying something rather than nothing is allowed.  Here, nothing.
+where saying something rather than nothing is allowed.  Here, nothing -- with one
+exception, which is not a judgement about the numbers either.
+
+**One of the rows is another publisher's.**  GreenDelta's package ships some flows
+twice, once under ecoinvent's uuid and once as its own row, and the two can reach
+one consensus flow with different numbers because each carries the factor of a
+*different* EF 3.1 flow.  The ecoinvent-uuid row restates ecoinvent's own
+implementation, which mapped `Paraquat` to EF's paraquat dichloride and `MCPA` to
+MCPA-sodium; GreenDelta's own row carries the factor of the flow the merge reaches.
+The first number is already published, as ecoinvent's, so the manifest may name the
+lists whose rows give way (`yields_in_a_collision`), and the implementation's own
+row is published.  Only where its own rows agree among themselves; the finding is
+written either way, naming the rows that gave way (#439).
 """
 
 from __future__ import annotations
 
+from collections.abc import Collection
 from typing import Any
 
 from brightway_flows.flow_layers.contested_cas import (
@@ -57,6 +70,7 @@ def settle(
     category: str,
     geography: str | None,
     ruling: Any | None = None,
+    yielding: Collection[str] = (),
 ):
     """One factor for one (flow, category, place), or none and a finding.
 
@@ -66,31 +80,43 @@ def settle(
     numbers it recorded; the finding is written either way, with the ruling on
     it where one applied (#196).
 
+    *yielding* is the source rows that give way to the implementation's own
+    where the two disagree: rows it states under another publisher's
+    identifier (the module docstring's last case).
+
     *candidates* are `MatchedFactor` records, all naming the same flow, category
     and place; the return is `(kept, finding)` with at most one of each.
     """
+    kept = _one_number(candidates)
+    if kept is not None:
+        return kept, None
+    return _disagree(
+        candidates,
+        elementary_flow_uuid=elementary_flow_uuid,
+        implemented_by=implemented_by,
+        category=category,
+        geography=geography,
+        ruling=ruling,
+        yielding=yielding,
+    )
+
+
+def _one_number(candidates: list):
+    """The candidate to publish where every row states one number, or None."""
     first = candidates[0]
     if len(candidates) == 1:
-        return first, None
+        return first
     if len({candidate.factor.amount for candidate in candidates}) == 1:
-        return first, None
-
+        return first
     kept = first
     for candidate in candidates[1:]:
         if not _comparable(kept.factor.amount, candidate.factor.amount):
-            return _disagree(
-                candidates,
-                elementary_flow_uuid=elementary_flow_uuid,
-                implemented_by=implemented_by,
-                category=category,
-                geography=geography,
-                ruling=ruling,
-            )
+            return None
         if more_precise_value(kept.factor.amount, candidate.factor.amount) == (
             candidate.factor.amount
         ):
             kept = candidate
-    return kept, None
+    return kept
 
 
 def _source_of(candidate) -> str:
@@ -105,14 +131,17 @@ def _disagree(
     category: str,
     geography: str | None,
     ruling: Any | None,
+    yielding: Collection[str] = (),
 ):
-    """Rows too far apart to be one number: nothing, unless a curator ruled.
+    """Rows too far apart to be one number: nothing, unless a curator ruled or
+    the rows apart are another publisher's.
 
     A ruling names the row whose number is taken, and is obeyed only where the
     colliding rows and their numbers are the ones it was made about -- a third
     row arriving, or a number moving, is a new question rather than an old
-    answer obeyed.  The finding is written either way, so a reader of the
-    findings sees the collision and its answer in one place.
+    answer obeyed.  Failing a ruling, the rows in *yielding* give way where the
+    rest state one number between them.  The finding is written either way, so
+    a reader of the findings sees the collision and its answer in one place.
     """
     stated = {_source_of(candidate): candidate.factor.amount for candidate in candidates}
     if ruling is not None and ruling.covers(stated=stated):
@@ -129,6 +158,23 @@ def _disagree(
             geography=geography,
             ruled=ruling,
         )
+    own = [candidate for candidate in candidates if _source_of(candidate) not in yielding]
+    if own and len(own) < len(candidates):
+        chosen = _one_number(own)
+        if chosen is not None:
+            return chosen, _collision(
+                candidates,
+                elementary_flow_uuid=elementary_flow_uuid,
+                implemented_by=implemented_by,
+                category=category,
+                geography=geography,
+                yielded=[
+                    _source_of(candidate)
+                    for candidate in candidates
+                    if _source_of(candidate) in yielding
+                ],
+                published=_source_of(chosen),
+            )
     return None, _collision(
         candidates,
         elementary_flow_uuid=elementary_flow_uuid,
@@ -146,16 +192,23 @@ def _collision(
     category: str,
     geography: str | None,
     ruled: Any | None = None,
+    yielded: list[str] | None = None,
+    published: str | None = None,
 ) -> Finding:
     """The row that says which two rows disagreed, and by how much -- and,
-    where a curator ruled, whose number was published."""
+    where a curator ruled or another publisher's rows gave way, whose number
+    was published."""
     amounts = sorted(abs(candidate.factor.amount) for candidate in candidates)
     ratio = amounts[-1] / amounts[0] if amounts[0] else None
-    outcome = (
-        ", so neither is published"
-        if ruled is None
-        else f" -- ruled: {ruled.publish_source_flow_uuid} is published"
-    )
+    if ruled is not None:
+        outcome = f" -- ruled: {ruled.publish_source_flow_uuid} is published"
+    elif yielded:
+        outcome = (
+            f" -- {', '.join(yielded)} restates another publisher's row and gives "
+            f"way: {published} is published"
+        )
+    else:
+        outcome = ", so neither is published"
     return Finding(
         kind=FindingKind.FACTOR_COLLISION,
         implemented_by=implemented_by,
@@ -183,6 +236,11 @@ def _collision(
                     }
                 }
                 if ruled is not None
+                else {}
+            ),
+            **(
+                {"yielded": {"published": published, "gave_way": yielded}}
+                if yielded
                 else {}
             ),
             "rows": [

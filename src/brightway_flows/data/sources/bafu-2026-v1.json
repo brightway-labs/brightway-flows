@@ -17,6 +17,7 @@
     "implemented_by": "GreenDelta",
     "archive_of": "openlca-2.8.2",
     "resolve_through": ["ecoinvent-3.12", "ecoinvent-3.8", "EF-3.1", "openlca-2.8.2"],
+    "yields_in_a_collision": ["ecoinvent-3.12", "ecoinvent-3.8"],
     "methods": [
       {
         "name": "EF 3.1 Method (adapted)"

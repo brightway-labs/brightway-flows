@@ -650,6 +650,141 @@
         "74-82-8"
       ],
       "comment": "The methane released when land changes use, under ecoinvent's uuids and name. 74-82-8 is the gas's own number, which the package writes on its other rows of this name and ecoinvent on all of its. Restored on the indoor and cruise-height rows (288c4e8a, ef4566f0), which ship without it: with the number, `from soil or biomass stock` is read as a land-use-change qualifier and narrows the candidates to EF's `(land use change)` flow of the gas; without it the qualified name is an unfamiliar one, and on the six-list build of 23 October 2026 (commit 5802a4c) these rows created `Methane, From Soil Or Biomass Stock` flows that no method characterises. The same shape as BAFU's `Carbon dioxide, land transformation` (#136). Matched on the name, so the rows that already carry the number are unaffected. (#435)"
+    },
+    {
+      "match": {
+        "uuid": "f6bee9aa-5859-443a-a881-44dbc4a51a27",
+        "name": "difenzoquat"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "49866-87-7"
+      ],
+      "new_value": [
+        "43222-48-6"
+      ],
+      "comment": "`difenzoquat` in `Emission to air / high population density`, one of nine rows the package ships under the name and the cation's number 49866-87-7 whose every EF 3.1 factor is EF's number for the methylsulphate salt, 1,2-dimethyl-3,5-diphenylpyrazolium methylsulphate (43222-48-6), in the same compartment -- for example 82.861 for freshwater ecotoxicity in unspecified air, where the cation's is 211.51. ecoinvent's and EF's own `Difenzoquat` rows carry the cation's numbers, and so do the package's `1,2-Dimethyl-3,5-diphenyl-1H-pyrazolium` rows; with this row on the cation beside them, the two numbers collided and GreenDelta published neither (on the six-list build of 24 October 2026, commit 34984fd, 18 collisions over nine compartments). Keyed on the row and its name rather than the name alone, because the evidence is the row's own factors: the package's other eleven difenzoquat rows carry no factor, and nothing in them says they are the salt. (#439)"
+    },
+    {
+      "match": {
+        "uuid": "92958866-acd8-4f83-b015-0a568666f473",
+        "name": "difenzoquat"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "49866-87-7"
+      ],
+      "new_value": [
+        "43222-48-6"
+      ],
+      "comment": "`difenzoquat` in `Emission to air / low population density`: the same reading as the first of these nine rows above, on the evidence of this row's own factors. (#439)"
+    },
+    {
+      "match": {
+        "uuid": "19e2cd6e-ce12-4396-837d-ddb59850a469",
+        "name": "difenzoquat"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "49866-87-7"
+      ],
+      "new_value": [
+        "43222-48-6"
+      ],
+      "comment": "`difenzoquat` in `Emission to air / lower stratosphere + upper troposphere`: the same reading as the first of these nine rows above, on the evidence of this row's own factors. (#439)"
+    },
+    {
+      "match": {
+        "uuid": "f991b217-32ae-4099-9408-6a3fa45fee0b",
+        "name": "difenzoquat"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "49866-87-7"
+      ],
+      "new_value": [
+        "43222-48-6"
+      ],
+      "comment": "`difenzoquat` in `Emission to air / unspecified`: the same reading as the first of these nine rows above, on the evidence of this row's own factors. (#439)"
+    },
+    {
+      "match": {
+        "uuid": "c77be982-8a93-4255-bbe7-c0011d084c1e",
+        "name": "difenzoquat"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "49866-87-7"
+      ],
+      "new_value": [
+        "43222-48-6"
+      ],
+      "comment": "`difenzoquat` in `Emission to soil / agricultural`: the same reading as the first of these nine rows above, on the evidence of this row's own factors. (#439)"
+    },
+    {
+      "match": {
+        "uuid": "038f3634-aaf3-4b64-b2d7-bcb17dd59d68",
+        "name": "difenzoquat"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "49866-87-7"
+      ],
+      "new_value": [
+        "43222-48-6"
+      ],
+      "comment": "`difenzoquat` in `Emission to soil / unspecified`: the same reading as the first of these nine rows above, on the evidence of this row's own factors. (#439)"
+    },
+    {
+      "match": {
+        "uuid": "36b83b9d-4922-4ba3-b0b3-77191669fd76",
+        "name": "difenzoquat"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "49866-87-7"
+      ],
+      "new_value": [
+        "43222-48-6"
+      ],
+      "comment": "`difenzoquat` in `Emission to water / fresh water`: the same reading as the first of these nine rows above, on the evidence of this row's own factors. (#439)"
+    },
+    {
+      "match": {
+        "uuid": "581270be-6454-4b75-a7d2-553c1e4a0cda",
+        "name": "difenzoquat"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "49866-87-7"
+      ],
+      "new_value": [
+        "43222-48-6"
+      ],
+      "comment": "`difenzoquat` in `Emission to water / ocean`: the same reading as the first of these nine rows above, on the evidence of this row's own factors. (#439)"
+    },
+    {
+      "match": {
+        "uuid": "c98c2f9d-7276-4d00-94cf-900dd0a7d98e",
+        "name": "difenzoquat"
+      },
+      "field": "cas_numbers",
+      "original_value": [
+        "49866-87-7"
+      ],
+      "new_value": [
+        "43222-48-6"
+      ],
+      "comment": "`difenzoquat` in `Emission to water / unspecified`: the same reading as the first of these nine rows above, on the evidence of this row's own factors. (#439)"
+    },
+    {
+      "match": {
+        "name": "Arsenic ion",
+        "cas_numbers": "17428-41-0"
+      },
+      "field": "cas_numbers",
+      "remove_value": "17428-41-0",
+      "comment": "17428-41-0 is arsenate's number, arsenic(V), and the row is the generic arsenic ion with the charge unstated, the reading AGRIBALYSE's `Arsenic, ion` fix in agribalyse-3.2-manual-fixes.json makes. The package writes it on 16 of its `Arsenic ion` rows, and where EF states one their factors are the element's, not arsenate's: 1,725.9 for freshwater ecotoxicity in agricultural soil, which is EF's `Arsenic`, where `Arsenic(5+)` is 2,506.95. The package's other 26 `Arsenic ion` emissions, which carry the element's number or none, already reach `Arsenic, ion`; these 16 reached `Arsenic(5+)` by the number, beside the package's `Arsenic V` rows, and GreenDelta's two numbers collided there (six-list build of 24 October 2026, commit 34984fd, 6 collisions). Removed rather than replaced: no number names a generic ion. Matched on the name and the number together, so a release that drops the number leaves nothing to do. (#439)"
     }
   ]
 }

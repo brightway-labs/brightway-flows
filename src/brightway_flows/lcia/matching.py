@@ -66,7 +66,7 @@ from __future__ import annotations
 
 import sqlite3
 from collections import Counter, defaultdict
-from collections.abc import Mapping, Sequence
+from collections.abc import Collection, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -542,6 +542,7 @@ def match(
     declined: Mapping[str, str] | None = None,
     conversions: Mapping[tuple[str, str, str], float] | None = None,
     collision_rulings: Mapping[tuple[str, str], Any] | None = None,
+    yielding: Collection[str] = (),
 ) -> tuple[list[MatchedFactor], list[Finding]]:
     """Every factor of one implementation, on the consensus flow it belongs to.
 
@@ -564,6 +565,9 @@ def match(
     conversion this build already recorded for that flow between those two
     units.  Without it a factor stated per kilogram against a flow published per
     cubic metre is dropped even where the merge wrote down the density (#170).
+
+    *yielding* is the publisher's flows that were resolved through a list the
+    manifest names in `yields_in_a_collision`; see `lcia.collisions`.
     """
     findings: list[Finding] = []
     grouped: dict[tuple[str, str, str], list[MatchedFactor]] = defaultdict(list)
@@ -683,6 +687,9 @@ def match(
             ruling=(collision_rulings or {}).get(
                 (elementary_uuid, str(category).strip().lower())
             ),
+            # The rows stated under another publisher's identifier, which give
+            # way to the implementation's own where the two disagree (#439).
+            yielding=yielding,
         )
         if kept is not None:
             matched.append(kept)

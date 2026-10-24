@@ -232,6 +232,35 @@ rows reaches the flow ecoinvent's row of the same uuid reaches
 ([#435](https://github.com/brightway-labs/brightway-flows/issues/435)). The
 capture, `to soil or biomass stock`, keeps its own reading.
 
+## Two numbers for one flow
+
+The package can state two different numbers for one flow of ours in one EF 3.1
+category, and GreenDelta's implementation then publishes neither: 79 times on
+the six-list build of 24 October 2026 (commit 34984fd). Traced against the JRC's
+own factors, most of these are two rows of the package that each carry the
+factor of a *different* EF flow, reaching one flow of ours.
+
+- **One row is the package's copy of an ecoinvent row.** Under ecoinvent's
+  uuid, it carries ecoinvent's own number, and ecoinvent's implementation
+  attached that row to a different EF flow than GreenDelta did: `Paraquat` to
+  surface water at 17,533 (EF's paraquat dichloride) against GreenDelta's own
+  190,560 (EF's paraquat). The copy's number is already published as the
+  ecoinvent Centre's, so the copy gives way and GreenDelta's own row is
+  published. In the MCPA pair the copy carries EF's number for MCPA and
+  GreenDelta's own row the number for MCPA-sodium, so GreenDelta's published
+  factor differs from the JRC's there, which is what GreenDelta states.
+  [Factors](../concepts/factors.md) has the examples side by side.
+- **One row was on the wrong flow.** Nine `difenzoquat` rows carry the salt's
+  factors under the cation's number, and 16 `Arsenic ion` rows carry the
+  element's factors under arsenate's number. Their registry numbers are
+  corrected below, and each row reaches the flow its factors belong to.
+- **Not settled yet.** Fenoxycarb is EF 3.1's own duplicate: EF ships it
+  twice, under 79127-80-3 and 72490-01-8, with factors about 740 times apart,
+  and GreenDelta copied both. It waits on
+  [#436](https://github.com/brightway-labs/brightway-flows/issues/436), which
+  settles the JRC's side. The rest need a curated ruling
+  ([#439](https://github.com/brightway-labs/brightway-flows/issues/439)).
+
 ## Rows sent to a curated target
 
 `openlca-2.8.2-match-overrides.json` names the flow for 30 rows the merge
@@ -436,6 +465,8 @@ those is ruled on yet.
 | Helium, in natural gas, in ground | `Resource / in ground` | none → 7440-59-7 | ecoinvent's `Helium, in natural gas` under ecoinvent's uuid, copied without the number ecoinvent's table reaches helium with. As shipped, it minted a substance named for a compartment |
 | Propane, Dibromopentafluoro- and five more | `Emission to air / unspecified` | none → 431-78-7, 453-00-9, 460-86-6, 666-25-1, 421-90-9, 172912-75-3 | six rows under Stepwise 2006's SimaPro spellings, copied without the numbers Stepwise's rows reach EF's substances under; the SimaPro name rewriting runs for SimaPro-shaped lists only. As shipped, each minted a substance under the SimaPro name and the lookup sent Stepwise's rows to it |
 | Carbon dioxide, Carbon monoxide and Methane, from soil or biomass stock | air: indoor, and cruise height for the last two | none → 124-38-9, 630-08-0, 74-82-8 | ecoinvent's land-use-change releases under ecoinvent's uuids; the package writes the gas's number on its other rows of these names and leaves it off these five. With it, the phrase is read as land-use change and the rows reach EF's `(land use change)` flow of the gas, as ecoinvent's do; as shipped, each created a `..., From Soil Or Biomass Stock` flow no method characterises ([#435](https://github.com/brightway-labs/brightway-flows/issues/435)) |
+| difenzoquat | nine compartments of air, soil and water | 49866-87-7 → 43222-48-6 | every EF 3.1 factor on these nine rows is EF's number for the methylsulphate salt in the same compartment (82.861 for freshwater ecotoxicity in unspecified air, where the cation's is 211.51), while ecoinvent's, EF's and the package's own `1,2-Dimethyl-3,5-diphenyl-1H-pyrazolium` rows carry the cation's. As shipped, the rows reached the cation and GreenDelta's two numbers collided in 18 places. The package's eleven other difenzoquat rows carry no factor, and stay on the cation their name and number name ([#439](https://github.com/brightway-labs/brightway-flows/issues/439)) |
+| Arsenic ion | 16 compartments of air, soil and water | 17428-41-0 → none | arsenate's number on the generic ion, whose factors are the element's where EF states one (1,725.9 in agricultural soil, EF's `Arsenic`; `Arsenic(5+)` is 2,506.95). As shipped, the 16 rows reached `Arsenic(5+)` beside the package's `Arsenic V`, and the two numbers collided in 6 places; the package's other 26 `Arsenic ion` emissions already reach `Arsenic, ion`, as AGRIBALYSE's do ([#439](https://github.com/brightway-labs/brightway-flows/issues/439)) |
 
 One synonym is restored rather than a number corrected: the agricultural-soil
 `Epoxiconazole` row (135319-73-2, ecoinvent's uuid) is the one of the package's
