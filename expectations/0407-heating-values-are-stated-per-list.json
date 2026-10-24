@@ -18,8 +18,7 @@
         "conversion_basis": "flow-property",
         "unit_mismatch": false
       },
-      "comment": "The issue's example row. The substance block at the end of `AGB32_final.CSV` gives this coal a lower heating value of 18.2 MJ/kg, and EF 3.1's `Hard Coal` is measured in net calorific value, so the net statement is the one the merge chooses. On the build of `5f06833` the same 18.2 was published with basis `curated`, read off the override row; phase B of #407 will make the statement `vendor-flow`, read off the CSV, with the number unchanged again.",
-      "pending": true
+      "comment": "The issue's example row. The substance block at the end of `AGB32_final.CSV` gives this coal a lower heating value of 18.2 MJ/kg, and EF 3.1's `Hard Coal` is measured in net calorific value, so the net statement is the one the merge chooses. On the build of `5f06833` the same 18.2 was published with basis `curated`, read off the override row; phase B of #407 will make the statement `vendor-flow`, read off the CSV, with the number unchanged again."
     },
     {
       "id": "0407-stepwise-hard-coal-converts-by-its-gross-calorific-value",
@@ -37,8 +36,7 @@
         "conversion_basis": "flow-property",
         "unit_mismatch": false
       },
-      "comment": "Stepwise's method states gross calorific values, and its `Non-renewable energy` factor for this row is 19.1. EF's flow is net. The number lands only because `stepwise-2006-property-statements.json` carries a conversion rule saying gross converts onto net for this list, and the mapping publishes `conversion_quantity` as the gross IRI so a reader sees it. Whether Stepwise should convert by the net value instead (18.2, making its factor 1.05 per MJ) is a measured change of its own; this claim pins that the refactor did not make it.",
-      "pending": true
+      "comment": "Stepwise's method states gross calorific values, and its `Non-renewable energy` factor for this row is 19.1. EF's flow is net. The number lands only because `stepwise-2006-property-statements.json` carries a conversion rule saying gross converts onto net for this list, and the mapping publishes `conversion_quantity` as the gross IRI so a reader sees it. Whether Stepwise should convert by the net value instead (18.2, making its factor 1.05 per MJ) is a measured change of its own; this claim pins that the refactor did not make it."
     },
     {
       "id": "0407-ecoinvent-38-crude-oil-keeps-its-vintage",
@@ -55,8 +53,7 @@
         "conversion_factor": 42.3,
         "conversion_basis": "flow-property"
       },
-      "comment": "#162's vintage rule survives the move: the statement file carries 43.4 checked against 3.9.1 to 3.12 and `by_release` 3.8 at 42.3, and the merge resolves the release's own number. A 43.4 here would mean the per-release value was lost in the move.",
-      "pending": true
+      "comment": "#162's vintage rule survives the move: the statement file carries 43.4 checked against 3.9.1 to 3.12 and `by_release` 3.8 at 42.3, and the merge resolves the release's own number. A 43.4 here would mean the per-release value was lost in the move."
     },
     {
       "id": "0407-bafu-crude-oil-converts-by-its-own-number",
@@ -72,8 +69,7 @@
         "conversion_factor": 43.1,
         "conversion_basis": "flow-property"
       },
-      "comment": "The one BAFU carrier whose number is BAFU's own rather than ecoinvent's. The statement is `calorific-value` with the basis unstated, because the dataset ratio says nothing about net or gross, and it converts onto EF's net flow with the mapping saying the basis was unstated.",
-      "pending": true
+      "comment": "The one BAFU carrier whose number is BAFU's own rather than ecoinvent's. The statement is `calorific-value` with the basis unstated, because the dataset ratio says nothing about net or gross, and it converts onto EF's net flow with the mapping saying the basis was unstated."
     }
   ]
 }
