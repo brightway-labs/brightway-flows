@@ -107,8 +107,13 @@ class PinnedSourcesTestCase(unittest.TestCase):
         """A list whose vendor publishes no download must name this project's."""
         from brightway_flows.integrations.agribalyse import AGRIBALYSE_DOWNLOADS
         from brightway_flows.integrations.bafu import BAFU_DOWNLOADS
+        from brightway_flows.integrations.stepwise import STEPWISE_DOWNLOADS
 
-        pinned = {"agribalyse": AGRIBALYSE_DOWNLOADS, "bafu": BAFU_DOWNLOADS}
+        pinned = {
+            "agribalyse": AGRIBALYSE_DOWNLOADS,
+            "bafu": BAFU_DOWNLOADS,
+            "stepwise": STEPWISE_DOWNLOADS,
+        }
         for source in known_source_lists().values():
             if source.list_name in pinned:
                 with self.subTest(key=source.key):
@@ -122,18 +127,23 @@ class PinnedSourcesTestCase(unittest.TestCase):
             GLAD_COMMIT,
             GLAD_ILCD_TO_SIMAPRO_URL,
         )
+        from brightway_flows.integrations.stepwise import STEPWISE_DOWNLOADS
 
         self.assertIn(f"/archive/rel{CHEBI_RELEASE}/", CHEBI_JSON_GZ_URL)
         self.assertRegex(GLAD_COMMIT, r"^[0-9a-f]{40}$")
         self.assertIn(f"/raw/{GLAD_COMMIT}/", GLAD_ILCD_TO_SIMAPRO_URL)
-        for pinned in (*AGRIBALYSE_DOWNLOADS.values(), *BAFU_DOWNLOADS.values()):
+        for pinned in (
+            *AGRIBALYSE_DOWNLOADS.values(),
+            *BAFU_DOWNLOADS.values(),
+            *STEPWISE_DOWNLOADS.values(),
+        ):
             for url in pinned.urls:
                 with self.subTest(url=url):
                     self.assertTrue(url.startswith(downloads.FILES_BRIGHTWAY_DEV))
             self.assertRegex(pinned.sha256, r"^[0-9a-f]{64}$")
 
     def test_a_missing_vendor_file_is_downloaded_where_the_adapter_wanted_it(self):
-        from brightway_flows.integrations import agribalyse, bafu
+        from brightway_flows.integrations import agribalyse, bafu, stepwise
 
         class Asked(Exception):
             pass
@@ -141,6 +151,7 @@ class PinnedSourcesTestCase(unittest.TestCase):
         cases = (
             (agribalyse, "AGRIBALYSE_DOWNLOADS", "agribalyse_csv_path", "agribalyse", "3.2"),
             (bafu, "BAFU_DOWNLOADS", "bafu_ecospold_zip_path", "bafu", "2026-v1"),
+            (stepwise, "STEPWISE_DOWNLOADS", "stepwise_csv_path", "stepwise", "2006-1.09"),
         )
         for module, table, path_function, name, version in cases:
             with self.subTest(list=name), tempfile.TemporaryDirectory() as tmp:
@@ -154,7 +165,8 @@ class PinnedSourcesTestCase(unittest.TestCase):
                     f"brightway_flows.filesystem.{path_function}", return_value=missing
                 ), self.assertRaises(Asked):
                     module.fetch(source)
-                pinned.download.assert_called_once_with(missing)
+                pinned.download.assert_called_once()
+                self.assertEqual(pinned.download.call_args.args, (missing,))
 
 
 if __name__ == "__main__":

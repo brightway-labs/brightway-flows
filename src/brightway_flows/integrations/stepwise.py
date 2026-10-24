@@ -50,20 +50,25 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Iterator
 
-import httpx
 import orjson
 import structlog
-from tqdm import tqdm
 
+from brightway_flows.downloads import FILES_BRIGHTWAY_DEV, PinnedFile
 from brightway_flows.integrations.ecoinvent import normalize_cas_number
 from brightway_flows.sources import SourceList
 
 logger = structlog.get_logger(__name__)
 
-#: Where the export is served from.  Stepwise 2006 is distributed inside
-#: SimaPro rather than at a vendor URL, so this is a copy taken from a SimaPro
-#: installation and published unchanged; the filename carries the version.
-STEPWISE_DOWNLOAD_PREFIX = "https://files.brightway.dev/"
+#: This project's copy of each export, by ``list_version``.  Stepwise 2006 is
+#: distributed inside SimaPro rather than at a vendor URL, so this is a copy
+#: taken from a SimaPro installation and published unchanged; the filename
+#: carries the version.  The digest is the copy every build has read.
+STEPWISE_DOWNLOADS: dict[str, PinnedFile] = {
+    "2006-1.09": PinnedFile(
+        urls=(f"{FILES_BRIGHTWAY_DEV}Stepwise2006_v1.09.csv",),
+        sha256="32d74b52b5facb95b42376c0c9f685c072fcd89a943bdd56a61e47f31a0bba8b",
+    ),
+}
 
 #: The method's own name, as its ``Method`` block spells it.  Checked rather
 #: than read: a file whose method is not this one is a different method wearing
@@ -120,28 +125,26 @@ _COMMENT_SECTION_BREAK = re.compile(
 _NO_FORMULA = "no formula available"
 
 
-def stepwise_csv_url(csv_path: Path) -> str:
-    """Where :func:`download` fetches *csv_path* from."""
-    return f"{STEPWISE_DOWNLOAD_PREFIX}{csv_path.name}"
+def download(source: SourceList, *, force: bool = False) -> Path:
+    """The method export for *source*, downloaded unless it is already there.
 
+    Downloaded from this project's copy of the release
+    (:data:`STEPWISE_DOWNLOADS`) and checked against its digest.  *force*
+    downloads it again.  A release with no copy is a person's next action, and
+    the error says which file and where.
+    """
+    from brightway_flows.filesystem import stepwise_csv_path
 
-def download(csv_path: Path, *, force: bool = False) -> Path:
-    """The method export, downloaded to *csv_path* unless it is already there."""
-    if csv_path.exists() and not force:
-        logger.info("stepwise_csv_already_downloaded", path=str(csv_path))
-        return csv_path
-
-    url = stepwise_csv_url(csv_path)
-    logger.info("downloading_stepwise_csv", url=url, destination=str(csv_path))
-    with httpx.stream("GET", url, follow_redirects=True, timeout=300) as response:
-        response.raise_for_status()
-        total = int(response.headers.get("content-length", 0))
-        with csv_path.open("wb") as handle, tqdm(
-            total=total or None, unit="B", unit_scale=True, desc=csv_path.name
-        ) as progress:
-            for chunk in response.iter_bytes(chunk_size=1024 * 64):
-                handle.write(chunk)
-                progress.update(len(chunk))
+    csv_path = stepwise_csv_path(source.list_version)
+    pinned = STEPWISE_DOWNLOADS.get(source.list_version)
+    if pinned is not None:
+        pinned.download(csv_path, force=force)
+    if not csv_path.exists():
+        raise FileNotFoundError(
+            f"Stepwise's SimaPro method export for {source.key} is not at "
+            f"{csv_path}, and this project hosts no copy of that release: "
+            "export it from SimaPro and place it there."
+        )
     return csv_path
 
 
@@ -377,8 +380,8 @@ def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]
 def fetch(source: SourceList, *, force: bool = False) -> Path:
     """The :class:`~brightway_flows.sources.SourceAdapter` for Stepwise 2006.
 
-    *force* re-downloads the export.  Parsing happens either way: the whole cost
-    is one pass over a 1.1 MB text file.
+    *force* downloads the export again (:func:`download`).  Parsing happens
+    either way: the whole cost is one pass over a 1.1 MB text file.
 
     The method's own version is checked against the manifest's, because the two
     are one claim.  ``list_version`` is what the flows are published under and
@@ -386,9 +389,7 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
     different release is a file to register rather than one to read under this
     list's key.
     """
-    from brightway_flows.filesystem import stepwise_csv_path
-
-    csv_path = download(stepwise_csv_path(source.list_version), force=force)
+    csv_path = download(source, force=force)
     blocks = _blocks(csv_path)
     method = _method_block(blocks)
     declared = _method_version(method)

@@ -115,8 +115,7 @@ uv run brightway-flows build --source ecoinvent-3.12 --source bafu-2026-v1
 Merging ecoinvent needs a licence you have to obtain. BAFU 2026 v1, Stepwise
 2006 1.09 and AGRIBALYSE 3.2 do not: their vendors hand the files over rather
 than publishing them, so `fetch-source` downloads the project's own copy from
-`files.brightway.dev` — and, for BAFU and AGRIBALYSE, checks that it is the
-copy every build has read. Merging is still asked for rather than opted out of: the
+`files.brightway.dev` and checks that it is the copy every build has read. Merging is still asked for rather than opted out of: the
 base list on its own needs none of it, and it is the product. `--source` defaulted to
 `ecoinvent-3.12` until
 [#99](https://github.com/brightway-labs/brightway-flows/issues/99), which
