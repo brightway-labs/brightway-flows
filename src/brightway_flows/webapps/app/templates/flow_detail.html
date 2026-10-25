@@ -125,6 +125,59 @@
   {% endif %}
 </section>
 
+{% if stated_properties %}
+<section class="section">
+  <div class="section__header">
+    <h2>What each list says a unit of this flow is</h2>
+    <span class="muted">{{ stated_properties | length | thousands }}</span>
+  </div>
+  {#
+    A source list's own statement about one unit of its flow -- a heating
+    value, a density, a specific activity -- read off the vendor's file or a
+    curated file (#407). The mapping converts by one of them; the others are
+    what the same list also said. The spread below is across every list on
+    this flow's substance, which is where the lists disagree.
+  #}
+  {% if property_spreads %}
+  <ul class="muted">
+    {% for spread in property_spreads %}
+    <li>{{ spread.quantity }}: {{ spread.minimum | amount }}{% if spread.minimum != spread.maximum %} to {{ spread.maximum | amount }}{% endif %} {{ spread.unit }} per {{ spread.per_unit }}, {{ spread.statements }} statement{{ "s" if spread.statements != 1 }} from {{ spread.lists }} list{{ "s" if spread.lists != 1 }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">List</th>
+          <th scope="col">Version</th>
+          <th scope="col">Name there</th>
+          <th scope="col">Quantity</th>
+          <th scope="col" class="num">Value</th>
+          <th scope="col">Per</th>
+          <th scope="col">Stated by</th>
+          <th scope="col">Converts</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for statement in stated_properties %}
+        <tr>
+          <td>{{ statement.list_name }}</td>
+          <td class="mono">{{ statement.list_version }}</td>
+          <td>{{ statement.source_flow_name or "—" }}</td>
+          <td>{{ statement.quantity }}</td>
+          <td class="num">{{ statement.value | amount }} {{ statement.unit }}</td>
+          <td class="mono">{{ statement.per_unit }}</td>
+          <td>{{ statement.stated_by }}</td>
+          <td>{{ "yes" if statement.used_for_conversion else "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
 {% if flow.concept_associations %}
 <section class="section">
   <div class="section__header">

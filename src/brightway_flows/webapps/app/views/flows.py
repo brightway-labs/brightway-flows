@@ -108,4 +108,9 @@ def detail(uuid: str):
         sort=sort,
         args={"uuid": uuid},
         factors=factor_queries.for_flow(connection, uuid, sort=sort),
+        # What each merged list says a unit of this flow is, and how far the
+        # lists' numbers lie apart (#407): read here like the factors, so the
+        # flows query module stays about the flow.
+        stated_properties=queries.stated_properties(connection, uuid),
+        property_spreads=queries.property_spreads(connection, uuid),
     )

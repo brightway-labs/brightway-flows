@@ -303,8 +303,14 @@ per kg onto the very same flows, and 213 factors are published on that
 ([#170](https://github.com/brightway-labs/brightway-flows/issues/170)). A
 flow whose rows state two different multipliers for one pair of units — natural
 gas, at 34.5 and 36.0 MJ per cubic metre — is not converted, because the
-evidence is that there is more than one answer. Where no conversion exists at
-all the factor is not published and the crossing is a finding.
+evidence is that there is more than one answer. Why the two differ is now
+readable: the `flow_property_statements` table, and the flow's page in the
+review application, hold what each list stated about a unit of its own row and
+which statement its mapping converted by, so the 34.5 reads as ecoinvent 3.8's
+cubic metre and the 36.0 as the later releases' standard cubic metre
+([#407](https://github.com/brightway-labs/brightway-flows/issues/407)). Where no
+conversion exists at all the factor is not published and the crossing is a
+finding.
 
 **The sign.** Taking a cubic metre of water out of a French river costs +6.98
 under EF 3.1's water use; putting a cubic metre back is −6.98. A process that
