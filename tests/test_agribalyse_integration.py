@@ -41,7 +41,7 @@ class ExtractionTestCase(unittest.TestCase):
         cls.by_name = {row["name"]: row for row in cls.records}
 
     def test_the_flows_are_the_distinct_exchanges(self):
-        """Two processes, nine exchange rows, eight flows: the repeated
+        """Two processes, ten exchange rows, nine flows: the repeated
         ammonia and caesium rows collapse.  The waste row is among them --
         extraction is faithful to the export, and the refusal of that
         compartment is the excluded list's, applied at load (#189)."""
@@ -50,6 +50,7 @@ class ExtractionTestCase(unittest.TestCase):
             [
                 "Ammonia",
                 "Cesium-137",
+                "Coal, hard",
                 "Cypermethrin",
                 "Nitrate",
                 "Occupation, annual crop",
@@ -121,6 +122,41 @@ class ExtractionTestCase(unittest.TestCase):
             key = normalize_context_key(row["context"])
             with self.subTest(context=row["context"]):
                 self.assertIn(key, rules)
+
+
+class PropertyStatementsTestCase(unittest.TestCase):
+    """The substance block's heating values come out on the record (#407, phase B).
+
+    The same reader Stepwise's export is read with, because the two share
+    SimaPro's substance library; the fixture's `Coal, hard` row is that
+    library's, with the lower heating value misspelt `MH/kg` as in the real
+    file.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.records = extract_elementary_flows(FIXTURE, source=KEY)
+        cls.by_name = {row["name"]: row for row in cls.records}
+
+    def test_the_higher_heating_value_is_read_and_the_misspelt_one_is_not(self):
+        from brightway_flows.domain.property_statements import PropertyStatement, StatementOrigin
+
+        statements = [
+            PropertyStatement.from_dict(entry)
+            for entry in self.by_name["Coal, hard"]["property_statements"]
+        ]
+        self.assertEqual(
+            [(s.quantity, s.value, s.unit, s.per_unit) for s in statements],
+            [("gross-calorific-value", 19.1, "MJ", "kg")],
+        )
+        self.assertIs(statements[0].stated_by, StatementOrigin.VENDOR_FLOW)
+        self.assertEqual(statements[0].provenance.was_derived_from, FIXTURE.name)
+        self.assertEqual(statements[0].provenance.was_attributed_to, KEY)
+
+    def test_a_row_stating_no_property_carries_none(self):
+        for name in ("Water, river, FR", "Ammonia", "Nitrate"):
+            with self.subTest(name=name):
+                self.assertNotIn("property_statements", self.by_name[name])
 
 
 class FetchTestCase(unittest.TestCase):

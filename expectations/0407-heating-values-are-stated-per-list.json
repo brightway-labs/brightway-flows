@@ -18,12 +18,12 @@
         "conversion_basis": "flow-property",
         "unit_mismatch": false
       },
-      "comment": "The issue's example row. The substance block at the end of `AGB32_final.CSV` gives this coal a lower heating value of 18.2 MJ/kg, and EF 3.1's `Hard Coal` is measured in net calorific value, so the net statement is the one the merge chooses. On the build of `5f06833` the same 18.2 was published with basis `curated`, read off the override row; phase B of #407 will make the statement `vendor-flow`, read off the CSV, with the number unchanged again."
+      "comment": "The issue's example row. The substance block at the end of `AGB32_final.CSV` gives this coal a lower heating value of 18.2 MJ/kg, and EF 3.1's `Hard Coal` is measured in net calorific value, so the net statement is the one the merge chooses. On the build of `5f06833` the same 18.2 was published with basis `curated`, read off the override row. Phase B of #407 reads the substance block off the CSV, but this one line is misspelt in the vendor's file (`18.2 MH/kg`), so the adapter leaves it unread and the net value stays a curated statement saying so; the flow also carries the vendor's gross 19.1, read off the same comment. Brown coal beside it is the vendor's own 8.75."
     },
     {
       "id": "0407-stepwise-hard-coal-converts-by-its-gross-calorific-value",
       "issue": 407,
-      "title": "Stepwise 2006's hard coal converts onto Hard Coal at its own gross heating value, 19.1 MJ/kg, by the list's stated rule",
+      "title": "Stepwise 2006's hard coal converts onto Hard Coal at the 19.1 MJ/kg its own method counts a kilogram as, by the list's stated rule",
       "subject": {
         "kind": "source_row",
         "list": "stepwise",
@@ -36,7 +36,7 @@
         "conversion_basis": "flow-property",
         "unit_mismatch": false
       },
-      "comment": "Stepwise's method states gross calorific values, and its `Non-renewable energy` factor for this row is 19.1. EF's flow is net. The number lands only because `stepwise-2006-property-statements.json` carries a conversion rule saying gross converts onto net for this list, and the mapping publishes `conversion_quantity` as the gross IRI so a reader sees it. Whether Stepwise should convert by the net value instead (18.2, making its factor 1.05 per MJ) is a measured change of its own; this claim pins that the refactor did not make it."
+      "comment": "Stepwise's `Non-renewable energy` factor for this row is 19.1, which is also the `Higher heating value (HHV)` its substance block states; EF's flow is net. Since phase B the adapter reads both off the export -- the method's number as a `calorific-value` of unstated basis stated by the method, the block's as a gross calorific value stated by the flow -- and the number lands because `stepwise-2006-property-statements.json` carries a conversion rule saying a Stepwise row converts onto net by the method's number, ahead of any closer statement; the mapping publishes `conversion_quantity` as the calorific-value IRI and its provenance names `Stepwise2006_v1.09.csv`. Whether Stepwise should convert by the net value instead (18.2, making its factor 1.05 per MJ) is a measured change of its own; this claim pins that neither phase made it."
     },
     {
       "id": "0407-ecoinvent-38-crude-oil-keeps-its-vintage",
@@ -53,7 +53,7 @@
         "conversion_factor": 42.3,
         "conversion_basis": "flow-property"
       },
-      "comment": "#162's vintage rule survives the move: the statement file carries 43.4 checked against 3.9.1 to 3.12 and `by_release` 3.8 at 42.3, and the merge resolves the release's own number. A 43.4 here would mean the per-release value was lost in the move."
+      "comment": "#162's vintage rule survives the move: 3.8's exchange carries no heating value, so `ecoinvent-property-statements.json` states 42.3 for 3.8 and names 3.9.1 to 3.12 in `stated_by_vendor_in`, where the exchange's own `heating value, net` property (43.4) is what the adapter reads onto the flow. A 43.4 here would mean the per-release value was lost."
     },
     {
       "id": "0407-bafu-crude-oil-converts-by-its-own-number",

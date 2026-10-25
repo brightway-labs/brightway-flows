@@ -80,9 +80,13 @@ what separates them is an assumption about the fuel cycle** — 451 GJ/kg is the
 net once-through figure of the ETH-era data, 560 GJ/kg the gross content, and
 2,291 GJ/kg a cycle with reprocessing, which extracts about four times what a
 once-through cycle does and is still under 3% of complete fission. The
-conversion is stated in the name and nowhere a machine reads, and the method's
-own factor is that same number: the row is a kilogram of uranium *standing for*
-an amount of energy.
+conversion is stated in the name, and the method's own factor is that same
+number: the row is a kilogram of uranium *standing for* an amount of energy.
+Since [#407](https://github.com/brightway-labs/brightway-flows/issues/407) both
+are read by a machine: the load reads the number out of the name and the
+adapter reads the method's factor, each onto the flow as a property statement,
+and `stepwise-2006-property-statements.json` rules all three rows' energy
+fission energy rather than a heat of combustion.
 
 Read as shipped, a kilogram in one row and a kilogram in another differ by a
 factor of five in what they mean, and none of them is the kilogram this list
