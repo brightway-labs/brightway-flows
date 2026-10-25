@@ -590,6 +590,96 @@ def filter_options(
     return {key: _sorted_options(key, values) for key, values in options.items()}
 
 
+@dataclass
+class StatedProperty:
+    """What one source list says a unit of this flow is (#407).
+
+    The read-side projection of a `flow_property_statements` row, for the
+    "What each list says a unit of this flow is" section: one list's statement
+    of one quantity, and whether the mapping converted by it.
+    """
+
+    list_name: str = ""
+    list_version: str = ""
+    source_flow_name: str = ""
+    quantity: str = ""
+    value: float = 0.0
+    unit: str = ""
+    per_unit: str = ""
+    stated_by: str = ""
+    used_for_conversion: bool = False
+
+
+@dataclass
+class PropertySpread:
+    """The range the lists' statements of one quantity span, per unit pair."""
+
+    quantity: str
+    unit: str
+    per_unit: str
+    minimum: float
+    maximum: float
+    statements: int
+    lists: int
+
+
+def stated_properties(connection: sqlite3.Connection, uuid: str) -> list[StatedProperty]:
+    """Every statement a merged list's rows carried onto this flow, or none."""
+    if not table_exists(connection, "flow_property_statements"):
+        return []
+    return [
+        StatedProperty(
+            list_name=row["list_name"] or "",
+            list_version=row["list_version"] or "",
+            source_flow_name=row["source_flow_name"] or "",
+            quantity=(row["quantity"] or "").replace("-", " "),
+            value=float(row["value"]),
+            unit=row["unit"] or "",
+            per_unit=row["per_unit"] or "",
+            stated_by=row["stated_by"] or "",
+            used_for_conversion=bool(row["used_for_conversion"]),
+        )
+        for row in connection.execute(
+            "SELECT list_name, list_version, source_flow_name, quantity, value, unit, "
+            "per_unit, stated_by, used_for_conversion FROM flow_property_statements "
+            "WHERE elementary_flow_uuid = ? "
+            "ORDER BY quantity, per_unit, list_name, list_version, source_flow_name",
+            (uuid,),
+        )
+    ]
+
+
+def property_spreads(connection: sqlite3.Connection, uuid: str) -> list[PropertySpread]:
+    """The spread of the lists' statements, per quantity and unit pair.
+
+    Over the flow's substance rather than the flow alone, because the spread
+    is the substance's: Stepwise's hard coal and AGRIBALYSE's land on one
+    `Hard Coal` and the number a reader wants is how far apart they are.
+    """
+    if not table_exists(connection, "flow_property_statements"):
+        return []
+    return [
+        PropertySpread(
+            quantity=(row["quantity"] or "").replace("-", " "),
+            unit=row["unit"] or "",
+            per_unit=row["per_unit"] or "",
+            minimum=float(row["low"]),
+            maximum=float(row["high"]),
+            statements=int(row["statements"]),
+            lists=int(row["lists"]),
+        )
+        for row in connection.execute(
+            "SELECT s.quantity, s.unit, s.per_unit, min(s.value) AS low, max(s.value) AS high, "
+            "count(*) AS statements, count(DISTINCT s.list_name || ' ' || s.list_version) AS lists "
+            "FROM flow_property_statements s "
+            "JOIN elementary_flows ef ON ef.uuid = ? "
+            "WHERE s.flow_object_id = ef.flow_object_id AND s.flow_object_id != '' "
+            "GROUP BY s.quantity, s.unit, s.per_unit ORDER BY s.quantity, s.per_unit",
+            (uuid,),
+        )
+    ]
+
+
 def flow_detail(connection: sqlite3.Connection, uuid: str) -> FlowDetail | None:
     """One flow, or None if this database does not have it."""
     row = connection.execute(
