@@ -95,9 +95,12 @@ implementation of a method:
   **The collisions left can be answered one at a time.** The package's two
   `Chromium III` rows to non-urban air both reach chromium(3+), and for
   freshwater ecotoxicity one states 333.75 and the other 4,292.06. Neither is a
-  copy, so neither gives way, and nothing is published. Once somebody decides
-  which number is right, the answer goes in
-  `data/lcia-factor-collision-rulings.json`: it names GreenDelta, the substance,
+  copy, so neither gives way. The second number is EF's for elemental chromium,
+  and nothing else about the second row says elemental chromium: its formula is
+  `Cr3+`, and every other method in the package scores it as chromium(3+). So
+  333.75 is published
+  ([#445](https://github.com/brightway-labs/brightway-flows/issues/445)). That
+  answer is written in `data/lcia-factor-collision-rulings.json`: it names GreenDelta, the substance,
   the category and the compartment, the row whose number is published, and the
   number every colliding row stated when the answer was written. If a third row
   arrives or either number changes, the answer no longer applies and nothing is

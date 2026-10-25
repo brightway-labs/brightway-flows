@@ -263,6 +263,14 @@ factor of a *different* EF flow, reaching one flow of ours.
   [#130](https://github.com/brightway-labs/brightway-flows/issues/130), which
   asks which entry EF's numbers describe. The rest need a curated ruling
   ([#439](https://github.com/brightway-labs/brightway-flows/issues/439)).
+- **Ruled: chromium(3+) in non-urban air.** Two `Chromium III` rows reach it,
+  and one carries EF's numbers for elemental chromium: 4,292.06 against 333.75
+  for freshwater ecotoxicity, and 7.8328e-7 against 1.7032e-9 for non-cancer
+  human toxicity. Nothing else about that row says elemental chromium. Its
+  formula is `Cr3+`, and every other method in the package scores it as
+  chromium(3+). So the chromium(3+) number is published, in all four categories
+  the two rows share
+  ([#445](https://github.com/brightway-labs/brightway-flows/issues/445)).
 
 ## Rows sent to a curated target
 

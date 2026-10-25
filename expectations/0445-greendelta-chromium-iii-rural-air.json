@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "description": "GreenDelta's openLCA package ships two `Chromium III` rows to Emission to air/low population density that reach Chromium(3+) in rural air with different EF 3.1 numbers: 017c1ca1 states EF's chromium(3+) factors and d43572af EF's elemental chromium factors, so on the six-list build of 3b6528e GreenDelta's implementation published neither in the four categories they share. d43572af's name, CAS number and formula `Cr3+` are chromium(3+)'s, and every other method in the package scores it as chromium(3+), so its EF 3.1 numbers are read as a mis-mapping and a ruling in lcia-factor-collision-rulings.json publishes 017c1ca1's (#445, using #444).",
+  "expectations": [
+    {
+      "id": "0445-greendelta-chromium-iii-rural-air-ecotoxicity-freshwater",
+      "issue": 445,
+      "title": "GreenDelta's freshwater ecotoxicity factor for chromium(3+) in rural air is 333.75, its chromium(3+) row's",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "4d9a8790-3ddd-11dd-8fcf-0050c2490048",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "333.7474653"
+      },
+      "comment": "The package's rows 017c1ca1 and d43572af state 333.75 against 4,292.06. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes 017c1ca1's, which is also the JRC's and ecoinvent's number for this flow."
+    },
+    {
+      "id": "0445-greendelta-chromium-iii-rural-air-ecotoxicity-freshwater-inorganics",
+      "issue": 445,
+      "title": "GreenDelta's freshwater ecotoxicity (inorganics) factor for chromium(3+) in rural air is 333.75, its chromium(3+) row's",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "4d9a8790-3ddd-11dd-8fcf-0050c2490048",
+        "category": "Ecotoxicity, freshwater_inorganics",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "333.7474653"
+      },
+      "comment": "The package's rows 017c1ca1 and d43572af state 333.75 against 4,292.06. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes 017c1ca1's, which is also the JRC's and ecoinvent's number for this flow."
+    },
+    {
+      "id": "0445-greendelta-chromium-iii-rural-air-human-toxicity-non-cancer",
+      "issue": 445,
+      "title": "GreenDelta's non-cancer human toxicity factor for chromium(3+) in rural air is 1.7032e-09, its chromium(3+) row's",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "4d9a8790-3ddd-11dd-8fcf-0050c2490048",
+        "category": "Human toxicity, non-cancer",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "1.7032e-09"
+      },
+      "comment": "The package's rows 017c1ca1 and d43572af state 1.7032e-9 against 7.8328e-7. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes 017c1ca1's, which is also the JRC's and ecoinvent's number for this flow."
+    },
+    {
+      "id": "0445-greendelta-chromium-iii-rural-air-human-toxicity-non-cancer-inorganics",
+      "issue": 445,
+      "title": "GreenDelta's non-cancer human toxicity (inorganics) factor for chromium(3+) in rural air is 1.7032e-09, its chromium(3+) row's",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "4d9a8790-3ddd-11dd-8fcf-0050c2490048",
+        "category": "Human toxicity, non-cancer_inorganics",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "1.7032e-09"
+      },
+      "comment": "The package's rows 017c1ca1 and d43572af state 1.7032e-9 against 7.8328e-7. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes 017c1ca1's, which is also the JRC's and ecoinvent's number for this flow."
+    }
+  ]
+}

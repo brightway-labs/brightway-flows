@@ -2,5 +2,66 @@
   "schema_version": 2,
   "method": "ef",
   "description": "Curated answers where two source rows of one EF 3.1 implementation -- GreenDelta's openLCA package, or the JRC's own package -- reach one consensus flow and state numbers too far apart to be one number written twice. `lcia.collisions.settle` publishes nothing for such a pair, because a gap that wide is usually evidence that the matching put two substances on one flow -- a question for the merge. Where the matching is right and the publisher simply scored two rows of one thing differently, this file says whose number the consensus takes, and why. Each ruling names the implementation whose rows collided, in `implemented_by` as the finding prints it, and is keyed on the substance, the category slug and the compartment, so it survives a renumbering of the flow; `ruled_about` records what every colliding row stated when it was written, and a third row or a moved number is a new question. The finding the collision would have raised is still written, with the ruling on it. Read by `brightway_flows.lcia.collision_rulings` for EF 3.1 alone; lcia-factor-collision-rulings-stepwise-2006.json is Stepwise 2006's.",
-  "rulings": []
+  "rulings": [
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-cc41dd8cd4558176",
+      "substance": "Chromium(3+)",
+      "category_slug": "ecotoxicity-freshwater",
+      "category": "Ecotoxicity, freshwater",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "context": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+      "publish_source_flow_uuid": "017c1ca1-8e93-3c85-b743-c8676bfd305a",
+      "ruled_about": {
+        "017c1ca1-8e93-3c85-b743-c8676bfd305a": 333.7474653,
+        "d43572af-d023-443b-9fad-d56ffc0adc53": 4292.0565976
+      },
+      "comment": "GreenDelta's package ships three `Chromium III` rows to Emission to air/low population density, and two of them reach this flow with EF 3.1 factors: 017c1ca1 states EF's chromium(3+) numbers, d43572af EF's numbers for elemental chromium (4,292.06 CTUe/kg and 7.8328e-7 CTUh/kg, which EF also gives chromium(6+)). Nothing else on d43572af says elemental chromium: its name, its CAS 16065-83-1 and its formula `Cr3+` are chromium(3+)'s. Every other method in the package scores d43572af as chromium(3+) -- ReCiPe 2016, USEtox 2, TRACI, ILCD 2011, EF 2.0 and EF 3.0 give it 017c1ca1's number, and ECO-COSTS 2025, which uses EF 3.1's numbers, gives it 333.7 and 1.703e-9 -- and the same kind of row in every other compartment carries EF 3.1's chromium(3+) number (333.09 in high-population air, 478.27 in industrial soil, 952.30 in fresh water). The elemental number on d43572af is read as a mis-mapping in GreenDelta's EF 3.1 factors, and 017c1ca1's number is published; it is also what the JRC and ecoinvent's implementation state for this flow. Ruled by the project owner on 25 October 2026 (#445, analysis in issuecomment-6394138215). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-cc41dd8cd4558176",
+      "substance": "Chromium(3+)",
+      "category_slug": "ecotoxicity-freshwater-inorganics",
+      "category": "Ecotoxicity, freshwater_inorganics",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "context": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+      "publish_source_flow_uuid": "017c1ca1-8e93-3c85-b743-c8676bfd305a",
+      "ruled_about": {
+        "017c1ca1-8e93-3c85-b743-c8676bfd305a": 333.7474653,
+        "d43572af-d023-443b-9fad-d56ffc0adc53": 4292.0565976
+      },
+      "comment": "GreenDelta's package ships three `Chromium III` rows to Emission to air/low population density, and two of them reach this flow with EF 3.1 factors: 017c1ca1 states EF's chromium(3+) numbers, d43572af EF's numbers for elemental chromium (4,292.06 CTUe/kg and 7.8328e-7 CTUh/kg, which EF also gives chromium(6+)). Nothing else on d43572af says elemental chromium: its name, its CAS 16065-83-1 and its formula `Cr3+` are chromium(3+)'s. Every other method in the package scores d43572af as chromium(3+) -- ReCiPe 2016, USEtox 2, TRACI, ILCD 2011, EF 2.0 and EF 3.0 give it 017c1ca1's number, and ECO-COSTS 2025, which uses EF 3.1's numbers, gives it 333.7 and 1.703e-9 -- and the same kind of row in every other compartment carries EF 3.1's chromium(3+) number (333.09 in high-population air, 478.27 in industrial soil, 952.30 in fresh water). The elemental number on d43572af is read as a mis-mapping in GreenDelta's EF 3.1 factors, and 017c1ca1's number is published; it is also what the JRC and ecoinvent's implementation state for this flow. Ruled by the project owner on 25 October 2026 (#445, analysis in issuecomment-6394138215). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-cc41dd8cd4558176",
+      "substance": "Chromium(3+)",
+      "category_slug": "human-toxicity-non-cancer",
+      "category": "Human toxicity, non-cancer",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "context": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+      "publish_source_flow_uuid": "017c1ca1-8e93-3c85-b743-c8676bfd305a",
+      "ruled_about": {
+        "017c1ca1-8e93-3c85-b743-c8676bfd305a": 1.7032e-09,
+        "d43572af-d023-443b-9fad-d56ffc0adc53": 7.8328e-07
+      },
+      "comment": "GreenDelta's package ships three `Chromium III` rows to Emission to air/low population density, and two of them reach this flow with EF 3.1 factors: 017c1ca1 states EF's chromium(3+) numbers, d43572af EF's numbers for elemental chromium (4,292.06 CTUe/kg and 7.8328e-7 CTUh/kg, which EF also gives chromium(6+)). Nothing else on d43572af says elemental chromium: its name, its CAS 16065-83-1 and its formula `Cr3+` are chromium(3+)'s. Every other method in the package scores d43572af as chromium(3+) -- ReCiPe 2016, USEtox 2, TRACI, ILCD 2011, EF 2.0 and EF 3.0 give it 017c1ca1's number, and ECO-COSTS 2025, which uses EF 3.1's numbers, gives it 333.7 and 1.703e-9 -- and the same kind of row in every other compartment carries EF 3.1's chromium(3+) number (333.09 in high-population air, 478.27 in industrial soil, 952.30 in fresh water). The elemental number on d43572af is read as a mis-mapping in GreenDelta's EF 3.1 factors, and 017c1ca1's number is published; it is also what the JRC and ecoinvent's implementation state for this flow. Ruled by the project owner on 25 October 2026 (#445, analysis in issuecomment-6394138215). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-cc41dd8cd4558176",
+      "substance": "Chromium(3+)",
+      "category_slug": "human-toxicity-non-cancer-inorganics",
+      "category": "Human toxicity, non-cancer_inorganics",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "context": "Environmental → Air → Medium stack, <150 meters → Rural (<1000 people/square mile)",
+      "publish_source_flow_uuid": "017c1ca1-8e93-3c85-b743-c8676bfd305a",
+      "ruled_about": {
+        "017c1ca1-8e93-3c85-b743-c8676bfd305a": 1.7032e-09,
+        "d43572af-d023-443b-9fad-d56ffc0adc53": 7.8328e-07
+      },
+      "comment": "GreenDelta's package ships three `Chromium III` rows to Emission to air/low population density, and two of them reach this flow with EF 3.1 factors: 017c1ca1 states EF's chromium(3+) numbers, d43572af EF's numbers for elemental chromium (4,292.06 CTUe/kg and 7.8328e-7 CTUh/kg, which EF also gives chromium(6+)). Nothing else on d43572af says elemental chromium: its name, its CAS 16065-83-1 and its formula `Cr3+` are chromium(3+)'s. Every other method in the package scores d43572af as chromium(3+) -- ReCiPe 2016, USEtox 2, TRACI, ILCD 2011, EF 2.0 and EF 3.0 give it 017c1ca1's number, and ECO-COSTS 2025, which uses EF 3.1's numbers, gives it 333.7 and 1.703e-9 -- and the same kind of row in every other compartment carries EF 3.1's chromium(3+) number (333.09 in high-population air, 478.27 in industrial soil, 952.30 in fresh water). The elemental number on d43572af is read as a mis-mapping in GreenDelta's EF 3.1 factors, and 017c1ca1's number is published; it is also what the JRC and ecoinvent's implementation state for this flow. Ruled by the project owner on 25 October 2026 (#445, analysis in issuecomment-6394138215). On the six-list build of 3b6528e the collision published neither number."
+    }
+  ]
 }
