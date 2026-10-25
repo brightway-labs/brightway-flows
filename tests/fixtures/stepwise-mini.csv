@@ -94,6 +94,18 @@ Economic;(unspecified);Wages;;1;EUR2003
 
 End
 
+Impact category
+Non-renewable energy;MJ primary
+
+Substances
+Raw;(unspecified);Coal, hard;;19.1;kg
+Raw;(unspecified);Uranium;007440-61-1;560000;kg
+Raw;(unspecified);Gas, natural, 35 MJ per m3;008006-14-2;35;m3
+Raw;(unspecified);Energy, from coal;;1;MJ
+Raw;(unspecified);Wood, hard, standing;;0;m3
+
+End
+
 Quantities
 Mass;Yes
 
@@ -107,7 +119,14 @@ End
 Raw materials
 Carbon dioxide in air, as CO2e (GWP aggr timing);ton;;
 Carbon dioxide, in air;kg;000124-38-9;Formula: CO2
+Coal, hard;kg;;"Synonyms: Anthracite; Hard coal
+Higher heating value (HHV): 19.1 MJ/kg
+Lower heating value (LHV): 18.2 MH/kg"
 Copper;kg;007440-50-8;Formula: Cu
+Energy, from coal;MJ;;
+Gas, natural, 35 MJ per m3;m3;008006-14-2;"Higher heating value (HHV): 38.9 MJ/m3
+Lower heating value (LHV): 35.0 MJ/m3"
+Uranium;kg;007440-61-1;Formula: U
 Occupation, accelerated denaturalisation, primary forest to managed forest;ha a;;
 Occupation, arable;m2a;;Formula: CORINE 21
 Wood, hard, standing;m3;;

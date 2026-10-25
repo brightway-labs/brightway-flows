@@ -152,8 +152,10 @@ things to watch:
   `correspondence-table` and `curated` are about that one source row. A
   `flow-property` factor was derived from what the source list says about its
   own flow — a heating value, a density — and `conversion_quantity` names which:
-  Stepwise's coal converts by its gross calorific value, AGRIBALYSE's by its
-  net one, onto the same flow. Absence means the two units are the
+  AGRIBALYSE's coal converts by its net calorific value, Stepwise's by the
+  number its own method counts a kilogram as, with no basis stated, onto the
+  same flow; `conversion_provenance` names the vendor's file or the curated
+  file the number was read from. Absence means the two units are the
   same unit, or that nothing converts them, so check `qudt:hasUnit` on the
   source concept against the target flow's `unit` before assuming parity. See
   [`qudt:conversionMultiplier`](../reference/schemas.md#qudtconversionmultiplier).

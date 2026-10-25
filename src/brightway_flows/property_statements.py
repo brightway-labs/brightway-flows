@@ -40,7 +40,7 @@ list's file once per run, and a test hands it a fixture.
 from __future__ import annotations
 
 from collections.abc import Iterable, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any
 
@@ -53,14 +53,18 @@ from brightway_flows.domain.property_statements import (
     PropertyStatement,
     StatementOrigin,
     factor_between,
+    vendor_statement,
 )
 from brightway_flows.domain.quantities import (
+    CALORIFIC_VALUE,
     load_quantities,
     quantity,
     quantity_for_ilcd_flow_property,
 )
 from brightway_flows.domain.units import unit_row_for
 from brightway_flows.filesystem import FLOW_PROPERTIES_FILEPATH
+from brightway_flows.manual_fixes import UNIT_CONVERSION_KEY
+from brightway_flows.simapro_names import energy_stated_in_name
 
 logger = structlog.get_logger(__name__)
 
@@ -90,6 +94,14 @@ class PropertyStatements:
     #: flow uuid -> quantity slug, for flows the file rules a reference
     #: quantity for.  The base list's file is the one that uses it.
     reference_quantities: dict[str, str] = field(default_factory=dict)
+    #: flow uuid -> quantity slug, for flows whose unlabelled energy -- the
+    #: method's factor, the number in the name -- the file rules to be that
+    #: quantity rather than a heat of combustion.  The uranium rows.
+    energy_quantities: dict[str, str] = field(default_factory=dict)
+    #: flow uuid -> the quantities the vendor's own file states for this
+    #: release, by an entry's `stated_by_vendor_in`, so that the entry yields
+    #: nothing here and the load checks the vendor did state it.
+    expected_from_vendor: dict[str, frozenset[str]] = field(default_factory=dict)
     path: Path | None = None
 
     @property
@@ -167,11 +179,17 @@ def _statement_from(
     index: int,
     path: Path,
     generated_by: str,
-) -> PropertyStatement:
+) -> PropertyStatement | None:
     """One entry's statement for *release*.
 
+    ``None`` for a release the entry names in `stated_by_vendor_in`: the
+    vendor's own file states the quantity for that release, the curated number
+    is for the releases that do not (ecoinvent 3.8 states no heating value on
+    its crude oil; 3.9.1 onward do), and the load checks the vendor did.
+
     :raises ValueError: for a malformed entry, and for a release the entry was
-        checked against in neither `checked_against` nor `by_release`.
+        checked against in neither `checked_against`, `by_release` nor
+        `stated_by_vendor_in`.
     """
     where = f"Statement {index} in {path.name}"
     source_uuid = _text(entry, "source_uuid", where=where)
@@ -255,16 +273,34 @@ def _statement_from(
         )
         resolved[named] = {"value": r_value, "unit": r_unit, "per_unit": r_per}
 
+    by_vendor = _releases(entry.get("stated_by_vendor_in"))
+    if "stated_by_vendor_in" in entry and not isinstance(entry["stated_by_vendor_in"], list):
+        raise ValueError(
+            f"{where} has a 'stated_by_vendor_in' that is not a list of releases."
+        )
+    for named in by_vendor:
+        if named in checked or named in resolved:
+            raise ValueError(
+                f"{where} names release {named!r} in 'stated_by_vendor_in' and "
+                f"also in 'checked_against' or 'by_release'. The first says the "
+                f"vendor's file states the number and the second says this entry "
+                f"does; the entry has not decided."
+            )
+
     wanted = str(release or "").strip()
+    if wanted and wanted in by_vendor:
+        return None
     if wanted and wanted not in checked and wanted not in resolved:
         name = str(entry.get("source_name") or source_uuid)
         raise ValueError(
             f"This release is {wanted}, and the {quantity_slug} of {name} "
             f"({source_uuid}) in {path.name} was checked against "
-            f"{', '.join([*checked, *resolved])}. A property is a measurement "
-            f"and a measurement has a vintage. Read this release's own file or "
-            f"implementation report: add {wanted} to 'checked_against' if the "
-            f"number holds, or state the release's own under 'by_release'."
+            f"{', '.join([*checked, *resolved, *by_vendor])}. A property is a "
+            f"measurement and a measurement has a vintage. Read this release's "
+            f"own file or implementation report: add {wanted} to "
+            f"'checked_against' if the number holds, state the release's own "
+            f"under 'by_release', or name it in 'stated_by_vendor_in' if the "
+            f"release's own file states the quantity."
         )
     chosen = resolved.get(wanted, {"value": value, "unit": unit, "per_unit": per_unit})
     return PropertyStatement(
@@ -308,36 +344,79 @@ def _rules_from(payload: dict[str, Any], *, path: Path) -> tuple[ConversionRule,
         if onto in seen:
             raise ValueError(f"{where} is the second rule onto {onto!r}.")
         seen.add(onto)
+        stated_by: StatementOrigin | None = None
+        if entry.get("stated_by") is not None:
+            origin = str(entry.get("stated_by") or "").strip()
+            if origin not in _ORIGINS:
+                raise ValueError(
+                    f"{where} converts by a statement stated by {origin!r}; the "
+                    f"origins are {', '.join(sorted(_ORIGINS))}."
+                )
+            stated_by = StatementOrigin(origin)
         rules.append(ConversionRule(onto=onto, convert_by=convert_by,
-                                    comment=_text(entry, "comment", where=where)))
+                                    comment=_text(entry, "comment", where=where),
+                                    stated_by=stated_by))
     return tuple(rules)
 
 
-def _reference_quantities_from(
-    payload: dict[str, Any], *, path: Path
+def _quantity_rulings_from(
+    payload: dict[str, Any], *, path: Path, key: str, label: str, uuid_key: str,
+    kind: str | None = None,
 ) -> dict[str, str]:
-    raw = payload.get("reference_quantities") or []
+    """A list of ``{<uuid_key>, quantity, comment}`` rulings, as uuid -> slug.
+
+    *kind*, where given, is the quantity kind every ruled slug must be of: an
+    energy ruling naming a mass is a typo.
+    """
+    raw = payload.get(key) or []
     if not isinstance(raw, list):
-        raise ValueError(
-            f"{path.name} has a 'reference_quantities' that is not a list."
-        )
+        raise ValueError(f"{path.name} has a {key!r} that is not a list.")
     by_uuid: dict[str, str] = {}
     for index, entry in enumerate(raw):
-        where = f"Reference quantity {index} in {path.name}"
+        where = f"{label} {index} in {path.name}"
         if not isinstance(entry, dict):
             raise ValueError(f"{where} is not an object.")
-        uuid = _text(entry, "flow_uuid", where=where)
+        uuid = _text(entry, uuid_key, where=where)
         slug = _text(entry, "quantity", where=where)
         if slug not in load_quantities():
             raise ValueError(
                 f"{where} names quantity {slug!r}, which quantities.json does "
                 f"not have."
             )
+        if kind is not None and quantity(slug).quantity_kind != kind:
+            raise ValueError(
+                f"{where} rules {slug!r}, which is not an {kind.lower()}."
+            )
         _text(entry, "comment", where=where)
         if uuid in by_uuid:
             raise ValueError(f"{where} rules {uuid} a second time.")
         by_uuid[uuid] = slug
     return by_uuid
+
+
+def _reference_quantities_from(
+    payload: dict[str, Any], *, path: Path
+) -> dict[str, str]:
+    return _quantity_rulings_from(
+        payload, path=path, key="reference_quantities",
+        label="Reference quantity", uuid_key="flow_uuid",
+    )
+
+
+def _energy_quantities_from(payload: dict[str, Any], *, path: Path) -> dict[str, str]:
+    """What an unlabelled energy a vendor states per unit of a named flow is.
+
+    Stepwise's method gives a kilogram of `Uranium` 560,000 MJ and the name
+    `Uranium oxide, 332 GJ per kg, in ore` says what it says; neither calls it
+    anything.  The adapters read such a number as a calorific value of
+    unstated basis, which is what an unlabelled energy per kilogram of a fuel
+    is for every fuel but a nuclear one, and this ruling says which rows are
+    the nuclear ones.
+    """
+    return _quantity_rulings_from(
+        payload, path=path, key="energy_quantities",
+        label="Energy quantity", uuid_key="source_uuid", kind="Energy",
+    )
 
 
 def load_property_statements(
@@ -375,6 +454,7 @@ def load_property_statements(
     if not isinstance(raw, list):
         raise ValueError(f"{path.name} has a 'statements' that is not a list.")
     statements: dict[str, list[PropertyStatement]] = {}
+    from_vendor: dict[str, set[str]] = {}
     seen: set[tuple[str, str]] = set()
     for index, entry in enumerate(raw):
         if not isinstance(entry, dict):
@@ -383,57 +463,171 @@ def load_property_statements(
             entry, release=release, index=index, path=path, generated_by=generated_by,
         )
         uuid = str(entry["source_uuid"]).strip()
-        key = (uuid, statement.quantity)
+        slug = str(entry["quantity"]).strip()
+        key = (uuid, slug)
         if key in seen:
             raise ValueError(
-                f"Statement {index} in {path.name} states {statement.quantity!r} "
+                f"Statement {index} in {path.name} states {slug!r} "
                 f"for {uuid} a second time. One flow states one value per "
                 f"quantity; two is a question for a ruling, not a file."
             )
         seen.add(key)
+        if statement is None:
+            from_vendor.setdefault(uuid, set()).add(slug)
+            continue
         statements.setdefault(uuid, []).append(statement)
     return PropertyStatements(
         statements={uuid: tuple(items) for uuid, items in statements.items()},
         rules=_rules_from(payload, path=path),
         reference_quantities=_reference_quantities_from(payload, path=path),
+        energy_quantities=_energy_quantities_from(payload, path=path),
+        expected_from_vendor={
+            uuid: frozenset(slugs) for uuid, slugs in from_vendor.items()
+        },
         path=path,
     )
 
 
+#: The origins whose statements name no quantity of their own: the method's
+#: factor and the number in a name are megajoules and nothing more, read as a
+#: calorific value of unstated basis until the list's `energy_quantities` says
+#: otherwise.  A vendor's flow dataset labels what it states (`heating value,
+#: net`), and a curator names the quantity in the entry.
+_UNLABELLED_ORIGINS = frozenset({StatementOrigin.VENDOR_METHOD, StatementOrigin.FLOW_NAME})
+
+
+def _relabelled(
+    statements: list[PropertyStatement], slug: str, *, loaded: PropertyStatements,
+    flow: Any,
+) -> list[PropertyStatement]:
+    """*statements* with each unlabelled calorific value made *slug*.
+
+    :raises ValueError: when the flow carries none to relabel: the ruling
+        names a row that states no unlabelled energy, which is a ruling about
+        nothing and most likely a uuid that moved.
+    """
+    out: list[PropertyStatement] = []
+    relabelled = 0
+    for statement in statements:
+        if (
+            statement.quantity == CALORIFIC_VALUE
+            and statement.stated_by in _UNLABELLED_ORIGINS
+        ):
+            out.append(
+                replace(
+                    statement,
+                    quantity=slug,
+                    comment=(
+                        f"{statement.comment} Ruled {slug} by "
+                        f"{loaded.filename}: the number is not a heat of combustion."
+                    ).strip(),
+                )
+            )
+            relabelled += 1
+        else:
+            out.append(statement)
+    if not relabelled:
+        raise ValueError(
+            f"{loaded.filename} rules the energy of {flow.name or flow.uuid} "
+            f"({flow.uuid}) to be {slug}, and the flow carries no unlabelled "
+            f"energy -- no method factor, no number in its name -- to apply "
+            f"that to. A ruling about nothing is most likely a uuid that moved."
+        )
+    return out
+
+
 def attach_property_statements(flows: Iterable[Any], loaded: PropertyStatements) -> int:
-    """Set `property_statements` on each flow *loaded* has statements for.
+    """Put every statement about each flow on its record, the vendor's and the curator's.
+
+    A flow arrives with what its vendor's file stated (`property_statements`
+    the adapter wrote, and the number its name states, both already on the
+    record), and *loaded* is what the curator adds.  Three rulings are applied
+    on the way:
+
+    * a flow the file's `energy_quantities` names has its unlabelled energies
+      -- the method's factor, the number in its name -- relabelled with the
+      ruled quantity; uranium's 560,000 MJ is fission energy, not a heat of
+      combustion;
+    * a curated statement of a quantity the vendor also states for the flow is
+      refused, naming both: one number has one home, and the curated file is
+      for what nobody states;
+    * a quantity an entry says the vendor states for this release
+      (`stated_by_vendor_in`) has to be there, or the entry is refused as
+      covering a release it does not.
 
     On the records, never into the raw row: a key dropped into the input dict
     would land in `Flow.extra`, which is the untyped shape #407 retires.
 
-    :raises ValueError: for a statement whose `per_unit` is of another kind
-        than the flow's unit -- a heating value per cubic metre on a flow in
-        kilograms -- checked against the unit the vendor shipped as well as the
-        one the flow is carried in, because a manual fix may have rebased it.
-    :returns: how many flows received statements.
+    :raises ValueError: for the three cases above; for a statement whose
+        `per_unit` is of another kind than the flow's unit -- a heating value
+        per cubic metre on a flow in kilograms -- checked against the unit the
+        vendor shipped as well as the one the flow is carried in, because a
+        manual fix may have rebased it; and for a ruling naming a flow the
+        list does not ship.
+    :returns: how many flows received a curated statement.
     """
     attached = 0
     for flow in flows:
-        statements = loaded.statements.get(flow.uuid)
+        statements = list(flow.property_statements or [])
+        ruled = loaded.energy_quantities.get(flow.uuid)
+        if ruled is not None:
+            statements = _relabelled(statements, ruled, loaded=loaded, flow=flow)
+        curated = loaded.statements.get(flow.uuid, ())
+        for statement in curated:
+            vendor = [s for s in statements if s.quantity == statement.quantity]
+            if vendor:
+                said = vendor[0]
+                raise ValueError(
+                    f"{loaded.filename} states the {statement.quantity} of "
+                    f"{flow.name or flow.uuid} ({flow.uuid}) as {statement.value} "
+                    f"{statement.unit} per {statement.per_unit}, and the vendor "
+                    f"states it as {said.value} {said.unit} per {said.per_unit} "
+                    f"({said.stated_by}). One number has one home: drop the "
+                    f"curated entry, or name this release in its "
+                    f"'stated_by_vendor_in'."
+                )
+            statements.append(statement)
+        for slug in loaded.expected_from_vendor.get(flow.uuid, ()):
+            if not any(
+                s.quantity == slug and s.stated_by is not StatementOrigin.CURATED
+                for s in statements
+            ):
+                raise ValueError(
+                    f"{loaded.filename} says the vendor states the {slug} of "
+                    f"{flow.name or flow.uuid} ({flow.uuid}) in this release, "
+                    f"and the flow carries none. The entry's 'stated_by_vendor_in' "
+                    f"names a release whose file does not state it."
+                )
         if not statements:
             continue
+        # The unit the flow is carried in, the one the vendor shipped, and the
+        # one a manual fix rebased it from: `Uranium, 451 GJ per kg` is in
+        # megajoules by the time it is a record, and its statements are per
+        # the kilogram the vendor measured it in.
+        rebased = (flow.extra or {}).get(UNIT_CONVERSION_KEY) if hasattr(flow, "extra") else None
         units = {
             _kind_of(str(unit))
-            for unit in (flow.unit, getattr(flow.provided, "unit", None))
+            for unit in (
+                flow.unit,
+                getattr(flow.provided, "unit", None),
+                rebased.get("source_unit") if isinstance(rebased, dict) else None,
+            )
             if unit
         }
         for statement in statements:
             per_kind = _kind_of(statement.per_unit)
             if units and per_kind not in units:
                 raise ValueError(
-                    f"{loaded.filename} states {statement.quantity} of "
+                    f"{statement.provenance.was_derived_from or loaded.filename} "
+                    f"states {statement.quantity} of "
                     f"{flow.name or flow.uuid} ({flow.uuid}) per "
                     f"{statement.per_unit!r}, and the flow is measured in "
                     f"{flow.unit!r}. A statement is about one unit of the flow "
                     f"as the vendor measures it."
                 )
-        flow.property_statements = list(statements)
-        attached += 1
+        flow.property_statements = statements
+        if curated:
+            attached += 1
     if attached:
         logger.info(
             "property_statements_attached",
@@ -442,6 +636,86 @@ def attach_property_statements(flows: Iterable[Any], loaded: PropertyStatements)
             statements=sum(len(items) for items in loaded.statements.values()),
         )
     return attached
+
+
+def refuse_rulings_about_unshipped_flows(
+    flows: Iterable[Any], loaded: PropertyStatements
+) -> None:
+    """Refuse a statement or ruling naming a uuid no flow of the list carries.
+
+    Apart from :func:`attach_property_statements` so that a caller holding a
+    few of the list's flows -- a test, a bounded run -- can attach to them;
+    `SourceList.load_flows` holds the whole list and asks this of it.
+
+    :raises ValueError: naming the ruling and the first few uuids.  A ruling
+        naming a uuid no row carries decides nothing and looks exactly like a
+        decision; most likely the uuid moved.
+    """
+    shipped = {flow.uuid for flow in flows}
+    for ruling, uuids in (
+        ("statements", loaded.statements),
+        ("energy_quantities", loaded.energy_quantities),
+        ("stated_by_vendor_in", loaded.expected_from_vendor),
+    ):
+        missing = sorted(set(uuids) - shipped)
+        if missing:
+            raise ValueError(
+                f"{loaded.filename} has {ruling} for {len(missing)} flow(s) the "
+                f"list does not ship: {', '.join(missing[:5])}. A ruling naming "
+                f"a uuid no row carries decides nothing and looks like a decision."
+            )
+
+
+def add_statements_from_names(rows: Sequence[dict[str, Any]], *, label: str) -> int:
+    """Write the energy a SimaPro-shaped name states onto its raw row.
+
+    `Gas, natural, 46.8 MJ per kg`, `Uranium oxide, 332 GJ per kg, in ore`:
+    the lineage's way of saying what a kilogram stands for in a list keyed on
+    names alone (`docs/findings/units.md`).  Read before the list's fixes and
+    the lineage's, which rename these rows and rebase the uranium ones, so the
+    statement is about the row as the vendor shipped it.  The number is read as
+    a calorific value of unstated basis, `stated_by` ``flow-name``; the list's
+    `energy_quantities` rules the uranium rows fission energy on attach.
+
+    Into the raw row rather than onto a record because this runs where the
+    rows are still raw, beside the other things read off the vendor's spelling
+    before the record is built; `property_statements` is a declared field of
+    the record, so the key lands there and not in `extra`.
+
+    :returns: how many rows gained a statement.
+    """
+    added = 0
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        name = str(row.get("name") or "")
+        parsed = energy_stated_in_name(name)
+        if parsed is None:
+            continue
+        value, unit, per_unit = parsed
+        statement = vendor_statement(
+            quantity=CALORIFIC_VALUE,
+            value=value,
+            unit=unit,
+            per_unit=per_unit,
+            stated_by=StatementOrigin.FLOW_NAME,
+            primary_source=[f"the flow's own name: `{name}`"],
+            derived_from="the flow's name",
+            generated_by=f"load_{label}",
+            attributed_to=label,
+            comment=(
+                f"The flow's name states it: `{name}`. The name says neither net "
+                f"nor gross."
+            ),
+        )
+        existing = row.get("property_statements")
+        if not isinstance(existing, list):
+            existing = []
+        row["property_statements"] = [*existing, statement.to_dict()]
+        added += 1
+    if added:
+        logger.info("property_statements_from_names", source=label, rows=added)
+    return added
 
 
 def refuse_a_pair_stated_twice(

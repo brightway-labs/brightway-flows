@@ -869,37 +869,39 @@ class ConversionVintageTestCase(unittest.TestCase):
     def test_the_two_revised_carriers_state_their_releases(self):
         """The real files, not fixtures.  The heating values moved from the
         override rows to `ecoinvent-property-statements.json` (#407) and took
-        their vintage with them: crude oil and natural gas resolve to 3.8's
-        number for 3.8 and the later one for 3.12, and no other statement
-        differs by release.  The ore rows, the factors still on the overrides,
-        keep the override's own vintage check."""
+        their vintage with them: crude oil and natural gas are stated for 3.8,
+        the release whose exchanges carry no heating value, and for 3.12 the
+        file says the vendor states them (`stated_by_vendor_in`), so the entry
+        yields nothing and the exchange's own `heating value, net` property is
+        what the flow carries.  No other statement differs by release.  The ore
+        rows, the factors still on the overrides, keep the override's own
+        vintage check."""
         from brightway_flows.filesystem import PACKAGE_DATA_DIR
         from brightway_flows.match_overrides import load_match_overrides
         from brightway_flows.property_statements import load_property_statements
 
         path = PACKAGE_DATA_DIR / "ecoinvent-property-statements.json"
-        resolved = {
-            release: {
-                uuid: statements[0]
-                for uuid, statements in load_property_statements(
-                    path, release=release
-                ).statements.items()
-            }
-            for release in ("3.8", "3.12")
-        }
-        differing = {
-            uuid: (resolved["3.8"][uuid].value, resolved["3.8"][uuid].per_unit,
-                   resolved["3.12"][uuid].value, resolved["3.12"][uuid].per_unit)
-            for uuid in resolved["3.12"]
-            if (resolved["3.8"][uuid].value, resolved["3.8"][uuid].per_unit)
-            != (resolved["3.12"][uuid].value, resolved["3.12"][uuid].per_unit)
-        }
-        self.assertEqual(differing, {
-            # Oil, crude, in ground
-            "88d06db9-59a1-4719-9174-afeb1fa4026a": (42.3, "kg", 43.4, "kg"),
-            # Gas, natural, in ground: 3.8 per plain cubic metre
-            "7c337428-fb1b-45c7-bbb2-2ee4d29e17ba": (34.5, "m3", 36.0, "sm3"),
-        })
+        old = load_property_statements(path, release="3.8")
+        new = load_property_statements(path, release="3.12")
+        oil = "88d06db9-59a1-4719-9174-afeb1fa4026a"
+        gas = "7c337428-fb1b-45c7-bbb2-2ee4d29e17ba"
+        self.assertEqual(
+            {uuid: (s[0].value, s[0].per_unit) for uuid, s in old.statements.items()
+             if uuid in (oil, gas)},
+            {oil: (42.3, "kg"), gas: (34.5, "m3")},
+        )
+        self.assertEqual(set(old.statements) - set(new.statements), {oil, gas})
+        self.assertEqual(
+            new.expected_from_vendor,
+            {oil: frozenset({"net-calorific-value"}), gas: frozenset({"net-calorific-value"})},
+        )
+        self.assertEqual(old.expected_from_vendor, {})
+        for uuid in new.statements:
+            with self.subTest(flow=uuid):
+                self.assertEqual(
+                    (old.statements[uuid][0].value, old.statements[uuid][0].per_unit),
+                    (new.statements[uuid][0].value, new.statements[uuid][0].per_unit),
+                )
         with self.assertRaises(ValueError):
             load_property_statements(path, release="3.13")
 

@@ -180,6 +180,15 @@
     "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy"
   },
   {
+    "iri": "https://vocab.brightway.one/units/unit/GigaJ",
+    "label": "Gigajoule",
+    "definition": "1,000,000,000-fold of the derived unit joule. The unit SimaPro-shaped flow names state a nuclear fuel's energy in: `Uranium oxide, 332 GJ per kg, in ore`.",
+    "conversion_multiplier": 1000000000.0,
+    "notation": "GJ",
+    "reference_unit_iri": "https://vocab.brightway.one/units/unit/J",
+    "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy"
+  },
+  {
     "iri": "https://vocab.brightway.one/units/unit/J",
     "label": "Joule",
     "definition": "$\\textit{Joule}$ is the SI unit of work or energy, defined to be the work done by a force of one newton acting to move an object through a distance of one meter in the direction in which the force is applied. \n  Equivalently, since kinetic energy is one half the mass times the square of the velocity, one joule is the kinetic energy of a mass of two kilograms moving at a velocity of $1 m/s$.",
