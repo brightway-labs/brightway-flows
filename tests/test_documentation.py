@@ -1014,14 +1014,25 @@ class ConversionMultiplierTableTestCase(unittest.TestCase):
     """`reference/schemas.md` prints the conversion multipliers out of `data/`.
 
     One table per source list, transcribed from that list's
-    `*-match-overrides.json` -- and a transcription drifts in both directions.
-    The ecoinvent table went on printing a `Gas, mine, off-gas` row at 36.0
-    long after the redirection that removed it, and it gained none of Stepwise
-    2006's twelve energy carriers on the day that list arrived with its own
-    heating values. Rule 30.
+    `*-property-statements.json` -- the heating values, densities and specific
+    activities the list states about its own flows (#407) -- and from the pair
+    facts still on its `*-match-overrides.json`: the ore conversions and the
+    coal-mine off-gas.  A transcription drifts in both directions.  The
+    ecoinvent table went on printing a `Gas, mine, off-gas` row at 36.0 long
+    after the redirection that removed it, and it gained none of Stepwise 2006's
+    twelve energy carriers on the day that list arrived with its own heating
+    values. Rule 30.
     """
 
     PAGE = DOCS / "reference" / "schemas.md"
+
+    #: Which statements file each list's override file goes with.
+    STATEMENTS = {
+        "ecoinvent-match-overrides.json": "ecoinvent-property-statements.json",
+        "bafu-2026-v1-match-overrides.json": "bafu-2026-v1-property-statements.json",
+        "stepwise-2006-match-overrides.json": "stepwise-2006-property-statements.json",
+        "agribalyse-3.2-match-overrides.json": "agribalyse-3.2-property-statements.json",
+    }
 
     #: The sentence each list's crossing table is counted in. A crossing is a
     #: mapping whose two ends are measured in different units; the ore
@@ -1051,11 +1062,23 @@ class ConversionMultiplierTableTestCase(unittest.TestCase):
             path.name: json.loads(path.read_text())["overrides"]
             for path in sorted(PACKAGE_DATA_DIR.glob("*-match-overrides.json"))
         }
+        self.statements = {
+            name: json.loads((PACKAGE_DATA_DIR / statements).read_text())["statements"]
+            for name, statements in self.STATEMENTS.items()
+        }
 
-    @staticmethod
-    def _conversions(overrides):
-        """Every (source flow, factor) a file states, releases included."""
-        for row in overrides:
+    def _conversions(self, name):
+        """Every (source flow, number) a list states, releases included.
+
+        The statements first -- the value and every `by_release` value -- then
+        the factors still on the override rows.
+        """
+        for entry in self.statements.get(name, ()):
+            yield entry["source_name"], float(entry["value"])
+            for restated in entry.get("by_release", {}).values():
+                if "value" in restated:
+                    yield entry["source_name"], float(restated["value"])
+        for row in self.files[name]:
             factors = []
             if "conversion_factor" in row:
                 factors.append(row["conversion_factor"])
@@ -1068,15 +1091,21 @@ class ConversionMultiplierTableTestCase(unittest.TestCase):
         """A row's unit as a set: one list ships a flow under two spellings."""
         return frozenset(value) if isinstance(value, list) else frozenset({value})
 
-    @classmethod
-    def _crossings(cls, overrides):
+    def _crossings(self, name):
         """The source flows whose mapping changes what is measured, and the
-        ones whose two ends are one unit and still carry a factor."""
-        crossing, ore = set(), set()
-        for row in overrides:
+        ones whose two ends are one unit and still carry a factor.
+
+        A statement is a crossing by construction -- its `unit` and `per_unit`
+        are of different kinds, or the loader refuses it -- so every stated flow
+        is one, and the override rows that keep a factor are sorted by whether
+        their two units differ.
+        """
+        crossing = {entry["source_name"] for entry in self.statements.get(name, ())}
+        ore = set()
+        for row in self.files[name]:
             if "conversion_factor" not in row and "conversion_by_release" not in row:
                 continue
-            same = cls._units(row.get("source_unit")) == cls._units(
+            same = self._units(row.get("source_unit")) == self._units(
                 row.get("target_unit")
             )
             (ore if same else crossing).add(row["source_name"])
@@ -1094,8 +1123,8 @@ class ConversionMultiplierTableTestCase(unittest.TestCase):
     def test_every_curated_conversion_is_printed_with_its_factor(self):
         checked = 0
         lines = self.text.splitlines()
-        for name, overrides in self.files.items():
-            for source, factor in self._conversions(overrides):
+        for name in self.files:
+            for source, factor in self._conversions(name):
                 checked += 1
                 with self.subTest(file=name, flow=source, factor=factor):
                     self.assertTrue(
@@ -1112,7 +1141,7 @@ class ConversionMultiplierTableTestCase(unittest.TestCase):
     def test_the_page_counts_each_table(self):
         for phrases, index in ((self.CROSSING_PHRASES, 0), (self.ORE_PHRASES, 1)):
             for name, phrase in phrases.items():
-                expected = len(self._crossings(self.files[name])[index])
+                expected = len(self._crossings(name)[index])
                 with self.subTest(file=name, phrase=phrase):
                     self.assertIn(phrase, self.flat)
                     self.assertEqual(

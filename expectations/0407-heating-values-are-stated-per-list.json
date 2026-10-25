@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "description": "A kilogram of a source list's coal reaches an EF 3.1 energy flow through a mapping that states one number, `qudt:conversionMultiplier`. Until #407 that number was typed by hand as a `conversion_factor` on a row of the list's match overrides, with no unit, no net-or-gross basis and no provenance beyond a comment, and the same heating value was written four times for four lists. It is now derived from a property statement the list makes about its own flow (`<list>-property-statements.json`): one kilogram of AGRIBALYSE's hard coal is 18.2 MJ of net calorific value, one of Stepwise's is 19.1 MJ of gross calorific value, one of ecoinvent's is 18.01 MJ of calorific value whose basis the workbook does not state. The multipliers do not move -- every claim below holds the number the build of `5f06833` (24 October 2026, the merge base) published -- and the basis moves to `flow-property`, with the quantity the number came through published beside it. A mapping still stating `curated` or `correspondence-table` for one of these rows means the merge read the override instead of the flow.",
+  "expectations": [
+    {
+      "id": "0407-agribalyse-hard-coal-converts-by-its-own-net-calorific-value",
+      "issue": 407,
+      "title": "AGRIBALYSE's hard coal in the ground converts onto Hard Coal at its own lower heating value, 18.2 MJ/kg, derived from a property of the flow",
+      "subject": {
+        "kind": "source_row",
+        "list": "agribalyse",
+        "uuid": "73592c08-9e10-5388-91ea-2e90c3de5bc3"
+      },
+      "expect": {
+        "target_name": "Hard Coal",
+        "target_unit": "MJ",
+        "conversion_factor": 18.2,
+        "conversion_basis": "flow-property",
+        "unit_mismatch": false
+      },
+      "comment": "The issue's example row. The substance block at the end of `AGB32_final.CSV` gives this coal a lower heating value of 18.2 MJ/kg, and EF 3.1's `Hard Coal` is measured in net calorific value, so the net statement is the one the merge chooses. On the build of `5f06833` the same 18.2 was published with basis `curated`, read off the override row; phase B of #407 will make the statement `vendor-flow`, read off the CSV, with the number unchanged again."
+    },
+    {
+      "id": "0407-stepwise-hard-coal-converts-by-its-gross-calorific-value",
+      "issue": 407,
+      "title": "Stepwise 2006's hard coal converts onto Hard Coal at its own gross heating value, 19.1 MJ/kg, by the list's stated rule",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "uuid": "7d86a5b7-c5d1-549b-aad3-29286a5e5346"
+      },
+      "expect": {
+        "target_name": "Hard Coal",
+        "target_unit": "MJ",
+        "conversion_factor": 19.1,
+        "conversion_basis": "flow-property",
+        "unit_mismatch": false
+      },
+      "comment": "Stepwise's method states gross calorific values, and its `Non-renewable energy` factor for this row is 19.1. EF's flow is net. The number lands only because `stepwise-2006-property-statements.json` carries a conversion rule saying gross converts onto net for this list, and the mapping publishes `conversion_quantity` as the gross IRI so a reader sees it. Whether Stepwise should convert by the net value instead (18.2, making its factor 1.05 per MJ) is a measured change of its own; this claim pins that the refactor did not make it."
+    },
+    {
+      "id": "0407-ecoinvent-38-crude-oil-keeps-its-vintage",
+      "issue": 407,
+      "title": "ecoinvent 3.8's crude oil converts at 42.3 MJ/kg, the release's own value, from a per-release property statement",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.8",
+        "uuid": "88d06db9-59a1-4719-9174-afeb1fa4026a"
+      },
+      "expect": {
+        "target_name": "Crude Oil",
+        "conversion_factor": 42.3,
+        "conversion_basis": "flow-property"
+      },
+      "comment": "#162's vintage rule survives the move: the statement file carries 43.4 checked against 3.9.1 to 3.12 and `by_release` 3.8 at 42.3, and the merge resolves the release's own number. A 43.4 here would mean the per-release value was lost in the move."
+    },
+    {
+      "id": "0407-bafu-crude-oil-converts-by-its-own-number",
+      "issue": 407,
+      "title": "BAFU's crude oil converts at 43.1 MJ/kg, the ratio its own archive states, from a property statement",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "uuid": "e48b3dc1-e9e7-54c1-aafb-3332dbd06a3e"
+      },
+      "expect": {
+        "target_name": "Crude Oil",
+        "conversion_factor": 43.1,
+        "conversion_basis": "flow-property"
+      },
+      "comment": "The one BAFU carrier whose number is BAFU's own rather than ecoinvent's. The statement is `calorific-value` with the basis unstated, because the dataset ratio says nothing about net or gross, and it converts onto EF's net flow with the mapping saying the basis was unstated."
+    }
+  ]
+}

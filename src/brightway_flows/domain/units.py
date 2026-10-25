@@ -265,6 +265,12 @@ CONVERSION_BASIS_KEY = "conversion_basis"
 #: The key a mapping states the conversion's own provenance under.
 CONVERSION_PROVENANCE_KEY = "conversion_provenance"
 
+#: The key a mapping names, by IRI, the quantity its multiplier was derived
+#: through -- `.../quantity/gross-calorific-value` on a Stepwise coal row, so a
+#: reader can see that 19.1 is a gross value landing on a net-calorific flow.
+#: Present only with a `flow-property` basis.
+CONVERSION_QUANTITY_KEY = "conversion_quantity"
+
 
 class ConversionBasis(StrEnum):
     """Who stated a published conversion factor.
@@ -280,6 +286,11 @@ class ConversionBasis(StrEnum):
     CURATED = "curated"
     #: `units.json`, between two units of one quantity kind.
     UNIT_TABLE = "unit-table"
+    #: Derived from a quantity the source list states about its own flow -- a
+    #: heating value, a density, a specific activity -- in that list's
+    #: `*-property-statements.json` (`domain.property_statements`, #407).
+    #: `conversion_quantity` beside it says which quantity.
+    FLOW_PROPERTY = "flow-property"
 
 
 def quantity_factor(

@@ -867,29 +867,53 @@ class ConversionVintageTestCase(unittest.TestCase):
             )))
 
     def test_the_two_revised_carriers_state_their_releases(self):
-        """The real file, not a fixture: crude oil and natural gas each name
-        3.8's number, and no other ecoinvent conversion does."""
+        """The real files, not fixtures.  The heating values moved from the
+        override rows to `ecoinvent-property-statements.json` (#407) and took
+        their vintage with them: crude oil and natural gas resolve to 3.8's
+        number for 3.8 and the later one for 3.12, and no other statement
+        differs by release.  The ore rows, the factors still on the overrides,
+        keep the override's own vintage check."""
         from brightway_flows.filesystem import PACKAGE_DATA_DIR
         from brightway_flows.match_overrides import load_match_overrides
+        from brightway_flows.property_statements import load_property_statements
+
+        path = PACKAGE_DATA_DIR / "ecoinvent-property-statements.json"
+        resolved = {
+            release: {
+                uuid: statements[0]
+                for uuid, statements in load_property_statements(
+                    path, release=release
+                ).statements.items()
+            }
+            for release in ("3.8", "3.12")
+        }
+        differing = {
+            uuid: (resolved["3.8"][uuid].value, resolved["3.8"][uuid].per_unit,
+                   resolved["3.12"][uuid].value, resolved["3.12"][uuid].per_unit)
+            for uuid in resolved["3.12"]
+            if (resolved["3.8"][uuid].value, resolved["3.8"][uuid].per_unit)
+            != (resolved["3.12"][uuid].value, resolved["3.12"][uuid].per_unit)
+        }
+        self.assertEqual(differing, {
+            # Oil, crude, in ground
+            "88d06db9-59a1-4719-9174-afeb1fa4026a": (42.3, "kg", 43.4, "kg"),
+            # Gas, natural, in ground: 3.8 per plain cubic metre
+            "7c337428-fb1b-45c7-bbb2-2ee4d29e17ba": (34.5, "m3", 36.0, "sm3"),
+        })
+        with self.assertRaises(ValueError):
+            load_property_statements(path, release="3.13")
 
         overrides = load_match_overrides(
             PACKAGE_DATA_DIR / "ecoinvent-match-overrides.json"
         )
-        by_release = {
-            o.source_name: dict(o.conversion_by_release)
-            for o in overrides
-            if o.converts and o.conversion_by_release
-        }
-        self.assertEqual(by_release, {
-            "Oil, crude, in ground": {"3.8": 42.3},
-            "Gas, natural, in ground": {"3.8": 34.5},
-        })
-        for override in overrides:
-            if override.converts:
-                with self.subTest(flow=override.source_name):
-                    self.assertTrue(override.covers_release("3.8"))
-                    self.assertTrue(override.covers_release("3.12"))
-                    self.assertFalse(override.covers_release("3.13"))
+        converting = [o for o in overrides if o.converts]
+        self.assertEqual(len(converting), 3, "the three titanium ore rows")
+        for override in converting:
+            with self.subTest(flow=override.source_name):
+                self.assertFalse(override.conversion_by_release)
+                self.assertTrue(override.covers_release("3.8"))
+                self.assertTrue(override.covers_release("3.12"))
+                self.assertFalse(override.covers_release("3.13"))
 
 
 class CuratedConversionTestCase(unittest.TestCase):

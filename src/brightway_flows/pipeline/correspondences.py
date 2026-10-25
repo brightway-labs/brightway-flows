@@ -71,6 +71,7 @@ from brightway_flows.domain.records import SerialisableRecord
 from brightway_flows.domain.units import (
     CONVERSION_BASIS_KEY,
     CONVERSION_PROVENANCE_KEY,
+    CONVERSION_QUANTITY_KEY,
     ConversionBasis,
     unit_iri_for,
 )
@@ -79,6 +80,7 @@ from brightway_flows.domain.vocabulary import (
     BIBO_STATUS_CURIE,
     BRIGHTWAY_CONVERSION_BASIS_CURIE,
     BRIGHTWAY_CONVERSION_PROVENANCE_CURIE,
+    BRIGHTWAY_CONVERSION_QUANTITY_CURIE,
     BRIGHTWAY_EXCLUDED_SOURCE_CONCEPT_CURIE,
     BRIGHTWAY_EXCLUSION_REASON_CURIE,
     DCTERMS_CREATED_CURIE,
@@ -163,6 +165,9 @@ class ConceptAssociationNode(SerialisableRecord):
     #: written by a build from before they were published.
     conversion_basis: ConversionBasis | None = None
     conversion_provenance: dict[str, Any] | None = None
+    #: The IRI of the quantity a `flow-property` multiplier was derived
+    #: through (`quantities.json`); absent on every other basis (#407).
+    conversion_quantity: str | None = None
 
     _ALIASES: ClassVar[dict[str, str]] = {
         "jsonld_id": "@id",
@@ -172,9 +177,11 @@ class ConceptAssociationNode(SerialisableRecord):
         "conversion_multiplier": QUDT_CONVERSION_MULTIPLIER_CURIE,
         "conversion_basis": BRIGHTWAY_CONVERSION_BASIS_CURIE,
         "conversion_provenance": BRIGHTWAY_CONVERSION_PROVENANCE_CURIE,
+        "conversion_quantity": BRIGHTWAY_CONVERSION_QUANTITY_CURIE,
     }
     _OMIT_IF_NONE: ClassVar[frozenset[str]] = frozenset({
         "conversion_multiplier", "conversion_basis", "conversion_provenance",
+        "conversion_quantity",
     })
 
 
@@ -471,6 +478,7 @@ def build_correspondences(
             )
             basis = association.get(CONVERSION_BASIS_KEY)
             stated_by = association.get(CONVERSION_PROVENANCE_KEY)
+            through = association.get(CONVERSION_QUANTITY_KEY)
             # Copied, not referenced: the strength is settled below and the
             # payload this came from belongs to the caller.
             collected.append((
@@ -486,6 +494,11 @@ def build_correspondences(
                     if multiplier is not None and isinstance(stated_by, dict)
                     else None
                 ),
+                (
+                    str(through)
+                    if multiplier is not None and isinstance(through, str) and through
+                    else None
+                ),
             ))
             cardinality.observe(scheme.slug, source_iri, target_iri)
             counts[f"associations_{scheme.slug}"] += 1
@@ -497,7 +510,8 @@ def build_correspondences(
     # because this is the last point before the claim is published, and a
     # non-zero `weakened_*` says a route into the export skipped the pass (#76).
     for (
-        scheme, iri, source_iri, target_iri, source, multiplier, basis, stated_by
+        scheme, iri, source_iri, target_iri, source, multiplier, basis, stated_by,
+        through,
     ) in collected:
         current = match_property_key(source)
         published = cardinality.published_match_for(
@@ -513,6 +527,7 @@ def build_correspondences(
                 conversion_multiplier=multiplier,
                 conversion_basis=basis,
                 conversion_provenance=stated_by,
+                conversion_quantity=through,
             )
         )
 

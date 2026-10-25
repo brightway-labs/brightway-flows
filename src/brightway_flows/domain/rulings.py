@@ -138,6 +138,16 @@ class CuratedFile:
 #: A curator looked at a case, overruled the pipeline, and wrote down why.
 RULINGS: tuple[CuratedFile, ...] = (
     CuratedFile(
+        "*-property-statements.json",
+        "brightway_flows.property_statements",
+        "This list states this quantity about one unit of its own flow -- a "
+        "heating value, a density, a specific activity -- per release and "
+        "naming where the number came from, and the merge derives the "
+        "mapping's multiplier from it. Also which quantity converts onto "
+        "another where the list's basis differs from EF's, and what a named "
+        "flow's unit measures where the vendor's flow property is wrong.",
+    ),
+    CuratedFile(
         "elementary-flow-collision-decisions.json",
         "brightway_flows.pipeline.collision_decisions",
         "Two live flows of one substance in one context are one flow, and this "
@@ -421,6 +431,13 @@ VOCABULARIES: tuple[CuratedFile, ...] = (
         "units.json",
         "brightway_flows.domain.units",
         "The unit table: notations, IRIs and conversion factors.",
+    ),
+    CuratedFile(
+        "quantities.json",
+        "brightway_flows.domain.quantities",
+        "What a number a list states about a flow measures -- net or gross "
+        "calorific value, fission energy, mass, volume, radioactivity -- with "
+        "ILCD's label, the vendors' spellings, and the QUDT kind it matches.",
     ),
     CuratedFile(
         "environmental-materials.json",

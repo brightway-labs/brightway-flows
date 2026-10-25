@@ -38,6 +38,7 @@ from typing import Any
 
 from brightway_flows.domain.elementary_flow import ElementaryFlow
 from brightway_flows.domain.flow_object import FlowObject
+from brightway_flows.domain.property_statements import ConversionRule, PropertyStatement
 from brightway_flows.domain.vocabulary import XKOS_SOURCE_CONCEPT_CURIE
 from brightway_flows.merge.contexts import ContextExpectations
 from brightway_flows.merge.conversions import UnitConversion
@@ -138,6 +139,10 @@ class SourceRow:
     #: for one that has none.  See
     #: :func:`brightway_flows.merge.conversions.conversion_from_source_flow`.
     conversion: UnitConversion | None = None
+    #: What the list states about one unit of this flow -- its heating value,
+    #: its density -- from `Flow.property_statements`.  The merge derives the
+    #: mapping's multiplier from them where no curated factor holds (#407).
+    property_statements: tuple[PropertyStatement, ...] = ()
     #: The name the source list shipped, verbatim (after its curated fixes),
     #: from `flow.provided.name`.  What the published mapping records as
     #: `source_flow_name` -- a consumer holding the vendor's inventory has this
@@ -247,6 +252,15 @@ class MergeIndexes:
     #: flow (`merge/historical_names.py`).  Consulted by `resolve_flow_object`
     #: only after every registry number and every shipped name has failed.
     historical_names: Mapping[str, "HistoricalName"] = field(default_factory=dict)
+    #: consensus flow uuid -> the quantity its unit measures, where something
+    #: states it: EF 3.1's ILCD flow property for its own flows (`Hard Coal` is
+    #: net calorific value), and the base list's statements file where that is
+    #: wrong (`Uranium` is fission energy).  A flow not here measures what its
+    #: unit generically does (`domain.quantities.quantity_for_unit`).
+    reference_quantities: Mapping[str, str] = field(default_factory=dict)
+    #: The list's rulings on which statement quantity converts onto a target of
+    #: another, from its `*-property-statements.json`.
+    conversion_rules: tuple[ConversionRule, ...] = ()
 
 
 @dataclass
