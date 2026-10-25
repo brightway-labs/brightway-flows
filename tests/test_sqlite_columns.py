@@ -55,6 +55,7 @@ from brightway_flows.pipeline.sqlite import (
     _RELATIONS,
     _SCHEMA,
 )
+from brightway_flows.merge.property_rows import COLUMNS as _PROPERTY_STATEMENT_COLUMNS
 from brightway_flows.pipeline.sqlite_schema import insert_statement, recreate
 
 #: table -> the columns no `INSERT` names, and why.
@@ -62,6 +63,8 @@ NOT_INSERTED = {
     # An autoincrement surrogate key: SQLite fills it.  The row's identity is
     # the unique constraint on the four reference columns, not this.
     "elementary_flow_sources": ("id",),
+    # The same surrogate key; a row is one statement of one source row.
+    "flow_property_statements": ("id",),
     # Written by the `UPDATE` in `finish_run`, because they are not known when
     # the row is inserted: a run opens its row before it does the work.
     "merge_runs": ("finished_at", "stats_json"),
@@ -71,6 +74,7 @@ NOT_INSERTED = {
 }
 
 DECLARATIONS = {
+    "flow_property_statements": _PROPERTY_STATEMENT_COLUMNS,
     "flow_objects": _FLOW_OBJECT_COLUMNS,
     "flow_objects_fts": _FLOW_OBJECT_FTS_COLUMNS,
     "flow_object_payloads": _FLOW_OBJECT_PAYLOAD_COLUMNS,

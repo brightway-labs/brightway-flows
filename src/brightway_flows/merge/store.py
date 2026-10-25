@@ -470,12 +470,18 @@ def _add_missing_columns(
 
 
 def create_merge_tables(connection: sqlite3.Connection) -> None:
+    # Imported here: `property_rows` imports `pipeline.sqlite_schema` as this
+    # module does, and nothing else of this module, but keeping its table
+    # beside its writer is what `sqlite_schema`'s docstring asks for.
+    from brightway_flows.merge.property_rows import create_table as create_property_rows
+
     for statement in SCHEMA:
         connection.execute(statement)
     _add_missing_columns(connection, "merge_outcomes", _ADDED_OUTCOME_COLUMNS)
     _add_missing_columns(connection, "merge_run_inputs", _ADDED_RUN_INPUT_COLUMNS)
     for statement in INDEXES:
         connection.execute(statement)
+    create_property_rows(connection)
 
 
 def _outcome_row(outcome: MergeOutcome) -> tuple[Any, ...]:

@@ -35,6 +35,19 @@ Two entries carry the shape of the file rather than a predicate:
   flow*, not of some intermediate "properties" resource, and `@nest` says
   exactly that. It requires `"@version": 1.1`, which the context declares.
 
+One kind of entry under `properties` is a node rather than a value: a
+substance's quantity entry
+([#407](https://github.com/brightway-labs/brightway-flows/issues/407)), keyed
+by the quantity's IRI and holding `brightway:measurements`, a list of
+`qudt:QuantityValue` nodes with `qudt:hasUnit`, `brightway:perUnit`,
+`qudt:value`, `brightway:sourceSpread` and `brightway:classRange`, the last two
+bounded by `schema:minValue` and `schema:maxValue`. Every one of those terms is
+in the context. The keys that describe the node to a human rather than to a
+processor — `statements`, `lists`, `basis`, `role`, and the per-statement
+`provenance` list — are not, and a processor drops them on expansion; they are
+there for a reader of the JSON, and the review application's flow page shows
+the same statements from the database.
+
 ## Datatypes
 
 Every ChemROF slot declares a range. Until schema version 3 all of them were

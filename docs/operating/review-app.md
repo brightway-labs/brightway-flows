@@ -166,7 +166,15 @@ same compartment*, or *A curated override row names a flow that has since been
 deprecated, and this flow replaced it*. **Concept associations** below it is the
 same links as they are published — the source flow's own identifier, name and
 compartment, how strong the mapping is claimed to be, and the unit conversion
-where the two lists measure the substance differently.
+where the two lists measure the substance differently. Where a list says what a
+unit of its flow is worth — AGRIBALYSE's hard coal is 18.2 MJ of net calorific
+value a kilogram, Stepwise's 19.1 by its method — **What each list says a unit
+of this flow is** lists every such statement the lists' rows carried onto the
+flow, which one the mapping converted by, and, above the table, how far apart
+the lists' numbers lie across the whole substance: *net calorific value: 18.01
+to 19.1 MJ per kg, 6 statements from 4 lists*
+([#407](https://github.com/brightway-labs/brightway-flows/issues/407)). The
+section appears only on a flow some list states something about.
 
 `/flow-objects/<id>/changes` is the same arrangement for a substance. It has no
 PROV-O trail — the graph is per flow version, and a substance is not a version

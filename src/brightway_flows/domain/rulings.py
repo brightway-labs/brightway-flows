@@ -148,6 +148,15 @@ RULINGS: tuple[CuratedFile, ...] = (
         "flow's unit measures where the vendor's flow property is wrong.",
     ),
     CuratedFile(
+        "flow-object-property-values.json",
+        "brightway_flows.flow_object_properties",
+        "One unit of this consensus substance is worth this much of this "
+        "quantity -- the reference value a list stating nothing of its own "
+        "would borrow, with its reason -- and the class of substance spans this "
+        "range, from a published table. The spread the merged lists' own "
+        "statements make is derived beside it and never written here.",
+    ),
+    CuratedFile(
         "elementary-flow-collision-decisions.json",
         "brightway_flows.pipeline.collision_decisions",
         "Two live flows of one substance in one context are one flow, and this "

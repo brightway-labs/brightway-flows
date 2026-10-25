@@ -60,6 +60,11 @@ class Namespace(StrEnum):
     PROV = "http://www.w3.org/ns/prov#"
     QUDT = "http://qudt.org/schema/qudt/"
     RDFS = "http://www.w3.org/2000/01/rdf-schema#"
+    # schema.org, for the two bounds of a range: its `QuantitativeValue`
+    # defines `minValue` and `maxValue` as "a point value or interval", where
+    # QUDT's `lowerBound`/`upperBound` belong to its datatype schema and bound
+    # no quantity value (checked against qudt.org 3.5.3, #407).
+    SCHEMA = "https://schema.org/"
     SKOS = "http://www.w3.org/2004/02/skos/core#"
     # XKOS -- namespace per the XKOS specification.
     XKOS = "http://rdf-vocabulary.ddialliance.org/xkos#"
@@ -519,6 +524,33 @@ class Term(StrEnum):
     #: 19.1 MJ/kg is a gross value landing on EF's net-calorific-value flow.
     CONVERSION_QUANTITY = "conversionQuantity"
 
+    # ── A flow object's property values (#407, phase C) ─────────────────────
+    #: QUDT's class for a measured value: what each measurement on a flow
+    #: object's property entry is typed as.
+    QUANTITY_VALUE = "QuantityValue"
+    #: QUDT's "relate an observable thing with a value expressed as a
+    #: decimal": the reference value on such a measurement.  `numericValue`
+    #: exists in QUDT 3.5.3 too but no shape names it; `value` is the one its
+    #: `Quantifiable` shape declares.
+    VALUE = "value"
+    #: The unit a measurement is per -- the kilogram in 18.2 MJ per kg -- as a
+    #: unit IRI beside `qudt:hasUnit`.  QUDT would say `MegaJ-PER-KiloGM`; the
+    #: statements this is derived from say "MJ per kg", and so does this.
+    PER_UNIT = "perUnit"
+    #: The range the merged lists' statements span for one measurement: what
+    #: the sources disagree by, derived at build time.
+    SOURCE_SPREAD = "sourceSpread"
+    #: The range the class of substance spans, from a published table: natural
+    #: variability, curated.  Kept apart from the spread because they are two
+    #: different claims (#3).
+    CLASS_RANGE = "classRange"
+    #: The measurements a flow object's property entry holds, one per unit
+    #: pair: the list of `qudt:QuantityValue`s under the quantity's IRI.
+    MEASUREMENTS = "measurements"
+    #: schema.org's bounds of a range, on both of the above.
+    MIN_VALUE = "minValue"
+    MAX_VALUE = "maxValue"
+
     # ── PROV ─────────────────────────────────────────────────────────────────
     WAS_GENERATED_BY = "wasGeneratedBy"
     WAS_ATTRIBUTED_TO = "wasAttributedTo"
@@ -578,8 +610,11 @@ _NAMESPACE_OF: dict[Term, Namespace] = {
     },
     **{
         term: Namespace.QUDT
-        for term in (Term.HAS_UNIT, Term.CONVERSION_MULTIPLIER)
+        for term in (
+            Term.HAS_UNIT, Term.CONVERSION_MULTIPLIER, Term.QUANTITY_VALUE, Term.VALUE,
+        )
     },
+    **{term: Namespace.SCHEMA for term in (Term.MIN_VALUE, Term.MAX_VALUE)},
     **{term: Namespace.RDFS for term in (Term.LABEL, Term.SEE_ALSO)},
     **{
         term: Namespace.XKOS
@@ -596,7 +631,8 @@ _NAMESPACE_OF: dict[Term, Namespace] = {
             Term.SUMS_OVER, Term.EXPRESSED_AS, Term.AGGREGATE_MEASUREMENT,
             Term.EXCLUDED_SOURCE_CONCEPT, Term.EXCLUSION_REASON,
             Term.CONVERSION_BASIS, Term.CONVERSION_PROVENANCE,
-            Term.CONVERSION_QUANTITY,
+            Term.CONVERSION_QUANTITY, Term.PER_UNIT, Term.SOURCE_SPREAD,
+            Term.CLASS_RANGE, Term.MEASUREMENTS,
         )
     },
     **{

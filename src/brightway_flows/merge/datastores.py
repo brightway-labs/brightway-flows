@@ -296,6 +296,52 @@ def sync_flow_object_synonyms(
     return len(rows)
 
 
+def sync_flow_object_properties(
+    flow_objects: list[FlowObject],
+    object_ids: set[str],
+    db_path: Path | None = None,
+) -> int:
+    """Write back the `properties` the property-value pass moved on existing objects.
+
+    The same shape as :func:`sync_flow_object_synonyms`, for the same reason: a
+    pass over objects an earlier stage wrote has to write them back or its
+    result lives in memory.  Three places hold an object's properties --
+    `flow_objects.properties_json`, the object's own `flow_object_json`, and the
+    shared `flow_object_payloads` row its flows read theirs from (#253) -- and
+    all three are rewritten, so the export, the flow pages and the substance
+    pages read one answer.  Returns how many objects were written.
+    """
+    db_path = CONSENSUS_DB_FILEPATH if db_path is None else db_path
+    if not object_ids:
+        return 0
+    if not db_path.exists():
+        logger.warning("consensus_db_not_found_skipping_sync", path=str(db_path))
+        return 0
+    rows: list[tuple] = []
+    for obj in flow_objects:
+        if not obj.flow_object_id or obj.flow_object_id not in object_ids:
+            continue
+        properties = orjson.dumps(obj.properties).decode("utf-8")
+        rows.append((properties, orjson.dumps(obj.to_dict()).decode("utf-8"), obj.flow_object_id))
+    conn = sqlite3.connect(db_path)
+    try:
+        conn.executemany(
+            "UPDATE flow_objects SET properties_json = ?, flow_object_json = ? "
+            "WHERE flow_object_id = ?",
+            rows,
+        )
+        conn.executemany(
+            "UPDATE flow_object_payloads SET payload_json = "
+            "json_set(payload_json, '$.properties', json(?)) WHERE flow_object_id = ?",
+            [(properties, object_id) for properties, _payload, object_id in rows],
+        )
+        conn.commit()
+        logger.info("synced_flow_object_properties", count=len(rows), path=str(db_path))
+    finally:
+        conn.close()
+    return len(rows)
+
+
 def _sync_new_flows_to_datastores(
     new_flows: list[ElementaryFlow],
     flow_object_label_by_id: dict[str, str],
