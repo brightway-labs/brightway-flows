@@ -16,7 +16,13 @@ import unittest
 from dataclasses import dataclass
 
 import orjson
+from vendor_statements import (
+    STEPWISE_CARRIERS,
+    converting_statement,
+    resolved_statements,
+)
 
+from brightway_flows.domain.property_statements import StatementOrigin
 from brightway_flows.merge.unit_changes import (
     ALLOWLIST_FILEPATH,
     canonical_unit,
@@ -399,23 +405,25 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
 
     Each is listed in `unit-change-allowlist.json`, which accepts the crossing;
     reaches its target through `stepwise-2006-match-overrides.json`, which names
-    the flow and nothing about the number; and has its heating value stated in
-    `stepwise-2006-property-statements.json`, in megajoules per the unit the row
-    is measured in, which is what the merge derives the mapping's factor from
-    (#407).  All three are pinned because any one alone is a part-answer: an
-    accepted crossing with no number publishes a mass on an energy and leaves
-    the reader to invent the factor, a number with no entry leaves the guard
-    reporting a pair somebody has in fact answered, and a target with no
-    statement is a kilogram landing on a megajoule flow with nothing between.
+    the flow and nothing about the number; and has its number stated by
+    Stepwise's own export, which the adapter reads onto the flow (#407, phase
+    B): the substance block's higher and lower heating values as the vendor's
+    flow statements, and the megajoules the method's `Non-renewable energy`
+    category gives the row as the method's.  All three are pinned because any
+    one alone is a part-answer: an accepted crossing with no number publishes
+    a mass on an energy and leaves the reader to invent the factor, a number
+    with no entry leaves the guard reporting a pair somebody has in fact
+    answered, and a target with no statement is a kilogram landing on a
+    megajoule flow with nothing between.
 
-    The statements also say *which* heating value, which the override's bare
-    factor could not.  Stepwise's method counts its carriers by gross calorific
-    value, so hard coal, brown coal and crude oil are stated gross and a rule
-    in the same file says the gross value is what converts them onto EF 3.1's
-    net flows; the six gas rows whose names carry their own number agree with
-    the substance block's lower heating value, so they are net; peat and
-    `Gas, natural/m3` take the method's factor, which agrees with neither, so
-    their basis is unstated; uranium is fission energy.
+    The export is not in the repository, so its lines are copied into
+    `tests/vendor_statements.py` and run through the same readers the load
+    runs.  What the merge converts by is what `stepwise-2006-property-
+    statements.json` rules: the method's number, whatever closer statement the
+    flow also carries -- 19.1 for hard coal, which is the block's higher
+    heating value, 46.8 for `Gas, natural, 46.8 MJ per kg`, which is its lower
+    one, 40.3 for `Gas, natural/m3`, which is neither.  The uranium row's
+    560,000 is ruled fission energy by the same file.
     """
 
     #: Stepwise's energy carriers, and the EF 3.1 flow each reaches.
@@ -434,27 +442,30 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
         "26eeeb1c-17c9-539c-a654-3a995495c235": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
     }
 
-    #: What the statements file says of each: (quantity, megajoules, per unit).
-    #: The numbers are the ones the override rows carried before #407.
-    STATED = {
-        "7d86a5b7-c5d1-549b-aad3-29286a5e5346": ("gross-calorific-value", 19.1, "kg"),
-        "cede79a3-3e82-562b-ac7c-8f0483604f8b": ("gross-calorific-value", 9.9, "kg"),
-        "146c61d4-321a-53ef-b58e-35d53bc57de6": ("gross-calorific-value", 45.8, "kg"),
+    #: What the merge converts each by: (quantity, megajoules, per unit, who
+    #: stated it).  The numbers are the ones the override rows carried before
+    #: #407; every one is the method's, by the file's rule, except uranium's,
+    #: which is the method's number ruled fission energy.
+    CONVERTS_BY = {
+        "7d86a5b7-c5d1-549b-aad3-29286a5e5346": ("calorific-value", 19.1, "kg"),
+        "cede79a3-3e82-562b-ac7c-8f0483604f8b": ("calorific-value", 9.9, "kg"),
+        "146c61d4-321a-53ef-b58e-35d53bc57de6": ("calorific-value", 45.8, "kg"),
         "b28ffb76-dac7-5bdc-9aa9-f3a00f1ce266": ("calorific-value", 9.9, "kg"),
         "2a7ddb41-4644-5f68-a2ac-81cf18772938": ("fission-energy", 560000.0, "kg"),
         "177b2fed-48df-5222-b7a7-be3b71a0e73c": ("calorific-value", 40.3, "m3"),
-        "bbc7d9ed-0d3a-541b-8ea4-9b80d7c93b66": ("net-calorific-value", 30.3, "kg"),
-        "1da85908-9de5-5f8c-ad12-c5c2031a675d": ("net-calorific-value", 46.8, "kg"),
-        "00e5682e-99d0-53ca-9142-8ddb8c14325a": ("net-calorific-value", 46.8, "kg"),
-        "3e88af6a-0f31-5fb7-a035-7a4577e02c9b": ("net-calorific-value", 35.0, "m3"),
-        "01aa0043-f4ce-5461-9eab-6f7725cecbf2": ("net-calorific-value", 35.0, "m3"),
-        "26eeeb1c-17c9-539c-a654-3a995495c235": ("net-calorific-value", 36.6, "m3"),
+        "bbc7d9ed-0d3a-541b-8ea4-9b80d7c93b66": ("calorific-value", 30.3, "kg"),
+        "1da85908-9de5-5f8c-ad12-c5c2031a675d": ("calorific-value", 46.8, "kg"),
+        "00e5682e-99d0-53ca-9142-8ddb8c14325a": ("calorific-value", 46.8, "kg"),
+        "3e88af6a-0f31-5fb7-a035-7a4577e02c9b": ("calorific-value", 35.0, "m3"),
+        "01aa0043-f4ce-5461-9eab-6f7725cecbf2": ("calorific-value", 35.0, "m3"),
+        "26eeeb1c-17c9-539c-a654-3a995495c235": ("calorific-value", 36.6, "m3"),
     }
 
     #: The six whose *name* states what a unit of the gas is worth.  The name is
     #: the vendor's own assertion of the quantity -- the rule
     #: `simapro-lineage-manual-fixes.json` applies to `Uranium, 451 GJ per kg` --
-    #: so the statement and the name have to agree or one of them is wrong.
+    #: and the method's factor, the block's lower heating value and the name
+    #: agree on it, or one of them is wrong.
     NAMED_IN_THE_NAME = {
         "bbc7d9ed-0d3a-541b-8ea4-9b80d7c93b66": 30.3,
         "1da85908-9de5-5f8c-ad12-c5c2031a675d": 46.8,
@@ -464,11 +475,13 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
         "26eeeb1c-17c9-539c-a654-3a995495c235": 36.6,
     }
 
-    #: The three the rule is for: stated gross, converting onto a net target.
+    #: The three whose method factor is the substance block's *higher* heating
+    #: value, and which also carry the block's lower one: the rows the rule's
+    #: precedence over the exact match exists for.
     GROSS = {
-        "7d86a5b7-c5d1-549b-aad3-29286a5e5346",
-        "cede79a3-3e82-562b-ac7c-8f0483604f8b",
-        "146c61d4-321a-53ef-b58e-35d53bc57de6",
+        "7d86a5b7-c5d1-549b-aad3-29286a5e5346": (19.1, None),
+        "cede79a3-3e82-562b-ac7c-8f0483604f8b": (9.9, 8.75),
+        "146c61d4-321a-53ef-b58e-35d53bc57de6": (45.8, 43.2),
     }
 
     def setUp(self):
@@ -489,10 +502,17 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
         self.source = known_source_lists()["stepwise-2006-1.09"]
         self.statements = self.source.load_property_statements()
 
-    def _statement(self, source_uuid):
-        statements = self.statements.statements[source_uuid]
-        self.assertEqual(len(statements), 1, statements)
-        return statements[0]
+    def _resolved(self, source_uuid):
+        name, unit, _factor = STEPWISE_CARRIERS[source_uuid]
+        return resolved_statements(self.source, uuid=source_uuid, name=name, unit=unit)
+
+    def _converting(self, source_uuid):
+        quantity = self.CONVERTS_BY[source_uuid][0]
+        target = "fission-energy" if quantity == "fission-energy" else "net-calorific-value"
+        name, unit, _factor = STEPWISE_CARRIERS[source_uuid]
+        return converting_statement(
+            self.source, uuid=source_uuid, name=name, unit=unit, target_quantity=target
+        )
 
     def test_the_manifest_names_the_statements_file(self):
         self.assertEqual(
@@ -500,15 +520,19 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
             "stepwise-2006-property-statements.json",
         )
 
-    def test_the_statements_file_states_exactly_the_twelve_carriers(self):
-        """Twelve statements for twelve carriers and nothing else: a carrier
-        with no statement lands a kilogram on a megajoule flow with no number,
-        and a statement for a row that is not a carrier converts a row the
-        allowlist has not accepted."""
-        self.assertEqual(set(self.statements.statements), set(self.CARRIERS))
-        self.assertEqual(
-            sum(len(items) for items in self.statements.statements.values()), 12
+    def test_the_file_states_no_number_and_rules_the_twelve_carriers(self):
+        """Every number is the export's own, so the file states none; what it
+        has is the rule that converts by the method's number and the ruling
+        that the five uranium rows' energy is fission energy."""
+        self.assertEqual(self.statements.statements, {})
+        self.assertEqual(set(STEPWISE_CARRIERS), set(self.CARRIERS))
+        self.assertIn(
+            "2a7ddb41-4644-5f68-a2ac-81cf18772938", self.statements.energy_quantities
         )
+        self.assertEqual(
+            set(self.statements.energy_quantities.values()), {"fission-energy"}
+        )
+        self.assertEqual(len(self.statements.energy_quantities), 5)
 
     def test_every_carrier_crossing_is_accepted(self):
         for source_uuid, target in sorted(self.CARRIERS.items()):
@@ -517,9 +541,10 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
 
     def test_every_carrier_states_its_conversion(self):
         """The override names the target and carries no factor -- the number
-        has one home -- and the statement is in megajoules per the unit the
-        row is measured in, a unit of another kind than the target's, so the
-        factor it derives for the pair is the stated value itself."""
+        has one home -- and the statement the merge converts by is the
+        method's, in megajoules per the unit the row is measured in, a unit of
+        another kind than the target's, so the factor it derives for the pair
+        is the stated value itself."""
         from brightway_flows.domain.property_statements import factor_between
 
         for source_uuid, target in sorted(self.CARRIERS.items()):
@@ -528,57 +553,74 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
                 self.assertIsNotNone(override)
                 self.assertEqual(override.target_uuid, target)
                 self.assertFalse(override.converts)
-                quantity, value, per_unit = self.STATED[source_uuid]
-                statement = self._statement(source_uuid)
+                quantity, value, per_unit = self.CONVERTS_BY[source_uuid]
+                statement = self._converting(source_uuid)
+                self.assertIsNotNone(statement)
                 self.assertEqual(statement.quantity, quantity)
                 self.assertEqual(statement.value, value)
                 self.assertEqual(statement.unit, "MJ")
                 self.assertEqual(statement.per_unit, per_unit)
+                self.assertIs(statement.stated_by, StatementOrigin.VENDOR_METHOD)
                 self.assertTrue(crosses_quantity_kinds(statement.per_unit, "MJ"))
                 self.assertEqual(factor_between(statement, per_unit, "MJ"), value)
 
     def test_a_factor_the_name_states_is_the_factor_the_row_carries(self):
+        """Three readers, one number: the name, the block's lower heating
+        value and the method agree, and the flow carries all three."""
         for source_uuid, stated in sorted(self.NAMED_IN_THE_NAME.items()):
             override = self.overrides[source_uuid]
             with self.subTest(name=override.source_name):
                 printed = f"{stated:g}"
                 self.assertIn(printed, override.source_name)
-                statement = self._statement(source_uuid)
-                self.assertEqual(statement.value, stated)
-                self.assertEqual(statement.quantity, "net-calorific-value")
+                by_origin = {
+                    (s.stated_by, s.quantity): s.value for s in self._resolved(source_uuid)
+                }
+                self.assertEqual(by_origin[(StatementOrigin.FLOW_NAME, "calorific-value")], stated)
+                self.assertEqual(by_origin[(StatementOrigin.VENDOR_METHOD, "calorific-value")], stated)
+                self.assertEqual(by_origin[(StatementOrigin.VENDOR_FLOW, "net-calorific-value")], stated)
+                self.assertEqual(self._converting(source_uuid).value, stated)
 
-    def test_the_one_rule_converts_gross_onto_net(self):
+    def test_the_one_rule_converts_by_the_methods_number(self):
         """The file holds exactly one conversion rule, and it is the decision
         the method forces: a Stepwise kilogram converts onto EF's
-        net-calorific-value flows by its gross value, because that is the
-        quantity Stepwise's own factors are stated in."""
+        net-calorific-value flows by what Stepwise's own method counts it as,
+        and by nothing read off the name or the block."""
         self.assertEqual(len(self.statements.rules), 1)
         rule = self.statements.rules[0]
         self.assertEqual(rule.onto, "net-calorific-value")
-        self.assertEqual(rule.convert_by, "gross-calorific-value")
+        self.assertEqual(rule.convert_by, "calorific-value")
+        self.assertIs(rule.stated_by, StatementOrigin.VENDOR_METHOD)
         self.assertTrue(rule.comment.strip())
 
-    def test_the_rule_is_what_lets_a_gross_value_reach_a_net_target(self):
-        """`choose_statement` takes an exact quantity, then an unstated basis,
-        then what the rules say.  A gross value is neither of the first two
-        for a net target, so without the rule the three coal and oil rows
-        would convert nothing; with it they convert by the gross value, and
-        the mapping says so."""
+    def test_the_rule_is_what_keeps_the_methods_number_over_the_blocks_net_one(self):
+        """`choose_statement` takes what the rules say, then an exact
+        quantity, then an unstated basis.  Brown coal and crude oil carry the
+        block's lower heating value, an exact match for a net target, and
+        without the rule the merge would convert by it (8.75, 43.2) and
+        restate the method's numbers (9.9, 45.8); with it the method's number
+        stands, and the mapping says which quantity it came through."""
         from brightway_flows.domain.property_statements import choose_statement
 
-        for source_uuid in sorted(self.GROSS):
+        for source_uuid, (method, net) in sorted(self.GROSS.items()):
             with self.subTest(flow=source_uuid):
-                statements = self.statements.statements[source_uuid]
-                self.assertIsNone(
-                    choose_statement(statements, target_quantity="net-calorific-value")
-                )
+                statements = self._resolved(source_uuid)
+                gross = [s for s in statements if s.quantity == "gross-calorific-value"]
+                self.assertEqual([s.value for s in gross], [method])
+                without = choose_statement(statements, target_quantity="net-calorific-value")
+                if net is None:
+                    # Hard coal's lower heating value is misspelt in the
+                    # vendor's file and never arrives; the method's unstated
+                    # basis stands in either way.
+                    self.assertEqual(without.value, method)
+                else:
+                    self.assertEqual(without.value, net)
                 chosen = choose_statement(
                     statements,
                     target_quantity="net-calorific-value",
                     rules=self.statements.rules,
                 )
-                self.assertIs(chosen, self._statement(source_uuid))
-                self.assertEqual(chosen.quantity, "gross-calorific-value")
+                self.assertEqual(chosen.value, method)
+                self.assertIs(chosen.stated_by, StatementOrigin.VENDOR_METHOD)
 
 
 if __name__ == "__main__":

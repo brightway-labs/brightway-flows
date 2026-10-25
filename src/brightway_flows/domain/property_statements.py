@@ -29,20 +29,27 @@ Three readers:
   and a curated file states each in the direction its mapping uses so that the
   published number is the stated number bit for bit.
 * :func:`choose_statement` says which of a flow's statements converts onto a
-  target of a given quantity -- the exact one, else a basis-unstated calorific
-  value, else what the list's conversion rule says -- which is how net and
-  gross coexist on one flow and the choice between them is data.
+  target of a given quantity -- what the list's conversion rule says first,
+  else the exact one, else a basis-unstated calorific value -- which is how net
+  and gross coexist on one flow and the choice between them is data.
   :func:`statement_converting` puts the two together for one unit pair: the
   statements that bridge it, each asked what it measures *in the direction
   it is read* (:func:`quantity_read_for`), and the one of them that converts
   onto the target.  The merge and the load-time refusals both go through it,
   so they cannot answer differently.
+* :func:`parse_value_per_unit` and :func:`vendor_statement` are what the
+  adapters build a statement with when they read one off the vendor's file:
+  SimaPro's substance block says `Higher heating value (HHV): 19.1 MJ/kg`,
+  ecoinvent's exchange carries a `heating value, net` property, Stepwise's
+  method gives a kilogram of hard coal 19.1 MJ, and a SimaPro flow name says
+  `46.8 MJ per kg`.
 * The codec pair and :data:`PROPERTY_STATEMENTS_SCHEMA` carry the statements
   on `Flow.property_statements` across the file boundary.
 """
 
 from __future__ import annotations
 
+import re
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
@@ -239,10 +246,14 @@ def quantity_read_for(
 class ConversionRule:
     """A list's ruling that one quantity converts onto a target of another.
 
-    Stepwise 2006's method states gross calorific values and its own energy
-    category counts them, so its rows convert onto EF's net-calorific-value
-    flows by the gross value, and the mapping says so.  That is a decision a
-    person wrote down with a reason, not a default the code applies.
+    Stepwise 2006 counts a kilogram of coal as whatever its own method's
+    `Non-renewable energy` category gives it -- the higher heating value for
+    hard coal, the number in the name for `Coal, 18 MJ per kg` -- so its rows
+    convert onto EF's net-calorific-value flows by that number, whatever closer
+    statement the flow also carries, and the mapping says so.  That is a
+    decision a person wrote down with a reason, not a default the code
+    applies, and it comes before the exact match because it is written exactly
+    where the exact match is not what the list counts.
     """
 
     #: The target's reference quantity this rule is about.
@@ -250,6 +261,23 @@ class ConversionRule:
     #: The statement quantity that converts onto it.
     convert_by: str
     comment: str
+    #: Only a statement of this origin, where the rule names one: Stepwise's
+    #: converts by the method's number and not by the same quantity read off
+    #: the flow's name.
+    stated_by: StatementOrigin | None = None
+
+    def admits(
+        self, statement: PropertyStatement, *, measured: str | None = None
+    ) -> bool:
+        """Whether *statement* is one this rule converts by.
+
+        *measured* is what the statement measures for the pair in hand
+        (:func:`quantity_read_for`); its own quantity when not given.
+        """
+        quantity = statement.quantity if measured is None else measured
+        return quantity == self.convert_by and (
+            self.stated_by is None or statement.stated_by is self.stated_by
+        )
 
 
 class AmbiguousPropertyStatementsError(ValueError):
@@ -259,7 +287,14 @@ class AmbiguousPropertyStatementsError(ValueError):
 def _one_of(
     candidates: list[PropertyStatement], *, step: str, target_quantity: str
 ) -> PropertyStatement | None:
-    if len(candidates) > 1:
+    """The one answer among *candidates*, or ``None`` for none.
+
+    Two statements that state the same number -- the method's 30.3 MJ per
+    kilogram and the 30.3 in the flow's name -- are one answer said twice,
+    and the first stands.  Two different numbers are a question.
+    """
+    distinct = {(s.value, s.unit, s.per_unit) for s in candidates}
+    if len(distinct) > 1:
         described = "; ".join(
             f"{s.value} {s.unit} of {s.quantity} per {s.per_unit} ({s.stated_by})"
             for s in candidates
@@ -289,12 +324,17 @@ def choose_statement(
 ) -> PropertyStatement | None:
     """Which of *statements* converts onto a target measuring *target_quantity*.
 
-    1. The statement whose quantity *is* the target's.
-    2. Else a calorific value of unstated basis for a net or gross target, or
+    1. What the list's conversion *rules* say converts onto this target, where
+       a rule names it and the flow carries such a statement.  A rule is the
+       list's own accounting convention, written down with its reason, and it
+       comes first because it is written exactly where the closer statement is
+       not what the list counts: Stepwise's brown coal carries the substance
+       block's net 8.75 and the method's 9.9, and Stepwise counts 9.9.
+    2. Else the statement whose quantity *is* the target's.
+    3. Else a calorific value of unstated basis for a net or gross target, or
        the reverse; the caller publishes that the basis was unstated.  A
        fission energy is never accepted here: it converts only onto a target
        ruled `fission-energy`, because it is not a heat of combustion.
-    3. Else what the list's conversion *rules* say converts onto this target.
     4. Else nothing.
 
     *quantity_of* is what a statement measures for the caller's purpose; by
@@ -302,12 +342,24 @@ def choose_statement(
     :func:`quantity_read_for`, so a density read inverted is asked about as a
     volume.
 
-    :raises AmbiguousPropertyStatementsError: when two statements answer at
-        one step.  Two gross values for one flow from two of the vendor's own
-        sources is a question for a ruling, never for file order (rule 14).
+    :raises AmbiguousPropertyStatementsError: when two statements of different
+        numbers answer at one step.  Two gross values for one flow from two of
+        the vendor's own sources is a question for a ruling, never for file
+        order (rule 14).  The same number said twice -- by the method and by
+        the flow's name -- is one answer.
     """
     measures = quantity_of or (lambda statement: statement.quantity)
     candidates = list(statements)
+    for rule in rules:
+        if rule.onto != target_quantity:
+            continue
+        ruled = [s for s in candidates if rule.admits(s, measured=measures(s))]
+        chosen = _one_of(
+            ruled, step=f"by the rule converting {rule.convert_by!r}",
+            target_quantity=target_quantity,
+        )
+        if chosen is not None:
+            return chosen
     exact = [s for s in candidates if measures(s) == target_quantity]
     chosen = _one_of(exact, step="exactly", target_quantity=target_quantity)
     if chosen is not None:
@@ -316,22 +368,9 @@ def choose_statement(
         s for s in candidates
         if _basis_unstated_pair(measures(s) or "", target_quantity)
     ]
-    chosen = _one_of(
+    return _one_of(
         unstated, step="with the basis unstated", target_quantity=target_quantity
     )
-    if chosen is not None:
-        return chosen
-    for rule in rules:
-        if rule.onto != target_quantity:
-            continue
-        ruled = [s for s in candidates if measures(s) == rule.convert_by]
-        chosen = _one_of(
-            ruled, step=f"by the rule converting {rule.convert_by!r}",
-            target_quantity=target_quantity,
-        )
-        if chosen is not None:
-            return chosen
-    return None
 
 
 def statement_converting(
@@ -377,3 +416,65 @@ def statement_converting(
     if chosen is None:
         return None
     return chosen, factors[id(chosen)]
+
+
+#: `19.1 MJ/kg`, `650 kg/m3`, `1.5e3 MJ/m3`: a number, a unit, a slash, the
+#: unit it is per.  A decimal comma is accepted because SimaPro exports write
+#: one where the export's locale does.
+_VALUE_PER_UNIT = re.compile(
+    r"^\s*(?P<value>[-+]?\d+(?:[.,]\d+)?(?:[eE][-+]?\d+)?)\s*"
+    r"(?P<unit>[A-Za-z][A-Za-z0-9]*)\s*/\s*(?P<per>[A-Za-z][A-Za-z0-9]*)\s*$"
+)
+
+
+def parse_value_per_unit(text: str) -> tuple[float, str, str] | None:
+    """``"19.1 MJ/kg"`` -> ``(19.1, "MJ", "kg")``; ``None`` where the text is not that shape.
+
+    The units come back as the vendor spelled them -- `MH` in SimaPro's
+    `18.2 MH/kg` is returned as written, and it is the caller's business to
+    find that `units.json` does not know it and to say so.
+    """
+    match = _VALUE_PER_UNIT.match(str(text or ""))
+    if match is None:
+        return None
+    return (
+        float(match["value"].replace(",", ".")),
+        match["unit"],
+        match["per"],
+    )
+
+
+def vendor_statement(
+    *,
+    quantity: str,
+    value: float,
+    unit: str,
+    per_unit: str,
+    stated_by: StatementOrigin,
+    primary_source: Sequence[str],
+    derived_from: str,
+    generated_by: str,
+    attributed_to: str,
+    comment: str,
+) -> PropertyStatement:
+    """A statement a vendor's own file makes, with its provenance spelled out.
+
+    What the adapters and the name reader build: *derived_from* is the file
+    the number was read out of, *primary_source* says where in it, and
+    *attributed_to* is the list that said it.  The record's own checks refuse
+    a value that converts nothing.
+    """
+    return PropertyStatement(
+        quantity=quantity,
+        value=value,
+        unit=unit,
+        per_unit=per_unit,
+        stated_by=stated_by,
+        provenance=Provenance(
+            was_generated_by=generated_by,
+            was_attributed_to=attributed_to,
+            had_primary_source=list(primary_source),
+            was_derived_from=derived_from,
+        ),
+        comment=comment,
+    )

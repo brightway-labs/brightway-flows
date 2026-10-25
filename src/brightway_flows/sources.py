@@ -58,10 +58,12 @@ from brightway_flows.manual_fixes import apply_manual_fixes
 from brightway_flows.match_overrides import apply_match_overrides
 from brightway_flows.property_statements import (
     PropertyStatements,
+    add_statements_from_names,
     attach_property_statements,
     load_property_statements,
     reference_quantities_from_ilcd,
     refuse_a_fix_stated_twice,
+    refuse_rulings_about_unshipped_flows,
     refuse_a_pair_stated_twice,
 )
 from brightway_flows.simapro_names import (
@@ -748,6 +750,12 @@ class SourceList:
             raise ValueError(f"Expected list payload in {self.flows_path}")
         rows = [row for row in payload if isinstance(row, dict)]
 
+        # Before every fix, because the fixes rename these rows: `Uranium, 451
+        # GJ per kg` becomes `Uranium` in megajoules under the lineage's fixes,
+        # and the statement is about the row as the vendor shipped it.
+        if self.simapro_origin:
+            add_statements_from_names(rows, label=self.key)
+
         # Before the fixes, so that a fix can name an added row: both files are
         # curated, and which of them a given flow arrived by is not something a
         # correction should have to know.
@@ -811,10 +819,17 @@ class SourceList:
         # On the records, after they are built: a statement is a typed field
         # of the flow, and a key dropped into the raw row would land in
         # `Flow.extra` -- the shape `_unit_conversion` takes and #407 retires.
-        attach_property_statements(flows, self.load_property_statements())
+        # The vendor's statements are already on the records (the adapter
+        # wrote them, the name reader above added its); the curator's join
+        # them here, and a ruling naming a row the list does not ship is
+        # refused while the whole list is in hand.
+        loaded = self.load_property_statements()
+        refuse_rulings_about_unshipped_flows(flows, loaded)
+        attach_property_statements(flows, loaded)
         # One number, one home, for the other curated route: a fix that
         # rebased a row's unit may keep its factor only for a pair no
-        # statement of the flow converts (#407).
+        # statement of the flow -- the vendor's or the curator's -- converts
+        # (#407).
         refuse_a_fix_stated_twice(flows, label=self.key)
         logger.info("loaded_source_flows", source=self.key, count=len(flows))
         return flows

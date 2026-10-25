@@ -31,7 +31,9 @@ import unittest
 
 import orjson
 
-from brightway_flows.domain.property_statements import factor_between
+from vendor_statements import AGRIBALYSE_VENDOR_STATED, converting_statement
+
+from brightway_flows.domain.property_statements import StatementOrigin, factor_between
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 from brightway_flows.integrations.agribalyse import _flow_uuid
 from brightway_flows.manual_fixes import apply_manual_fixes
@@ -87,6 +89,14 @@ PAIR_FACTS = {
 QUANTITY_BY_TARGET_UNIT = {"MJ": "net-calorific-value", "kBq": "radioactivity", "m3": "volume"}
 FISSION = {"99a20ba5-1e0c-5e9b-8c23-18c6a935a905", "4328482b-3230-5bad-b039-2a40af37e3a5"}
 
+#: Who states each converted row's number since #407's phase B.  The substance
+#: block's lower heating value for the fuels, read off the export by the
+#: adapter; the curated file for the rest -- hard coal, whose lower heating
+#: value the vendor misspelt `MH/kg`, uranium, whose name says nothing, the
+#: water densities and the radionuclides' activities, which nobody states.
+VENDOR_STATED = set(AGRIBALYSE_VENDOR_STATED) & set(CONVERTED)
+CURATED = set(CONVERTED) - PAIR_FACTS - VENDOR_STATED
+
 #: Released by mass onto a flow the merge creates rather than one EF 3.1 ships,
 #: which a curated target cannot name -- the row comes out unmatched,
 #: `prepared-target-not-found` -- so the row's own unit is rebased in the manual
@@ -121,25 +131,33 @@ class TheRowsTestCase(unittest.TestCase):
         }
         # Through the list, so the statements are resolved for the release the
         # manifest declares and an unchecked number is refused here.
-        self.statements = known_source_lists()["agribalyse-3.2"].load_property_statements()
+        self.source = known_source_lists()["agribalyse-3.2"]
+        self.statements = self.source.load_property_statements()
 
     def test_there_are_the_twenty_six_the_issue_counted(self) -> None:
         self.assertEqual(len(CONVERTED) + len(REBASED) + len(INERT), 26)
 
-    def test_the_statements_file_states_twenty_nine_rows_eighteen_of_them_here(self) -> None:
-        """AGRIBALYSE states 29 properties: the eighteen converted rows here
-        that are not pair facts, the nine water densities of #352 that
-        `test_agribalyse_water_reaches_the_taxonomy.py` pins, and the two
-        self-naming energy rows of #354 that `test_agribalyse_match_overrides.py`
-        pins.  Counted here so that a statement added for a row nobody has
-        accepted, or dropped from one somebody has, is noticed."""
+    def test_the_statements_file_states_seventeen_rows_eight_of_them_here(self) -> None:
+        """AGRIBALYSE's curated file states 17 properties since #407's phase
+        B: of the eighteen converted rows here that are not pair facts, the
+        eight the vendor's export does not state -- hard coal's misspelt net
+        value, uranium, the radionuclides, water -- plus the nine water
+        densities of #352 that `test_agribalyse_water_reaches_the_taxonomy.py`
+        pins.  The other ten here, and the two self-naming energy rows of #354
+        that `test_agribalyse_match_overrides.py` pins, are the vendor's own
+        statements, read off the export (`tests/vendor_statements.py`).
+        Counted here so that a statement added for a row nobody has accepted,
+        or dropped from one somebody has, is noticed."""
         stated = set(self.statements.statements)
-        self.assertEqual(len(stated), 29)
+        self.assertEqual(len(stated), 17)
         self.assertEqual(
-            sum(len(items) for items in self.statements.statements.values()), 29
+            sum(len(items) for items in self.statements.statements.values()), 17
         )
-        self.assertTrue(set(CONVERTED) - PAIR_FACTS <= stated)
         self.assertEqual(len(set(CONVERTED) - PAIR_FACTS), 18)
+        self.assertEqual(len(CURATED), 8)
+        self.assertEqual(len(VENDOR_STATED), 10)
+        self.assertTrue(CURATED <= stated)
+        self.assertEqual(VENDOR_STATED & stated, set())
         self.assertEqual(PAIR_FACTS & stated, set())
         self.assertEqual((set(REBASED) | set(INERT)) & stated, set())
 
@@ -163,9 +181,11 @@ class TheRowsTestCase(unittest.TestCase):
 
     def test_every_converted_row_states_its_target_factor_and_units(self) -> None:
         """The target always comes off the override.  The factor comes off the
-        override for a pair fact and off the statement for everything else:
-        stated in the target's unit per the row's own, so that what
-        `factor_between` derives for the pair is the stated number itself."""
+        override for a pair fact and off a statement for everything else --
+        the vendor's for the fuels, the curated file's for the rest -- stated
+        in the target's unit per the row's own, so that what `factor_between`
+        derives for the pair is the stated number itself, and the statement
+        the merge picks for the target's quantity is the one that states it."""
         for uuid, (name, _, _, unit, target, factor, target_unit) in CONVERTED.items():
             with self.subTest(name=name, uuid=uuid):
                 override = self.by_uuid[uuid]
@@ -177,17 +197,25 @@ class TheRowsTestCase(unittest.TestCase):
                     self.assertEqual(override.target_unit, target_unit)
                     continue
                 self.assertFalse(override.converts)
-                statements = self.statements.statements[uuid]
-                self.assertEqual(len(statements), 1)
-                statement = statements[0]
-                self.assertEqual(statement.per_unit, unit)
-                self.assertEqual(statement.unit, target_unit)
-                self.assertEqual(factor_between(statement, unit, target_unit), factor)
                 expected = (
                     "fission-energy" if uuid in FISSION
                     else QUANTITY_BY_TARGET_UNIT[target_unit]
                 )
+                statement = converting_statement(
+                    self.source, uuid=uuid, name=name, unit=unit, target_quantity=expected,
+                )
+                self.assertIsNotNone(statement)
+                self.assertEqual(statement.per_unit, unit)
+                self.assertEqual(statement.unit, target_unit)
+                self.assertEqual(factor_between(statement, unit, target_unit), factor)
                 self.assertEqual(statement.quantity, expected)
+                self.assertIs(
+                    statement.stated_by,
+                    StatementOrigin.VENDOR_FLOW if uuid in VENDOR_STATED
+                    else StatementOrigin.CURATED,
+                )
+                if uuid in CURATED:
+                    self.assertEqual(len(self.statements.statements[uuid]), 1)
 
     def test_every_row_is_accepted_against_its_target(self) -> None:
         accepted = _accepted()

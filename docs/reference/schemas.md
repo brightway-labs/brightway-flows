@@ -257,12 +257,16 @@ It is published wherever the two units differ and something converts them, and
 A `flow-property` factor carries a fourth key, `conversion_quantity`: the IRI of
 the quantity the number came through, from `quantities.json` —
 `https://vocab.brightway.one/quantity/net-calorific-value` on AGRIBALYSE's coal,
-`…/gross-calorific-value` on Stepwise's. That is what tells a reader that
-Stepwise's 19.1 is a gross value landing on EF 3.1's net-calorific-value flow,
-and that ecoinvent's 18.01 for hard coal, published through
-`…/calorific-value`, is a heat of combustion whose basis the workbook never
-stated. In the published correspondences the key is
-`brightway:conversionQuantity`.
+`…/calorific-value` on Stepwise's. That is what tells a reader that Stepwise's
+19.1 is the number its own method counts a kilogram as, stated with no basis,
+landing on EF 3.1's net-calorific-value flow — the flow itself also carries the
+substance block's gross 19.1, so a reader can see which it is — and that
+ecoinvent's 18.01 for hard coal, published through the same IRI, is a heat of
+combustion whose basis the workbook never stated. In the published
+correspondences the key is `brightway:conversionQuantity`, and
+`conversion_provenance` names the file the number was read out of: the vendor's
+own export where the vendor stated it, the list's `<list>-property-statements.json`
+where a curator did.
 
 `conversion_provenance` is the factor's own PROV record. For a `unit-table`
 factor it names the two unit IRIs and `units.json`:
@@ -335,10 +339,17 @@ number. A release nobody has checked is refused rather than given the default,
 so the next ecoinvent means reading its implementation report rather than
 inheriting a value by silence.
 
-Every ecoinvent number above is read from that release's own `LCIA
-Implementation` workbook, under `energy resources: non-renewable`. The characterisation factor
-there is 1 MJ per MJ for a flow already in megajoules, so on a kilogram flow it
-is the energy content, which is why the workbook answers the question at all.
+From 3.9.1 the crude oil and natural gas numbers are ecoinvent's own, read off
+the exchange: `Oil, crude` carries a `heating value, net` property of 43.4 (and
+a gross one of 46), `Gas, natural` 36 per standard cubic metre (and 40), each
+citing Meili et al. (2022), and the adapter reads them onto the flow as the
+vendor's statements. Every other ecoinvent number above — the two coals, uranium,
+sea water, and 3.8's crude oil and gas, whose exchanges carry no property — is
+read from that release's own `LCIA Implementation` workbook, under `energy
+resources: non-renewable`, and stated in `ecoinvent-property-statements.json`.
+The characterisation factor there is 1 MJ per MJ for a flow already in
+megajoules, so on a kilogram flow it is the energy content, which is why the
+workbook answers the question at all.
 
 A factor can differ between *lists* for the same reason it can differ between
 releases: it describes a pair, not a substance. BAFU's `Oil, crude` converts at
@@ -359,9 +370,14 @@ both a mass of crude oil and the energy from it, where ecoinvent's converts at
 
 Stepwise 2006 reaches the same energy-content flows from its own masses and
 volumes, and states its own numbers for them. Twelve rows, every one taken from
-Stepwise's own export — the higher heating value in its substance block, which
-is also the factor its `Non-renewable energy` category gives the flow, and for
-six of the gas rows the energy content the row's own name states:
+Stepwise's own export by the adapter: the number is the factor its
+`Non-renewable energy` category gives the flow, which is what Stepwise counts a
+kilogram of it as, and `stepwise-2006-property-statements.json` rules that this
+is the number a Stepwise row converts by. The substance block states a higher
+and a lower heating value beside it — the method's number is the higher one for
+hard coal, brown coal and crude oil, the lower one for the six gas rows whose
+own name states it, and neither for `Gas, natural/m3` and peat — and the flow
+carries all of them:
 
 | Stepwise 2006 flow | | consensus flow | Multiplier |
 |---|---|---|---:|
@@ -645,27 +661,36 @@ that list's own, read out of its own archive. The ecoinvent ones reached this
 project through the `randonneur_data`
 correspondence tables while those were loaded; the tables are retired
 ([#141](https://github.com/brightway-labs/brightway-flows/issues/141)) and
-each number now lives in `ecoinvent-property-statements.json` as a statement
-about the flow: one kilogram of `Coal, hard, unspecified, in ground` is 18.01 MJ
-of calorific value, checked against the five releases, with the workbook named
-as its source. They are not in the JRC's own EF 3.1 distribution: every one of the target
+each number is now a statement about the flow: one kilogram of `Coal, hard,
+unspecified, in ground` is 18.01 MJ of calorific value, stated in
+`ecoinvent-property-statements.json` and checked against the five releases,
+with the workbook named as its source; one kilogram of `Oil, crude` is 43.4 MJ
+of net calorific value, stated by the exchange's own `heating value, net`
+property from 3.9.1 and read off the master data by the adapter. They are not
+in the JRC's own EF 3.1 distribution: every one of the target
 flow datasets in `EF-v3.1.zip` carries a single flow-property `meanValue` of
 `1.0`, and no characterisation factor in its LCIA methods has these values.
 The ecoinvent implementation is where they exist.
 
 **The basis is stated where the source states it.** A calorific value is net
 or gross, and 26 MJ/kg dry-ash-free is a different claim from 26 MJ/kg
-as-received. Each statement names its quantity: AGRIBALYSE's fuels are
-`net-calorific-value`, because its substance block gives a lower heating value
-and EF 3.1's energy flows measure net; Stepwise's coal and crude oil are
-`gross-calorific-value`, because its method's factors are the higher heating
-value; ecoinvent's and BAFU's coal are `calorific-value`, a heat of combustion
-whose workbook states no basis; every list's uranium is `fission-energy`, which
-is not a heat of combustion at all and never converts onto one. The mapping
-publishes the quantity it used as `conversion_quantity`, so a gross value
-landing on a net flow says so. Which bases exist, and what each is called by
-ILCD, SimaPro, ecoinvent and QUDT, is `quantities.json`; the ash and moisture
-basis of a coal value is still nobody's to state, and stays in the comment.
+as-received. Each statement names its quantity, as its source labels it:
+AGRIBALYSE's fuels convert by their `net-calorific-value`, the substance block's
+`Lower heating value (LHV)` line, because EF 3.1's energy flows measure net;
+Stepwise's convert by a `calorific-value` of unstated basis, the number its
+method's `Non-renewable energy` category gives the row, because that is what
+Stepwise counts a kilogram as and the method says neither net nor gross — the
+flow also carries the block's `Higher heating value (HHV)` and `Lower heating
+value (LHV)` as gross and net, so a reader can see that hard coal's 19.1 is the
+gross one; ecoinvent's crude oil and natural gas carry both `heating value, net`
+and `heating value, gross` from their exchanges; ecoinvent's and BAFU's coal are
+`calorific-value`, a heat of combustion whose workbook states no basis; every
+list's uranium is `fission-energy`, which is not a heat of combustion at all and
+never converts onto one. The mapping publishes the quantity it used as
+`conversion_quantity`, so a basis-unstated or gross value landing on a net flow
+says so. Which bases exist, and what each is called by ILCD, SimaPro, ecoinvent
+and QUDT, is `quantities.json`; the ash and moisture basis of a coal value is
+still nobody's to state, and stays in the comment.
 
 **The factor is on the mapping; what it is derived from is on the flow.** 9.41
 is what a kilogram of ecoinvent's brown coal becomes on EF's `Brown Coal` in
@@ -674,8 +699,13 @@ coal is 9.41 MJ of calorific value" is a fact about the source flow, said by
 ecoinvent's implementation, and since
 [#407](https://github.com/brightway-labs/brightway-flows/issues/407) it lives
 on the source flow as a property statement — quantity, value, unit, who said it
-and where — in that list's `<list>-property-statements.json`, read onto the flow
-when the list is loaded. The merge derives the multiplier from it. An override
+and where. Where the vendor's own file states it — SimaPro's substance block,
+Stepwise's method, ecoinvent's exchange properties, a number in a flow's name —
+the adapter or the load reads it onto the flow from there, `stated_by`
+`vendor-flow`, `vendor-method` or `flow-name`; where nobody states it, a curator
+writes it in that list's `<list>-property-statements.json`, `stated_by`
+`curated`, naming where the number came from. The merge derives the multiplier
+from it. An override
 row keeps a `conversion_factor` only for a pair fact no property of the flow
 expresses: an ore's share of its metal, mine gas at 1.0 from plain to standard
 cubic metres. Nothing is written onto a flow object yet; a reference value with

@@ -89,12 +89,28 @@ from brightway_flows.domain.common import Provenance
 from brightway_flows.domain.context_registry import context_for_iri
 from brightway_flows.domain.elementary_flow import ElementaryFlow
 from brightway_flows.domain.flow_object import FlowObject
+from vendor_statements import (
+    AGRIBALYSE_VENDOR_STATED,
+    ECOINVENT_CRUDE_OIL,
+    ECOINVENT_NATURAL_GAS,
+    ECOINVENT_PROPERTY_DEFINITIONS,
+    STEPWISE_CARRIERS,
+    resolved_statements,
+)
+
 from brightway_flows.domain.property_statements import (
     ConversionRule,
     PropertyStatement,
     StatementOrigin,
+    choose_statement,
     factor_between,
 )
+from brightway_flows.domain.quantities import (
+    FISSION_ENERGY,
+    MASS,
+    NET_CALORIFIC_VALUE,
+)
+from brightway_flows.integrations.ecoinvent import statements_from_properties
 from brightway_flows.domain.simple_flow import SimpleFlow
 from brightway_flows.domain.units import (
     CONVERSION_BASIS_KEY,
@@ -196,6 +212,18 @@ UNIT_PAIRS_BY_RELEASE = {
 #: number is a fact about the flow.
 PROPERTY_STATED = frozenset(UNIT_PAIRS)
 
+#: What each property-stated flow's target measures, which is what the merge
+#: asks the flow's statements for: EF's energy flows net calorific value, its
+#: uranium fission energy, sea water a mass.
+TARGET_QUANTITIES = {
+    "024c9722-1e88-412b-8c4b-10c532be8dca": NET_CALORIFIC_VALUE,
+    "b6d0042d-0ef8-49ed-9162-a07ff1ccf750": NET_CALORIFIC_VALUE,
+    "88d06db9-59a1-4719-9174-afeb1fa4026a": NET_CALORIFIC_VALUE,
+    GAS: NET_CALORIFIC_VALUE,
+    "2ba5e39b-adb6-4767-a51d-90c1cf32fe98": FISSION_ENERGY,
+    "629ffbca-ca71-4e4b-a006-ca9bdd9cd1df": MASS,
+}
+
 #: BAFU source flow uuid -> (factor, target uuid).  BAFU carries the ore flow
 #: in ecoinvent 3.8's old spelling under its own uuids, and the same 0.599
 #: decision covers them -- stated in `bafu-2026-v1-match-overrides.json`,
@@ -258,6 +286,64 @@ def _one_statement(loaded, source_uuid):
     return statement
 
 
+#: ecoinvent's two exchanges that carry heating-value properties from 3.9.1,
+#: as the master data hands them over (`tests/vendor_statements.py`).
+_ECOINVENT_EXCHANGES = {
+    "88d06db9-59a1-4719-9174-afeb1fa4026a": (ECOINVENT_CRUDE_OIL, "kg"),
+    GAS: (ECOINVENT_NATURAL_GAS, "sm3"),
+}
+
+
+def _ecoinvent_statements(source, source_uuid):
+    """Every statement an ecoinvent release leaves on *source_uuid*.
+
+    The curated file's where it states the number for this release, else the
+    exchange's own properties where the file says the vendor states it
+    (`stated_by_vendor_in`) -- the two homes #407's phase B split the six
+    between, read the way the load reads them.
+    """
+    loaded = source.load_property_statements()
+    if source_uuid in loaded.statements:
+        return list(loaded.statements[source_uuid])
+    if source_uuid in loaded.expected_from_vendor:
+        obj, unit = _ECOINVENT_EXCHANGES[source_uuid]
+        return statements_from_properties(
+            obj, ECOINVENT_PROPERTY_DEFINITIONS, flow_unit=unit,
+            version=source.list_version, source=source.source_label,
+        )
+    return []
+
+
+def _ecoinvent_statement(source, source_uuid, target_quantity):
+    """The statement the merge converts *source_uuid* by onto *target_quantity*."""
+    return choose_statement(
+        _ecoinvent_statements(source, source_uuid),
+        target_quantity=target_quantity,
+        rules=source.load_property_statements().rules,
+    )
+
+
+def _all_stated(source):
+    """Every statement the load leaves on each of *source*'s stated rows.
+
+    The curated file's statements and, for the lists whose vendors state
+    numbers, the vendor's -- read through the same readers the load uses, off
+    the lines `tests/vendor_statements.py` copies from the vendor files.
+    """
+    loaded = source.load_property_statements()
+    out = {uuid: list(items) for uuid, items in loaded.statements.items()}
+    if source.list_name == "stepwise":
+        for uuid, (name, unit, _factor) in STEPWISE_CARRIERS.items():
+            out[uuid] = resolved_statements(source, uuid=uuid, name=name, unit=unit)
+    elif source.list_name == "agribalyse":
+        for uuid, (name, unit) in AGRIBALYSE_VENDOR_STATED.items():
+            out[uuid] = resolved_statements(source, uuid=uuid, name=name, unit=unit)
+    elif source.list_name == "ecoinvent":
+        for uuid in loaded.expected_from_vendor:
+            out[uuid] = _ecoinvent_statements(source, uuid)
+    return out
+
+
 def _quantity_iri(slug):
     return f"{QUANTITY_IRI_PREFIX}{slug}"
 
@@ -278,8 +364,7 @@ class RespelledUnitTestCase(unittest.TestCase):
     """
 
     def _gas(self, key):
-        loaded = resolve_source_list(key).load_property_statements()
-        return _one_statement(loaded, GAS)
+        return _ecoinvent_statement(resolve_source_list(key), GAS, NET_CALORIFIC_VALUE)
 
     def test_3_8_reads_its_own_value_per_cubic_metre(self):
         statement = self._gas("ecoinvent-3.8")
@@ -367,7 +452,8 @@ class EveryVersionTestCase(unittest.TestCase):
                 uuid for uuid, row in rows.items()
                 if conversion_from_prepared_rows([row]) is not None
             }
-            stated = set(source.load_property_statements().statements)
+            loaded = source.load_property_statements()
+            stated = set(loaded.statements) | set(loaded.expected_from_vendor)
             with self.subTest(key=key):
                 self.assertEqual(converting, ELEMENTAL_CONTENT)
                 self.assertEqual(stated, PROPERTY_STATED)
@@ -399,7 +485,6 @@ class EveryVersionTestCase(unittest.TestCase):
         for key in _ecoinvent_keys():
             source = resolve_source_list(key)
             release = source.list_version
-            loaded = source.load_property_statements()
             rows = {
                 _source_uuid(row): row
                 for row in load_prepared_match_table(source)
@@ -415,9 +500,19 @@ class EveryVersionTestCase(unittest.TestCase):
                     source_unit, target_unit = UNIT_PAIRS_BY_RELEASE.get(
                         (source_uuid, release), UNIT_PAIRS[source_uuid]
                     )
-                    statement = _one_statement(loaded, source_uuid)
+                    statement = _ecoinvent_statement(
+                        source, source_uuid, TARGET_QUANTITIES[source_uuid]
+                    )
+                    self.assertIsNotNone(statement)
                     self.assertEqual(
                         factor_between(statement, source_unit, target_unit), expected
+                    )
+                    # 3.8's crude oil and gas are the curator's, read off the
+                    # workbook; from 3.9.1 the exchange states them itself.
+                    vendors = source_uuid in _ECOINVENT_EXCHANGES and release != "3.8"
+                    self.assertIs(
+                        statement.stated_by,
+                        StatementOrigin.VENDOR_FLOW if vendors else StatementOrigin.CURATED,
                     )
 
     def test_every_converting_row_names_both_of_its_units(self):
@@ -512,21 +607,22 @@ class AllowlistAgreementTestCase(unittest.TestCase):
         }
 
     def _statement_pairs(self, source):
-        """(source uuid, statement, target uuid) for every statement *source* makes.
+        """(source uuid, statements, target uuid) for every stated row of *source*.
 
-        One per target the list's override names for the flow.  A statement
-        whose flow has no override row yields nothing, and the first test
-        below is what says that never happens.
+        One per target the list's override names for the flow, with every
+        statement the load leaves on the row -- the curator's and the
+        vendor's (:func:`_all_stated`).  A stated flow with no override row
+        yields nothing, and the first test below is what says that never
+        happens.
         """
-        loaded = source.load_property_statements()
+        stated = _all_stated(source)
         targets = defaultdict(list)
         for row in load_prepared_match_table(source):
-            if _source_uuid(row) in loaded.statements:
+            if _source_uuid(row) in stated:
                 targets[_source_uuid(row)].append(_target_uuid(row))
         return [
-            (source_uuid, statement, target_uuid)
-            for source_uuid, statements in loaded.statements.items()
-            for statement in statements
+            (source_uuid, statements, target_uuid)
+            for source_uuid, statements in stated.items()
             for target_uuid in targets[source_uuid]
         ]
 
@@ -534,14 +630,15 @@ class AllowlistAgreementTestCase(unittest.TestCase):
         """What makes the sweep a sweep: a statement is about a flow, and the
         pair it converts is only known once the override says where the flow
         goes.  The count is the 58 rows #407 moved, by list, so that a file
-        losing its rows reads as a loss rather than as fewer things to check."""
+        losing its rows reads as a loss rather than as fewer things to check
+        -- whichever of the two homes, the curated file or the vendor's own,
+        the row's number is in since phase B."""
         moved = defaultdict(set)
         for source in _lists_with_statements():
-            loaded = source.load_property_statements()
             pairs = self._statement_pairs(source)
             with self.subTest(key=source.key):
                 self.assertEqual(
-                    {uuid for uuid, _, _ in pairs}, set(loaded.statements)
+                    {uuid for uuid, _, _ in pairs}, set(_all_stated(source))
                 )
             for source_uuid, _, target_uuid in pairs:
                 moved[source.list_name].add((source_uuid, target_uuid))
@@ -560,22 +657,32 @@ class AllowlistAgreementTestCase(unittest.TestCase):
         """
         allowed = load_unit_change_allowlist()
         entries = self._allowlisted()
-        per_units = defaultdict(set)
-        pairs = []
+        # Across a list's releases, because ecoinvent's gas is per `m3` in 3.8
+        # and per `sm3` after, and one entry reviews the pair for the list.
+        across = defaultdict(list)
+        keys = {}
         for source in _lists_with_statements():
-            for source_uuid, statement, target_uuid in self._statement_pairs(source):
-                per_units[(source.list_name, source_uuid)].add(statement.per_unit)
-                pairs.append((source, source_uuid, statement, target_uuid))
-        self.assertTrue(pairs)
-        for source, source_uuid, statement, target_uuid in pairs:
-            with self.subTest(key=source.key, flow=source_uuid):
+            for source_uuid, statements, target_uuid in self._statement_pairs(source):
+                across[(source.list_name, source_uuid, target_uuid)].extend(statements)
+                keys.setdefault((source.list_name, source_uuid, target_uuid), source.key)
+        self.assertTrue(across)
+        for (list_name, source_uuid, target_uuid), statements in across.items():
+            with self.subTest(key=keys[(list_name, source_uuid, target_uuid)], flow=source_uuid):
                 self.assertIn((source_uuid, target_uuid), allowed)
                 entry = entries[(source_uuid, target_uuid)]
-                self.assertIn(
-                    str(entry["source_unit"]),
-                    per_units[(source.list_name, source_uuid)],
+                # Some statement on the row bridges the pair the entry was
+                # reviewed between; a row stating only per another unit would
+                # be reviewed for a pair it does not convert.
+                self.assertTrue(
+                    any(
+                        factor_between(
+                            statement, str(entry["source_unit"]), str(entry["target_unit"])
+                        ) is not None
+                        for statement in statements
+                    ),
+                    f"no statement on {source_uuid} bridges "
+                    f"{entry['source_unit']} -> {entry['target_unit']}",
                 )
-                self.assertEqual(str(entry["target_unit"]), statement.unit)
 
     def test_every_pair_fact_across_units_is_allowlisted(self):
         """The other home: a factor an override still states between two

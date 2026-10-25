@@ -374,7 +374,11 @@ A kilogram of AGRIBALYSE's `Coal, hard` lands on EF 3.1's `Hard Coal`, which is
 measured in megajoules, and the mapping has to say how many: 18.2, because the
 substance block at the end of AGRIBALYSE's export gives that coal a lower heating
 value of 18.2 MJ/kg. That is a fact about AGRIBALYSE's flow, not about the pair,
-and it is written down as one, in `agribalyse-3.2-property-statements.json`:
+and it is written down as one. For this coal a curator writes it, in
+`agribalyse-3.2-property-statements.json`, because the vendor's line is misspelt
+(`18.2 MH/kg`) and the adapter leaves it unread; for brown coal beside it the
+adapter reads `Lower heating value (LHV): 8.75 MJ/kg` off the export itself and
+the file says nothing. Either way the statement has the same shape:
 
 ```json
 {
@@ -392,14 +396,15 @@ and it is written down as one, in `agribalyse-3.2-property-statements.json`:
 ```
 
 Read: one `per_unit` of this flow is `value` `unit` of `quantity`. The merge
-reads the statements onto the list's flows as it loads them and, when a row
-lands on a flow measured in another quantity, derives the mapping's
-`qudt:conversionMultiplier` from the statement whose quantity the target
-measures — EF's energy flows are net calorific value, so the net statement —
-and publishes it with `conversion_basis` `flow-property` and the quantity's IRI
-as `conversion_quantity`. Every list's manifest names its file under
-`inputs.property_statements`; `ecoinvent-property-statements.json` is shared by
-the five ecoinvent releases, as the overrides file is.
+reads the curated statements onto the list's flows as it loads them, beside the
+vendor's own, and, when a row lands on a flow measured in another quantity,
+derives the mapping's `qudt:conversionMultiplier` from the statement the list's
+rule names, else the one whose quantity the target measures — EF's energy flows
+are net calorific value, so the net statement — else a calorific value of
+unstated basis, and publishes it with `conversion_basis` `flow-property` and the
+quantity's IRI as `conversion_quantity`. Every list's manifest names its file
+under `inputs.property_statements`; `ecoinvent-property-statements.json` is
+shared by the five ecoinvent releases, as the overrides file is.
 
 The fields a statement has to say, and why:
 
@@ -423,20 +428,47 @@ The fields a statement has to say, and why:
   neither is refused when that release is merged, naming the row to re-read,
   as the override's `conversion_checked_against` is.
 - **`primary_source`** says where the number came from: the vendor's file and
-  section, the workbook, the IPCC table. **`stated_by`** says who: `vendor-flow`,
-  `vendor-method`, `flow-name` or `curated`. Every statement is `curated` until
-  the parsers read the vendor files themselves; BAFU's 18.01 says in its
-  primary source that it is ecoinvent's workbook figure, borrowed, and that is
-  what makes a borrowed number visible.
+  section, the workbook, the IPCC table. **`stated_by`** says who, and in this
+  file it is `curated`: BAFU's 18.01 says in its primary source that it is
+  ecoinvent's workbook figure, borrowed, and that is what makes a borrowed
+  number visible.
+- **`stated_by_vendor_in`** names the releases whose own file states the
+  quantity, so the entry yields nothing for them: ecoinvent's crude oil is
+  42.3 for 3.8, whose exchange carries no heating value, and
+  `["3.9.1", "3.10.1", "3.11", "3.12"]` are the vendor's to state. The load
+  checks the vendor did, and refuses the entry for a release named nowhere.
 
-Two rulings about quantities live in the same file. A **conversion rule** says
-which statement quantity converts onto a target of another: Stepwise's method
-states gross calorific values, so its file rules `gross-calorific-value` onto
-`net-calorific-value`, and its coal lands at 19.1 with the mapping saying so.
-A **reference quantity** corrects what a named flow's unit measures where the
-vendor's own flow property is wrong: EF 3.1 labels its `uranium` flow's
-megajoule a net calorific value, and `ef-3.1-property-statements.json` rules it
-`fission-energy`, so no heat of combustion ever converts onto it.
+**Most numbers are the vendor's own, and are not in this file.** SimaPro's
+substance block writes a fuel's heating values beside its synonyms — `Higher
+heating value (HHV): 19.1 MJ/kg`, `Lower heating value (LHV): 18.2 MJ/kg` — and
+the Stepwise and AGRIBALYSE adapters read them onto the flow as the vendor's
+statements, `stated_by` `vendor-flow`, with the line quoted as the primary
+source; the Stepwise adapter also writes the megajoules the method's
+`Non-renewable energy` category gives a kilogram, `stated_by` `vendor-method`;
+the ecoinvent adapter reads the `heating value, net` and `heating value, gross`
+properties an exchange carries; and when a SimaPro-shaped list is loaded, a
+name like `Gas, natural, 46.8 MJ per kg` is read as a statement `stated_by`
+`flow-name`. The method's factor and the name say only "megajoules", so both are
+read as a `calorific-value` of unstated basis. The curated file is for what
+nobody states — the water densities, the radionuclides' activities, a line the
+vendor misspelt (`18.2 MH/kg`) — and a curated entry for a quantity the vendor
+already states is refused: one number has one home.
+
+Three rulings about quantities live in the same file. A **conversion rule** says
+which statement quantity converts onto a target of another, and comes before the
+exact match, because it is written exactly where the exact match is not what the
+list counts: Stepwise counts a kilogram of brown coal as the 9.9 MJ its method
+gives it, not the 8.75 net value its substance block also states, so its file
+rules that onto `net-calorific-value` a row converts by the `calorific-value`
+`stated_by` `vendor-method`, and the mapping says so. An **energy quantity**
+says what a vendor's unlabelled energy is for a named row: Stepwise's method gives
+`Uranium` 560,000 MJ a kilogram, and the name `Uranium oxide, 332 GJ per kg, in
+ore` says what it says; both files rule those rows `fission-energy`, so the
+number never converts onto a heat of combustion. A **reference quantity**
+corrects what a named flow's unit measures where the vendor's own flow property
+is wrong: EF 3.1 labels its `uranium` flow's megajoule a net calorific value, and
+`ef-3.1-property-statements.json` rules it `fission-energy`, so only a fission
+energy ever converts onto it.
 
 An override row may still state a `conversion_factor`, for a pair fact no
 property of the flow expresses — titanium's share of its ore, mine gas at 1.0

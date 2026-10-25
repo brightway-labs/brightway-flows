@@ -30,6 +30,7 @@ Where a row is reached:
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from functools import lru_cache
 from typing import Any
@@ -208,6 +209,40 @@ def quantity_for_unit(unit: str) -> str | None:
         return None
     kind = str(row.get("quantity_kind_iri") or "").rsplit("/", 1)[-1]
     return _GENERIC_BY_KIND.get(kind)
+
+
+#: A parenthetical qualifier on a vendor's label -- SimaPro's `Specific weight
+#: (for absolutely dry, u=0%)` -- which says how the value was measured, not
+#: what it measures.
+_PARENTHETICAL = re.compile(r"\s*\([^)]*\)")
+
+
+@lru_cache(maxsize=1)
+def _by_label() -> dict[str, str]:
+    index: dict[str, str] = {}
+    for q in load_quantities().values():
+        for spelling in (q.label, *q.aliases):
+            index[" ".join(spelling.casefold().split())] = q.slug
+    return index
+
+
+def quantity_for_label(label: str) -> str | None:
+    """The quantity a vendor's *label* names, by the vocabulary's spellings.
+
+    `Higher heating value (HHV)` and `heating value, net` are aliases the file
+    lists; `Specific weight (for absolutely dry, u=0%)` is read as `Specific
+    weight` once its measurement qualifier is dropped.  Case and spacing do
+    not count.  ``None`` for a label no row spells, which is how a parser
+    passes over `wet mass` or `carbon content, fossil` without guessing.
+    """
+    text = " ".join(str(label or "").casefold().split())
+    if not text:
+        return None
+    found = _by_label().get(text)
+    if found is not None:
+        return found
+    stripped = " ".join(_PARENTHETICAL.sub("", text).split())
+    return _by_label().get(stripped) if stripped != text else None
 
 
 @lru_cache(maxsize=1)
