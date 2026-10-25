@@ -62,6 +62,171 @@
         "d43572af-d023-443b-9fad-d56ffc0adc53": 7.8328e-07
       },
       "comment": "GreenDelta's package ships three `Chromium III` rows to Emission to air/low population density, and two of them reach this flow with EF 3.1 factors: 017c1ca1 states EF's chromium(3+) numbers, d43572af EF's numbers for elemental chromium (4,292.06 CTUe/kg and 7.8328e-7 CTUh/kg, which EF also gives chromium(6+)). Nothing else on d43572af says elemental chromium: its name, its CAS 16065-83-1 and its formula `Cr3+` are chromium(3+)'s. Every other method in the package scores d43572af as chromium(3+) -- ReCiPe 2016, USEtox 2, TRACI, ILCD 2011, EF 2.0 and EF 3.0 give it 017c1ca1's number, and ECO-COSTS 2025, which uses EF 3.1's numbers, gives it 333.7 and 1.703e-9 -- and the same kind of row in every other compartment carries EF 3.1's chromium(3+) number (333.09 in high-population air, 478.27 in industrial soil, 952.30 in fresh water). The elemental number on d43572af is read as a mis-mapping in GreenDelta's EF 3.1 factors, and 017c1ca1's number is published; it is also what the JRC and ecoinvent's implementation state for this flow. Ruled by the project owner on 25 October 2026 (#445, analysis in issuecomment-6394138215). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-697e126705df00f6",
+      "substance": "Arsenic, ion",
+      "category_slug": "human-toxicity-cancer",
+      "category": "Human toxicity, cancer",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "0cc4fa9c-ed07-4249-988d-6b2fe84b7dff",
+      "ruled_about": {
+        "0cc4fa9c-ed07-4249-988d-6b2fe84b7dff": 3.4101e-05,
+        "c0f8b131-19e5-4787-9c2d-142378b08c2a": 1.8565e-05
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: 0cc4fa9c copies EF's number for surface water and c0f8b131 EF's number for unspecified water, checked against the JRC's numbers for arsenic, arsenic(3+) and arsenic(5+), which are one number in each compartment (the JRC characterises no generic arsenic ion). Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-697e126705df00f6",
+      "substance": "Arsenic, ion",
+      "category_slug": "human-toxicity-cancer-inorganics",
+      "category": "Human toxicity, cancer_inorganics",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "0cc4fa9c-ed07-4249-988d-6b2fe84b7dff",
+      "ruled_about": {
+        "0cc4fa9c-ed07-4249-988d-6b2fe84b7dff": 3.4101e-05,
+        "c0f8b131-19e5-4787-9c2d-142378b08c2a": 1.8565e-05
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: 0cc4fa9c copies EF's number for surface water and c0f8b131 EF's number for unspecified water, checked against the JRC's numbers for arsenic, arsenic(3+) and arsenic(5+), which are one number in each compartment (the JRC characterises no generic arsenic ion). Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-697e126705df00f6",
+      "substance": "Arsenic, ion",
+      "category_slug": "human-toxicity-non-cancer",
+      "category": "Human toxicity, non-cancer",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "0cc4fa9c-ed07-4249-988d-6b2fe84b7dff",
+      "ruled_about": {
+        "0cc4fa9c-ed07-4249-988d-6b2fe84b7dff": 0.002526,
+        "c0f8b131-19e5-4787-9c2d-142378b08c2a": 0.0013752
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: 0cc4fa9c copies EF's number for surface water and c0f8b131 EF's number for unspecified water, checked against the JRC's numbers for arsenic, arsenic(3+) and arsenic(5+), which are one number in each compartment (the JRC characterises no generic arsenic ion). Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-697e126705df00f6",
+      "substance": "Arsenic, ion",
+      "category_slug": "human-toxicity-non-cancer-inorganics",
+      "category": "Human toxicity, non-cancer_inorganics",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "0cc4fa9c-ed07-4249-988d-6b2fe84b7dff",
+      "ruled_about": {
+        "0cc4fa9c-ed07-4249-988d-6b2fe84b7dff": 0.002526,
+        "c0f8b131-19e5-4787-9c2d-142378b08c2a": 0.0013752
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: 0cc4fa9c copies EF's number for surface water and c0f8b131 EF's number for unspecified water, checked against the JRC's numbers for arsenic, arsenic(3+) and arsenic(5+), which are one number in each compartment (the JRC characterises no generic arsenic ion). Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-31ab226b5e0a22ac",
+      "substance": "Cadmium(2+)",
+      "category_slug": "human-toxicity-cancer",
+      "category": "Human toxicity, cancer",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "ba29bfe3-17a6-4702-8b50-9b63884bf91c",
+      "ruled_about": {
+        "ba29bfe3-17a6-4702-8b50-9b63884bf91c": 1.7466e-06,
+        "68701316-d3f5-4e08-8814-6b3b28712d85": 9.276e-07
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: ba29bfe3 copies EF's number for surface water and 68701316 EF's number for unspecified water, checked against the JRC's numbers for cadmium(2+) itself. Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-31ab226b5e0a22ac",
+      "substance": "Cadmium(2+)",
+      "category_slug": "human-toxicity-cancer-inorganics",
+      "category": "Human toxicity, cancer_inorganics",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "ba29bfe3-17a6-4702-8b50-9b63884bf91c",
+      "ruled_about": {
+        "ba29bfe3-17a6-4702-8b50-9b63884bf91c": 1.7466e-06,
+        "68701316-d3f5-4e08-8814-6b3b28712d85": 9.276e-07
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: ba29bfe3 copies EF's number for surface water and 68701316 EF's number for unspecified water, checked against the JRC's numbers for cadmium(2+) itself. Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-31ab226b5e0a22ac",
+      "substance": "Cadmium(2+)",
+      "category_slug": "human-toxicity-non-cancer",
+      "category": "Human toxicity, non-cancer",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "ba29bfe3-17a6-4702-8b50-9b63884bf91c",
+      "ruled_about": {
+        "ba29bfe3-17a6-4702-8b50-9b63884bf91c": 0.00046859,
+        "68701316-d3f5-4e08-8814-6b3b28712d85": 0.00024887
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: ba29bfe3 copies EF's number for surface water and 68701316 EF's number for unspecified water, checked against the JRC's numbers for cadmium(2+) itself. Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-31ab226b5e0a22ac",
+      "substance": "Cadmium(2+)",
+      "category_slug": "human-toxicity-non-cancer-inorganics",
+      "category": "Human toxicity, non-cancer_inorganics",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "ba29bfe3-17a6-4702-8b50-9b63884bf91c",
+      "ruled_about": {
+        "ba29bfe3-17a6-4702-8b50-9b63884bf91c": 0.00046859,
+        "68701316-d3f5-4e08-8814-6b3b28712d85": 0.00024887
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: ba29bfe3 copies EF's number for surface water and 68701316 EF's number for unspecified water, checked against the JRC's numbers for cadmium(2+) itself. Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-68c3d37c7952fd0f",
+      "substance": "Nickel(2+)",
+      "category_slug": "human-toxicity-cancer-inorganics",
+      "category": "Human toxicity, cancer_inorganics",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "7aca2bc2-51ed-4ef5-b569-fb153216fea9",
+      "ruled_about": {
+        "7aca2bc2-51ed-4ef5-b569-fb153216fea9": 1.1893e-05,
+        "c742a8cc-6f9c-4742-879c-a18be0d6e5ad": 6.2525e-06
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: 7aca2bc2 copies EF's number for surface water and c742a8cc EF's number for unspecified water, checked against the JRC's numbers for nickel(2+) itself. Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-68c3d37c7952fd0f",
+      "substance": "Nickel(2+)",
+      "category_slug": "human-toxicity-non-cancer",
+      "category": "Human toxicity, non-cancer",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "7aca2bc2-51ed-4ef5-b569-fb153216fea9",
+      "ruled_about": {
+        "7aca2bc2-51ed-4ef5-b569-fb153216fea9": 6.6923e-07,
+        "c742a8cc-6f9c-4742-879c-a18be0d6e5ad": 3.5185e-07
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: 7aca2bc2 copies EF's number for surface water and c742a8cc EF's number for unspecified water, checked against the JRC's numbers for nickel(2+) itself. Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
+    },
+    {
+      "implemented_by": "GreenDelta",
+      "flow_object_id": "fo-68c3d37c7952fd0f",
+      "substance": "Nickel(2+)",
+      "category_slug": "human-toxicity-non-cancer-inorganics",
+      "category": "Human toxicity, non-cancer_inorganics",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lake",
+      "context": "Environmental → Water → Lake",
+      "publish_source_flow_uuid": "7aca2bc2-51ed-4ef5-b569-fb153216fea9",
+      "ruled_about": {
+        "7aca2bc2-51ed-4ef5-b569-fb153216fea9": 6.6923e-07,
+        "c742a8cc-6f9c-4742-879c-a18be0d6e5ad": 3.5185e-07
+      },
+      "comment": "EF 3.1 has no lake compartment, and GreenDelta's package ships two rows of this substance to Emission to water/lake: 7aca2bc2 copies EF's number for surface water and c742a8cc EF's number for unspecified water, checked against the JRC's numbers for nickel(2+) itself. Which registry number a row carries says nothing about which: EF gives the element and the ion one number in every water compartment. A lake is surface water in this list's context vocabulary, and the consensus implementation already carries surface water's number into it, so the surface-water row is published and GreenDelta's column agrees with it. Ruled by the project owner on 25 October 2026 (#446). On the six-list build of 3b6528e the collision published neither number."
     }
   ]
 }

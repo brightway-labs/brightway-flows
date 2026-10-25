@@ -271,6 +271,14 @@ factor of a *different* EF flow, reaching one flow of ours.
   chromium(3+). So the chromium(3+) number is published, in all four categories
   the two rows share
   ([#445](https://github.com/brightway-labs/brightway-flows/issues/445)).
+- **Ruled: cadmium(2+), nickel(2+) and the arsenic ion in lake water.** EF 3.1
+  has no lake compartment. For each of these metals the package ships two lake
+  rows: one copies EF's surface-water number and the other its unspecified-water
+  number, about 1.9 times lower. A lake is surface water here, so the
+  surface-water number is published, as the consensus already does. For
+  cadmium's non-cancer human toxicity that is 4.6859e-4 CTUh/kg rather than
+  2.4887e-4. The rulings cover 11 factors over the three metals
+  ([#446](https://github.com/brightway-labs/brightway-flows/issues/446)).
 
 ## Rows sent to a curated target
 

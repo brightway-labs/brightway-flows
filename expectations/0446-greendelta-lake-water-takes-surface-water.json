@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "description": "EF 3.1 has no lake compartment, and GreenDelta's openLCA package ships two rows each of `Cadmium II`, `Nickel II` and `Arsenic ion` to Emission to water/lake: in each pair one row copies EF's surface-water number and the other its unspecified-water number, whatever registry number it carries. Both reach one flow of ours, so on the six-list build of 3b6528e GreenDelta's implementation published neither, 11 times. A lake is surface water in this list's vocabulary, and rulings in lcia-factor-collision-rulings.json publish the surface-water row (#446, using #444).",
+  "expectations": [
+    {
+      "id": "0446-greendelta-lake-arsenic-ion-human-toxicity-cancer",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, cancer factor for Arsenic, ion in lake water is 3.4101e-05, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "a3c8b0758f549e8647c7a5fdbe9681fb200fe3d5",
+        "category": "Human toxicity, cancer",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "3.4101e-05"
+      },
+      "comment": "The package's rows 0cc4fa9c and c0f8b131 state 3.4101e-05 and 1.8565e-05, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    },
+    {
+      "id": "0446-greendelta-lake-arsenic-ion-human-toxicity-cancer-inorganics",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, cancer (inorganics) factor for Arsenic, ion in lake water is 3.4101e-05, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "a3c8b0758f549e8647c7a5fdbe9681fb200fe3d5",
+        "category": "Human toxicity, cancer_inorganics",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "3.4101e-05"
+      },
+      "comment": "The package's rows 0cc4fa9c and c0f8b131 state 3.4101e-05 and 1.8565e-05, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    },
+    {
+      "id": "0446-greendelta-lake-arsenic-ion-human-toxicity-non-cancer",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, non-cancer factor for Arsenic, ion in lake water is 0.002526, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "a3c8b0758f549e8647c7a5fdbe9681fb200fe3d5",
+        "category": "Human toxicity, non-cancer",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "0.002526"
+      },
+      "comment": "The package's rows 0cc4fa9c and c0f8b131 state 0.002526 and 0.0013752, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    },
+    {
+      "id": "0446-greendelta-lake-arsenic-ion-human-toxicity-non-cancer-inorganics",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, non-cancer (inorganics) factor for Arsenic, ion in lake water is 0.002526, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "a3c8b0758f549e8647c7a5fdbe9681fb200fe3d5",
+        "category": "Human toxicity, non-cancer_inorganics",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "0.002526"
+      },
+      "comment": "The package's rows 0cc4fa9c and c0f8b131 state 0.002526 and 0.0013752, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    },
+    {
+      "id": "0446-greendelta-lake-cadmium2-human-toxicity-cancer",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, cancer factor for Cadmium(2+) in lake water is 1.7466e-06, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "0265e04d2746b0298356ade9668edbd30b98f82f",
+        "category": "Human toxicity, cancer",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "1.7466e-06"
+      },
+      "comment": "The package's rows ba29bfe3 and 68701316 state 1.7466e-06 and 9.276e-07, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    },
+    {
+      "id": "0446-greendelta-lake-cadmium2-human-toxicity-cancer-inorganics",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, cancer (inorganics) factor for Cadmium(2+) in lake water is 1.7466e-06, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "0265e04d2746b0298356ade9668edbd30b98f82f",
+        "category": "Human toxicity, cancer_inorganics",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "1.7466e-06"
+      },
+      "comment": "The package's rows ba29bfe3 and 68701316 state 1.7466e-06 and 9.276e-07, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    },
+    {
+      "id": "0446-greendelta-lake-cadmium2-human-toxicity-non-cancer",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, non-cancer factor for Cadmium(2+) in lake water is 0.00046859, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "0265e04d2746b0298356ade9668edbd30b98f82f",
+        "category": "Human toxicity, non-cancer",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "0.00046859"
+      },
+      "comment": "The package's rows ba29bfe3 and 68701316 state 0.00046859 and 0.00024887, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    },
+    {
+      "id": "0446-greendelta-lake-cadmium2-human-toxicity-non-cancer-inorganics",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, non-cancer (inorganics) factor for Cadmium(2+) in lake water is 0.00046859, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "0265e04d2746b0298356ade9668edbd30b98f82f",
+        "category": "Human toxicity, non-cancer_inorganics",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "0.00046859"
+      },
+      "comment": "The package's rows ba29bfe3 and 68701316 state 0.00046859 and 0.00024887, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    },
+    {
+      "id": "0446-greendelta-lake-nickel2-human-toxicity-cancer-inorganics",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, cancer (inorganics) factor for Nickel(2+) in lake water is 1.1893e-05, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "854625e5f8c0934511d2980212ab8a24a3bdaad8",
+        "category": "Human toxicity, cancer_inorganics",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "1.1893e-05"
+      },
+      "comment": "The package's rows 7aca2bc2 and c742a8cc state 1.1893e-05 and 6.2525e-06, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    },
+    {
+      "id": "0446-greendelta-lake-nickel2-human-toxicity-non-cancer",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, non-cancer factor for Nickel(2+) in lake water is 6.6923e-07, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "854625e5f8c0934511d2980212ab8a24a3bdaad8",
+        "category": "Human toxicity, non-cancer",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "6.6923e-07"
+      },
+      "comment": "The package's rows 7aca2bc2 and c742a8cc state 6.6923e-07 and 3.5185e-07, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    },
+    {
+      "id": "0446-greendelta-lake-nickel2-human-toxicity-non-cancer-inorganics",
+      "issue": 446,
+      "title": "GreenDelta's Human toxicity, non-cancer (inorganics) factor for Nickel(2+) in lake water is 6.6923e-07, EF's surface-water number",
+      "subject": {
+        "kind": "factor",
+        "flow_uuid": "854625e5f8c0934511d2980212ab8a24a3bdaad8",
+        "category": "Human toxicity, non-cancer_inorganics",
+        "implemented_by": "GreenDelta"
+      },
+      "expect": {
+        "amount": "6.6923e-07"
+      },
+      "comment": "The package's rows 7aca2bc2 and c742a8cc state 6.6923e-07 and 3.5185e-07, EF's surface-water and unspecified-water numbers. On the build of 3b6528e GreenDelta's implementation published neither; the ruling publishes the surface-water row's, which is also what the consensus carries into lake water."
+    }
+  ]
+}
