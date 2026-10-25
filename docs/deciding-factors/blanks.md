@@ -109,7 +109,7 @@ EF 3.1 in each air compartment — 5.49e-5 in urban ground-level air — and und
 Stepwise gives the two windows finer than PM2.5 its 1.0, the coarse band its
 0.536, and particles above ten micrometres its 0.157: the number Stepwise
 states for dust of no stated size, once the collision on that flow is ruled
-(`data/lcia-factor-collision-rulings.json`; Stepwise scored `Particulates` and
+(`data/lcia-factor-collision-rulings-stepwise-2006.json`; Stepwise scored `Particulates` and
 `Particulates, unspecified` differently, and the plain row's number is the one
 taken). Above ten micrometres under EF stays blank, because nothing above it is
 characterised, and that is every publisher's answer. The concern that EF's PM10

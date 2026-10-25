@@ -218,12 +218,20 @@ RULINGS: tuple[CuratedFile, ...] = (
     CuratedFile(
         "lcia-factor-collision-rulings.json",
         "brightway_flows.lcia.collision_rulings",
-        "Two rows of one implementation reach one consensus flow and state "
-        "numbers too far apart to be one number, and -- where the matching is "
-        "right and the publisher scored two spellings of one thing differently "
-        "-- this says whose number the consensus takes. Keyed on the substance, "
-        "the category and the compartment; pinned to what every colliding row "
+        "Two rows of one EF 3.1 implementation -- GreenDelta's or the JRC's -- "
+        "reach one consensus flow and state numbers too far apart to be one "
+        "number, and -- where the matching is right and the publisher scored "
+        "two rows of one thing differently -- this says whose number the "
+        "consensus takes. Keyed on the implementation, the substance, the "
+        "category and the compartment; pinned to what every colliding row "
         "stated when it was written.",
+    ),
+    CuratedFile(
+        "lcia-factor-collision-rulings-stepwise-2006.json",
+        "brightway_flows.lcia.collision_rulings",
+        "The same answer for Stepwise 2006: its two numbers for particles of "
+        "unstated size, `Particulates` and `Particulates, unspecified`, and "
+        "which one the consensus takes.",
     ),
     CuratedFile(
         "lcia-rounded-printings.json",

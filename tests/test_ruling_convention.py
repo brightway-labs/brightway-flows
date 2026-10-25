@@ -76,6 +76,8 @@ RULING_LOADERS = (
      "brightway_flows.lcia.size_class_carry", "load_size_class_carry_rules"),
     ("lcia-factor-collision-rulings.json",
      "brightway_flows.lcia.collision_rulings", "load_collision_rulings"),
+    ("lcia-factor-collision-rulings-stepwise-2006.json",
+     "brightway_flows.lcia.collision_rulings", "load_collision_rulings"),
     ("preferred-label-decisions.json",
      "brightway_flows.domain.preferred_label_decisions",
      "load_preferred_label_decisions"),
@@ -439,7 +441,7 @@ class TheConventionsPageStatesTheseNumbersTestCase(unittest.TestCase):
         24: "twenty-four", 25: "twenty-five", 26: "twenty-six",
         27: "twenty-seven", 28: "twenty-eight", 29: "twenty-nine",
         30: "thirty", 31: "thirty-one", 32: "thirty-two", 33: "thirty-three",
-        34: "thirty-four", 35: "thirty-five",
+        34: "thirty-four", 35: "thirty-five", 36: "thirty-six",
     }
 
     def _returns_a_set(self, module_name: str, function_name: str) -> bool:

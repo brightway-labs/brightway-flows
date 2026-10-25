@@ -584,27 +584,48 @@ def _lists_for(
 
 
 def _collision_rulings_by_flow(
-    rulings: Mapping[tuple[str, str, str], CollisionRuling],
+    method: LCIAMethodDefinition,
+    rulings: Mapping[tuple[str, str, str, str], CollisionRuling],
     *,
     flows: Mapping[str, Mapping[str, Any]],
-) -> dict[tuple[str, str], CollisionRuling]:
-    """The rulings, keyed the way `lcia.matching` looks them up.
+) -> dict[str, dict[tuple[str, str], CollisionRuling]]:
+    """The rulings, by implementation and keyed the way `lcia.matching` looks
+    them up.
 
-    A ruling names a substance, a category and a compartment; the matching
-    settles a collision on an elementary flow and a category name.  Resolved
-    here, once per method, over the flows this build publishes: every live flow
-    of the ruling's substance in the ruling's compartment answers to it.
+    A ruling names an implementation, a substance, a category and a
+    compartment; the matching settles one implementation's collision on an
+    elementary flow and the category as its rows state it -- the JRC's ILCD
+    identifier on a GreenDelta row, the name on a Stepwise one
+    (`matching._factor_key`).  Resolved here, once per method, over the flows
+    this build publishes: every live flow of the ruling's substance in the
+    ruling's compartment answers to it, under both what the implementation calls
+    the category and the identifier it files it under.
     """
+    by_slug = {category.slug: category for category in method.categories}
+    slug_of = {
+        implementation.name: implementation.slug
+        for implementation in method.transcriptions
+    }
     by_place: dict[tuple[str, str], list[CollisionRuling]] = {}
     for ruling in rulings.values():
         by_place.setdefault((ruling.flow_object_id, ruling.context_iri), []).append(ruling)
-    out: dict[tuple[str, str], CollisionRuling] = {}
+    out: dict[str, dict[tuple[str, str], CollisionRuling]] = {}
     for uuid, flow in flows.items():
         if flow.get("deprecated"):
             continue
         place = (str(flow.get("flow_object_id") or ""), str(flow.get("context_iri") or ""))
         for ruling in by_place.get(place, ()):
-            out[(str(uuid), ruling.category.strip().lower())] = ruling
+            # The loader checked that the method has this implementation and
+            # that it states this category.
+            stated = by_slug[ruling.category_slug].stated_by(
+                slug_of[ruling.implemented_by]
+            )
+            assert stated is not None
+            for spelling in {stated.identifier, stated.name}:
+                if spelling.strip():
+                    out.setdefault(ruling.implemented_by, {})[
+                        (str(uuid), spelling.strip().lower())
+                    ] = ruling
     return out
 
 
@@ -648,9 +669,14 @@ def _characterise_method(
     # read for this method and resolved onto the flows this build publishes
     # (`lcia.collision_rulings`, #196).
     collision_rulings = _collision_rulings_by_flow(
-        load_collision_rulings(method=method.slug), flows=flows
+        method, load_collision_rulings(method=method.slug), flows=flows
     )
-    stats[f"{prefix}_collision_rulings"] = len(collision_rulings)
+    # Counted once per flow a ruling answers on, not once per spelling of its
+    # category.
+    stats[f"{prefix}_collision_rulings"] = sum(
+        len({(uuid, ruling.key) for (uuid, _), ruling in by_flow.items()})
+        for by_flow in collision_rulings.values()
+    )
     factors: dict[str, list[MatchedFactor]] = {}
     findings: list[Finding] = []
     transcribed: dict[str, list[MatchedFactor]] = {}
@@ -670,7 +696,7 @@ def _characterise_method(
             source_list=source_list,
             stats=stats,
             conversions=conversions,
-            collision_rulings=collision_rulings,
+            collision_rulings=collision_rulings.get(implementation.name, {}),
         )
         factors.update(grouped)
         findings.extend(found)
