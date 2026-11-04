@@ -6,17 +6,6 @@
   "adapter": "brightway_flows.integrations.ecoinvent:fetch",
   "flow_iri_prefix": "https://vocab.brightway.one/ecoinvent/3.13/flow/",
   "prepared_match_table": null,
-  "lcia": {
-    "adapter": "brightway_flows.integrations.ecoinvent_lcia:fetch",
-    "factors": "ecoinvent-3.13-lcia-factors.json",
-    "implemented_by": "ecoinvent Centre",
-    "methods": [
-      {
-        "name": "EF v3.1",
-        "no_long_term": "EF v3.1 no LT"
-      }
-    ]
-  },
   "inputs": {
     "flows": "ecoinvent-biosphere-flows-3.13.json",
     "manual_fixes": "ecoinvent-3.13-manual-fixes.json",

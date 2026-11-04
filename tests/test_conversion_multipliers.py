@@ -234,9 +234,9 @@ class RespelledUnitTestCase(unittest.TestCase):
 
 
 class EveryVersionTestCase(unittest.TestCase):
-    def test_five_versions_are_registered(self):
+    def test_six_versions_are_registered(self):
         """The sweeps below are only a sweep if every version is in them."""
-        self.assertEqual(len(_ecoinvent_keys()), 5)
+        self.assertEqual(len(_ecoinvent_keys()), 6)
 
     def test_every_version_converts_the_same_flows_to_the_same_targets(self):
         """Through the merge's own predicate, not a hand-rolled filter: what a

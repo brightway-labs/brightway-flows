@@ -367,7 +367,6 @@ class TheManifestDeclaresItTestCase(unittest.TestCase):
             declared,
             {
                 "ecoinvent-3.12": "ecoinvent Centre",
-                "ecoinvent-3.13": "ecoinvent Centre",
                 "bafu-2026-v1": "GreenDelta",
                 "stepwise-2006-1.09": "2.-0 LCA consultants",
             },
