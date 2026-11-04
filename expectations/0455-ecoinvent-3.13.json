@@ -4,6 +4,7 @@
   "expectations": [
     {
       "id": "ecoinvent-3-13-alpha-endosulfan-is-the-alpha-isomer",
+      "issue": 455,
       "title": "Every ecoinvent `Alpha-endosulfan` row, from 3.12 and 3.13 alike, lands on the alpha isomer, 959-98-8",
       "subject": {
         "kind": "source_row",
@@ -19,6 +20,7 @@
     },
     {
       "id": "ecoinvent-3-13-beta-endosulfan-is-the-beta-isomer",
+      "issue": 455,
       "title": "The ecoinvent `Beta-endosulfan` row to unspecified water lands on the beta isomer, 33213-65-9, from 3.12 and 3.13 alike",
       "subject": {
         "kind": "source_row",
@@ -34,6 +36,7 @@
     },
     {
       "id": "ecoinvent-3-13-endosulfan-keeps-the-parent",
+      "issue": 455,
       "title": "The ecoinvent `Endosulfan` rows keep the parent's number, 115-29-7, and reach one substance",
       "subject": {
         "kind": "source_row",
@@ -51,6 +54,7 @@
     },
     {
       "id": "ecoinvent-3-13-propyl-propionate-is-not-a-carbonate",
+      "issue": 455,
       "title": "The ecoinvent `Propyl propionate` row lands on propyl propionate, 106-36-5, from 3.12 and 3.13 alike",
       "subject": {
         "kind": "source_row",
@@ -66,6 +70,7 @@
     },
     {
       "id": "ecoinvent-3-13-dibutyltin-is-the-cation",
+      "issue": 455,
       "title": "The ecoinvent `Dibutyltin` row reaches one substance under the cation's number, 14488-53-0, from every release",
       "subject": {
         "kind": "source_row",
@@ -81,6 +86,7 @@
     },
     {
       "id": "ecoinvent-3-13-triphenyltin-is-the-cation",
+      "issue": 455,
       "title": "The ecoinvent `Triphenyltin` row reaches one substance under the cation's number, 668-34-8, from every release",
       "subject": {
         "kind": "source_row",
@@ -96,6 +102,7 @@
     },
     {
       "id": "ecoinvent-3-13-diphenyltin-is-one-substance",
+      "issue": 455,
       "title": "The ecoinvent `Diphenyltin` rows of 3.8, 3.12 and 3.13 reach one substance",
       "subject": {
         "kind": "source_row",
@@ -110,6 +117,7 @@
     },
     {
       "id": "ecoinvent-3-13-phenyltin-is-one-substance",
+      "issue": 455,
       "title": "The ecoinvent `Phenyltin` rows of 3.8, 3.12 and 3.13 reach one substance",
       "subject": {
         "kind": "source_row",
@@ -124,6 +132,7 @@
     },
     {
       "id": "ecoinvent-3-13-trioctyltin-is-one-substance",
+      "issue": 455,
       "title": "The ecoinvent `Trioctyltin` rows of 3.8, 3.12 and 3.13 reach one substance",
       "subject": {
         "kind": "source_row",
@@ -138,6 +147,7 @@
     },
     {
       "id": "ecoinvent-3-13-strontium-ii-needs-no-fix",
+      "issue": 455,
       "title": "ecoinvent 3.13's thirteen `Strontium II` rows reach `Strontium(2+)` with no correction stated",
       "subject": {
         "kind": "source_row",
@@ -154,6 +164,7 @@
     },
     {
       "id": "ecoinvent-3-13-caesium-i-needs-no-fix",
+      "issue": 455,
       "title": "ecoinvent 3.13's five `Caesium I` rows reach `Caesium(1+)` with no correction stated",
       "subject": {
         "kind": "source_row",
@@ -170,6 +181,7 @@
     },
     {
       "id": "ecoinvent-3-13-molybdenum-vi-needs-no-fix",
+      "issue": 455,
       "title": "ecoinvent 3.13's thirteen `Molybdenum VI` rows reach `Molybdenum(6+)` with no correction stated",
       "subject": {
         "kind": "source_row",
@@ -186,6 +198,7 @@
     },
     {
       "id": "ecoinvent-3-13-alpha-lindane-needs-no-fix",
+      "issue": 455,
       "title": "The ecoinvent `Alpha-lindane` row to unspecified air lands on the alpha isomer, 319-84-6, from 3.12 and 3.13 alike",
       "subject": {
         "kind": "source_row",
@@ -201,6 +214,7 @@
     },
     {
       "id": "ecoinvent-3-13-organic-nitrogen-is-not-the-gas",
+      "issue": 455,
       "title": "ecoinvent 3.13's five `Nitrogen, organic bound` rows reach `Nitrogen, Organic Bound`, not dinitrogen",
       "subject": {
         "kind": "source_row",
@@ -217,6 +231,7 @@
     },
     {
       "id": "ecoinvent-3-13-allyl-alcohol-is-one-flow-per-compartment",
+      "issue": 455,
       "title": "ecoinvent 3.13's two `Allyl alcohol` rows reach `Allyl Alcohol`, where 3.12's `2-Propen-1-ol` rows also sit",
       "subject": {
         "kind": "source_row",
@@ -233,6 +248,7 @@
     },
     {
       "id": "ecoinvent-3-13-sodium-stearyl-fumarate-is-not-fumaric-acid",
+      "issue": 455,
       "title": "ecoinvent 3.13's `Sodium stearyl fumarate` row creates its own substance, 4070-80-8, rather than landing on fumaric acid",
       "subject": {
         "kind": "source_row",
@@ -249,6 +265,7 @@
     },
     {
       "id": "ecoinvent-3-13-monostearyl-fumarate-is-not-fumaric-acid",
+      "issue": 455,
       "title": "ecoinvent 3.13's `Monostearyl fumarate` row creates its own substance, 1741-93-1, rather than landing on fumaric acid",
       "subject": {
         "kind": "source_row",
@@ -265,6 +282,7 @@
     },
     {
       "id": "ecoinvent-3-13-fumaric-acid-carries-only-the-acid",
+      "issue": 455,
       "title": "The fumaric acid substance carries EF 3.1's thirteen rows and no ecoinvent 3.13 ester",
       "subject": {
         "kind": "substance",
