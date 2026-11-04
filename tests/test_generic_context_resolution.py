@@ -65,9 +65,12 @@ PREFIX = "https://vocab.brightway.one/flow-contexts/"
 #: rows in the `Social` compartment ecoinvent's refusal had already emptied --
 #: so `social` has lost its rule twice, to two lists, for two reasons.  It was
 #: 242, 10 and 122 until #381 removed BAFU's rule for `resources /
-#: unspecified`, which names no medium and was written by no other list.
-RULE_COUNT = 241
-LIST_COUNT = 10
+#: unspecified`, which names no medium and was written by no other list.  It
+#: was 241, 10 and 121 until ecoinvent 3.13 was registered on 2026-11-04 and
+#: restated 3.12's 25 compartment rules under its own key, naming no new
+#: compartment.
+RULE_COUNT = 266
+LIST_COUNT = 11
 COMPARTMENT_COUNT = 121
 
 #: Every consensus context, and every one of them printed differently.
