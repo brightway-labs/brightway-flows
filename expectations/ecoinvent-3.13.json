@@ -5,107 +5,280 @@
     {
       "id": "ecoinvent-3-13-alpha-endosulfan-is-the-alpha-isomer",
       "title": "Every ecoinvent `Alpha-endosulfan` row, from 3.12 and 3.13 alike, lands on the alpha isomer, 959-98-8",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Alpha-endosulfan"},
-      "expect": {"row_count": 14, "same_substance": true, "target_cas": "959-98-8"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Alpha-endosulfan"
+      },
+      "expect": {
+        "row_count": 14,
+        "same_substance": true,
+        "target_cas": "959-98-8"
+      },
       "comment": "On the build of 5f06833 the seven 3.12 rows landed on `Endosulfan`, 115-29-7, because 3.12 wrote the parent's number on them. 3.13 writes 959-98-8, and 3.11 and 3.12 are corrected to it, so the fourteen merged rows reach EF 3.1's alpha-endosulfan flows."
     },
     {
       "id": "ecoinvent-3-13-beta-endosulfan-is-the-beta-isomer",
       "title": "Every ecoinvent `Beta-endosulfan` row lands on the beta isomer, 33213-65-9",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Beta-endosulfan"},
-      "expect": {"row_count": 14, "same_substance": true, "target_cas": "33213-65-9"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Beta-endosulfan"
+      },
+      "expect": {
+        "row_count": 14,
+        "same_substance": true,
+        "target_cas": "33213-65-9"
+      },
       "comment": "The same measurement for the beta isomer: on 5f06833 all seven 3.12 rows sat on the parent."
     },
     {
       "id": "ecoinvent-3-13-endosulfan-keeps-the-parent",
       "title": "The ecoinvent `Endosulfan` rows keep the parent's number, 115-29-7, and reach one substance",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Endosulfan"},
-      "expect": {"row_count": {"at_least": 14}, "same_substance": true, "target_cas": "115-29-7"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Endosulfan"
+      },
+      "expect": {
+        "row_count": {
+          "at_least": 14
+        },
+        "same_substance": true,
+        "target_cas": "115-29-7"
+      },
       "comment": "Seven rows each in 3.12 and 3.13, one in 3.8. Nothing about them changes; this pins that separating the isomers did not move the parent."
     },
     {
       "id": "ecoinvent-3-13-propyl-propionate-is-not-a-carbonate",
       "title": "The ecoinvent `Propyl propionate` row lands on propyl propionate, 106-36-5, from 3.12 and 3.13 alike",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Propyl propionate"},
-      "expect": {"row_count": 2, "same_substance": true, "target_cas": "106-36-5"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Propyl propionate"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_cas": "106-36-5"
+      },
       "comment": "On 5f06833 the one 3.12 row, b842b096, carried 623-53-0 -- ethyl methyl carbonate -- and was matched to EF 3.1's flow of that carbonate and published as `Ethyl Methyl Carbonate`. 3.13 registers the uuid 106-36-5 and 3.12 is corrected to match."
     },
     {
       "id": "ecoinvent-3-13-dibutyltin-is-the-cation",
       "title": "The ecoinvent `Dibutyltin` row reaches one substance under the cation's number, 14488-53-0, from every release",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Dibutyltin"},
-      "expect": {"row_count": 3, "same_substance": true, "target_cas": "14488-53-0"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Dibutyltin"
+      },
+      "expect": {
+        "row_count": 3,
+        "same_substance": true,
+        "target_cas": "14488-53-0"
+      },
       "comment": "One `water / ocean` row in 3.8, 3.12 and 3.13. On 5f06833 it was published under 1002-53-5, dibutylstannane, the neutral dihydride; 3.13 registers the dissolved cation and the earlier releases are corrected to it."
     },
     {
       "id": "ecoinvent-3-13-triphenyltin-is-the-cation",
       "title": "The ecoinvent `Triphenyltin` row reaches one substance under the cation's number, 668-34-8, from every release",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Triphenyltin"},
-      "expect": {"row_count": 3, "same_substance": true, "target_cas": "668-34-8"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Triphenyltin"
+      },
+      "expect": {
+        "row_count": 3,
+        "same_substance": true,
+        "target_cas": "668-34-8"
+      },
       "comment": "3.8 ships 668-34-8, 3.12 shipped 892-20-6 (triphenylstannane) and is corrected, 3.13 ships 668-34-8 again. On 5f06833 the substance was published under 892-20-6."
     },
     {
       "id": "ecoinvent-3-13-diphenyltin-is-one-substance",
       "title": "The ecoinvent `Diphenyltin` rows of 3.8, 3.12 and 3.13 reach one substance",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Diphenyltin"},
-      "expect": {"row_count": 3, "same_substance": true},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Diphenyltin"
+      },
+      "expect": {
+        "row_count": 3,
+        "same_substance": true
+      },
       "comment": "3.13 ships the row with no registry number and the formula `C12H10Sn+2`; 1011-95-6 is removed from the earlier releases so the three copies are placed by name alike."
     },
     {
       "id": "ecoinvent-3-13-phenyltin-is-one-substance",
       "title": "The ecoinvent `Phenyltin` rows of 3.8, 3.12 and 3.13 reach one substance",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Phenyltin"},
-      "expect": {"row_count": 3, "same_substance": true},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Phenyltin"
+      },
+      "expect": {
+        "row_count": 3,
+        "same_substance": true
+      },
       "comment": "As for Diphenyltin: 2406-68-0 is removed from the earlier releases, following 3.13."
     },
     {
       "id": "ecoinvent-3-13-trioctyltin-is-one-substance",
       "title": "The ecoinvent `Trioctyltin` rows of 3.8, 3.12 and 3.13 reach one substance",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "name": "Trioctyltin"},
-      "expect": {"row_count": 3, "same_substance": true},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "name": "Trioctyltin"
+      },
+      "expect": {
+        "row_count": 3,
+        "same_substance": true
+      },
       "comment": "As for Diphenyltin: 869-59-0, trioctyltin hydride, is removed from the earlier releases, following 3.13."
     },
     {
       "id": "ecoinvent-3-13-strontium-ii-needs-no-fix",
       "title": "ecoinvent 3.13's thirteen `Strontium II` rows reach `Strontium(2+)` with no correction stated",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.13", "name": "Strontium II"},
-      "expect": {"row_count": 13, "same_substance": true, "target_name": "Strontium(2+)"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.13",
+        "name": "Strontium II"
+      },
+      "expect": {
+        "row_count": 13,
+        "same_substance": true,
+        "target_name": "Strontium(2+)"
+      },
       "comment": "3.12 needed a fix from 7440-24-6, the metal, to 22537-39-9; 3.13 ships the ion's number, and its fixes file states nothing about the rows."
     },
     {
       "id": "ecoinvent-3-13-caesium-i-needs-no-fix",
       "title": "ecoinvent 3.13's five `Caesium I` rows reach `Caesium(1+)` with no correction stated",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.13", "name": "Caesium I"},
-      "expect": {"row_count": 5, "same_substance": true, "target_name": "Caesium(1+)"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.13",
+        "name": "Caesium I"
+      },
+      "expect": {
+        "row_count": 5,
+        "same_substance": true,
+        "target_name": "Caesium(1+)"
+      },
       "comment": "3.13 ships 18459-37-5, the number the 3.12 fix supplied."
     },
     {
       "id": "ecoinvent-3-13-molybdenum-vi-needs-no-fix",
       "title": "ecoinvent 3.13's thirteen `Molybdenum VI` rows reach `Molybdenum(6+)` with no correction stated",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.13", "name": "Molybdenum VI"},
-      "expect": {"row_count": 13, "same_substance": true, "target_name": "Molybdenum(6+)"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.13",
+        "name": "Molybdenum VI"
+      },
+      "expect": {
+        "row_count": 13,
+        "same_substance": true,
+        "target_name": "Molybdenum(6+)"
+      },
       "comment": "3.13 ships 16065-87-5, the ion's number, which 3.10.1 to 3.12 had to be corrected to (#181)."
     },
     {
       "id": "ecoinvent-3-13-alpha-lindane-needs-no-fix",
       "title": "ecoinvent 3.13's seven `Alpha-lindane` rows reach the alpha isomer, 319-84-6, with no correction stated",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.13", "name": "Alpha-lindane"},
-      "expect": {"row_count": 7, "same_substance": true, "target_cas": "319-84-6"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.13",
+        "name": "Alpha-lindane"
+      },
+      "expect": {
+        "row_count": 7,
+        "same_substance": true,
+        "target_cas": "319-84-6"
+      },
       "comment": "3.11 and 3.12 wrote gamma-lindane's 58-89-9 on the alpha, beta and delta rows and are corrected (#26); 3.13 writes each isomer's own number."
     },
     {
       "id": "ecoinvent-3-13-organic-nitrogen-is-not-the-gas",
       "title": "ecoinvent 3.13's five `Nitrogen, organic bound` rows reach `Nitrogen, Organic Bound`, not dinitrogen",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.13", "name": "Nitrogen, organic bound"},
-      "expect": {"row_count": 5, "same_substance": true, "target_name": "Nitrogen, Organic Bound"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.13",
+        "name": "Nitrogen, organic bound"
+      },
+      "expect": {
+        "row_count": 5,
+        "same_substance": true,
+        "target_name": "Nitrogen, Organic Bound"
+      },
       "comment": "3.13 ships the rows with no registry number, which is what the 3.12 fix did; it still writes the synonyms `dinitrogen` and `molecular nitrogen` on them, and the 3.13 fixes file still removes those (#57)."
     },
     {
       "id": "ecoinvent-3-13-allyl-alcohol-is-one-flow-per-compartment",
       "title": "ecoinvent 3.13's two `Allyl alcohol` rows reach `Allyl Alcohol`, where 3.12's `2-Propen-1-ol` rows also sit",
-      "subject": {"kind": "source_row", "list": "ecoinvent", "version": "3.13", "name": "Allyl alcohol"},
-      "expect": {"row_count": 2, "same_substance": true, "target_name": "Allyl Alcohol"},
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.13",
+        "name": "Allyl alcohol"
+      },
+      "expect": {
+        "row_count": 2,
+        "same_substance": true,
+        "target_name": "Allyl Alcohol"
+      },
       "comment": "3.13 retires the seven `2-Propen-1-ol` rows, 107-18-6, and keeps the two `Allyl alcohol` rows under the same number with `2-Propen-1-ol` as a synonym. The merge already put both names on one substance."
+    },
+    {
+      "id": "ecoinvent-3-13-sodium-stearyl-fumarate-is-not-fumaric-acid",
+      "title": "ecoinvent 3.13's `Sodium stearyl fumarate` row creates its own substance, 4070-80-8, rather than landing on fumaric acid",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.13",
+        "name": "Sodium stearyl fumarate"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "created",
+        "target_cas": "4070-80-8"
+      },
+      "comment": "On the build of a87255f the row, which carries 4070-80-8, was matched by its vendor synonym `Fumaric acid` to EF 3.1's `fumaric acid`, 110-17-8, because no list carries the ester's number and the label matcher reads synonyms. The synonym is removed by the 3.13 fixes file.",
+      "pending": true
+    },
+    {
+      "id": "ecoinvent-3-13-monostearyl-fumarate-is-not-fumaric-acid",
+      "title": "ecoinvent 3.13's `Monostearyl fumarate` row creates its own substance, 1741-93-1, rather than landing on fumaric acid",
+      "subject": {
+        "kind": "source_row",
+        "list": "ecoinvent",
+        "version": "3.13",
+        "name": "Monostearyl fumarate"
+      },
+      "expect": {
+        "row_count": 1,
+        "outcome": "created",
+        "target_cas": "1741-93-1"
+      },
+      "comment": "The same defect on the second ester, through the same synonym, measured on the same build.",
+      "pending": true
+    },
+    {
+      "id": "ecoinvent-3-13-fumaric-acid-carries-only-the-acid",
+      "title": "The fumaric acid substance carries EF 3.1's thirteen rows and no ecoinvent 3.13 ester",
+      "subject": {
+        "kind": "substance",
+        "cas": "110-17-8"
+      },
+      "expect": {
+        "count": 1,
+        "flow_count": 13
+      },
+      "comment": "On the build of a87255f the substance carried fifteen flows: EF 3.1's thirteen and the two ester rows above.",
+      "pending": true
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Manual corrections for ecoinvent 3.13 biosphere flows. Applied as the first step of the merge pipeline, before any automated matching. Flows are identified by UUID unless a correction is about the substance rather than about one row, in which case it matches on the field that names the substance -- ecoinvent repeats a substance once per context, so a per-row rule would state itself seven or nine times and go stale when a context is added. Every correction below is also in the fixes file of each earlier version that ships the same row, on the same UUIDs: a correction applied to one version and not another leaves the merge two lists that disagree about what a substance is (#26). Seven of the 27 corrections stated for 3.12 are absent here because 3.13, released 2026-11-04, ships them: `Strontium II` under 22537-39-9 on all 13 rows, `Caesium I` under 18459-37-5 on all 5, `Alpha-`, `Beta-` and `Delta-lindane` under 319-84-6, 319-85-7 and 319-86-8 on 7 rows each, `Molybdenum VI` under 16065-87-5 on all 13, and `Nitrogen, organic bound` with no registry number on all 5. The synonyms `dinitrogen` and `molecular nitrogen` are still written on the organic-bound rows and are still removed here. 3.13 also registers the endosulfan isomers, propyl propionate and five organotins under new numbers; those are corrections the earlier releases now state about their own copies of the rows, and this release needs none.",
+  "description": "Manual corrections for ecoinvent 3.13 biosphere flows. Applied as the first step of the merge pipeline, before any automated matching. Flows are identified by UUID unless a correction is about the substance rather than about one row, in which case it matches on the field that names the substance -- ecoinvent repeats a substance once per context, so a per-row rule would state itself seven or nine times and go stale when a context is added. Every correction below is also in the fixes file of each earlier version that ships the same row, on the same UUIDs: a correction applied to one version and not another leaves the merge two lists that disagree about what a substance is (#26). Seven of the 27 corrections stated for 3.12 are absent here because 3.13, released 2026-11-04, ships them: `Strontium II` under 22537-39-9 on all 13 rows, `Caesium I` under 18459-37-5 on all 5, `Alpha-`, `Beta-` and `Delta-lindane` under 319-84-6, 319-85-7 and 319-86-8 on 7 rows each, `Molybdenum VI` under 16065-87-5 on all 13, and `Nitrogen, organic bound` with no registry number on all 5. The synonyms `dinitrogen` and `molecular nitrogen` are still written on the organic-bound rows and are still removed here. 3.13 also registers the endosulfan isomers, propyl propionate and five organotins under new numbers; those are corrections the earlier releases now state about their own copies of the rows. This release's own corrections are four synonym removals on two rows it is the first to ship, `Sodium stearyl fumarate` and `Monostearyl fumarate`, which carried the parent acid's name as a synonym.",
   "fixes": [
     {
       "match": {
@@ -171,6 +171,38 @@
       "original_value": "68359-37-5",
       "new_value": "1820573-27-0",
       "comment": "68359-37-5 is cyfluthrin, the commercial mixture of eight isomers; these rows are named Beta-cyfluthrin, the product enriched in the two most insecticidally active diastereoisomeric pairs of the same set, and PPDB gives that product its own registry number, 1820573-27-0 (PPDB record 74; plain cyfluthrin is record 192, 68359-37-5). ecoinvent's own naming history says the flow is the beta product -- the 2.2-to-3.12 transition table retired the name Cyfluthrin for these uuids in favour of Beta-cyfluthrin (ecoinvent-historical-names.json) -- while EF 3.1 ships plain cyfluthrin rows under the same number, so one number was carrying two vendors' different substances and the merge folded ecoinvent's beta rows into the plain substance by CAS. With the product's own number the beta rows separate at the registry-number index itself, the way the U-238 rows separated from the element's number. The EC number 269-855-7 is stated by both PPDB records and is left alone; only the CAS can tell the two apart. 8 such row(s) in this release, all shipped as Beta-cyfluthrin with no EC of their own. The same correction is in every ecoinvent release's fixes file, because it has to be made on all of them or the releases disagree about what the number names. See #188."
+    },
+    {
+      "match": {
+        "uuid": "3a7cc057-6a9f-5161-99ea-476356790aeb"
+      },
+      "field": "synonyms",
+      "remove_value": "Fumaric acid",
+      "comment": "`Fumaric acid` is not a name of this ester. ecoinvent 3.13 writes it as a synonym on this row, beside the row's own number (4070-80-8), apparently from a catalogue entry that lists the parent acid; a synonym is what the label matcher reads when no list carries the row's registry number, and EF 3.1 carries neither fumarate ester, so on the build of a87255f the row was matched by that one word to EF 3.1's `fumaric acid`, 110-17-8, and an emission of the ester was published as the acid. Taken off so that the row creates its own substance under its own number. The row also carries `Dibasic acid` and `Sodium salt`, two more fragments of the same catalogue sentence, removed below for the same reason; `SSF`, `Sodium Stearyl Fumarate` and `Stearyl fumarate sodium salt` are names of the ester and stay."
+    },
+    {
+      "match": {
+        "uuid": "3a7cc057-6a9f-5161-99ea-476356790aeb"
+      },
+      "field": "synonyms",
+      "remove_value": "Dibasic acid",
+      "comment": "A fragment of the catalogue sentence `Fumaric acid` came from, on the same row; it names a class, not this ester. See the `Fumaric acid` entry above."
+    },
+    {
+      "match": {
+        "uuid": "3a7cc057-6a9f-5161-99ea-476356790aeb"
+      },
+      "field": "synonyms",
+      "remove_value": "Sodium salt",
+      "comment": "The same: a fragment naming no substance, on the same row. See the `Fumaric acid` entry above."
+    },
+    {
+      "match": {
+        "uuid": "ece708a7-8ff8-4940-82a3-722580ce4abb"
+      },
+      "field": "synonyms",
+      "remove_value": "Fumaric acid",
+      "comment": "`Fumaric acid` is not a name of this ester. ecoinvent 3.13 writes it as a synonym on this row, beside the row's own number (1741-93-1), apparently from a catalogue entry that lists the parent acid; a synonym is what the label matcher reads when no list carries the row's registry number, and EF 3.1 carries neither fumarate ester, so on the build of a87255f the row was matched by that one word to EF 3.1's `fumaric acid`, 110-17-8, and an emission of the ester was published as the acid. Taken off so that the row creates its own substance under its own number. `Octadecyl hydrogen fumarate`, the row's other synonym, is a name of the ester and stays."
     }
   ]
 }
