@@ -11,22 +11,81 @@ earlier release too. All four system models — cutoff, APOS, consequential and
 EN15804 — ship the same 9,893 exchanges, so reading the cutoff release loses
 nothing (`ecoinvent-3.13-additional-flows.json` records the comparison).
 
-The curated corrections are in `ecoinvent-3.13-manual-fixes.json`: 20
-entries, of which 5 alter a registry number, 5 a name, 7 a synonym list and
-3 a unit. That is seven fewer than 3.12 needs, because 3.13 ships seven of
-3.12's corrections itself — see *What 3.13 corrected on its own* below.
+The curated corrections are in `ecoinvent-3.13-manual-fixes.json`: 24
+entries, of which 5 alter a registry number, 5 a name, 11 a synonym list and
+3 a unit. Twenty are 3.12's; 3.13 ships seven of 3.12's corrections itself —
+see *What 3.13 corrected on its own* below — and needs four of its own, on
+two rows it is the first to ship (*Rows merged into one flow*).
 
 ## One name, two substances
 
-MEASURED-ON-THE-BUILD
+On the six-list build of 2026-11-04 (commit `BUILD-COMMIT`), every one of
+3.13's 9,893 rows was placed — 8,837 by the matching rules, 185 by a curated
+row in `ecoinvent-match-overrides.json`, and 871 by creating a flow that no
+list before it had — and two names ended up on more than one substance. Both
+are the compartment splits the [3.12 page](ecoinvent-3.12.md) describes as
+deliberate, and nothing else: `Water` is **Water** in its six water
+compartments and **Water vapour** in its five air compartments, and
+`Water, unspecified natural origin` is **Groundwater** when taken from
+`natural resource / in water`'s unconfined aquifer, **Fossil groundwater**
+from the confined one and **Water** when the body is not said. The three
+substances 3.12 published twice on the 2026-08-29 build, and corrected the
+next day, stay corrected here.
+
+Because 3.13 is merged first, it is the release that creates every
+ecoinvent-only substance, and 3.12's copies of the same rows then match what
+3.13 created: 855 rows that the five-list build of `5f06833` recorded as
+*created* for 3.12 are recorded as *matched* now, every one of them on the
+same substance. That is the whole of what moved for 3.12, apart from the
+fourteen endosulfan isomer rows and the propyl propionate row, which move
+because their numbers were corrected (*Numbers 3.13 corrects that this
+project had not*, below).
 
 ## An ionic charge was added or corrected
 
-MEASURED-ON-THE-BUILD
+422 of 3.13's rows are published under a name that carries a charge their
+source name did not write out, in 37 name pairs — the same pairs as 3.12.
+Thirty name a metal with a Roman numeral and are published as the ion,
+`Aluminium III` as **Aluminium(3+)**, `Strontium II` as **Strontium(2+)**,
+`Vanadium V` as **Vanadium(5+)**; five anions gain their charge, `Chloride`
+as **Chloride(1-)**, `Sulfide` as **Sulfide(2-)**; and the six `ion` names
+without a numeral — `Antimony ion`, `Arsenic ion`, `Copper ion`, `Iron ion`,
+`Tin ion`, `Titanium ion` — are published as **Antimony, ion** and so on,
+the spelling `domain/ion_names.py` gives an ion of unstated charge. Three of
+those pairs needed a corrected registry number in 3.12 to reach the ion and
+need none here: `Strontium II`, `Caesium I` and `Molybdenum VI` ship with
+the ion's number in 3.13.
+
+Five organotin rows in `water / ocean` carry a charge in 3.13's formula —
+`Dibutyltin` as `C8H18Sn+2`, `Triphenyltin` as `C18H15Sn+` — and are
+published without one: the adapter reads a row's registry number and not
+its formula, and the published names are the vendor's. Where 3.13 states
+the cation's number, `Dibutyltin` 14488-53-0 and `Triphenyltin` 668-34-8,
+the substance carries it.
 
 ## Rows merged into one flow
 
-MEASURED-ON-THE-BUILD
+On the build of 2026-11-04, 17 consensus flows carry more than one 3.13 row.
+They are the groups the [3.12 page](ecoinvent-3.12.md) lists under the same
+heading, less the endosulfan isomers: `Cypermethrin` and its two isomer
+mixtures, 21 rows onto 7 flows, because ecoinvent still writes 52315-07-8 on
+all three; the two groundwater rows of `1,4-Butanediol`; the two spellings of
+total organic carbon; the four `Carbon` rows to soil; the carbon-stock
+increase and decrease; and the paired `annual crop` / `arable land,
+unspecified use` and `unknown` / `unspecified` land rows. The 21 endosulfan
+rows that the 2026-08-29 build put on seven flows are on twenty-one flows
+now: 3.13 gives the alpha and beta isomers their own numbers, and they reach
+EF 3.1's `A-endosulfan` and `endosulfan (beta)` rows, with one flow created
+for each isomer in `soil / forestry`, which EF 3.1 does not have.
+
+One merge was wrong and is corrected here. 3.13 is the first release to ship
+`Sodium stearyl fumarate` (4070-80-8) and `Monostearyl fumarate`
+(1741-93-1), and writes `Fumaric acid` as a synonym on both. No list carries
+either ester's number, so the label matcher read that synonym and put both
+rows on EF 3.1's `fumaric acid`, 110-17-8, on the build of `a87255f`.
+`ecoinvent-3.13-manual-fixes.json` takes the acid's name off both rows, and
+two more catalogue fragments — `Dibasic acid`, `Sodium salt` — off the sodium
+salt; each ester creates its own substance.
 
 ## What 3.13 corrected on its own
 
@@ -65,7 +124,13 @@ substance (#26). The earlier releases' pages carry the rows.
 
 3.13 adds 50 rows, none of which an earlier release ships: 46 emissions to
 `water / unspecified` and 4 to `air / unspecified`, most of them
-pharmaceutical excipients, amino acids and fine-chemical intermediates —
+pharmaceutical excipients, amino acids and fine-chemical intermediates. On
+the build of 2026-11-04, 32 of them reach a flow EF 3.1 already has by their
+registry number — `L-Cystein` lands on **L-cysteine**, `Stearyl alcohol` on
+**Octadecan-1-ol** — one, `D-Mannitol`, reaches EF 3.1's **D-mannitol** by
+name, and 17 create a substance no list had, among them
+`Hydroxypropylmethylcellulose`, `Magnesium stearate`, `L-Histidine` and the
+two fumarate esters. Among the names:
 `Citric acid`, `Glycine`, `L-Histidine`, `Hydroxypropylmethylcellulose`,
 `Magnesium stearate`, `Sorbitan monooleate`, `Fluorobenzene` and
 `Vinyl acetate` in both compartments. Five arrive without a registry number:
@@ -93,8 +158,11 @@ Each is applied before the row is matched, and each is the same correction
 
 ### Other corrections that change what a row says
 
-The five renames, three unit corrections and seven synonym corrections are
-3.12's, unchanged: `Silver-110` to `Silver-110m`, `Ioxynil methyl ester` to
+Four synonym corrections are 3.13's own: `Fumaric acid` comes off
+`Sodium stearyl fumarate` and `Monostearyl fumarate`, and `Dibasic acid` and
+`Sodium salt` off the former, for the reason given under *Rows merged into
+one flow*. The five renames, three unit corrections and seven other synonym
+corrections are 3.12's, unchanged: `Silver-110` to `Silver-110m`, `Ioxynil methyl ester` to
 `MCPA-methyl`, the seven `Granite` emission rows to `Penoxsulam`,
 `Zirconia, as baddeleyite` to `Baddeleyite`, `Peat` to `Peat, horticulture`;
 the three `(obsolete)` arable occupation rows from m² to m²·a; `BAS 480F`

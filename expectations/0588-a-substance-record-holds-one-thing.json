@@ -42,11 +42,11 @@
       },
       "expect": {
         "not_outcome": "unmatched",
-        "row_count": 3,
+        "row_count": 5,
         "same_substance": true,
         "target_name": "Carbon, Organic, In Soil Or Biomass Stock"
       },
-      "comment": "Three rows: 3.12's Decrease, which the vendor's own correspondence table sends to EF's stock flow; 3.8's direction-less row, prepared likewise; and 3.12's Increase, which is absent from the vendor's table and had reached the stock only through the shared registry number -- the very evidence the `separate` ruling withdraws. It carries the match override stating what the Decrease mapping implies. On the before build all three reached EF's flow but the wrong substance, and the flow published as `Carbon`."
+      "comment": "Three rows: 3.12's Decrease, which the vendor's own correspondence table sends to EF's stock flow; 3.8's direction-less row, prepared likewise; and 3.12's Increase, which is absent from the vendor's table and had reached the stock only through the shared registry number -- the very evidence the `separate` ruling withdraws. It carries the match override stating what the Decrease mapping implies. On the before build all three reached EF's flow but the wrong substance, and the flow published as `Carbon`. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0588-bafus-stock-row-joins-them",
@@ -137,10 +137,10 @@
       },
       "expect": {
         "outcome": "prepared",
-        "row_count": 2,
+        "row_count": 3,
         "target_uuid": "da174fac-e567-42d3-99b5-a688913dc88e"
       },
-      "comment": "ecoinvent's correspondence table has said `da174fac` -- EF's plain biogenic uptake -- all along; the merge records it in `prepared_target_elementary_flow_id` on both builds. On the before build that flow was deprecated into the 100yr variant, so the resolution reads `redirected-from-deprecated-target` and the row landed on `b3136069` carrying 100-year semantics nothing in ecoinvent's data states. With the variant split off, the resolution is `direct-active-target`: the vendor's mapping lands where the vendor wrote it. Claimed by uuid because both flows publish under their substances' names and a name claim could not tell them apart. Both versions, hence `row_count: 2`."
+      "comment": "ecoinvent's correspondence table has said `da174fac` -- EF's plain biogenic uptake -- all along; the merge records it in `prepared_target_elementary_flow_id` on both builds. On the before build that flow was deprecated into the 100yr variant, so the resolution reads `redirected-from-deprecated-target` and the row landed on `b3136069` carrying 100-year semantics nothing in ecoinvent's data states. With the variant split off, the resolution is `direct-active-target`: the vendor's mapping lands where the vendor wrote it. Claimed by uuid because both flows publish under their substances' names and a name claim could not tell them apart. Both versions, hence `row_count: 2`. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0588-the-water-ruling-empties-the-queue",

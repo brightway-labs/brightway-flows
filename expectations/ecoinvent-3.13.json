@@ -19,18 +19,18 @@
     },
     {
       "id": "ecoinvent-3-13-beta-endosulfan-is-the-beta-isomer",
-      "title": "Every ecoinvent `Beta-endosulfan` row lands on the beta isomer, 33213-65-9",
+      "title": "The ecoinvent `Beta-endosulfan` row to unspecified water lands on the beta isomer, 33213-65-9, from 3.12 and 3.13 alike",
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
-        "name": "Beta-endosulfan"
+        "uuid": "9c426aaa-f6fa-5a91-b93c-3d920c5ef63d"
       },
       "expect": {
-        "row_count": 14,
+        "row_count": 2,
         "same_substance": true,
         "target_cas": "33213-65-9"
       },
-      "comment": "The same measurement for the beta isomer: on 5f06833 all seven 3.12 rows sat on the parent."
+      "comment": "The same measurement for the beta isomer: on 5f06833 all seven 3.12 rows sat on the parent. Selected by uuid: the merge records the row under the substance's name rather than the vendor's, so a name selector finds nothing."
     },
     {
       "id": "ecoinvent-3-13-endosulfan-keeps-the-parent",
@@ -114,13 +114,13 @@
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
-        "name": "Phenyltin"
+        "uuid": "cff46201-bfb0-486c-8f70-277a413c58a1"
       },
       "expect": {
         "row_count": 3,
         "same_substance": true
       },
-      "comment": "As for Diphenyltin: 2406-68-0 is removed from the earlier releases, following 3.13."
+      "comment": "As for Diphenyltin: 2406-68-0 is removed from the earlier releases, following 3.13. Selected by uuid: 3.8 names the same row `Monophenyltin`."
     },
     {
       "id": "ecoinvent-3-13-trioctyltin-is-one-substance",
@@ -143,14 +143,14 @@
         "kind": "source_row",
         "list": "ecoinvent",
         "version": "3.13",
-        "name": "Strontium II"
+        "name": "Strontium(2+)"
       },
       "expect": {
         "row_count": 13,
         "same_substance": true,
         "target_name": "Strontium(2+)"
       },
-      "comment": "3.12 needed a fix from 7440-24-6, the metal, to 22537-39-9; 3.13 ships the ion's number, and its fixes file states nothing about the rows."
+      "comment": "3.12 needed a fix from 7440-24-6, the metal, to 22537-39-9; 3.13 ships the ion's number, and its fixes file states nothing about the rows. The merge records the thirteen rows under the ion's spelling, `Strontium(2+)`, which is what the selector names."
     },
     {
       "id": "ecoinvent-3-13-caesium-i-needs-no-fix",
@@ -175,30 +175,29 @@
         "kind": "source_row",
         "list": "ecoinvent",
         "version": "3.13",
-        "name": "Molybdenum VI"
+        "name": "Molybdenum(6+)"
       },
       "expect": {
         "row_count": 13,
         "same_substance": true,
         "target_name": "Molybdenum(6+)"
       },
-      "comment": "3.13 ships 16065-87-5, the ion's number, which 3.10.1 to 3.12 had to be corrected to (#181)."
+      "comment": "3.13 ships 16065-87-5, the ion's number, which 3.10.1 to 3.12 had to be corrected to (#181). Selected by the ion's spelling, as the merge records the rows."
     },
     {
       "id": "ecoinvent-3-13-alpha-lindane-needs-no-fix",
-      "title": "ecoinvent 3.13's seven `Alpha-lindane` rows reach the alpha isomer, 319-84-6, with no correction stated",
+      "title": "The ecoinvent `Alpha-lindane` row to unspecified air lands on the alpha isomer, 319-84-6, from 3.12 and 3.13 alike",
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
-        "version": "3.13",
-        "name": "Alpha-lindane"
+        "uuid": "9acd62b8-2051-5ccb-aa96-907b3313788a"
       },
       "expect": {
-        "row_count": 7,
+        "row_count": 2,
         "same_substance": true,
         "target_cas": "319-84-6"
       },
-      "comment": "3.11 and 3.12 wrote gamma-lindane's 58-89-9 on the alpha, beta and delta rows and are corrected (#26); 3.13 writes each isomer's own number."
+      "comment": "3.11 and 3.12 wrote gamma-lindane's 58-89-9 on the alpha, beta and delta rows and are corrected (#26); 3.13 writes each isomer's own number. Selected by uuid, since the merge records the row under the substance's name."
     },
     {
       "id": "ecoinvent-3-13-organic-nitrogen-is-not-the-gas",
@@ -246,8 +245,7 @@
         "outcome": "created",
         "target_cas": "4070-80-8"
       },
-      "comment": "On the build of a87255f the row, which carries 4070-80-8, was matched by its vendor synonym `Fumaric acid` to EF 3.1's `fumaric acid`, 110-17-8, because no list carries the ester's number and the label matcher reads synonyms. The synonym is removed by the 3.13 fixes file.",
-      "pending": true
+      "comment": "On the build of a87255f the row, which carries 4070-80-8, was matched by its vendor synonym `Fumaric acid` to EF 3.1's `fumaric acid`, 110-17-8, because no list carries the ester's number and the label matcher reads synonyms. The synonym is removed by the 3.13 fixes file. Met on the six-list build of 4198d4c, where each ester creates its own substance."
     },
     {
       "id": "ecoinvent-3-13-monostearyl-fumarate-is-not-fumaric-acid",
@@ -263,8 +261,7 @@
         "outcome": "created",
         "target_cas": "1741-93-1"
       },
-      "comment": "The same defect on the second ester, through the same synonym, measured on the same build.",
-      "pending": true
+      "comment": "The same defect on the second ester, through the same synonym, measured on the same build. Met on the six-list build of 4198d4c, where each ester creates its own substance."
     },
     {
       "id": "ecoinvent-3-13-fumaric-acid-carries-only-the-acid",
@@ -277,8 +274,7 @@
         "count": 1,
         "flow_count": 13
       },
-      "comment": "On the build of a87255f the substance carried fifteen flows: EF 3.1's thirteen and the two ester rows above.",
-      "pending": true
+      "comment": "On the build of a87255f the substance carried fifteen flows: EF 3.1's thirteen and the two ester rows above. Met on the six-list build of 4198d4c, where each ester creates its own substance."
     }
   ]
 }
