@@ -10,8 +10,8 @@ at `9fbb0d5`. Its rows carry a uuid that is the same in every ecoinvent release,
 so every row quoted below can be found in the `ElementaryExchanges.xml` of
 3.12 and, where the row existed then, of any earlier release too.
 
-The curated corrections are in `ecoinvent-3.12-manual-fixes.json`: 30 entries
-in all, of which 15 alter a registry number, 5 a name, 7 a synonym list and 3 a
+The curated corrections are in `ecoinvent-3.12-manual-fixes.json`: 35 entries
+in all, of which 20 alter a registry number, 5 a name, 7 a synonym list and 3 a
 unit. Where a row is sent somewhere ecoinvent's own correspondence table to EF
 3.1 would not send it, the target is in `ecoinvent-match-overrides.json`,
 which applies to every ecoinvent release because the uuids are shared. The
@@ -293,7 +293,7 @@ consensus land vocabulary names the class once:
 
 ## Registry numbers corrected
 
-Fifteen entries in `ecoinvent-3.12-manual-fixes.json` change a registry number.
+Twenty entries in `ecoinvent-3.12-manual-fixes.json` change a registry number.
 Each is applied before the row is matched, so the row reaches the substance
 the corrected number names.
 
@@ -314,6 +314,9 @@ the corrected number names.
 | `Alpha-endosulfan`, 7 rows | 115-29-7 | 959-98-8 | 115-29-7 is endosulfan, the technical mixture of the two isomers. ecoinvent registered all twenty-one endosulfan rows with it, so every build landed the alpha and beta isomers on the parent. 959-98-8 is the alpha isomer's own number, the one ecoinvent 3.13 ships on the same uuids and EF 3.1 carries on its `A-endosulfan` rows ([#26](https://github.com/brightway-labs/brightway-flows/issues/26)). |
 | `Beta-endosulfan`, 7 rows | 115-29-7 | 33213-65-9 | The same slip on the beta isomer: 33213-65-9 is its own number, in 3.13 and on EF 3.1's `endosulfan (beta)` rows. |
 | `Propyl propionate`, water / unspecified (`b842b096-d4d3-498c-bdff-c46b2c09c651`) | 623-53-0 | 106-36-5 | 623-53-0 is ethyl methyl carbonate, a different compound, and with it the row was published as `Ethyl Methyl Carbonate` on EF 3.1's flow of that carbonate (build of 5f06833). 106-36-5 is propyl propionate, the number ecoinvent 3.13 ships on the same uuid. |
+| `Dibutyltin`, water / ocean (`9b84ef84-a567-48de-8dd5-24726bc6688d`) | 1002-53-5 | 14488-53-0 | 1002-53-5 is dibutylstannane, the neutral dihydride. Dibutyltin dissolved in sea water is the cation Bu₂Sn²⁺, 14488-53-0, which ecoinvent 3.13 registers on this uuid with the formula `C8H18Sn+2`. |
+| `Triphenyltin`, water / ocean (`ad5a58d5-6ccd-4693-96f4-e56554a81269`) | 892-20-6 | 668-34-8 | 892-20-6 is triphenylstannane, the neutral hydride; 668-34-8 is the triphenyltin cation, the number 3.8 and 3.9.1 carried and 3.13 returns to, with the formula `C18H15Sn+`. |
+| `Diphenyltin`, `Phenyltin` and `Trioctyltin`, water / ocean (`8892f038-c4cf-4166-adeb-df61c4e32af0`, `cff46201-bfb0-486c-8f70-277a413c58a1`, `e2ee2329-8e3f-484a-a1a7-99316eb2762c`) | 1011-95-6, 2406-68-0, 869-59-0 | removed | 1011-95-6 is diphenyltin as a neutral tin compound and 869-59-0 is trioctyltin hydride; 2406-68-0 resolves to nothing in PubChem. The rows report the dissolved cations, which ecoinvent 3.13 writes as `C12H10Sn+2`, `C6H5Sn+3` and `C24H51Sn1+` with no registry number, so the numbers come off rather than being replaced. |
 
 ### Other corrections that change what a row says
 

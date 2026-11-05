@@ -382,7 +382,7 @@ elements.)
 
 ## Registry numbers corrected
 
-Fourteen entries in `ecoinvent-3.8-manual-fixes.json` change a registry
+Eighteen entries in `ecoinvent-3.8-manual-fixes.json` change a registry
 number, and they are applied before any matching runs. Nine of them make 3.8
 say what a later release already says about the same uuid: the vendor
 corrected its own CAS number, and the older export is read as meaning what the
@@ -404,6 +404,8 @@ newer one states.
 | `9877ce00-65f8-4c0c-9fcf-92aa53a2c9c0` Diatomite, in ground | 7631-86-9 | 61790-53-2 | 7631-86-9 is pure silicon dioxide; 61790-53-2 is diatomite, the sedimentary rock, and is what 3.10.1 onwards say (#140) |
 | `0fa4f51e-b0dc-5d11-84d3-b32f0f3c88d5` Fluorspar, in ground | 7789-75-5 | 14542-23-5 | 7789-75-5 is calcium difluoride the compound; 14542-23-5 is fluorite, the mineral, which 3.12 uses and 3.8's own `Fluorspar, 92%, in ground` already carries |
 | Beta-cyfluthrin, both rows | 68359-37-5 | 1820573-27-0 | 68359-37-5 is cyfluthrin, the commercial eight-isomer mixture. These rows are the beta product — the same molecules enriched in the two most insecticidally active diastereoisomeric pairs — and PPDB registers it separately (record 74; plain cyfluthrin is record 192). ecoinvent's own transition table retired the name Cyfluthrin for these uuids in favour of Beta-cyfluthrin, while EF 3.1 ships plain cyfluthrin under the same number, so with the shared number the beta rows fused with the plain substance. The shared EC number 269-855-7 stays; every release ships the rows and takes the same correction ([#188](https://github.com/brightway-labs/brightway-flows/issues/188)) |
+| `Dibutyltin`, water / ocean (`9b84ef84-a567-48de-8dd5-24726bc6688d`) | 1002-53-5 | 14488-53-0 | 1002-53-5 is dibutylstannane, the neutral dihydride. Dibutyltin dissolved in sea water is the cation Bu₂Sn²⁺, 14488-53-0, which ecoinvent 3.13 registers on this uuid with the formula `C8H18Sn+2`. |
+| `Diphenyltin`, `Phenyltin` and `Trioctyltin`, water / ocean (`8892f038-c4cf-4166-adeb-df61c4e32af0`, `cff46201-bfb0-486c-8f70-277a413c58a1`, `e2ee2329-8e3f-484a-a1a7-99316eb2762c`) | 1011-95-6, 2406-68-0, 869-59-0 | removed | 1011-95-6 is diphenyltin as a neutral tin compound and 869-59-0 is trioctyltin hydride; 2406-68-0 resolves to nothing in PubChem. The rows report the dissolved cations, which ecoinvent 3.13 writes as `C12H10Sn+2`, `C6H5Sn+3` and `C24H51Sn1+` with no registry number, so the numbers come off rather than being replaced. |
 
 ### Other corrections in the same file
 
