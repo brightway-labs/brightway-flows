@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "Phase C of #407. Every statement a merged list's rows carry about one unit of a flow -- the 18.01, 18.2 and 19.1 MJ three lists give a kilogram of hard coal -- is kept in `flow_property_statements`, one row per statement per source row that reached a consensus flow, with which one the mapping converted by; the review app's flow page shows them and the spread across the substance. The substance itself gains, in `properties`, a reference value a curator chose with its reason (`flow-object-property-values.json`), the spread the lists make, and the range the class spans, kept apart. The claims hold the number of mappings converting by a statement at what phases A and B measured (63 on the builds of 779e1c4 and 1055f92), so a statement lost on the way into the table or the flow object reads as a loss, and hold each list's row count at no less than the statements its converting rows carry.",
+  "expectations": [
+    {
+      "id": "0407-sixty-three-mappings-convert-by-a-property-statement",
+      "issue": 407,
+      "title": "63 mappings publish a multiplier derived from a property statement, as on the builds of 779e1c4 and 1055f92",
+      "subject": {"kind": "measure", "key": "merge.conversions_from_flow_property"},
+      "expect": {"equals": 63},
+      "comment": "The 58 override rows phase A moved onto statements become 63 links because ecoinvent's six rows are merged for 3.12 and 3.8 (12 links) and one of BAFU's eleven statements converts nothing on its own target. A number below this is a statement that stopped converting; above it, a crossing that newly converts, which is a change to measure on its own."
+    },
+    {
+      "id": "0407-stepwise-rows-carry-their-statements-into-the-table",
+      "issue": 407,
+      "title": "Stepwise 2006's rows carry at least 24 property statements onto consensus flows",
+      "subject": {"kind": "measure", "key": "merge.stepwise-2006-1.09.property_statements"},
+      "expect": {"at_least": 24},
+      "comment": "Twelve energy carriers, each with the method's number and at least one of the substance block's, plus the rows whose names state their energy. Counted from `flow_property_statements`, so a list whose adapter stopped writing `property_statements`, or whose rows stopped reaching a flow, reads as a loss here."
+    },
+    {
+      "id": "0407-agribalyse-rows-carry-their-statements-into-the-table",
+      "issue": 407,
+      "title": "AGRIBALYSE 3.2's rows carry at least 29 property statements onto consensus flows",
+      "subject": {"kind": "measure", "key": "merge.agribalyse-3.2.property_statements"},
+      "expect": {"at_least": 29},
+      "comment": "The 29 rows phase A stated, now 17 curated and 12 the vendor's, each carrying at least one statement; most fuels carry a gross and a net value."
+    }
+  ]
+}

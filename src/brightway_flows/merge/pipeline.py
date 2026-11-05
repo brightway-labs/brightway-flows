@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections import Counter
 from collections.abc import Iterable
 from datetime import datetime, timezone
 from time import perf_counter
@@ -35,7 +36,13 @@ from brightway_flows.merge.contexts import (
 from brightway_flows.merge.creations import (
     create_flows_for_unmatched_rows,
 )
+from brightway_flows.flow_object_properties import (
+    MERGE_PROPERTY_VALUE_STAGE,
+    load_flow_object_property_values,
+    write_flow_object_property_values,
+)
 from brightway_flows.merge.datastores import (
+    sync_flow_object_properties,
     sync_flow_object_synonyms,
     sync_merge_results,
 )
@@ -54,6 +61,11 @@ from brightway_flows.merge.places import (
     MERGE_PLACE_STAGE,
     report_land_classes_out_of_place,
     report_substance_places,
+)
+from brightway_flows.merge.property_rows import (
+    read_rows as read_property_rows,
+    rows_for_merged_list,
+    write_rows as write_property_rows,
 )
 from brightway_flows.merge.prepared import (
     find_prepared_context_inconsistencies,
@@ -635,6 +647,49 @@ def merge_source_list(
         CONSENSUS_DB_FILEPATH,
         stage=MERGE_SYNONYM_STAGE,
         counts=dict(synonym_stats),
+    )
+
+    # What each list says a unit of the flow is -- the statements its rows
+    # carried, kept for every list merged so far -- and the substance's own
+    # entry derived from all of them: the reference value a curator wrote, the
+    # spread the lists make, the range the class spans (#407, phase C).  Over
+    # the objects this list's rows reached plus the ones the ruling names, read
+    # back from the table so the spread is every list's and not this one's.
+    property_rows = rows_for_merged_list(
+        run_id=run_id,
+        list_name=source.list_name,
+        list_version=source.list_version,
+        source_flows=source_flows,
+        merged_elementary=accumulator.merged_elementary,
+    )
+    property_stats: Counter = Counter()
+    property_stats["rows"] = write_property_rows(
+        property_rows,
+        list_name=source.list_name,
+        list_version=source.list_version,
+        db_path=CONSENSUS_DB_FILEPATH,
+    )
+    touched_objects = {row.flow_object_id for row in property_rows if row.flow_object_id}
+    touched_objects |= {object_id for object_id, _ in load_flow_object_property_values()}
+    property_objects = [
+        obj for object_id, obj in indexes.flow_objects_by_id.items()
+        if object_id in touched_objects
+    ]
+    changed_properties: set[str] = set()
+    property_stats.update(
+        write_flow_object_property_values(
+            property_objects,
+            rows_by_object=read_property_rows(touched_objects, db_path=CONSENSUS_DB_FILEPATH),
+            changed=changed_properties,
+        )
+    )
+    property_stats["substances_rewritten"] = sync_flow_object_properties(
+        property_objects, changed_properties, CONSENSUS_DB_FILEPATH
+    )
+    replace_stage_stats(
+        CONSENSUS_DB_FILEPATH,
+        stage=MERGE_PROPERTY_VALUE_STAGE,
+        counts=dict(property_stats),
     )
 
     # After the synonym pass, because that is the last writer of an object's

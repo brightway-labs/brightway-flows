@@ -305,6 +305,8 @@ applies to hold the next; these are the records between the two.
 | `PropertyStatement` | `domain/property_statements.py` | "One `per_unit` of this flow is `value` `unit` of `quantity`", said by a vendor file, a method, the flow's name or a curator, with provenance. Carried on `Flow.property_statements`; the merge derives a mapping's `qudt:conversionMultiplier` from it (#407) |
 | `ConversionRule` | `domain/property_statements.py` | A list's ruling that one quantity, optionally from one origin, converts onto a target of another, ahead of the exact match: Stepwise's method-stated calorific values onto EF's net flows |
 | `PropertyStatements` | `property_statements.py` | One list's `<list>-property-statements.json`, resolved for one release: curated statements by source uuid, its conversion rules, the reference quantities it rules for named flows, the energy quantities it rules for rows whose vendor states an unlabelled energy, and the quantities it says the vendor states for this release |
+| `FlowObjectPropertyValue`, `ClassRange` | `flow_object_properties.py` | One row of `flow-object-property-values.json`: the reference value a curator chose for one substance and quantity, with its reason, and the range the class of substance spans from a published table. The pass in the same module writes them, with the merged lists' spread, onto `FlowObject.properties` under the quantity's IRI (#407) |
+| `PropertyStatementRow` | `merge/property_rows.py` | One statement a source row carried onto a consensus flow, as the `flow_property_statements` table holds it: the list, the row, the flow and substance it reached, the statement, and whether the mapping converted by it |
 
 ## Writing a transformer
 

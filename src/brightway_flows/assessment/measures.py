@@ -49,6 +49,7 @@ from brightway_flows.domain.composition import contradicts_name
 from brightway_flows.domain.elementary_flow import minted_elementary_flow_id
 from brightway_flows.domain.labels import flow_label_value
 from brightway_flows.domain.preferred_label_decisions import decision_key
+from brightway_flows.domain.units import ConversionBasis
 from brightway_flows.domain.vocabulary import CHEMROF_MOLECULAR_FORMULA
 from brightway_flows.merge.store import ConflictKind, disagreement_filter
 from brightway_flows.pipeline.review_records import ReviewQueue
@@ -225,6 +226,46 @@ def _scalar(connection: sqlite3.Connection, sql: str, parameters: tuple = ()) ->
 # The measures
 # ---------------------------------------------------------------------------
 
+def _property_statement_measures(connection: sqlite3.Connection) -> list[MeasureValue]:
+    """What the merged lists state about a unit of their flows (#407).
+
+    `merge.<list>-<version>.property_statements` counts the statements each
+    list's rows carried onto a consensus flow, from `flow_property_statements`;
+    `merge.conversions_from_flow_property` counts the mappings whose multiplier
+    was derived from one, from the links themselves, which is the number that
+    says the statements are doing their job.  Neutral: more statements is more
+    read, not better or worse; a conversion lost is caught by the expectation
+    that holds the second at what the build publishes.
+    """
+    out: list[MeasureValue] = []
+    if _table_exists(connection, "flow_property_statements"):
+        for list_name, list_version, count in connection.execute(
+            "SELECT list_name, list_version, count(*) FROM flow_property_statements "
+            "GROUP BY list_name, list_version ORDER BY list_name, list_version"
+        ).fetchall():
+            out.append(MeasureValue(
+                f"merge.{list_name}-{list_version}.property_statements",
+                int(count),
+                f"{list_name} {list_version}: statements its rows carry about one unit of a flow",
+                Direction.NEUTRAL,
+                "merge",
+            ))
+    if _table_exists(connection, "elementary_flow_sources"):
+        out.append(MeasureValue(
+            "merge.conversions_from_flow_property",
+            _scalar(
+                connection,
+                "SELECT count(*) FROM elementary_flow_sources "
+                "WHERE json_extract(source_metadata_json, '$.conversion_basis') = ?",
+                (ConversionBasis.FLOW_PROPERTY.value,),
+            ),
+            "mappings whose multiplier is derived from a property statement",
+            Direction.NEUTRAL,
+            "merge",
+        ))
+    return out
+
+
 def collect_measures(
     connection: sqlite3.Connection, *, db_path: Path | None = None
 ) -> dict[str, MeasureValue]:
@@ -244,6 +285,7 @@ def collect_measures(
         *_published_measures(connection),
         *_curated_name_measures(connection),
         *_merge_measures(connection),
+        *_property_statement_measures(connection),
         *_unit_crossing_measures(connection),
         *_queue_measures(connection),
         *_run_stat_measures(connection),

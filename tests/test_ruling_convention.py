@@ -54,6 +54,8 @@ def _shipped_files() -> set[str]:
 #: case or fail on a helper -- and keyed by filename so that
 #: `test_every_ruling_has_a_loader` can say which ruling is unaccounted for.
 RULING_LOADERS = (
+    ("flow-object-property-values.json",
+     "brightway_flows.flow_object_properties", "load_flow_object_property_values"),
     ("elementary-flow-collision-decisions.json",
      "brightway_flows.pipeline.collision_decisions", "load_collision_rulings"),
     ("release-migration-rulings.json",
@@ -439,7 +441,7 @@ class TheConventionsPageStatesTheseNumbersTestCase(unittest.TestCase):
         24: "twenty-four", 25: "twenty-five", 26: "twenty-six",
         27: "twenty-seven", 28: "twenty-eight", 29: "twenty-nine",
         30: "thirty", 31: "thirty-one", 32: "thirty-two", 33: "thirty-three",
-        34: "thirty-four", 35: "thirty-five",
+        34: "thirty-four", 35: "thirty-five", 36: "thirty-six",
     }
 
     def _returns_a_set(self, module_name: str, function_name: str) -> bool:
@@ -515,6 +517,7 @@ class TheBareSchemaVersionNameIsTakenTestCase(unittest.TestCase):
                 "brightway_flows/domain/land_flow_classes.py",
                 "brightway_flows/domain/particulate_size.py",
                 "brightway_flows/flow_layers/roles.py",
+                "brightway_flows/flow_object_properties.py",
                 "brightway_flows/merge/land_groupings.py",
                 "brightway_flows/merge/prepared_context_decisions.py",
                 "brightway_flows/pipeline/collision_decisions.py",
