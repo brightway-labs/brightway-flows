@@ -251,6 +251,15 @@
       "original_value": "115-29-7",
       "new_value": "33213-65-9",
       "comment": "The same slip on the beta isomer: 33213-65-9 is `β-Endosulfan`'s own number (Common Chemistry; PubChem CID 12309466), the one ecoinvent 3.13, released 2026-11-04, ships on these seven uuids and EF 3.1 carries on its thirteen `endosulfan (beta)` rows. See `Alpha-endosulfan` above for what the parent's number cost and why the correction is stated in every release that ships the rows (#26). (#456)"
+    },
+    {
+      "match": {
+        "uuid": "b842b096-d4d3-498c-bdff-c46b2c09c651"
+      },
+      "field": "cas_number",
+      "original_value": "623-53-0",
+      "new_value": "106-36-5",
+      "comment": "623-53-0 is ethyl methyl carbonate, C4H8O3, a battery-electrolyte solvent (Common Chemistry; PubChem CID 522046). The row is `Propyl propionate`, to water / unspecified, with the synonyms `n-Propyl propionate` and `Propanoic acid, propyl ester`, and the ester the name and the synonyms describe is 106-36-5, propyl propanoate, C6H12O2 (PubChem CID 7803). A registry number outranks a name, so on the build of 5f06833 the row was matched to EF 3.1's `ethyl methyl carbonate` and published under that label: an emission of propyl propionate characterised as a carbonate. ecoinvent 3.13, released 2026-11-04, registers the same uuid 106-36-5, which is the vendor's own correction; 3.12 is the only earlier release that ships the row, and it is corrected here so that the two releases the build merges reach one substance (#26). EF 3.1 has no propyl propionate flow -- its `isopropyl propionate`, 637-78-5, is the other ester -- so the corrected row creates the substance rather than reaching one. Keyed on the uuid because one row carries the name. (#457)"
     }
   ]
 }

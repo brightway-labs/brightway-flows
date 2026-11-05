@@ -10,8 +10,8 @@ at `9fbb0d5`. Its rows carry a uuid that is the same in every ecoinvent release,
 so every row quoted below can be found in the `ElementaryExchanges.xml` of
 3.12 and, where the row existed then, of any earlier release too.
 
-The curated corrections are in `ecoinvent-3.12-manual-fixes.json`: 29 entries
-in all, of which 14 alter a registry number, 5 a name, 7 a synonym list and 3 a
+The curated corrections are in `ecoinvent-3.12-manual-fixes.json`: 30 entries
+in all, of which 15 alter a registry number, 5 a name, 7 a synonym list and 3 a
 unit. Where a row is sent somewhere ecoinvent's own correspondence table to EF
 3.1 would not send it, the target is in `ecoinvent-match-overrides.json`,
 which applies to every ecoinvent release because the uuids are shared. The
@@ -293,7 +293,7 @@ consensus land vocabulary names the class once:
 
 ## Registry numbers corrected
 
-Fourteen entries in `ecoinvent-3.12-manual-fixes.json` change a registry number.
+Fifteen entries in `ecoinvent-3.12-manual-fixes.json` change a registry number.
 Each is applied before the row is matched, so the row reaches the substance
 the corrected number names.
 
@@ -313,6 +313,7 @@ the corrected number names.
 | `Beta-cyfluthrin`, 8 rows | 68359-37-5 | 1820573-27-0 | 68359-37-5 is cyfluthrin, the commercial eight-isomer mixture. These rows are the beta product — the same molecules enriched in the two most insecticidally active diastereoisomeric pairs — and PPDB registers it separately (record 74; plain cyfluthrin is record 192). ecoinvent's own transition table retired the name Cyfluthrin for these uuids in favour of Beta-cyfluthrin, while EF 3.1 ships plain cyfluthrin under the same number, so with the shared number the beta rows fused with the plain substance. The shared EC number 269-855-7 stays; every release ships the rows and takes the same correction ([#188](https://github.com/brightway-labs/brightway-flows/issues/188)). |
 | `Alpha-endosulfan`, 7 rows | 115-29-7 | 959-98-8 | 115-29-7 is endosulfan, the technical mixture of the two isomers. ecoinvent registered all twenty-one endosulfan rows with it, so every build landed the alpha and beta isomers on the parent. 959-98-8 is the alpha isomer's own number, the one ecoinvent 3.13 ships on the same uuids and EF 3.1 carries on its `A-endosulfan` rows ([#26](https://github.com/brightway-labs/brightway-flows/issues/26)). |
 | `Beta-endosulfan`, 7 rows | 115-29-7 | 33213-65-9 | The same slip on the beta isomer: 33213-65-9 is its own number, in 3.13 and on EF 3.1's `endosulfan (beta)` rows. |
+| `Propyl propionate`, water / unspecified (`b842b096-d4d3-498c-bdff-c46b2c09c651`) | 623-53-0 | 106-36-5 | 623-53-0 is ethyl methyl carbonate, a different compound, and with it the row was published as `Ethyl Methyl Carbonate` on EF 3.1's flow of that carbonate (build of 5f06833). 106-36-5 is propyl propionate, the number ecoinvent 3.13 ships on the same uuid. |
 
 ### Other corrections that change what a row says
 

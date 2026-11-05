@@ -2737,3 +2737,49 @@ class EndosulfanIsomersCarryTheirOwnNumbersTestCase(unittest.TestCase):
                 self.assertEqual(list(row.cas_numbers), [expected[row.name]], row.name)
                 seen[row.name] += 1
         self.assertEqual(seen, {"Alpha-endosulfan": 7, "Beta-endosulfan": 7, "Endosulfan": 7})
+
+
+class PropylPropionateIsNotEthylMethylCarbonateTestCase(unittest.TestCase):
+    """623-53-0 is ethyl methyl carbonate; the row is propyl propionate, 106-36-5 (#457).
+
+    3.12 is the only release before 3.13 that ships the row, so its file alone
+    states the correction, keyed on the uuid because one row carries the name.
+    A different row under the same name is not touched.
+    """
+
+    UUID = "b842b096-d4d3-498c-bdff-c46b2c09c651"
+    CARBONATE = "623-53-0"
+    ESTER = "106-36-5"
+
+    def _paths(self):
+        return {p.name.removesuffix("-manual-fixes.json"): p
+                for p in PACKAGE_DATA_DIR.glob("ecoinvent-*-manual-fixes.json")}
+
+    def test_only_the_release_that_ships_the_row_states_the_correction(self):
+        for key, path in self._paths().items():
+            fixes = [f for f in orjson.loads(path.read_bytes())["fixes"]
+                     if f.get("match", {}).get("uuid") == self.UUID]
+            with self.subTest(file=path.name):
+                if key != "ecoinvent-3.12":
+                    self.assertEqual(fixes, [])
+                    continue
+                self.assertEqual(len(fixes), 1)
+                self.assertEqual(fixes[0]["field"], "cas_number")
+                self.assertEqual(fixes[0]["original_value"], self.CARBONATE)
+                self.assertEqual(fixes[0]["new_value"], self.ESTER)
+
+    def test_the_row_takes_the_esters_number_and_another_row_does_not(self):
+        row = {"uuid": self.UUID, "name": "Propyl propionate", "cas_number": self.CARBONATE}
+        other = {"uuid": "u-2", "name": "Propyl propionate", "cas_number": self.CARBONATE}
+        apply_manual_fixes([row, other], self._paths()["ecoinvent-3.12"], label="ecoinvent-3.12")
+        self.assertEqual(row["cas_number"], self.ESTER)
+        self.assertEqual(other["cas_number"], self.CARBONATE)
+
+    def test_the_merged_release_loads_the_corrected_number(self):
+        source = known_source_lists()["ecoinvent-3.12"]
+        if not source.flows_path.exists():
+            raise unittest.SkipTest("ecoinvent-3.12 has not been fetched here")
+        rows = [r for r in source.load_flows() if r.uuid == self.UUID]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].name, "Propyl propionate")
+        self.assertEqual(list(rows[0].cas_numbers), [self.ESTER])
