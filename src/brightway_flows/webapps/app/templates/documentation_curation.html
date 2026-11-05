@@ -1,0 +1,17 @@
+<aside class="docs-curation" aria-label="Curation links" id="curation-links">
+  {% if curation_unavailable %}
+  <strong>Curation links are temporarily unavailable.</strong>
+  <p>The register could not be read. The source documentation remains available below.</p>
+  <a href="/curation/">Open Curation →</a>
+  {% elif page.slug == 'findings/index' %}
+  <div class="docs-curation-heading"><strong>Source findings in Curation</strong><a href="/docs/curation/index">Workflow guide →</a></div>
+  <p>The Brightway Labs investigations below retain their evidence, decisions and measured outcomes. Curation connects those articles to individual review records.</p>
+  <div class="docs-curation-links"><a href="{{ url_for('curation.index',view='classes',document=page.slug) }}">{{ curation_classes | length }} finding classes →</a><a href="{{ url_for('curation.index',view='individual',document=page.slug) }}">{{ curation_cases | length }} registered individual case{{ "" if curation_cases | length == 1 else "s" }} →</a><a href="/checks/">Quality checks →</a></div>
+  {% if curation_cases %}<details><summary>Registered cases and proposals</summary><ul class="docs-curation-cases">{% for case in curation_cases %}<li><a href="{{ url_for('curation.detail',case_id=case.id) }}">{{ case.title }}</a><small>{{ case.stage_label }} · {{ case.reported_by or 'Record author not recorded' }}{% if case.reported_at %} · {{ case.reported_at.strftime('%d %b %Y') }}{% endif %}</small></li>{% endfor %}</ul></details>{% endif %}
+  {% else %}
+  <div class="docs-curation-heading"><strong>Curation for this finding</strong><a href="/docs/findings/index">All source findings →</a></div>
+  <div class="docs-curation-links">{% for case in curation_classes %}<a href="{{ url_for('curation.detail',case_id=case.id) }}">Finding-class record →</a>{% endfor %}{% if curation_cases %}<a href="{{ url_for('curation.index',view='individual',document=page.slug) }}">{{ curation_cases | length }} registered individual case{{ "" if curation_cases | length == 1 else "s" }} →</a>{% endif %}</div>
+  <p>{% if not curation_cases %}The individual corrections described below have not yet been indexed as separate cases. {% endif %}The article remains the source for its documented decisions and outcomes.</p>
+  {% endif %}
+  {% if not curation_unavailable %}<small>Links follow explicit evidence references in the loaded register. They do not represent a complete migration of every example or a new scientific review.</small>{% endif %}
+</aside>

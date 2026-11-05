@@ -131,6 +131,15 @@ SECTIONS: tuple[Section, ...] = (
         summary="Characterisation factors, by method and implementation",
     ),
     Section(
+        key="curation",
+        label="Curation",
+        href="/curation/",
+        blurb="Follow a finding through evidence, proposals, executable "
+              "corrections and revision-specific review.",
+        group="browse",
+        summary="Findings, proposals and correction modules",
+    ),
+    Section(
         key="checks",
         label="Checks",
         href="/checks/",
@@ -138,7 +147,7 @@ SECTIONS: tuple[Section, ...] = (
               "substances, a formula that disagrees with its own source, a "
               "row measured in the wrong unit.",
         group="browse",
-        summary="Where the source lists disagree with each other",
+        summary="Quality control for the finished list",
     ),
     Section(
         key="overview",

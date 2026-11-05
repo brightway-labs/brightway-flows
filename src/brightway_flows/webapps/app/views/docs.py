@@ -14,7 +14,7 @@ from pathlib import Path
 
 from flask import Blueprint, abort, current_app, render_template, send_from_directory
 
-from brightway_flows.webapps.app import documentation
+from brightway_flows.webapps.app import curation, documentation
 
 blueprint = Blueprint("docs", __name__, url_prefix="/docs")
 
@@ -57,6 +57,23 @@ def page(page: str = ""):
     if document is None:
         abort(404)
     previous_page, next_page = documentation.neighbours(sections, document.slug)
+    register = None
+    curation_unavailable = False
+    linked = ()
+    if document.slug.startswith("findings/"):
+        try:
+            register = curation.read_register(
+                curation.register_path(
+                    root, current_app.config.get("CURATION_REGISTER_PATH")
+                )
+            )
+            if register:
+                linked = curation.cases_for_document(register, root, document.slug)
+        except ValueError, OSError:
+            current_app.logger.warning(
+                "Curation links unavailable on documentation page", exc_info=True
+            )
+            curation_unavailable = True
     return render_template(
         "documentation.html",
         page=document,
@@ -64,4 +81,10 @@ def page(page: str = ""):
         group=documentation.group_of(sections, document.slug),
         previous_page=previous_page,
         next_page=next_page,
+        curation_register=register,
+        curation_unavailable=curation_unavailable,
+        curation_classes=[
+            c for c in linked if c.origin == curation.Origin.FINDING_CLASS
+        ],
+        curation_cases=[c for c in linked if c.origin != curation.Origin.FINDING_CLASS],
     )

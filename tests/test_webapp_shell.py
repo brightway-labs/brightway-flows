@@ -458,7 +458,7 @@ class LinkIntegrityTestCase(unittest.TestCase):
         keys = [section.key for section in SECTIONS]
         self.assertEqual(
             keys,
-            ["docs", "download", "about", "flows", "substances", "factors", "checks",
+            ["docs", "download", "about", "flows", "substances", "factors", "curation", "checks",
              "overview", "scores", "queue", "merge"],
         )
         self.assertEqual(

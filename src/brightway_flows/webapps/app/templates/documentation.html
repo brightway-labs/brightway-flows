@@ -25,6 +25,9 @@
    is three and a half megabytes worth fetching.  `defer` so neither script
    holds up the prose, and in this order because the second one calls the
    first. #}
+{% block head %}
+{% if curation_register or curation_unavailable %}<link rel="stylesheet" href="{{ url_for('static', filename='curation-docs.css') }}">{% endif %}
+{% endblock %}
 {% block scripts %}
 {% if page.has_diagrams %}
 <script defer src="{{ url_for('static', filename='mermaid.min.js') }}"></script>
@@ -52,6 +55,8 @@
     <p class="docs__breadcrumb">
       <a href="{{ url_for('docs.page') }}">Docs</a>{% if group %} / {{ group.title }}{% endif %}
     </p>
+
+    {% if curation_register or curation_unavailable %}{% include "documentation_curation.html" %}{% endif %}
 
     {% if page.contents %}
     {# Closed by default: the contents are worth having on a page of five

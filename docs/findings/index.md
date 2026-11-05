@@ -1,5 +1,12 @@
 # What we have found
 
+The review application's Curation section connects these observations to
+proposals, the code that would correct them and revision-specific sign-off; [From
+findings to reviewed corrections](../curation/index.md) says how. One
+finding-class record there indexes each page below, and individual cases keep
+their own proposals, implementation evidence and review history. Registration
+there does not replace the decisions documented here.
+
 Harmonising several flow lists means reading them against each other, and against
 the chemical registries, one substance at a time. That work turns up errors. A
 flow is named after a chemical it is not; two flows that are one substance are

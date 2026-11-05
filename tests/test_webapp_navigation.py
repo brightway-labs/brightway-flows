@@ -41,7 +41,7 @@ class SectionGroupTestCase(unittest.TestCase):
         groups = navigation()
         self.assertEqual([s["key"] for s in groups["top"]], ["docs", "download", "about"])
         self.assertEqual([s["key"] for s in groups["browse"]],
-                         ["flows", "substances", "factors", "checks"])
+                         ["flows", "substances", "factors", "curation", "checks"])
         self.assertEqual([s["key"] for s in groups["build"]],
                          ["overview", "scores", "queue", "merge"])
 

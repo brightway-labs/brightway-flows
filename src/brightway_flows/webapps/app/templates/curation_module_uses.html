@@ -1,0 +1,18 @@
+{% for use in module_uses %}{% set module = use.module %}
+<article class="curation-implementation-card">
+<div class="curation-package-top"><span class="curation-eyebrow">{{ module.kind }}</span><span class="curation-badge">{{ 'Implementation linked' if use.actual else 'Proposed destination' }}</span></div>
+<h3><a href="{{ url_for('curation.module_detail',module_id=module.id) }}">{{ module.title }}</a></h3>
+<code class="curation-module-path">{{ module.path }}</code>
+<p>{{ module.summary }}</p>
+<div class="curation-implementation-counts">{% if use.actual %}<span>{{ use.actual }} implementation link{{ '' if use.actual == 1 else 's' }} in this {{ 'case' if case is defined else 'package' }}</span>{% endif %}{% if use.proposed %}<span>{{ use.proposed }} proposed destination{{ '' if use.proposed == 1 else 's' }} · acceptance not established</span>{% endif %}</div>
+{% if use.versions %}<ul class="curation-version-links">{% for version in use.versions %}<li>{% if version.cases | length == 1 %}<strong>{{ version.cases[0].title }}</strong>{% endif %}<span>{{ version.role }} · <code>{{ version.revision[:12] }}</code></span><a href="{{ version.references[0].url }}">Recorded code ↗</a></li>{% endfor %}</ul>{% else %}
+<details class="curation-inline-module"><summary>Purpose, steps and curated decisions</summary>
+{% if module.documentation %}<p class="curation-preserved-text">{{ module.documentation }}</p>{% endif %}
+{% for step in module.steps %}<h4>Step {{ step.order }} · {{ step.name }}</h4><p class="curation-preserved-text">{{ step.description or 'No class documentation recorded.' }}</p>{% endfor %}
+{% for input in module.inputs %}<h4>{{ input.kind }} · {{ input.pattern }}</h4><p>{{ input.description }}</p>{% endfor %}
+{% if not module.documentation and not module.inputs and not module.steps %}<p>Purpose not documented in this checkout. Review the linked case evidence.</p>{% endif %}
+</details>{% endif %}
+{% if case is defined and module.id in case.modules %}<p><a href="{{ code_url ~ module.path }}">Code at case revision {{ case.revision[:12] }} ↗</a></p>{% endif %}
+<a class="curation-module-details-link" href="{{ url_for('curation.module_detail',module_id=module.id) }}">Source, history and related cases →</a>
+</article>
+{% else %}<p class="curation-missing">No implementation or proposed module has been linked to these records yet.</p>{% endfor %}

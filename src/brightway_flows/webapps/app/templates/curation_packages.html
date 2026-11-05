@@ -1,0 +1,29 @@
+{% extends "curation_shell.html" %}
+{% set page_title = "Review packages · Curation" %}
+{% block curation_content %}
+{% include "curation_browser_header.html" %}
+<section class="curation-browser-panel">
+  <div class="curation-panel-heading"><div><h2>Review packages</h2><p>One shared decision at a time. Every underlying case stays attached.</p></div><button type="button" class="curation-local-toggle" data-export-triage hidden>Export my triage</button></div>
+  <form id="curation-filter-form" class="curation-live-form" method="get" action="/curation/" hx-get="/curation/" hx-trigger="curation-filter, submit" hx-push-url="true" role="search" aria-label="Filter review packages">
+    <input type="hidden" name="view" value="packages"><input type="hidden" name="sort" value="{{ sort }}"><input type="hidden" name="direction" value="{{ direction }}">
+    <div class="curation-search-bar"><label class="curation-primary-search" for="curation-query"><span>Search packages</span><input id="curation-query" name="q" type="search" value="{{ query }}" placeholder="A rule, substance or review question…" autocomplete="off"></label><a class="curation-clear" href="/curation/" hx-boost="true">Clear filters</a></div>
+    <div class="curation-view-controls"><label>Evidence needed<select id="curation-gap" name="gap"><option value="">All evidence needs</option>{% for value,label in gap_labels.items() %}<option value="{{ value }}"{% if gap == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label></div>
+    <div class="curation-result-summary"><span data-results-summary><strong data-package-visible-count>{{ packages | length }}</strong> of {{ package_count }} packages <span class="muted">· <span data-triaged-count>0</span> acknowledged in this view</span></span><span>{{ register.cases | length }} underlying cases preserved</span></div>
+    {% include "curation_live_status.html" %}
+    <div class="curation-table-scroll" tabindex="0" role="region" aria-label="Review package results"><table class="curation-table curation-package-table">
+      <colgroup><col style="width:43%"><col style="width:24%"><col style="width:10%"><col style="width:23%"></colgroup>
+      <thead><tr>
+        {% for key,label in [('title','Review package'),('workstream','Workstream'),('size','Cases')] %}<th scope="col"{% if sort == key %} aria-sort="{{ 'ascending' if direction == 'asc' else 'descending' }}"{% endif %}><a hx-boost="true" href="{{ sort_link(key) }}">{{ label }} <span>{{ ('↑' if direction == 'asc' else '↓') if sort == key else '↕' }}</span></a>{% if key == 'workstream' %}<label class="curation-column-filter"><span class="visually-hidden">Workstream</span><select id="curation-workstream" name="workstream"><option value="">All workstreams</option>{% for name,count in workstreams | dictsort %}<option value="{{ name }}"{% if workstream == name %} selected{% endif %}>{{ name }} ({{ count }})</option>{% endfor %}</select></label>{% endif %}</th>{% endfor %}
+        <th scope="col">My triage<label class="curation-column-filter" hidden data-triage-filter-label><span class="visually-hidden">My triage</span><select id="curation-triage" name="triage" data-triage-filter>{% for value,label in [('all','All triage states'),('attention','Needs attention'),('acknowledged','Acknowledged'),('split','Split requested')] %}<option value="{{ value }}"{% if triage == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label></th>
+      </tr></thead>
+      <tbody>{% for package in packages %}<tr data-package-row="{{ package.id }}" data-package-revision="{{ revisions[package.id] }}">
+        <th scope="row"><a class="curation-case-title" href="{{ url_for('curation.package_detail',package_id=package.id) }}">{{ package.title }}</a><p>{{ package.decision }}</p>{% if gap_counts[package.id] %}<small class="curation-package-gaps">{% if gap_counts[package.id].get('contradiction') %}<a class="curation-conflict" href="{{ url_for('curation.index',view='all',package=package.id,gap='contradiction') }}">{{ gap_counts[package.id]['contradiction'] }} conflicting evidence</a> · {% endif %}<a href="{{ url_for('curation.package_detail',package_id=package.id) }}#evidence-quality">Review evidence gaps →</a></small>{% endif %}</th>
+        <td>{{ package.workstream }}</td><td class="curation-numeric">{{ package.case_ids | length }}</td><td><span class="curation-badge" data-package-status>Unreviewed</span><small data-package-exceptions></small></td>
+      </tr>{% else %}<tr><td colspan="4" class="curation-table-empty">No packages match these filters. <a hx-boost="true" href="/curation/">Clear filters</a></td></tr>{% endfor %}</tbody>
+    </table></div>
+    <p class="curation-table-empty" data-triage-empty hidden>No packages match this triage state. Choose another state or clear the filters.</p>
+  </form>
+</section>
+<p class="curation-caption">Triage records scope and next steps. Scientific review stays with each case. Your triage is stored in this browser.{% if has_migration_coverage %} <a href="/curation/evidence/migration-coverage">Source coverage →</a>{% endif %}</p>
+<p data-triage-message role="status" class="curation-caption"></p>
+{% endblock %}

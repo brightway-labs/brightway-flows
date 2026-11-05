@@ -19,6 +19,16 @@ identity in this project's sense: one CAS may be listed by several database
 records, and database records occasionally claim a CAS belonging to a different
 substance. See [How a flow is decided](../deciding/index.md).
 
+### Case (curation)
+
+One record in the Curation section of the review application connecting a
+[finding](#finding) or a [processing defect](#processing-defect) to its
+proposals, the correction modules that could answer it, and its validation and
+review history. A case keeps rejected proposals and withdrawn conclusions. A
+*finding-class record* is a case that indexes one page of
+[What we have found](../findings/index.md); it is not itself a correction
+awaiting implementation.
+
 ### ChEBI
 
 Chemical Entities of Biological Interest, the EBI's chemical ontology. The
@@ -72,6 +82,26 @@ the display strings, is the authoritative form.** Contexts should always be
 resolved from the IRI; reconstructing one by parsing display strings loses
 information, because `Unknown` values are omitted from the display form.
 
+### Correction module
+
+Existing executable code — a transformer, a ruling with its data file, a
+reader of reference data — that applies one defined change, named from a case
+so that a reviewer can find the code behind a proposal. The term adds nothing
+to the code: the module is whatever `domain/rulings.py` or the transformer
+chain already registers. One module can answer several cases, and a case can
+need several modules.
+
+### Curation
+
+Two things, which should not be confused. In the code, `curation/` holds
+**shortlists**: candidate rows a person has yet to rule on. Nothing in a build
+may import it, because a shortlist decides nothing (AGENTS.md rule 15). In the
+review application, **Curation** is the section that connects cases, review
+packages and correction modules; it reads the versioned register at
+`docs/curation/register.json` and the ruling and transformer registries, and
+it changes neither. The page [From findings to reviewed
+corrections](../curation/index.md) describes that section.
+
 ### Dimension
 
 The top level of the context taxonomy: `Environmental`, `Resource`,
@@ -89,6 +119,15 @@ references. See [Flow objects and elementary flows](two-layers.md).
 
 The European Commission's Environmental Footprint reference flow list, version
 3.1, distributed in ILCD format. The base input for this project.
+
+### Finding
+
+An error found **in the source data** — in EF 3.1, ecoinvent, BAFU, the
+SimaPro-era method files, or the correspondence tables between them — with the
+evidence for the judgement, as recorded in [What we have
+found](../findings/index.md). A mistake this project made in its own processing
+is not a finding; it is a [processing defect](#processing-defect). The
+Curation section tracks both kinds of record, under those two names.
 
 ### Flow object
 
@@ -149,11 +188,41 @@ despite sharing its CAS number: `biogenic`, `fossil`, `land_use_change`,
 
 The preferred name, one per language. From SKOS.
 
+### Processing defect
+
+A mistake in this project's own processing: a transformer, a ruling or the merge
+putting a row somewhere it does not belong. Where the published output is still
+known to be wrong, it is recorded in [Known
+limitations](../reference/limitations.md), not as a finding. The Curation
+section can hold a processing defect as a case; the register marks it
+`processing` to keep it apart from a source finding.
+
+### Proposal
+
+A suggested response to a finding or processing defect: an issue, a discussion
+or a pull request. Several proposals can concern one case, and a case keeps the
+ones that were rejected. The claim a proposal makes is stated as data in
+`expectations/` and graded by `brightway-flows assess`; the proposal record in
+a case points at that file rather than restating it.
+
 ### Provenance
 
 A structured record of where a data value came from, following
 [PROV-O](https://www.w3.org/TR/prov-o/) — not free text. Distinct from the
-change log, which records which processing step wrote a field.
+change log, which records which processing step wrote a field. See [How
+provenance is recorded](../deciding/provenance.md).
+
+The Curation pages use the word for something else as well: the **captured
+evidence** behind a case — a retained copy of a source file, its SHA-256, and
+the row or line a claim points at. Where a Curation page means that, it says
+"captured evidence" or "source capture"; a bare "provenance" there is the
+PROV record above.
+
+### Release adoption
+
+Evidence that a named published build contains and applies a revision.
+Merging a proposal, or a test passing, does not establish adoption; a Curation
+case records it separately when it is known.
 
 ### Resource (dimension)
 
@@ -163,11 +232,24 @@ sphalerite is a tangible substance and gets `Environmental` with a media
 instead. This differs from most source lists and is a deliberate choice — see
 [Flow contexts](contexts.md).
 
+### Review package
+
+A named set of curation cases that share one review question, with the reason
+they are grouped. Cases keep their identities and evidence when a package is
+split or regrouped. A *workstream* groups packages by the part of the work they
+concern — method policies, historical comparisons.
+
 ### SKOS
 
 Simple Knowledge Organization System. Supplies `prefLabel`, `altLabel`,
 `definition`, and the mapping properties (`exactMatch`, `closeMatch`,
 `broadMatch`, `narrowMatch`, `relatedMatch`) used in concept associations.
+
+### Sign-off
+
+A named person's recorded judgement about one revision and one scope. Code
+review and scientific acceptance are different scopes; changing the reviewed
+revision makes a sign-off stale. A case shows "not recorded" where none exists.
 
 ### Source ref
 
@@ -186,6 +268,19 @@ One processing step in the transform. Twenty run by default, in a fixed order.
 Each proposes changes rather than editing flows directly, which is what makes
 the change log complete. See
 [Harmonisation steps](../reference/harmonisation-steps.md).
+
+### Triage acknowledgement
+
+A person's recorded acknowledgement of a review package's scope and next
+action, with any cases held out for separate attention (*triage exceptions*).
+It establishes no scientific approval, execution or adoption; a change to the
+package's membership or evidence requires it again.
+
+### Validation receipt
+
+A recorded execution of checks against identified code and inputs, with the
+result and its limits. The existence of a test is not a validation receipt;
+neither is a sentence saying the checks passed.
 
 ### XKOS
 

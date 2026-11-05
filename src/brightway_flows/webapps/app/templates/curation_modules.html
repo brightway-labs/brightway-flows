@@ -1,0 +1,25 @@
+{% extends "curation_shell.html" %}
+{% set page_title = "Modules · Curation" %}
+{% block curation_content %}
+{% include "curation_browser_header.html" %}
+<section class="curation-browser-panel">
+  <div class="curation-panel-heading"><div><h2>Modules</h2><p>Shared code, its recorded versions, and the cases it supports.</p></div></div>
+  <form id="curation-filter-form" class="curation-live-form" method="get" action="/curation/modules/" hx-get="/curation/modules/" hx-trigger="curation-filter, submit" hx-push-url="true" role="search" aria-label="Filter correction modules">
+    <input type="hidden" name="sort" value="{{ sort }}"><input type="hidden" name="direction" value="{{ direction }}">
+    <div class="curation-search-bar"><label class="curation-primary-search" for="curation-query"><span>Search modules</span><input id="curation-query" name="q" type="search" value="{{ query }}" placeholder="A purpose, source file or decision…" autocomplete="off"></label><a class="curation-clear" href="/curation/modules/" hx-boost="true">Clear filters</a></div>
+    <div class="curation-result-summary"><span data-results-summary><strong>{{ modules | length }}</strong> of {{ catalogue_count }} inventory entries</span><span>Source baseline <code>{{ register.source_revision[:12] }}</code></span></div>
+    {% include "curation_live_status.html" %}
+    <div class="curation-table-scroll" tabindex="0" role="region" aria-label="Module results"><table class="curation-table curation-module-table">
+      <colgroup><col style="width:43%"><col style="width:22%"><col style="width:15%"><col style="width:20%"></colgroup>
+      <thead><tr>{% for key,label in [('name','Module / source'),('kind','Kind'),('decisions','Rulings'),('cases','Case relationships')] %}<th scope="col"{% if sort == key %} aria-sort="{{ 'ascending' if direction == 'asc' else 'descending' }}"{% endif %}><a hx-boost="true" href="{{ sort_link(key) }}">{{ label }} <span>{{ ('↑' if direction == 'asc' else '↓') if sort == key else '↕' }}</span></a>{% if key == 'kind' %}<label class="curation-column-filter"><span class="visually-hidden">Kind</span><select id="curation-kind" name="kind"><option value="">All kinds</option>{% for k in kinds %}<option{% if kind == k %} selected{% endif %}>{{ k }}</option>{% endfor %}</select></label>{% elif key == 'cases' %}<label class="curation-column-filter"><span class="visually-hidden">Case coverage</span><select id="curation-linked" name="linked"><option value="">All relationships</option><option value="yes"{% if linked %} selected{% endif %}>Linked or proposed</option></select></label>{% endif %}</th>{% endfor %}</tr></thead>
+      <tbody>{% for module in modules %}<tr>
+        <th scope="row"><a class="curation-case-title" href="{{ url_for('curation.module_detail',module_id=module.id) }}">{{ module.title }}</a><code class="curation-module-path">{{ module.path }}</code><p>{{ module.summary | truncate(170) }}</p></th>
+        <td>{{ module.kind }}{% if module.steps %}<small>Chain positions {% for step in module.steps %}{{ step.order }}{{ ', ' if not loop.last else '' }}{% endfor %}</small>{% endif %}{% if module.versions %}<small>{{ module.versions | length }} revision/role combinations</small>{% endif %}</td>
+        <td>{{ module.decision_files | length }} registrations<small>{{ module.resolved_decision_files | length }} resolved files</small></td>
+        <td>{% if module.cases %}<a href="{{ url_for('curation.index',view='all',module=module.id,relation='actual') }}">{{ module.cases | length }} implementation links</a>{% endif %}{% if module.proposed_cases %}<a class="curation-case-ref" href="{{ url_for('curation.index',view='all',module=module.id,relation='proposed') }}">{{ module.proposed_cases | length }} proposed destinations</a>{% endif %}{% if not module.related_cases %}<span class="muted">No case links recorded</span>{% endif %}</td>
+      </tr>{% else %}<tr><td colspan="4" class="curation-table-empty">No modules match these filters. <a hx-boost="true" href="/curation/modules/">Clear filters</a></td></tr>{% endfor %}</tbody>
+    </table></div>
+  </form>
+</section>
+<details class="curation-inventory-scope"><summary>Inventory coverage and limits</summary><p>{{ step_count }} default transformer steps · {{ ruling_count }} registered rulings in {{ decision_file_count }} resolved files · all registered vocabulary and reference-data readers · all actual and proposed module links in this register{% if source_count %} · {{ source_count }} recorded source files with {{ version_count }} revision/role combinations{% endif %}.</p><p>Unregistered helpers and post-processing passes are outside this inventory. Test references are discovered statically; execution, scientific sign-off and application evidence remain attached to each case and revision. Ruling registrations identify their direct reader. Current checkout source and historical snapshots are labelled separately.</p></details>
+{% endblock %}
