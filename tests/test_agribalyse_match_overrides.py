@@ -16,6 +16,7 @@ import unittest
 
 import orjson
 
+from brightway_flows.domain.property_statements import factor_between
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 from brightway_flows.integrations.agribalyse import _flow_uuid
 from brightway_flows.match_overrides import load_match_overrides
@@ -109,10 +110,18 @@ class EnergyAndPeatTestCase(unittest.TestCase):
     identical names already go, and the two rows whose names state their own
     energy content are rebased at the vendor's numbers, accepted as crossings
     in `unit-change-allowlist.json`.
+
+    Since #407 the number is not on the override row.  It is a statement about
+    the flow in `agribalyse-3.2-property-statements.json` -- 9.5 MJ of
+    calorific value per kilogram of `Wood and wood waste, 9.5 MJ per kg` -- and
+    the merge derives the mapping's factor from it; the override names the
+    target and nothing else.  The seven rows that cross no unit have no
+    statement either, which is the negative half of the same claim.
     """
 
     #: uuid -> (vendor name, compartment, subcompartment, unit, target uuid,
-    #:          conversion factor or None)
+    #:          the factor the statement gives between that unit and MJ, or
+    #:          None for a row that crosses nothing and states nothing)
     ROWS = {
         "fc379dc0-4b59-5cc3-b454-3538dd8f9f60": (
             "Peat", "Resources", "", "kg",
@@ -157,6 +166,9 @@ class EnergyAndPeatTestCase(unittest.TestCase):
             override.source_uuid: override
             for override in load_match_overrides(OVERRIDES_PATH)
         }
+        # Through the list, so the statements are resolved for the release the
+        # manifest declares and an unchecked number is refused here.
+        self.statements = known_source_lists()[KEY].load_property_statements()
 
     def test_every_row_names_the_flow_its_vendor_fields_derive(self) -> None:
         for uuid, (name, compartment, sub, unit, _, _) in self.ROWS.items():
@@ -165,17 +177,44 @@ class EnergyAndPeatTestCase(unittest.TestCase):
                 self.assertEqual(_flow_uuid(name, compartment, sub, unit), uuid)
 
     def test_every_row_states_its_target_and_factor(self) -> None:
-        for uuid, (name, _, _, _, target, factor) in self.ROWS.items():
+        """The target comes off the override and the number off the statement:
+        one statement per rebased row, in megajoules per kilogram, whose value
+        is the factor the mapping publishes between the two units.  A row that
+        crosses nothing carries no factor on the override and has no statement
+        to derive one from."""
+        for uuid, (name, _, _, unit, target, factor) in self.ROWS.items():
             with self.subTest(name=name):
                 override = self.by_uuid[uuid]
                 self.assertEqual(override.target_uuid, target)
                 self.assertTrue(override.comment.strip())
+                self.assertFalse(override.converts)
                 if factor is None:
-                    self.assertIsNone(override.conversion_factor)
+                    self.assertNotIn(uuid, self.statements.statements)
                 else:
-                    self.assertEqual(override.conversion_factor, factor)
-                    self.assertEqual(override.source_unit, "kg")
-                    self.assertEqual(override.target_unit, "MJ")
+                    statements = self.statements.statements[uuid]
+                    self.assertEqual(len(statements), 1)
+                    statement = statements[0]
+                    self.assertEqual(statement.per_unit, unit)
+                    self.assertEqual(statement.unit, "MJ")
+                    self.assertEqual(factor_between(statement, unit, "MJ"), factor)
+
+    def test_the_two_statements_name_what_their_megajoules_measure(self) -> None:
+        """A bare 332,000 could be a heat of combustion; it is not.  The wood's
+        9.5 MJ/kg is a heating value whose basis the name does not state, and
+        the uranium oxide's megajoules are fission energy, which converts only
+        onto a target ruled to measure one."""
+        quantities = {
+            uuid: self.statements.statements[uuid][0].quantity
+            for uuid, (*_rest, factor) in self.ROWS.items()
+            if factor is not None
+        }
+        self.assertEqual(
+            quantities,
+            {
+                "f65c0b45-7781-5ae0-aeb1-d329b21796dd": "calorific-value",
+                "e6f6fcbd-c5ce-53c1-b5aa-d2fc52c10d98": "fission-energy",
+            },
+        )
 
     def test_the_two_crossings_are_accepted_with_their_rows(self) -> None:
         """A quantity-kind crossing needs a written reason in the allowlist;

@@ -5,7 +5,8 @@
       "enum": [
         "correspondence-table",
         "curated",
-        "unit-table"
+        "unit-table",
+        "flow-property"
       ],
       "title": "ConversionBasis",
       "type": "string"
@@ -226,6 +227,18 @@
                   ],
                   "default": null,
                   "title": "Conversion Provenance"
+                },
+                "brightway:conversionQuantity": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Conversion Quantity"
                 },
                 "qudt:conversionMultiplier": {
                   "anyOf": [

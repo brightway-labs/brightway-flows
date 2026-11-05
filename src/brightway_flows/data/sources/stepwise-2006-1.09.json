@@ -23,6 +23,7 @@
     "manual_fixes": "stepwise-2006-manual-fixes.json",
     "manual_additions": null,
     "additional_flows": "stepwise-2006-additional-flows.json",
-    "match_overrides": "stepwise-2006-match-overrides.json"
+    "match_overrides": "stepwise-2006-match-overrides.json",
+    "property_statements": "stepwise-2006-property-statements.json"
   }
 }

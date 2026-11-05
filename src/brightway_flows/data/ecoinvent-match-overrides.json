@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Curated targets for ecoinvent flows the published correspondence tables place somewhere this project does not accept. One set for every ecoinvent version: the flow uuids are stable across releases, so a decision about a flow is a decision about it in every release that ships it, and a row naming a flow a version does not carry is inert there. Applied by `brightway_flows.sources.load_prepared_match_table`, onto the empty table every manifest declares since #141 -- these rows are the whole prepared correspondence, and what they append is what reaches the merge. (They were also once applied by the tool that composed 3.8's table, so the checked-in table showed the curated choices in a reviewable diff; table and tool are git history now.) Targets are EF 3.1 elementary flow ids, because that is what every table here maps onto. `comment` is mandatory: each row asserts something the published table does not, and the assertion needs its reasoning attached. These correct the *mapping*, not the source data, which is why they are not `manual_fixes` -- editing fields on the source flow would make the source list look as though the anomaly never happened. A row may also state a `conversion_factor`, with the `source_unit` and `target_unit` it is stated between: a curated conversion reaches every version by the same argument its target does, and a factor with only one unit named cannot be checked against the pair the merge builds. Only a factor `units.json` does not already imply belongs here -- crossing quantity kinds, or changing what is being measured, as an ore mass to an elemental mass does. A row may instead state `decline: true` and no target at all, which takes the table's rows for that flow away and lets it reach the merge looking like a flow the table never mentioned, so the addition path mints a consensus flow for it. That is for a published row whose target is wrong and for which the target list holds nothing right -- a rewrite cannot say it, because a rewrite must name a `target_uuid`. A declining row may not also state a target or a conversion factor: it declines to form the pair those describe. A row may also state `only_when_named`, and then it decides only where the table calls the flow that. The file's premise is that a uuid names the same flow in every release -- which is what lets one row decide for all of them -- and ecoinvent's thirteen vanadium flows are the counter-example: 3.8 ships those uuids as `Vanadium` and `Vanadium, ion`, 3.12 ships them as `Vanadium V`, three substances under one set of identifiers. The guard is opt-in rather than enforced on every row, because most renames are cosmetic and must not cost a decision -- `Particulates, > 2.5 um, and < 10um` became `Particulate Matter, > 2.5 um and < 10um` between the same two releases, and the four overrides about it are as true after the comma moved as before. A row may instead state `carries_when_registered_as`, which is the other answer to the same question: the registry numbers this decision has been checked against, for a flow ecoinvent registers differently in different releases. Nine `Chromium III` rows have exactly the vanadium shape -- 3.8 ships their uuids as elemental `Chromium` (7440-47-3) -- and the opposite answer, because 3.8 also shipped a separate `Chromium VI` flow in those same nine contexts, so its unspeciated chromium already meant trivalent. Five `Copper oxychloride` rows are the third case, found by asking the question mechanically rather than by reading: 1332-40-7 in 3.9.1 and 3.10.1, 1332-65-6 in 3.11 and 3.12, the same name throughout, two registry entries for one fungicide. A row states one of the two fields, never both: the guard says this decision does not reach that release, and the record says it does and what the yes was checked against. Which is right is a chemist's question, but *asking* it is not -- `tests/test_renumbered_flow_corrections.py` asks it of every row against every release on disk, and a release that registers a recorded flow as a number nobody has checked is refused at build time rather than applied and hoped over (#109).",
+  "description": "Curated targets for ecoinvent flows the published correspondence tables place somewhere this project does not accept. One set for every ecoinvent version: the flow uuids are stable across releases, so a decision about a flow is a decision about it in every release that ships it, and a row naming a flow a version does not carry is inert there. Applied by `brightway_flows.sources.load_prepared_match_table`, onto the empty table every manifest declares since #141 -- these rows are the whole prepared correspondence, and what they append is what reaches the merge. (They were also once applied by the tool that composed 3.8's table, so the checked-in table showed the curated choices in a reviewable diff; table and tool are git history now.) Targets are EF 3.1 elementary flow ids, because that is what every table here maps onto. `comment` is mandatory: each row asserts something the published table does not, and the assertion needs its reasoning attached. These correct the *mapping*, not the source data, which is why they are not `manual_fixes` -- editing fields on the source flow would make the source list look as though the anomaly never happened. A row may also state a `conversion_factor`, with the `source_unit` and `target_unit` it is stated between, for a pair fact no property of the source flow expresses -- an ore mass to an elemental mass, the three titanium rows. A heating value or a density is a property of the flow and lives in `ecoinvent-property-statements.json` since #407; a row stating a factor for a pair that file already converts is refused at load. A curated conversion reaches every version by the same argument its target does, and a factor with only one unit named cannot be checked against the pair the merge builds. Only a factor `units.json` does not already imply belongs here. A row may instead state `decline: true` and no target at all, which takes the table's rows for that flow away and lets it reach the merge looking like a flow the table never mentioned, so the addition path mints a consensus flow for it. That is for a published row whose target is wrong and for which the target list holds nothing right -- a rewrite cannot say it, because a rewrite must name a `target_uuid`. A declining row may not also state a target or a conversion factor: it declines to form the pair those describe. A row may also state `only_when_named`, and then it decides only where the table calls the flow that. The file's premise is that a uuid names the same flow in every release -- which is what lets one row decide for all of them -- and ecoinvent's thirteen vanadium flows are the counter-example: 3.8 ships those uuids as `Vanadium` and `Vanadium, ion`, 3.12 ships them as `Vanadium V`, three substances under one set of identifiers. The guard is opt-in rather than enforced on every row, because most renames are cosmetic and must not cost a decision -- `Particulates, > 2.5 um, and < 10um` became `Particulate Matter, > 2.5 um and < 10um` between the same two releases, and the four overrides about it are as true after the comma moved as before. A row may instead state `carries_when_registered_as`, which is the other answer to the same question: the registry numbers this decision has been checked against, for a flow ecoinvent registers differently in different releases. Nine `Chromium III` rows have exactly the vanadium shape -- 3.8 ships their uuids as elemental `Chromium` (7440-47-3) -- and the opposite answer, because 3.8 also shipped a separate `Chromium VI` flow in those same nine contexts, so its unspeciated chromium already meant trivalent. Five `Copper oxychloride` rows are the third case, found by asking the question mechanically rather than by reading: 1332-40-7 in 3.9.1 and 3.10.1, 1332-65-6 in 3.11 and 3.12, the same name throughout, two registry entries for one fungicide. A row states one of the two fields, never both: the guard says this decision does not reach that release, and the record says it does and what the yes was checked against. Which is right is a chemist's question, but *asking* it is not -- `tests/test_renumbered_flow_corrections.py` asks it of every row against every release on disk, and a release that registers a recorded flow as a number nobody has checked is refused at build time rather than applied and hoped over (#109).",
   "overrides": [
     {
       "source_uuid": "c5c25aa6-d630-40bd-bed7-4e718c877ef4",
@@ -2977,16 +2977,6 @@
       ],
       "target_uuid": "fe0acd60-3ddc-11dd-a6f9-0050c2490048",
       "target_name": "brown coal",
-      "source_unit": "kg",
-      "target_unit": "MJ",
-      "conversion_factor": 9.41,
-      "conversion_checked_against": [
-        "3.8",
-        "3.9.1",
-        "3.10.1",
-        "3.11",
-        "3.12"
-      ],
       "comment": "The energy-content conversions the retired tables carried (#141), restated as this project's rows with nothing changed: ecoinvent extracts its fossil energy carriers and sea water in kilograms and EF 3.1 publishes the resources in megajoules (or as its own basis), and the factor is the carrier's energy content -- 9.41 MJ/kg brown coal, 18.01 hard coal, 43.4 crude oil, 36.0 natural gas, 560,000 uranium, and sea water's density pairing. Without these the retirement build landed every one of the rows on a kilogram flow of the right substance and EF's fossil-depletion factors, which live on the energy flows, became unreachable from ecoinvent -- the #33 underestimate by a new road. The numbers are the tables' own, read out of the composed 3.8 table before its retirement. Read off ecoinvent's own LCIA implementation workbooks, one per release: `LCIA Implementation v3.8.xlsx`, `3.9.1`, `3.10.1`, `3.11` and `3.12`, `energy resources: non-renewable` under EF v3.0 and EF v3.1. The characterisation factor for a kilogram flow under an indicator defined per megajoule is the energy content, which is why the workbook answers this question at all. The same number in all five releases' workbooks, so the row's factor needs no release of its own. (#162)"
     },
     {
@@ -2998,16 +2988,6 @@
       ],
       "target_uuid": "3e4d2966-6556-11dd-ad8b-0800200c9a66",
       "target_name": "uranium",
-      "source_unit": "kg",
-      "target_unit": "MJ",
-      "conversion_factor": 560000.0,
-      "conversion_checked_against": [
-        "3.8",
-        "3.9.1",
-        "3.10.1",
-        "3.11",
-        "3.12"
-      ],
       "comment": "One of the energy-content family; the full reasoning is on the family's first row above. (#141) Read off ecoinvent's own LCIA implementation workbooks, one per release: `LCIA Implementation v3.8.xlsx`, `3.9.1`, `3.10.1`, `3.11` and `3.12`, `energy resources: non-renewable` under EF v3.0 and EF v3.1. The characterisation factor for a kilogram flow under an indicator defined per megajoule is the energy content, which is why the workbook answers this question at all. The same number in all five releases' workbooks, so the row's factor needs no release of its own. (#162)"
     },
     {
@@ -3019,16 +2999,6 @@
       ],
       "target_uuid": "172a3db9-6556-11dd-ad8b-0800200c9a66",
       "target_name": "sea water",
-      "source_unit": "m3",
-      "target_unit": "kg",
-      "conversion_factor": 1025.0,
-      "conversion_checked_against": [
-        "3.8",
-        "3.9.1",
-        "3.10.1",
-        "3.11",
-        "3.12"
-      ],
       "comment": "One of the energy-content family; the full reasoning is on the family's first row above. (#141) Checked across releases against the three published correspondence tables that ever stated it -- `ecoinvent-3.9.1`, `-3.10.1` and `-3.11` biosphere to EF 3.1 biosphere -- which state the same number in each; 3.12 read 3.11's table and 3.8's was composed. The basis cannot carry a release's revision in any case: it is a density of sea water, a property of the substance and not of any ecoinvent release. (#162)"
     },
     {
@@ -3040,21 +3010,6 @@
       ],
       "target_uuid": "fe0acd60-3ddc-11dd-a6fa-0050c2490048",
       "target_name": "natural gas",
-      "source_unit": [
-        "sm3",
-        "m3"
-      ],
-      "target_unit": "MJ",
-      "conversion_factor": 36.0,
-      "conversion_checked_against": [
-        "3.9.1",
-        "3.10.1",
-        "3.11",
-        "3.12"
-      ],
-      "conversion_by_release": {
-        "3.8": 34.5
-      },
       "comment": "One of the energy-content family; the full reasoning is on the family's first row above. Stated after an independent review of #336 found the first cut silently dropped the factor for 3.8. (#141) Read off ecoinvent's own LCIA implementation workbooks, one per release: `LCIA Implementation v3.8.xlsx`, `3.9.1`, `3.10.1`, `3.11` and `3.12`, `energy resources: non-renewable` under EF v3.0 and EF v3.1. The characterisation factor for a kilogram flow under an indicator defined per megajoule is the energy content, which is why the workbook answers this question at all. ecoinvent revised this value at 3.9 following Meili et al. (2021) and rebuilt its oil and gas datasets on the new number, so a 3.8 inventory has to be converted with 3.8's figure: converting it with the later one used a heating value that release never had. The line falls exactly between 3.8 and 3.9.1, and of the seven carriers the workbooks state only this one, crude oil and mine off-gas moved -- the coals, peat and uranium cite the older source in every report and did not. (#162) 34.5 MJ per cubic metre in 3.8's workbook and 36.0 per standard cubic metre from 3.9.1 on. The two spellings under `source_unit` and the two factors line up: 3.8 is the release that ships `m3`, and the releases that ship `sm3` are the ones the 36.0 was read from. The sentence that used to stand here said ecoinvent respelled the unit at 3.9 \"without restating any amount\", and the amount was restated in that very release -- a statement about units standing in for one about releases."
     },
     {
@@ -3066,18 +3021,6 @@
       ],
       "target_uuid": "fe0acd60-3ddc-11dd-a6f8-0050c2490048",
       "target_name": "crude oil",
-      "source_unit": "kg",
-      "target_unit": "MJ",
-      "conversion_factor": 43.4,
-      "conversion_checked_against": [
-        "3.9.1",
-        "3.10.1",
-        "3.11",
-        "3.12"
-      ],
-      "conversion_by_release": {
-        "3.8": 42.3
-      },
       "comment": "One of the energy-content family; the full reasoning is on the family's first row above. (#141) Read off ecoinvent's own LCIA implementation workbooks, one per release: `LCIA Implementation v3.8.xlsx`, `3.9.1`, `3.10.1`, `3.11` and `3.12`, `energy resources: non-renewable` under EF v3.0 and EF v3.1. The characterisation factor for a kilogram flow under an indicator defined per megajoule is the energy content, which is why the workbook answers this question at all. ecoinvent revised this value at 3.9 following Meili et al. (2021) and rebuilt its oil and gas datasets on the new number, so a 3.8 inventory has to be converted with 3.8's figure: converting it with the later one used a heating value that release never had. The line falls exactly between 3.8 and 3.9.1, and of the seven carriers the workbooks state only this one, natural gas and mine off-gas moved -- the coals, peat and uranium cite the older source in every report and did not. (#162) 42.3 MJ/kg in 3.8's workbook and 43.4 from 3.9.1 on."
     },
     {
@@ -3089,16 +3032,6 @@
       ],
       "target_uuid": "fe0acd60-3ddc-11dd-a6fc-0050c2490048",
       "target_name": "hard coal",
-      "source_unit": "kg",
-      "target_unit": "MJ",
-      "conversion_factor": 18.01,
-      "conversion_checked_against": [
-        "3.8",
-        "3.9.1",
-        "3.10.1",
-        "3.11",
-        "3.12"
-      ],
       "comment": "One of the energy-content family; the full reasoning is on the family's first row above. (#141) Read off ecoinvent's own LCIA implementation workbooks, one per release: `LCIA Implementation v3.8.xlsx`, `3.9.1`, `3.10.1`, `3.11` and `3.12`, `energy resources: non-renewable` under EF v3.0 and EF v3.1. The characterisation factor for a kilogram flow under an indicator defined per megajoule is the energy content, which is why the workbook answers this question at all. The same number in all five releases' workbooks, so the row's factor needs no release of its own. (#162)"
     },
     {

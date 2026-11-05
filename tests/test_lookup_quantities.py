@@ -290,15 +290,65 @@ def test_a_unit_table_multiplier_is_not_a_reason_to_ask_for_the_identifier(tmp_p
     assert result.selector_details["quantity_conversion"]["basis"] == "unit-table"
 
 
-def test_a_stated_multiplier_still_asks_for_the_identifier(tmp_path):
-    db = quantity_build(
-        tmp_path, source="kg", target="kg", factor=0.599, basis="correspondence-table"
-    )
+@pytest.mark.parametrize(
+    "source,target,factor,basis",
+    [
+        ("kg", "kg", 0.599, "correspondence-table"),
+        ("kg", "kg", 0.599, "curated"),
+        # A heating value the source list states about its own flow (#407):
+        # 18.2 MJ per kilogram of AGRIBALYSE's hard coal is true of that coal
+        # and of no other kilogram sent under the same name.
+        ("kg", "MJ", 18.2, "flow-property"),
+    ],
+)
+def test_a_stated_multiplier_still_asks_for_the_identifier(
+    tmp_path, source, target, factor, basis
+):
+    db = quantity_build(tmp_path, source=source, target=target, factor=factor, basis=basis)
     result = FlowMatcher.from_results(db, recorded_by_name=True).match(
-        FlowQuery(name="Quantity fixture", unit="kg", context_iri=AIR)
+        FlowQuery(name="Quantity fixture", unit=source, context_iri=AIR)
     )
     assert result.unit_conversion_factor is None
     assert (
         result.selector_details["quantity_conversion"]["basis"]
         == "source-identifier-required"
     )
+
+
+@pytest.mark.parametrize("basis", ["correspondence-table", "curated", "flow-property"])
+def test_a_stated_multiplier_is_served_as_the_rows_own_to_the_identifier(tmp_path, basis):
+    """The other half of what `unit-table` is the exception to.  A multiplier
+    derived from a property statement is the row's own as much as a curated
+    one: a caller naming the row by identifier gets 18.2, and a build from
+    before the basis was published is read the same way (no basis)."""
+    db = quantity_build(tmp_path, source="kg", target="MJ", factor=18.2, basis=basis)
+    result = FlowMatcher.from_results(db).match(
+        FlowQuery(
+            name="Quantity fixture",
+            unit="kg",
+            list_key="quantity-fixture-1",
+            identifier="source-row",
+        )
+    )
+    assert result.matched and result.tier == "recorded"
+    assert result.unit_conversion_factor == pytest.approx(18.2)
+
+
+def test_a_unit_table_multiplier_is_not_served_as_the_rows_own(tmp_path):
+    """The exception itself, read by identifier: `units.json`'s 0.001 is
+    dropped from the recorded decision and derived again from the units, so
+    the number the caller gets is the table's and not a copy of it."""
+    db = quantity_build(
+        tmp_path, source="Bq", target="kBq", factor=0.001, basis="unit-table"
+    )
+    result = FlowMatcher.from_results(db).match(
+        FlowQuery(
+            name="Quantity fixture",
+            unit="Bq",
+            list_key="quantity-fixture-1",
+            identifier="source-row",
+        )
+    )
+    assert result.matched and result.tier == "recorded"
+    assert result.unit_conversion_factor == pytest.approx(0.001)
+    assert result.selector_details["quantity_conversion"]["basis"] == "unit-table"

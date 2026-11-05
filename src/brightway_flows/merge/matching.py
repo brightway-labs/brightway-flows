@@ -28,6 +28,8 @@ from brightway_flows.domain.vocabulary import (
 )
 from brightway_flows.filesystem import PUBCHEM_DATA_FILEPATH
 from brightway_flows.integrations.chebi import load_chebi_index
+from brightway_flows.property_statements import reference_quantities_from_ilcd
+from brightway_flows.sources import base_source_list
 from brightway_flows.domain.context_registry import context_display_parts
 from brightway_flows.merge.contexts import (
     ContextExpectations,
@@ -318,6 +320,16 @@ def build_merge_indexes(
         canonical_identities=(
             load_canonical_identities() if rule_governs(source) else {}
         ),
+        # What each target's unit measures, where something says: EF's own
+        # ILCD flow properties, and the base list's rulings over them.  What
+        # tells the merge that a kilogram of coal landing on `Hard Coal` wants
+        # the net calorific value, and a kilogram of uranium landing on
+        # `Uranium` wants fission energy whatever EF's property label says.
+        reference_quantities={
+            **reference_quantities_from_ilcd(),
+            **base_source_list().load_property_statements().reference_quantities,
+        },
+        conversion_rules=source.load_property_statements().rules,
         # Loaded for every list: each entry is a string the vendor itself
         # shipped for a known flow, and the branch that reads it is reached
         # only once everything the row shipped has failed.

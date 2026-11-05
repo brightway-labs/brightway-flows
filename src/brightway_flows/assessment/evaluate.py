@@ -340,6 +340,16 @@ def _resolve_source_rows(
         if has_links
         else "NULL AS conversion_factor"
     )
+    # Who stated it, read off the same link for the same reason.
+    basis_column = (
+        "(SELECT json_extract(efs.source_metadata_json, "
+        "'$.conversion_basis') FROM elementary_flow_sources efs "
+        "WHERE efs.list_name = mo.list_name "
+        "AND efs.list_version = mo.list_version "
+        "AND efs.source_flow_uuid = mo.source_uuid LIMIT 1) AS conversion_basis"
+        if has_links
+        else "NULL AS conversion_basis"
+    )
     if (value := selector.get("published")) is not None:
         if not has_links:
             raise _Unanswerable(
@@ -377,7 +387,7 @@ def _resolve_source_rows(
         f"mo.source_cas, mo.outcome, mo.reason, mo.basis, mo.basis_value, "
         f"mo.matching_method, mo.target_elementary_flow_id, mo.flow_object_id, "
         f"mo.has_unit_mismatch, mo.has_context_inconsistency, mo.detail_json, "
-        f"{published_column}, {conversion_column}, "
+        f"{published_column}, {conversion_column}, {basis_column}, "
         f"{target_columns} "
         f"FROM merge_outcomes mo {joins} WHERE {' AND '.join(clauses)} "
         f"ORDER BY mo.source_name, mo.source_uuid",
@@ -409,6 +419,7 @@ def _resolve_source_rows(
             "target_deprecated": bool(row["target_is_deprecated"] or 0),
             "published": bool(row["published"] or 0),
             "conversion_factor": row["conversion_factor"],
+            "conversion_basis": row["conversion_basis"] or "",
             "unit_mismatch": bool(row["has_unit_mismatch"] or 0),
             "context_inconsistency": bool(row["has_context_inconsistency"] or 0),
             "_detail": _load(row["detail_json"], {}),

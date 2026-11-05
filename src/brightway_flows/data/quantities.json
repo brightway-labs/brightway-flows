@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "description": "What a number measures. A unit does not say it: a megajoule can be net calorific value, gross calorific value, or a heat of combustion whose basis nobody stated, and uranium's megajoules are not a heat of combustion at all. One row per quantity a source list can state about one of its own flows (`*-property-statements.json`), keyed by `slug`. `quantity_kind_iri` is the kind a statement's `unit` must belong to, in the spelling `units.json` uses; `ilcd_flow_property_uuid` is the ILCD flow property the quantity is the same thing as, where ILCD has one -- EF 3.1 ships these under `flow-properties.json`; `qudt_match` is the published QUDT quantity kind and how this row relates to it, looked up in the QUDT vocabulary on 2026-10-24 and never inferred. The canonical labels are ILCD's; the other spellings are aliases the vendor parsers match on.",
+  "quantities": [
+    {
+      "slug": "mass",
+      "label": "Mass",
+      "aliases": ["mass", "density", "specific weight", "mass density"],
+      "ilcd_flow_property_uuid": "93a60a56-a3c8-11da-a746-0800200b9a66",
+      "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Mass",
+      "qudt_match": {"relation": "skos:exactMatch", "iri": "http://qudt.org/vocab/quantitykind/Mass"},
+      "definition": "How much of the flow there is by weight. Stated per unit volume of a flow measured in cubic metres it is the flow's density, which is why the density spellings are aliases here: a vendor saying `Specific weight: 650 kg/m3` is saying one cubic metre of this wood is 650 kg."
+    },
+    {
+      "slug": "volume",
+      "label": "Volume",
+      "aliases": ["volume"],
+      "ilcd_flow_property_uuid": "93a60a56-a3c8-22da-a746-0800200c9a66",
+      "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Volume",
+      "qudt_match": {"relation": "skos:exactMatch", "iri": "http://qudt.org/vocab/quantitykind/Volume"},
+      "definition": "How much of the flow there is by the space it takes up. Stated per kilogram of a flow measured by mass it is the inverse of its density: one kilogram of fresh water is 0.001 cubic metres."
+    },
+    {
+      "slug": "net-calorific-value",
+      "label": "Net calorific value",
+      "aliases": ["net calorific value", "lower heating value", "lower heating value (LHV)", "LHV", "NCV", "heating value, net", "lower calorific value", "inferior calorific value"],
+      "ilcd_flow_property_uuid": "93a60a56-a3c8-11da-a746-0800200c9a66",
+      "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy",
+      "qudt_match": {"relation": "skos:broader", "iri": "http://qudt.org/vocab/quantitykind/HeatingValue"},
+      "definition": "The heat released when a unit of the flow is burnt, not counting the latent heat of the water the combustion forms. What EF 3.1 measures its 34 energy flows in, and the lower of a fuel's two heating values. QUDT's `HeatingValue` does not split net from gross, so this is a narrower term of it."
+    },
+    {
+      "slug": "gross-calorific-value",
+      "label": "Gross calorific value",
+      "aliases": ["gross calorific value", "higher heating value", "higher heating value (HHV)", "HHV", "GCV", "heating value, gross", "upper heating value", "superior calorific value"],
+      "ilcd_flow_property_uuid": "93a60a56-a3c8-14da-a746-0800200c9a66",
+      "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy",
+      "qudt_match": {"relation": "skos:broader", "iri": "http://qudt.org/vocab/quantitykind/HeatingValue"},
+      "definition": "The heat released when a unit of the flow is burnt and the water the combustion forms is condensed, so its latent heat is counted. The higher of a fuel's two heating values; what Stepwise 2006's method converts by."
+    },
+    {
+      "slug": "calorific-value",
+      "label": "Calorific value, basis unstated",
+      "aliases": ["calorific value", "heating value", "energy content"],
+      "ilcd_flow_property_uuid": null,
+      "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy",
+      "qudt_match": {"relation": "skos:exactMatch", "iri": "http://qudt.org/vocab/quantitykind/HeatingValue"},
+      "definition": "A heat of combustion whose source does not say whether it is net or gross: ecoinvent's 18.01 MJ/kg for hard coal, read off its EF 3.1 implementation workbook. Kept apart from the two stated bases so that the gap is visible rather than guessed at; it converts onto either, and the mapping says the basis was unstated."
+    },
+    {
+      "slug": "fission-energy",
+      "label": "Fission energy",
+      "aliases": ["fission energy", "gross fission energy", "fission energy content", "nuclear fuel energy"],
+      "ilcd_flow_property_uuid": null,
+      "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy",
+      "qudt_match": {"relation": "skos:broader", "iri": "http://qudt.org/vocab/quantitykind/SpecificEnergy"},
+      "definition": "The energy a unit of a nuclear fuel yields by fission -- 560,000 MJ per kilogram of natural uranium, which ecoinvent documents as a gross fission energy content. Not a heat of combustion, so it never shares a quantity with a calorific value and never converts onto one. EF 3.1 labels its `Uranium` flow's megajoule a net calorific value; the base list's statements file corrects that flow's reference quantity to this. QUDT has no per-mass fission kind, so this is a narrower term of its `SpecificEnergy`."
+    },
+    {
+      "slug": "radioactivity",
+      "label": "Radioactivity",
+      "aliases": ["radioactivity", "activity", "specific activity"],
+      "ilcd_flow_property_uuid": "93a60a56-a3c8-17da-a746-0800200c9a66",
+      "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Activity",
+      "qudt_match": {"relation": "skos:exactMatch", "iri": "http://qudt.org/vocab/quantitykind/Activity"},
+      "definition": "How many nuclei of the flow decay per second. Stated per kilogram of a flow measured by mass it is the isotope's specific activity, which follows from its half-life: a kilogram of radium-226 is 3.66e10 kilobecquerels."
+    }
+  ]
+}

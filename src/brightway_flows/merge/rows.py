@@ -49,6 +49,7 @@ from brightway_flows.merge.conversions import (
     conversion_from_prepared_rows,
     conversion_from_source_flow,
     conversion_to_publish,
+    target_quantity_for,
 )
 from brightway_flows.merge.unit_changes import published_unit_for
 from brightway_flows.merge.matching import (
@@ -93,16 +94,21 @@ def _conversion_to_publish(
     row: SourceRow,
     target_unit: str,
     indexes: MergeIndexes,
+    target_uuid: str = "",
 ) -> PublishedConversion | None:
     """What the mapping from *row* to a flow in *target_unit* publishes.
 
     The pair is the vendor's unit and the flow's -- :attr:`SourceRow.provenance_unit`,
     which is the one the mapping states -- so a row a fix rebased is converted
-    from what the vendor shipped.  See
+    from what the vendor shipped.  *target_uuid* is the consensus flow, where
+    there is one already, so that what its unit measures can be looked up
+    (`Hard Coal` is net calorific value); a flow this row is creating has no
+    entry and measures what its unit generically does.  See
     :func:`~brightway_flows.merge.conversions.conversion_to_publish`.
     """
     source = indexes.source
     overrides = getattr(source, "match_overrides_path", None)
+    statements = getattr(source, "property_statements_path", None)
     return conversion_to_publish(
         conversion,
         source_unit=row.provenance_unit,
@@ -110,6 +116,13 @@ def _conversion_to_publish(
         generated_by=str(source.merge_activity),
         correspondence_file=str(indexes.mapping_file or ""),
         overrides_file=str(overrides.name) if overrides is not None else "",
+        property_statements=row.property_statements,
+        target_quantity=target_quantity_for(
+            target_uuid, target_unit,
+            reference_quantities=indexes.reference_quantities,
+        ),
+        conversion_rules=indexes.conversion_rules,
+        statements_file=str(statements.name) if statements is not None else "",
     )
 
 
@@ -682,7 +695,11 @@ def _record_prepared_match(
             source_key=indexes.source.key,
         )
     published = _conversion_to_publish(
-        conversion, row=row, target_unit=target_unit, indexes=indexes
+        conversion,
+        row=row,
+        target_unit=target_unit,
+        indexes=indexes,
+        target_uuid=target_row.elementary_flow_id,
     )
     conversion_factor = published.factor if published else None
     conversion_comment = published.comment if published else ""
@@ -824,7 +841,11 @@ def record_algorithmic_match(
             source_key=indexes.source.key,
         )
     published = _conversion_to_publish(
-        conversion, row=row, target_unit=target_unit, indexes=indexes
+        conversion,
+        row=row,
+        target_unit=target_unit,
+        indexes=indexes,
+        target_uuid=target_row.elementary_flow_id,
     )
     _append_source_ref(
         target_row,
@@ -1000,6 +1021,7 @@ def match_source_rows(
             # published in the old one.  Read here rather than at each writer,
             # so every path down from this row states the same pair.
             conversion=conversion_from_source_flow(source_flow),
+            property_statements=tuple(source_flow.property_statements or ()),
         )
 
         # The element/ion rule (merge/species.py): where it governs -- ecoinvent

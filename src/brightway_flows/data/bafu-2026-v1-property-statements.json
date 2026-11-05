@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "description": "What is stated about one unit of BAFU 2026 v1's flows, read for the merge (#407). BAFU ships no heating values and no correspondence table, so every entry is curated and says where its number came from: the two coals borrow ecoinvent's EF 3.1 implementation figures, and say so; crude oil is BAFU's own, the ratio one of its datasets implies; peat is IPCC's net calorific value; natural gas borrows ecoinvent's net value; uranium is the fission energy every list uses. The numbers are the ones the override rows carried before #407, unchanged.",
+  "statements": [
+    {
+      "source_uuid": "d144bede-fdfa-580c-ad08-4fbaf0b35291",
+      "source_name": "Coal, hard",
+      "quantity": "calorific-value",
+      "value": 18.01,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "borrowed from ecoinvent's EF 3.1 LCIA Implementation workbook, sheet CFs, category `Resource use, fossils`: the factor on the kilogram or cubic-metre flow, which is 1 MJ/MJ times the energy content; BAFU states no heating value of its own"
+      ],
+      "comment": "BAFU's mass row for the substance `Energy, from coal` states by energy content, and the flow ecoinvent's own `Coal, hard` already reaches. Without this row it is `created` instead: algorithmic matching finds no kg flow to land on, because EF 3.1 declares hard coal in MJ, so it mints a separate `Coal, Hard` substance (`fo-7bcc5c3366b1b207`) beside the `Hard Coal` every other list shares. 18.01 MJ/kg is the EF 3.1 LCIA method as implemented by the ecoinvent Centre, which is the factor this project already carries for ecoinvent's kg flow onto this same target. It is used here so that two source lists reaching one flow reach it by one conversion; a second factor on the same target would make an ecoinvent kilogram and a BAFU kilogram of the same coal contribute differently. Note it is not the IPCC default: IPCC 2006 Guidelines Vol. 2 Table 1.2 gives 25.8 MJ/kg for other bituminous coal, 43% higher. Which basis EF intends is worth settling, but it is a question about the target flow and every list that reaches it, not about this row."
+    },
+    {
+      "source_uuid": "80922cad-30bf-5248-ae0a-656cae92b95c",
+      "source_name": "Coal, brown",
+      "quantity": "calorific-value",
+      "value": 9.41,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "borrowed from ecoinvent's EF 3.1 LCIA Implementation workbook, sheet CFs, category `Resource use, fossils`: the factor on the kilogram or cubic-metre flow, which is 1 MJ/MJ times the energy content; BAFU states no heating value of its own"
+      ],
+      "comment": "As for `Coal, hard`, and this is the pair #3 opened on: BAFU shipping `Coal, brown` in kg beside `Energy, from coal, brown` in MJ. Both now reach `Brown Coal`, the mass row through this factor and the energy row unconverted. That is safe because the two never appear in the same dataset -- 128 datasets carry the mass, 14 carry the energy, none carries both -- so nothing is counted twice by their sharing a flow. 9.41 MJ/kg is the EF 3.1 LCIA method as implemented by the ecoinvent Centre, matching the factor already carried for ecoinvent's `Coal, brown` onto this target. It is not the IPCC default: Table 1.2 gives 18.9 MJ/kg for sub-bituminous coal and 11.9 for lignite, both well above this."
+    },
+    {
+      "source_uuid": "e48b3dc1-e9e7-54c1-aafb-3332dbd06a3e",
+      "source_name": "Oil, crude",
+      "quantity": "calorific-value",
+      "value": 43.1,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "BAFU 2026 v1 ecoSpold archive: the one dataset stating both a mass of crude oil and the energy from it, 43.1 MJ/kg"
+      ],
+      "comment": "As for the coals, except that this is the one carrier where BAFU's own archive says what a kilogram of it is worth, so BAFU's number is used rather than ecoinvent's. `Cement ZN, D, at plant [CH]` is one of only two datasets in the 11,947 of the release that carry both this flow and `Energy, from oil`, and its implied ratio is 43.1 MJ/kg. The other, `Burnt shale, at plant [DE]`, implies 602 MJ/kg and is a defect in that dataset rather than evidence about the substance, so the check rests on one dataset and says so.\n\n43.1 sits between the two published values it might have taken: the IPCC 2006 Guidelines Vol. 2 Table 1.2 default of 42.3 MJ/kg, and the 43.4 of the EF 3.1 LCIA method as implemented by the ecoinvent Centre, which this row carried until now and which ecoinvent's own flow still carries. The three are within 2.5% of each other, unlike the coals, where the IPCC and ecoinvent bases diverge widely.\n\nUntil now this row took 43.4 on the rule that one target takes one conversion whichever list the kilogram came from, and 43.1 was recorded beside it as a corroboration. That rule is withdrawn. It was written for the case where two lists offer a target the *same* unit pair and one of them has no number of its own -- which is every other row in this file, each of them ecoinvent's number because BAFU states none. It is not a reason to prefer another list's measurement over this list's own, and a conversion is a statement about a pair, so BAFU's pair takes BAFU's evidence. Nothing about ecoinvent's row changes. (#162)"
+    },
+    {
+      "source_uuid": "25d290ab-0e08-5963-9141-cbcbb998c559",
+      "source_name": "Peat",
+      "quantity": "net-calorific-value",
+      "value": 9.76,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "IPCC 2006 Guidelines for National Greenhouse Gas Inventories, Vol. 2, Table 1.2: net calorific value of peat, 9.76 TJ/Gg"
+      ],
+      "comment": "This row already reaches the right flow -- algorithmic matching lands it on `Peat` in MJ on a label match -- but reaches it with the units disagreeing and no factor, so the mapping is right and only the number is missing. That is what this row supplies. 9.76 MJ/kg is the IPCC 2006 Guidelines Vol. 2 Table 1.2 default for peat, whose 95% confidence interval is 7.80 to 12.5 MJ/kg; content varies that widely with moisture, which is why the value is stated with its source rather than derived. Peat is the one carrier here where the IPCC default and the value this project already uses are the same number, because no ecoinvent association for peat ever existed and IPCC is the only source. BAFU's other peat row, in the biotic compartment, now goes to `Peat, in ground` instead, on the same substance as ecoinvent's kilogram of peat. It was left alone here on the grounds that its units already agreed with this flow's, which was true and was never what was wrong with it: it was on the wrong substance (#87). The two BAFU rows therefore land on the two peats EF 3.1 ships, each on the one its compartment names, which is as close to consistent as this list gets until #266 decides whether those two are one substance.\n\nBAFU's biotic peat row now reaches this flow too, with the same conversion: the archive says it is the extraction for `Peat, at mine` under `fuels / peat`, so it is this substance rather than the material peat #87 sent it to. The sentence above about the two BAFU rows landing on the two peats EF ships is therefore no longer what happens, and was never right: BAFU has one peat and it is the fuel. (#89)"
+    },
+    {
+      "source_uuid": "0417d728-9c64-5755-9685-e547485968d4",
+      "source_name": "Peat",
+      "quantity": "net-calorific-value",
+      "value": 9.76,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "IPCC 2006 Guidelines for National Greenhouse Gas Inventories, Vol. 2, Table 1.2: net calorific value of peat, 9.76 TJ/Gg"
+      ],
+      "comment": "BAFU's main peat row, in 134 of the 11,947 datasets in the 2026 v1 release, and it is peat burned as fuel. The archive says which peat this is. The row is the extraction input to `Peat, at mine`, one kilogram per kilogram of product, and that dataset is filed under `fuels / peat`; its output feeds `Peat, burned in power plant` and `Electricity, peat, at power plant`. The other 133 datasets carrying this row are ordinary products -- glass, acetone, gypsum, polyols -- at 1e-4 to 1e-8 kg, which is peat-fired electricity reaching them through the background: `Electricity imports` alone carries `Electricity, peat, at power plant` 211 times. Nothing in the release uses peat as a growing medium.\n\nIt used to go to EF 3.1's material peat -- `Peat, in ground`, now published as `Peat, horticulture` -- on the reasoning that BAFU's row has the same name, the same `biotic` compartment and the same kilogram as ecoinvent 3.12's, which is that substance (#87). Same name and same compartment, different substance: BAFU's flows came out of ecoinvent 2, where peat was a fuel, and ecoinvent 3 restructured. #89 renamed the material peat for exactly this reason -- so that a row on the wrong one of the two is visible -- and this row was on the wrong one.\n\n9.76 MJ/kg is the IPCC 2006 Guidelines Vol. 2 Table 1.2 default for peat, the same figure and the same source as BAFU's `resources / in ground` peat row below, which is the same substance from the other compartment. Both of BAFU's kilogram rows and its megajoule row now reach one flow. (#89, #87)"
+    },
+    {
+      "source_uuid": "dbfc8434-b713-5719-94bf-3b6643530e07",
+      "source_name": "Uranium",
+      "quantity": "fission-energy",
+      "value": 560000.0,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "ecoinvent's documentation of its natural uranium resource: 560 GJ per kilogram, a gross fission energy content; the same number on every list that ships uranium by mass"
+      ],
+      "comment": "Like peat, this already reaches the right flow, on a cas+label match, and reaches it with the units disagreeing and no factor. 560000 MJ/kg is fission energy content on a gross basis, not a calorific value: four orders of magnitude above any combustion figure, because the two quantities are related by fission rather than burning, and it must never be read as a heating value. IPCC Table 1.2 lists no value for uranium at all -- it is a table of combustion fuels -- so the number is the one this project already carries for ecoinvent's `Uranium` onto this same target, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre. BAFU's `resources / in ground` compartment, which is the only resource context EF 3.1 gives uranium."
+    },
+    {
+      "source_uuid": "8daa605b-050a-50ea-800d-e491a93eb282",
+      "source_name": "Uranium",
+      "quantity": "fission-energy",
+      "value": 560000.0,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "ecoinvent's documentation of its natural uranium resource: 560 GJ per kilogram, a gross fission energy content; the same number on every list that ships uranium by mass"
+      ],
+      "comment": "BAFU files uranium in three compartments; this is the `unspecified` one. Same substance, same target, same fission energy content as the `in ground` row. A separate row because overrides are keyed by source flow and BAFU gives each compartment its own uuid."
+    },
+    {
+      "source_uuid": "108c7884-7e7d-5765-a951-3276d4e09499",
+      "source_name": "Uranium",
+      "quantity": "fission-energy",
+      "value": 560000.0,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "ecoinvent's documentation of its natural uranium resource: 560 GJ per kilogram, a gross fission energy content; the same number on every list that ships uranium by mass"
+      ],
+      "comment": "The third of BAFU's uranium compartments, filed under `land`, which is an odd place for an extracted metal and may be a filing error on BAFU's part. Mapping it to Resource -> Ground is not a choice between compartments: EF 3.1 carries exactly one uranium resource flow, `uranium` in MJ under `Non-renewable energy resources from ground`, and every other uranium it declares is an emission. There is no resource-from-land or resource-unspecified uranium for this row to prefer. Same fission energy content as the other two."
+    },
+    {
+      "source_uuid": "528d5071-4006-5f56-adc9-b39f23d13a03",
+      "source_name": "Gas, natural/m3",
+      "quantity": "net-calorific-value",
+      "value": 36.0,
+      "unit": "MJ",
+      "per_unit": "m3",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "borrowed from ecoinvent, whose `Gas, natural` exchange states `heating value, net` 36 MJ per standard cubic metre (3.9 onwards); BAFU states no heating value of its own"
+      ],
+      "comment": "Unmatched before this row, on `multiple-flow-object-candidates`, so 137 datasets' worth of natural gas reached no gas flow at all. 36.0 MJ per cubic metre is the EF 3.1 LCIA method as implemented by the ecoinvent Centre, and is what ecoinvent states for its own `Gas, natural` onto this same target -- in m3 at 3.8 and in Sm3 from 3.9, at the same number. Not an IPCC value: Table 1.2 is TJ/Gg throughout, with no volumetric column, so it gives natural gas at 48.0 MJ/kg and nothing per volume. For natural gas a normal cubic metre and a standard cubic metre are the same quantity, so the two unit spellings take the same factor and there is no conversion between them. Both name 15.00 C (288.15 K) at 101.325 kPa: for Nm3 see the ScienceDirect engineering topic page for 'cubic metre', which gives the normalised cubic metre applied to natural gas as base conditions of 101.325 kPa and 15.00 C; for sm3 see the standard cubic metre, defined as the gas contained in a cubic metre at 15 C and 101.325 kPa. The 0 C reading of Nm3 -- DIN 1343, which `units.json` records -- is the general industrial convention and is not the one the gas industry uses for natural gas, which is the only substance this unit appears on here."
+    },
+    {
+      "source_uuid": "99bbee18-e1d0-5600-82df-d0bfa91394c7",
+      "source_name": "Gas, natural",
+      "quantity": "net-calorific-value",
+      "value": 36.0,
+      "unit": "MJ",
+      "per_unit": "sm3",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "borrowed from ecoinvent, whose `Gas, natural` exchange states `heating value, net` 36 MJ per standard cubic metre (3.9 onwards); BAFU states no heating value of its own"
+      ],
+      "comment": "115 datasets' worth of natural gas. #289 took the `/m3` tail off this row's name, because the name said `m3` while the unit field said `Nm3`, so it is `Gas, natural` by the time the merge sees it. Same 36.0 MJ per cubic metre as the `m3` spelling of this same flow. BAFU writes this row's unit `Nm3`, which normalises to `sm3`: for gas the two are one quantity and the alias in `domain/units.py` says so, so the pair the merge builds is sm3 to MJ and that is what this row states. Both name 15.00 C (288.15 K) at 101.325 kPa: for Nm3 see the ScienceDirect engineering topic page for 'cubic metre', which gives the normalised cubic metre applied to natural gas as base conditions of 101.325 kPa and 15.00 C; for sm3 see the standard cubic metre, defined as the gas contained in a cubic metre at 15 C and 101.325 kPa. The 0 C reading of Nm3 -- DIN 1343, which `units.json` records -- is the general industrial convention and is not the one the gas industry uses for natural gas, which is the only substance this unit appears on here. BAFU uses the two spellings for this flow in different datasets -- 115 in Nm3 against 137 in m3, and no dataset uses both -- which tracks the vintage of the data rather than a difference in what is measured: the Nm3 rows carry an Enerdata 2024 comment and no CAS number, the m3 rows carry the legacy CAS and no comment."
+    },
+    {
+      "source_uuid": "44360b86-a3d8-5623-b211-44ec41853fcd",
+      "source_name": "Water, salt, ocean",
+      "quantity": "mass",
+      "value": 1025.0,
+      "unit": "kg",
+      "per_unit": "m3",
+      "stated_by": "curated",
+      "checked_against": [
+        "2026-v1"
+      ],
+      "primary_source": [
+        "the density of sea water, 1024.6 kg per cubic metre (1025 as ecoinvent's EF 3.1 implementation rounds it)"
+      ],
+      "comment": "The target this row already reaches, restated so the factor can ride with it. Matching finds EF 3.1's `sea water` on its own -- the material assignment says BAFU's `Water, salt, ocean` is sea water and the withdrawal rule puts it in the ocean -- and what it cannot supply is the density, because BAFU declares no correspondence table for anything to have stated one in.\n\nThis is the one water crossing that converting BAFU's own rows cannot settle, and it runs the other way from the rest: BAFU states the volume and EF 3.1 states the mass. Converting BAFU into kilograms would move it away from every other water withdrawal in the list rather than towards them, and ecoinvent's identical row -- same vendor name, same target -- is kept in cubic metres with the factor stated, in `unit-change-allowlist.json`. Two lists shipping one vendor row should not be treated differently.\n\n1025 kg/m3, the same value ecoinvent's pair carries, from the EF 3.1 LCIA method as implemented by the ecoinvent Centre; a rough average of the 1020-1029 kg/m3 range. Sea water rather than the 1000 kg/m3 the fresh-water rows are converted at, because it is salt. (#78)"
+    }
+  ]
+}

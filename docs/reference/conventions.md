@@ -262,9 +262,9 @@ to browse.
    and the only question asked of it is whether a label is one of them.
    Wrapping each in a record would buy nothing and make the membership test
    worse. The distinction is what the reading end asks: a *field*, or
-   *membership*. Five of the thirty-four loaders answer membership — the keep
+   *membership*. Five of the thirty-five loaders answer membership — the keep
    list, the colour index names, the unit-change allowlist's accepted pairs, and
-   the two the correspondence routing file holds — and the other twenty-nine hand
+   the two the correspondence routing file holds — and the other thirty hand
    out records.
 3. **Cached exactly when the path is fixed.** A loader taking an injectable
    `path` must **not** be cached: the cache would serve the first test's fixture

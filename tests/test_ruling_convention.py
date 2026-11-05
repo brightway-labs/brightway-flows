@@ -100,6 +100,8 @@ RULING_LOADERS = (
      "brightway_flows.flow_layers.layering", "_load_overrides"),
     ("*-match-overrides.json",
      "brightway_flows.match_overrides", "load_match_overrides"),
+    ("*-property-statements.json",
+     "brightway_flows.property_statements", "load_property_statements"),
     # Registered against `sources`, which resolves the path a manifest names;
     # the merge is where the file is read.
     ("ecoinvent-unmatched-pesticide-groupings.json",
@@ -516,6 +518,7 @@ class TheBareSchemaVersionNameIsTakenTestCase(unittest.TestCase):
                 "brightway_flows/merge/land_groupings.py",
                 "brightway_flows/merge/prepared_context_decisions.py",
                 "brightway_flows/pipeline/collision_decisions.py",
+                "brightway_flows/property_statements.py",
             ],
         )
 

@@ -63,14 +63,22 @@ class TheFileTestCase(unittest.TestCase):
         # The check the file exists to survive.  A uuid no row carries decides
         # nothing and looks exactly like a decision.
         #
-        # The unit is part of the identifier, so a converting row is checked
-        # against the unit it says it converts *from*; the one row that states
-        # no conversion is a kilogram of carbon dioxide.
+        # The unit is part of the identifier, so a row that crosses a unit is
+        # checked against the unit the vendor ships it in -- the `per_unit` of
+        # the flow's statement in `stepwise-2006-property-statements.json`,
+        # where the heating values live since #407; the rows that state no
+        # property are kilograms, carbon dioxide among them.
+        stated = resolve_source_list(KEY).load_property_statements().statements
         for override in self.overrides:
             with self.subTest(override.source_name):
                 self.assertTrue(override.source_context)
                 compartment, subcompartment = override.source_context
-                unit = override.source_unit or "kg"
+                statements = stated.get(override.source_uuid, ())
+                unit = (
+                    override.source_unit
+                    or (statements[0].per_unit if statements else "")
+                    or "kg"
+                )
                 self.assertEqual(
                     _flow_uuid(override.source_name, compartment, subcompartment, unit),
                     override.source_uuid,

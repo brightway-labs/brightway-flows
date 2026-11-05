@@ -249,9 +249,20 @@ It is published wherever the two units differ and something converts them, and
 
 | `conversion_basis` | Who stated the factor | Example |
 |---|---|---|
-| `correspondence-table` | the source list's own correspondence table | ecoinvent's `Coal, brown, in ground`, 9.41 MJ per kg |
-| `curated` | this project, in a match override or the manual fix that rebased the row's unit | BAFU's standing wood, 0.00204 m³ per kg |
+| `correspondence-table` | the source list's own correspondence table | a factor a table states for a pair; none today |
+| `curated` | this project, in a match override or the manual fix that rebased the row's unit | BAFU's standing wood, 0.00204 m³ per kg; ecoinvent's titanium ore, 0.599 kg of metal per kg |
 | `unit-table` | `units.json`, between two units of one quantity kind | a BAFU row in Bq on a flow in kBq, 0.001 |
+| `flow-property` | derived from what the source list states about one unit of its own flow, in `<list>-property-statements.json` | AGRIBALYSE's `Coal, hard`, 18.2 MJ of net calorific value per kg |
+
+A `flow-property` factor carries a fourth key, `conversion_quantity`: the IRI of
+the quantity the number came through, from `quantities.json` —
+`https://vocab.brightway.one/quantity/net-calorific-value` on AGRIBALYSE's coal,
+`…/gross-calorific-value` on Stepwise's. That is what tells a reader that
+Stepwise's 19.1 is a gross value landing on EF 3.1's net-calorific-value flow,
+and that ecoinvent's 18.01 for hard coal, published through
+`…/calorific-value`, is a heat of combustion whose basis the workbook never
+stated. In the published correspondences the key is
+`brightway:conversionQuantity`.
 
 `conversion_provenance` is the factor's own PROV record. For a `unit-table`
 factor it names the two unit IRIs and `units.json`:
@@ -276,7 +287,7 @@ published correspondences the same two keys are `brightway:conversionBasis` and
 `brightway:conversionProvenance`.
 
 **A `unit-table` factor is true of any flow measured in those two units**, so
-you can apply it to an amount whichever row it came from. A
+you can apply it to an amount whichever row it came from. A `flow-property`,
 `correspondence-table` or `curated` factor is about one source row: a density,
 a heating value, an ore's share of its metal. Apply it to that row's amounts
 and no others.
@@ -634,23 +645,41 @@ that list's own, read out of its own archive. The ecoinvent ones reached this
 project through the `randonneur_data`
 correspondence tables while those were loaded; the tables are retired
 ([#141](https://github.com/brightway-labs/brightway-flows/issues/141)) and
-each factor now lives on its own reviewed row in
-`ecoinvent-match-overrides.json`, with the pair of units it converts between.
-They are not in the JRC's own EF 3.1 distribution: every one of the target
+each number now lives in `ecoinvent-property-statements.json` as a statement
+about the flow: one kilogram of `Coal, hard, unspecified, in ground` is 18.01 MJ
+of calorific value, checked against the five releases, with the workbook named
+as its source. They are not in the JRC's own EF 3.1 distribution: every one of the target
 flow datasets in `EF-v3.1.zip` carries a single flow-property `meanValue` of
 `1.0`, and no characterisation factor in its LCIA methods has these values.
 The ecoinvent implementation is where they exist.
 
-What none of them states is a **basis** — a calorific value is net or gross,
-and 26 MJ/kg dry-ash-free is a different claim from 26 MJ/kg as-received.
-Uranium's is documented as a gross (HHV) fission energy content; the coal and
-oil values say nothing either way. Giving the field a unit, an explicit basis
-and provenance is tracked in
-[#3](https://github.com/brightway-labs/brightway-flows/issues/3).
+**The basis is stated where the source states it.** A calorific value is net
+or gross, and 26 MJ/kg dry-ash-free is a different claim from 26 MJ/kg
+as-received. Each statement names its quantity: AGRIBALYSE's fuels are
+`net-calorific-value`, because its substance block gives a lower heating value
+and EF 3.1's energy flows measure net; Stepwise's coal and crude oil are
+`gross-calorific-value`, because its method's factors are the higher heating
+value; ecoinvent's and BAFU's coal are `calorific-value`, a heat of combustion
+whose workbook states no basis; every list's uranium is `fission-energy`, which
+is not a heat of combustion at all and never converts onto one. The mapping
+publishes the quantity it used as `conversion_quantity`, so a gross value
+landing on a net flow says so. Which bases exist, and what each is called by
+ILCD, SimaPro, ecoinvent and QUDT, is `quantities.json`; the ash and moisture
+basis of a coal value is still nobody's to state, and stays in the comment.
 
-It never appears on a flow or a flow object. A factor is a statement about a
-pair — 9.41 is not a fact about brown coal until it is 9.41 MJ per kg — so it
-belongs to the mapping and to nothing else.
+**The factor is on the mapping; what it is derived from is on the flow.** 9.41
+is what a kilogram of ecoinvent's brown coal becomes on EF's `Brown Coal` in
+megajoules, and that number belongs to the pair. "One kilogram of this brown
+coal is 9.41 MJ of calorific value" is a fact about the source flow, said by
+ecoinvent's implementation, and since
+[#407](https://github.com/brightway-labs/brightway-flows/issues/407) it lives
+on the source flow as a property statement — quantity, value, unit, who said it
+and where — in that list's `<list>-property-statements.json`, read onto the flow
+when the list is loaded. The merge derives the multiplier from it. An override
+row keeps a `conversion_factor` only for a pair fact no property of the flow
+expresses: an ore's share of its metal, mine gas at 1.0 from plain to standard
+cubic metres. Nothing is written onto a flow object yet; a reference value with
+bounds per substance is the issue's third part.
 
 Source IRI prefixes:
 

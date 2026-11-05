@@ -22,6 +22,7 @@
     "manual_fixes": "ecoinvent-3.12-manual-fixes.json",
     "manual_additions": "ecoinvent-unmatched-pesticide-groupings.json",
     "additional_flows": "ecoinvent-3.12-additional-flows.json",
-    "match_overrides": "ecoinvent-match-overrides.json"
+    "match_overrides": "ecoinvent-match-overrides.json",
+    "property_statements": "ecoinvent-property-statements.json"
   }
 }
