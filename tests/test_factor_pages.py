@@ -71,6 +71,12 @@ ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
 GREENDELTA_IMPL = _METHOD.implementation("greendelta")
 CONSENSUS_IMPL = _METHOD.consensus
 IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
+#: The fixture writes a factor for every implementation but the ecoinvent
+#: Centre's 3.12 workbook, which is published and compared and is not what the
+#: pages are about.
+NAMES_WITH_A_FIXTURE_ROW = IMPLEMENTATION_NAMES - {
+    _METHOD.implementation("ecoinvent-centre-3-12").name
+}
 
 #: The category every fixture factor is under, in all four implementations.
 SLUG = sorted(definition.slug for definition in impact_categories())[0]
@@ -560,7 +566,7 @@ class TheCategoryPageTestCase(FactorPageTestCase):
     def test_a_category_is_addressed_by_method_version_and_slug(self):
         detail = self.detail()
         self.assertEqual(detail.label, "EF 3.1")
-        self.assertEqual(len(detail.ids), 4)
+        self.assertEqual(len(detail.ids), 5)
         self.assertEqual(detail.implementations[0], CONSENSUS_IMPL.name)
 
     def test_an_unknown_category_is_a_404(self):
@@ -1255,7 +1261,7 @@ class OneFlowsFactorsTestCase(FactorPageTestCase):
         self.assertEqual({row.method for row in rows}, {"EF 3.1"})
         self.assertEqual(
             {row.implemented_by for row in rows},
-            IMPLEMENTATION_NAMES,
+            NAMES_WITH_A_FIXTURE_ROW,
         )
         stated = {row.implemented_by: row.amount for row in rows}
         self.assertEqual(stated[JRC_IMPL.name], 1.5)

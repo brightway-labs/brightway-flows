@@ -536,14 +536,18 @@ def stepwise_factors(
     return result
 
 
-#: How each implementation's factors are read, by who states them.  The method
-#: file says *that* an implementation reads a list and *which* list; this says
-#: which reader turns that list's file into records, because three publishers
-#: ship three file formats and none is a general case of another.
+#: How each implementation's factors are read, by the adapter that wrote the
+#: list's file.  The method file says *that* an implementation reads a list and
+#: *which* list; this says which reader turns that list's file into records,
+#: because three publishers ship three file formats and none is a general case
+#: of another.  Keyed on the manifest's ``lcia.adapter`` rather than on the
+#: publisher's name: the format is a property of the file the adapter fetched,
+#: and one publisher can be read twice -- the ecoinvent Centre's 3.13 workbook
+#: decides and its 3.12 one is kept to be compared -- while a name keys one.
 _READERS: dict[str, Any] = {
-    "ecoinvent Centre": ecoinvent_factors,
-    "GreenDelta": greendelta_factors,
-    "2.-0 LCA consultants": stepwise_factors,
+    "brightway_flows.integrations.ecoinvent_lcia:fetch": ecoinvent_factors,
+    "brightway_flows.integrations.greendelta_lcia:fetch": greendelta_factors,
+    "brightway_flows.integrations.stepwise_lcia:fetch": stepwise_factors,
 }
 
 
@@ -552,16 +556,17 @@ def source_list_factors(
 ) -> FactorSource:
     """One registered list's implementation, whichever it is.
 
-    :raises ValueError: if nothing here knows the file format the publisher ships.
-        An implementation reading a list and being skipped would publish 24
-        categories of 25 with nothing saying so.
+    :raises ValueError: if nothing here knows the file format the list's adapter
+        wrote.  An implementation reading a list and being skipped would publish
+        24 categories of 25 with nothing saying so.
     """
-    reader = _READERS.get(implementation.name)
+    assert source.lcia is not None
+    reader = _READERS.get(source.lcia.adapter)
     if reader is None:
         known = ", ".join(sorted(_READERS))
         raise ValueError(
-            f"{implementation.name} reads its factors from {source.key}, and no "
-            f"reader in `lcia.sources` knows that publisher's file format; "
-            f"{known} are known."
+            f"{implementation.name} reads its factors from {source.key}, whose "
+            f"adapter {source.lcia.adapter!r} writes a file format no reader in "
+            f"`lcia.sources` knows; {known} are known."
         )
     return reader(implementation, source)

@@ -18,6 +18,8 @@ from __future__ import annotations
 
 import json
 import unittest
+
+import orjson
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -28,6 +30,7 @@ from brightway_flows.lcia.precision import (
     REFINED,
     RoundedPrinting,
     RoundedPrintingError,
+    ROUNDED_PRINTINGS_FILEPATH,
     load_rounded_printings,
     refine_factors,
 )
@@ -257,55 +260,28 @@ class TheFileIsRead(unittest.TestCase):
         self.assertEqual(load_rounded_printings(Path("/nowhere.json")), {})
 
 
-class TheCuratedFileHoldsWhatIssue724Says(unittest.TestCase):
-    """The rows shipped in `data/`, which are a claim about two IPCC tables."""
+class TheCuratedFileIsEmptySinceIssue459(unittest.TestCase):
+    """The file shipped in `data/` holds no row, and says why.
 
-    @classmethod
-    def setUpClass(cls):
-        cls.printings = load_rounded_printings()
+    Its four rows -- CFC-11 and HFC-134a in the two climate categories -- were
+    a claim about a build where the JRC printed AR6's supplement (6230, 1530)
+    and the ecoinvent Centre's 3.12 workbook printed Chapter 7 (6226, 1526).
+    The 3.13 workbook prints the supplement too, so both deciding
+    implementations agree in every compartment and the rows were retired
+    (#459): a row kept would have been this file overriding both publishers
+    rather than reconciling them.  The loader and the refiner stay, for the
+    next release that prints one assessment at two precisions, and the rows
+    are in this file's history at a4d92fd.
+    """
 
-    def test_it_carries_both_substances_in_both_climate_categories(self):
-        self.assertEqual(
-            {(key[1], key[0]) for key in self.printings},
-            {
-                ("fo-a40881b1029ff99c", "climate-change"),
-                ("fo-a40881b1029ff99c", "climate-change-fossil"),
-                ("fo-9a8a2ec4f7948ae5", "climate-change"),
-                ("fo-9a8a2ec4f7948ae5", "climate-change-fossil"),
-            },
-        )
+    def test_it_holds_no_printing(self):
+        self.assertEqual(load_rounded_printings(), {})
 
-    def test_every_row_refines_the_jrcs_printing(self):
-        """Which direction the refinement runs is the claim, not an accident.
-
-        The JRC transcribed the supplement and ecoinvent the chapter; a row
-        pointing the other way would be publishing a rounding.
-        """
-        self.assertEqual(
-            {row.implemented_by for row in self.printings.values()}, {JRC}
-        )
-
-    def test_the_numbers_are_ar6s_two_printings(self):
-        pairs = {(row.prints, row.states) for row in self.printings.values()}
-        self.assertEqual(pairs, {(6230.0, 6226.0), (1530.0, 1526.0)})
-
-    def test_every_row_cites_where_the_precise_value_is_printed(self):
-        for row in self.printings.values():
-            with self.subTest(substance=row.substance, category=row.category):
-                self.assertIn("7.15", row.primary_source)
-
-    def test_every_row_states_its_reasoning(self):
-        for row in self.printings.values():
-            with self.subTest(substance=row.substance, category=row.category):
-                self.assertGreater(len(row.comment), 200)
-
-    def test_sulfur_hexafluoride_is_not_here(self):
-        """Its two numbers are two lifetimes, not two printings, and it was
-        answered by a ruling instead (#342)."""
-        self.assertNotIn(
-            "fo-21903c3421b5c942",
-            {row.flow_object_id for row in self.printings.values()},
-        )
+    def test_it_says_why(self):
+        document = orjson.loads(ROUNDED_PRINTINGS_FILEPATH.read_bytes())
+        self.assertEqual(document["printings"], [])
+        self.assertIn("#459", document["description"])
+        self.assertIn("3.13", document["description"])
 
 
 class TheStatedIndexIsShared(unittest.TestCase):
