@@ -233,6 +233,24 @@
       "original_value": "68359-37-5",
       "new_value": "1820573-27-0",
       "comment": "68359-37-5 is cyfluthrin, the commercial mixture of eight isomers; these rows are named Beta-cyfluthrin, the product enriched in the two most insecticidally active diastereoisomeric pairs of the same set, and PPDB gives that product its own registry number, 1820573-27-0 (PPDB record 74; plain cyfluthrin is record 192, 68359-37-5). ecoinvent's own naming history says the flow is the beta product -- the 2.2-to-3.12 transition table retired the name Cyfluthrin for these uuids in favour of Beta-cyfluthrin (ecoinvent-historical-names.json) -- while EF 3.1 ships plain cyfluthrin rows under the same number, so one number was carrying two vendors' different substances and the merge folded ecoinvent's beta rows into the plain substance by CAS. With the product's own number the beta rows separate at the registry-number index itself, the way the U-238 rows separated from the element's number. The EC number 269-855-7 is stated by both PPDB records and is left alone; only the CAS can tell the two apart. 8 such row(s) in this release, all shipped as Beta-cyfluthrin with no EC of their own. The same correction is in every ecoinvent release's fixes file, because it has to be made on all of them or the releases disagree about what the number names. See #188."
+    },
+    {
+      "match": {
+        "name": "Alpha-endosulfan"
+      },
+      "field": "cas_number",
+      "original_value": "115-29-7",
+      "new_value": "959-98-8",
+      "comment": "115-29-7 is endosulfan, the technical product, a mixture of the alpha and beta isomers; the alpha isomer's own registry number is 959-98-8 (Common Chemistry `α-Endosulfan`; PubChem CID 12309460). ecoinvent names these seven rows `Alpha-endosulfan`, one per emission context, and registers every one of them with the parent's number -- as it does the seven `Beta-endosulfan` rows and the seven `Endosulfan` rows, twenty-one rows under one number. A shared registry number is how this project decides two rows are one substance, so on the build of 2026-08-29 (54b0f9d) and every build since, all twenty-one landed on `Endosulfan` and the isomer distinction the names draw was lost (docs/changes/ecoinvent-3.12.md, Rows merged into one flow). ecoinvent 3.13, released 2026-11-04, registers the seven alpha rows 959-98-8 and the seven beta rows 33213-65-9 under the same uuids, which is the vendor's current statement of what the rows are and agrees with EF 3.1, which carries `A-endosulfan` under 959-98-8 and `endosulfan (beta)` under 33213-65-9 in thirteen contexts each. Stated here so that the releases the build merges agree about the substance (#26): with the isomer's number the rows reach EF 3.1's alpha-endosulfan flows rather than the parent's. The seven `Endosulfan` rows keep 115-29-7, which is theirs. 3.11 is the release that added the isomer rows; 3.8 to 3.10.1 ship only the parent. Matched on the name with the parent's number as the guard, so a row already carrying the isomer's number -- 3.13's -- is left alone. (#456)"
+    },
+    {
+      "match": {
+        "name": "Beta-endosulfan"
+      },
+      "field": "cas_number",
+      "original_value": "115-29-7",
+      "new_value": "33213-65-9",
+      "comment": "The same slip on the beta isomer: 33213-65-9 is `β-Endosulfan`'s own number (Common Chemistry; PubChem CID 12309466), the one ecoinvent 3.13, released 2026-11-04, ships on these seven uuids and EF 3.1 carries on its thirteen `endosulfan (beta)` rows. See `Alpha-endosulfan` above for what the parent's number cost and why the correction is stated in every release that ships the rows (#26). (#456)"
     }
   ]
 }

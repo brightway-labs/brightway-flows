@@ -10,8 +10,8 @@ at `9fbb0d5`. Its rows carry a uuid that is the same in every ecoinvent release,
 so every row quoted below can be found in the `ElementaryExchanges.xml` of
 3.12 and, where the row existed then, of any earlier release too.
 
-The curated corrections are in `ecoinvent-3.12-manual-fixes.json`: 24 entries
-in all, of which 9 alter a registry number, 5 a name, 7 a synonym list and 3 a
+The curated corrections are in `ecoinvent-3.12-manual-fixes.json`: 29 entries
+in all, of which 14 alter a registry number, 5 a name, 7 a synonym list and 3 a
 unit. Where a row is sent somewhere ecoinvent's own correspondence table to EF
 3.1 would not send it, the target is in `ecoinvent-match-overrides.json`,
 which applies to every ecoinvent release because the uuids are shared. The
@@ -210,7 +210,11 @@ twenty-one rows. A shared registry number is how this list decides that two
 rows are one substance, so all three names land on **Endosulfan** in each
 compartment. The isomer distinction ecoinvent's names draw is lost: the alpha
 isomer has its own CAS number (959-98-8) and so does the beta (33213-65-9), and
-ecoinvent did not use them.
+ecoinvent did not use them. ecoinvent 3.13, released 2026-11-04, does, on the
+same uuids, and the isomer rows of 3.11 and 3.12 are corrected to the same
+numbers before matching (*Registry numbers corrected*, below;
+[#456](https://github.com/brightway-labs/brightway-flows/issues/456)), so the
+three stay apart.
 
 | Compartment | Endosulfan | Alpha-endosulfan | Beta-endosulfan |
 |---|---|---|---|
@@ -289,7 +293,7 @@ consensus land vocabulary names the class once:
 
 ## Registry numbers corrected
 
-Twelve entries in `ecoinvent-3.12-manual-fixes.json` change a registry number.
+Fourteen entries in `ecoinvent-3.12-manual-fixes.json` change a registry number.
 Each is applied before the row is matched, so the row reaches the substance
 the corrected number names.
 
@@ -307,6 +311,8 @@ the corrected number names.
 | `Caesium I`, 5 water rows | 7440-46-2 | 18459-37-5 | The same slip on the monovalent caesium ion: 7440-46-2 is the metal, 18459-37-5 the ion, and the five water rows were published as `Cesium` beside AGRIBALYSE's `Cesium (I)` rows on `Cesium(1+)` (#198). |
 | `Stibnite`, natural resource / in ground (`3e0034cd-21d6-4582-9fbf-09c26edd05df`) | 1345-04-6 | 1317-86-8 | Both numbers are antimony trisulfide, Sb₂S₃, but CAS registers the manufactured chemical and the mineral separately, and 1345-04-6 is the chemical. This row is ore dug out of the ground, so it takes the mineral's number — the one BAFU already uses for its stibnite, and the one that keeps the ore apart from EF 3.1's thirteen emission rows of the compound ([#123](https://github.com/brightway-labs/brightway-flows/issues/123)). |
 | `Beta-cyfluthrin`, 8 rows | 68359-37-5 | 1820573-27-0 | 68359-37-5 is cyfluthrin, the commercial eight-isomer mixture. These rows are the beta product — the same molecules enriched in the two most insecticidally active diastereoisomeric pairs — and PPDB registers it separately (record 74; plain cyfluthrin is record 192). ecoinvent's own transition table retired the name Cyfluthrin for these uuids in favour of Beta-cyfluthrin, while EF 3.1 ships plain cyfluthrin under the same number, so with the shared number the beta rows fused with the plain substance. The shared EC number 269-855-7 stays; every release ships the rows and takes the same correction ([#188](https://github.com/brightway-labs/brightway-flows/issues/188)). |
+| `Alpha-endosulfan`, 7 rows | 115-29-7 | 959-98-8 | 115-29-7 is endosulfan, the technical mixture of the two isomers. ecoinvent registered all twenty-one endosulfan rows with it, so every build landed the alpha and beta isomers on the parent. 959-98-8 is the alpha isomer's own number, the one ecoinvent 3.13 ships on the same uuids and EF 3.1 carries on its `A-endosulfan` rows ([#26](https://github.com/brightway-labs/brightway-flows/issues/26)). |
+| `Beta-endosulfan`, 7 rows | 115-29-7 | 33213-65-9 | The same slip on the beta isomer: 33213-65-9 is its own number, in 3.13 and on EF 3.1's `endosulfan (beta)` rows. |
 
 ### Other corrections that change what a row says
 
