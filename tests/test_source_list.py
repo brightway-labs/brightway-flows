@@ -220,6 +220,7 @@ class ManifestsAreTheRegistryTestCase(unittest.TestCase):
                 "ecoinvent-3.10.1": "https://vocab.brightway.one/ecoinvent/3.10.1/flow/",
                 "ecoinvent-3.11": "https://vocab.brightway.one/ecoinvent/3.11/flow/",
                 "ecoinvent-3.12": "https://vocab.brightway.one/ecoinvent/3.12/flow/",
+                "ecoinvent-3.13": "https://vocab.brightway.one/ecoinvent/3.13/flow/",
             },
         )
 
@@ -261,6 +262,7 @@ class ManifestsAreTheRegistryTestCase(unittest.TestCase):
                 "ecoinvent-3.10.1": 100,
                 "ecoinvent-3.11": 100,
                 "ecoinvent-3.12": 100,
+                "ecoinvent-3.13": 100,
             },
         )
 

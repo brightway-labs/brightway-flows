@@ -54,7 +54,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_PATH = REPO_ROOT / "tests" / "data" / "observed-land-classes.json"
 VENDOR_DIR = Path.home() / ".local" / "share" / "brightway-flows"
 
-ECOINVENT_VERSIONS = ("3.8", "3.9.1", "3.10.1", "3.11", "3.12")
+ECOINVENT_VERSIONS = ("3.8", "3.9.1", "3.10.1", "3.11", "3.12", "3.13")
 
 def source_names() -> tuple[dict[str, set[str]], int]:
     """Every land-flow name each registered list ships, and how many were split.

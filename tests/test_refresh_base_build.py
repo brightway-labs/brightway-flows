@@ -567,6 +567,7 @@ class DefaultsTestCase(unittest.TestCase):
         self.assertEqual(
             tool.DEFAULT_SOURCES,
             (
+                "ecoinvent-3.13",
                 "ecoinvent-3.12",
                 "ecoinvent-3.8",
                 "bafu-2026-v1",

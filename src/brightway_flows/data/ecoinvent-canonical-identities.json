@@ -1,19 +1,20 @@
 {
   "schema_version": 1,
-  "description": "The newest release's identity for every ecoinvent element/ion flow that an earlier release on disk states differently. Derived by tools/derive_ecoinvent_canonical_identities.py from the release extractions (3.8, 3.9.1, 3.10.1, 3.11, 3.12); do not edit by hand -- regenerate. plans/retire-prepared-correspondence.md §3a is the rule this implements: the newest name is the vendor's current opinion, and the earlier ones are treated as mistaken spellings of it -- except where an earlier release stated the bare element under the element's number and the newest an ion, which is a second substance under a reused uuid and is not listed (#398). merge/species.py loads it, and only for a source list with no prepared correspondence table.",
+  "description": "The newest release's identity for every ecoinvent element/ion flow that an earlier release on disk states differently. Derived by tools/derive_ecoinvent_canonical_identities.py from the release extractions (3.8, 3.9.1, 3.10.1, 3.11, 3.12, 3.13); do not edit by hand -- regenerate. plans/retire-prepared-correspondence.md §3a is the rule this implements: the newest name is the vendor's current opinion, and the earlier ones are treated as mistaken spellings of it -- except where an earlier release stated the bare element under the element's number and the newest an ion, which is a second substance under a reused uuid and is not listed (#398). merge/species.py loads it, and only for a source list with no prepared correspondence table.",
   "derived_from": [
     "3.8",
     "3.9.1",
     "3.10.1",
     "3.11",
-    "3.12"
+    "3.12",
+    "3.13"
   ],
   "identities": [
     {
       "uuid": "a45cd247-3532-4e27-bddc-b519fdb5e08f",
       "name": "Aluminium",
       "cas_number": "7429-90-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -26,7 +27,7 @@
       "uuid": "47262180-8308-5d4c-9332-c77617e032ef",
       "name": "Antimony",
       "cas_number": "7440-36-0",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -39,7 +40,7 @@
       "uuid": "e16fd15c-0ebc-55ba-8d3b-9704f13663cb",
       "name": "Arsenic",
       "cas_number": "7440-38-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -52,7 +53,7 @@
       "uuid": "1f607ae2-b42d-4411-90b8-e9bbac66a554",
       "name": "Arsenic ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -65,7 +66,7 @@
       "uuid": "8c8ffaa5-84ed-4668-ba7d-80fd0f47013f",
       "name": "Arsenic ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -78,7 +79,7 @@
       "uuid": "d70b4182-d633-4178-84c0-8854f5f6594b",
       "name": "Arsenic ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -91,7 +92,7 @@
       "uuid": "e1bd008f-c3c2-47f1-ab60-35e1a842acc0",
       "name": "Arsenic ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -104,7 +105,7 @@
       "uuid": "e60edb16-3c74-415b-9aff-a22a6f49fecb",
       "name": "Arsenic ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -117,7 +118,7 @@
       "uuid": "240177d8-6f3b-43f5-8d1e-0c18114dfa02",
       "name": "Barium",
       "cas_number": "7440-39-3",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -130,7 +131,7 @@
       "uuid": "68f7bc03-0665-55a1-bd99-96530eab30e2",
       "name": "Beryllium",
       "cas_number": "7440-41-7",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -143,7 +144,7 @@
       "uuid": "b053aa52-bfac-5435-a0b1-4ca374b0e991",
       "name": "Boron",
       "cas_number": "7440-42-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -156,7 +157,7 @@
       "uuid": "45d6f26b-596b-5182-8c08-d6d975ff4efe",
       "name": "Bromine",
       "cas_number": "7726-95-6",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -169,7 +170,7 @@
       "uuid": "bf377e4f-3a95-4ce2-a9ba-66ee31f00f60",
       "name": "Cadmium",
       "cas_number": "7440-43-9",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -182,7 +183,7 @@
       "uuid": "2712fe5f-0d3c-4c8e-8bc4-26c604413849",
       "name": "Cadmium II",
       "cas_number": "22537-48-0",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -195,7 +196,7 @@
       "uuid": "3937f5a5-b4a4-434d-9fc3-1d29064fc3f8",
       "name": "Cadmium II",
       "cas_number": "22537-48-0",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -208,7 +209,7 @@
       "uuid": "4ce23896-a82f-49f1-a8e3-8848734805a3",
       "name": "Cadmium II",
       "cas_number": "22537-48-0",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -221,7 +222,7 @@
       "uuid": "62fcd384-906d-474f-a84b-9f944b78f804",
       "name": "Cadmium II",
       "cas_number": "22537-48-0",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -234,7 +235,7 @@
       "uuid": "af83b42f-a4e6-4457-be74-46a87798f82a",
       "name": "Cadmium II",
       "cas_number": "22537-48-0",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -247,7 +248,7 @@
       "uuid": "0e2f5e72-a754-5a14-bce5-6f8d66276d82",
       "name": "Caesium",
       "cas_number": "7440-46-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -260,7 +261,7 @@
       "uuid": "c8fc4197-7410-42f2-aeb4-c08c6a693992",
       "name": "Calcium",
       "cas_number": "7440-70-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -273,7 +274,7 @@
       "uuid": "08151735-9d1b-4b1c-a8b1-f341ade54f2f",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -286,7 +287,7 @@
       "uuid": "15fd8f0f-c3c2-4f63-b8d0-86793a22aacd",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.10.1",
@@ -299,7 +300,7 @@
       "uuid": "1d0f4392-8c91-4d01-8a5d-f8fe1f5b05c9",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -312,7 +313,7 @@
       "uuid": "2cc93e0a-c655-4628-bea6-243d8240b5a4",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.10.1",
@@ -325,7 +326,7 @@
       "uuid": "55bf893f-0d89-429c-be59-2f99b33ddb11",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -338,7 +339,7 @@
       "uuid": "57117e3c-15aa-4b4d-b953-6d33986aa5aa",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.10.1",
@@ -351,7 +352,7 @@
       "uuid": "a912f450-5233-489b-a2e9-8c029fab480f",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.10.1",
@@ -364,7 +365,7 @@
       "uuid": "ac066c02-b403-407b-a1f0-b29ad0f8188f",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -377,7 +378,7 @@
       "uuid": "ae28c923-a4a3-4f00-b862-1ae6e748efb9",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -390,7 +391,7 @@
       "uuid": "b87016c6-ac91-4414-98ce-fb665e0a6d2e",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.10.1",
@@ -403,7 +404,7 @@
       "uuid": "cac53ea3-b11c-47a6-adfd-678672a088e6",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.10.1",
@@ -416,7 +417,7 @@
       "uuid": "e681e6ba-2d66-4f17-8812-e8c74bdcf7e8",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.10.1",
@@ -429,7 +430,7 @@
       "uuid": "f16fa1da-e426-4820-bf9d-71595c22283b",
       "name": "Calcium II",
       "cas_number": "14127-61-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.10.1",
@@ -442,7 +443,7 @@
       "uuid": "e189e2d4-3d3f-4ada-b302-91611784311f",
       "name": "Chromium",
       "cas_number": "7440-47-3",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -455,7 +456,7 @@
       "uuid": "1c87de06-e58f-4684-a54c-d29f1a251a87",
       "name": "Chromium III",
       "cas_number": "16065-83-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -468,7 +469,7 @@
       "uuid": "30f484ee-dec4-47ae-8e92-d00d4b93fe05",
       "name": "Chromium III",
       "cas_number": "16065-83-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -481,7 +482,7 @@
       "uuid": "d98f0ec0-bf19-4c90-a457-a8593dec497f",
       "name": "Chromium III",
       "cas_number": "16065-83-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -494,7 +495,7 @@
       "uuid": "d9c23a8d-e7bf-4f70-8d22-b9ad8a653204",
       "name": "Chromium III",
       "cas_number": "16065-83-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -507,7 +508,7 @@
       "uuid": "e34d3da4-a3d5-41be-84b5-458afe32c990",
       "name": "Chromium III",
       "cas_number": "16065-83-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -520,7 +521,7 @@
       "uuid": "d0779a5e-6969-4144-954e-ceb81fb83f15",
       "name": "Cobalt",
       "cas_number": "7440-48-4",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -533,7 +534,7 @@
       "uuid": "a9ac40a0-9bea-4c48-afa7-66aa6eb90624",
       "name": "Copper",
       "cas_number": "7440-50-8",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -546,7 +547,7 @@
       "uuid": "40229ebf-9346-4f20-910a-f8ea3bd88d44",
       "name": "Copper ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -559,7 +560,7 @@
       "uuid": "615b1460-6860-4cf6-8678-ad92c03c5e8b",
       "name": "Copper ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -572,7 +573,7 @@
       "uuid": "6d9550e2-e670-44c1-bad8-c0c4975ffca7",
       "name": "Copper ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -585,7 +586,7 @@
       "uuid": "c3b659e5-35f1-408c-8cb5-b5f9b295c76e",
       "name": "Copper ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -598,7 +599,7 @@
       "uuid": "d8f9ccf6-fd32-4348-83c0-1cee724af9ae",
       "name": "Copper ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -611,7 +612,7 @@
       "uuid": "3048af84-1d72-5e3f-a739-b2d7fa7d4773",
       "name": "Fluorine",
       "cas_number": "7782-41-4",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -624,7 +625,7 @@
       "uuid": "d080e6a4-42c6-484e-b5d7-d74693aec7d9",
       "name": "Gold",
       "cas_number": "7440-57-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -637,7 +638,7 @@
       "uuid": "36a3d172-7373-507f-85bd-12b8ba31a6d4",
       "name": "Iodine",
       "cas_number": "7553-56-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -650,7 +651,7 @@
       "uuid": "ed9d969e-f77b-5f66-aa23-1b43ec0e9fa1",
       "name": "Iodine",
       "cas_number": "7553-56-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.10.1",
@@ -663,7 +664,7 @@
       "uuid": "8ce3ff02-7a1e-48e3-881e-3248b944f28a",
       "name": "Iron",
       "cas_number": "7439-89-6",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -676,7 +677,7 @@
       "uuid": "2c9a7182-37c8-4777-a37a-9a007c3edb2f",
       "name": "Iron ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -689,7 +690,7 @@
       "uuid": "33fd8342-58e7-45c9-ad92-0951c002c403",
       "name": "Iron ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -702,7 +703,7 @@
       "uuid": "7c335b9c-a403-47a8-bb6d-2e7d3c3a230e",
       "name": "Iron ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -715,7 +716,7 @@
       "uuid": "9b6d6f07-ebc6-447d-a3c0-f2017d77d852",
       "name": "Iron ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -728,7 +729,7 @@
       "uuid": "de444dc0-5964-4501-8367-50ba53bfc6b9",
       "name": "Iron ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -741,7 +742,7 @@
       "uuid": "fbcb9c7a-eea7-4694-ba6c-568e01d28883",
       "name": "Lead",
       "cas_number": "7439-92-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -754,7 +755,7 @@
       "uuid": "7d2c1cdd-a64a-5936-a577-5b82db0c0d1b",
       "name": "Lithium",
       "cas_number": "7439-93-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -767,7 +768,7 @@
       "uuid": "c44b0e3b-e65e-4276-aa1f-3db768757b66",
       "name": "Lithium I",
       "cas_number": "17341-24-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -780,7 +781,7 @@
       "uuid": "cf88e72e-13bc-416c-ac41-7d4b24bda86a",
       "name": "Lithium I",
       "cas_number": "17341-24-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -793,7 +794,7 @@
       "uuid": "e98084d6-88a2-48cf-9ad5-6462fe9cf857",
       "name": "Lithium I",
       "cas_number": "17341-24-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -806,7 +807,7 @@
       "uuid": "eb2bfdf1-1881-40e8-bebb-d674b2a79149",
       "name": "Lithium I",
       "cas_number": "17341-24-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -819,7 +820,7 @@
       "uuid": "247f3d96-7da2-5adf-a399-65745bc042fb",
       "name": "Magnesium",
       "cas_number": "7439-95-4",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -832,7 +833,7 @@
       "uuid": "9e5823ad-9d9b-4b98-b627-e39611b6a8bd",
       "name": "Magnesium",
       "cas_number": "7439-95-4",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -845,7 +846,7 @@
       "uuid": "06ee87f5-4946-4ecd-9615-b4723595fbaf",
       "name": "Manganese",
       "cas_number": "7439-96-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -863,7 +864,7 @@
       "uuid": "32299af9-3432-470b-8f90-5d06df12b062",
       "name": "Manganese",
       "cas_number": "7439-96-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -881,7 +882,7 @@
       "uuid": "583eec00-1480-4cd7-8670-31eaf94053ad",
       "name": "Manganese",
       "cas_number": "7439-96-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -899,7 +900,7 @@
       "uuid": "6ed06a59-4fd1-422e-a397-4c3274596701",
       "name": "Manganese",
       "cas_number": "7439-96-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -917,7 +918,7 @@
       "uuid": "957d4d94-9f88-4f40-9755-cfc3918882bb",
       "name": "Manganese",
       "cas_number": "7439-96-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -935,7 +936,7 @@
       "uuid": "c2586875-bb56-4b1e-84c5-5ff255a1108b",
       "name": "Manganese",
       "cas_number": "7439-96-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -948,7 +949,7 @@
       "uuid": "54b9cbd0-65df-4fd3-8a19-dd3b8eccc619",
       "name": "Mercury",
       "cas_number": "7439-97-6",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -961,7 +962,7 @@
       "uuid": "e5a3dff5-72dc-5287-893c-597dd4a19566",
       "name": "Molybdenum",
       "cas_number": "7439-98-7",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -974,7 +975,7 @@
       "uuid": "974213ef-1ba0-40e5-bc7b-52ef099e9e09",
       "name": "Nickel",
       "cas_number": "7440-02-0",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -987,7 +988,7 @@
       "uuid": "23cb10a4-6228-4ce4-9fb5-7043bc31faec",
       "name": "Nickel II",
       "cas_number": "14701-22-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1000,7 +1001,7 @@
       "uuid": "6ec6cdaa-5a01-46d4-b716-1905e56690ea",
       "name": "Nickel II",
       "cas_number": "14701-22-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1013,7 +1014,7 @@
       "uuid": "9798359e-a3ee-4362-a038-23a188582c6e",
       "name": "Nickel II",
       "cas_number": "14701-22-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1026,7 +1027,7 @@
       "uuid": "9f69cb8e-51fe-447b-a1ac-4da74de8ebe4",
       "name": "Nickel II",
       "cas_number": "14701-22-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1039,7 +1040,7 @@
       "uuid": "edc69c63-a776-4dbf-acbf-e0368914980a",
       "name": "Palladium",
       "cas_number": "7440-05-3",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1052,7 +1053,7 @@
       "uuid": "483ae3c5-4eb0-46e4-b811-a72ad391716b",
       "name": "Phosphorus",
       "cas_number": "7723-14-0",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1065,7 +1066,7 @@
       "uuid": "e373f7b4-42e9-4cc7-a73c-f87bec88008b",
       "name": "Potassium",
       "cas_number": "7440-09-7",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1078,7 +1079,7 @@
       "uuid": "130bbacf-e7c7-4ffd-b109-4d576f1d02c1",
       "name": "Potassium I",
       "cas_number": "24203-36-9",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1091,7 +1092,7 @@
       "uuid": "1653bf60-f682-4088-b02d-6dc44eae2786",
       "name": "Potassium I",
       "cas_number": "24203-36-9",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1104,7 +1105,7 @@
       "uuid": "297cc04f-e215-433c-ae3b-d1e34464c785",
       "name": "Potassium I",
       "cas_number": "24203-36-9",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1117,7 +1118,7 @@
       "uuid": "b93fc4df-91b2-4ac4-a315-89147515ddfb",
       "name": "Potassium I",
       "cas_number": "24203-36-9",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1130,7 +1131,7 @@
       "uuid": "4803f22f-6950-489b-914d-fa953a8081f6",
       "name": "Rhodium",
       "cas_number": "7440-16-6",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1143,7 +1144,7 @@
       "uuid": "7f9f9b59-35a0-584d-ad5e-07da01dde768",
       "name": "Scandium",
       "cas_number": "7440-20-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1156,7 +1157,7 @@
       "uuid": "5f47f918-1c32-5870-b992-db91f843ff34",
       "name": "Selenium",
       "cas_number": "7782-49-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1169,7 +1170,7 @@
       "uuid": "00143719-33a7-5738-aa1b-131f97b4fef3",
       "name": "Silicon",
       "cas_number": "7440-21-3",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1182,7 +1183,7 @@
       "uuid": "361a64cb-ab76-4a72-9ea1-c07d6a20c124",
       "name": "Silver",
       "cas_number": "7440-22-4",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1195,7 +1196,7 @@
       "uuid": "21c257b2-57ce-4a6e-b4bd-40f0f75f310f",
       "name": "Silver I",
       "cas_number": "14701-21-4",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1208,7 +1209,7 @@
       "uuid": "6aa8673f-f7e3-4270-93dc-e97b745fced7",
       "name": "Silver I",
       "cas_number": "14701-21-4",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1221,7 +1222,7 @@
       "uuid": "71cfe87c-ab80-421e-adba-afb7d5bd0861",
       "name": "Silver I",
       "cas_number": "14701-21-4",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1234,7 +1235,7 @@
       "uuid": "94426df9-63b1-4dc6-ad1b-3509e22f1154",
       "name": "Silver I",
       "cas_number": "14701-21-4",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1247,7 +1248,7 @@
       "uuid": "af9793ba-25a1-4928-a14a-4bcf7d5bd3f7",
       "name": "Silver I",
       "cas_number": "14701-21-4",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1260,7 +1261,7 @@
       "uuid": "fab932d4-0a58-491c-9d7f-294d07a7953d",
       "name": "Sodium",
       "cas_number": "7440-23-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1273,7 +1274,7 @@
       "uuid": "1fc409bc-b8e7-48b2-92d5-2ced4aa7bae2",
       "name": "Sodium I",
       "cas_number": "17341-25-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1286,7 +1287,7 @@
       "uuid": "5ac961f0-8e53-42ff-b13f-1a7fb9133868",
       "name": "Sodium I",
       "cas_number": "17341-25-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1299,7 +1300,7 @@
       "uuid": "9310f497-3205-4717-aaa8-1a94c321f7d8",
       "name": "Sodium I",
       "cas_number": "17341-25-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1312,7 +1313,7 @@
       "uuid": "ee9fdd7c-5e29-4bdb-852a-3258f06ec2ab",
       "name": "Sodium I",
       "cas_number": "17341-25-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1325,7 +1326,7 @@
       "uuid": "fb83d61e-6fe3-4da7-8eb2-b0e2dc85a76d",
       "name": "Sodium I",
       "cas_number": "17341-25-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1338,7 +1339,7 @@
       "uuid": "0f1b21d0-2780-4742-87f2-28fb21a44db5",
       "name": "Strontium",
       "cas_number": "7440-24-6",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1351,7 +1352,7 @@
       "uuid": "852281f6-db73-4250-84d3-86b569fce0c1",
       "name": "Sulfur",
       "cas_number": "7704-34-9",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1364,7 +1365,7 @@
       "uuid": "f0e37b5f-3f67-516a-afd5-442c83e094bc",
       "name": "Thallium",
       "cas_number": "7440-28-0",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1377,7 +1378,7 @@
       "uuid": "53d5ef26-66d8-4536-afa2-2f6b114189ba",
       "name": "Tin",
       "cas_number": "7440-31-5",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1390,7 +1391,7 @@
       "uuid": "2a992e5e-9f16-47b8-8bcb-733d00bed658",
       "name": "Tin ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1403,7 +1404,7 @@
       "uuid": "3ddb2e36-bc1b-43a5-8ef4-cbcdbeeeea70",
       "name": "Tin ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1416,7 +1417,7 @@
       "uuid": "60a6702f-20ad-444f-a6df-f6374f1e3183",
       "name": "Tin ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1429,7 +1430,7 @@
       "uuid": "d5c40848-fc29-47fa-90a4-46db64a45a4e",
       "name": "Tin ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1442,7 +1443,7 @@
       "uuid": "f73177d8-5e57-4f0d-ba34-6889cfdfed40",
       "name": "Tin ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1455,7 +1456,7 @@
       "uuid": "2f033407-6060-4e1e-868c-9f362d10fdb2",
       "name": "Titanium",
       "cas_number": "7440-32-6",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1468,7 +1469,7 @@
       "uuid": "2a46e7f4-c66c-43e5-8a8a-d119c4098aff",
       "name": "Titanium ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1481,7 +1482,7 @@
       "uuid": "2beb46d1-2d1d-48ca-bf95-f0668fed29bf",
       "name": "Titanium ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1494,7 +1495,7 @@
       "uuid": "a4c31e2a-915e-4ab2-accd-d3ae93d2e01e",
       "name": "Titanium ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1507,7 +1508,7 @@
       "uuid": "e2380d91-f278-41ee-9926-15272a7d1443",
       "name": "Titanium ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1520,7 +1521,7 @@
       "uuid": "ff36578b-f403-4656-b934-81d8d4e02dc8",
       "name": "Titanium ion",
       "cas_number": "",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1533,7 +1534,7 @@
       "uuid": "ebcc1f0c-6b19-501d-86a4-629df2a457b5",
       "name": "Tungsten",
       "cas_number": "7440-33-7",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1546,7 +1547,7 @@
       "uuid": "c9c4b80a-73dd-415a-92fb-f877595651c1",
       "name": "Vanadium",
       "cas_number": "7440-62-2",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1559,7 +1560,7 @@
       "uuid": "20839113-fbf2-4d2f-bab8-66861f86bc60",
       "name": "Vanadium V",
       "cas_number": "22537-31-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1572,7 +1573,7 @@
       "uuid": "41dbbe1f-06e1-4a34-8497-5986be8f9e51",
       "name": "Vanadium V",
       "cas_number": "22537-31-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1585,7 +1586,7 @@
       "uuid": "a46a250e-297d-43e9-b1c4-052cdcfb79c5",
       "name": "Vanadium V",
       "cas_number": "22537-31-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1598,7 +1599,7 @@
       "uuid": "dbdc3ea8-cc2b-4dbe-82b9-e954e333281d",
       "name": "Vanadium V",
       "cas_number": "22537-31-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1611,7 +1612,7 @@
       "uuid": "ed1fd27e-014a-41cf-842f-7b2022b0be79",
       "name": "Vanadium V",
       "cas_number": "22537-31-1",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1624,7 +1625,7 @@
       "uuid": "be73218b-18af-492e-96e6-addd309d1e32",
       "name": "Zinc",
       "cas_number": "7440-66-6",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1637,7 +1638,7 @@
       "uuid": "2195d86f-e4c8-4e86-9f18-b5b065b1df7e",
       "name": "Zinc II",
       "cas_number": "23713-49-7",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1650,7 +1651,7 @@
       "uuid": "2c7be02c-791f-4fef-b231-b90321bbeb30",
       "name": "Zinc II",
       "cas_number": "23713-49-7",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1663,7 +1664,7 @@
       "uuid": "541b633c-17a3-4047-bce6-0c0e4fdb7c10",
       "name": "Zinc II",
       "cas_number": "23713-49-7",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1676,7 +1677,7 @@
       "uuid": "7e769b3e-03fb-4b53-be15-85a910dcfea9",
       "name": "Zinc II",
       "cas_number": "23713-49-7",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",
@@ -1689,7 +1690,7 @@
       "uuid": "bdce3a7c-e008-4391-be26-285f71a02453",
       "name": "Zinc II",
       "cas_number": "23713-49-7",
-      "decided_by": "3.12",
+      "decided_by": "3.13",
       "replaces": [
         {
           "version": "3.8",

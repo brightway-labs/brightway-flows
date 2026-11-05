@@ -8,21 +8,22 @@ shared vocabulary — and none of that is recorded here. These pages record the
 changes that alter *what a row says*: the ones a reader who knows the source
 list would want to check.
 
-One page per input list, the five ecoinvent releases by version number. Which
+One page per input list, the six ecoinvent releases by version number. Which
 of them the standard build merges, and in what order, is the Role column —
-3.12 is merged before 3.8, and the three releases between them are curated but
-not merged:
+3.13 is merged first, then 3.12, then 3.8, and the three releases between 3.8
+and 3.12 are curated but not merged:
 
 | Source | Role in the build | Page |
 |---|---|---|
 | EF 3.1 | The base list every other list is merged into | [EF 3.1](ef-3.1.md) |
-| ecoinvent 3.8 | Merged second | [ecoinvent 3.8](ecoinvent-3.8.md) |
+| ecoinvent 3.8 | Merged third | [ecoinvent 3.8](ecoinvent-3.8.md) |
 | ecoinvent 3.9.1 | Curated, and available to merge; not part of the standard build | [ecoinvent 3.9.1](ecoinvent-3.9.1.md) |
 | ecoinvent 3.10.1 | Curated, and available to merge; not part of the standard build | [ecoinvent 3.10.1](ecoinvent-3.10.1.md) |
 | ecoinvent 3.11 | Curated, and available to merge; not part of the standard build | [ecoinvent 3.11](ecoinvent-3.11.md) |
-| ecoinvent 3.12 | Merged first | [ecoinvent 3.12](ecoinvent-3.12.md) |
-| BAFU 2026 v1 | Merged third | [BAFU 2026 v1](bafu-2026-v1.md) |
-| Stepwise 2006 | Merged fourth | [Stepwise 2006](stepwise-2006.md) |
+| ecoinvent 3.12 | Merged second | [ecoinvent 3.12](ecoinvent-3.12.md) |
+| ecoinvent 3.13 | Merged first | [ecoinvent 3.13](ecoinvent-3.13.md) |
+| BAFU 2026 v1 | Merged fourth | [BAFU 2026 v1](bafu-2026-v1.md) |
+| Stepwise 2006 | Merged fifth | [Stepwise 2006](stepwise-2006.md) |
 | AGRIBALYSE 3.2 | Merged last; in every build since release 1.0.0 | [AGRIBALYSE 3.2](agribalyse-3.2.md) |
 
 ## The four kinds of change these pages show

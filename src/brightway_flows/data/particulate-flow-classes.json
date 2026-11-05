@@ -2666,6 +2666,175 @@
       "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
     },
     {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "051aaf7a-6c1a-4e86-999f-85d5f0830df6",
+      "source_name": "Particulate Matter, < 2.5 um",
+      "source_context": [
+        "air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of `Particulates, < 2.5 um`, same uuid. A vendor renaming its own rows is exactly the event a name-based identity cannot survive, and the window is unmoved by it."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "21e46cb8-6233-4c99-bac3-c41d2ab99498",
+      "source_name": "Particulate Matter, < 2.5 um",
+      "source_context": [
+        "air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of `Particulates, < 2.5 um`, same uuid. A vendor renaming its own rows is exactly the event a name-based identity cannot survive, and the window is unmoved by it."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "230d8a0a-517c-43fe-8357-1818dd12997a",
+      "source_name": "Particulate Matter, < 2.5 um",
+      "source_context": [
+        "air",
+        "urban air close to ground"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of `Particulates, < 2.5 um`, same uuid. A vendor renaming its own rows is exactly the event a name-based identity cannot survive, and the window is unmoved by it."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "66f50b33-fd62-4fdd-a373-c5b0de7de00d",
+      "source_name": "Particulate Matter, < 2.5 um",
+      "source_context": [
+        "air",
+        "non-urban air or from high stacks"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of `Particulates, < 2.5 um`, same uuid. A vendor renaming its own rows is exactly the event a name-based identity cannot survive, and the window is unmoved by it."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "ddd99a3a-be86-423d-b36a-a9dc8af1b1f8",
+      "source_name": "Particulate Matter, < 2.5 um",
+      "source_context": [
+        "air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of `Particulates, < 2.5 um`, same uuid. A vendor renaming its own rows is exactly the event a name-based identity cannot survive, and the window is unmoved by it."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "1eb1b94c-e9d8-47ab-969b-9cca920157d8",
+      "source_name": "Particulate Matter, > 10 um",
+      "source_context": [
+        "air",
+        "urban air close to ground"
+      ],
+      "unit": "kg",
+      "size_class": "above_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the above-ten fraction, same uuid."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "66020d27-7ae4-4e59-83a3-89214b72c40a",
+      "source_name": "Particulate Matter, > 10 um",
+      "source_context": [
+        "air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "above_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the above-ten fraction, same uuid."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "7678cec7-b8e1-439d-8242-99cd452834b1",
+      "source_name": "Particulate Matter, > 10 um",
+      "source_context": [
+        "air",
+        "non-urban air or from high stacks"
+      ],
+      "unit": "kg",
+      "size_class": "above_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the above-ten fraction, same uuid."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "b001715e-60e4-4f1d-949d-1acfab65bd8f",
+      "source_name": "Particulate Matter, > 10 um",
+      "source_context": [
+        "air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "above_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the above-ten fraction, same uuid."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "295c9740-6fdb-4676-9eb8-15e3786f713d",
+      "source_name": "Particulate Matter, > 2.5 um and < 10um",
+      "source_context": [
+        "air",
+        "non-urban air or from high stacks"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5_to_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "5716c728-bd33-414d-8691-16e5534f5d37",
+      "source_name": "Particulate Matter, > 2.5 um and < 10um",
+      "source_context": [
+        "air",
+        "low population density, long-term"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5_to_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "b967e1bf-f09b-4c89-8740-ace21db47bba",
+      "source_name": "Particulate Matter, > 2.5 um and < 10um",
+      "source_context": [
+        "air",
+        "unspecified"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5_to_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "ccb169c3-8aae-4727-89bb-a7dd122946f3",
+      "source_name": "Particulate Matter, > 2.5 um and < 10um",
+      "source_context": [
+        "air",
+        "urban air close to ground"
+      ],
+      "unit": "kg",
+      "size_class": "pm2_5_to_pm10",
+      "source_category": "",
+      "comment": "The 3.9.1 rename of the coarse band, same uuid -- and note the comma ecoinvent dropped along with the word. Two spellings, one window."
+    },
+    {
       "source": "ecoinvent-3.8",
       "source_uuid": "051aaf7a-6c1a-4e86-999f-85d5f0830df6",
       "source_name": "Particulates, < 2.5 um",

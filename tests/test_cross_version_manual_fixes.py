@@ -120,10 +120,11 @@ class EveryVersionIsCorrectedTestCase(unittest.TestCase):
     def test_the_substance_corrections_are_in_every_version_that_can_hold_them(self):
         """Named, because the generic guard below needs fetched flows.
 
-        Uranium-238, `Silver-110` and MCPA-methyl's name are in all five
+        Uranium-238, `Silver-110` and MCPA-methyl's name are in all six
         versions; the lindanes and the endosulfan isomers arrive at 3.11 and
         Mefentrifluconazole at 3.10.1, so the versions before those cannot
-        state a correction about a row they do not have.
+        state a correction about a row they do not have.  3.13 registers the
+        lindane and endosulfan isomers itself, so the correction stops there.
         """
         everywhere = {
             ("name", "Uranium-238"),
@@ -148,6 +149,12 @@ class EveryVersionIsCorrectedTestCase(unittest.TestCase):
                 ("name", "Alpha-lindane"), ("name", "Beta-lindane"),
                 ("name", "Delta-lindane"),
                 ("name", "Alpha-endosulfan"), ("name", "Beta-endosulfan"),
+                ("uuid", "a1f19e68-e0ca-4d2b-a159-38e9036542f3"),
+            },
+            # 3.13 ships the lindane and endosulfan isomers under their own
+            # numbers, so it has nothing to state about them; Mefentrifluconazole
+            # still arrives without a number.
+            "ecoinvent-3.13": everywhere | {
                 ("uuid", "a1f19e68-e0ca-4d2b-a159-38e9036542f3"),
             },
         }

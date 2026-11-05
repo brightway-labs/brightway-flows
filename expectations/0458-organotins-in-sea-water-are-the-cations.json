@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Five ecoinvent organotin rows to sea water carried the numbers of neutral tin hydrides and compounds from 3.8 to 3.12; ecoinvent 3.13, released 2026-11-04, re-registers them as the dissolved cations, with a number for dibutyltin and triphenyltin and none for diphenyltin, phenyltin and trioctyltin. The earlier releases are corrected to the same, so the merged releases reach one substance per row.",
+  "description": "Five ecoinvent organotin rows to sea water carried the numbers of neutral tin hydrides and compounds from 3.8 to 3.12; ecoinvent 3.13, released 2026-11-04, re-registers them as the dissolved cations, with a number for dibutyltin and triphenyltin and none for diphenyltin, phenyltin and trioctyltin. The earlier releases are corrected to the same, so the merged releases reach one substance per row. 3.13 ships the cations itself.",
   "expectations": [
     {
       "id": "0458-dibutyltin-is-the-cation",
@@ -12,11 +12,11 @@
         "name": "Dibutyltin"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_cas": "14488-53-0"
       },
-      "comment": "One `water / ocean` row in 3.8 and 3.12. On 5f06833 it was published under 1002-53-5, dibutylstannane, the neutral dihydride; ecoinvent 3.13 registers the dissolved cation and the earlier releases are corrected to it."
+      "comment": "One `water / ocean` row in 3.8 and 3.12. On 5f06833 it was published under 1002-53-5, dibutylstannane, the neutral dihydride; ecoinvent 3.13 registers the dissolved cation and the earlier releases are corrected to it. With ecoinvent 3.13 in the build the count includes its copy of each row; the claim is the same."
     },
     {
       "id": "0458-triphenyltin-is-the-cation",
@@ -28,56 +28,56 @@
         "name": "Triphenyltin"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_cas": "668-34-8"
       },
-      "comment": "3.8 ships 668-34-8; 3.12 shipped 892-20-6 (triphenylstannane) and is corrected. On 5f06833 the substance was published under 892-20-6."
+      "comment": "3.8 ships 668-34-8; 3.12 shipped 892-20-6 (triphenylstannane) and is corrected. On 5f06833 the substance was published under 892-20-6. With ecoinvent 3.13 in the build the count includes its copy of each row; the claim is the same."
     },
     {
       "id": "0458-diphenyltin-is-one-substance",
       "issue": 458,
-      "title": "The ecoinvent `Diphenyltin` rows of 3.8 and 3.12 reach one substance",
+      "title": "The ecoinvent `Diphenyltin` rows of 3.8, 3.12 and 3.13 reach one substance",
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
         "name": "Diphenyltin"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true
       },
-      "comment": "ecoinvent 3.13 ships the row with no registry number and the formula `C12H10Sn+2`; 1011-95-6 is removed from the earlier releases so the copies are placed by name alike. Met on 5f06833 as well: with the number on both copies they were one substance by number, and without it they have to stay one by name, which is what this pins."
+      "comment": "ecoinvent 3.13 ships the row with no registry number and the formula `C12H10Sn+2`; 1011-95-6 is removed from the earlier releases so the copies are placed by name alike. Met on 5f06833 as well: with the number on both copies they were one substance by number, and without it they have to stay one by name, which is what this pins. With ecoinvent 3.13 in the build the count includes its copy of each row; the claim is the same."
     },
     {
       "id": "0458-phenyltin-is-one-substance",
       "issue": 458,
-      "title": "The ecoinvent `Phenyltin` rows of 3.8 and 3.12 reach one substance",
+      "title": "The ecoinvent `Phenyltin` rows of 3.8, 3.12 and 3.13 reach one substance",
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
         "uuid": "cff46201-bfb0-486c-8f70-277a413c58a1"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true
       },
-      "comment": "As for Diphenyltin: 2406-68-0 is removed from the earlier releases, following 3.13. Selected by uuid: 3.8 names the same row `Monophenyltin`. Met on 5f06833 as well: with the number on both copies they were one substance by number, and without it they have to stay one by name, which is what this pins."
+      "comment": "As for Diphenyltin: 2406-68-0 is removed from the earlier releases, following 3.13. Selected by uuid: 3.8 names the same row `Monophenyltin`. Met on 5f06833 as well: with the number on both copies they were one substance by number, and without it they have to stay one by name, which is what this pins. With ecoinvent 3.13 in the build the count includes its copy of each row; the claim is the same."
     },
     {
       "id": "0458-trioctyltin-is-one-substance",
       "issue": 458,
-      "title": "The ecoinvent `Trioctyltin` rows of 3.8 and 3.12 reach one substance",
+      "title": "The ecoinvent `Trioctyltin` rows of 3.8, 3.12 and 3.13 reach one substance",
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
         "name": "Trioctyltin"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true
       },
-      "comment": "As for Diphenyltin: 869-59-0, trioctyltin hydride, is removed from the earlier releases, following 3.13. Met on 5f06833 as well: with the number on both copies they were one substance by number, and without it they have to stay one by name, which is what this pins."
+      "comment": "As for Diphenyltin: 869-59-0, trioctyltin hydride, is removed from the earlier releases, following 3.13. Met on 5f06833 as well: with the number on both copies they were one substance by number, and without it they have to stay one by name, which is what this pins. With ecoinvent 3.13 in the build the count includes its copy of each row; the claim is the same."
     }
   ]
 }

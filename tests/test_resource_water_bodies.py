@@ -64,6 +64,7 @@ REGISTERED_ECOINVENT = (
     "ecoinvent-3.10.1",
     "ecoinvent-3.11",
     "ecoinvent-3.12",
+    "ecoinvent-3.13",
 )
 
 

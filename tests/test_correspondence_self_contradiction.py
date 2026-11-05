@@ -470,6 +470,7 @@ class TheShippedTables(unittest.TestCase):
         # contradicting itself about a substance is exactly the defect this
         # module was built to catch, one authority earlier.
         for key in (
+            "ecoinvent-3.13",
             "ecoinvent-3.12",
             "ecoinvent-3.11",
             "ecoinvent-3.10.1",

@@ -19124,6 +19124,3124 @@
       "comment": "'Transformation, to wetland, inland (non-use)' decomposes onto 3 axes: the cover is wetland, the use status is not used, the position is inland. Published as 'To wetland, not used, inland'."
     },
     {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c5aafa60-495c-461c-a1d4-b262a34c45b9",
+      "source_name": "Occupation, annual crop",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND"
+      },
+      "comment": "'Occupation, annual crop' decomposes onto 1 axis: the cover is cropland and nothing else is stated. Published as 'Cropland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "7956039f-1181-42ab-b03b-ba9992733394",
+      "source_name": "Occupation, annual crop, flooded crop",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland/vegetation_form=flooded",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "vegetation_form": "FLOODED"
+      },
+      "comment": "'Occupation, annual crop, flooded crop' decomposes onto 2 axes: the cover is cropland, the vegetation form is flooded. Published as 'Cropland, flooded'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "9e80f7cd-47fa-4c7f-8f2c-bdb9731b3196",
+      "source_name": "Occupation, annual crop, greenhouse",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland/vegetation_form=under-glass",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "vegetation_form": "UNDER_GLASS"
+      },
+      "comment": "'Occupation, annual crop, greenhouse' decomposes onto 2 axes: the cover is cropland, the vegetation form is under glass. Published as 'Cropland, under glass'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c4a82f46-381f-474c-a362-3363064b9c33",
+      "source_name": "Occupation, annual crop, irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland/irrigation=irrigated",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "irrigation": "IRRIGATED"
+      },
+      "comment": "'Occupation, annual crop, irrigated' decomposes onto 2 axes: the cover is cropland, the irrigation is irrigated. Published as 'Cropland, irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "12c7671c-e4aa-46c6-93c5-b6f9ac1c453b",
+      "source_name": "Occupation, annual crop, irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland/irrigation=irrigated/intensity=extensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Occupation, annual crop, irrigated, extensive' decomposes onto 3 axes: the cover is cropland, the irrigation is irrigated, the intensity is extensive. Published as 'Cropland, irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "9fd128fe-d8c5-476f-af42-2795d5f5d227",
+      "source_name": "Occupation, annual crop, irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland/irrigation=irrigated/intensity=intensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Occupation, annual crop, irrigated, intensive' decomposes onto 3 axes: the cover is cropland, the irrigation is irrigated, the intensity is intensive. Published as 'Cropland, irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "a6889a22-e99e-42ea-85cd-4a68d7975dcd",
+      "source_name": "Occupation, annual crop, non-irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland/irrigation=rainfed",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "irrigation": "RAINFED"
+      },
+      "comment": "'Occupation, annual crop, non-irrigated' decomposes onto 2 axes: the cover is cropland, the irrigation is non-irrigated. Published as 'Cropland, non-irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "1b0a8570-eab4-46c2-9b67-c9b918e75676",
+      "source_name": "Occupation, annual crop, non-irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland/irrigation=rainfed/intensity=extensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Occupation, annual crop, non-irrigated, extensive' decomposes onto 3 axes: the cover is cropland, the irrigation is non-irrigated, the intensity is extensive. Published as 'Cropland, non-irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "e063ee9c-9850-42b5-b01e-4cc9b5ad7152",
+      "source_name": "Occupation, annual crop, non-irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland/irrigation=rainfed/intensity=intensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Occupation, annual crop, non-irrigated, intensive' decomposes onto 3 axes: the cover is cropland, the irrigation is non-irrigated, the intensity is intensive. Published as 'Cropland, non-irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "8c173ca1-5f74-4a6e-89e5-dd18e0f18d1a",
+      "source_name": "Occupation, arable land, unspecified use",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND"
+      },
+      "comment": "'Occupation, arable land, unspecified use' decomposes onto 1 axis: the cover is cropland and nothing else is stated. Published as 'Cropland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "fdb1b2d0-f537-401e-b845-1d93da512174",
+      "source_name": "Occupation, arable, conservation tillage (obsolete)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "occupation/cropland/tillage=conservation",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "tillage": "CONSERVATION"
+      },
+      "comment": "'Occupation, arable, conservation tillage (obsolete)' decomposes onto 2 axes: the cover is cropland, the tillage is conservation tillage. Published as 'Cropland, conservation tillage'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "e489cce4-a80f-417d-9ae6-9fc14cc7dd49",
+      "source_name": "Occupation, arable, conventional tillage (obsolete)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "occupation/cropland/tillage=conventional",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "tillage": "CONVENTIONAL"
+      },
+      "comment": "'Occupation, arable, conventional tillage (obsolete)' decomposes onto 2 axes: the cover is cropland, the tillage is conventional tillage. Published as 'Cropland, conventional tillage'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "81e07a67-28e0-4392-a553-d86e54a9b8a9",
+      "source_name": "Occupation, arable, reduced tillage (obsolete)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "occupation/cropland/tillage=reduced",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "tillage": "REDUCED"
+      },
+      "comment": "'Occupation, arable, reduced tillage (obsolete)' decomposes onto 2 axes: the cover is cropland, the tillage is reduced tillage. Published as 'Cropland, reduced tillage'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c991a302-884f-4882-a094-e1b8f1d4c6b0",
+      "source_name": "Occupation, bare area (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/barren/use_status=unused",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "BARREN",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Occupation, bare area (non-use)' decomposes onto 2 axes: the cover is barren land, the use status is not used. Published as 'Barren land, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "4b6b9b76-3199-4bd0-b11d-f8f2efbeac4e",
+      "source_name": "Occupation, construction site",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/construction-site",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CONSTRUCTION_SITE"
+      },
+      "comment": "'Occupation, construction site' decomposes onto 1 axis: the cover is construction site and nothing else is stated. Published as 'Construction site'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "5d615a38-6d0a-4f3a-8973-69b333b6e814",
+      "source_name": "Occupation, cropland fallow (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/cropland/use_status=fallow",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "CROPLAND",
+        "use_status": "FALLOW"
+      },
+      "comment": "'Occupation, cropland fallow (non-use)' decomposes onto 2 axes: the cover is cropland, the use status is fallow. Published as 'Cropland, fallow'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "1eaa9ea4-40b8-414a-b198-5626400372e1",
+      "source_name": "Occupation, dump site",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/dump-site",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "DUMP_SITE"
+      },
+      "comment": "'Occupation, dump site' decomposes onto 1 axis: the cover is dump site and nothing else is stated. Published as 'Dump site'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "8222627a-0ca1-4632-894c-94d0e21064a1",
+      "source_name": "Occupation, field margin/hedgerow",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/field-margin",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "FIELD_MARGIN"
+      },
+      "comment": "'Occupation, field margin/hedgerow' decomposes onto 1 axis: the cover is field margin and nothing else is stated. Published as 'Field margin'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "2925111b-3464-4e34-9d02-b73c1c033e91",
+      "source_name": "Occupation, forest, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/forest/intensity=extensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "FOREST",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Occupation, forest, extensive' decomposes onto 2 axes: the cover is forest, the intensity is extensive. Published as 'Forest, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "aca1714f-0040-4a65-a73a-0e38aa9f50f4",
+      "source_name": "Occupation, forest, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/forest/intensity=intensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "FOREST",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Occupation, forest, intensive' decomposes onto 2 axes: the cover is forest, the intensity is intensive. Published as 'Forest, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "0f923637-e322-44d8-9ff2-9c765d75e253",
+      "source_name": "Occupation, forest, primary (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/forest/use_status=unused/stage=primary",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "FOREST",
+        "use_status": "UNUSED",
+        "stage": "PRIMARY"
+      },
+      "comment": "'Occupation, forest, primary (non-use)' decomposes onto 3 axes: the cover is forest, the use status is not used, the stage is primary. Published as 'Forest, not used, primary'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "84b11d12-a078-44e7-9d6e-7675a0e23c4d",
+      "source_name": "Occupation, forest, secondary (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/forest/use_status=unused/stage=secondary",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "FOREST",
+        "use_status": "UNUSED",
+        "stage": "SECONDARY"
+      },
+      "comment": "'Occupation, forest, secondary (non-use)' decomposes onto 3 axes: the cover is forest, the use status is not used, the stage is secondary. Published as 'Forest, not used, secondary'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "b91d0527-9a01-4a86-b420-c62b70629ba4",
+      "source_name": "Occupation, forest, unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/forest",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "FOREST"
+      },
+      "comment": "'Occupation, forest, unspecified' decomposes onto 1 axis: the cover is forest and nothing else is stated. Published as 'Forest'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "2b8a0f87-bd2a-4b10-8dd9-714487f59fc9",
+      "source_name": "Occupation, grassland, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/grassland/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "GRASSLAND",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Occupation, grassland, natural (non-use)' decomposes onto 3 axes: the cover is grassland, the origin is natural, the use status is not used. Published as 'Grassland, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "e780232c-898f-4606-8d21-f8589801ebe6",
+      "source_name": "Occupation, grassland, natural, for livestock grazing",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/grassland/origin=natural/use_status=grazed",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "GRASSLAND",
+        "origin": "NATURAL",
+        "use_status": "GRAZED"
+      },
+      "comment": "'Occupation, grassland, natural, for livestock grazing' decomposes onto 3 axes: the cover is grassland, the origin is natural, the use status is grazed. Published as 'Grassland, natural, grazed'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "69c7d771-04fc-499e-84f8-6c7b923b8ced",
+      "source_name": "Occupation, heterogeneous, agricultural",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/agriculture/built_form=mosaic",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "AGRICULTURE",
+        "built_form": "MOSAIC"
+      },
+      "comment": "'Occupation, heterogeneous, agricultural' decomposes onto 2 axes: the cover is agriculture, the built form is mosaic. Published as 'Agriculture, mosaic'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "fe9c3a98-a6d2-452d-a9a4-a13e64f1b95b",
+      "source_name": "Occupation, industrial area",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/industrial",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "INDUSTRIAL"
+      },
+      "comment": "'Occupation, industrial area' decomposes onto 1 axis: the cover is industrial area and nothing else is stated. Published as 'Industrial area'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "e5824519-f945-4b2c-a81b-677290021b8a",
+      "source_name": "Occupation, inland waterbody, unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/inland-water",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "INLAND_WATER"
+      },
+      "comment": "'Occupation, inland waterbody, unspecified' decomposes onto 1 axis: the cover is inland water body and nothing else is stated. Published as 'Inland water body'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "69dfa439-8e4e-4cae-bb0c-85a8aa8b9a73",
+      "source_name": "Occupation, lake, artificial",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/lake/origin=artificial",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "LAKE",
+        "origin": "ARTIFICIAL"
+      },
+      "comment": "'Occupation, lake, artificial' decomposes onto 2 axes: the cover is lake, the origin is artificial. Published as 'Lake, artificial'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "f8ba8266-7f00-47b8-9ef0-bc81a8728d09",
+      "source_name": "Occupation, lake, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/lake/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "LAKE",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Occupation, lake, natural (non-use)' decomposes onto 3 axes: the cover is lake, the origin is natural, the use status is not used. Published as 'Lake, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "379ba5c9-5c3a-43d0-8e2d-605ad9c39e46",
+      "source_name": "Occupation, mineral extraction site",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/extraction-site",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "EXTRACTION_SITE"
+      },
+      "comment": "'Occupation, mineral extraction site' decomposes onto 1 axis: the cover is mineral extraction site and nothing else is stated. Published as 'Mineral extraction site'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "59ded913-17fe-4b3e-80cb-79b97cdbef9a",
+      "source_name": "Occupation, pasture, man made",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/pasture/origin=man-made",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "PASTURE",
+        "origin": "MAN_MADE"
+      },
+      "comment": "'Occupation, pasture, man made' decomposes onto 2 axes: the cover is pasture, the origin is man-made. Published as 'Pasture, man-made'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "19f84b2e-e6ff-4351-ba3a-8b650fc20d14",
+      "source_name": "Occupation, pasture, man made, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/pasture/origin=man-made/intensity=extensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "PASTURE",
+        "origin": "MAN_MADE",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Occupation, pasture, man made, extensive' decomposes onto 3 axes: the cover is pasture, the origin is man-made, the intensity is extensive. Published as 'Pasture, man-made, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "98b723d4-3362-4b38-8b1e-1bedacfd5e27",
+      "source_name": "Occupation, pasture, man made, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/pasture/origin=man-made/intensity=intensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "PASTURE",
+        "origin": "MAN_MADE",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Occupation, pasture, man made, intensive' decomposes onto 3 axes: the cover is pasture, the origin is man-made, the intensity is intensive. Published as 'Pasture, man-made, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "e9007a6f-7244-44d4-a561-91ae1b6c6cfc",
+      "source_name": "Occupation, permanent crop",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/permanent-cropland",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "PERMANENT_CROPLAND"
+      },
+      "comment": "'Occupation, permanent crop' decomposes onto 1 axis: the cover is permanent cropland and nothing else is stated. Published as 'Permanent cropland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "1896b498-8d13-4f58-8c17-21fe57740158",
+      "source_name": "Occupation, permanent crop, irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/permanent-cropland/irrigation=irrigated",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "IRRIGATED"
+      },
+      "comment": "'Occupation, permanent crop, irrigated' decomposes onto 2 axes: the cover is permanent cropland, the irrigation is irrigated. Published as 'Permanent cropland, irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "7e7d6ebb-8c9c-4ecb-b64b-23a8c2c908c4",
+      "source_name": "Occupation, permanent crop, irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/permanent-cropland/irrigation=irrigated/intensity=extensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Occupation, permanent crop, irrigated, extensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is irrigated, the intensity is extensive. Published as 'Permanent cropland, irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "3afbc2d8-1b51-4d43-87a7-e68291c1e999",
+      "source_name": "Occupation, permanent crop, irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/permanent-cropland/irrigation=irrigated/intensity=intensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Occupation, permanent crop, irrigated, intensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is irrigated, the intensity is intensive. Published as 'Permanent cropland, irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "18636f13-f552-4136-a353-3b5a8e5f87d1",
+      "source_name": "Occupation, permanent crop, non-irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/permanent-cropland/irrigation=rainfed",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "RAINFED"
+      },
+      "comment": "'Occupation, permanent crop, non-irrigated' decomposes onto 2 axes: the cover is permanent cropland, the irrigation is non-irrigated. Published as 'Permanent cropland, non-irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "f318deb8-ac36-47c0-bb00-e3022b583c7e",
+      "source_name": "Occupation, permanent crop, non-irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/permanent-cropland/irrigation=rainfed/intensity=extensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Occupation, permanent crop, non-irrigated, extensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is non-irrigated, the intensity is extensive. Published as 'Permanent cropland, non-irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c9461a73-d00a-4fc7-a890-a9eda6af3185",
+      "source_name": "Occupation, permanent crop, non-irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/permanent-cropland/irrigation=rainfed/intensity=intensive",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Occupation, permanent crop, non-irrigated, intensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is non-irrigated, the intensity is intensive. Published as 'Permanent cropland, non-irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c14ea750-4a9f-41fa-bcc1-4a1d84466f43",
+      "source_name": "Occupation, river, artificial",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/river/origin=artificial",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "RIVER",
+        "origin": "ARTIFICIAL"
+      },
+      "comment": "'Occupation, river, artificial' decomposes onto 2 axes: the cover is river, the origin is artificial. Published as 'River, artificial'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "d54bb4f8-e6d9-46dc-a8ae-e70d5d8562c2",
+      "source_name": "Occupation, river, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/river/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "RIVER",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Occupation, river, natural (non-use)' decomposes onto 3 axes: the cover is river, the origin is natural, the use status is not used. Published as 'River, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "70c4c6d8-ed81-4763-ae6d-39e54ef0b1fa",
+      "source_name": "Occupation, seabed, drilling and mining",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/seabed/activity=drilling-and-mining",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "SEABED",
+        "activity": "DRILLING_AND_MINING"
+      },
+      "comment": "'Occupation, seabed, drilling and mining' decomposes onto 2 axes: the cover is seabed, the activity is drilling and mining. Published as 'Seabed, drilling and mining'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "9db06277-b6d9-4c48-8cfb-de342e928a50",
+      "source_name": "Occupation, seabed, infrastructure",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/seabed/built_form=infrastructure",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "SEABED",
+        "built_form": "INFRASTRUCTURE"
+      },
+      "comment": "'Occupation, seabed, infrastructure' decomposes onto 2 axes: the cover is seabed, the built form is infrastructure. Published as 'Seabed, infrastructure'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "76e1a3ec-8bf5-4eae-92f0-1020ccd46e61",
+      "source_name": "Occupation, seabed, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/seabed/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "SEABED",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Occupation, seabed, natural (non-use)' decomposes onto 3 axes: the cover is seabed, the origin is natural, the use status is not used. Published as 'Seabed, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "7af0b1a6-2e8f-407a-8ac7-b02a2023155b",
+      "source_name": "Occupation, seabed, unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/seabed",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "SEABED"
+      },
+      "comment": "'Occupation, seabed, unspecified' decomposes onto 1 axis: the cover is seabed and nothing else is stated. Published as 'Seabed'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c199261c-8234-43c5-b906-5b67707e4395",
+      "source_name": "Occupation, shrub land, sclerophyllous",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/shrubland/vegetation_form=sclerophyllous",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "SHRUBLAND",
+        "vegetation_form": "SCLEROPHYLLOUS"
+      },
+      "comment": "'Occupation, shrub land, sclerophyllous' decomposes onto 2 axes: the cover is shrubland, the vegetation form is sclerophyllous. Published as 'Shrubland, sclerophyllous'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "817ebb8a-027d-4e4f-89c1-fe5548abcd0b",
+      "source_name": "Occupation, snow and ice (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/snow-and-ice/use_status=unused",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "SNOW_AND_ICE",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Occupation, snow and ice (non-use)' decomposes onto 2 axes: the cover is snow and ice, the use status is not used. Published as 'Snow and ice, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "062a6faf-b1a5-4a6a-aa02-47ae3ec566a8",
+      "source_name": "Occupation, traffic area, rail network",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/traffic/infrastructure=rail-network",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "TRAFFIC",
+        "infrastructure": "RAIL_NETWORK"
+      },
+      "comment": "'Occupation, traffic area, rail network' decomposes onto 2 axes: the cover is traffic area, the infrastructure is rail network. Published as 'Traffic area, rail network'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "956c5f83-65c8-4607-9749-147cfb9c8f70",
+      "source_name": "Occupation, traffic area, rail/road embankment",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/traffic/infrastructure=rail-road-embankment",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "TRAFFIC",
+        "infrastructure": "RAIL_ROAD_EMBANKMENT"
+      },
+      "comment": "'Occupation, traffic area, rail/road embankment' decomposes onto 2 axes: the cover is traffic area, the infrastructure is rail and road embankment. Published as 'Traffic area, rail and road embankment'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "26efe47c-92a5-4dea-b4d0-eac13e418a58",
+      "source_name": "Occupation, traffic area, road network",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/traffic/infrastructure=road-network",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "TRAFFIC",
+        "infrastructure": "ROAD_NETWORK"
+      },
+      "comment": "'Occupation, traffic area, road network' decomposes onto 2 axes: the cover is traffic area, the infrastructure is road network. Published as 'Traffic area, road network'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c7cb5880-4219-4051-9357-10fdd08c6f2b",
+      "source_name": "Occupation, unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/unspecified",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "UNSPECIFIED"
+      },
+      "comment": "'Occupation, unspecified' decomposes onto 1 axis: the cover is unspecified and nothing else is stated. Published as 'Unspecified'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "061259d7-7bcc-4298-af3a-63d084191988",
+      "source_name": "Occupation, unspecified, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/unspecified/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "UNSPECIFIED",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Occupation, unspecified, natural (non-use)' decomposes onto 3 axes: the cover is unspecified, the origin is natural, the use status is not used. Published as 'Unspecified, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "3b4db191-9634-4a01-a873-f3cb234785e4",
+      "source_name": "Occupation, urban, continuously built",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/urban/built_form=continuous",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "URBAN",
+        "built_form": "CONTINUOUS"
+      },
+      "comment": "'Occupation, urban, continuously built' decomposes onto 2 axes: the cover is urban, the built form is continuously built. Published as 'Urban, continuously built'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "56ec994a-eb96-42e8-93eb-4970e30e6362",
+      "source_name": "Occupation, urban, discontinuously built",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/urban/built_form=discontinuous",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "URBAN",
+        "built_form": "DISCONTINUOUS"
+      },
+      "comment": "'Occupation, urban, discontinuously built' decomposes onto 2 axes: the cover is urban, the built form is discontinuously built. Published as 'Urban, discontinuously built'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "190d9910-5d04-4c97-abea-3b39682b7ed6",
+      "source_name": "Occupation, urban, green area",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/urban/built_form=green-space",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "URBAN",
+        "built_form": "GREEN_SPACE"
+      },
+      "comment": "'Occupation, urban, green area' decomposes onto 2 axes: the cover is urban, the built form is green space. Published as 'Urban, green space'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "70aa745b-8bc5-4433-b2f5-d1da652ba166",
+      "source_name": "Occupation, urban/industrial fallow (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/urban-industrial-fallow/use_status=unused",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "URBAN_INDUSTRIAL_FALLOW",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Occupation, urban/industrial fallow (non-use)' decomposes onto 2 axes: the cover is urban or industrial fallow, the use status is not used. Published as 'Urban or industrial fallow, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "54dfbd2f-8218-4f2f-87f8-d928d8056e8e",
+      "source_name": "Occupation, wetland, coastal (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/wetland/use_status=unused/position=coastal",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "WETLAND",
+        "use_status": "UNUSED",
+        "position": "COASTAL"
+      },
+      "comment": "'Occupation, wetland, coastal (non-use)' decomposes onto 3 axes: the cover is wetland, the use status is not used, the position is coastal. Published as 'Wetland, not used, coastal'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "db1e4137-27a3-4b89-99af-42a18271c144",
+      "source_name": "Occupation, wetland, inland (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2.a",
+      "key": "occupation/wetland/use_status=unused/position=inland",
+      "land_use": {
+        "direction": "OCCUPATION",
+        "cover": "WETLAND",
+        "use_status": "UNUSED",
+        "position": "INLAND"
+      },
+      "comment": "'Occupation, wetland, inland (non-use)' decomposes onto 3 axes: the cover is wetland, the use status is not used, the position is inland. Published as 'Wetland, not used, inland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "f05cca02-ec18-4acc-9939-59658ff9a554",
+      "source_name": "Transformation, from annual crop",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND"
+      },
+      "comment": "'Transformation, from annual crop' decomposes onto 1 axis: the cover is cropland and nothing else is stated. Published as 'From cropland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "398ed67b-081c-49c4-8b43-b666bdfd739f",
+      "source_name": "Transformation, from annual crop, flooded crop",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland/vegetation_form=flooded",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND",
+        "vegetation_form": "FLOODED"
+      },
+      "comment": "'Transformation, from annual crop, flooded crop' decomposes onto 2 axes: the cover is cropland, the vegetation form is flooded. Published as 'From cropland, flooded'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "101f15ac-0698-49dd-b177-471a813ef78e",
+      "source_name": "Transformation, from annual crop, greenhouse",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland/vegetation_form=under-glass",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND",
+        "vegetation_form": "UNDER_GLASS"
+      },
+      "comment": "'Transformation, from annual crop, greenhouse' decomposes onto 2 axes: the cover is cropland, the vegetation form is under glass. Published as 'From cropland, under glass'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "a70beb60-354d-4dcd-b6fd-8c251357fb2a",
+      "source_name": "Transformation, from annual crop, irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland/irrigation=irrigated",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND",
+        "irrigation": "IRRIGATED"
+      },
+      "comment": "'Transformation, from annual crop, irrigated' decomposes onto 2 axes: the cover is cropland, the irrigation is irrigated. Published as 'From cropland, irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "fabbb533-f106-4786-aefc-f5ecaed20262",
+      "source_name": "Transformation, from annual crop, irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland/irrigation=irrigated/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, from annual crop, irrigated, extensive' decomposes onto 3 axes: the cover is cropland, the irrigation is irrigated, the intensity is extensive. Published as 'From cropland, irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "10ebc72c-2c4b-45ea-abd8-cb7fe0805883",
+      "source_name": "Transformation, from annual crop, irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland/irrigation=irrigated/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, from annual crop, irrigated, intensive' decomposes onto 3 axes: the cover is cropland, the irrigation is irrigated, the intensity is intensive. Published as 'From cropland, irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "4b420f19-0421-461e-a0b6-7efbf580089b",
+      "source_name": "Transformation, from annual crop, non-irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland/irrigation=rainfed",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND",
+        "irrigation": "RAINFED"
+      },
+      "comment": "'Transformation, from annual crop, non-irrigated' decomposes onto 2 axes: the cover is cropland, the irrigation is non-irrigated. Published as 'From cropland, non-irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c7869c43-266c-429d-bfd5-6b578ed32ce8",
+      "source_name": "Transformation, from annual crop, non-irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland/irrigation=rainfed/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, from annual crop, non-irrigated, extensive' decomposes onto 3 axes: the cover is cropland, the irrigation is non-irrigated, the intensity is extensive. Published as 'From cropland, non-irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "ab3e851e-21c9-47cf-8e7d-5f96dfae3ba5",
+      "source_name": "Transformation, from annual crop, non-irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland/irrigation=rainfed/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, from annual crop, non-irrigated, intensive' decomposes onto 3 axes: the cover is cropland, the irrigation is non-irrigated, the intensity is intensive. Published as 'From cropland, non-irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "4d166779-88fd-441b-9537-f3b974e3bff7",
+      "source_name": "Transformation, from arable land, unspecified use",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND"
+      },
+      "comment": "'Transformation, from arable land, unspecified use' decomposes onto 1 axis: the cover is cropland and nothing else is stated. Published as 'From cropland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "93b6b5d5-69e7-483f-ab1d-877205900970",
+      "source_name": "Transformation, from bare area (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/barren/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "BARREN",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, from bare area (non-use)' decomposes onto 2 axes: the cover is barren land, the use status is not used. Published as 'From barren land, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "4da2ea28-8273-4901-9931-264169ec7731",
+      "source_name": "Transformation, from cropland fallow (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/cropland/use_status=fallow",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "CROPLAND",
+        "use_status": "FALLOW"
+      },
+      "comment": "'Transformation, from cropland fallow (non-use)' decomposes onto 2 axes: the cover is cropland, the use status is fallow. Published as 'From cropland, fallow'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "5eb25424-acb6-4ffa-a96a-5fdef05f6515",
+      "source_name": "Transformation, from dump site",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/dump-site",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "DUMP_SITE"
+      },
+      "comment": "'Transformation, from dump site' decomposes onto 1 axis: the cover is dump site and nothing else is stated. Published as 'From dump site'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c1513682-45ad-444e-afb5-27c660714e88",
+      "source_name": "Transformation, from dump site, inert material landfill",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/dump-site/landfill=inert-material",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "DUMP_SITE",
+        "landfill": "INERT_MATERIAL"
+      },
+      "comment": "'Transformation, from dump site, inert material landfill' decomposes onto 2 axes: the cover is dump site, the landfill is inert material landfill. Published as 'From dump site, inert material landfill'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "7fdc928c-f347-45e7-82d7-046acdf878ae",
+      "source_name": "Transformation, from dump site, residual material landfill",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/dump-site/landfill=residual-material",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "DUMP_SITE",
+        "landfill": "RESIDUAL_MATERIAL"
+      },
+      "comment": "'Transformation, from dump site, residual material landfill' decomposes onto 2 axes: the cover is dump site, the landfill is residual material landfill. Published as 'From dump site, residual material landfill'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "b79e26a0-88db-441f-b79b-508506e81b93",
+      "source_name": "Transformation, from dump site, sanitary landfill",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/dump-site/landfill=sanitary",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "DUMP_SITE",
+        "landfill": "SANITARY"
+      },
+      "comment": "'Transformation, from dump site, sanitary landfill' decomposes onto 2 axes: the cover is dump site, the landfill is sanitary landfill. Published as 'From dump site, sanitary landfill'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "7d5b5802-3698-4be8-98f8-ab7c1a2e9328",
+      "source_name": "Transformation, from dump site, slag compartment",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/dump-site/landfill=slag-compartment",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "DUMP_SITE",
+        "landfill": "SLAG_COMPARTMENT"
+      },
+      "comment": "'Transformation, from dump site, slag compartment' decomposes onto 2 axes: the cover is dump site, the landfill is slag compartment. Published as 'From dump site, slag compartment'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "24edeb85-2af8-4477-b064-1cdcf1510449",
+      "source_name": "Transformation, from field margin/hedgerow",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/field-margin",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "FIELD_MARGIN"
+      },
+      "comment": "'Transformation, from field margin/hedgerow' decomposes onto 1 axis: the cover is field margin and nothing else is stated. Published as 'From field margin'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "e71f95a5-fd82-4128-9fd1-be3f0e85d0fc",
+      "source_name": "Transformation, from forest, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/forest/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "FOREST",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, from forest, extensive' decomposes onto 2 axes: the cover is forest, the intensity is extensive. Published as 'From forest, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "e717f3cc-ac70-4c9b-be56-1614239b917e",
+      "source_name": "Transformation, from forest, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/forest/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "FOREST",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, from forest, intensive' decomposes onto 2 axes: the cover is forest, the intensity is intensive. Published as 'From forest, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "9d136389-8670-45ae-ad1d-a06848a1fd1d",
+      "source_name": "Transformation, from forest, primary (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/forest/use_status=unused/stage=primary",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "FOREST",
+        "use_status": "UNUSED",
+        "stage": "PRIMARY"
+      },
+      "comment": "'Transformation, from forest, primary (non-use)' decomposes onto 3 axes: the cover is forest, the use status is not used, the stage is primary. Published as 'From forest, not used, primary'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "9cc80820-fcf9-4ea9-8e67-0aa423eba6a4",
+      "source_name": "Transformation, from forest, secondary (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/forest/use_status=unused/stage=secondary",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "FOREST",
+        "use_status": "UNUSED",
+        "stage": "SECONDARY"
+      },
+      "comment": "'Transformation, from forest, secondary (non-use)' decomposes onto 3 axes: the cover is forest, the use status is not used, the stage is secondary. Published as 'From forest, not used, secondary'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "0930b6b8-d9c6-4462-966f-ac7495b63bed",
+      "source_name": "Transformation, from forest, unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/forest",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "FOREST"
+      },
+      "comment": "'Transformation, from forest, unspecified' decomposes onto 1 axis: the cover is forest and nothing else is stated. Published as 'From forest'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "b905c2e0-a0db-4e66-80d2-8bdfc93c6218",
+      "source_name": "Transformation, from grassland, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/grassland/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "GRASSLAND",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, from grassland, natural (non-use)' decomposes onto 3 axes: the cover is grassland, the origin is natural, the use status is not used. Published as 'From grassland, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c12ed8b5-8452-43ca-9986-a814e908e792",
+      "source_name": "Transformation, from grassland, natural, for livestock grazing",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/grassland/origin=natural/use_status=grazed",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "GRASSLAND",
+        "origin": "NATURAL",
+        "use_status": "GRAZED"
+      },
+      "comment": "'Transformation, from grassland, natural, for livestock grazing' decomposes onto 3 axes: the cover is grassland, the origin is natural, the use status is grazed. Published as 'From grassland, natural, grazed'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "2e002771-9f22-43e3-9990-f06f8235700b",
+      "source_name": "Transformation, from heterogeneous, agricultural",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/agriculture/built_form=mosaic",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "AGRICULTURE",
+        "built_form": "MOSAIC"
+      },
+      "comment": "'Transformation, from heterogeneous, agricultural' decomposes onto 2 axes: the cover is agriculture, the built form is mosaic. Published as 'From agriculture, mosaic'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "b6dcefd8-3848-4338-9c3e-fe6e91f20937",
+      "source_name": "Transformation, from industrial area",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/industrial",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "INDUSTRIAL"
+      },
+      "comment": "'Transformation, from industrial area' decomposes onto 1 axis: the cover is industrial area and nothing else is stated. Published as 'From industrial area'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "b9bc9427-5808-4e9e-8c78-e7098563afb4",
+      "source_name": "Transformation, from inland waterbody, unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/inland-water",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "INLAND_WATER"
+      },
+      "comment": "'Transformation, from inland waterbody, unspecified' decomposes onto 1 axis: the cover is inland water body and nothing else is stated. Published as 'From inland water body'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "9c08496f-7895-44f9-8686-fe3154392da4",
+      "source_name": "Transformation, from lake, artificial",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/lake/origin=artificial",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "LAKE",
+        "origin": "ARTIFICIAL"
+      },
+      "comment": "'Transformation, from lake, artificial' decomposes onto 2 axes: the cover is lake, the origin is artificial. Published as 'From lake, artificial'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "e3502f7b-0690-4b1e-8e1c-22f6886c26a1",
+      "source_name": "Transformation, from lake, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/lake/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "LAKE",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, from lake, natural (non-use)' decomposes onto 3 axes: the cover is lake, the origin is natural, the use status is not used. Published as 'From lake, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "64d99cb5-3b4f-4195-b86f-c5f45b4dcd19",
+      "source_name": "Transformation, from mineral extraction site",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/extraction-site",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "EXTRACTION_SITE"
+      },
+      "comment": "'Transformation, from mineral extraction site' decomposes onto 1 axis: the cover is mineral extraction site and nothing else is stated. Published as 'From mineral extraction site'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "2c126bcc-bb63-4d63-bd72-f02a1e616809",
+      "source_name": "Transformation, from pasture, man made",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/pasture/origin=man-made",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "PASTURE",
+        "origin": "MAN_MADE"
+      },
+      "comment": "'Transformation, from pasture, man made' decomposes onto 2 axes: the cover is pasture, the origin is man-made. Published as 'From pasture, man-made'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "82f2476e-988b-4d7a-bde6-5da9337d1f65",
+      "source_name": "Transformation, from pasture, man made, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/pasture/origin=man-made/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "PASTURE",
+        "origin": "MAN_MADE",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, from pasture, man made, extensive' decomposes onto 3 axes: the cover is pasture, the origin is man-made, the intensity is extensive. Published as 'From pasture, man-made, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "592bf69f-8551-4611-8942-4620be0adabe",
+      "source_name": "Transformation, from pasture, man made, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/pasture/origin=man-made/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "PASTURE",
+        "origin": "MAN_MADE",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, from pasture, man made, intensive' decomposes onto 3 axes: the cover is pasture, the origin is man-made, the intensity is intensive. Published as 'From pasture, man-made, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "fcb77a5a-6882-4aeb-82a9-ba57688d2224",
+      "source_name": "Transformation, from permanent crop",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/permanent-cropland",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "PERMANENT_CROPLAND"
+      },
+      "comment": "'Transformation, from permanent crop' decomposes onto 1 axis: the cover is permanent cropland and nothing else is stated. Published as 'From permanent cropland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "73cba245-5969-4076-8490-75a236073196",
+      "source_name": "Transformation, from permanent crop, irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/permanent-cropland/irrigation=irrigated",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "IRRIGATED"
+      },
+      "comment": "'Transformation, from permanent crop, irrigated' decomposes onto 2 axes: the cover is permanent cropland, the irrigation is irrigated. Published as 'From permanent cropland, irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "d0394db1-a1cd-4026-bf50-dd5e47331572",
+      "source_name": "Transformation, from permanent crop, irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/permanent-cropland/irrigation=irrigated/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, from permanent crop, irrigated, extensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is irrigated, the intensity is extensive. Published as 'From permanent cropland, irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "d585d599-05f1-47ff-8c41-790f51830b9b",
+      "source_name": "Transformation, from permanent crop, irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/permanent-cropland/irrigation=irrigated/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, from permanent crop, irrigated, intensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is irrigated, the intensity is intensive. Published as 'From permanent cropland, irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "31e4e26b-a997-4969-963d-243699aca3a8",
+      "source_name": "Transformation, from permanent crop, non-irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/permanent-cropland/irrigation=rainfed",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "RAINFED"
+      },
+      "comment": "'Transformation, from permanent crop, non-irrigated' decomposes onto 2 axes: the cover is permanent cropland, the irrigation is non-irrigated. Published as 'From permanent cropland, non-irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "af41f691-3a3e-47a3-9e45-3b4d78469ae0",
+      "source_name": "Transformation, from permanent crop, non-irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/permanent-cropland/irrigation=rainfed/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, from permanent crop, non-irrigated, extensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is non-irrigated, the intensity is extensive. Published as 'From permanent cropland, non-irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "fa288b80-6ef1-4e80-b534-5c2e5c492fd8",
+      "source_name": "Transformation, from permanent crop, non-irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/permanent-cropland/irrigation=rainfed/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, from permanent crop, non-irrigated, intensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is non-irrigated, the intensity is intensive. Published as 'From permanent cropland, non-irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "631d9552-1190-4edf-abc9-319139c90bd4",
+      "source_name": "Transformation, from river, artificial",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/river/origin=artificial",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "RIVER",
+        "origin": "ARTIFICIAL"
+      },
+      "comment": "'Transformation, from river, artificial' decomposes onto 2 axes: the cover is river, the origin is artificial. Published as 'From river, artificial'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "b06ca23e-c6c0-478b-a65c-50e5e5dd8440",
+      "source_name": "Transformation, from river, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/river/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "RIVER",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, from river, natural (non-use)' decomposes onto 3 axes: the cover is river, the origin is natural, the use status is not used. Published as 'From river, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "902b828c-5b1f-4a1b-ad0f-d795eaaf067c",
+      "source_name": "Transformation, from seabed, drilling and mining",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/seabed/activity=drilling-and-mining",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "SEABED",
+        "activity": "DRILLING_AND_MINING"
+      },
+      "comment": "'Transformation, from seabed, drilling and mining' decomposes onto 2 axes: the cover is seabed, the activity is drilling and mining. Published as 'From seabed, drilling and mining'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "bbcdd18c-4d16-4c28-b031-d988884030a7",
+      "source_name": "Transformation, from seabed, infrastructure",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/seabed/built_form=infrastructure",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "SEABED",
+        "built_form": "INFRASTRUCTURE"
+      },
+      "comment": "'Transformation, from seabed, infrastructure' decomposes onto 2 axes: the cover is seabed, the built form is infrastructure. Published as 'From seabed, infrastructure'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "da92cf98-87cb-437e-ab2c-205ba0639006",
+      "source_name": "Transformation, from seabed, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/seabed/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "SEABED",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, from seabed, natural (non-use)' decomposes onto 3 axes: the cover is seabed, the origin is natural, the use status is not used. Published as 'From seabed, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "928ba839-d6e5-4d1e-b5fd-122998a9bbe2",
+      "source_name": "Transformation, from seabed, unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/seabed",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "SEABED"
+      },
+      "comment": "'Transformation, from seabed, unspecified' decomposes onto 1 axis: the cover is seabed and nothing else is stated. Published as 'From seabed'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "17a5a406-333f-4b9e-8852-c2de50bc9585",
+      "source_name": "Transformation, from shrub land, sclerophyllous",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/shrubland/vegetation_form=sclerophyllous",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "SHRUBLAND",
+        "vegetation_form": "SCLEROPHYLLOUS"
+      },
+      "comment": "'Transformation, from shrub land, sclerophyllous' decomposes onto 2 axes: the cover is shrubland, the vegetation form is sclerophyllous. Published as 'From shrubland, sclerophyllous'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "dcd996a7-1c08-4b63-87d6-04bcbbe87792",
+      "source_name": "Transformation, from snow and ice (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/snow-and-ice/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "SNOW_AND_ICE",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, from snow and ice (non-use)' decomposes onto 2 axes: the cover is snow and ice, the use status is not used. Published as 'From snow and ice, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "a99a8eaf-2f2c-42c6-b6ce-d5686a9ca249",
+      "source_name": "Transformation, from traffic area, rail network",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/traffic/infrastructure=rail-network",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "TRAFFIC",
+        "infrastructure": "RAIL_NETWORK"
+      },
+      "comment": "'Transformation, from traffic area, rail network' decomposes onto 2 axes: the cover is traffic area, the infrastructure is rail network. Published as 'From traffic area, rail network'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "46b8b2fd-eb2a-413d-bc39-e7dc18a420ef",
+      "source_name": "Transformation, from traffic area, rail/road embankment",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/traffic/infrastructure=rail-road-embankment",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "TRAFFIC",
+        "infrastructure": "RAIL_ROAD_EMBANKMENT"
+      },
+      "comment": "'Transformation, from traffic area, rail/road embankment' decomposes onto 2 axes: the cover is traffic area, the infrastructure is rail and road embankment. Published as 'From traffic area, rail and road embankment'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "00907a61-b501-4f47-b688-1dc2b51d48c1",
+      "source_name": "Transformation, from traffic area, road network",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/traffic/infrastructure=road-network",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "TRAFFIC",
+        "infrastructure": "ROAD_NETWORK"
+      },
+      "comment": "'Transformation, from traffic area, road network' decomposes onto 2 axes: the cover is traffic area, the infrastructure is road network. Published as 'From traffic area, road network'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "12264257-7f8b-4afe-b3cb-3ac28ca1661a",
+      "source_name": "Transformation, from unknown",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/unspecified",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "UNSPECIFIED"
+      },
+      "comment": "'Transformation, from unknown' decomposes onto 1 axis: the cover is unspecified and nothing else is stated. Published as 'From unspecified'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "29630a65-f38c-48a5-9744-c0121f586640",
+      "source_name": "Transformation, from unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/unspecified",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "UNSPECIFIED"
+      },
+      "comment": "'Transformation, from unspecified' decomposes onto 1 axis: the cover is unspecified and nothing else is stated. Published as 'From unspecified'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "1a1d0d4b-6b95-4815-ad06-2ec5fe333c43",
+      "source_name": "Transformation, from unspecified, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/unspecified/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "UNSPECIFIED",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, from unspecified, natural (non-use)' decomposes onto 3 axes: the cover is unspecified, the origin is natural, the use status is not used. Published as 'From unspecified, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "a8e39acd-6e7f-4d43-973b-37e6b7c00037",
+      "source_name": "Transformation, from urban, continuously built",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/urban/built_form=continuous",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "URBAN",
+        "built_form": "CONTINUOUS"
+      },
+      "comment": "'Transformation, from urban, continuously built' decomposes onto 2 axes: the cover is urban, the built form is continuously built. Published as 'From urban, continuously built'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "ba94eeb5-4b68-4848-a86e-71a9f3b70a4c",
+      "source_name": "Transformation, from urban, discontinuously built",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/urban/built_form=discontinuous",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "URBAN",
+        "built_form": "DISCONTINUOUS"
+      },
+      "comment": "'Transformation, from urban, discontinuously built' decomposes onto 2 axes: the cover is urban, the built form is discontinuously built. Published as 'From urban, discontinuously built'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "83a691df-1e4a-4cee-bcdb-17b7bd0c8c35",
+      "source_name": "Transformation, from urban, green area",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/urban/built_form=green-space",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "URBAN",
+        "built_form": "GREEN_SPACE"
+      },
+      "comment": "'Transformation, from urban, green area' decomposes onto 2 axes: the cover is urban, the built form is green space. Published as 'From urban, green space'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "211de86f-2e82-4a7a-acdb-0b72232f1fa3",
+      "source_name": "Transformation, from urban/industrial fallow (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/urban-industrial-fallow/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "URBAN_INDUSTRIAL_FALLOW",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, from urban/industrial fallow (non-use)' decomposes onto 2 axes: the cover is urban or industrial fallow, the use status is not used. Published as 'From urban or industrial fallow, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "1ef118e8-af9a-46d5-b04d-3ca10a69c51d",
+      "source_name": "Transformation, from wetland, coastal (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/wetland/use_status=unused/position=coastal",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "WETLAND",
+        "use_status": "UNUSED",
+        "position": "COASTAL"
+      },
+      "comment": "'Transformation, from wetland, coastal (non-use)' decomposes onto 3 axes: the cover is wetland, the use status is not used, the position is coastal. Published as 'From wetland, not used, coastal'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "0782d8ff-80e5-47a7-a2ba-3ba40ab60b60",
+      "source_name": "Transformation, from wetland, inland (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-from/wetland/use_status=unused/position=inland",
+      "land_use": {
+        "direction": "TRANSFORMATION_FROM",
+        "cover": "WETLAND",
+        "use_status": "UNUSED",
+        "position": "INLAND"
+      },
+      "comment": "'Transformation, from wetland, inland (non-use)' decomposes onto 3 axes: the cover is wetland, the use status is not used, the position is inland. Published as 'From wetland, not used, inland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c3f83a91-4888-41a4-add9-fd01678a1e5f",
+      "source_name": "Transformation, to annual crop",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND"
+      },
+      "comment": "'Transformation, to annual crop' decomposes onto 1 axis: the cover is cropland and nothing else is stated. Published as 'To cropland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "69ec5008-2c7e-408f-ac10-a31e07ded999",
+      "source_name": "Transformation, to annual crop, flooded crop",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland/vegetation_form=flooded",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND",
+        "vegetation_form": "FLOODED"
+      },
+      "comment": "'Transformation, to annual crop, flooded crop' decomposes onto 2 axes: the cover is cropland, the vegetation form is flooded. Published as 'To cropland, flooded'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "49c23685-ef19-495b-9a6b-4a91a7ceb710",
+      "source_name": "Transformation, to annual crop, greenhouse",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland/vegetation_form=under-glass",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND",
+        "vegetation_form": "UNDER_GLASS"
+      },
+      "comment": "'Transformation, to annual crop, greenhouse' decomposes onto 2 axes: the cover is cropland, the vegetation form is under glass. Published as 'To cropland, under glass'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "247ddc2a-c861-43be-97f0-0183e3d12f99",
+      "source_name": "Transformation, to annual crop, irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland/irrigation=irrigated",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND",
+        "irrigation": "IRRIGATED"
+      },
+      "comment": "'Transformation, to annual crop, irrigated' decomposes onto 2 axes: the cover is cropland, the irrigation is irrigated. Published as 'To cropland, irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "a70f8014-0de5-477f-9f10-712b5c280b8e",
+      "source_name": "Transformation, to annual crop, irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland/irrigation=irrigated/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, to annual crop, irrigated, extensive' decomposes onto 3 axes: the cover is cropland, the irrigation is irrigated, the intensity is extensive. Published as 'To cropland, irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c3c3d385-57fa-4d47-a2c5-d838006e7985",
+      "source_name": "Transformation, to annual crop, irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland/irrigation=irrigated/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, to annual crop, irrigated, intensive' decomposes onto 3 axes: the cover is cropland, the irrigation is irrigated, the intensity is intensive. Published as 'To cropland, irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "e97b784a-ec09-4b1b-9f14-cc0ce9799c9e",
+      "source_name": "Transformation, to annual crop, non-irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland/irrigation=rainfed",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND",
+        "irrigation": "RAINFED"
+      },
+      "comment": "'Transformation, to annual crop, non-irrigated' decomposes onto 2 axes: the cover is cropland, the irrigation is non-irrigated. Published as 'To cropland, non-irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "91a067cc-543a-4d73-a0c0-feb1f8935756",
+      "source_name": "Transformation, to annual crop, non-irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland/irrigation=rainfed/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, to annual crop, non-irrigated, extensive' decomposes onto 3 axes: the cover is cropland, the irrigation is non-irrigated, the intensity is extensive. Published as 'To cropland, non-irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "2e52cbfa-94d7-432b-892f-431daa71a6ef",
+      "source_name": "Transformation, to annual crop, non-irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland/irrigation=rainfed/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, to annual crop, non-irrigated, intensive' decomposes onto 3 axes: the cover is cropland, the irrigation is non-irrigated, the intensity is intensive. Published as 'To cropland, non-irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "2f1e926a-ec96-432b-b2a6-bd5e3de2ff87",
+      "source_name": "Transformation, to arable land, unspecified use",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND"
+      },
+      "comment": "'Transformation, to arable land, unspecified use' decomposes onto 1 axis: the cover is cropland and nothing else is stated. Published as 'To cropland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "ac2c63cf-c657-4d33-bbc0-a5a9a1e29cf5",
+      "source_name": "Transformation, to bare area (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/barren/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "BARREN",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, to bare area (non-use)' decomposes onto 2 axes: the cover is barren land, the use status is not used. Published as 'To barren land, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "54b82481-32a3-4e82-bac7-1df475dbc80c",
+      "source_name": "Transformation, to cropland fallow (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/cropland/use_status=fallow",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "CROPLAND",
+        "use_status": "FALLOW"
+      },
+      "comment": "'Transformation, to cropland fallow (non-use)' decomposes onto 2 axes: the cover is cropland, the use status is fallow. Published as 'To cropland, fallow'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "90a5a447-af6f-421a-8201-011f07ad1150",
+      "source_name": "Transformation, to dump site",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/dump-site",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "DUMP_SITE"
+      },
+      "comment": "'Transformation, to dump site' decomposes onto 1 axis: the cover is dump site and nothing else is stated. Published as 'To dump site'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "d10b390c-9d0c-4f59-b31d-3d0d70e77a35",
+      "source_name": "Transformation, to dump site, inert material landfill",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/dump-site/landfill=inert-material",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "DUMP_SITE",
+        "landfill": "INERT_MATERIAL"
+      },
+      "comment": "'Transformation, to dump site, inert material landfill' decomposes onto 2 axes: the cover is dump site, the landfill is inert material landfill. Published as 'To dump site, inert material landfill'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "8f5c8cb3-dccd-45da-9f1f-d1c61cd789c3",
+      "source_name": "Transformation, to dump site, residual material landfill",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/dump-site/landfill=residual-material",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "DUMP_SITE",
+        "landfill": "RESIDUAL_MATERIAL"
+      },
+      "comment": "'Transformation, to dump site, residual material landfill' decomposes onto 2 axes: the cover is dump site, the landfill is residual material landfill. Published as 'To dump site, residual material landfill'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "1a568858-efa8-4c2a-b46e-82b6e66b6072",
+      "source_name": "Transformation, to dump site, sanitary landfill",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/dump-site/landfill=sanitary",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "DUMP_SITE",
+        "landfill": "SANITARY"
+      },
+      "comment": "'Transformation, to dump site, sanitary landfill' decomposes onto 2 axes: the cover is dump site, the landfill is sanitary landfill. Published as 'To dump site, sanitary landfill'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "d73b27a2-81bd-4264-baa5-ce4aca3545be",
+      "source_name": "Transformation, to dump site, slag compartment",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/dump-site/landfill=slag-compartment",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "DUMP_SITE",
+        "landfill": "SLAG_COMPARTMENT"
+      },
+      "comment": "'Transformation, to dump site, slag compartment' decomposes onto 2 axes: the cover is dump site, the landfill is slag compartment. Published as 'To dump site, slag compartment'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c8a0392e-5ef6-4988-adf6-0adf88129aa1",
+      "source_name": "Transformation, to field margin/hedgerow",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/field-margin",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "FIELD_MARGIN"
+      },
+      "comment": "'Transformation, to field margin/hedgerow' decomposes onto 1 axis: the cover is field margin and nothing else is stated. Published as 'To field margin'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "88e8456c-dc23-4bb4-aed5-a4186a2fbf77",
+      "source_name": "Transformation, to forest, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/forest/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "FOREST",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, to forest, extensive' decomposes onto 2 axes: the cover is forest, the intensity is extensive. Published as 'To forest, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "994d61de-fbb0-4187-a4d4-b11c3c2b9102",
+      "source_name": "Transformation, to forest, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/forest/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "FOREST",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, to forest, intensive' decomposes onto 2 axes: the cover is forest, the intensity is intensive. Published as 'To forest, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "ede9fa50-8d76-4f6d-961f-36f701fbae4e",
+      "source_name": "Transformation, to forest, primary (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/forest/use_status=unused/stage=primary",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "FOREST",
+        "use_status": "UNUSED",
+        "stage": "PRIMARY"
+      },
+      "comment": "'Transformation, to forest, primary (non-use)' decomposes onto 3 axes: the cover is forest, the use status is not used, the stage is primary. Published as 'To forest, not used, primary'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "ff6dccc1-5ebd-42c3-9fd9-3d73db7a3dd2",
+      "source_name": "Transformation, to forest, secondary (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/forest/use_status=unused/stage=secondary",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "FOREST",
+        "use_status": "UNUSED",
+        "stage": "SECONDARY"
+      },
+      "comment": "'Transformation, to forest, secondary (non-use)' decomposes onto 3 axes: the cover is forest, the use status is not used, the stage is secondary. Published as 'To forest, not used, secondary'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "bba9f623-5919-4ef3-b98d-c94af1553179",
+      "source_name": "Transformation, to forest, unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/forest",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "FOREST"
+      },
+      "comment": "'Transformation, to forest, unspecified' decomposes onto 1 axis: the cover is forest and nothing else is stated. Published as 'To forest'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "fe17e7c1-9574-4880-b7e6-ec09c2e3ae5d",
+      "source_name": "Transformation, to grassland, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/grassland/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "GRASSLAND",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, to grassland, natural (non-use)' decomposes onto 3 axes: the cover is grassland, the origin is natural, the use status is not used. Published as 'To grassland, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "ce132b7d-ab1c-4df3-9656-8fe37ede77b1",
+      "source_name": "Transformation, to grassland, natural, for livestock grazing",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/grassland/origin=natural/use_status=grazed",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "GRASSLAND",
+        "origin": "NATURAL",
+        "use_status": "GRAZED"
+      },
+      "comment": "'Transformation, to grassland, natural, for livestock grazing' decomposes onto 3 axes: the cover is grassland, the origin is natural, the use status is grazed. Published as 'To grassland, natural, grazed'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "fdda4f8e-b620-4df6-92a9-101a251d2f42",
+      "source_name": "Transformation, to heterogeneous, agricultural",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/agriculture/built_form=mosaic",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "AGRICULTURE",
+        "built_form": "MOSAIC"
+      },
+      "comment": "'Transformation, to heterogeneous, agricultural' decomposes onto 2 axes: the cover is agriculture, the built form is mosaic. Published as 'To agriculture, mosaic'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "4624deff-2016-41d4-b2bf-3db8dab88779",
+      "source_name": "Transformation, to industrial area",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/industrial",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "INDUSTRIAL"
+      },
+      "comment": "'Transformation, to industrial area' decomposes onto 1 axis: the cover is industrial area and nothing else is stated. Published as 'To industrial area'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "14de323f-9e2d-4beb-b28e-6b93bae98da8",
+      "source_name": "Transformation, to inland waterbody, unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/inland-water",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "INLAND_WATER"
+      },
+      "comment": "'Transformation, to inland waterbody, unspecified' decomposes onto 1 axis: the cover is inland water body and nothing else is stated. Published as 'To inland water body'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "84b65d8f-2edd-4ddd-8f68-ca28d1c681b0",
+      "source_name": "Transformation, to lake, artificial",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/lake/origin=artificial",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "LAKE",
+        "origin": "ARTIFICIAL"
+      },
+      "comment": "'Transformation, to lake, artificial' decomposes onto 2 axes: the cover is lake, the origin is artificial. Published as 'To lake, artificial'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "1e725387-0874-4acb-b026-11b30d76af56",
+      "source_name": "Transformation, to lake, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/lake/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "LAKE",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, to lake, natural (non-use)' decomposes onto 3 axes: the cover is lake, the origin is natural, the use status is not used. Published as 'To lake, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "626915e9-2424-4059-8b6a-fae47161acdf",
+      "source_name": "Transformation, to mineral extraction site",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/extraction-site",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "EXTRACTION_SITE"
+      },
+      "comment": "'Transformation, to mineral extraction site' decomposes onto 1 axis: the cover is mineral extraction site and nothing else is stated. Published as 'To mineral extraction site'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "7a16b680-6d9a-4db3-a23e-0ec64aca5995",
+      "source_name": "Transformation, to pasture, man made",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/pasture/origin=man-made",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "PASTURE",
+        "origin": "MAN_MADE"
+      },
+      "comment": "'Transformation, to pasture, man made' decomposes onto 2 axes: the cover is pasture, the origin is man-made. Published as 'To pasture, man-made'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "7464da86-f239-4bef-a778-04d5818bb956",
+      "source_name": "Transformation, to pasture, man made, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/pasture/origin=man-made/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "PASTURE",
+        "origin": "MAN_MADE",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, to pasture, man made, extensive' decomposes onto 3 axes: the cover is pasture, the origin is man-made, the intensity is extensive. Published as 'To pasture, man-made, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "ec242c43-095c-4b42-8907-e0f13573f0a4",
+      "source_name": "Transformation, to pasture, man made, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/pasture/origin=man-made/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "PASTURE",
+        "origin": "MAN_MADE",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, to pasture, man made, intensive' decomposes onto 3 axes: the cover is pasture, the origin is man-made, the intensity is intensive. Published as 'To pasture, man-made, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "6e02ccfc-9eb5-4a51-be9a-870c1087c833",
+      "source_name": "Transformation, to permanent crop",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/permanent-cropland",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "PERMANENT_CROPLAND"
+      },
+      "comment": "'Transformation, to permanent crop' decomposes onto 1 axis: the cover is permanent cropland and nothing else is stated. Published as 'To permanent cropland'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "a487b7db-318a-46ff-8e52-2837fab777ad",
+      "source_name": "Transformation, to permanent crop, irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/permanent-cropland/irrigation=irrigated",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "IRRIGATED"
+      },
+      "comment": "'Transformation, to permanent crop, irrigated' decomposes onto 2 axes: the cover is permanent cropland, the irrigation is irrigated. Published as 'To permanent cropland, irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "59df4945-6ee2-4ea6-9ef7-36c4f4b478f6",
+      "source_name": "Transformation, to permanent crop, irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/permanent-cropland/irrigation=irrigated/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, to permanent crop, irrigated, extensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is irrigated, the intensity is extensive. Published as 'To permanent cropland, irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "93ac2969-a4e9-49b5-8b97-5cbc6b9b2601",
+      "source_name": "Transformation, to permanent crop, irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/permanent-cropland/irrigation=irrigated/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "IRRIGATED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, to permanent crop, irrigated, intensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is irrigated, the intensity is intensive. Published as 'To permanent cropland, irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "3f8e24d7-3d44-4a47-870f-9e3e74decca4",
+      "source_name": "Transformation, to permanent crop, non-irrigated",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/permanent-cropland/irrigation=rainfed",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "RAINFED"
+      },
+      "comment": "'Transformation, to permanent crop, non-irrigated' decomposes onto 2 axes: the cover is permanent cropland, the irrigation is non-irrigated. Published as 'To permanent cropland, non-irrigated'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "2cb441cd-8d2e-4e5c-a208-48c4fa005c41",
+      "source_name": "Transformation, to permanent crop, non-irrigated, extensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/permanent-cropland/irrigation=rainfed/intensity=extensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "EXTENSIVE"
+      },
+      "comment": "'Transformation, to permanent crop, non-irrigated, extensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is non-irrigated, the intensity is extensive. Published as 'To permanent cropland, non-irrigated, extensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "aa784c1b-0d0b-4c69-b631-b045d6ee61af",
+      "source_name": "Transformation, to permanent crop, non-irrigated, intensive",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/permanent-cropland/irrigation=rainfed/intensity=intensive",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "PERMANENT_CROPLAND",
+        "irrigation": "RAINFED",
+        "intensity": "INTENSIVE"
+      },
+      "comment": "'Transformation, to permanent crop, non-irrigated, intensive' decomposes onto 3 axes: the cover is permanent cropland, the irrigation is non-irrigated, the intensity is intensive. Published as 'To permanent cropland, non-irrigated, intensive'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "090e9aa9-a9a9-4878-9634-3ad0ba7fbc91",
+      "source_name": "Transformation, to river, artificial",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/river/origin=artificial",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "RIVER",
+        "origin": "ARTIFICIAL"
+      },
+      "comment": "'Transformation, to river, artificial' decomposes onto 2 axes: the cover is river, the origin is artificial. Published as 'To river, artificial'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "9a6a4617-dd80-4fe6-84a9-e6c5644bdf59",
+      "source_name": "Transformation, to river, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/river/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "RIVER",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, to river, natural (non-use)' decomposes onto 3 axes: the cover is river, the origin is natural, the use status is not used. Published as 'To river, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "9b5b8c40-38fe-42fb-8130-56c15e485fd0",
+      "source_name": "Transformation, to seabed, drilling and mining",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/seabed/activity=drilling-and-mining",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "SEABED",
+        "activity": "DRILLING_AND_MINING"
+      },
+      "comment": "'Transformation, to seabed, drilling and mining' decomposes onto 2 axes: the cover is seabed, the activity is drilling and mining. Published as 'To seabed, drilling and mining'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "c7d2cf2d-0d21-45f7-9769-b07f3e53b76a",
+      "source_name": "Transformation, to seabed, infrastructure",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/seabed/built_form=infrastructure",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "SEABED",
+        "built_form": "INFRASTRUCTURE"
+      },
+      "comment": "'Transformation, to seabed, infrastructure' decomposes onto 2 axes: the cover is seabed, the built form is infrastructure. Published as 'To seabed, infrastructure'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "9197fa8a-1f9a-427b-91d3-113260ae6eb1",
+      "source_name": "Transformation, to seabed, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/seabed/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "SEABED",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, to seabed, natural (non-use)' decomposes onto 3 axes: the cover is seabed, the origin is natural, the use status is not used. Published as 'To seabed, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "ebb16be1-8db3-42a2-8123-418787422cfe",
+      "source_name": "Transformation, to seabed, unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/seabed",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "SEABED"
+      },
+      "comment": "'Transformation, to seabed, unspecified' decomposes onto 1 axis: the cover is seabed and nothing else is stated. Published as 'To seabed'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "9089d7ad-09b1-4174-a188-8844ebde2d5d",
+      "source_name": "Transformation, to shrub land, sclerophyllous",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/shrubland/vegetation_form=sclerophyllous",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "SHRUBLAND",
+        "vegetation_form": "SCLEROPHYLLOUS"
+      },
+      "comment": "'Transformation, to shrub land, sclerophyllous' decomposes onto 2 axes: the cover is shrubland, the vegetation form is sclerophyllous. Published as 'To shrubland, sclerophyllous'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "4e1b1828-1085-46ad-a083-1868b5146537",
+      "source_name": "Transformation, to snow and ice (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/snow-and-ice/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "SNOW_AND_ICE",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, to snow and ice (non-use)' decomposes onto 2 axes: the cover is snow and ice, the use status is not used. Published as 'To snow and ice, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "0abf9db7-b5a2-4c18-8ec6-aca3a7fb5579",
+      "source_name": "Transformation, to traffic area, rail network",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/traffic/infrastructure=rail-network",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "TRAFFIC",
+        "infrastructure": "RAIL_NETWORK"
+      },
+      "comment": "'Transformation, to traffic area, rail network' decomposes onto 2 axes: the cover is traffic area, the infrastructure is rail network. Published as 'To traffic area, rail network'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "04eb0695-e67b-46e5-9516-da6bde119822",
+      "source_name": "Transformation, to traffic area, rail/road embankment",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/traffic/infrastructure=rail-road-embankment",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "TRAFFIC",
+        "infrastructure": "RAIL_ROAD_EMBANKMENT"
+      },
+      "comment": "'Transformation, to traffic area, rail/road embankment' decomposes onto 2 axes: the cover is traffic area, the infrastructure is rail and road embankment. Published as 'To traffic area, rail and road embankment'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "a42347d2-09f1-405e-95dd-bf6ac03765d8",
+      "source_name": "Transformation, to traffic area, road network",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/traffic/infrastructure=road-network",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "TRAFFIC",
+        "infrastructure": "ROAD_NETWORK"
+      },
+      "comment": "'Transformation, to traffic area, road network' decomposes onto 2 axes: the cover is traffic area, the infrastructure is road network. Published as 'To traffic area, road network'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "36965153-1daf-452a-8089-f4b5222c46ae",
+      "source_name": "Transformation, to unknown",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/unspecified",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "UNSPECIFIED"
+      },
+      "comment": "'Transformation, to unknown' decomposes onto 1 axis: the cover is unspecified and nothing else is stated. Published as 'To unspecified'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "512a5356-8059-4772-a43f-42e3c4f3d299",
+      "source_name": "Transformation, to unspecified",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/unspecified",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "UNSPECIFIED"
+      },
+      "comment": "'Transformation, to unspecified' decomposes onto 1 axis: the cover is unspecified and nothing else is stated. Published as 'To unspecified'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "46cfaeaf-f124-409f-998d-47b159051cec",
+      "source_name": "Transformation, to unspecified, natural (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/unspecified/origin=natural/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "UNSPECIFIED",
+        "origin": "NATURAL",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, to unspecified, natural (non-use)' decomposes onto 3 axes: the cover is unspecified, the origin is natural, the use status is not used. Published as 'To unspecified, natural, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "66f25f1d-1898-4827-bcbb-ca82f15c4d02",
+      "source_name": "Transformation, to urban, continuously built",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/urban/built_form=continuous",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "URBAN",
+        "built_form": "CONTINUOUS"
+      },
+      "comment": "'Transformation, to urban, continuously built' decomposes onto 2 axes: the cover is urban, the built form is continuously built. Published as 'To urban, continuously built'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "55beee8d-d04e-4307-bb0e-4e113dc07ee7",
+      "source_name": "Transformation, to urban, discontinuously built",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/urban/built_form=discontinuous",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "URBAN",
+        "built_form": "DISCONTINUOUS"
+      },
+      "comment": "'Transformation, to urban, discontinuously built' decomposes onto 2 axes: the cover is urban, the built form is discontinuously built. Published as 'To urban, discontinuously built'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "f669a957-5574-4932-98cb-2851a12b3137",
+      "source_name": "Transformation, to urban, green area",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/urban/built_form=green-space",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "URBAN",
+        "built_form": "GREEN_SPACE"
+      },
+      "comment": "'Transformation, to urban, green area' decomposes onto 2 axes: the cover is urban, the built form is green space. Published as 'To urban, green space'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "f157b88d-f288-473c-8b03-0f97b58235ff",
+      "source_name": "Transformation, to urban/industrial fallow (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/urban-industrial-fallow/use_status=unused",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "URBAN_INDUSTRIAL_FALLOW",
+        "use_status": "UNUSED"
+      },
+      "comment": "'Transformation, to urban/industrial fallow (non-use)' decomposes onto 2 axes: the cover is urban or industrial fallow, the use status is not used. Published as 'To urban or industrial fallow, not used'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "f86f2893-58e9-4cb2-b4f2-ab1d80765c2f",
+      "source_name": "Transformation, to wetland, coastal (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/wetland/use_status=unused/position=coastal",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "WETLAND",
+        "use_status": "UNUSED",
+        "position": "COASTAL"
+      },
+      "comment": "'Transformation, to wetland, coastal (non-use)' decomposes onto 3 axes: the cover is wetland, the use status is not used, the position is coastal. Published as 'To wetland, not used, coastal'."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "d36dd104-5214-4ca2-b1ab-c878987a42fe",
+      "source_name": "Transformation, to wetland, inland (non-use)",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "unit": "m2",
+      "key": "transformation-to/wetland/use_status=unused/position=inland",
+      "land_use": {
+        "direction": "TRANSFORMATION_TO",
+        "cover": "WETLAND",
+        "use_status": "UNUSED",
+        "position": "INLAND"
+      },
+      "comment": "'Transformation, to wetland, inland (non-use)' decomposes onto 3 axes: the cover is wetland, the use status is not used, the position is inland. Published as 'To wetland, not used, inland'."
+    },
+    {
       "source": "ecoinvent-3.8",
       "source_uuid": "c5aafa60-495c-461c-a1d4-b262a34c45b9",
       "source_name": "Occupation, annual crop",

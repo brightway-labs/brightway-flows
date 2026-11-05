@@ -838,6 +838,7 @@ class WasteHeatIsNotSomethingYouExtractTestCase(unittest.TestCase):
         "ecoinvent-3.10.1": 13,
         "ecoinvent-3.11": 13,
         "ecoinvent-3.12": 13,
+        "ecoinvent-3.13": 13,
         # None. Stepwise is an LCIA method and characterises no waste heat, so
         # it ships no row for one -- pinned at zero rather than left out, so a
         # revision that adds one arrives here instead of being placed by
@@ -1540,13 +1541,13 @@ class MCPAMethylIsNotAnIoxynilEsterTestCase(unittest.TestCase):
         return rows
 
     def test_every_version_states_the_correction(self):
-        """All five ship the row under the same UUIDs, so all five state it.
+        """All six ship the row under the same UUIDs, so all six state it.
 
         A version that did not would hand the merge two lists disagreeing about
         what 2436-73-9 is called, which is what these files exist to prevent.
         """
         paths = self._paths()
-        self.assertEqual(len(paths), 5)
+        self.assertEqual(len(paths), 6)
         for path in paths:
             with self.subTest(file=path.name):
                 fixes = orjson.loads(path.read_bytes())["fixes"]
@@ -2069,7 +2070,7 @@ class GypsumIsNotCalciumAndNotSulfateTestCase(unittest.TestCase):
     PHRASE = "Calcium sulfate dihydrate"
 
     #: What each release actually ships beside the phrase, read off the five
-    #: extracted lists on 2026-08-20.  Spelled per release rather than as one
+    #: extracted lists on 2026-08-20 and 3.13's on 2026-11-04.  Spelled per release rather than as one
     #: set, because a correction that matched nothing would warn, and because
     #: the difference is the fact worth recording: 3.8 splits the phrase into
     #: all three of its words and every release after it drops the first.
@@ -2079,6 +2080,7 @@ class GypsumIsNotCalciumAndNotSulfateTestCase(unittest.TestCase):
         "ecoinvent-3.10.1": ("sulfate", "dihydrate"),
         "ecoinvent-3.11": ("sulfate", "dihydrate"),
         "ecoinvent-3.12": ("sulfate", "dihydrate"),
+        "ecoinvent-3.13": ("sulfate", "dihydrate"),
     }
 
     def _sources(self):
@@ -2533,7 +2535,7 @@ class BetaCyfluthrinIsItsOwnSubstanceTestCase(unittest.TestCase):
 
     def _release_fix_paths(self):
         paths = sorted(PACKAGE_DATA_DIR.glob("ecoinvent-*-manual-fixes.json"))
-        self.assertEqual(len(paths), 5, paths)
+        self.assertEqual(len(paths), 6, paths)
         return paths
 
     def test_every_release_carries_the_same_correction(self):
@@ -2868,3 +2870,55 @@ class OrganotinsInSeaWaterAreTheCationsTestCase(unittest.TestCase):
                 self.assertEqual(list(rows[self.TRIPHENYLTIN].cas_numbers), ["668-34-8"])
                 for uuid in self.REMOVED:
                     self.assertEqual(list(rows[uuid].cas_numbers), [])
+
+
+class FumarateEstersAreNotFumaricAcidTestCase(unittest.TestCase):
+    """ecoinvent 3.13 writes `Fumaric acid` as a synonym on its two fumarate esters.
+
+    The esters carry their own numbers, 4070-80-8 and 1741-93-1, which no other
+    list ships, so the label matcher is what places them -- and on the build of
+    68894af it read that one synonym and put both on EF 3.1's `fumaric acid`,
+    110-17-8.  The 3.13 fixes file takes the acid's name off both rows, and two
+    more catalogue fragments off the sodium salt.  The names of the esters
+    themselves have to survive, or the fix is a rule about a word.
+    """
+
+    SSF = "3a7cc057-6a9f-5161-99ea-476356790aeb"
+    MSF = "ece708a7-8ff8-4940-82a3-722580ce4abb"
+
+    def _fixed(self, uuid, name, cas, synonyms):
+        source = known_source_lists()["ecoinvent-3.13"]
+        flow = {
+            "uuid": uuid, "name": name, "cas_number": cas,
+            "context": ["water", "unspecified"], "unit": "kg",
+            "synonyms": list(synonyms),
+        }
+        apply_manual_fixes([flow], source.manual_fixes_path, label="ecoinvent-3.13")
+        return flow
+
+    def test_the_acid_comes_off_both_esters(self):
+        ssf = self._fixed(self.SSF, "Sodium stearyl fumarate", "4070-80-8", [
+            "Dibasic acid", "Fumaric acid", "Mixed Stearyl and Oleyl esters", "SSF",
+            "Sodium Stearyl Fumarate", "Sodium salt", "Stearyl fumarate sodium salt",
+        ])
+        self.assertEqual(
+            ssf["synonyms"],
+            ["Mixed Stearyl and Oleyl esters", "SSF", "Sodium Stearyl Fumarate",
+             "Stearyl fumarate sodium salt"],
+        )
+        msf = self._fixed(self.MSF, "Monostearyl fumarate", "1741-93-1", [
+            "Fumaric acid", "Octadecyl hydrogen fumarate",
+        ])
+        self.assertEqual(msf["synonyms"], ["Octadecyl hydrogen fumarate"])
+
+    def test_the_numbers_are_untouched(self):
+        ssf = self._fixed(self.SSF, "Sodium stearyl fumarate", "4070-80-8", ["Fumaric acid"])
+        self.assertEqual(ssf["cas_number"], "4070-80-8")
+
+    def test_applying_twice_changes_nothing_further(self):
+        flow = self._fixed(self.MSF, "Monostearyl fumarate", "1741-93-1", ["Fumaric acid", "Octadecyl hydrogen fumarate"])
+        once = orjson.dumps(flow)
+        source = known_source_lists()["ecoinvent-3.13"]
+        apply_manual_fixes([flow], source.manual_fixes_path, label="ecoinvent-3.13")
+        self.assertEqual(orjson.dumps(flow), once)
+

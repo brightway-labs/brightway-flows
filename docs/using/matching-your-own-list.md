@@ -252,7 +252,7 @@ wrote that down, not because a rule read the name.
 
 But every row of both tables also records the vendor's spelling, and no vendor
 disagrees with another about most of them: BAFU and five ecoinvent releases all
-call `Water, lake` lake water, and no two of the land table's 1,517 rows
+call `Water, lake` lake water, and no two of the land table's 1,699 rows
 disagree about any of its 496 names. So the lookup consults both tables under
 your row's name, and
 

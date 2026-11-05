@@ -12,11 +12,11 @@
         "name": "Carbon Dioxide, Fossil"
       },
       "expect": {
-        "row_count": 10,
+        "row_count": 15,
         "same_substance": true,
         "target_substance_id": "fo-130030e87e592b4c"
       },
-      "comment": "Five air compartments in each release. The group nothing in this work touched, and the reason it is pinned: it is the control. If a change to the qualifier vocabulary or the matching rule ever moves fossil carbon dioxide, every other claim in this family is suspect too."
+      "comment": "Five air compartments in each release. The group nothing in this work touched, and the reason it is pinned: it is the control. If a change to the qualifier vocabulary or the matching rule ever moves fossil carbon dioxide, every other claim in this family is suspect too. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-ecoinvent-non-fossil-carbon-dioxide",
@@ -28,11 +28,11 @@
         "name": "Carbon Dioxide, Non-fossil"
       },
       "expect": {
-        "row_count": 9,
+        "row_count": 13,
         "same_substance": true,
         "target_substance_id": "fo-c830feb8dfc643a1"
       },
-      "comment": "The synonym decision, tested. `non-fossil` and `biogenic` are one word to this list, so ecoinvent's nine air rows meet EF's `carbon dioxide (biogenic)` and the factors EF states for it. An exact-name selector, so it cannot also catch `Carbon Dioxide, Non-fossil, Resource Correction`."
+      "comment": "The synonym decision, tested. `non-fossil` and `biogenic` are one word to this list, so ecoinvent's nine air rows meet EF's `carbon dioxide (biogenic)` and the factors EF states for it. An exact-name selector, so it cannot also catch `Carbon Dioxide, Non-fossil, Resource Correction`. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-ecoinvent-carbon-dioxide-in-air",
@@ -44,12 +44,12 @@
         "uuid": "cc6a1abb-b123-4ca6-8f16-38209df609be"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_substance_id": "fo-c830feb8dfc643a1",
         "target_context_display": "Resource → Air"
       },
-      "comment": "#257 settled this leg: EF's neutral biogenic uptake, characterised 0, which is also what ecoinvent's own implementation states. It arrives by the prepared correspondence and is the row BAFU's three `in air` rows are now aligned with. Compartment claimed as well as substance, because half of #135 was a compartment."
+      "comment": "#257 settled this leg: EF's neutral biogenic uptake, characterised 0, which is also what ecoinvent's own implementation states. It arrives by the prepared correspondence and is the row BAFU's three `in air` rows are now aligned with. Compartment claimed as well as substance, because half of #135 was a compartment. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-agricultural-soil-capture",
@@ -61,11 +61,11 @@
         "uuid": "259cf8d6-6ea8-4ccf-84b7-23c930a5b2b3"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_substance_id": "fo-7edfcc35f0a40da5"
       },
-      "comment": "The compartment EF does have a biogenic soil flow for, which is what made #258's mapping look right. What could not be carried across is the meaning: EF's biogenic carbon is neutral in both directions and this row is a removal."
+      "comment": "The compartment EF does have a biogenic soil flow for, which is what made #258's mapping look right. What could not be carried across is the meaning: EF's biogenic carbon is neutral in both directions and this row is a removal. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-silvicultural-soil-capture",
@@ -77,11 +77,11 @@
         "uuid": "8ae4d8bb-3e4b-4825-8325-94696d7a64fd"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_substance_id": "fo-7edfcc35f0a40da5"
       },
-      "comment": "A compartment EF 3.1 has none of, so before this the row sat on a flow *this project minted* under biogenic carbon dioxide — the wrong substance was one the list had invented rather than one EF ships."
+      "comment": "A compartment EF 3.1 has none of, so before this the row sat on a flow *this project minted* under biogenic carbon dioxide — the wrong substance was one the list had invented rather than one EF ships. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-industrial-soil-capture",
@@ -93,11 +93,11 @@
         "uuid": "60d424f7-d5a9-4549-9540-da06684bc3bb"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_substance_id": "fo-7edfcc35f0a40da5"
       },
-      "comment": "The other minted compartment. Named separately from the three beside it because all four have to move together or the substance is half-built, and a claim covering the group would pass while one of them regressed."
+      "comment": "The other minted compartment. Named separately from the three beside it because all four have to move together or the substance is half-built, and a claim covering the group would pass while one of them regressed. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-unspecified-soil-capture",
@@ -109,11 +109,11 @@
         "uuid": "375bc95e-6596-4aa1-9716-80ff51b9da77"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_substance_id": "fo-7edfcc35f0a40da5"
       },
-      "comment": "The fourth and last, and the compartment 116 of the 269 emitting datasets use."
+      "comment": "The fourth and last, and the compartment 116 of the 269 emitting datasets use. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-stock-release-urban-air",
@@ -125,11 +125,11 @@
         "uuid": "e8787b5e-d927-446d-81a9-f56977bbfeb4"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_substance_id": "fo-c39139738b531191"
       },
-      "comment": "The release leg, which this work deliberately did **not** move. EF has a flow that means what it means, both implementations state +1 for it, and the list publishes `agreed`. If this ever reaches the sequestration substance, the asymmetry §12 argues for has been flattened by somebody who thought the two legs were a pair."
+      "comment": "The release leg, which this work deliberately did **not** move. EF has a flow that means what it means, both implementations state +1 for it, and the list publishes `agreed`. If this ever reaches the sequestration substance, the asymmetry §12 argues for has been flattened by somebody who thought the two legs were a pair. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-stock-release-unspecified-air",
@@ -141,11 +141,11 @@
         "uuid": "e4e9febc-07c1-403d-8d3a-6707bb4d96e6"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_substance_id": "fo-c39139738b531191"
       },
-      "comment": "A second release row, in the compartment most of them use. All six release uuids are pinned: the first version of this file pinned two and said so in this comment, which was a reasonable economy until the paragraph above claimed the file covered every row (#337)."
+      "comment": "A second release row, in the compartment most of them use. All six release uuids are pinned: the first version of this file pinned two and said so in this comment, which was a reasonable economy until the paragraph above claimed the file covered every row (#337). Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-stock-release-non-urban-air",
@@ -157,11 +157,11 @@
         "uuid": "78eb1859-abd9-44c6-9ce3-f3b5b33d619c"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_substance_id": "fo-c39139738b531191"
       },
-      "comment": "The third release compartment, shipped by both releases. Same target and same route as the two above; pinned because a group is only guarded by naming all of it."
+      "comment": "The third release compartment, shipped by both releases. Same target and same route as the two above; pinned because a group is only guarded by naming all of it. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-stock-release-long-term-air",
@@ -173,11 +173,11 @@
         "uuid": "e1c597cc-14cb-4ebb-af07-7a93a5b77d34"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_substance_id": "fo-c39139738b531191"
       },
-      "comment": "`low population density, long-term` is the compartment whose factors the coverage report skips, so this row reaches a substance and carries no published factor. That is the expected shape, and pinning it here stops a future reading of the skip as a matching failure."
+      "comment": "`low population density, long-term` is the compartment whose factors the coverage report skips, so this row reaches a substance and carries no published factor. That is the expected shape, and pinning it here stops a future reading of the skip as a matching failure. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-stock-release-indoor-air-38-only",
@@ -221,11 +221,11 @@
         "uuid": "419de9f0-ee00-4e95-9556-c8f06b17beec"
       },
       "expect": {
-        "row_count": 2,
+        "row_count": 3,
         "same_substance": true,
         "target_substance_id": "fo-525d7ddc2fa0004e"
       },
-      "comment": "ecoinvent's allocation counterweight, and the row that found the rule in #133: its qualifier was detected, no flow object carried it, and the label branch then matched the very substance the qualifier exists to distinguish it from."
+      "comment": "ecoinvent's allocation counterweight, and the row that found the rule in #133: its qualifier was detected, no flow object carried it, and the label branch then matched the very substance the qualifier exists to distinguish it from. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0669-every-row-bafu-fossil-carbon-dioxide",

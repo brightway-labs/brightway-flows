@@ -889,7 +889,8 @@ class ConversionVintageTestCase(unittest.TestCase):
                 with self.subTest(flow=override.source_name):
                     self.assertTrue(override.covers_release("3.8"))
                     self.assertTrue(override.covers_release("3.12"))
-                    self.assertFalse(override.covers_release("3.13"))
+                    self.assertTrue(override.covers_release("3.13"))
+                    self.assertFalse(override.covers_release("3.14"))
 
 
 class CuratedConversionTestCase(unittest.TestCase):
@@ -986,7 +987,7 @@ class CoarseParticulateTestCase(unittest.TestCase):
             source for source in known_source_lists().values()
             if source.list_name == "ecoinvent"
         ]
-        self.assertEqual(len(ecoinvent), 5)
+        self.assertEqual(len(ecoinvent), 6)
         for source in ecoinvent:
             with self.subTest(source.key):
                 self.assertEqual(source.match_overrides_path, OVERRIDES_PATH)

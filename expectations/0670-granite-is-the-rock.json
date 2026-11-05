@@ -12,7 +12,9 @@
         "uuid": "a4375a18-172c-4f82-90b7-bca972f75548",
         "name": "Penoxsulam"
       },
-      "expect": {"row_count": 0},
+      "expect": {
+        "row_count": 0
+      },
       "comment": "Before the fix both merged releases' rows of this uuid are recorded `Penoxsulam` with CAS 219714-96-2. The selector asks for rows of the rock's uuid under the herbicide's name; the claim is that there are none."
     },
     {
@@ -24,8 +26,12 @@
         "list": "ecoinvent",
         "uuid": "a4375a18-172c-4f82-90b7-bca972f75548"
       },
-      "expect": {"outcome": "prepared", "target_name": "Granite", "row_count": 2},
-      "comment": "The correspondence table's target was right all along; only the row's recorded identity was wrong. This pins that the CAS strip moves the label without moving the landing."
+      "expect": {
+        "outcome": "prepared",
+        "target_name": "Granite",
+        "row_count": 3
+      },
+      "comment": "The correspondence table's target was right all along; only the row's recorded identity was wrong. This pins that the CAS strip moves the label without moving the landing. Row count raised on 2026-11-04, when ecoinvent 3.13 joined the standard build ahead of 3.12 and 3.8 and ships the same row under the same uuid; the substance claim is unchanged."
     },
     {
       "id": "0670-the-trade-name-emissions-are-penoxsulam",
@@ -37,7 +43,12 @@
         "version": "3.12",
         "name": "Penoxsulam"
       },
-      "expect": {"outcome": "matched", "target_name": "Penoxsulam", "row_count": 7, "same_substance": true},
+      "expect": {
+        "outcome": "matched",
+        "target_name": "Penoxsulam",
+        "row_count": 7,
+        "same_substance": true
+      },
       "comment": "3.12 ships the herbicide's emissions as `Granite` with penoxsulam's CAS; the manual fix renames them to the substance before matching. Exactly seven, all on the Penoxsulam object — the count is the guard against the rename catching the CAS-less rock."
     }
   ]

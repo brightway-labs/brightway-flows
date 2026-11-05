@@ -1207,6 +1207,7 @@ class SourceChangePagesTestCase(unittest.TestCase):
         "ecoinvent-3.10.1.md": ("ecoinvent-3.10.1-manual-fixes.json",),
         "ecoinvent-3.11.md": ("ecoinvent-3.11-manual-fixes.json",),
         "ecoinvent-3.12.md": ("ecoinvent-3.12-manual-fixes.json",),
+        "ecoinvent-3.13.md": ("ecoinvent-3.13-manual-fixes.json",),
         "bafu-2026-v1.md": (
             "bafu-2026-v1-manual-fixes.json",
             "simapro-lineage-manual-fixes.json",

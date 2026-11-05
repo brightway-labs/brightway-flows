@@ -93,6 +93,10 @@ EXCHANGE_COUNTS = {
     "ecoinvent-3.12": {
         "cutoff": 9850, "apos": 9850, "consequential": 9850, "EN15804": 9850,
     },
+    # Measured 2026-11-04, the day 3.13 was registered.
+    "ecoinvent-3.13": {
+        "cutoff": 9893, "apos": 9893, "consequential": 9893, "EN15804": 9893,
+    },
 }
 
 SOCIAL_IRI = "https://vocab.brightway.one/flow-contexts/soci"

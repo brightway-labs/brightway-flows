@@ -247,7 +247,8 @@ ecoinvent gives both 107-18-6. In `air / unspecified`,
 `f8828e44-6c1e-50ee-afa4-1b2f2a89590c` land on one flow; in
 `water / unspecified`, `3dbfcc62-4898-48a7-969b-74270615e36e` and
 `0d8d3729-7b68-5669-bc51-fa692e31c561` on another. Published as **Allyl
-Alcohol**.
+Alcohol**. ecoinvent 3.13 retires all seven `2-Propen-1-ol` rows and keeps the
+two `Allyl alcohol` rows, with `2-Propen-1-ol` added as a synonym.
 
 **Two spellings of total organic carbon — 2 rows onto 1 flow.** `Organic
 carbon` (`9a891f6c-937c-4226-9702-4a552973ae3f`) and `TOC, Total Organic

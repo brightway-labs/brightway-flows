@@ -323,11 +323,11 @@ RULINGS: tuple[CuratedFile, ...] = (
             "find them.",
             named_by_manifest=True,
         )
-        # One per registered ecoinvent, four of them holding no flows at all.
+        # One per registered ecoinvent, five of them holding no flows at all.
         # An empty file is the ruling that the version's four system models were
         # compared and agreed; without it, that is indistinguishable from nobody
         # having looked (#100).
-        for version in ("3.8", "3.9.1", "3.10.1", "3.11", "3.12")
+        for version in ("3.8", "3.9.1", "3.10.1", "3.11", "3.12", "3.13")
     ),
     CuratedFile(
         "stepwise-2006-additional-flows.json",

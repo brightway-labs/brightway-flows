@@ -43,6 +43,9 @@ def _mapping_file_for_version(version: str) -> str | None:
         "3.11": "ecoinvent-3.11-biosphere-EF-3.1-biosphere",
         # ecoinvent 3.12 uses the same correspondence table as 3.11
         "3.12": "ecoinvent-3.11-biosphere-EF-3.1-biosphere",
+        # and so does 3.13: the registry publishes no table past 3.11, and
+        # since #141 the table only feeds the unmatched-rows side file.
+        "3.13": "ecoinvent-3.11-biosphere-EF-3.1-biosphere",
     }
     return mapping_by_version.get(version)
 
@@ -235,7 +238,7 @@ def ecospold2_biosphere_extractor(
 def fetch(source: SourceList, *, force: bool = False) -> Path:
     """The :class:`~brightway_flows.sources.SourceAdapter` for ecoinvent.
 
-    One adapter for all five ecoinvent manifests: they differ in `list_version`,
+    One adapter for all six ecoinvent manifests: they differ in `list_version`,
     and that is exactly what is read off *source* here.  Before #15 this was a
     dedicated CLI command taking a `--version` string, which is the same
     information arriving by a route the registry could not see.
