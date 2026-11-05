@@ -32,16 +32,30 @@
     {
       "id": "0766-every-factor-ecoinvent-states-is-read",
       "issue": 766,
-      "title": "All 27,415 factors the ecoinvent Centre's file states for EF 3.1 are read",
+      "title": "All 27,403 factors the ecoinvent Centre's 3.13 file states for EF 3.1 are read",
       "subject": {
         "kind": "measure",
         "key": "factors.ef_ecoinvent_centre_factors_stated"
       },
       "expect": {
+        "at_least": 27403,
+        "at_most": 27403
+      },
+      "comment": "The second of the two implementations the consensus is derived from, stated as `0766-every-factor-the-jrc-states-is-read` states the first, and for the same reason. Measured on the build of 22 September 2026 (`20260922T2037421996740000`). 27,403 since #459, the count of the 3.13 workbook; the 3.12 workbook's 27,415 is the next claim."
+    },
+    {
+      "id": "0766-every-factor-ecoinvent-3-12-states-is-read",
+      "issue": 766,
+      "title": "All 27,415 factors the ecoinvent Centre's 3.12 file states for EF 3.1 are read",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_ecoinvent_centre_3_12_factors_stated"
+      },
+      "expect": {
         "at_least": 27415,
         "at_most": 27415
       },
-      "comment": "The second of the two implementations the consensus is derived from, stated as `0766-every-factor-the-jrc-states-is-read` states the first, and for the same reason. Measured on the build of 22 September 2026 (`20260922T2037421996740000`)."
+      "comment": "The 3.12 workbook, kept as a non-deciding implementation since #459 and read in full for the same reason as the others. An equality: the count of a file."
     },
     {
       "id": "0766-every-factor-greendelta-states-is-read",

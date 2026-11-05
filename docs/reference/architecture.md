@@ -284,7 +284,7 @@ about is one the merge has already placed. Its design is
 | Module | Responsibility |
 |---|---|
 | `pipeline` | `characterise`: the order the steps below run in |
-| `categories` | the 138 `ImpactCategory` objects — EF 3.1's 25 categories times four implementations, Stepwise 2006's 19 times two — and the IRI and id each is published under |
+| `categories` | the 163 `ImpactCategory` objects — EF 3.1's 25 categories times five implementations, Stepwise 2006's 19 times two — and the IRI and id each is published under |
 | `sources` | which implementations exist and where each one's factors come from |
 | `matching` | getting a factor onto a consensus flow: which flow, and in what unit |
 | `conversion` | a factor stated per one unit, published per another |
@@ -320,7 +320,7 @@ joined by ours.
 
 `domain/lcia/crosswalk.py` reads one file per LCIA method, listed in its
 `METHOD_FILEPATHS`. `data/lcia-impact-categories.json` is EF 3.1's: the method,
-its four implementations and where each one's factors are read from, and its 25
+its five implementations and where each one's factors are read from, and its 25
 categories with every implementation's name for each under that implementation's
 slug. `data/stepwise-2006-impact-categories.json` is the second method, the same
 shape and no module changes; nothing under `lcia/` names a method or an

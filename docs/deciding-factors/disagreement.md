@@ -52,10 +52,14 @@ Almost never toxicology. The ones ruled so far are all the same kind of finding:
   134.73, because that is the row ecoinvent's own flow corresponds to
   ([#64](https://github.com/brightway-labs/brightway-flows/issues/64)).
 - **vanadium**, 10.0000× — the unit slip above. Ruled to the JRC's.
-- **sulphuryl difluoride**, climate change — ecoinvent states a global warming
-  potential of 4,630 kg CO₂‑eq where the JRC states none; ruled to publish, with
-  IPCC AR6 cited on the ruling
-  ([#151](https://github.com/brightway-labs/brightway-flows/issues/151)).
+- **sulphuryl difluoride**, climate change — ecoinvent's 3.12 workbook stated a
+  global warming potential of 4,630 kg CO₂‑eq where the JRC states none; ruled
+  to publish, with IPCC AR6 cited on the ruling
+  ([#151](https://github.com/brightway-labs/brightway-flows/issues/151)). The
+  3.13 workbook states none either, so since
+  [#459](https://github.com/brightway-labs/brightway-flows/issues/459) the
+  ruling has nothing to publish and the number is read only under
+  `ecoinvent Centre (3.12)`.
 
 And two still open that are real, in the sense that the numbers describe
 different things. **Fenpropimorph** in soil differs by 47× between the two

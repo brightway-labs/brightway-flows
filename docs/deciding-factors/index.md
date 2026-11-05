@@ -248,11 +248,16 @@ writes its own word so a reader can tell it from a decision:
 - a number `derive()` put on the wrong flow is **moved** to the flow it is about
   (`data/lcia-misattributed-factors.json`, 5 factors);
 - a rounded printing one implementation states is replaced by the precise value
-  its own source states — **refined** (`data/lcia-rounded-printings.json`, 8);
+  its own source states — **refined** (`data/lcia-rounded-printings.json`; 8 on
+  that build, none since the 3.13 workbook printed the same rounding as the JRC
+  and the file's four rows were retired,
+  [#459](https://github.com/brightway-labs/brightway-flows/issues/459));
 - a context nobody characterises is filled from the neighbour the convention
   names — **carried** (`data/context-carry-rules.json`, stage 5 above).
-  Sulphuryl difluoride's 4,630 kg CO₂‑eq reaches the urban ground level from
-  unspecified air this way, and does not reach indoor air, which is a wall.
+  Sulphuryl difluoride's 4,630 kg CO₂‑eq reached the urban ground level from
+  unspecified air this way, and did not reach indoor air, which is a wall;
+  since the 3.13 workbook states no climate-change factor for the gas there is
+  nothing to carry (#459).
 
 ## 7. Checking any of it
 
