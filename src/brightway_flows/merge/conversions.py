@@ -110,6 +110,7 @@ from brightway_flows.domain.common import Provenance
 from brightway_flows.domain.property_statements import (
     ConversionRule,
     PropertyStatement,
+    StatementOrigin,
     choose_statement,
     factor_between,
 )
@@ -506,6 +507,14 @@ def conversion_to_publish(
     )
     if derived is not None:
         from_statements, statement = derived
+        # A curated statement was read out of the list's statements file; a
+        # vendor's was read out of the vendor's file, which its own provenance
+        # names, and the mapping says which.
+        stated_in = (
+            statements_file
+            if statement.stated_by is StatementOrigin.CURATED
+            else statement.provenance.was_derived_from or ""
+        )
         return PublishedConversion(
             factor=from_statements.factor,
             basis=ConversionBasis.FLOW_PROPERTY,
@@ -514,10 +523,10 @@ def conversion_to_publish(
                 was_attributed_to="brightway-flows",
                 had_primary_source=[
                     *units,
-                    *([statements_file] if statements_file else []),
+                    *([stated_in] if stated_in else []),
                     *statement.provenance.had_primary_source,
                 ],
-                was_derived_from=statements_file or None,
+                was_derived_from=stated_in or None,
             ),
             comment=statement.comment,
             quantity=statement.quantity,

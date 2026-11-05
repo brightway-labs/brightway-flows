@@ -31,6 +31,8 @@ from brightway_flows.domain.property_statements import (
     decode_statements,
     encode_statements,
     factor_between,
+    parse_value_per_unit,
+    vendor_statement,
 )
 from brightway_flows.domain.quantities import (
     CALORIFIC_VALUE,
@@ -44,10 +46,12 @@ from brightway_flows.domain.units import unit_row_for
 from brightway_flows.property_statements import (
     DECISIONS_SCHEMA_VERSION,
     PropertyStatements,
+    add_statements_from_names,
     attach_property_statements,
     load_property_statements,
     reference_quantities_from_ilcd,
     refuse_a_pair_stated_twice,
+    refuse_rulings_about_unshipped_flows,
 )
 from brightway_flows.sources import (
     base_source_list,
@@ -69,12 +73,18 @@ ILCD_MASS = "93a60a56-a3c8-11da-a746-0800200b9a66"
 #: value and the base list's statements file rules fission energy.
 EF_URANIUM = "3e4d2966-6556-11dd-ad8b-0800200c9a66"
 
-#: Statements per source list in the shipped files, by `list_name`.
+#: Statements per source list in the shipped files, by `list_name`, read with
+#: no release so an entry stated for 3.8 only counts.  58 until #407's phase
+#: B read the vendors' own statements off their files; what is left is what
+#: nobody states: BAFU's eleven borrowed or archive-derived numbers, the six
+#: ecoinvent numbers the exchanges do not carry (two of them for 3.8 only),
+#: and AGRIBALYSE's water densities, radionuclide activities, uranium and
+#: misspelt hard-coal value.  Stepwise's export states every one of its own.
 EXPECTED_STATEMENT_COUNTS = {
     "ecoinvent": 6,
     "bafu": 11,
-    "stepwise": 12,
-    "agribalyse": 29,
+    "stepwise": 0,
+    "agribalyse": 17,
 }
 
 
@@ -209,15 +219,17 @@ class ChooseStatementTestCase(unittest.TestCase):
             choose_statement([self.gross], target_quantity=NET_CALORIFIC_VALUE)
         )
 
-    def test_the_rule_yields_to_a_closer_statement(self):
-        """An exact or basis-unstated statement comes before any rule."""
+    def test_the_rule_comes_before_a_closer_statement(self):
+        """A rule is the list's convention, written exactly where the exact
+        match is not what the list counts: Stepwise's brown coal carries the
+        block's net 8.75 and the method's 9.9, and Stepwise counts 9.9."""
         self.assertIs(
             choose_statement(
                 [self.gross, self.net],
                 target_quantity=NET_CALORIFIC_VALUE,
                 rules=[self.gross_rule],
             ),
-            self.net,
+            self.gross,
         )
         self.assertIs(
             choose_statement(
@@ -225,8 +237,39 @@ class ChooseStatementTestCase(unittest.TestCase):
                 target_quantity=NET_CALORIFIC_VALUE,
                 rules=[self.gross_rule],
             ),
-            self.unstated,
+            self.gross,
         )
+
+    def test_a_rule_whose_statement_is_absent_falls_through(self):
+        self.assertIs(
+            choose_statement(
+                [self.net], target_quantity=NET_CALORIFIC_VALUE, rules=[self.gross_rule]
+            ),
+            self.net,
+        )
+
+    def test_a_rule_may_name_the_origin_it_converts_by(self):
+        """Stepwise converts by the method's number, not by the same quantity
+        read off the flow's name."""
+        method = _stmt(CALORIFIC_VALUE, 40.3, "MJ", "m3", StatementOrigin.VENDOR_METHOD)
+        named = _stmt(CALORIFIC_VALUE, 35.0, "MJ", "m3", StatementOrigin.FLOW_NAME)
+        rule = ConversionRule(
+            onto=NET_CALORIFIC_VALUE, convert_by=CALORIFIC_VALUE,
+            comment="the method's", stated_by=StatementOrigin.VENDOR_METHOD,
+        )
+        self.assertIs(
+            choose_statement([named, method], target_quantity=NET_CALORIFIC_VALUE, rules=[rule]),
+            method,
+        )
+        self.assertFalse(rule.admits(named))
+        self.assertTrue(rule.admits(method))
+
+    def test_the_same_number_said_twice_is_one_answer(self):
+        """The method's 30.3 and the 30.3 in the flow's name agree."""
+        method = _stmt(CALORIFIC_VALUE, 30.3, "MJ", "kg", StatementOrigin.VENDOR_METHOD)
+        named = _stmt(CALORIFIC_VALUE, 30.3, "MJ", "kg", StatementOrigin.FLOW_NAME)
+        chosen = choose_statement([named, method], target_quantity=CALORIFIC_VALUE)
+        self.assertIn(chosen, (named, method))
 
     def test_a_rule_for_another_target_is_not_applied(self):
         rule = ConversionRule(onto=CALORIFIC_VALUE, convert_by=FISSION_ENERGY, comment="no")
@@ -877,7 +920,7 @@ class ShippedFilesTestCase(unittest.TestCase):
             loaded = load_property_statements(path)
             counts[list_name] = sum(len(items) for items in loaded.statements.values())
         self.assertEqual(counts, EXPECTED_STATEMENT_COUNTS)
-        self.assertEqual(sum(counts.values()), 58)
+        self.assertEqual(sum(counts.values()), 34)
 
     def test_every_statement_states_one_kind_per_another(self):
         for path in self.files:
@@ -909,7 +952,8 @@ class ShippedFilesTestCase(unittest.TestCase):
         self.assertEqual(len({s.property_statements_path for s in ecoinvent}), 1)
 
     def test_ecoinvent_3_8_natural_gas_is_stated_per_cubic_metre(self):
-        """The one `by_release` the shipped files use, resolved both ways."""
+        """The two `stated_by_vendor_in` entries the shipped files use: 3.8's
+        own number, and nothing for a release whose exchange states it."""
         path = resolve_source_list("ecoinvent-3.8").property_statements_path
         payload = orjson.loads(path.read_bytes())
         (uuid,) = [
@@ -918,9 +962,190 @@ class ShippedFilesTestCase(unittest.TestCase):
             if e["source_name"] == "Gas, natural, in ground"
         ]
         (old,) = load_property_statements(path, release="3.8").statements[uuid]
-        (new,) = load_property_statements(path, release="3.12").statements[uuid]
+        new = load_property_statements(path, release="3.12")
         self.assertEqual((old.value, old.per_unit), (34.5, "m3"))
-        self.assertEqual((new.value, new.per_unit), (36.0, "sm3"))
+        self.assertNotIn(uuid, new.statements)
+        self.assertEqual(new.expected_from_vendor[uuid], {NET_CALORIFIC_VALUE})
+
+    def test_every_vendor_release_named_is_one_a_manifest_declares(self):
+        for path, list_name in self.files.items():
+            declared = {
+                source.list_version
+                for source in self.sources.values()
+                if source.list_name == list_name
+            }
+            payload = orjson.loads(path.read_bytes())
+            for index, entry in enumerate(payload.get("statements", [])):
+                for release in entry.get("stated_by_vendor_in", []):
+                    with self.subTest(file=path.name, statement=index, release=release):
+                        self.assertIn(release, declared)
+
+    def test_the_energy_rulings_name_the_uranium_rows(self):
+        """Stepwise and AGRIBALYSE each rule five rows fission energy, every
+        one a uranium flow by name; nothing else is ruled."""
+        for key in ("stepwise-2006-1.09", "agribalyse-3.2"):
+            with self.subTest(source=key):
+                loaded = resolve_source_list(key).load_property_statements()
+                self.assertEqual(len(loaded.energy_quantities), 5)
+                self.assertEqual(set(loaded.energy_quantities.values()), {FISSION_ENERGY})
+                payload = orjson.loads(loaded.path.read_bytes())
+                for entry in payload["energy_quantities"]:
+                    self.assertIn("Uranium", entry["source_name"])
+
+
+class VendorAndCuratorTestCase(LoaderFixtureTestCase):
+    """What the vendor states and what the curator states meet on attach.
+
+    Since #407's phase B a flow arrives with the vendor's statements on it --
+    the adapter's, the name reader's -- and the curated file is for what
+    nobody states.  Three rulings decide the meeting: an entry may say the
+    vendor states its quantity in some releases (`stated_by_vendor_in`), a
+    file may rule a flow's unlabelled energy a fission energy
+    (`energy_quantities`), and a rule may name the origin it converts by.
+    Each is checked both ways, because a ruling about nothing looks exactly
+    like a decision.
+    """
+
+    def _vendor(self, quantity=CALORIFIC_VALUE, value=19.1, origin=StatementOrigin.VENDOR_METHOD):
+        return vendor_statement(
+            quantity=quantity, value=value, unit="MJ", per_unit="kg", stated_by=origin,
+            primary_source=["the method"], derived_from="export.csv",
+            generated_by="fetch_test", attributed_to="test", comment="the method's number",
+        )
+
+    def test_a_release_the_vendor_states_yields_nothing_and_is_expected(self):
+        loaded = self.load(
+            release="3.12",
+            statements=[_entry(checked_against=["3.8"], stated_by_vendor_in=["3.12"])],
+        )
+        self.assertEqual(loaded.statements, {})
+        self.assertEqual(loaded.expected_from_vendor, {"coal-hard": {NET_CALORIFIC_VALUE}})
+        again = self.load(
+            release="3.8",
+            statements=[_entry(checked_against=["3.8"], stated_by_vendor_in=["3.12"])],
+        )
+        self.assertEqual(set(again.statements), {"coal-hard"})
+        self.assertEqual(again.expected_from_vendor, {})
+
+    def test_a_release_both_checked_and_stated_by_the_vendor_is_refused(self):
+        self.assertRefused(
+            "stated_by_vendor_in",
+            statements=[_entry(checked_against=["3.12"], stated_by_vendor_in=["3.12"])],
+        )
+
+    def test_a_release_named_nowhere_is_still_refused(self):
+        self.assertRefused(
+            "stated_by_vendor_in",
+            release="3.13",
+            statements=[_entry(checked_against=["3.8"], stated_by_vendor_in=["3.12"])],
+        )
+
+    def test_the_expected_vendor_statement_has_to_be_there(self):
+        loaded = self.load(
+            release="3.12",
+            statements=[_entry(checked_against=["3.8"], stated_by_vendor_in=["3.12"])],
+        )
+        coal = Flow(uuid="coal-hard", name="Coal, hard", unit="kg",
+                    property_statements=[self._vendor(NET_CALORIFIC_VALUE, 43.4, StatementOrigin.VENDOR_FLOW)])
+        attach_property_statements([coal], loaded)
+        self.assertEqual(len(coal.property_statements), 1)
+        bare = Flow(uuid="coal-hard", name="Coal, hard", unit="kg")
+        with self.assertRaises(ValueError) as caught:
+            attach_property_statements([bare], loaded)
+        self.assertIn("stated_by_vendor_in", str(caught.exception))
+
+    def test_a_curated_statement_the_vendor_also_makes_is_refused(self):
+        loaded = self.load(statements=[_entry()])
+        coal = Flow(uuid="coal-hard", name="Coal, hard", unit="kg",
+                    property_statements=[self._vendor(NET_CALORIFIC_VALUE, 18.2, StatementOrigin.VENDOR_FLOW)])
+        with self.assertRaises(ValueError) as caught:
+            attach_property_statements([coal], loaded)
+        self.assertIn("One number has one home", str(caught.exception))
+
+    def test_a_curated_statement_of_another_quantity_joins_the_vendors(self):
+        loaded = self.load(statements=[_entry()])
+        coal = Flow(uuid="coal-hard", name="Coal, hard", unit="kg",
+                    property_statements=[self._vendor(GROSS_CALORIFIC_VALUE, 19.1, StatementOrigin.VENDOR_FLOW)])
+        self.assertEqual(attach_property_statements([coal], loaded), 1)
+        self.assertEqual(
+            [(s.quantity, s.stated_by) for s in coal.property_statements],
+            [(GROSS_CALORIFIC_VALUE, StatementOrigin.VENDOR_FLOW),
+             (NET_CALORIFIC_VALUE, StatementOrigin.VENDOR_FLOW)],
+        )
+
+    def test_an_energy_ruling_relabels_the_methods_number_and_the_names(self):
+        loaded = self.load(energy_quantities=[
+            {"source_uuid": "uranium", "quantity": FISSION_ENERGY, "comment": "not burnt"}
+        ])
+        uranium = Flow(uuid="uranium", name="Uranium", unit="kg", property_statements=[
+            self._vendor(CALORIFIC_VALUE, 560000.0, StatementOrigin.VENDOR_METHOD),
+            self._vendor(CALORIFIC_VALUE, 560000.0, StatementOrigin.FLOW_NAME),
+            self._vendor(GROSS_CALORIFIC_VALUE, 1.0, StatementOrigin.VENDOR_FLOW),
+        ])
+        attach_property_statements([uranium], loaded)
+        self.assertEqual(
+            [s.quantity for s in uranium.property_statements],
+            [FISSION_ENERGY, FISSION_ENERGY, GROSS_CALORIFIC_VALUE],
+        )
+        self.assertIn("test-property-statements.json", uranium.property_statements[0].comment)
+        self.assertIs(uranium.property_statements[0].stated_by, StatementOrigin.VENDOR_METHOD)
+
+    def test_an_energy_ruling_with_nothing_to_relabel_is_refused(self):
+        loaded = self.load(energy_quantities=[
+            {"source_uuid": "uranium", "quantity": FISSION_ENERGY, "comment": "not burnt"}
+        ])
+        with self.assertRaises(ValueError) as caught:
+            attach_property_statements([Flow(uuid="uranium", name="Uranium", unit="kg")], loaded)
+        self.assertIn("no unlabelled energy", str(caught.exception))
+
+    def test_an_energy_ruling_naming_a_mass_is_refused(self):
+        self.assertRefused(
+            "not an energy",
+            energy_quantities=[{"source_uuid": "u", "quantity": MASS, "comment": "no"}],
+        )
+
+    def test_a_rule_may_name_its_origin_and_an_unknown_one_is_refused(self):
+        loaded = self.load(conversion_rules=[{
+            "onto": NET_CALORIFIC_VALUE, "convert_by": CALORIFIC_VALUE,
+            "stated_by": "vendor-method", "comment": "the method's number",
+        }])
+        self.assertIs(loaded.rules[0].stated_by, StatementOrigin.VENDOR_METHOD)
+        self.assertRefused("stated by 'the vendor'", conversion_rules=[{
+            "onto": NET_CALORIFIC_VALUE, "convert_by": CALORIFIC_VALUE,
+            "stated_by": "the vendor", "comment": "no",
+        }])
+
+    def test_a_ruling_about_a_flow_the_list_does_not_ship_is_refused(self):
+        loaded = self.load(statements=[_entry()])
+        with self.assertRaises(ValueError) as caught:
+            refuse_rulings_about_unshipped_flows([Flow(uuid="water", unit="m3")], loaded)
+        self.assertIn("coal-hard", str(caught.exception))
+        refuse_rulings_about_unshipped_flows([Flow(uuid="coal-hard", unit="kg")], loaded)
+
+    def test_the_name_reader_writes_onto_the_raw_row(self):
+        rows = [
+            {"uuid": "gas", "name": "Gas, natural, 46.8 MJ per kg", "unit": "kg"},
+            {"uuid": "ore", "name": "Uranium oxide, 332 GJ per kg, in ore", "unit": "kg"},
+            {"uuid": "coal", "name": "Coal, hard", "unit": "kg"},
+        ]
+        self.assertEqual(add_statements_from_names(rows, label="stepwise-2006-1.09"), 2)
+        gas = PropertyStatement.from_dict(rows[0]["property_statements"][0])
+        self.assertEqual((gas.quantity, gas.value, gas.unit, gas.per_unit), (CALORIFIC_VALUE, 46.8, "MJ", "kg"))
+        self.assertIs(gas.stated_by, StatementOrigin.FLOW_NAME)
+        self.assertEqual(gas.provenance.was_attributed_to, "stepwise-2006-1.09")
+        ore = PropertyStatement.from_dict(rows[1]["property_statements"][0])
+        self.assertEqual((ore.value, ore.unit), (332.0, "GJ"))
+        self.assertEqual(factor_between(ore, "kg", "MJ"), 332000.0)
+        self.assertNotIn("property_statements", rows[2])
+
+    def test_parse_value_per_unit(self):
+        self.assertEqual(parse_value_per_unit("19.1 MJ/kg"), (19.1, "MJ", "kg"))
+        self.assertEqual(parse_value_per_unit(" 650 kg/m3 "), (650.0, "kg", "m3"))
+        self.assertEqual(parse_value_per_unit("18.2 MH/kg"), (18.2, "MH", "kg"))
+        self.assertEqual(parse_value_per_unit("9,90 MJ/kg"), (9.9, "MJ", "kg"))
+        self.assertIsNone(parse_value_per_unit("19.1 MJ per kg"))
+        self.assertIsNone(parse_value_per_unit("Formula: CH4"))
+        self.assertIsNone(parse_value_per_unit(""))
 
 
 if __name__ == "__main__":

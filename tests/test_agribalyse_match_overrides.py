@@ -16,7 +16,9 @@ import unittest
 
 import orjson
 
-from brightway_flows.domain.property_statements import factor_between
+from vendor_statements import resolved_statements
+
+from brightway_flows.domain.property_statements import StatementOrigin, factor_between
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 from brightway_flows.integrations.agribalyse import _flow_uuid
 from brightway_flows.match_overrides import load_match_overrides
@@ -112,11 +114,14 @@ class EnergyAndPeatTestCase(unittest.TestCase):
     in `unit-change-allowlist.json`.
 
     Since #407 the number is not on the override row.  It is a statement about
-    the flow in `agribalyse-3.2-property-statements.json` -- 9.5 MJ of
-    calorific value per kilogram of `Wood and wood waste, 9.5 MJ per kg` -- and
-    the merge derives the mapping's factor from it; the override names the
-    target and nothing else.  The seven rows that cross no unit have no
-    statement either, which is the negative half of the same claim.
+    the flow -- 9.5 MJ of calorific value per kilogram of `Wood and wood waste,
+    9.5 MJ per kg` -- read off the flow's own name when the list is loaded
+    (phase B; `tests/vendor_statements.py` runs the same readers), and the
+    merge derives the mapping's factor from it; the override names the target
+    and nothing else.  The uranium oxide's 332 GJ is ruled fission energy by
+    `agribalyse-3.2-property-statements.json`.  The seven rows that cross no
+    unit have no statement either, which is the negative half of the same
+    claim.
     """
 
     #: uuid -> (vendor name, compartment, subcompartment, unit, target uuid,
@@ -168,7 +173,8 @@ class EnergyAndPeatTestCase(unittest.TestCase):
         }
         # Through the list, so the statements are resolved for the release the
         # manifest declares and an unchecked number is refused here.
-        self.statements = known_source_lists()[KEY].load_property_statements()
+        self.source = known_source_lists()[KEY]
+        self.statements = self.source.load_property_statements()
 
     def test_every_row_names_the_flow_its_vendor_fields_derive(self) -> None:
         for uuid, (name, compartment, sub, unit, _, _) in self.ROWS.items():
@@ -177,35 +183,37 @@ class EnergyAndPeatTestCase(unittest.TestCase):
                 self.assertEqual(_flow_uuid(name, compartment, sub, unit), uuid)
 
     def test_every_row_states_its_target_and_factor(self) -> None:
-        """The target comes off the override and the number off the statement:
-        one statement per rebased row, in megajoules per kilogram, whose value
-        is the factor the mapping publishes between the two units.  A row that
-        crosses nothing carries no factor on the override and has no statement
-        to derive one from."""
+        """The target comes off the override and the number off the name:
+        one statement per rebased row, stated by the flow's name, whose value
+        between the row's unit and megajoules is the factor the mapping
+        publishes.  A row that crosses nothing carries no factor on the
+        override and has no statement to derive one from."""
         for uuid, (name, _, _, unit, target, factor) in self.ROWS.items():
             with self.subTest(name=name):
                 override = self.by_uuid[uuid]
                 self.assertEqual(override.target_uuid, target)
                 self.assertTrue(override.comment.strip())
                 self.assertFalse(override.converts)
+                self.assertNotIn(uuid, self.statements.statements)
+                statements = resolved_statements(self.source, uuid=uuid, name=name, unit=unit)
                 if factor is None:
-                    self.assertNotIn(uuid, self.statements.statements)
+                    self.assertEqual(statements, [])
                 else:
-                    statements = self.statements.statements[uuid]
                     self.assertEqual(len(statements), 1)
                     statement = statements[0]
+                    self.assertIs(statement.stated_by, StatementOrigin.FLOW_NAME)
                     self.assertEqual(statement.per_unit, unit)
-                    self.assertEqual(statement.unit, "MJ")
                     self.assertEqual(factor_between(statement, unit, "MJ"), factor)
 
     def test_the_two_statements_name_what_their_megajoules_measure(self) -> None:
         """A bare 332,000 could be a heat of combustion; it is not.  The wood's
         9.5 MJ/kg is a heating value whose basis the name does not state, and
-        the uranium oxide's megajoules are fission energy, which converts only
-        onto a target ruled to measure one."""
+        the uranium oxide's gigajoules are fission energy -- ruled so by the
+        list's statements file, since the name says only `GJ` -- which
+        converts only onto a target ruled to measure one."""
         quantities = {
-            uuid: self.statements.statements[uuid][0].quantity
-            for uuid, (*_rest, factor) in self.ROWS.items()
+            uuid: resolved_statements(self.source, uuid=uuid, name=name, unit=unit)[0].quantity
+            for uuid, (name, _, _, unit, _, factor) in self.ROWS.items()
             if factor is not None
         }
         self.assertEqual(

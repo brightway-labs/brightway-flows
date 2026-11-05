@@ -1,13 +1,25 @@
 import json
 from collections import defaultdict
 from pathlib import Path
+from typing import Any
 
 import randonneur_data as rd
+import structlog
 import xmltodict
 from ecoinvent_interface import EcoinventRelease, ReleaseType, Settings
 
+from brightway_flows.domain.property_statements import (
+    PropertyStatement,
+    StatementOrigin,
+    parse_value_per_unit,
+    vendor_statement,
+)
+from brightway_flows.domain.quantities import quantity, quantity_for_label
+from brightway_flows.domain.units import unit_row_for
 from brightway_flows.filesystem import DATA_DIR
 from brightway_flows.sources import SourceList, source_flows_path
+
+logger = structlog.get_logger(__name__)
 from brightway_flows.transformers.unit_normalization import (
     build_units_index,
     resolve_unit_notation,
@@ -55,6 +67,117 @@ def _load_replace_table(version: str) -> list[dict]:
     registry = rd.Registry()
     data = registry.get_file(mapping_file)
     return data["replace"]
+
+
+def _text(value: Any) -> str:
+    """xmltodict hands a leaf over as a string, or as a dict with ``#text``."""
+    if isinstance(value, dict):
+        return str(value.get("#text") or "").strip()
+    return str(value or "").strip()
+
+
+def property_definitions(properties_xml: Path) -> dict[str, tuple[str, str]]:
+    """``Properties.xml`` as ``{property id: (name, unit)}``.
+
+    The exchange carries only the property's id and an amount; the name --
+    `heating value, net` -- and the unit the amount is in -- `MJ` -- are in the
+    master data's property list, beside the exchanges.
+    """
+    payload = xmltodict.parse(properties_xml.read_text(encoding="utf-8"))
+    rows = payload.get("validProperties", {}).get("property") or []
+    if isinstance(rows, dict):
+        rows = [rows]
+    return {
+        str(row["@id"]): (_text(row.get("name")), _text(row.get("unitName")))
+        for row in rows
+        if isinstance(row, dict) and row.get("@id")
+    }
+
+
+def statements_from_properties(
+    obj: dict,
+    definitions: dict[str, tuple[str, str]],
+    *,
+    flow_unit: str,
+    version: str,
+    source: str,
+) -> list[PropertyStatement]:
+    """What an exchange's ``<property>`` children state about one unit of it.
+
+    ecoinvent gives `Oil, crude` a `heating value, net` of 43.4 and a `heating
+    value, gross` of 46 from 3.9.1 on, each a property whose unit is megajoules
+    and whose amount is per unit of the exchange, which is how the property's
+    own comment reads it ("Expressed in MJ per unit of product").  Each becomes
+    a :class:`~brightway_flows.domain.property_statements.PropertyStatement`
+    `stated_by` ``vendor-flow``, its quantity matched by the property's name
+    against the vocabulary's spellings.  A property whose name is no quantity
+    the vocabulary knows -- `wet mass`, `carbon content, fossil` -- is passed
+    over, and so is an amount of zero, which states nothing.  A property whose
+    unit is itself a ratio (`kg/m3`) is read as that ratio; none is on an
+    elementary exchange in the five releases read today.
+    """
+    raw = obj.get("property")
+    if not raw:
+        return []
+    properties = raw if isinstance(raw, list) else [raw]
+    statements: list[PropertyStatement] = []
+    name = _text(obj.get("name"))
+    for prop in properties:
+        if not isinstance(prop, dict):
+            continue
+        definition = definitions.get(str(prop.get("@propertyId") or ""))
+        if definition is None:
+            continue
+        label, prop_unit = definition
+        slug = quantity_for_label(label)
+        if slug is None:
+            continue
+        try:
+            amount = float(prop.get("@amount"))
+        except (TypeError, ValueError):
+            continue
+        if amount <= 0:
+            continue
+        ratio = parse_value_per_unit(f"{amount} {prop_unit}")
+        if ratio is not None:
+            _, unit, per_unit = ratio
+        else:
+            unit, per_unit = prop_unit, flow_unit
+        if not unit or not per_unit:
+            continue
+        unit_kind = _kind_of(unit)
+        if not unit_kind or unit_kind != quantity(slug).quantity_kind_iri:
+            continue
+        if unit_kind == _kind_of(per_unit) or not _kind_of(per_unit):
+            continue
+        comment = _text(prop.get("comment"))
+        statements.append(
+            vendor_statement(
+                quantity=slug,
+                value=amount,
+                unit=unit,
+                per_unit=per_unit,
+                stated_by=StatementOrigin.VENDOR_FLOW,
+                primary_source=[
+                    f"ecoinvent {version} ElementaryExchanges.xml, exchange "
+                    f"`{name}` ({obj.get('@id')}), property `{label}`: {amount} "
+                    f"{prop_unit}" + (f" -- {comment}" if comment else "")
+                ],
+                derived_from=f"ecoinvent-{version} ElementaryExchanges.xml",
+                generated_by=f"fetch_{source}",
+                attributed_to=source,
+                comment=(
+                    f"ecoinvent's master data states the property `{label}` on "
+                    f"the exchange" + (f": {comment}" if comment else ".")
+                ),
+            )
+        )
+    return statements
+
+
+def _kind_of(unit: str) -> str:
+    row = unit_row_for(unit)
+    return str(row.get("quantity_kind_iri") or "") if row is not None else ""
 
 
 def reformat(obj: dict) -> dict:
@@ -145,6 +268,31 @@ def ecospold2_biosphere_extractor(
             f"Add them to units.json or UNIT_ALIASES. "
             f"Unresolved: {sorted(missing_units)}"
         )
+
+    # After the units are canonical, so a statement is per the unit the flow
+    # is carried in (`sm3`, not `Sm3`).  The property list is the master
+    # data's, beside the exchanges; a release shipped without it states no
+    # property a reader can name, and the log says so.
+    properties_xml = input_path.parent / "Properties.xml"
+    if properties_xml.exists():
+        definitions = property_definitions(properties_xml)
+        stated = 0
+        for flow, obj in zip(data, ei_xml):
+            statements = statements_from_properties(
+                obj, definitions, flow_unit=str(flow.get("unit") or ""),
+                version=version, source=source,
+            )
+            if statements:
+                flow["property_statements"] = [s.to_dict() for s in statements]
+                stated += len(statements)
+        logger.info(
+            "ecoinvent_property_statements_extracted",
+            version=version,
+            flows=sum(1 for flow in data if "property_statements" in flow),
+            statements=stated,
+        )
+    else:
+        logger.warning("ecoinvent_properties_xml_missing", path=str(properties_xml))
 
     with open(output_path, "w") as fs:
         json.dump(data, fs, indent=2)

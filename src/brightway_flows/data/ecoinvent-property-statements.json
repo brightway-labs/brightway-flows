@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "What ecoinvent states about one unit of its own flows, read for the merge (#407). Every value here was a bare `conversion_factor` on a row of `ecoinvent-match-overrides.json` until #407; the numbers are unchanged and each now says what quantity it is, which unit it is in, which releases it was checked against and where it came from. Shared by every ecoinvent release the manifests declare, with `by_release` where a release restated a measurement: crude oil was 42.3 MJ/kg in 3.8 and 43.4 from 3.9.1 on, and 3.8's natural gas is per plain cubic metre where later releases are per standard cubic metre. The coal values come from ecoinvent's EF 3.1 implementation workbook, which states no basis, so they are `calorific-value`; crude oil and natural gas carry `heating value, net` on the exchange itself from 3.9 on and are `net-calorific-value`; uranium is fission energy, never a heat of combustion.",
+  "description": "What ecoinvent states about one unit of its own flows, read for the merge (#407). Every value here was a bare `conversion_factor` on a row of `ecoinvent-match-overrides.json` until #407; the numbers are unchanged and each now says what quantity it is, which unit it is in, which releases it was checked against and where it came from. Shared by every ecoinvent release the manifests declare, with `by_release` where a release restated a measurement: crude oil was 42.3 MJ/kg in 3.8 and 43.4 from 3.9.1 on, and 3.8's natural gas is per plain cubic metre where later releases are per standard cubic metre. The coal values come from ecoinvent's EF 3.1 implementation workbook, which states no basis, so they are `calorific-value`; crude oil and natural gas carry `heating value, net` on the exchange itself from 3.9 on and are `net-calorific-value`; uranium is fission energy, never a heat of combustion. Since phase B of #407 the adapter reads the `heating value, net` and `heating value, gross` properties ecoinvent states on its exchanges (crude oil and natural gas from 3.9.1, and some thirty emission flows in 3.12) onto the flows as the vendor's own statements; an entry here names those releases in `stated_by_vendor_in` and states the number only for 3.8, which carries none.",
   "statements": [
     {
       "source_uuid": "024c9722-1e88-412b-8c4b-10c532be8dca",
@@ -66,52 +66,45 @@
       "source_uuid": "7c337428-fb1b-45c7-bbb2-2ee4d29e17ba",
       "source_name": "Gas, natural, in ground",
       "quantity": "net-calorific-value",
-      "value": 36.0,
+      "value": 34.5,
       "unit": "MJ",
-      "per_unit": "sm3",
+      "per_unit": "m3",
       "stated_by": "curated",
       "checked_against": [
+        "3.8"
+      ],
+      "primary_source": [
+        "ecoinvent 3.8's EF 3.1 LCIA Implementation workbook, sheet CFs, category `Resource use, fossils`: the factor on the cubic-metre flow, which is 1 MJ/MJ times the energy content"
+      ],
+      "comment": "ecoinvent 3.8 ships `Gas, natural, in ground` per cubic metre with no heating value property on the exchange; its implementation workbook counts the cubic metre as 34.5 MJ. From 3.9.1 the exchange is per standard cubic metre and carries `heating value, net` 36 and `heating value, gross` 40 as properties, which the adapter reads onto the flow, so this entry covers 3.8 only and names the later releases as the vendor's to state. ecoinvent revised the number at 3.9 following Meili et al. (2022), so converting a 3.8 inventory with 36.0 would use a heating value that release never had (#162).",
+      "stated_by_vendor_in": [
         "3.9.1",
         "3.10.1",
         "3.11",
         "3.12"
-      ],
-      "by_release": {
-        "3.8": {
-          "value": 34.5,
-          "per_unit": "m3"
-        }
-      },
-      "primary_source": [
-        "ecoinvent's EF 3.1 LCIA Implementation workbook, sheet CFs, category `Resource use, fossils`: the factor on the kilogram or cubic-metre flow, which is 1 MJ/MJ times the energy content",
-        "ecoinvent 3.12 ElementaryExchanges.xml, property `heating value, net` 36 on `Gas, natural` per standard cubic metre"
-      ],
-      "comment": "One of the energy-content family; the full reasoning is on the family's first row above. Stated after an independent review of #336 found the first cut silently dropped the factor for 3.8. (#141) Read off ecoinvent's own LCIA implementation workbooks, one per release: `LCIA Implementation v3.8.xlsx`, `3.9.1`, `3.10.1`, `3.11` and `3.12`, `energy resources: non-renewable` under EF v3.0 and EF v3.1. The characterisation factor for a kilogram flow under an indicator defined per megajoule is the energy content, which is why the workbook answers this question at all. ecoinvent revised this value at 3.9 following Meili et al. (2021) and rebuilt its oil and gas datasets on the new number, so a 3.8 inventory has to be converted with 3.8's figure: converting it with the later one used a heating value that release never had. The line falls exactly between 3.8 and 3.9.1, and of the seven carriers the workbooks state only this one, crude oil and mine off-gas moved -- the coals, peat and uranium cite the older source in every report and did not. (#162) 34.5 MJ per cubic metre in 3.8's workbook and 36.0 per standard cubic metre from 3.9.1 on. The two spellings under `source_unit` and the two factors line up: 3.8 is the release that ships `m3`, and the releases that ship `sm3` are the ones the 36.0 was read from. The sentence that used to stand here said ecoinvent respelled the unit at 3.9 \"without restating any amount\", and the amount was restated in that very release -- a statement about units standing in for one about releases."
+      ]
     },
     {
       "source_uuid": "88d06db9-59a1-4719-9174-afeb1fa4026a",
       "source_name": "Oil, crude, in ground",
       "quantity": "net-calorific-value",
-      "value": 43.4,
+      "value": 42.3,
       "unit": "MJ",
       "per_unit": "kg",
       "stated_by": "curated",
       "checked_against": [
+        "3.8"
+      ],
+      "primary_source": [
+        "ecoinvent 3.8's EF 3.1 LCIA Implementation workbook, sheet CFs, category `Resource use, fossils`: the factor on the kilogram flow, which is 1 MJ/MJ times the energy content"
+      ],
+      "comment": "ecoinvent 3.8 states no heating value on its `Oil, crude` exchange; its implementation workbook counts the kilogram as 42.3 MJ. From 3.9.1 the exchange carries `heating value, net` 43.4 and `heating value, gross` 46 as properties (Meili et al. 2022, section 5.1), which the adapter reads onto the flow, so this entry covers 3.8 only and names the later releases as the vendor's to state. A 3.8 inventory converted at 43.4 would be 2.6% high (#162).",
+      "stated_by_vendor_in": [
         "3.9.1",
         "3.10.1",
         "3.11",
         "3.12"
-      ],
-      "by_release": {
-        "3.8": {
-          "value": 42.3
-        }
-      },
-      "primary_source": [
-        "ecoinvent's EF 3.1 LCIA Implementation workbook, sheet CFs, category `Resource use, fossils`: the factor on the kilogram or cubic-metre flow, which is 1 MJ/MJ times the energy content",
-        "ecoinvent 3.12 ElementaryExchanges.xml, property `heating value, net` 43.4 on `Oil, crude` (3.8 states none; 42.3 is its workbook figure)"
-      ],
-      "comment": "One of the energy-content family; the full reasoning is on the family's first row above. (#141) Read off ecoinvent's own LCIA implementation workbooks, one per release: `LCIA Implementation v3.8.xlsx`, `3.9.1`, `3.10.1`, `3.11` and `3.12`, `energy resources: non-renewable` under EF v3.0 and EF v3.1. The characterisation factor for a kilogram flow under an indicator defined per megajoule is the energy content, which is why the workbook answers this question at all. ecoinvent revised this value at 3.9 following Meili et al. (2021) and rebuilt its oil and gas datasets on the new number, so a 3.8 inventory has to be converted with 3.8's figure: converting it with the later one used a heating value that release never had. The line falls exactly between 3.8 and 3.9.1, and of the seven carriers the workbooks state only this one, natural gas and mine off-gas moved -- the coals, peat and uranium cite the older source in every report and did not. (#162) 42.3 MJ/kg in 3.8's workbook and 43.4 from 3.9.1 on."
+      ]
     },
     {
       "source_uuid": "b6d0042d-0ef8-49ed-9162-a07ff1ccf750",

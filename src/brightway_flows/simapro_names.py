@@ -743,6 +743,31 @@ def name_without_unit_suffix(name: str, unit: str) -> str | None:
     return match["name"].strip() or None
 
 
+#: An energy content written into the name: ``Gas, natural, 46.8 MJ per kg``,
+#: ``Uranium oxide, 332 GJ per kg, in ore``, ``Oil, crude, 38400 MJ per m3``.
+#: The lineage's way of saying what a kilogram stands for in a list keyed on
+#: names alone (`docs/findings/units.md`).  The number is read as the vendor
+#: wrote it; which quantity it is -- a heat of combustion, or for the uranium
+#: rows a fission energy -- is the list's statements file's to say.
+_ENERGY_IN_NAME = re.compile(
+    r"(?<![\w.])(?P<value>\d+(?:\.\d+)?)\s*(?P<unit>MJ|GJ)\s+per\s+(?P<per>kg|m3)(?![\w])"
+)
+
+
+def energy_stated_in_name(name: str) -> tuple[float, str, str] | None:
+    """``"Gas, natural, 46.8 MJ per kg"`` -> ``(46.8, "MJ", "kg")``; ``None`` for a name that states none.
+
+    >>> energy_stated_in_name("Uranium oxide, 332 GJ per kg, in ore")
+    (332.0, 'GJ', 'kg')
+    >>> energy_stated_in_name("Coal, hard") is None
+    True
+    """
+    match = _ENERGY_IN_NAME.search(str(name or ""))
+    if match is None:
+        return None
+    return float(match["value"]), match["unit"], match["per"]
+
+
 def unit_suffix_rewrites(
     rows: Iterable[tuple[str, str]],
 ) -> dict[tuple[str, str], str]:

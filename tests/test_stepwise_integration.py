@@ -25,6 +25,7 @@ from brightway_flows.context_mapping import (
     normalize_context_key,
 )
 from brightway_flows.domain.flow import Flow
+from brightway_flows.domain.property_statements import PropertyStatement, StatementOrigin
 from brightway_flows.domain.units import build_units_index, resolve_unit_notation
 from brightway_flows.filesystem import stepwise_csv_path
 from brightway_flows.integrations.stepwise import (
@@ -36,6 +37,7 @@ from brightway_flows.integrations.stepwise import (
     fetch,
     method_revision,
     parse_substance_comment,
+    statements_from_substance_comment,
 )
 from brightway_flows.pipeline.loading import _normalize_input_flow_record
 from brightway_flows.sources import (
@@ -336,6 +338,123 @@ class PlacementTestCase(unittest.TestCase):
         for row in self.rows:
             with self.subTest(context=row["context"]):
                 self.assertIn(normalize_context_key(row["context"]), rules)
+
+
+class PropertyStatementsTestCase(unittest.TestCase):
+    """What the export states about a unit of a flow comes out on the record.
+
+    Two readers (#407, phase B).  The substance block's comment states a
+    fuel's heating values beside its synonyms, and the method's `Non-renewable
+    energy` category states what Stepwise counts a kilogram of the flow as.
+    The fixture's `Coal, hard` row is the real file's, typo and all: its lower
+    heating value is written `18.2 MH/kg`, and the adapter leaves it unread
+    and says so rather than guess.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.rows = extract_elementary_flows(FIXTURE, source=KEY)
+        cls.by_name = {row["name"]: row for row in cls.rows}
+
+    def _statements(self, name):
+        return [
+            PropertyStatement.from_dict(entry)
+            for entry in self.by_name[name].get("property_statements", [])
+        ]
+
+    def test_the_substance_blocks_heating_value_is_the_vendors_statement(self):
+        coal = self._statements("Coal, hard")
+        gross = [s for s in coal if s.quantity == "gross-calorific-value"]
+        self.assertEqual(len(gross), 1)
+        (gross,) = gross
+        self.assertEqual((gross.value, gross.unit, gross.per_unit), (19.1, "MJ", "kg"))
+        self.assertIs(gross.stated_by, StatementOrigin.VENDOR_FLOW)
+        self.assertIn("Higher heating value (HHV): 19.1 MJ/kg", gross.provenance.had_primary_source[0])
+        self.assertEqual(gross.provenance.was_derived_from, FIXTURE.name)
+        self.assertEqual(gross.provenance.was_attributed_to, KEY)
+
+    def test_a_misspelt_unit_is_left_unread(self):
+        """`18.2 MH/kg` is no unit `units.json` knows, so no net value arrives
+        off the file; the curated file states it, saying why."""
+        coal = self._statements("Coal, hard")
+        self.assertEqual([s.quantity for s in coal if s.quantity == "net-calorific-value"], [])
+
+    def test_the_methods_factor_is_the_methods_statement(self):
+        coal = self._statements("Coal, hard")
+        method = [s for s in coal if s.stated_by is StatementOrigin.VENDOR_METHOD]
+        self.assertEqual(len(method), 1)
+        (method,) = method
+        self.assertEqual(method.quantity, "calorific-value")
+        self.assertEqual((method.value, method.unit, method.per_unit), (19.1, "MJ", "kg"))
+        self.assertIn("Non-renewable energy", method.provenance.had_primary_source[0])
+
+    def test_the_method_states_neither_net_nor_gross(self):
+        """Uranium's 560,000 MJ comes out as the method's unlabelled energy;
+        the list's statements file rules it fission energy at load, not here,
+        because this module reports what the file says and nothing else."""
+        (uranium,) = self._statements("Uranium")
+        self.assertEqual(uranium.quantity, "calorific-value")
+        self.assertEqual(uranium.value, 560000.0)
+        self.assertIs(uranium.stated_by, StatementOrigin.VENDOR_METHOD)
+
+    def test_a_row_with_both_carries_both_and_they_agree(self):
+        gas = self._statements("Gas, natural, 35 MJ per m3")
+        self.assertEqual(
+            sorted((s.quantity, s.value, s.stated_by.value) for s in gas),
+            [
+                ("calorific-value", 35.0, "vendor-method"),
+                ("gross-calorific-value", 38.9, "vendor-flow"),
+                ("net-calorific-value", 35.0, "vendor-flow"),
+            ],
+        )
+        self.assertEqual({s.per_unit for s in gas}, {"m3"})
+
+    def test_a_factor_of_zero_or_per_an_energy_states_nothing(self):
+        """Standing wood at 0 and `Energy, from coal` at 1 MJ per MJ are the
+        method's rows and not properties of the flow; nor is Zinc's `HHV: 0`."""
+        for name in ("Wood, hard, standing", "Energy, from coal"):
+            with self.subTest(name=name):
+                self.assertNotIn("property_statements", self.by_name[name])
+        zinc = [row for row in self.rows if row["name"] == "Zinc"]
+        self.assertTrue(zinc)
+        for row in zinc:
+            self.assertNotIn("property_statements", row)
+
+    def test_the_comment_reader_reports_what_it_could_not_read(self):
+        statements, refused = statements_from_substance_comment(
+            "Synonyms: Anthracite; Hard coal\n"
+            "Higher heating value (HHV): 19.1 MJ/kg\n"
+            "Lower heating value (LHV): 18.2 MH/kg\n"
+            "Specific weight (for absolutely dry, u=0%): 650 kg/m3",
+            flow_unit="kg", row_name="Coal, hard", block="Raw materials",
+            export="x.csv", source=KEY,
+        )
+        self.assertEqual([s.quantity for s in statements], ["gross-calorific-value"])
+        # The misspelt unit, and a weight per cubic metre on a flow in kilograms.
+        self.assertEqual(
+            refused,
+            [
+                "Lower heating value (LHV): 18.2 MH/kg",
+                "Specific weight (for absolutely dry, u=0%): 650 kg/m3",
+            ],
+        )
+        wood, refused = statements_from_substance_comment(
+            "Higher heating value (HHV): 12740 MJ/m3\n"
+            "Specific weight (for absolutely dry, u=0%): 650 kg/m3",
+            flow_unit="m3", row_name="Wood, hard, standing", block="Raw materials",
+            export="x.csv", source=KEY,
+        )
+        self.assertEqual(refused, [])
+        self.assertEqual(
+            [(s.quantity, s.value, s.unit, s.per_unit) for s in wood],
+            [("gross-calorific-value", 12740.0, "MJ", "m3"), ("mass", 650.0, "kg", "m3")],
+        )
+
+    def test_every_statement_round_trips_through_the_record(self):
+        for row in self.rows:
+            for entry in row.get("property_statements", []):
+                with self.subTest(name=row["name"]):
+                    self.assertEqual(PropertyStatement.from_dict(entry).to_dict(), entry)
 
 
 class MethodIdentityTestCase(unittest.TestCase):

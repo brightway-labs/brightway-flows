@@ -1067,17 +1067,67 @@ class ConversionMultiplierTableTestCase(unittest.TestCase):
             for name, statements in self.STATEMENTS.items()
         }
 
+    #: The numbers the vendors state themselves since #407's phase B, which
+    #: are in no file under `data/`: the lines are copied from the vendor
+    #: files into `tests/vendor_statements.py` and read here through the same
+    #: readers the load uses, so the page's tables are checked against what
+    #: the merge converts by whichever of the two homes the number is in.
+    @staticmethod
+    def _vendor_stated(name):
+        """(source flow name, published number) for a list's vendor-stated rows."""
+        from vendor_statements import (
+            AGRIBALYSE_VENDOR_STATED,
+            ECOINVENT_CRUDE_OIL,
+            ECOINVENT_NATURAL_GAS,
+            ECOINVENT_PROPERTY_DEFINITIONS,
+            STEPWISE_CARRIERS,
+            published_factor,
+        )
+
+        from brightway_flows.integrations.ecoinvent import statements_from_properties
+        from brightway_flows.sources import known_source_lists
+
+        lists = known_source_lists()
+        if name == "stepwise-2006-match-overrides.json":
+            return [(flow, factor) for flow, _unit, factor in STEPWISE_CARRIERS.values()]
+        if name == "agribalyse-3.2-match-overrides.json":
+            source = lists["agribalyse-3.2"]
+            out = []
+            for uuid, (flow, unit) in AGRIBALYSE_VENDOR_STATED.items():
+                target = "fission-energy" if "Uranium" in flow else "net-calorific-value"
+                out.append((flow, published_factor(
+                    source, uuid=uuid, name=flow, unit=unit, target_unit="MJ",
+                    target_quantity=target,
+                )))
+            return out
+        if name == "ecoinvent-match-overrides.json":
+            out = []
+            for obj, unit, flow in (
+                (ECOINVENT_CRUDE_OIL, "kg", "Oil, crude, in ground"),
+                (ECOINVENT_NATURAL_GAS, "sm3", "Gas, natural, in ground"),
+            ):
+                for statement in statements_from_properties(
+                    obj, ECOINVENT_PROPERTY_DEFINITIONS, flow_unit=unit,
+                    version="3.12", source="ecoinvent-3.12",
+                ):
+                    if statement.quantity == "net-calorific-value":
+                        out.append((flow, statement.value))
+            return out
+        return []
+
     def _conversions(self, name):
         """Every (source flow, number) a list states, releases included.
 
         The statements first -- the value and every `by_release` value -- then
-        the factors still on the override rows.
+        the numbers the vendor states itself, then the factors still on the
+        override rows.
         """
         for entry in self.statements.get(name, ()):
             yield entry["source_name"], float(entry["value"])
             for restated in entry.get("by_release", {}).values():
                 if "value" in restated:
                     yield entry["source_name"], float(restated["value"])
+        yield from self._vendor_stated(name)
         for row in self.files[name]:
             factors = []
             if "conversion_factor" in row:
@@ -1101,6 +1151,7 @@ class ConversionMultiplierTableTestCase(unittest.TestCase):
         their two units differ.
         """
         crossing = {entry["source_name"] for entry in self.statements.get(name, ())}
+        crossing |= {flow for flow, _number in self._vendor_stated(name)}
         ore = set()
         for row in self.files[name]:
             if "conversion_factor" not in row and "conversion_by_release" not in row:

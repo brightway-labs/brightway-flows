@@ -303,8 +303,8 @@ applies to hold the next; these are the records between the two.
 | `Classification` | `domain/flow_object.py` | A classification with resource URLs and per-value provenance |
 | `Quantity` | `domain/quantities.py` | One row of `quantities.json`: what a stated number measures — net or gross calorific value, fission energy, mass, volume, radioactivity — with ILCD's label, the vendors' spellings and the QUDT kind it matches or narrows |
 | `PropertyStatement` | `domain/property_statements.py` | "One `per_unit` of this flow is `value` `unit` of `quantity`", said by a vendor file, a method, the flow's name or a curator, with provenance. Carried on `Flow.property_statements`; the merge derives a mapping's `qudt:conversionMultiplier` from it (#407) |
-| `ConversionRule` | `domain/property_statements.py` | A list's ruling that one quantity converts onto a target of another: Stepwise's gross calorific values onto EF's net flows |
-| `PropertyStatements` | `property_statements.py` | One list's `<list>-property-statements.json`, resolved for one release: statements by source uuid, its conversion rules, and the reference quantities it rules for named flows |
+| `ConversionRule` | `domain/property_statements.py` | A list's ruling that one quantity, optionally from one origin, converts onto a target of another, ahead of the exact match: Stepwise's method-stated calorific values onto EF's net flows |
+| `PropertyStatements` | `property_statements.py` | One list's `<list>-property-statements.json`, resolved for one release: curated statements by source uuid, its conversion rules, the reference quantities it rules for named flows, the energy quantities it rules for rows whose vendor states an unlabelled energy, and the quantities it says the vendor states for this release |
 
 ## Writing a transformer
 

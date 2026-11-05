@@ -53,6 +53,18 @@ from typing import Any, Iterator
 import orjson
 import structlog
 
+from brightway_flows.domain.property_statements import (
+    PropertyStatement,
+    StatementOrigin,
+    parse_value_per_unit,
+    vendor_statement,
+)
+from brightway_flows.domain.quantities import (
+    CALORIFIC_VALUE,
+    quantity,
+    quantity_for_label,
+)
+from brightway_flows.domain.units import unit_row_for
 from brightway_flows.downloads import FILES_BRIGHTWAY_DEV, PinnedFile
 from brightway_flows.integrations.ecoinvent import normalize_cas_number
 from brightway_flows.sources import SourceList
@@ -123,6 +135,175 @@ _COMMENT_SECTION_BREAK = re.compile(
 
 #: A comment that says there is nothing to say.
 _NO_FORMULA = "no formula available"
+
+#: A line of the substance comment stating a property: a label, a colon, and
+#: a value with its unit per the flow's -- ``Higher heating value (HHV): 19.1
+#: MJ/kg``, ``Specific weight (for absolutely dry, u=0%): 650 kg/m3``.  The
+#: label has to be one `quantities.json` spells; `Formula:` and `Synonyms:`
+#: are the other lines these comments hold and name no quantity.
+_PROPERTY_LINE = re.compile(r"^\s*(?P<label>[^:]+?)\s*:\s*(?P<rest>\S.*?)\s*$")
+
+#: The method's energy category.  Its factor on a kilogram or cubic-metre flow
+#: is the megajoules the method counts that unit of the flow as -- what a
+#: Stepwise kilogram of coal *is*, to Stepwise -- and the one place the method
+#: states an energy content.  The method says neither net nor gross: the
+#: factor is the substance block's higher heating value for hard coal, the
+#: lower one for `Coal, 18 MJ per kg`, and neither for natural gas.
+STEPWISE_ENERGY_CATEGORY = "Non-renewable energy"
+
+
+def _kind_of(unit: str) -> str:
+    row = unit_row_for(unit)
+    return str(row.get("quantity_kind_iri") or "") if row is not None else ""
+
+
+def statements_from_substance_comment(
+    comment: str,
+    *,
+    flow_unit: str,
+    row_name: str,
+    block: str,
+    export: str,
+    source: str,
+) -> tuple[list[PropertyStatement], list[str]]:
+    """What a SimaPro substance comment states about one unit of the flow.
+
+    SimaPro's substance library writes a fuel's heating values into the free
+    text beside its synonyms -- ``Higher heating value (HHV): 19.1 MJ/kg``,
+    ``Lower heating value (LHV): 18.2 MJ/kg`` -- and a wood's ``Specific weight
+    (for absolutely dry, u=0%): 650 kg/m3``.  Each is a
+    :class:`~brightway_flows.domain.property_statements.PropertyStatement` the
+    vendor makes, `stated_by` ``vendor-flow``, with the line quoted as its
+    primary source.  The label is matched against the vocabulary's spellings
+    (:func:`~brightway_flows.domain.quantities.quantity_for_label`), so the
+    higher heating value is a gross calorific value and the lower a net one.
+
+    Returns the statements and the lines that *looked* like one and were not
+    read, for the caller to log: a unit `units.json` does not know (the
+    library's `18.2 MH/kg` for hard coal is a typo in the vendor's file, and
+    the net value of that coal stays a curated statement that says so), a
+    value of zero, which converts nothing, or a value per a unit of another
+    kind than the flow's own.  Not raised: this module reports what the file
+    says, and a line it cannot read is reported as unread rather than guessed
+    at.
+    """
+    statements: list[PropertyStatement] = []
+    refused: list[str] = []
+    flow_kind = _kind_of(flow_unit)
+    for line in str(comment or "").splitlines():
+        match = _PROPERTY_LINE.match(line)
+        if match is None:
+            continue
+        slug = quantity_for_label(match["label"])
+        if slug is None:
+            continue
+        parsed = parse_value_per_unit(match["rest"])
+        if parsed is None:
+            refused.append(line.strip())
+            continue
+        value, unit, per_unit = parsed
+        unit_kind, per_kind = _kind_of(unit), _kind_of(per_unit)
+        if (
+            value <= 0
+            or not unit_kind
+            or not per_kind
+            or unit_kind != quantity(slug).quantity_kind_iri
+            or unit_kind == per_kind
+            or (flow_kind and per_kind != flow_kind)
+        ):
+            refused.append(line.strip())
+            continue
+        statements.append(
+            vendor_statement(
+                quantity=slug,
+                value=value,
+                unit=unit,
+                per_unit=per_unit,
+                stated_by=StatementOrigin.VENDOR_FLOW,
+                primary_source=[
+                    f"{export}, substance block `{block}`, row `{row_name}`: "
+                    f"`{line.strip()}`"
+                ],
+                derived_from=export,
+                generated_by=f"fetch_{source}",
+                attributed_to=source,
+                comment=(
+                    f"The vendor's substance library states it beside the "
+                    f"flow's synonyms: `{line.strip()}`."
+                ),
+            )
+        )
+    return statements, refused
+
+
+def _energy_factors(blocks: list[Any]) -> dict[tuple[str, str, str], tuple[float, str]]:
+    """The method's energy factor on every flow it characterises.
+
+    ``(name, compartment, subcompartment) -> (amount, the unit the factor is
+    per)``, from :data:`STEPWISE_ENERGY_CATEGORY`.  Only the category whose
+    unit is megajoules: a category by that name in another unit would be a
+    different method's.
+    """
+    found: dict[tuple[str, str, str], tuple[float, str]] = {}
+    for block in _named(blocks, "ImpactCategory"):
+        if str(block.parsed.get("name") or "").strip() != STEPWISE_ENERGY_CATEGORY:
+            continue
+        unit = str(block.parsed.get("unit") or "").strip()
+        if not unit.startswith("MJ"):
+            raise ValueError(
+                f"The method's {STEPWISE_ENERGY_CATEGORY!r} category is stated in "
+                f"{unit!r}, not megajoules; its factors are not energy contents."
+            )
+        for factor in block.parsed.get("cfs", []):
+            name = str(factor.get("name") or "").strip()
+            context = [str(part) for part in (factor.get("context") or [])]
+            if not name or len(context) != 2:
+                continue
+            found[(name, context[0], context[1])] = (
+                float(factor.get("factor") or 0.0),
+                str(factor.get("unit") or "").strip(),
+            )
+    return found
+
+
+def _method_statement(
+    *, name: str, compartment: str, subcompartment: str, amount: float, per_unit: str,
+    export: str, source: str,
+) -> PropertyStatement | None:
+    """The method's energy factor as a statement about one unit of the flow.
+
+    ``None`` where the factor states no property: zero (the method looked at
+    standing wood and counts it as nothing), or per a unit that is itself an
+    energy (`Energy, from coal` at 1 MJ per MJ is the unit table's fact).  The
+    quantity is a calorific value of unstated basis, because that is all the
+    method says; the list's statements file rules the uranium rows fission
+    energy, which the method's number is for them.
+    """
+    if amount <= 0 or not per_unit:
+        return None
+    if _kind_of(per_unit) == quantity(CALORIFIC_VALUE).quantity_kind_iri:
+        return None
+    if not _kind_of(per_unit):
+        return None
+    return vendor_statement(
+        quantity=CALORIFIC_VALUE,
+        value=amount,
+        unit="MJ",
+        per_unit=per_unit,
+        stated_by=StatementOrigin.VENDOR_METHOD,
+        primary_source=[
+            f"{export}, impact category `{STEPWISE_ENERGY_CATEGORY}`, row "
+            f"`{compartment}; {subcompartment}; {name}`: {amount} MJ per {per_unit}"
+        ],
+        derived_from=export,
+        generated_by=f"fetch_{source}",
+        attributed_to=source,
+        comment=(
+            f"The factor the method's `{STEPWISE_ENERGY_CATEGORY}` category gives "
+            f"one {per_unit} of this flow: what Stepwise counts that {per_unit} "
+            f"as, in megajoules. The method states neither net nor gross."
+        ),
+    )
 
 
 def download(source: SourceList, *, force: bool = False) -> Path:
@@ -292,10 +473,12 @@ def _characterised_flows(blocks: list[Any]) -> dict[tuple[str, str, str], list[s
 
 def extract_elementary_flows(csv_path: Path, *, source: str) -> list[dict[str, Any]]:
     """The flows Stepwise 2006 characterises, as source-list records."""
-    return flows_from_blocks(_blocks(csv_path), source=source)
+    return flows_from_blocks(_blocks(csv_path), source=source, export=csv_path.name)
 
 
-def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]:
+def flows_from_blocks(
+    blocks: list[Any], *, source: str, export: str = ""
+) -> list[dict[str, Any]]:
     """The flows *blocks* characterise, as source-list records.
 
     Faithful to what the export says.  A registry number is written as the
@@ -305,14 +488,30 @@ def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]
     emitted with no unit and counted: it is the vendor's own gap, the loader
     drops such a row, and inventing a unit here would hide which rows are
     missing from a file a correction could name.
+
+    Two things the export states about a unit of a flow are written as
+    ``property_statements`` on the record, in the shape
+    :class:`~brightway_flows.domain.property_statements.PropertyStatement`
+    serialises to: the heating values and specific weights in the substance
+    block's comment (:func:`statements_from_substance_comment`), and the
+    megajoules the method's energy category gives the flow
+    (:data:`STEPWISE_ENERGY_CATEGORY`).  The second is a factor, and the
+    factors are otherwise read here and not written (the module docstring);
+    this one is written because it is also the vendor's statement of what a
+    kilogram of its coal *is*, which is what #407 asks a list for, and the
+    merge converts by it only where the list's statements file rules that it
+    should.  *export* is the file's name, for the statements' provenance.
     """
     substances = _substances(blocks)
     characterised = _characterised_flows(blocks)
+    energy = _energy_factors(blocks)
 
     records: list[dict[str, Any]] = []
     unknown_compartments: dict[str, int] = defaultdict(int)
     without_substance_row: list[str] = []
     categories_seen: set[str] = set()
+    unread_property_lines: list[str] = []
+    statements_written = 0
 
     for (name, compartment, subcompartment), categories in sorted(
         characterised.items()
@@ -328,7 +527,8 @@ def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]
             substance = {}
 
         unit = str(substance.get("unit") or "").strip()
-        synonyms, comment = parse_substance_comment(str(substance.get("comment") or ""))
+        raw_comment = str(substance.get("comment") or "")
+        synonyms, comment = parse_substance_comment(raw_comment)
         record: dict[str, Any] = {
             "uuid": _flow_uuid(name, compartment, subcompartment, unit),
             "name": name,
@@ -345,6 +545,22 @@ def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]
             record["synonyms"] = synonyms
         if comment:
             record["general_comment"] = comment
+        statements, refused = statements_from_substance_comment(
+            raw_comment, flow_unit=unit, row_name=name, block=heading,
+            export=export, source=source,
+        )
+        unread_property_lines.extend(f"{name}: {line}" for line in refused)
+        factor = energy.get((name, compartment, subcompartment))
+        if factor is not None:
+            method = _method_statement(
+                name=name, compartment=compartment, subcompartment=subcompartment,
+                amount=factor[0], per_unit=factor[1], export=export, source=source,
+            )
+            if method is not None:
+                statements.append(method)
+        if statements:
+            record["property_statements"] = [s.to_dict() for s in statements]
+            statements_written += len(statements)
         records.append(record)
 
     emitted = {(row["context"][0], row["name"]) for row in records}
@@ -364,11 +580,21 @@ def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]
             count=len(without_substance_row),
             rows=without_substance_row[:10],
         )
+    if unread_property_lines:
+        logger.warning(
+            "stepwise_property_lines_not_read",
+            count=len(unread_property_lines),
+            lines=unread_property_lines[:10],
+        )
     logger.info(
         "stepwise_elementary_flows_extracted",
         flows=len(records),
         with_cas=sum(1 for row in records if "cas_numbers" in row),
         with_synonyms=sum(1 for row in records if "synonyms" in row),
+        with_property_statements=sum(
+            1 for row in records if "property_statements" in row
+        ),
+        property_statements=statements_written,
         contexts=len({tuple(row["context"]) for row in records}),
         units=sorted({row["unit"] for row in records}),
         impact_categories=len(categories_seen),
@@ -404,7 +630,9 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
             "context rules are keyed to it."
         )
 
-    records = flows_from_blocks(blocks, source=source.source_label)
+    records = flows_from_blocks(
+        blocks, source=source.source_label, export=csv_path.name
+    )
     source.flows_path.write_bytes(orjson.dumps(records, option=orjson.OPT_INDENT_2))
     logger.info(
         "stepwise_flows_written", path=str(source.flows_path), flows=len(records)
