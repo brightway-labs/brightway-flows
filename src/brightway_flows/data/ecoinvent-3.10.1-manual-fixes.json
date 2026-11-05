@@ -186,6 +186,48 @@
       "original_value": "68359-37-5",
       "new_value": "1820573-27-0",
       "comment": "68359-37-5 is cyfluthrin, the commercial mixture of eight isomers; these rows are named Beta-cyfluthrin, the product enriched in the two most insecticidally active diastereoisomeric pairs of the same set, and PPDB gives that product its own registry number, 1820573-27-0 (PPDB record 74; plain cyfluthrin is record 192, 68359-37-5). ecoinvent's own naming history says the flow is the beta product -- the 2.2-to-3.12 transition table retired the name Cyfluthrin for these uuids in favour of Beta-cyfluthrin (ecoinvent-historical-names.json) -- while EF 3.1 ships plain cyfluthrin rows under the same number, so one number was carrying two vendors' different substances and the merge folded ecoinvent's beta rows into the plain substance by CAS. With the product's own number the beta rows separate at the registry-number index itself, the way the U-238 rows separated from the element's number. The EC number 269-855-7 is stated by both PPDB records and is left alone; only the CAS can tell the two apart. 5 such row(s) in this release, all shipped as Beta-cyfluthrin with no EC of their own. The same correction is in every ecoinvent release's fixes file, because it has to be made on all of them or the releases disagree about what the number names. See #188."
+    },
+    {
+      "match": {
+        "uuid": "9b84ef84-a567-48de-8dd5-24726bc6688d"
+      },
+      "field": "cas_number",
+      "original_value": "1002-53-5",
+      "new_value": "14488-53-0",
+      "comment": "1002-53-5 is dibutylstannane, C8H20Sn, the neutral dihydride (PubChem CID 6513). The row is `Dibutyltin` to water / ocean, one row in every release from 3.8, and what is dissolved in sea water is the organotin cation Bu2Sn2+, whose own number is 14488-53-0 (PubChem CID 177839890, `C8H18Sn+2`). ecoinvent 3.13, released 2026-11-04, registers this uuid 14488-53-0 and writes the charged formula `C8H18Sn+2` on it. The newest release is read as the vendor's current opinion of what a row is -- the rule ecoinvent-canonical-identities.json applies to the metal ions -- and the correction is stated in every earlier release so the releases the build merges agree about the substance (#26). EF 3.1 carries neither number, so the row creates the substance either way; what changes is the chemistry it is published with. Keyed on the uuid: one row per release. (#458)"
+    },
+    {
+      "match": {
+        "uuid": "8892f038-c4cf-4166-adeb-df61c4e32af0"
+      },
+      "field": "cas_number",
+      "remove_value": "1011-95-6",
+      "comment": "1011-95-6 is diphenyltin as a neutral tin compound, C12H10Sn (PubChem CID 70535). The row is `Diphenyltin` to water / ocean, one row in every release from 3.8, and what it reports is the organotin cation dissolved in sea water, for which ecoinvent 3.13, released 2026-11-04, ships no registry number and a charged formula instead -- `C12H10Sn+2` on Diphenyltin, `C6H5Sn+3` on Phenyltin, `C24H51Sn1+` on Trioctyltin. Removed rather than corrected, following 3.13: the number names a compound that is not what is emitted, and the vendor states no number for the cation. With the number gone the row is placed by name, as 3.13's copy of it is, so the releases the build merges reach one substance (#26). Keyed on the uuid: one row per release. (#458)"
+    },
+    {
+      "match": {
+        "uuid": "cff46201-bfb0-486c-8f70-277a413c58a1"
+      },
+      "field": "cas_number",
+      "remove_value": "2406-68-0",
+      "comment": "2406-68-0 is a number PubChem resolves to no compound at all. The row is `Phenyltin` to water / ocean, one row in every release from 3.8, and what it reports is the organotin cation dissolved in sea water, for which ecoinvent 3.13, released 2026-11-04, ships no registry number and a charged formula instead -- `C12H10Sn+2` on Diphenyltin, `C6H5Sn+3` on Phenyltin, `C24H51Sn1+` on Trioctyltin. Removed rather than corrected, following 3.13: the number names a compound that is not what is emitted, and the vendor states no number for the cation. With the number gone the row is placed by name, as 3.13's copy of it is, so the releases the build merges reach one substance (#26). Keyed on the uuid: one row per release. (#458)"
+    },
+    {
+      "match": {
+        "uuid": "e2ee2329-8e3f-484a-a1a7-99316eb2762c"
+      },
+      "field": "cas_number",
+      "remove_value": "869-59-0",
+      "comment": "869-59-0 is trioctyltin hydride, C24H52Sn, the neutral stannane (Common Chemistry `Trioctyltin hydride`; PubChem CID 5360423 indexes it as C24H51Sn with no charge). The row is `Trioctyltin` to water / ocean, one row in every release from 3.8, and what it reports is the organotin cation dissolved in sea water, for which ecoinvent 3.13, released 2026-11-04, ships no registry number and a charged formula instead -- `C12H10Sn+2` on Diphenyltin, `C6H5Sn+3` on Phenyltin, `C24H51Sn1+` on Trioctyltin. Removed rather than corrected, following 3.13: the number names a compound that is not what is emitted, and the vendor states no number for the cation. With the number gone the row is placed by name, as 3.13's copy of it is, so the releases the build merges reach one substance (#26). Keyed on the uuid: one row per release. (#458)"
+    },
+    {
+      "match": {
+        "uuid": "ad5a58d5-6ccd-4693-96f4-e56554a81269"
+      },
+      "field": "cas_number",
+      "original_value": "892-20-6",
+      "new_value": "668-34-8",
+      "comment": "892-20-6 is triphenylstannane, C18H16Sn, the neutral hydride (PubChem CID 6460); 668-34-8 is the triphenyltin cation Ph3Sn+, `C18H15Sn+` (PubChem CID 91481), the species of the fentin fungicides in water. The row is `Triphenyltin` to water / ocean, one row in every release from 3.8. ecoinvent registered it 668-34-8 in 3.8 and 3.9.1, changed it to the hydride's number in 3.10.1, and ecoinvent 3.13, released 2026-11-04, returns to 668-34-8 with the charged formula `C18H15Sn+`. This project already files Triphenyltin under 668-34-8 in curated-chebi-roles.json. Stated in 3.10.1, 3.11 and 3.12, the releases that ship the hydride's number, so that every release the build merges reaches one substance (#26). Keyed on the uuid: one row per release. (#458)"
     }
   ]
 }

@@ -2783,3 +2783,88 @@ class PropylPropionateIsNotEthylMethylCarbonateTestCase(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0].name, "Propyl propionate")
         self.assertEqual(list(rows[0].cas_numbers), [self.ESTER])
+
+
+class OrganotinsInSeaWaterAreTheCationsTestCase(unittest.TestCase):
+    """Five organotin rows to `water / ocean` are the dissolved cations (#458).
+
+    Every release from 3.8 ships the same five uuids.  Dibutyltin carried the
+    neutral dihydride's number and takes the cation's, 14488-53-0, in every
+    file; Triphenyltin carried the cation's number in 3.8 and 3.9.1 and the
+    hydride's from 3.10.1, so only the three later files state it; Diphenyltin,
+    Phenyltin and Trioctyltin lose a number that names a neutral compound or
+    nothing, because 3.13 states none for the cations.  Keyed on the uuid, one
+    row per release.
+    """
+
+    DIBUTYLTIN = "9b84ef84-a567-48de-8dd5-24726bc6688d"
+    TRIPHENYLTIN = "ad5a58d5-6ccd-4693-96f4-e56554a81269"
+    REMOVED = {
+        "8892f038-c4cf-4166-adeb-df61c4e32af0": "1011-95-6",  # Diphenyltin
+        "cff46201-bfb0-486c-8f70-277a413c58a1": "2406-68-0",  # Phenyltin
+        "e2ee2329-8e3f-484a-a1a7-99316eb2762c": "869-59-0",  # Trioctyltin
+    }
+    HYDRIDE_RELEASES = ("ecoinvent-3.10.1", "ecoinvent-3.11", "ecoinvent-3.12")
+
+    def _paths(self):
+        return {p.name.removesuffix("-manual-fixes.json"): p
+                for p in PACKAGE_DATA_DIR.glob("ecoinvent-*-manual-fixes.json")}
+
+    def _by_uuid(self, path):
+        return {f["match"]["uuid"]: f for f in orjson.loads(path.read_bytes())["fixes"]
+                if "uuid" in f.get("match", {})}
+
+    def test_every_file_states_the_dibutyltin_number_and_the_three_removals(self):
+        for key, path in self._paths().items():
+            if key == "ecoinvent-3.13":
+                continue
+            fixes = self._by_uuid(path)
+            with self.subTest(file=path.name):
+                fix = fixes[self.DIBUTYLTIN]
+                self.assertEqual((fix["field"], fix["original_value"], fix["new_value"]),
+                                 ("cas_number", "1002-53-5", "14488-53-0"))
+                for uuid, number in self.REMOVED.items():
+                    self.assertEqual((fixes[uuid]["field"], fixes[uuid]["remove_value"]),
+                                     ("cas_number", number))
+
+    def test_only_the_releases_shipping_the_hydride_correct_triphenyltin(self):
+        for key, path in self._paths().items():
+            if key == "ecoinvent-3.13":
+                continue
+            fix = self._by_uuid(path).get(self.TRIPHENYLTIN)
+            with self.subTest(file=path.name):
+                if key in self.HYDRIDE_RELEASES:
+                    self.assertEqual((fix["field"], fix["original_value"], fix["new_value"]),
+                                     ("cas_number", "892-20-6", "668-34-8"))
+                else:
+                    self.assertIsNone(fix)
+
+    def test_the_rows_come_out_as_the_cations(self):
+        for key, path in self._paths().items():
+            if key == "ecoinvent-3.13":
+                continue
+            with self.subTest(file=path.name):
+                flows = [
+                    {"uuid": self.DIBUTYLTIN, "name": "Dibutyltin", "cas_number": "1002-53-5"},
+                    {"uuid": self.TRIPHENYLTIN, "name": "Triphenyltin",
+                     "cas_number": "892-20-6" if key in self.HYDRIDE_RELEASES else "668-34-8"},
+                ] + [{"uuid": u, "name": "x", "cas_number": n} for u, n in self.REMOVED.items()]
+                apply_manual_fixes(flows, path, label=key)
+                self.assertEqual(flows[0]["cas_number"], "14488-53-0")
+                self.assertEqual(flows[1]["cas_number"], "668-34-8")
+                for flow in flows[2:]:
+                    self.assertIsNone(flow["cas_number"])
+
+    def test_the_merged_releases_load_the_cations(self):
+        for key in ("ecoinvent-3.12", "ecoinvent-3.8"):
+            source = known_source_lists()[key]
+            if not source.flows_path.exists():
+                raise unittest.SkipTest(f"{key} has not been fetched here")
+            with self.subTest(list=key):
+                rows = {r.uuid: r for r in source.load_flows()
+                        if r.uuid in {self.DIBUTYLTIN, self.TRIPHENYLTIN, *self.REMOVED}}
+                self.assertEqual(len(rows), 5)
+                self.assertEqual(list(rows[self.DIBUTYLTIN].cas_numbers), ["14488-53-0"])
+                self.assertEqual(list(rows[self.TRIPHENYLTIN].cas_numbers), ["668-34-8"])
+                for uuid in self.REMOVED:
+                    self.assertEqual(list(rows[uuid].cas_numbers), [])
