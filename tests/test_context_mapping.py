@@ -63,6 +63,7 @@ MERGEABLE = {
     "ecoinvent-3.10.1": 25,
     "ecoinvent-3.11": 25,
     "ecoinvent-3.12": 25,
+    "ecoinvent-3.13": 25,
     "stepwise-2006-1.09": 10,
 }
 

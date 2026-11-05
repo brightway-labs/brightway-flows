@@ -58,9 +58,9 @@ class EveryManifestNamesAnImportableAdapterTestCase(unittest.TestCase):
             with self.subTest(source=key):
                 self.assertTrue(callable(load_adapter(source)))
 
-    def test_the_five_ecoinvent_manifests_share_one_adapter(self):
+    def test_the_six_ecoinvent_manifests_share_one_adapter(self):
         """The point of passing the `SourceList`: they differ in `list_version`,
-        which the adapter reads off it.  A no-argument `fetch()` would need five
+        which the adapter reads off it.  A no-argument `fetch()` would need six
         near-identical functions."""
         adapters = {
             source.adapter
@@ -70,7 +70,7 @@ class EveryManifestNamesAnImportableAdapterTestCase(unittest.TestCase):
         self.assertEqual(adapters, {"brightway_flows.integrations.ecoinvent:fetch"})
         self.assertEqual(
             len([s for s in known_source_lists().values() if s.list_name == "ecoinvent"]),
-            5,
+            6,
         )
 
 

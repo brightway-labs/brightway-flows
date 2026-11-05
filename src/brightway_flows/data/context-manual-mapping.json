@@ -594,6 +594,231 @@
       "comment": "Set context_iri manually."
     },
     {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "air",
+        "low population density, long-term"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-lote",
+      "comment": "Was envi-air-grle-ru10pesq, where 344 flows sat on a ground-level rural context that is not where they belong and merged with EF's `Emissions to air, unspecified (long-term)`. Long-term is carried as a strata value, so it cannot also express `low population density`: this trades ecoinvent's rural qualifier for the temporal one. ecoinvent defines this subcompartment as emissions >100 years after the activity starts, essentially uranium mill tailings, so the temporal axis is the one that matters."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-aicrhe",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "air",
+        "non-urban air or from high stacks"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-mest15me-ru10pesq",
+      "comment": "`non-urban air or from high stacks` names two situations at once -- a release in the countryside, or a release from a tall stack anywhere -- and no context can hold both. It was published as envi-air-hist15me, which says a dairy barn's ammonia left a 150-metre chimney; the other reading, Ground level + Rural, says a power-station plume was released at head height, and nothing in a flow says which it is. EF 3.1's factors settle it, and they pick neither: in all 40 (flow, method) pairs where this compartment and one of EF's narrow non-urban compartments are both characterised, EF gives this one exactly the factor it gives `Emissions to non-urban air high stack` -- particles (PM2.5) 3.01757e-06, against 1.13763e-05 non-urban close to ground and 1.62949e-06 non-urban very high stack. That compartment is envi-air-mest15me-ru10pesq here, so this keeps the rural qualifier the compartment does assert and takes the stack height EF characterises rather than the one the name suggests. What is given up: a release that really did leave a >150-metre stack is published as a sub-150-metre one, which EF's own numbers say is the smaller error. Decided once for the three lists that spell this compartment differently -- EF 3.1, ecoinvent in all five versions, and BAFU's `emissions to air / low. pop.`, SimaPro's spelling of ecoinvent v2's `low population density` -- because moving one alone would split them apart. (#79)"
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "air",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-unkn",
+      "comment": "Was envi-air-grle-unkn, which asserted a stratum the source does not name. ecoinvent's `unspecified` says only that the release went to air; reading it as ground level split it from EF 3.1's `Emissions to air, unspecified` and BAFU's `emissions to air / unspecified`, which both sit on envi-air-unkn -- one compartment under three spellings landing in two places. It split ecoinvent from itself as well: the rows the correspondence tables match onto EF's unspecified air flow (383 in 3.8 up to 1,175 in 3.12) were already published in envi-air-unkn, with the guard reconciling that by a permitted coarsening in correspondence-context-routing.json, and only the rows that found no EF partner stayed behind. On the 2026-08-13 build those were all 54 flows in envi-air-grle-unkn -- every one an ecoinvent creation, none carrying a characterisation factor, in a context no other list can reach. The coarsening entry is removed with this change. Nothing is given up: the ground-level qualifier was never in the source. (#79)"
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "air",
+        "urban air close to ground"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-air-grle-ur10pesq",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "economic",
+        "primary production factor"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/econ",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "inventory indicator",
+        "output flow"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/inin",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "inventory indicator",
+        "resource use"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/inin",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "inventory indicator",
+        "waste"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/inin",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "natural resource",
+        "biotic"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-biot",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "natural resource",
+        "fossil well"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-coaqwifo",
+      "comment": "ecoinvent's one water compartment that names its body -- EF 3.1 gives all six of its water bodies one compartment, so the rest need a per-flow rule. The subcompartment holds exactly one flow, `Water, unspecified natural origin` 2caa889e, in every version 3.8 to 3.12. ecoinvent publishes no definition of `fossil well`, and the name reads either as a well into a fossil aquifer or as a fossil-fuel well producing formation water -- but those converge on this body rather than diverging. Produced water from a hydrocarbon well is connate water in a confined formation with negligible modern recharge, which is fossil groundwater; the two readings differ in why somebody drilled, not in what the water is, and this axis is the body. Salinity does not argue against it either: formation water is typically hypersaline, and salinity is a material property carried on the other axis. ecoinvent's own correspondence table sends this flow to EF 3.1's `ground water`, so they read it as groundwater too; `Confined aquifer with fossil groundwater` is the more precise version of what they said. The emission side already maps `water / fossil well` here, and this makes the two sides agree. Repointed in all five registered versions at once: the subcompartment is unchanged between them. See #263."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "natural resource",
+        "in air"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-air",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "natural resource",
+        "in ground"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-grou",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-occu",
+      "comment": "ecoinvent puts occupation and transformation in this one compartment, so the compartment cannot say which a flow is; the name does, and the rules that read it are in `name_prefix_context_mappings`. They cover every flow ecoinvent ships here in every registered version and refuse a name they do not recognise, so this row is the compartment's declaration rather than the rule that places a land flow (#52)."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "soil",
+        "agricultural"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-agri",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "soil",
+        "forestry"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-silv",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "soil",
+        "industrial"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-indu",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "soil",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-grou-unkn",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "water",
+        "fossil well"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-coaqwifo",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "water",
+        "ground-"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unaq",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "water",
+        "ground-, long-term"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-lote",
+      "comment": "Was envi-wate-unaq, the same IRI as `water / ground-`, so the two were one flow after deduplication and 261 consensus flows received both this subcompartment and `water / unspecified`. Long-term is carried as a water body value, so it cannot also express `ground-`: this trades the aquifer for the temporal qualifier. The previous comment here read `Temporal differentiation belongs to LCIA, not LCI`, which holds for EF 3.1's `Emissions to water, unspecified (long-term)` -- that flow ships uncharacterised, so collapsing it costs no CF values -- but not for this one, where ecoinvent means releases >100 years after the activity starts, essentially landfill and tailings leachate."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "water",
+        "ocean"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-ocea",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "water",
+        "surface water"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-suwa",
+      "comment": "Set context_iri manually."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "water",
+        "unspecified"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/envi-wate-unkn",
+      "comment": "Set context_iri manually."
+    },
+    {
       "source": "EF 3.1",
       "source_context": [
         "Emissions",
@@ -2586,6 +2811,26 @@
       "comment": "The other half of `natural resource / land`. A transformation flow is land changing from one state to another, which is `Land use / Transformation` -- a sibling of occupation, not a coarser version of it, so the compartment rule could not be right about both. It was filing all 122 of these as occupation (#52). The correspondence table to EF 3.1 sends every one of them to EF's `Land use / Land transformation`."
     },
     {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "name_prefix": "Occupation, ",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-occu",
+      "comment": "ecoinvent files land occupation and land transformation in one compartment, `natural resource / land`, and says which is which in the flow name: `Occupation, annual crop` against `Transformation, from annual crop`. An occupation flow is land held in a use for a time, which is `Land use / Occupation`. The correspondence table to EF 3.1 reads the same names the same way and sends every one of them to EF's `Land use / Land occupation`."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_context": [
+        "natural resource",
+        "land"
+      ],
+      "name_prefix": "Transformation, ",
+      "context_iri": "https://vocab.brightway.one/flow-contexts/laus-tran",
+      "comment": "The other half of `natural resource / land`. A transformation flow is land changing from one state to another, which is `Land use / Transformation` -- a sibling of occupation, not a coarser version of it, so the compartment rule could not be right about both. It was filing all 122 of these as occupation (#52). The correspondence table to EF 3.1 sends every one of them to EF's `Land use / Land transformation`."
+    },
+    {
       "source": "bafu-2026-v1",
       "source_context": [
         "resources",
@@ -3479,6 +3724,72 @@
     },
     {
       "source": "ecoinvent-3.12",
+      "source_uuid": "36dfb44d-db99-4cc5-bfb7-f266d69abf3e",
+      "source_name": "Water, green",
+      "source_context": [
+        "natural resource",
+        "in ground"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-air",
+      "comment": "Green water is rainfall held in soil and used by plants. EF 3.1 files it as a resource taken from air, because precipitation is how it arrives; ecoinvent 3.12 files it in the ground, because that is where a plant's roots reach it. Neither list is making a mistake, and no characterisation factor is attached on either side -- so unlike every other row in this group this is a choice rather than a correction, and it is recorded here because leaving it open meant publishing green water in two places that cannot be added together.\n\nIt goes to EF's flow because EF 3.1 is the base list, its flow is the one a method would characterise without this project minting a target, and one place beats two whichever is picked. `0450-withdrawal-water-bodies.json` deliberately left this row alone when #315 moved ecoinvent's other water row out of this compartment, on the ground that the disagreement was #89's to settle; the expectation that pinned it is rewritten to point here, keeping its id. Shipped by 3.11 and 3.12 only, and pinned to the merged release for the reason the peat row above is. (#89, #315)"
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "1acb026e-9de6-48fe-9e0d-be4d24125bbc",
+      "source_name": "Water, lake",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-lake",
+      "comment": "The name states the body. ecoinvent puts every water withdrawal in `natural resource / in water`, so the body is in the name here too."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "8c75e7ab-8ab8-41e4-b394-c166ff5b050d",
+      "source_name": "Water, river",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-rive",
+      "comment": "The name states the body. ecoinvent puts every water withdrawal in `natural resource / in water`, so the body is in the name here too."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "629ffbca-ca71-4e4b-a006-ca9bdd9cd1df",
+      "source_name": "Water, salt, ocean",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-ocea",
+      "comment": "The name states the body. The salinity is a material property and is not carried here. ecoinvent puts every water withdrawal in `natural resource / in water`, so the body is in the name here too."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "67c40aae-d403-464d-9649-c12695e43ad8",
+      "source_name": "Water, well, in ground",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-unaq",
+      "comment": "A well in the ground is an aquifer withdrawal. `Unconfined aquifer` for the reason given on EF 3.1's `ground water`: the enum has no unqualified aquifer value and the confined one names fossil water, which this flow does not. ecoinvent puts every water withdrawal in `natural resource / in water`, so the body is in the name here too."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "478e8437-1c21-4032-8438-872a6b5ddcdf",
+      "source_name": "Water, unspecified natural origin",
+      "source_context": [
+        "natural resource",
+        "in ground"
+      ],
+      "context_iri": "https://vocab.brightway.one/flow-contexts/reso-wate-unaq",
+      "comment": "Water drawn from an aquifer, filed in the compartment ecoinvent uses for what is dug or pumped out of the ground. `natural resource / in ground` maps wholesale to `Resource / Ground`, which is right for the ores, minerals and fossil fuels that fill it and is the coarse half of the statement for this one row: the substance says which resource it is and the compartment says only where it was found. `Unconfined aquifer` for the reason given on EF 3.1's `ground water` and on `Water, well, in ground` above -- the enum has no unqualified aquifer value and the confined one names fossil water, which this flow does not; ecoinvent's own `Water, unspecified natural origin` in `natural resource / fossil well` is the row that does name it.\n\nLeft alone the row reached a second `Groundwater` flow in `Resource / Ground` that exists only because it minted it and that carries no characterisation factor, while EF 3.1's `ground water` -- the flow ecoinvent's own correspondence table names as its target -- carries 209. The merge was right to refuse that target: `Ground` and `Water` are different media and `context_contradicts` says so, recording `prepared-target;context-not-publishable`. It is the row's compartment that was coarse, not the table's answer, so the fix belongs here rather than in `correspondence-context-routing.json`, whose three `publishable: false` entries are the opposite case -- a target compartment nobody would file the row in (#84, #77).\n\n`Water, green` is the only other water row in this compartment and is deliberately not moved: green water is rainfall held in soil, which is where a plant reaches it, and EF 3.1 filing its `Green water` as a resource from air is a disagreement between two lists rather than a slip either of them made. A rule about water in this compartment would have settled that silently. (#89, found while measuring #48)"
+    },
+    {
+      "source": "ecoinvent-3.13",
       "source_uuid": "36dfb44d-db99-4cc5-bfb7-f266d69abf3e",
       "source_name": "Water, green",
       "source_context": [

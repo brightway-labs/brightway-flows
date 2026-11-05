@@ -91,7 +91,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 #: What a base build merges.  A comparison is only comparable where both sides
 #: merged the same lists, so this is the set a before side has to have.
-#: ecoinvent 3.12 and 3.8 are the two releases the current work measures against,
+#: ecoinvent 3.13, 3.12 and 3.8 are the releases the current work measures
+#: against -- 3.13 because it is the newest and so the one that mints, 3.12
+#: because every expectation written before it names 3.12's rows --
 #: and BAFU 2026 v1 is here because it was the first merged list whose flows come
 #: out of SimaPro: the name-matching strategies that de-invert `Benzene,
 #: chloro-`, strip a geography and read a unit out of a name run on no other
@@ -120,6 +122,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 #: were on arrival, so the same caveat applies to every comparison read against
 #: this baseline.
 DEFAULT_SOURCES: tuple[str, ...] = (
+    "ecoinvent-3.13",
     "ecoinvent-3.12",
     "ecoinvent-3.8",
     "bafu-2026-v1",

@@ -70,6 +70,7 @@ class TheFileTestCase(unittest.TestCase):
                 "ecoinvent-3.10.1",
                 "ecoinvent-3.11",
                 "ecoinvent-3.12",
+                "ecoinvent-3.13",
                 "stepwise-2006-1.09",
             },
         )
@@ -114,7 +115,7 @@ class TheFileTestCase(unittest.TestCase):
         of it. Eight of the 201 carry a country the way BAFU's rail rows do,
         split off per #65 and recorded as the row's location.
         """
-        self.assertEqual(len(self.rows), 1517)
+        self.assertEqual(len(self.rows), 1699)
         self.assertEqual(len({row["key"] for row in self.rows}), 345)
 
     def test_the_three_directions_are_all_present(self):
@@ -148,9 +149,10 @@ class FiveListsAgreeAboutABuildingSiteTestCase(unittest.TestCase):
     """
 
     #: The building site, as each list identifies it.  ecoinvent's uuid is one
-    #: flow in every release, which is why the five releases contribute one
-    #: entry and not five.
+    #: flow in every release, which is why the six releases contribute one
+    #: entry and not six.
     THE_SAME_BUILDING_SITE = {
+        "ecoinvent-3.13": "4b6b9b76-3199-4bd0-b11d-f8f2efbeac4e",
         "ecoinvent-3.12": "4b6b9b76-3199-4bd0-b11d-f8f2efbeac4e",
         "ecoinvent-3.8": "4b6b9b76-3199-4bd0-b11d-f8f2efbeac4e",
         "bafu-2026-v1": "2b353c3f-d447-53cb-8624-71f3a38bd054",

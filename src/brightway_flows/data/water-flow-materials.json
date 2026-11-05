@@ -18545,6 +18545,305 @@
       "comment": "The source names the material."
     },
     {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "06d4812b-6937-4d64-8517-b69aabce3648",
+      "source_name": "Water",
+      "source_context": [
+        "water",
+        "ground-, long-term"
+      ],
+      "unit": "m3",
+      "node": "water",
+      "match": "broad",
+      "comment": "Genuinely unspecific: the source names water without naming a kind of it, so it lands on the parent concept rather than a narrower one."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "075e433b-4be4-448e-9510-9a5029c1ce94",
+      "source_name": "Water",
+      "source_context": [
+        "air",
+        "unspecified"
+      ],
+      "unit": "m3",
+      "node": "water_vapour",
+      "match": "close",
+      "comment": "Water in the air domain is vapour or rain, and this flow says neither, so the material is read off the context rather than the name -- our reading, which is why the match is `close` rather than `exact`. `Green water` is the one exception: EF files it under Resources from air and it is neither."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "09872080-d143-4fb1-a3a5-647b077107ff",
+      "source_name": "Water",
+      "source_context": [
+        "air",
+        "non-urban air or from high stacks"
+      ],
+      "unit": "m3",
+      "node": "water_vapour",
+      "match": "close",
+      "comment": "Water in the air domain is vapour or rain, and this flow says neither, so the material is read off the context rather than the name -- our reading, which is why the match is `close` rather than `exact`. `Green water` is the one exception: EF files it under Resources from air and it is neither."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "2256a142-8242-4b4f-b9aa-a167803989ca",
+      "source_name": "Water",
+      "source_context": [
+        "water",
+        "fossil well"
+      ],
+      "unit": "m3",
+      "node": "water",
+      "match": "broad",
+      "comment": "Genuinely unspecific: the source names water without naming a kind of it, so it lands on the parent concept rather than a narrower one."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "2404b41a-2eed-4e9d-8ab6-783946fdf5d6",
+      "source_name": "Water",
+      "source_context": [
+        "water",
+        "unspecified"
+      ],
+      "unit": "m3",
+      "node": "water",
+      "match": "broad",
+      "comment": "Genuinely unspecific: the source names water without naming a kind of it, so it lands on the parent concept rather than a narrower one."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "4f0f15b3-b227-4cdc-b0b3-6412d55695d5",
+      "source_name": "Water",
+      "source_context": [
+        "water",
+        "ocean"
+      ],
+      "unit": "m3",
+      "node": "water",
+      "match": "broad",
+      "comment": "Genuinely unspecific: the source names water without naming a kind of it, so it lands on the parent concept rather than a narrower one."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "51254820-3456-4373-b7b4-056cf7b16e01",
+      "source_name": "Water",
+      "source_context": [
+        "water",
+        "ground-"
+      ],
+      "unit": "m3",
+      "node": "water",
+      "match": "broad",
+      "comment": "Genuinely unspecific: the source names water without naming a kind of it, so it lands on the parent concept rather than a narrower one."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "5d368100-b1bc-4456-8420-e469edccf349",
+      "source_name": "Water",
+      "source_context": [
+        "air",
+        "urban air close to ground"
+      ],
+      "unit": "m3",
+      "node": "water_vapour",
+      "match": "close",
+      "comment": "Water in the air domain is vapour or rain, and this flow says neither, so the material is read off the context rather than the name -- our reading, which is why the match is `close` rather than `exact`. `Green water` is the one exception: EF files it under Resources from air and it is neither."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "db4566b1-bd88-427d-92da-2d25879063b9",
+      "source_name": "Water",
+      "source_context": [
+        "water",
+        "surface water"
+      ],
+      "unit": "m3",
+      "node": "water",
+      "match": "broad",
+      "comment": "Genuinely unspecific: the source names water without naming a kind of it, so it lands on the parent concept rather than a narrower one."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "f14b59ff-d438-442d-8bad-b53694b8263a",
+      "source_name": "Water",
+      "source_context": [
+        "air",
+        "lower stratosphere + upper troposphere"
+      ],
+      "unit": "m3",
+      "node": "water_vapour",
+      "match": "close",
+      "comment": "Water in the air domain is vapour or rain, and this flow says neither, so the material is read off the context rather than the name -- our reading, which is why the match is `close` rather than `exact`. `Green water` is the one exception: EF files it under Resources from air and it is neither."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "f977a02e-3564-4798-843c-9fb9a18bc18b",
+      "source_name": "Water",
+      "source_context": [
+        "air",
+        "low population density, long-term"
+      ],
+      "unit": "m3",
+      "node": "water_vapour",
+      "match": "close",
+      "comment": "Water in the air domain is vapour or rain, and this flow says neither, so the material is read off the context rather than the name -- our reading, which is why the match is `close` rather than `exact`. `Green water` is the one exception: EF files it under Resources from air and it is neither."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "fc1c42ce-a759-49fa-b987-f1ec5e503db1",
+      "source_name": "Water, cooling, unspecified natural origin",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "unit": "m3",
+      "node": "cooling_water",
+      "match": "exact",
+      "comment": "The source names the material."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "36dfb44d-db99-4cc5-bfb7-f266d69abf3e",
+      "source_name": "Water, green",
+      "source_context": [
+        "natural resource",
+        "in ground"
+      ],
+      "unit": "m3",
+      "node": "green_water",
+      "match": "exact",
+      "comment": "An accounting category rather than a material: green water is separate for accounting reasons, not physics, so it stays a qualifier and anchors to AGROVOC."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "31417daa-cd7a-4920-9c73-708b68d494ad",
+      "source_name": "Water, in air",
+      "source_context": [
+        "natural resource",
+        "in air"
+      ],
+      "unit": "m3",
+      "node": "water_vapour",
+      "match": "exact",
+      "comment": "The source names the material."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "1acb026e-9de6-48fe-9e0d-be4d24125bbc",
+      "source_name": "Water, lake",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "unit": "m3",
+      "node": "lake_water",
+      "match": "exact",
+      "comment": "The source names the material."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "8c75e7ab-8ab8-41e4-b394-c166ff5b050d",
+      "source_name": "Water, river",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "unit": "m3",
+      "node": "river_water",
+      "match": "exact",
+      "comment": "The source names the material."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "629ffbca-ca71-4e4b-a006-ca9bdd9cd1df",
+      "source_name": "Water, salt, ocean",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "unit": "m3",
+      "node": "sea_water",
+      "match": "exact",
+      "comment": "The source names the material."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "79238018-8ec1-4615-9469-2b0df95a43c3",
+      "source_name": "Water, salt, sole",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "unit": "m3",
+      "node": "brine",
+      "match": "exact",
+      "comment": "Brine, not water. Its CAS 7732-18-5 is the vendor's error -- brine is a mixture, not the molecule -- and the concept carries no CAS for that reason."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "8c1494a5-4987-4715-aa2d-1908c495f4eb",
+      "source_name": "Water, turbine use, unspecified natural origin",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "unit": "m3",
+      "node": "turbine_water",
+      "match": "exact",
+      "comment": "The source names the material."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "2caa889e-8187-459d-963a-fa47a79c5378",
+      "source_name": "Water, unspecified natural origin",
+      "source_context": [
+        "natural resource",
+        "fossil well"
+      ],
+      "unit": "m3",
+      "node": "fossil_groundwater",
+      "match": "exact",
+      "comment": "Taken from a fossil well, and fossil groundwater is its own material rather than a body groundwater sits in: EF 3.1 classifies every water resource it carries as `Renewable material resources from water`, so the target list has nowhere to put water that is not renewable, and mapping it onto `ground water` published it as an unconfined aquifer -- the one thing ecoinvent says it is not."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "478e8437-1c21-4032-8438-872a6b5ddcdf",
+      "source_name": "Water, unspecified natural origin",
+      "source_context": [
+        "natural resource",
+        "in ground"
+      ],
+      "unit": "m3",
+      "node": "groundwater",
+      "match": "broad",
+      "comment": "Taken from the ground, so groundwater -- the name says unspecified *origin*, and the compartment supplies it."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "831f249e-53f2-49cf-a93c-7cee105f048e",
+      "source_name": "Water, unspecified natural origin",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "unit": "m3",
+      "node": "water",
+      "match": "broad",
+      "comment": "Genuinely unspecific: the source names water without naming a kind of it, so it lands on the parent concept rather than a narrower one."
+    },
+    {
+      "source": "ecoinvent-3.13",
+      "source_uuid": "67c40aae-d403-464d-9649-c12695e43ad8",
+      "source_name": "Water, well, in ground",
+      "source_context": [
+        "natural resource",
+        "in water"
+      ],
+      "unit": "m3",
+      "node": "groundwater",
+      "match": "exact",
+      "comment": "The source names the material."
+    },
+    {
       "source": "ecoinvent-3.8",
       "source_uuid": "8bdedc25-af46-4c46-9b3a-670d0c177d8f",
       "source_name": "Fresh water (obsolete)",

@@ -72,6 +72,7 @@ SOURCE_KEYS = (
     "ecoinvent-3.10.1",
     "ecoinvent-3.11",
     "ecoinvent-3.12",
+    "ecoinvent-3.13",
     "bafu-2026-v1",
     "stepwise-2006-1.09",
     "agribalyse-3.2",

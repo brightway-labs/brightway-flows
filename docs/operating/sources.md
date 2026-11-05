@@ -158,11 +158,11 @@ whatever its nineteen impact categories characterise, it has no identifiers of
 its own at all — a SimaPro method file ships none, so its UUIDs are derived from
 its own names — and 164 of its 6,064 rows carry no registry number either.
 
-**Within one list, newest version first** — 3.12, then 3.11, then 3.10.1, then
-3.9.1, then 3.8, however they were typed. Versions are compared as numbers
+**Within one list, newest version first** — 3.13, then 3.12, then 3.11, then
+3.10.1, then 3.9.1, then 3.8, however they were typed. Versions are compared as numbers
 rather than as text, so 3.10.1 is newer than 3.9.1 and not older.
 
-This second rule is why `merge_priority` does not have to separate the five
+This second rule is why `merge_priority` does not have to separate the six
 ecoinvent releases, and it used to be missing. They all declare 100, ties kept
 the order they arrived in, and so:
 
@@ -295,7 +295,7 @@ source list look as though the anomaly never happened.
 
 **One file covers every version of a list.** ecoinvent's flow uuids are stable
 across releases, so a decision about a flow is a decision about it in every
-release that ships it, and all five ecoinvent manifests name
+release that ships it, and all six ecoinvent manifests name
 `ecoinvent-match-overrides.json`. A row naming a flow a version does not carry
 is inert there rather than an error — ten rows name 3.8 flows that 3.9.1
 dropped.
@@ -392,7 +392,7 @@ is merged *into*, not that it arrives by a different route. `extract` and
 ecoinvent, because both are in existing runbooks; neither has an implementation
 of its own.
 
-It takes the `SourceList` rather than nothing, because five ecoinvent manifests
+It takes the `SourceList` rather than nothing, because six ecoinvent manifests
 share one adapter and differ only in `list_version` — and because where a list's
 flows go is the manifest's answer, not the adapter's to invent. It must return
 `source.flows_path`, and that is checked: an adapter writing anywhere else has
@@ -413,7 +413,7 @@ system model — `cutoff`, `apos`, `consequential` and `EN15804` — and the ada
 reads **`cutoff`**, for every version.
 
 That is safe because the difference has been measured rather than assumed. Of
-the twenty releases behind the five registered versions, exactly one pair
+the twenty-four releases behind the six registered versions, exactly one pair
 disagrees: 3.8's APOS and consequential exports each carry three
 `social / unspecified` exchanges cutoff does not, and those three arrive through
 `inputs.additional_flows`. Everything else is identical — same uuids, and every

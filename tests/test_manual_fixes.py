@@ -838,6 +838,7 @@ class WasteHeatIsNotSomethingYouExtractTestCase(unittest.TestCase):
         "ecoinvent-3.10.1": 13,
         "ecoinvent-3.11": 13,
         "ecoinvent-3.12": 13,
+        "ecoinvent-3.13": 13,
         # None. Stepwise is an LCIA method and characterises no waste heat, so
         # it ships no row for one -- pinned at zero rather than left out, so a
         # revision that adds one arrives here instead of being placed by
@@ -1540,13 +1541,13 @@ class MCPAMethylIsNotAnIoxynilEsterTestCase(unittest.TestCase):
         return rows
 
     def test_every_version_states_the_correction(self):
-        """All five ship the row under the same UUIDs, so all five state it.
+        """All six ship the row under the same UUIDs, so all six state it.
 
         A version that did not would hand the merge two lists disagreeing about
         what 2436-73-9 is called, which is what these files exist to prevent.
         """
         paths = self._paths()
-        self.assertEqual(len(paths), 5)
+        self.assertEqual(len(paths), 6)
         for path in paths:
             with self.subTest(file=path.name):
                 fixes = orjson.loads(path.read_bytes())["fixes"]
@@ -2069,7 +2070,7 @@ class GypsumIsNotCalciumAndNotSulfateTestCase(unittest.TestCase):
     PHRASE = "Calcium sulfate dihydrate"
 
     #: What each release actually ships beside the phrase, read off the five
-    #: extracted lists on 2026-08-20.  Spelled per release rather than as one
+    #: extracted lists on 2026-08-20 and 3.13's on 2026-11-04.  Spelled per release rather than as one
     #: set, because a correction that matched nothing would warn, and because
     #: the difference is the fact worth recording: 3.8 splits the phrase into
     #: all three of its words and every release after it drops the first.
@@ -2079,6 +2080,7 @@ class GypsumIsNotCalciumAndNotSulfateTestCase(unittest.TestCase):
         "ecoinvent-3.10.1": ("sulfate", "dihydrate"),
         "ecoinvent-3.11": ("sulfate", "dihydrate"),
         "ecoinvent-3.12": ("sulfate", "dihydrate"),
+        "ecoinvent-3.13": ("sulfate", "dihydrate"),
     }
 
     def _sources(self):
@@ -2533,7 +2535,7 @@ class BetaCyfluthrinIsItsOwnSubstanceTestCase(unittest.TestCase):
 
     def _release_fix_paths(self):
         paths = sorted(PACKAGE_DATA_DIR.glob("ecoinvent-*-manual-fixes.json"))
-        self.assertEqual(len(paths), 5, paths)
+        self.assertEqual(len(paths), 6, paths)
         return paths
 
     def test_every_release_carries_the_same_correction(self):

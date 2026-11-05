@@ -62,6 +62,7 @@ class TheFileTestCase(unittest.TestCase):
                 "ecoinvent-3.10.1",
                 "ecoinvent-3.11",
                 "ecoinvent-3.12",
+                "ecoinvent-3.13",
                 "stepwise-2006-1.09",
             },
         )
@@ -85,10 +86,11 @@ class TheFileTestCase(unittest.TestCase):
                 "ecoinvent-3.10.1": 13,
                 "ecoinvent-3.11": 13,
                 "ecoinvent-3.12": 13,
+                "ecoinvent-3.13": 13,
                 "stepwise-2006-1.09": 6,
             },
         )
-        self.assertEqual(len(self.rows), 233)
+        self.assertEqual(len(self.rows), 246)
 
     def test_every_row_names_a_class_the_scheme_carries(self):
         known = set(size_classes())

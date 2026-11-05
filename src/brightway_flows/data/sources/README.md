@@ -55,9 +55,9 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
     return source.flows_path
 ```
 
-It takes the `SourceList` rather than nothing. Five ecoinvent manifests share
+It takes the `SourceList` rather than nothing. Six ecoinvent manifests share
 one adapter and differ only in `list_version`, so a no-argument `fetch()` would
-need five near-identical functions — and the adapter needs `flows_path`
+need six near-identical functions — and the adapter needs `flows_path`
 regardless, because where a list's flows go is the manifest's answer and not the
 adapter's to invent.
 
@@ -159,7 +159,7 @@ as though the anomaly never happened.
 
 **One file covers every version of a list.**  ecoinvent's flow uuids are stable
 across releases, so a decision about a flow is a decision about it in every
-release that ships it, and all five ecoinvent manifests name
+release that ships it, and all six ecoinvent manifests name
 `../ecoinvent-match-overrides.json` -- a couple of hundred rows now that the
 file is the correspondence.  A row naming a flow a version does not carry is
 inert there rather than an error: ten rows name 3.8 flows that 3.9.1 dropped.

@@ -9,13 +9,13 @@ see, so the difference has to be known rather than assumed (#100).
 This tool is how it is known.  For each version it reads
 `MasterData/ElementaryExchanges.xml` out of all four releases, compares them, and
 writes one `ecoinvent-<version>-additional-flows.json` per version recording
-what it found -- including, for the four versions where the answer is "nothing",
+what it found -- including, for the five versions where the answer is "nothing",
 a file whose `flows` list is empty.  An empty file is the point: without one, a
 version nobody has checked and a version checked and found clean look exactly
 alike, which is the state #100 was filed about.
 
 What it found when it was last run, on 2026-08-15 against 3.8, 3.9.1, 3.10.1,
-3.11 and 3.12:
+3.11 and 3.12, and on 2026-11-04 against 3.13:
 
     3.8       apos and consequential each carry three exchanges cutoff does not
               -- `venting of argon, crude, liquid`, `venting of nitrogen,
@@ -25,6 +25,7 @@ What it found when it was last run, on 2026-08-15 against 3.8, 3.9.1, 3.10.1,
     3.10.1    all four releases identical
     3.11      all four releases identical
     3.12      all four releases identical
+    3.13      all four releases identical
 
 "Identical" is meant strictly: the same uuids, and every shared exchange record
 equal field for field, not merely equal in the handful of fields the adapter
@@ -74,7 +75,7 @@ from brightway_flows.sources import PACKAGE_DATA_DIR
 SYSTEM_MODELS = ("cutoff", "apos", "consequential", "EN15804")
 
 #: The versions with a registered source list.  A new manifest belongs here.
-VERSIONS = ("3.8", "3.9.1", "3.10.1", "3.11", "3.12")
+VERSIONS = ("3.8", "3.9.1", "3.10.1", "3.11", "3.12", "3.13")
 
 #: Rewritten by `ecoinvent_interface` on extraction, not by ecoinvent.  Comparing
 #: them would report every release read from a cache as differing from every

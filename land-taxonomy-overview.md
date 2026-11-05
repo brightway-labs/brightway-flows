@@ -90,7 +90,7 @@ Different values, so different objects, so the pair cannot collapse. Direction i
 
 ## 3. What appears in the list
 
-The axes *permit* many thousands of combinations. The list publishes the ones a source flow actually lands on, which is **345 land classes**, reached by **1,517 source flows**:
+The axes *permit* many thousands of combinations. The list publishes the ones a source flow actually lands on, which is **345 land classes**, reached by **1,699 source flows**:
 
 | Source list | Land flows assigned |
 |---|---|
@@ -105,7 +105,7 @@ Stepwise 2006 is the only list with a number smaller than what it ships, and the
 
 The four EF flows measuring a **volume** — a repository, a reservoir, an underground deposit, filed under land occupation — are deliberately left out. No surface classification has a word for the inside of a mountain, and folding them in would make the taxonomy's root claim false. They are handled separately.
 
-**The assignment is curated, one row per source flow.** `data/land-flow-classes.json` holds all 1,517, with the vendor's uuid, name, context and unit taken mechanically from the shipped files and the class as the curated part. A parser drafts it; it does not decide it. That distinction is the point: a parser gets a curator to 152 of 153 strings, and it does not get to decide, unsupervised, that *heterogeneous, agricultural* is agricultural mosaic. It is the same discipline the water taxonomy follows, where no algorithm reads *Water, salt, sole* and knows it is brine.
+**The assignment is curated, one row per source flow.** `data/land-flow-classes.json` holds all 1,699, with the vendor's uuid, name, context and unit taken mechanically from the shipped files and the class as the curated part. A parser drafts it; it does not decide it. That distinction is the point: a parser gets a curator to 152 of 153 strings, and it does not get to decide, unsupervised, that *heterogeneous, agricultural* is agricultural mosaic. It is the same discipline the water taxonomy follows, where no algorithm reads *Water, salt, sole* and knows it is brine.
 
 ### The hierarchy is generated, not curated
 
