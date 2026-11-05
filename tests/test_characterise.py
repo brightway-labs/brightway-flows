@@ -60,7 +60,10 @@ from brightway_flows.lcia.store import (
 )
 from brightway_flows.sources import LciaMethodSpec, LciaSpec, SourceList
 
-#: EF 3.1, and its three implementations by role.
+#: EF 3.1, and the implementations a fixture stands in for, by role.  The
+#: fixture's ecoinvent list is the one the deciding ecoinvent Centre
+#: implementation reads, 3.13; the 3.12 workbook's implementation reads a list
+#: no fixture here registers and is skipped.
 METHOD = ef_method()
 JRC = METHOD.reference
 ECOINVENT = METHOD.implementation("ecoinvent-centre")
@@ -819,7 +822,7 @@ class EndToEndTestCase(unittest.TestCase):
         )
         connection.execute(
             "INSERT INTO elementary_flow_sources VALUES (?, ?, ?, ?, ?)",
-            ("cf-1", "ecoinvent", "3.12", "ei-1", orjson.dumps({"unit": "kg"}).decode()),
+            ("cf-1", "ecoinvent", "3.13", "ei-1", orjson.dumps({"unit": "kg"}).decode()),
         )
         connection.execute(
             "INSERT INTO pipeline_runs (run_id, timestamp, schema_version) VALUES (?, ?, 1)",
@@ -828,7 +831,7 @@ class EndToEndTestCase(unittest.TestCase):
         connection.commit()
         connection.close()
 
-        factors_path = root / "ecoinvent-3.12-lcia-factors.json"
+        factors_path = root / "ecoinvent-3.13-lcia-factors.json"
         factors_path.write_bytes(
             orjson.dumps(
                 {
@@ -853,7 +856,7 @@ class EndToEndTestCase(unittest.TestCase):
         )
         self.source = SourceList(
             list_name="ecoinvent",
-            list_version="3.12",
+            list_version="3.13",
             flows_path=root / "flows.json",
             lcia=LciaSpec(
                 adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
@@ -862,7 +865,7 @@ class EndToEndTestCase(unittest.TestCase):
                 implemented_by="ecoinvent Centre",
             ),
         )
-        self.stats = characterise(self.db, source_lists={"ecoinvent-3.12": self.source})
+        self.stats = characterise(self.db, source_lists={"ecoinvent-3.13": self.source})
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -883,10 +886,10 @@ class EndToEndTestCase(unittest.TestCase):
         the list publishes, and a count of zero is honest where leaving them out
         would say they do not exist.
 
-        138 -- EF 3.1's 25 times four implementations, Stepwise 2006's 19 times
+        163 -- EF 3.1's 25 times five implementations, Stepwise 2006's 19 times
         two. This fixture merges no Stepwise flows, so all 19 of its consensus
         categories are awaiting factors alongside EF's 25."""
-        self.assertEqual(len(self._rows("SELECT * FROM lcia_impact_categories")), 138)
+        self.assertEqual(len(self._rows("SELECT * FROM lcia_impact_categories")), 163)
         self.assertEqual(self.stats["consensus_categories_awaiting_factors"], 44)
 
     def test_each_factor_is_on_its_own_implementation(self):
@@ -920,7 +923,7 @@ class EndToEndTestCase(unittest.TestCase):
         before = self._rows(
             "SELECT * FROM lcia_characterization_factors ORDER BY 1, 2, 3"
         )
-        characterise(self.db, source_lists={"ecoinvent-3.12": self.source})
+        characterise(self.db, source_lists={"ecoinvent-3.13": self.source})
         self.assertEqual(
             self._rows("SELECT * FROM lcia_characterization_factors ORDER BY 1, 2, 3"),
             before,
@@ -1049,13 +1052,13 @@ class WhatTheUnderlyingModelContradictsTestCase(unittest.TestCase):
         connection.commit()
         connection.close()
 
-        factors_path = root / "ecoinvent-3.12-lcia-factors.json"
+        factors_path = root / "ecoinvent-3.13-lcia-factors.json"
         factors_path.write_bytes(
             orjson.dumps({"schema_version": 1, "methods": []})
         )
         self.source = SourceList(
             list_name="ecoinvent",
-            list_version="3.12",
+            list_version="3.13",
             flows_path=root / "flows.json",
             lcia=LciaSpec(
                 adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
@@ -1064,7 +1067,7 @@ class WhatTheUnderlyingModelContradictsTestCase(unittest.TestCase):
                 implemented_by="ecoinvent Centre",
             ),
         )
-        self.stats = characterise(self.db, source_lists={"ecoinvent-3.12": self.source})
+        self.stats = characterise(self.db, source_lists={"ecoinvent-3.13": self.source})
 
     def tearDown(self):
         self.tmp.cleanup()

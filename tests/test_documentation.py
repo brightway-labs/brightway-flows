@@ -910,9 +910,9 @@ class PublishedCategoryCountTestCase(unittest.TestCase):
     #: against the match with its whitespace collapsed, so a wrapped line reads
     #: the same as an unwrapped one.
     NOT_THE_PUBLISHED_SET = {
-        "25 categories",  # EF 3.1's own, times four implementations
+        "25 categories",  # EF 3.1's own, times five implementations
         "19 categories",  # Stepwise 2006's own, times two
-        "100 categories",  # EF 3.1's four implementations, in `using/outputs.md`
+        "125 categories",  # EF 3.1's five implementations, in `using/outputs.md`
         # Ours alone, 25 + 19: the ones 1.0.0 published under `consensus-flow-list`,
         # in `using/outputs.md`.  Checked against the method files in
         # `test_impact_categories.RetiredCategoryIdsTestCase`.
@@ -928,9 +928,9 @@ class PublishedCategoryCountTestCase(unittest.TestCase):
         )
 
     def test_the_arithmetic_is_what_the_method_files_say(self):
-        # 25 x 4 + 19 x 2. Stated here so that a method file gaining an
+        # 25 x 5 + 19 x 2. Stated here so that a method file gaining an
         # implementation is a number this test moves rather than one it accepts.
-        self.assertEqual(self._expected(), 138)
+        self.assertEqual(self._expected(), 163)
 
     def test_no_page_states_a_stale_category_count(self):
         expected = self._expected()

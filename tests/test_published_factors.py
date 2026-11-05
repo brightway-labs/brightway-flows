@@ -130,7 +130,7 @@ class ARunThatPublishesTestCase(unittest.TestCase):
         connection.executemany(
             "INSERT INTO elementary_flow_sources VALUES (?, ?, ?, ?, ?)",
             [
-                ("cf-1", "ecoinvent", "3.12", "ei-1",
+                ("cf-1", "ecoinvent", "3.13", "ei-1",
                  orjson.dumps({"unit": "kg"}).decode()),
                 # GreenDelta's package names flows by the ecoinvent UUID it was
                 # built against, so its row is resolved through a release of
@@ -148,10 +148,13 @@ class ARunThatPublishesTestCase(unittest.TestCase):
         connection.close()
 
         # ecoinvent states the same number for the same category, so the
-        # consensus implementation has something to agree with and all four
-        # implementations appear in the counts.
+        # consensus implementation has something to agree with and every
+        # implementation this fixture registers a list for appears in the
+        # counts.  The ecoinvent list is 3.13, the one the deciding ecoinvent
+        # Centre implementation reads; the 3.12 workbook's implementation is
+        # given no list and is skipped.
         ecoinvent_name = ef_method().by_stated_identifier("jrc")[FIRST].stated["ecoinvent-centre"].name
-        factors_path = root / "ecoinvent-3.12-lcia-factors.json"
+        factors_path = root / "ecoinvent-3.13-lcia-factors.json"
         factors_path.write_bytes(orjson.dumps({
             "schema_version": 1,
             "methods": [{
@@ -166,7 +169,7 @@ class ARunThatPublishesTestCase(unittest.TestCase):
         }))
         self.source = SourceList(
             list_name="ecoinvent",
-            list_version="3.12",
+            list_version="3.13",
             flows_path=root / "flows.json",
             lcia=LciaSpec(
                 adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
@@ -207,13 +210,13 @@ class ARunThatPublishesTestCase(unittest.TestCase):
                 factors_path=greendelta_path,
                 methods=(LciaMethodSpec(name="EF 3.1 Method (adapted)"),),
                 implemented_by="GreenDelta",
-                resolve_through=("ecoinvent-3.12", "ecoinvent-3.8"),
+                resolve_through=("ecoinvent-3.13", "ecoinvent-3.8"),
             ),
         )
         self.stats = characterise(
             self.db,
             source_lists={
-                "ecoinvent-3.12": self.source,
+                "ecoinvent-3.13": self.source,
                 "bafu-2026-v1": self.greendelta,
             },
         )
@@ -328,9 +331,11 @@ class WhatTheReviewAppShowsTestCase(ARunThatPublishesTestCase):
         """Not the largest count: the implementation this list publishes."""
         counts = self._counts()
         self.assertEqual(counts[0].implemented_by, CONSENSUS_IMPL.name)
+        # Every implementation the fixture registered a list for: the ecoinvent
+        # Centre's 3.12 workbook reads a list this fixture does not have.
         self.assertEqual(
             {count.implemented_by for count in counts},
-            IMPLEMENTATION_NAMES,
+            IMPLEMENTATION_NAMES - {_METHOD.implementation("ecoinvent-centre-3-12").name},
         )
 
     def test_a_count_says_how_many_of_its_factors_are_zero(self):
@@ -496,7 +501,7 @@ class TheFilesTestCase(ARunThatPublishesTestCase):
         characterise(
             self.db,
             source_lists={
-                "ecoinvent-3.12": self.source,
+                "ecoinvent-3.13": self.source,
                 "bafu-2026-v1": self.greendelta,
             },
         )

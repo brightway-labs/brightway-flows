@@ -9,7 +9,7 @@
   "lcia": {
     "adapter": "brightway_flows.integrations.ecoinvent_lcia:fetch",
     "factors": "ecoinvent-3.12-lcia-factors.json",
-    "implemented_by": "ecoinvent Centre",
+    "implemented_by": "ecoinvent Centre (3.12)",
     "methods": [
       {
         "name": "EF v3.1",
