@@ -121,9 +121,9 @@ class EveryVersionIsCorrectedTestCase(unittest.TestCase):
         """Named, because the generic guard below needs fetched flows.
 
         Uranium-238, `Silver-110` and MCPA-methyl's name are in all five
-        versions; the lindanes arrive at 3.11 and Mefentrifluconazole at
-        3.10.1, so the versions before those cannot state a correction about a
-        row they do not have.
+        versions; the lindanes and the endosulfan isomers arrive at 3.11 and
+        Mefentrifluconazole at 3.10.1, so the versions before those cannot
+        state a correction about a row they do not have.
         """
         everywhere = {
             ("name", "Uranium-238"),
@@ -141,11 +141,13 @@ class EveryVersionIsCorrectedTestCase(unittest.TestCase):
             "ecoinvent-3.11": everywhere | {
                 ("name", "Alpha-lindane"), ("name", "Beta-lindane"),
                 ("name", "Delta-lindane"),
+                ("name", "Alpha-endosulfan"), ("name", "Beta-endosulfan"),
                 ("uuid", "a1f19e68-e0ca-4d2b-a159-38e9036542f3"),
             },
             "ecoinvent-3.12": everywhere | {
                 ("name", "Alpha-lindane"), ("name", "Beta-lindane"),
                 ("name", "Delta-lindane"),
+                ("name", "Alpha-endosulfan"), ("name", "Beta-endosulfan"),
                 ("uuid", "a1f19e68-e0ca-4d2b-a159-38e9036542f3"),
             },
         }

@@ -2655,3 +2655,85 @@ class EcoinventStatesTheElementOnTwoIonsTestCase(unittest.TestCase):
         ):
             with self.subTest(uuid=uuid):
                 self.assertNotIn(uuid, identities)
+
+
+class EndosulfanIsomersCarryTheirOwnNumbersTestCase(unittest.TestCase):
+    """The alpha and beta isomers separate from the parent at the registry number (#456).
+
+    115-29-7 is endosulfan, the technical mixture of the two isomers.  ecoinvent
+    3.11 and 3.12 register their seven `Alpha-endosulfan` and seven
+    `Beta-endosulfan` rows with it, as they do the seven `Endosulfan` rows, so
+    the merge put all twenty-one on one substance.  3.13 registers the isomers
+    959-98-8 and 33213-65-9 on the same uuids, and the two earlier releases
+    that ship the rows state the same.  Matched on the name with the parent's
+    number as the guard: a parent row is not touched, and neither is a row that
+    already carries the isomer's number.
+    """
+
+    PARENT = "115-29-7"
+    ALPHA = "959-98-8"
+    BETA = "33213-65-9"
+    SHIPPING = ("ecoinvent-3.11", "ecoinvent-3.12")
+
+    def _paths(self):
+        return {p.name.removesuffix("-manual-fixes.json"): p
+                for p in PACKAGE_DATA_DIR.glob("ecoinvent-*-manual-fixes.json")}
+
+    def test_the_two_releases_that_ship_the_rows_state_both_corrections(self):
+        for key, path in self._paths().items():
+            fixes = {
+                f["match"]["name"]: f
+                for f in orjson.loads(path.read_bytes())["fixes"]
+                if f.get("match", {}).get("name", "").endswith("-endosulfan")
+            }
+            with self.subTest(file=path.name):
+                if key not in self.SHIPPING:
+                    self.assertEqual(fixes, {})
+                    continue
+                self.assertEqual(set(fixes), {"Alpha-endosulfan", "Beta-endosulfan"})
+                for name, number in (("Alpha-endosulfan", self.ALPHA), ("Beta-endosulfan", self.BETA)):
+                    self.assertEqual(fixes[name]["field"], "cas_number")
+                    self.assertEqual(fixes[name]["original_value"], self.PARENT)
+                    self.assertEqual(fixes[name]["new_value"], number)
+                    self.assertTrue(str(fixes[name].get("comment") or "").strip())
+
+    def test_an_isomer_row_takes_its_own_number(self):
+        for key in self.SHIPPING:
+            with self.subTest(list=key):
+                alpha = {"uuid": "u-a", "name": "Alpha-endosulfan", "cas_number": self.PARENT}
+                beta = {"uuid": "u-b", "name": "Beta-endosulfan", "cas_number": self.PARENT}
+                apply_manual_fixes([alpha, beta], self._paths()[key], label=key)
+                self.assertEqual(alpha["cas_number"], self.ALPHA)
+                self.assertEqual(beta["cas_number"], self.BETA)
+
+    def test_the_parent_keeps_its_number(self):
+        for key in self.SHIPPING:
+            with self.subTest(list=key):
+                parent = {"uuid": "u-p", "name": "Endosulfan", "cas_number": self.PARENT}
+                apply_manual_fixes([parent], self._paths()[key], label=key)
+                self.assertEqual(parent["cas_number"], self.PARENT)
+
+    def test_a_row_already_carrying_the_isomers_number_is_left_alone(self):
+        """What 3.13 ships, run through the 3.12 file, is not warned about or changed."""
+        alpha = {"uuid": "u-a", "name": "Alpha-endosulfan", "cas_number": self.ALPHA}
+        with capture_logs() as logs:
+            apply_manual_fixes([alpha], self._paths()["ecoinvent-3.12"], label="ecoinvent-3.12")
+        self.assertEqual(alpha["cas_number"], self.ALPHA)
+        self.assertFalse([
+            e for e in logs
+            if e["event"] == "manual_fix_original_value_mismatch" and e.get("field") == "cas_number"
+            and e.get("expected_original") == self.PARENT
+        ])
+
+    def test_the_merged_release_loads_the_corrected_numbers(self):
+        """The whole route, not just the table: `load_flows` applies the fix."""
+        source = known_source_lists()["ecoinvent-3.12"]
+        if not source.flows_path.exists():
+            raise unittest.SkipTest("ecoinvent-3.12 has not been fetched here")
+        expected = {"Alpha-endosulfan": self.ALPHA, "Beta-endosulfan": self.BETA, "Endosulfan": self.PARENT}
+        seen = {name: 0 for name in expected}
+        for row in source.load_flows():
+            if row.name in expected:
+                self.assertEqual(list(row.cas_numbers), [expected[row.name]], row.name)
+                seen[row.name] += 1
+        self.assertEqual(seen, {"Alpha-endosulfan": 7, "Beta-endosulfan": 7, "Endosulfan": 7})
