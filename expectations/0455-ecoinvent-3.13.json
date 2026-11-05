@@ -118,7 +118,7 @@
         "outcome": "created",
         "target_cas": "4070-80-8"
       },
-      "comment": "On the build of a87255f the row, which carries 4070-80-8, was matched by its vendor synonym `Fumaric acid` to EF 3.1's `fumaric acid`, 110-17-8, because no list carries the ester's number and the label matcher reads synonyms. The synonym is removed by the 3.13 fixes file. Met on the six-list build of 4198d4c, where each ester creates its own substance."
+      "comment": "On the build of 68894af the row, which carries 4070-80-8, was matched by its vendor synonym `Fumaric acid` to EF 3.1's `fumaric acid`, 110-17-8, because no list carries the ester's number and the label matcher reads synonyms. The synonym is removed by the 3.13 fixes file. Met on the six-list build of 4198d4c, where each ester creates its own substance."
     },
     {
       "id": "ecoinvent-3-13-monostearyl-fumarate-is-not-fumaric-acid",
@@ -149,7 +149,7 @@
         "count": 1,
         "flow_count": 13
       },
-      "comment": "On the build of a87255f the substance carried fifteen flows: EF 3.1's thirteen and the two ester rows above. Met on the six-list build of 4198d4c, where each ester creates its own substance."
+      "comment": "On the build of 68894af the substance carried fifteen flows: EF 3.1's thirteen and the two ester rows above. Met on the six-list build of 4198d4c, where each ester creates its own substance."
     }
   ]
 }

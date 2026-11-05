@@ -2877,7 +2877,7 @@ class FumarateEstersAreNotFumaricAcidTestCase(unittest.TestCase):
 
     The esters carry their own numbers, 4070-80-8 and 1741-93-1, which no other
     list ships, so the label matcher is what places them -- and on the build of
-    a87255f it read that one synonym and put both on EF 3.1's `fumaric acid`,
+    68894af it read that one synonym and put both on EF 3.1's `fumaric acid`,
     110-17-8.  The 3.13 fixes file takes the acid's name off both rows, and two
     more catalogue fragments off the sodium salt.  The names of the esters
     themselves have to survive, or the fix is a rule about a word.

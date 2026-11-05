@@ -178,7 +178,7 @@
       },
       "field": "synonyms",
       "remove_value": "Fumaric acid",
-      "comment": "`Fumaric acid` is not a name of this ester. ecoinvent 3.13 writes it as a synonym on this row, beside the row's own number (4070-80-8), apparently from a catalogue entry that lists the parent acid; a synonym is what the label matcher reads when no list carries the row's registry number, and EF 3.1 carries neither fumarate ester, so on the build of a87255f the row was matched by that one word to EF 3.1's `fumaric acid`, 110-17-8, and an emission of the ester was published as the acid. Taken off so that the row creates its own substance under its own number. The row also carries `Dibasic acid` and `Sodium salt`, two more fragments of the same catalogue sentence, removed below for the same reason; `SSF`, `Sodium Stearyl Fumarate` and `Stearyl fumarate sodium salt` are names of the ester and stay."
+      "comment": "`Fumaric acid` is not a name of this ester. ecoinvent 3.13 writes it as a synonym on this row, beside the row's own number (4070-80-8), apparently from a catalogue entry that lists the parent acid; a synonym is what the label matcher reads when no list carries the row's registry number, and EF 3.1 carries neither fumarate ester, so on the build of 68894af the row was matched by that one word to EF 3.1's `fumaric acid`, 110-17-8, and an emission of the ester was published as the acid. Taken off so that the row creates its own substance under its own number. The row also carries `Dibasic acid` and `Sodium salt`, two more fragments of the same catalogue sentence, removed below for the same reason; `SSF`, `Sodium Stearyl Fumarate` and `Stearyl fumarate sodium salt` are names of the ester and stay."
     },
     {
       "match": {
@@ -202,7 +202,7 @@
       },
       "field": "synonyms",
       "remove_value": "Fumaric acid",
-      "comment": "`Fumaric acid` is not a name of this ester. ecoinvent 3.13 writes it as a synonym on this row, beside the row's own number (1741-93-1), apparently from a catalogue entry that lists the parent acid; a synonym is what the label matcher reads when no list carries the row's registry number, and EF 3.1 carries neither fumarate ester, so on the build of a87255f the row was matched by that one word to EF 3.1's `fumaric acid`, 110-17-8, and an emission of the ester was published as the acid. Taken off so that the row creates its own substance under its own number. `Octadecyl hydrogen fumarate`, the row's other synonym, is a name of the ester and stays."
+      "comment": "`Fumaric acid` is not a name of this ester. ecoinvent 3.13 writes it as a synonym on this row, beside the row's own number (1741-93-1), apparently from a catalogue entry that lists the parent acid; a synonym is what the label matcher reads when no list carries the row's registry number, and EF 3.1 carries neither fumarate ester, so on the build of 68894af the row was matched by that one word to EF 3.1's `fumaric acid`, 110-17-8, and an emission of the ester was published as the acid. Taken off so that the row creates its own substance under its own number. `Octadecyl hydrogen fumarate`, the row's other synonym, is a name of the ester and stays."
     }
   ]
 }

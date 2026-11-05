@@ -19,7 +19,7 @@ two rows it is the first to ship (*Rows merged into one flow*).
 
 ## One name, two substances
 
-On the six-list build of 2026-11-04 (commit `BUILD-COMMIT`), every one of
+On the six-list build of 2026-11-05 (commit `a4d92fd`), every one of
 3.13's 9,893 rows was placed — 8,837 by the matching rules, 185 by a curated
 row in `ecoinvent-match-overrides.json`, and 871 by creating a flow that no
 list before it had — and two names ended up on more than one substance. Both
@@ -65,7 +65,7 @@ the substance carries it.
 
 ## Rows merged into one flow
 
-On the build of 2026-11-04, 17 consensus flows carry more than one 3.13 row.
+On the build of 2026-11-05, 17 consensus flows carry more than one 3.13 row.
 They are the groups the [3.12 page](ecoinvent-3.12.md) lists under the same
 heading, less the endosulfan isomers: `Cypermethrin` and its two isomer
 mixtures, 21 rows onto 7 flows, because ecoinvent still writes 52315-07-8 on
@@ -82,7 +82,7 @@ One merge was wrong and is corrected here. 3.13 is the first release to ship
 `Sodium stearyl fumarate` (4070-80-8) and `Monostearyl fumarate`
 (1741-93-1), and writes `Fumaric acid` as a synonym on both. No list carries
 either ester's number, so the label matcher read that synonym and put both
-rows on EF 3.1's `fumaric acid`, 110-17-8, on the build of `a87255f`.
+rows on EF 3.1's `fumaric acid`, 110-17-8, on the build of `68894af`.
 `ecoinvent-3.13-manual-fixes.json` takes the acid's name off both rows, and
 two more catalogue fragments — `Dibasic acid`, `Sodium salt` — off the sodium
 salt; each ester creates its own substance.
@@ -126,7 +126,7 @@ the rows.
 3.13 adds 50 rows, none of which an earlier release ships: 46 emissions to
 `water / unspecified` and 4 to `air / unspecified`, most of them
 pharmaceutical excipients, amino acids and fine-chemical intermediates. On
-the build of 2026-11-04, 32 of them reach a flow EF 3.1 already has by their
+the build of 2026-11-05, 32 of them reach a flow EF 3.1 already has by their
 registry number — `L-Cystein` lands on **L-cysteine**, `Stearyl alcohol` on
 **Octadecan-1-ol** — one, `D-Mannitol`, reaches EF 3.1's **D-mannitol** by
 name, and 17 create a substance no list had, among them
