@@ -18,7 +18,8 @@
         "amount": "4630",
         "derivation": "carried"
       },
-      "comment": "The expectation the first rule was written for, kept. The urban ground level takes unspecified air's number under the convention, and unspecified air carries the 4,630 a ruling published (#151)."
+      "comment": "The expectation the first rule was written for, kept. The urban ground level takes unspecified air's number under the convention, and unspecified air carries the 4,630 a ruling published (#151). Pending since #459: the ecoinvent Centre's 3.13 workbook states no climate-change factor for either sulfuryl fluoride air row (it keeps the rows and their two ecotoxicity factors), so no implementation that decides proposes 4,630 and the `publish` ruling applies to nothing. The number is AR6's and the ruling stays in `lcia-factor-rulings.json`; publishing it again needs a route that does not wait for a vendor to propose it, which is a change of its own.",
+      "pending": true
     },
     {
       "id": "0731-but-not-indoors",

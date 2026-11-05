@@ -19,7 +19,7 @@ Figures are from the build of 1 September 2026, run `20260901T0451332605450000`.
 | role | who | what it means to the method |
 |---|---|---|
 | **reference** | the JRC for EF 3.1; 2.-0 LCA consultants for Stepwise 2006 | the method's own publisher. Exactly one per method. Always decides |
-| **transcription** | the ecoinvent Centre's EF 3.1; GreenDelta's EF 3.1 | somebody else's rendering of the same method, against their own flow list |
+| **transcription** | the ecoinvent Centre's EF 3.1, from its 3.13 workbook and again from its 3.12 one; GreenDelta's EF 3.1 | somebody else's rendering of the same method, against their own flow list |
 | **consensus** | this list | ours, derived from the deciding implementations. Never decides, because it is the thing being decided |
 
 The role is what the pipeline branches on — never the name. A factor only the
@@ -52,17 +52,29 @@ never evidence for a number of ours, never a candidate in a queue, and changes n
 factor this list states. What it is for is putting a third reading of EF 3.1 in
 the difference report, where a disagreement is a question somebody can look at.
 
+The ecoinvent Centre's 3.12 workbook is the second such case
+([#459](https://github.com/brightway-labs/brightway-flows/issues/459)). When
+3.13's workbook became the one that decides, 3.12's stayed in the file as an
+implementation of its own, `ecoinvent Centre (3.12)`, marked `decides: false`:
+the publisher's current statement is the 3.13 workbook, and two statements by
+one publisher are not two votes. What it is for is the difference report, where
+a number that moved between the two releases is a row rather than a memory.
+
 So for EF 3.1 the flowchart's first question is asked of two voices, the JRC's
 and the ecoinvent Centre's; for Stepwise 2006, of one.
 
+Figures from the six-list build of a4d92fd, characterised on 2026-11-05 with
+the 3.13 workbook deciding:
+
 | implementation | role | decides | factors | flows reached |
-|---|---|---|---:|---:|
-| European Commission — JRC | reference | yes | 318,774 | 88,907 |
-| ecoinvent Centre | transcription | yes | 27,290 | 7,925 |
-| GreenDelta | transcription | **no** | 25,258 | 1,507 |
-| brightway-flows | consensus | no | 323,874 | — |
-| 2.-0 LCA consultants (Stepwise 2006) | reference | yes | 9,622 | 6,006 |
-| brightway-flows (Stepwise 2006) | consensus | no | 9,622 | — |
+|---|---|---:|---:|---:|
+| European Commission — JRC | reference | yes | 318,766 | 88,903 |
+| ecoinvent Centre | transcription | yes | 27,342 | 7,965 |
+| ecoinvent Centre (3.12) | transcription | **no** | 27,346 | 7,939 |
+| GreenDelta | transcription | **no** | 25,261 | 1,510 |
+| brightway-flows | consensus | no | 336,579 | — |
+| 2.-0 LCA consultants (Stepwise 2006) | reference | yes | 9,623 | 6,007 |
+| brightway-flows (Stepwise 2006) | consensus | no | 9,623 | — |
 
 ## Where a voice's numbers come from
 
@@ -90,7 +102,7 @@ category called *Acidification*, counted in a different unit from a different
 model, and it is not EF's; no category, no ruling, no approval and no queue
 crosses from one method to the other, and a method's contradiction model
 ([next page](model.md)) is that method's alone. What the two share is the
-flowchart. EF 3.1 with four implementations and Stepwise 2006 with one run
+flowchart. EF 3.1 with five implementations and Stepwise 2006 with one run
 through the same questions in the same order — and the convention that fills a
 blank ([page 5](blanks.md)) is written once, about our contexts, for both.
 

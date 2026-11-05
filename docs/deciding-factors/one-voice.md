@@ -156,7 +156,9 @@ substance and wait for the merge rather than for a signature.
 
 For a number that is genuinely one publisher's own, with no donor and no
 neighbour, the standard is an attributable source: sulphuryl difluoride's
-global warming potential was published because IPCC AR6 states it, and a rock's
+global warming potential was published because IPCC AR6 states it — and stopped
+being published when ecoinvent's 3.13 workbook stopped proposing it (#459),
+because the ruling adopts a proposal and nothing proposes it now — and a rock's
 depletion factor will be published when somebody can say where it came from —
 or declined on the record.
 

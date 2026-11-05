@@ -126,10 +126,12 @@ that misses both is a flow this list has never carried; a lookup that hits
 ### `lcia-factors.json.gz` — the characterisation factors
 
 Written by `characterise`, which runs after a build. Two methods in one file.
-Four implementations of EF 3.1: **the European Commission's JRC**, **the
-ecoinvent Centre's**, **GreenDelta's**, and **this list's**, which publishes the
-numbers the two deciding implementations — the JRC's and the ecoinvent Centre's
-— agree on and asks a curator about the rest. Two of Stepwise 2006: **2.-0 LCA
+Five implementations of EF 3.1: **the European Commission's JRC**, **the
+ecoinvent Centre's** (its 3.13 workbook), **the ecoinvent Centre's 3.12
+workbook** under the name `ecoinvent Centre (3.12)`, **GreenDelta's**, and
+**this list's**, which publishes the numbers the two deciding implementations —
+the JRC's and the ecoinvent Centre's — agree on and asks a curator about the
+rest. Two of Stepwise 2006: **2.-0 LCA
 consultants'**, and this list's beside it.
 
 ```json
@@ -166,8 +168,8 @@ consultants'**, and this list's beside it.
 Four things to know before you read a number out of it:
 
 * **An implementation is not a method.** A method's version and its implementer
-  are fields on the *category*, so four implementations of EF 3.1 are 100
-  categories under one method rather than four methods with one name. Two
+  are fields on the *category*, so five implementations of EF 3.1 are 125
+  categories under one method rather than five methods with one name. Two
   methods are published — EF 3.1 and Stepwise 2006 — and they share the flow
   list and nothing else.
 * **A factor has no identifier of its own.** It is identified by the three
@@ -445,7 +447,7 @@ JSON.
 | A flow's factors, counted per implementation | `lcia_flow_factor_counts` |
 
 `elementary_flows.lcia_factor_count` is **the JRC's non-zero factors** and keeps
-that meaning now that there are four implementations, so a query written before
+that meaning now that there are five implementations, so a query written before
 `characterise` existed still answers what it always answered. The question it
 cannot answer — how many each implementation states — is
 `lcia_flow_factor_counts`, a view over the factors themselves, so the two cannot

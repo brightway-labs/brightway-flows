@@ -84,9 +84,19 @@ class TheFileNamesItsMethodTestCase(unittest.TestCase):
 class EveryLoaderTakesAMethodTestCase(unittest.TestCase):
     """The curated files as shipped, read for EF and read for something else."""
 
+    #: Shipped empty, on purpose: the rounding file's four rows were retired
+    #: when ecoinvent's 3.13 workbook printed the same rounding as the JRC
+    #: (#459).  It still declares its method, which the two cases below check;
+    #: that it answers nothing for EF is the file's own claim, not a scope
+    #: failure.
+    EMPTY_FOR_EF = {"load_rounded_printings"}
+
     def test_the_shipped_files_are_read_for_ef(self):
         for loader, _key in LOADERS:
             with self.subTest(loader.__name__):
+                if loader.__name__ in self.EMPTY_FOR_EF:
+                    self.assertEqual(loader(method=METHOD), {})
+                    continue
                 self.assertTrue(loader(method=METHOD))
 
     def test_the_shipped_files_answer_nothing_for_another_method(self):

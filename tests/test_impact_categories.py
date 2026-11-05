@@ -1,6 +1,7 @@
 """The 138 impact categories, and the identifiers they are published under.
 
-Four implementations of EF 3.1 -- the JRC's, the ecoinvent Centre's,
+Five implementations of EF 3.1 -- the JRC's, the ecoinvent Centre's from two
+releases of its workbook,
 GreenDelta's and this list's own judgement -- times the 25 categories they each
 render, plus two implementations of Stepwise 2006 -- its own publisher's and
 ours -- times its 19.  What these
@@ -61,10 +62,14 @@ from brightway_flows.lcia import (
 )
 from brightway_flows.lcia.categories import _category, retired_impact_category_ids
 
-#: EF 3.1's four implementations, by slug, in file order.
-JRC, ECOINVENT, GREENDELTA, CONSENSUS = (
+#: EF 3.1's five implementations, by slug, in file order.  The ecoinvent
+#: Centre is read twice: its 3.13 workbook decides, and its 3.12 workbook is
+#: kept to be compared, under a slug of its own so that the deciding
+#: implementation's category ids did not move when the release did.
+JRC, ECOINVENT, ECOINVENT_PREVIOUS, GREENDELTA, CONSENSUS = (
     "jrc",
     "ecoinvent-centre",
+    "ecoinvent-centre-3-12",
     "greendelta",
     "brightway-flows",
 )
@@ -142,7 +147,8 @@ STEPWISE_SLUGS: tuple[str, ...] = (
 PUBLISHED_IRIS: tuple[str, ...] = tuple(
     f"{_PREFIX}/{implementation}/long/{slug}"
     for implementation in (
-        "jrc", "ecoinvent-centre", "greendelta", "brightway-flows",
+        "jrc", "ecoinvent-centre", "ecoinvent-centre-3-12", "greendelta",
+        "brightway-flows",
     )
     for slug in SLUGS
 ) + tuple(
@@ -153,7 +159,7 @@ PUBLISHED_IRIS: tuple[str, ...] = tuple(
 
 #: One id per implementation, stated as a literal.  The other 134 follow from
 #: `uuid5` over the IRI, which the IRIs above pin -- but the namespace the hash
-#: is taken in does not appear in an IRI, and these four are what would catch a
+#: is taken in does not appear in an IRI, and these five are what would catch a
 #: change to it.
 PINNED_IDS: dict[str, str] = {
     f"{_PREFIX}/jrc/long/acidification": "7507f0b3-eb52-5e00-aa33-c7e640bdae50",
@@ -162,6 +168,9 @@ PINNED_IDS: dict[str, str] = {
     ),
     f"{_PREFIX}/ecoinvent-centre/long/acidification": (
         "2e55a9ec-4781-5eaf-9523-af49223e7fc8"
+    ),
+    f"{_PREFIX}/ecoinvent-centre-3-12/long/acidification": (
+        "f80f21c6-d9d0-541b-8a2b-2ea240e67b50"
     ),
     f"{_PREFIX}/brightway-flows/long/acidification": (
         "9e2fdedd-ad4a-5381-8725-681a744c95da"
@@ -323,7 +332,7 @@ class CrosswalkTestCase(unittest.TestCase):
         self.assertEqual(payload["method"]["slug"], "ef")
         self.assertEqual(
             [row["slug"] for row in payload["implementations"]],
-            [JRC, ECOINVENT, GREENDELTA, CONSENSUS],
+            [JRC, ECOINVENT, ECOINVENT_PREVIOUS, GREENDELTA, CONSENSUS],
         )
 
     def test_the_registered_methods(self):
@@ -342,7 +351,7 @@ class CrosswalkTestCase(unittest.TestCase):
         self.assertEqual(method.consensus.slug, CONSENSUS)
         self.assertEqual(
             [row.slug for row in method.transcriptions],
-            [JRC, ECOINVENT, GREENDELTA],
+            [JRC, ECOINVENT, ECOINVENT_PREVIOUS, GREENDELTA],
         )
 
     def test_every_implementation_says_where_its_factors_come_from(self):
@@ -352,6 +361,7 @@ class CrosswalkTestCase(unittest.TestCase):
             {
                 JRC: "published-flows",
                 ECOINVENT: "source-list",
+                ECOINVENT_PREVIOUS: "source-list",
                 GREENDELTA: "source-list",
                 CONSENSUS: "derived",
             },
@@ -360,7 +370,8 @@ class CrosswalkTestCase(unittest.TestCase):
             {row.slug: row.factors.source_list for row in method.implementations},
             {
                 JRC: "EF-3.1",
-                ECOINVENT: "ecoinvent-3.12",
+                ECOINVENT: "ecoinvent-3.13",
+                ECOINVENT_PREVIOUS: "ecoinvent-3.12",
                 GREENDELTA: "bafu-2026-v1",
                 CONSENSUS: "",
             },
@@ -369,12 +380,15 @@ class CrosswalkTestCase(unittest.TestCase):
             method.implementation(ECOINVENT).factors.stated_method, ECOINVENT_METHOD
         )
 
-    def test_only_two_of_the_four_decide_anything(self):
+    def test_only_two_of_the_five_decide_anything(self):
         """Everything transcribed is compared; only a deciding implementation is
-        evidence. GreenDelta's is here to be compared with (#157)."""
+        evidence. GreenDelta's is here to be compared with (#157), and so is the
+        ecoinvent Centre's 3.12 workbook now that its 3.13 one decides (#459):
+        two statements by one publisher are not two votes."""
         method = ef_method()
         self.assertEqual([row.slug for row in method.deciding], [JRC, ECOINVENT])
         self.assertFalse(method.implementation(GREENDELTA).decides)
+        self.assertFalse(method.implementation(ECOINVENT_PREVIOUS).decides)
         self.assertTrue(method.reference.decides)
         self.assertFalse(method.consensus.decides)
 
@@ -401,9 +415,9 @@ class PublishedCategoryTestCase(unittest.TestCase):
         Two rather than four is not an omission: one publisher renders Stepwise,
         so it has a reference implementation and ours and nothing in between.
         """
-        self.assertEqual(len(published_impact_categories()), 138)
+        self.assertEqual(len(published_impact_categories()), 163)
         for slug, categories, implementations in (
-            ("ef", 25, 4),
+            ("ef", 25, 5),
             ("stepwise-2006", 19, 2),
         ):
             method = lcia_method(slug)
@@ -434,8 +448,8 @@ class PublishedCategoryTestCase(unittest.TestCase):
 
     def test_no_two_categories_share_an_identifier(self):
         categories = published_impact_categories()
-        self.assertEqual(len({category.id for category in categories}), 138)
-        self.assertEqual(len({category.meta["iri"] for category in categories}), 138)
+        self.assertEqual(len({category.id for category in categories}), 163)
+        self.assertEqual(len({category.meta["iri"] for category in categories}), 163)
 
     def test_each_category_carries_its_own_method_and_version(self):
         """One `method` record per method, shared by its categories.
@@ -723,14 +737,14 @@ class MalformedMethodFileTestCase(unittest.TestCase):
 
     def test_no_consensus_implementation_raises(self):
         def change(payload):
-            payload["implementations"] = payload["implementations"][:3]
+            payload["implementations"] = payload["implementations"][:4]
 
         with self.assertRaises(ValueError):
             self._read(change)
 
     def test_a_consensus_implementation_under_another_name_raises(self):
         def change(payload):
-            payload["implementations"][3]["name"] = "somebody else"
+            payload["implementations"][4]["name"] = "somebody else"
 
         with self.assertRaises(ValueError):
             self._read(change)
@@ -767,7 +781,7 @@ class MalformedMethodFileTestCase(unittest.TestCase):
 
     def test_a_consensus_implementation_that_decides_raises(self):
         def change(payload):
-            payload["implementations"][3]["decides"] = True
+            payload["implementations"][4]["decides"] = True
 
         with self.assertRaises(ValueError):
             self._read(change)
@@ -785,7 +799,7 @@ class MalformedMethodFileTestCase(unittest.TestCase):
 
     def test_identifiers_from_an_undeclared_implementation_raises(self):
         def change(payload):
-            payload["implementations"][2]["identifiers_from"] = "nobody"
+            payload["implementations"][3]["identifiers_from"] = "nobody"
 
         with self.assertRaises(ValueError):
             self._read(change)
@@ -801,14 +815,14 @@ class MalformedMethodFileTestCase(unittest.TestCase):
         """An old id would then name two categories."""
 
         def change(payload):
-            payload["implementations"][3]["previous_slugs"] = [JRC]
+            payload["implementations"][4]["previous_slugs"] = [JRC]
 
         with self.assertRaises(ValueError):
             self._read(change)
 
     def test_previous_slugs_that_are_not_a_list_raise(self):
         def change(payload):
-            payload["implementations"][3]["previous_slugs"] = "consensus-flow-list"
+            payload["implementations"][4]["previous_slugs"] = "consensus-flow-list"
 
         with self.assertRaises(ValueError):
             self._read(change)

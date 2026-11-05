@@ -183,7 +183,7 @@ def _factor_lines(assessment: Assessment, paint: Any) -> list[str]:
     another line here.
     """
     wanted = (
-        ("factors.factors_published", "factors, over four implementations"),
+        ("factors.factors_published", "factors, over every implementation"),
         ("factors.ef_jrc_factors_published", "the JRC's"),
         ("factors.ef_ecoinvent_centre_factors_published", "the ecoinvent Centre's"),
         ("factors.ef_greendelta_factors_published", "GreenDelta's"),

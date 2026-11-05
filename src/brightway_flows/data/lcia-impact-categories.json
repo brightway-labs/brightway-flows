@@ -23,8 +23,22 @@
       "name": "ecoinvent Centre",
       "role": "transcription",
       "decides": true,
+      "release": "3.13",
+      "source": "LCIA Implementation 3.13.xlsx, method EF v3.1, from ecoinvent 3.13_LCIA_implementation.7z",
+      "factors": {
+        "from": "source-list",
+        "list": "ecoinvent-3.13",
+        "method": "EF v3.1"
+      }
+    },
+    {
+      "slug": "ecoinvent-centre-3-12",
+      "name": "ecoinvent Centre (3.12)",
+      "role": "transcription",
+      "decides": false,
       "release": "3.12",
       "source": "LCIA Implementation 3.12.xlsx, method EF v3.1",
+      "comment": "The same publisher's rendering of the same method one release earlier, kept so that a number of theirs that moved between 3.12 and 3.13 is a row in the difference report rather than a memory. Published, transcribed and compared like GreenDelta's, and like GreenDelta's it decides nothing: the ecoinvent Centre's current statement is the 3.13 workbook, and two statements by one publisher are not two votes.",
       "factors": {
         "from": "source-list",
         "list": "ecoinvent-3.12",
@@ -48,7 +62,9 @@
     {
       "slug": "brightway-flows",
       "name": "brightway-flows",
-      "previous_slugs": ["consensus-flow-list"],
+      "previous_slugs": [
+        "consensus-flow-list"
+      ],
       "role": "consensus",
       "decides": false,
       "source": "ours, derived from the deciding implementations, each factor saying how",
@@ -75,6 +91,12 @@
           "unit": "mol H+ equivalents"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "acidification",
+          "indicator": "accumulated exceedance (AE)",
+          "unit": "mol H+-Eq"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "acidification",
           "indicator": "accumulated exceedance (AE)",
@@ -124,6 +146,12 @@
           "indicator": "global warming potential (GWP100)",
           "unit": "kg CO2-Eq"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "climate change",
+          "indicator": "global warming potential (GWP100)",
+          "unit": "kg CO2-Eq"
+        },
         "greendelta": {
           "identifier": "6209b35f-9447-40b5-b68c-a1099e3674a0",
           "name": "Climate change",
@@ -159,6 +187,12 @@
           "unit": "kg CO2-Equivalents"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "climate change: biogenic",
+          "indicator": "global warming potential (GWP100)",
+          "unit": "kg CO2-Eq"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "climate change: biogenic",
           "indicator": "global warming potential (GWP100)",
@@ -204,6 +238,12 @@
           "indicator": "global warming potential (GWP100)",
           "unit": "kg CO2-Eq"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "climate change: fossil",
+          "indicator": "global warming potential (GWP100)",
+          "unit": "kg CO2-Eq"
+        },
         "greendelta": {
           "identifier": "7fce5b3a-66b8-4ce1-91e8-a925aee1f186",
           "name": "Climate change (fossil)",
@@ -244,6 +284,12 @@
           "indicator": "global warming potential (GWP100)",
           "unit": "kg CO2-Eq"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "climate change: land use and land use change",
+          "indicator": "global warming potential (GWP100)",
+          "unit": "kg CO2-Eq"
+        },
         "greendelta": {
           "identifier": "14af9ca7-aa1d-4832-b1d9-ab05a06dcb12",
           "name": "Climate change (land use)",
@@ -279,6 +325,12 @@
           "unit": "disease incidence"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "particulate matter formation",
+          "indicator": "impact on human health",
+          "unit": "disease incidence"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "particulate matter formation",
           "indicator": "impact on human health",
@@ -327,6 +379,12 @@
           "indicator": "comparative toxic unit for ecosystems (CTUe)",
           "unit": "CTUe"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "ecotoxicity: freshwater",
+          "indicator": "comparative toxic unit for ecosystems (CTUe)",
+          "unit": "CTUe"
+        },
         "greendelta": {
           "identifier": "05316e7a-b254-4bea-9cf0-6bf33eb5c630",
           "name": "Ecotoxicity freshwater",
@@ -362,6 +420,12 @@
           "unit": "CTUe"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "ecotoxicity: freshwater, inorganics",
+          "indicator": "comparative toxic unit for ecosystems (CTUe)",
+          "unit": "CTUe"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "ecotoxicity: freshwater, inorganics",
           "indicator": "comparative toxic unit for ecosystems (CTUe)",
@@ -407,6 +471,12 @@
           "indicator": "comparative toxic unit for ecosystems (CTUe)",
           "unit": "CTUe"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "ecotoxicity: freshwater, organics",
+          "indicator": "comparative toxic unit for ecosystems (CTUe)",
+          "unit": "CTUe"
+        },
         "greendelta": {
           "identifier": "fd530f00-9325-424a-92ef-aaac67922fd9",
           "name": "Ecotoxicity freshwater (organics)",
@@ -442,6 +512,12 @@
           "unit": "kg N equivalents"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "eutrophication: marine",
+          "indicator": "fraction of nutrients reaching marine end compartment (N)",
+          "unit": "kg N-Eq"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "eutrophication: marine",
           "indicator": "fraction of nutrients reaching marine end compartment (N)",
@@ -487,6 +563,12 @@
           "indicator": "fraction of nutrients reaching freshwater end compartment (P)",
           "unit": "kg P-Eq"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "eutrophication: freshwater",
+          "indicator": "fraction of nutrients reaching freshwater end compartment (P)",
+          "unit": "kg P-Eq"
+        },
         "greendelta": {
           "identifier": "b53ec18f-7377-4ad3-86eb-cc3f4f276b2b",
           "name": "Eutrophication freshwater",
@@ -522,6 +604,12 @@
           "unit": "mol N equivalents"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "eutrophication: terrestrial",
+          "indicator": "accumulated exceedance (AE)",
+          "unit": "mol N-Eq"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "eutrophication: terrestrial",
           "indicator": "accumulated exceedance (AE)",
@@ -570,6 +658,12 @@
           "indicator": "comparative toxic unit for human (CTUh)",
           "unit": "CTUh"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "human toxicity: carcinogenic",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
         "greendelta": {
           "identifier": "2299222a-bbd8-474f-9d4f-4dd1f18aea7c",
           "name": "Human toxicity cancer",
@@ -610,6 +704,12 @@
           "indicator": "comparative toxic unit for human (CTUh)",
           "unit": "CTUh"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "human toxicity: carcinogenic, inorganics",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
         "greendelta": {
           "identifier": "01500b74-7ffb-463e-9bd4-72f17c2263ff",
           "name": "Human toxicity cancer (inorganics)",
@@ -645,6 +745,12 @@
           "unit": " CTUh "
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "human toxicity: carcinogenic, organics",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "human toxicity: carcinogenic, organics",
           "indicator": "comparative toxic unit for human (CTUh)",
@@ -693,6 +799,12 @@
           "indicator": "comparative toxic unit for human (CTUh)",
           "unit": "CTUh"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "human toxicity: non-carcinogenic",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
         "greendelta": {
           "identifier": "7cfdcfcf-b222-4b26-888a-a55f9fbf7ac8",
           "name": "Human toxicity non-cancer",
@@ -728,6 +840,12 @@
           "unit": "CTUh"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "human toxicity: non-carcinogenic, inorganics",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "human toxicity: non-carcinogenic, inorganics",
           "indicator": "comparative toxic unit for human (CTUh)",
@@ -773,6 +891,12 @@
           "indicator": "comparative toxic unit for human (CTUh)",
           "unit": "CTUh"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "human toxicity: non-carcinogenic, organics",
+          "indicator": "comparative toxic unit for human (CTUh)",
+          "unit": "CTUh"
+        },
         "greendelta": {
           "identifier": "8c3141e9-1f15-43b5-bff2-182e49893a46",
           "name": "Human toxicity non-cancer (organics)",
@@ -808,6 +932,12 @@
           "unit": "kBq U235 equivalents"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "ionising radiation: human health",
+          "indicator": "human exposure efficiency relative to u235",
+          "unit": "kBq U235-Eq"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "ionising radiation: human health",
           "indicator": "human exposure efficiency relative to u235",
@@ -853,6 +983,12 @@
           "indicator": "soil quality index",
           "unit": "dimensionless"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "land use",
+          "indicator": "soil quality index",
+          "unit": "dimensionless"
+        },
         "greendelta": {
           "identifier": "b2ad6890-c78d-11e6-9d9d-cec0c932ce01",
           "name": "Land use",
@@ -888,6 +1024,12 @@
           "unit": "kg CFC11 equivalents"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "ozone depletion",
+          "indicator": "ozone depletion potential (ODP)",
+          "unit": "kg CFC-11-Eq"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "ozone depletion",
           "indicator": "ozone depletion potential (ODP)",
@@ -933,6 +1075,12 @@
           "indicator": "tropospheric ozone concentration increase",
           "unit": "kg NMVOC-Eq"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "photochemical oxidant formation: human health",
+          "indicator": "tropospheric ozone concentration increase",
+          "unit": "kg NMVOC-Eq"
+        },
         "greendelta": {
           "identifier": "b5c610fe-def3-11e6-bf01-fe55135034f3",
           "name": "Photochemical ozone formation (human health)",
@@ -968,6 +1116,12 @@
           "unit": "MJ"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "energy resources: non-renewable",
+          "indicator": "abiotic depletion potential (ADP): fossil fuels",
+          "unit": "MJ, net calorific value"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "energy resources: non-renewable",
           "indicator": "abiotic depletion potential (ADP): fossil fuels",
@@ -1013,6 +1167,12 @@
           "indicator": "abiotic depletion potential (ADP): elements (ultimate reserves)",
           "unit": "kg Sb-Eq"
         },
+        "ecoinvent-centre-3-12": {
+          "method": "EF v3.1",
+          "name": "material resources: metals/minerals",
+          "indicator": "abiotic depletion potential (ADP): elements (ultimate reserves)",
+          "unit": "kg Sb-Eq"
+        },
         "greendelta": {
           "identifier": "b2ad6494-c78d-11e6-9d9d-cec0c932ce01",
           "name": "Resource use minerals and metals",
@@ -1048,6 +1208,12 @@
           "unit": "m3-world equivalents"
         },
         "ecoinvent-centre": {
+          "method": "EF v3.1",
+          "name": "water use",
+          "indicator": "user deprivation potential (deprivation-weighted water consumption)",
+          "unit": "m3 world Eq deprived"
+        },
+        "ecoinvent-centre-3-12": {
           "method": "EF v3.1",
           "name": "water use",
           "indicator": "user deprivation potential (deprivation-weighted water consumption)",
