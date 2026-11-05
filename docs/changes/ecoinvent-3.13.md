@@ -112,13 +112,14 @@ corrected 3.12 said, 3.13 says.
 Three other changes correct a registry number this project had left as
 shipped, and each is now stated as a correction in every earlier release
 that ships the row, so that the releases the build merges agree about the
-substance (#26). The earlier releases' pages carry the rows.
+substance (#26). Each has its own issue, and the earlier releases' pages carry
+the rows.
 
 | ecoinvent row(s) | 3.12 shipped | 3.13 ships | What it changes |
 |---|---|---|---|
-| `Alpha-endosulfan` and `Beta-endosulfan`, 7 rows each | 115-29-7, the parent | 959-98-8 and 33213-65-9, the isomers | On the build of 5f06833 all twenty-one endosulfan rows sat on one substance. EF 3.1 carries both isomers under these numbers, and the rows now reach them. |
-| `Propyl propionate`, water / unspecified | 623-53-0, ethyl methyl carbonate | 106-36-5, propyl propionate | On the build of 5f06833 the 3.12 row was published as `Ethyl Methyl Carbonate` on EF 3.1's flow of that carbonate. |
-| `Dibutyltin`, `Diphenyltin`, `Phenyltin`, `Trioctyltin`, `Triphenyltin`, one `water / ocean` row each | 1002-53-5, 1011-95-6, 2406-68-0, 869-59-0, 892-20-6 — neutral tin hydrides and compounds | 14488-53-0 and 668-34-8, the dibutyltin and triphenyltin cations; no number on the other three, with charged formulas `C12H10Sn+2`, `C6H5Sn+3`, `C24H51Sn1+` | The dissolved cations are what an emission to sea water is. The adapter does not read formulas, so the charge reaches the build only through the number, where 3.13 states one. |
+| `Alpha-endosulfan` and `Beta-endosulfan`, 7 rows each ([#456](https://github.com/brightway-labs/brightway-flows/issues/456)) | 115-29-7, the parent | 959-98-8 and 33213-65-9, the isomers | On the build of 5f06833 all twenty-one endosulfan rows sat on one substance. EF 3.1 carries both isomers under these numbers, and the rows now reach them. |
+| `Propyl propionate`, water / unspecified ([#457](https://github.com/brightway-labs/brightway-flows/issues/457)) | 623-53-0, ethyl methyl carbonate | 106-36-5, propyl propionate | On the build of 5f06833 the 3.12 row was published as `Ethyl Methyl Carbonate` on EF 3.1's flow of that carbonate. |
+| `Dibutyltin`, `Diphenyltin`, `Phenyltin`, `Trioctyltin`, `Triphenyltin`, one `water / ocean` row each ([#458](https://github.com/brightway-labs/brightway-flows/issues/458)) | 1002-53-5, 1011-95-6, 2406-68-0, 869-59-0, 892-20-6 — neutral tin hydrides and compounds | 14488-53-0 and 668-34-8, the dibutyltin and triphenyltin cations; no number on the other three, with charged formulas `C12H10Sn+2`, `C6H5Sn+3`, `C24H51Sn1+` | The dissolved cations are what an emission to sea water is. The adapter does not read formulas, so the charge reaches the build only through the number, where 3.13 states one. |
 
 ### Rows added and retired
 

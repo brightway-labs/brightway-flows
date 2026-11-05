@@ -1,22 +1,22 @@
 {
   "schema_version": 1,
-  "description": "ecoinvent 3.12's one `Propyl propionate` row carries 623-53-0, ethyl methyl carbonate's number, and the five-list build of 5f06833 published it as that carbonate on EF 3.1's flow. ecoinvent 3.13, released 2026-11-04, registers the uuid 106-36-5, propyl propanoate, and 3.12 is corrected to match.",
+  "description": "ecoinvent 3.12's one `Propyl propionate` row carries 623-53-0, ethyl methyl carbonate's number, and the five-list build of 5f06833 published it as that carbonate on EF 3.1's flow. ecoinvent 3.13, released 2026-11-04, registers the uuid 106-36-5, propyl propanoate, and 3.12 is corrected to match. 3.13 ships 106-36-5 itself.",
   "expectations": [
     {
       "id": "0457-propyl-propionate-is-not-a-carbonate",
       "issue": 457,
-      "title": "The ecoinvent `Propyl propionate` row lands on propyl propionate, 106-36-5",
+      "title": "The ecoinvent `Propyl propionate` row lands on propyl propionate, 106-36-5, from 3.12 and 3.13 alike",
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
         "name": "Propyl propionate"
       },
       "expect": {
-        "row_count": 1,
+        "row_count": 2,
         "same_substance": true,
         "target_cas": "106-36-5"
       },
-      "comment": "On 5f06833 the one 3.12 row, b842b096, carried 623-53-0 -- ethyl methyl carbonate -- and was matched to EF 3.1's flow of that carbonate and published as `Ethyl Methyl Carbonate`. ecoinvent 3.13 registers the uuid 106-36-5 and 3.12 is corrected to match; EF 3.1 has no propyl propionate flow, so the row creates the substance."
+      "comment": "On 5f06833 the one 3.12 row, b842b096, carried 623-53-0 -- ethyl methyl carbonate -- and was matched to EF 3.1's flow of that carbonate and published as `Ethyl Methyl Carbonate`. ecoinvent 3.13 registers the uuid 106-36-5 and 3.12 is corrected to match; EF 3.1 has no propyl propionate flow, so the row creates the substance. With ecoinvent 3.13 in the build the count includes its copy of each row; the claim is the same."
     }
   ]
 }

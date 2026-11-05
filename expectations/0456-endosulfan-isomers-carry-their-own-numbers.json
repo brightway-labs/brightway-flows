@@ -1,38 +1,38 @@
 {
   "schema_version": 1,
-  "description": "ecoinvent 3.11 and 3.12 register `Alpha-endosulfan` and `Beta-endosulfan` with the parent's number, 115-29-7, so the five-list build of 5f06833 landed all twenty-one endosulfan rows on one substance. ecoinvent 3.13, released 2026-11-04, registers the same uuids 959-98-8 and 33213-65-9; the two earlier releases are corrected to the same numbers before matching, so the merged isomer rows reach EF 3.1's isomer flows and the parent keeps its own.",
+  "description": "ecoinvent 3.11 and 3.12 register `Alpha-endosulfan` and `Beta-endosulfan` with the parent's number, 115-29-7, so the five-list build of 5f06833 landed all twenty-one endosulfan rows on one substance. ecoinvent 3.13, released 2026-11-04, registers the same uuids 959-98-8 and 33213-65-9; the two earlier releases are corrected to the same numbers before matching, so the merged isomer rows reach EF 3.1's isomer flows and the parent keeps its own. 3.13 ships the isomers' numbers itself, so its fourteen rows reach the same flows with no correction.",
   "expectations": [
     {
       "id": "0456-alpha-endosulfan-is-the-alpha-isomer",
       "issue": 456,
-      "title": "Every ecoinvent `Alpha-endosulfan` row lands on the alpha isomer, 959-98-8",
+      "title": "Every ecoinvent `Alpha-endosulfan` row, from 3.12 and 3.13 alike, lands on the alpha isomer, 959-98-8",
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
         "name": "Alpha-endosulfan"
       },
       "expect": {
-        "row_count": 7,
+        "row_count": 14,
         "same_substance": true,
         "target_cas": "959-98-8"
       },
-      "comment": "On the build of 5f06833 the seven 3.12 rows landed on `Endosulfan`, 115-29-7, because 3.12 wrote the parent's number on them. Corrected to 959-98-8, the number ecoinvent 3.13 ships on the same uuids, they reach EF 3.1's alpha-endosulfan flows. Seven rows because 3.12 is the only merged release that ships the isomer rows; 3.8 ships the parent alone."
+      "comment": "On the build of 5f06833 the seven 3.12 rows landed on `Endosulfan`, 115-29-7, because 3.12 wrote the parent's number on them. Corrected to 959-98-8, the number ecoinvent 3.13 ships on the same uuids, they reach EF 3.1's alpha-endosulfan flows. Seven rows because 3.12 is the only merged release that ships the isomer rows; 3.8 ships the parent alone. With ecoinvent 3.13 in the build the count includes its copy of each row; the claim is the same."
     },
     {
       "id": "0456-beta-endosulfan-is-the-beta-isomer",
       "issue": 456,
-      "title": "The ecoinvent `Beta-endosulfan` row to unspecified water lands on the beta isomer, 33213-65-9",
+      "title": "The ecoinvent `Beta-endosulfan` row to unspecified water lands on the beta isomer, 33213-65-9, from 3.12 and 3.13 alike",
       "subject": {
         "kind": "source_row",
         "list": "ecoinvent",
         "uuid": "9c426aaa-f6fa-5a91-b93c-3d920c5ef63d"
       },
       "expect": {
-        "row_count": 1,
+        "row_count": 2,
         "same_substance": true,
         "target_cas": "33213-65-9"
       },
-      "comment": "The same measurement for the beta isomer: on 5f06833 all seven 3.12 rows sat on the parent. Selected by uuid: the merge records the row under the substance's name rather than the vendor's, so a name selector finds nothing."
+      "comment": "The same measurement for the beta isomer: on 5f06833 all seven 3.12 rows sat on the parent. Selected by uuid: the merge records the row under the substance's name rather than the vendor's, so a name selector finds nothing. With ecoinvent 3.13 in the build the count includes its copy of each row; the claim is the same."
     },
     {
       "id": "0456-endosulfan-keeps-the-parent",
@@ -45,12 +45,12 @@
       },
       "expect": {
         "row_count": {
-          "at_least": 8
+          "at_least": 14
         },
         "same_substance": true,
         "target_cas": "115-29-7"
       },
-      "comment": "Seven rows in 3.12 and one in 3.8. Nothing about them changes; this pins that separating the isomers did not move the parent."
+      "comment": "Seven rows in 3.12 and one in 3.8. Nothing about them changes; this pins that separating the isomers did not move the parent. With ecoinvent 3.13 in the build the count includes its copy of each row; the claim is the same."
     }
   ]
 }
