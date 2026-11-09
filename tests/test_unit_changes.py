@@ -580,17 +580,22 @@ class TheRealFileAnswersEveryCarrierTestCase(unittest.TestCase):
                 self.assertEqual(by_origin[(StatementOrigin.VENDOR_FLOW, "net-calorific-value")], stated)
                 self.assertEqual(self._converting(source_uuid).value, stated)
 
-    def test_the_one_rule_converts_by_the_methods_number(self):
-        """The file holds exactly one conversion rule, and it is the decision
-        the method forces: a Stepwise kilogram converts onto EF's
-        net-calorific-value flows by what Stepwise's own method counts it as,
-        and by nothing read off the name or the block."""
-        self.assertEqual(len(self.statements.rules), 1)
-        rule = self.statements.rules[0]
-        self.assertEqual(rule.onto, "net-calorific-value")
-        self.assertEqual(rule.convert_by, "calorific-value")
-        self.assertIs(rule.stated_by, StatementOrigin.VENDOR_METHOD)
-        self.assertTrue(rule.comment.strip())
+    def test_the_two_rules_name_whose_number_stands(self):
+        """Two conversion rules, each a decision the vendor's own file forces.
+        A Stepwise kilogram converts onto EF's net-calorific-value flows by
+        what Stepwise's own method counts it as, and by nothing read off the
+        name or the block; and its fission energy is the name's number, which
+        for `Uranium, 2291 GJ per kg` the method rounds to 2,290,000 MJ."""
+        self.assertEqual(len(self.statements.rules), 2)
+        by_target = {rule.onto: rule for rule in self.statements.rules}
+        net = by_target["net-calorific-value"]
+        self.assertEqual(net.convert_by, "calorific-value")
+        self.assertIs(net.stated_by, StatementOrigin.VENDOR_METHOD)
+        fission = by_target["fission-energy"]
+        self.assertEqual(fission.convert_by, "fission-energy")
+        self.assertIs(fission.stated_by, StatementOrigin.FLOW_NAME)
+        for rule in (net, fission):
+            self.assertTrue(rule.comment.strip())
 
     def test_the_rule_is_what_keeps_the_methods_number_over_the_blocks_net_one(self):
         """`choose_statement` takes what the rules say, then an exact

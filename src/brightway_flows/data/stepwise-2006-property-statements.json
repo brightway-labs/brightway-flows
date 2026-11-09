@@ -7,6 +7,12 @@
       "convert_by": "calorific-value",
       "stated_by": "vendor-method",
       "comment": "A Stepwise kilogram of coal converts onto EF 3.1's net-calorific-value flows by what Stepwise's own method counts it as: the factor its `Non-renewable energy` category gives the row, read off the export by the adapter as a calorific value of unstated basis stated by the method. That number is the substance block's higher heating value for `Coal, hard` (19.1), `Coal, brown` (9.9) and `Oil, crude` (45.8), the lower one for the rows whose names state their energy (`Gas, natural, 46.8 MJ per kg`), and neither for `Gas, natural/m3` (40.3 against 38.3 gross and 34.5 net) and `Peat` (9.9, no block value); the method itself says neither net nor gross. The rule comes before the exact match deliberately: Stepwise's brown coal also carries the block's net 8.75, and converting by it would restate the method's numbers. The build of 5f06833 published every one of these factors off the override rows; whether Stepwise should convert by the net value instead is a measured change of its own."
+    },
+    {
+      "onto": "fission-energy",
+      "convert_by": "fission-energy",
+      "stated_by": "flow-name",
+      "comment": "Stepwise states the fission energy of its three named uranium rows twice: in the name (`Uranium, 2291 GJ per kg`) and as the method's `Non-renewable energy` factor. For `Uranium, 451 GJ per kg` and `Uranium, 560 GJ per kg` the two are one number in two units; for `Uranium, 2291 GJ per kg` the method's factor is 2,290,000 MJ against the name's 2291 GJ, a rounding in the method's table that is 0.04% off the name. The name's number stands: it is what `simapro-lineage-manual-fixes.json` rebases the row by (2,291,000 MJ per kg), and what the build of 1055f92 published for the row. Written down because two statements of one quantity that disagree are a question for a ruling, not for file order, and a Stepwise row is the one place the two vendor origins meet."
     }
   ],
   "statements": [],

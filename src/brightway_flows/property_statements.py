@@ -19,7 +19,12 @@ about one flow's value:
     Which statement quantity converts onto a target of another.  Stepwise
     2006's method states gross calorific values, so its rows convert onto EF's
     net-calorific-value flows by the gross value; the rule says so with its
-    reason, and the mapping publishes which quantity it used.
+    reason, and the mapping publishes which quantity it used.  A rule may
+    name the origin it converts by, and a rule onto a quantity *itself* with
+    an origin is how two of the vendor's own statements of one quantity that
+    disagree are decided: Stepwise's method gives `Uranium, 2291 GJ per kg`
+    2,290,000 MJ where the name says 2291 GJ, and the rule says the name's
+    number stands.
 
 ``reference_quantities``
     What a named flow's unit measures where the vendor's own flow property is
@@ -331,10 +336,6 @@ def _rules_from(payload: dict[str, Any], *, path: Path) -> tuple[ConversionRule,
                     f"{where} names quantity {slug!r}, which quantities.json does "
                     f"not have."
                 )
-        if onto == convert_by:
-            raise ValueError(
-                f"{where} converts {onto!r} onto itself, which needs no rule."
-            )
         if onto in seen:
             raise ValueError(f"{where} is the second rule onto {onto!r}.")
         seen.add(onto)
@@ -347,6 +348,13 @@ def _rules_from(payload: dict[str, Any], *, path: Path) -> tuple[ConversionRule,
                     f"origins are {', '.join(sorted(_ORIGINS))}."
                 )
             stated_by = StatementOrigin(origin)
+        if onto == convert_by and stated_by is None:
+            raise ValueError(
+                f"{where} converts {onto!r} onto itself and names no origin, "
+                f"which needs no rule. A rule onto a quantity itself decides "
+                f"*whose* statement of it stands -- the method's or the name's "
+                f"-- and so has to name one in 'stated_by'."
+            )
         rules.append(ConversionRule(onto=onto, convert_by=convert_by,
                                     comment=_text(entry, "comment", where=where),
                                     stated_by=stated_by))

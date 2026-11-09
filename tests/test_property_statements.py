@@ -288,6 +288,23 @@ class ChooseStatementTestCase(unittest.TestCase):
         chosen = choose_statement([method, named], target_quantity=FISSION_ENERGY)
         self.assertIs(chosen, method)
 
+    def test_a_rule_onto_the_quantity_itself_decides_between_two_origins(self):
+        """Stepwise's method gives `Uranium, 2291 GJ per kg` 2,290,000 MJ where
+        the name says 2291 GJ; the list's rule says the name's number stands,
+        and the method's is not consulted for the target it rules."""
+        method = _stmt(FISSION_ENERGY, 2_290_000, "MJ", "kg", StatementOrigin.VENDOR_METHOD)
+        named = _stmt(FISSION_ENERGY, 2291, "GJ", "kg", StatementOrigin.FLOW_NAME)
+        rule = ConversionRule(
+            onto=FISSION_ENERGY, convert_by=FISSION_ENERGY, comment="the name's",
+            stated_by=StatementOrigin.FLOW_NAME,
+        )
+        self.assertIs(
+            choose_statement([method, named], target_quantity=FISSION_ENERGY, rules=[rule]),
+            named,
+        )
+        with self.assertRaises(AmbiguousPropertyStatementsError):
+            choose_statement([method, named], target_quantity=FISSION_ENERGY)
+
     def test_two_different_numbers_in_two_units_are_still_a_question(self):
         method = _stmt(FISSION_ENERGY, 451_000, "MJ", "kg", StatementOrigin.VENDOR_METHOD)
         named = _stmt(FISSION_ENERGY, 560, "GJ", "kg", StatementOrigin.FLOW_NAME)
@@ -654,12 +671,19 @@ class LoaderTestCase(LoaderFixtureTestCase):
         self.assertIn(str(DECISIONS_SCHEMA_VERSION), str(error))
 
     def test_a_rule_onto_itself(self):
+        """Without an origin it decides nothing; with one it decides whose
+        statement of the quantity stands, which is a ruling."""
         self.assertRefused(
-            "Conversion rule 0",
+            "names no origin",
             conversion_rules=[
                 {"onto": NET_CALORIFIC_VALUE, "convert_by": NET_CALORIFIC_VALUE, "comment": "x"}
             ],
         )
+        loaded = self.load(conversion_rules=[{
+            "onto": FISSION_ENERGY, "convert_by": FISSION_ENERGY,
+            "stated_by": "flow-name", "comment": "the name's number stands",
+        }])
+        self.assertIs(loaded.rules[0].stated_by, StatementOrigin.FLOW_NAME)
 
     def test_a_second_rule_onto_the_same_quantity(self):
         self.assertRefused(
