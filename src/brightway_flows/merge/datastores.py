@@ -305,11 +305,20 @@ def sync_flow_object_properties(
 
     The same shape as :func:`sync_flow_object_synonyms`, for the same reason: a
     pass over objects an earlier stage wrote has to write them back or its
-    result lives in memory.  Three places hold an object's properties --
-    `flow_objects.properties_json`, the object's own `flow_object_json`, and the
-    shared `flow_object_payloads` row its flows read theirs from (#253) -- and
-    all three are rewritten, so the export, the flow pages and the substance
-    pages read one answer.  Returns how many objects were written.
+    result lives in memory.  Four places hold an object's properties --
+    `flow_objects.properties_json`, the object's own `flow_object_json`, the
+    shared `flow_object_payloads` row its flows read theirs from (#253), and
+    the `flow_json` of any flow that still carries its own `properties` key --
+    and all four are rewritten, so the export, the flow pages and the
+    substance pages read one answer.
+
+    The fourth is what the payload cannot reach.  `merge_object_payload` lets a
+    flow's own keys win over the shared payload, and a flow keeps its own
+    `properties` where its object's flows disagreed at build time, where a
+    later writer put the key back, and on every flow the merge minted, which
+    is written with its whole body and no payload row at all.  Writing the
+    object's properties onto those flows is what makes their published record
+    agree with their substance's.  Returns how many objects were written.
     """
     db_path = CONSENSUS_DB_FILEPATH if db_path is None else db_path
     if not object_ids:
@@ -330,13 +339,29 @@ def sync_flow_object_properties(
             "WHERE flow_object_id = ?",
             rows,
         )
+        by_object = [(properties, object_id) for properties, _payload, object_id in rows]
         conn.executemany(
             "UPDATE flow_object_payloads SET payload_json = "
             "json_set(payload_json, '$.properties', json(?)) WHERE flow_object_id = ?",
-            [(properties, object_id) for properties, _payload, object_id in rows],
+            by_object,
         )
+        flows_rewritten = 0
+        for properties, object_id in by_object:
+            cursor = conn.execute(
+                "UPDATE elementary_flows SET flow_json = "
+                "json_set(flow_json, '$.properties', json(?)) "
+                "WHERE flow_object_id = ? "
+                "AND json_type(flow_json, '$.properties') IS NOT NULL",
+                (properties, object_id),
+            )
+            flows_rewritten += cursor.rowcount
         conn.commit()
-        logger.info("synced_flow_object_properties", count=len(rows), path=str(db_path))
+        logger.info(
+            "synced_flow_object_properties",
+            count=len(rows),
+            flows_with_own_properties_rewritten=flows_rewritten,
+            path=str(db_path),
+        )
     finally:
         conn.close()
     return len(rows)

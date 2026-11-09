@@ -49,7 +49,7 @@ from brightway_flows.domain.composition import contradicts_name
 from brightway_flows.domain.elementary_flow import minted_elementary_flow_id
 from brightway_flows.domain.labels import flow_label_value
 from brightway_flows.domain.preferred_label_decisions import decision_key
-from brightway_flows.domain.units import ConversionBasis
+from brightway_flows.domain.units import CONVERSION_BASIS_KEY, ConversionBasis
 from brightway_flows.domain.vocabulary import CHEMROF_MOLECULAR_FORMULA
 from brightway_flows.merge.store import ConflictKind, disagreement_filter
 from brightway_flows.pipeline.review_records import ReviewQueue
@@ -256,7 +256,7 @@ def _property_statement_measures(connection: sqlite3.Connection) -> list[Measure
             _scalar(
                 connection,
                 "SELECT count(*) FROM elementary_flow_sources "
-                "WHERE json_extract(source_metadata_json, '$.conversion_basis') = ?",
+                f"WHERE json_extract(source_metadata_json, '$.{CONVERSION_BASIS_KEY}') = ?",
                 (ConversionBasis.FLOW_PROPERTY.value,),
             ),
             "mappings whose multiplier is derived from a property statement",

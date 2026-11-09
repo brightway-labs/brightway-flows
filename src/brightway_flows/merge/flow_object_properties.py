@@ -27,6 +27,10 @@ The statements are read from the `flow_property_statements` table
 (`merge.property_rows`), which every merged list has written to by the time
 this runs, so the spread spans the lists merged so far rather than the one
 merging now.  The ruling's loader takes no path and is cached (rule 13).
+
+Under `merge/` because the merge is the stage that applies the ruling (rule
+13), and because the module imports `merge.property_rows`: a home at the
+package root made importing it first a cycle through `merge/__init__`.
 """
 
 from __future__ import annotations
@@ -43,8 +47,9 @@ import structlog
 from brightway_flows.domain.common import Provenance
 from brightway_flows.domain.flow_object import FlowObject
 from brightway_flows.domain.quantities import load_quantities, quantity
-from brightway_flows.domain.units import unit_iri_for, unit_row_for
+from brightway_flows.domain.units import quantity_kind_of, unit_iri_for
 from brightway_flows.domain.vocabulary import (
+    QUANTITY_IRI_PREFIX,
     QUDT_HAS_UNIT_CURIE,
     RDFS_LABEL_CURIE,
     Term,
@@ -98,11 +103,6 @@ class FlowObjectPropertyValue:
     primary_source: tuple[str, ...]
     comment: str
     class_range: ClassRange | None = None
-
-
-def _kind_of(unit: str) -> str:
-    row = unit_row_for(unit)
-    return str(row.get("quantity_kind_iri") or "") if row is not None else ""
 
 
 def _text(entry: Mapping[str, Any], key: str, *, where: str) -> str:
@@ -171,7 +171,7 @@ def load_flow_object_property_values() -> dict[tuple[str, str], FlowObjectProper
         if slug not in load_quantities():
             raise ValueError(f"{where} names quantity {slug!r}, which quantities.json does not have.")
         unit, per_unit = _text(entry, "unit", where=where), _text(entry, "per_unit", where=where)
-        unit_kind, per_kind = _kind_of(unit), _kind_of(per_unit)
+        unit_kind, per_kind = quantity_kind_of(unit), quantity_kind_of(per_unit)
         if not unit_kind or not per_kind:
             raise ValueError(f"{where} states a unit units.json does not know ({unit!r} per {per_unit!r}).")
         if unit_kind != quantity(slug).quantity_kind_iri or unit_kind == per_kind:
@@ -314,13 +314,14 @@ def property_entries(
     entries: dict[str, dict[str, Any]] = {}
     for slug in sorted({slug for slug, _, _ in groups}):
         record = quantity(slug)
+        reference = references.get(slug)
         measurements = [
             _measurement(
                 unit=unit, per_unit=per_unit, rows=groups[(q, unit, per_unit)],
                 curated=(
-                    references.get(slug)
-                    if references.get(slug) is not None
-                    and (references[slug].unit, references[slug].per_unit) == (unit, per_unit)
+                    reference
+                    if reference is not None
+                    and (reference.unit, reference.per_unit) == (unit, per_unit)
                     else None
                 ),
                 counts=counts,
@@ -340,6 +341,11 @@ def property_entries(
     return entries
 
 
+def is_quantity_entry(key: str) -> bool:
+    """Whether *key* of a `properties` mapping is an entry this pass writes."""
+    return str(key).startswith(QUANTITY_IRI_PREFIX)
+
+
 def write_flow_object_property_values(
     flow_objects: Iterable[FlowObject],
     *,
@@ -348,6 +354,16 @@ def write_flow_object_property_values(
     changed: set[str] | None = None,
 ) -> Counter:
     """Write each flow object's property entries, in place; return the counts.
+
+    The quantity entries an object ends up with are exactly the ones the table
+    and the ruling give it now: an entry whose statements are gone -- a list
+    re-merged under a bound that left its coal row out, a quantity the vendor
+    stopped stating -- is removed rather than left standing on the object with
+    a spread the table no longer holds.  The object's other `properties` keys
+    are not this pass's and are left alone.  So the caller hands over every
+    object that carries a quantity entry today as well as the ones the rows
+    and the ruling name (`merge.pipeline` does), or a stale entry survives
+    unvisited.
 
     *changed* collects the ids of the objects whose `properties` moved, for
     the write-back.  Returns a `Counter` (rule 11); `FlowObject` is not a
@@ -359,16 +375,23 @@ def write_flow_object_property_values(
     for obj in flow_objects:
         object_id = obj.flow_object_id
         rows = rows_by_object.get(object_id, [])
-        if not rows and object_id not in ruled:
+        properties = dict(obj.properties or {})
+        stale = [key for key in properties if is_quantity_entry(key)]
+        if not rows and object_id not in ruled and not stale:
             continue
         entries = property_entries(object_id, rows=rows, curated=curated, counts=counts)
-        properties = dict(obj.properties or {})
-        if all(properties.get(key) == value for key, value in entries.items()):
+        removed = [key for key in stale if key not in entries]
+        if not removed and all(
+            properties.get(key) == value for key, value in entries.items()
+        ):
             continue
+        for key in removed:
+            del properties[key]
         properties.update(entries)
         obj.properties = properties
         counts["objects_written"] += 1
         counts["entries"] += len(entries)
+        counts["entries_removed"] += len(removed)
         if changed is not None:
             changed.add(object_id)
     logger.info("wrote_flow_object_property_values", **dict(counts))

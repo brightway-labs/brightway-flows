@@ -36,7 +36,8 @@ from brightway_flows.merge.contexts import (
 from brightway_flows.merge.creations import (
     create_flows_for_unmatched_rows,
 )
-from brightway_flows.flow_object_properties import (
+from brightway_flows.merge.flow_object_properties import (
+    is_quantity_entry,
     MERGE_PROPERTY_VALUE_STAGE,
     load_flow_object_property_values,
     write_flow_object_property_values,
@@ -681,6 +682,14 @@ def merge_source_list(
     )
     touched_objects = {row.flow_object_id for row in property_rows if row.flow_object_id}
     touched_objects |= {object_id for object_id, _ in load_flow_object_property_values()}
+    # And every object carrying an entry from an earlier merge, so that one
+    # whose statements this re-merge took away is revisited and the entry
+    # rebuilt from what the table holds now rather than left as it was.
+    touched_objects |= {
+        object_id
+        for object_id, obj in indexes.flow_objects_by_id.items()
+        if any(is_quantity_entry(key) for key in (obj.properties or {}))
+    }
     property_objects = [
         obj for object_id, obj in indexes.flow_objects_by_id.items()
         if object_id in touched_objects

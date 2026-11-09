@@ -15,7 +15,7 @@ import orjson
 from brightway_flows.domain.flow_object import FlowObject
 from brightway_flows.domain.quantities import NET_CALORIFIC_VALUE, quantity
 from brightway_flows.domain.vocabulary import QUDT_HAS_UNIT_CURIE, RDFS_LABEL_CURIE
-from brightway_flows.flow_object_properties import (
+from brightway_flows.merge.flow_object_properties import (
     CLASS_RANGE_CURIE,
     FLOW_OBJECT_PROPERTY_VALUES_FILEPATH,
     MAX_VALUE_CURIE,
@@ -195,6 +195,26 @@ class WritePassTestCase(unittest.TestCase):
         self.assertEqual(coal.properties["x"], 1)
         self.assertIn(quantity(NET_CALORIFIC_VALUE).iri, coal.properties)
         self.assertEqual(other.properties, {"x": 1})
+
+    def test_an_entry_whose_statements_are_gone_is_removed(self):
+        """A list re-merged under a bound that left its coal row out deletes
+        its rows from the table; the object's entry is rebuilt from what the
+        table holds now, and a quantity nobody states any more goes with it.
+        The object's other keys are not this pass's and stay."""
+        coal = self._object()
+        write_flow_object_property_values(
+            [coal],
+            rows_by_object={HARD_COAL: [_row("stepwise", 19.1)]},
+            curated={},
+        )
+        self.assertIn(quantity(NET_CALORIFIC_VALUE).iri, coal.properties)
+        changed: set[str] = set()
+        counts = write_flow_object_property_values(
+            [coal], rows_by_object={}, curated={}, changed=changed
+        )
+        self.assertEqual(changed, {HARD_COAL})
+        self.assertEqual(counts["entries_removed"], 1)
+        self.assertEqual(coal.properties, {"x": 1})
 
     def test_a_second_pass_with_the_same_answer_changes_nothing(self):
         coal = self._object()

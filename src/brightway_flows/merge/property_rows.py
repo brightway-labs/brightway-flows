@@ -35,7 +35,7 @@ from brightway_flows.domain.quantities import quantity
 from brightway_flows.domain.records import SerialisableRecord
 from brightway_flows.domain.units import CONVERSION_BASIS_KEY, CONVERSION_QUANTITY_KEY, ConversionBasis
 from brightway_flows.domain.vocabulary import QUDT_CONVERSION_MULTIPLIER_CURIE
-from brightway_flows.pipeline.sqlite_schema import insert_statement
+from brightway_flows.pipeline.sqlite_schema import insert_statement, table_exists
 
 logger = structlog.get_logger(__name__)
 
@@ -104,13 +104,29 @@ class PropertyStatementRow(SerialisableRecord):
     comment: str = ""
 
     def as_tuple(self) -> tuple[Any, ...]:
-        return (
-            self.run_id, self.list_name, self.list_version, self.source_flow_uuid,
-            self.source_flow_name, self.elementary_flow_uuid, self.flow_object_id,
-            self.quantity, self.quantity_iri, self.value, self.unit, self.per_unit,
-            self.stated_by, int(self.used_for_conversion),
-            orjson.dumps(self.provenance).decode(), self.comment,
-        )
+        """The row's values in :data:`COLUMNS` order, for the `INSERT`.
+
+        Driven by `COLUMNS` rather than spelled out beside it, so that a column
+        added or moved in one place cannot land a value under the wrong name
+        in the other.  Two columns are encodings of a field rather than the
+        field itself (:data:`_COLUMN_CODECS`); every other column is the
+        attribute of the same name.
+        """
+        return tuple(self.column_value(name) for name in COLUMNS)
+
+    def column_value(self, column: str) -> Any:
+        codec = _COLUMN_CODECS.get(column)
+        if codec is not None:
+            return codec(self)
+        return getattr(self, column)
+
+
+#: The columns whose stored form is not the field's: SQLite has no boolean,
+#: and the provenance is a JSON text.
+_COLUMN_CODECS: dict[str, Any] = {
+    "used_for_conversion": lambda row: int(row.used_for_conversion),
+    "provenance_json": lambda row: orjson.dumps(row.provenance).decode(),
+}
 
 
 def create_table(connection: sqlite3.Connection) -> None:
@@ -227,48 +243,76 @@ def write_rows(
     return len(rows)
 
 
+#: The order rows come back in, and so the order the provenance list on a
+#: substance's entry is published in.  Every column that can differ between
+#: two rows of one source row is in it -- Stepwise's `Coal, hard` carries a
+#: gross value and a method factor under one list, version and name -- with
+#: the row id last, so two builds of one revision read the table in one order
+#: and `tools/verify_run.py`'s identical-hash criterion holds.
+_READ_ORDER = (
+    "list_name", "list_version", "source_flow_name", "source_flow_uuid",
+    "quantity", "stated_by", "unit", "per_unit", "value", "id",
+)
+
+#: SQLite's default limit on bound parameters is 999; the ids are asked for
+#: in slices under it.
+_IN_CLAUSE_LIMIT = 500
+
+
 def read_rows(
     flow_object_ids: Iterable[str], *, db_path: Path | None = None
 ) -> dict[str, list[PropertyStatementRow]]:
-    """Every list's rows for each of *flow_object_ids*, across every merge so far."""
+    """Every list's rows for each of *flow_object_ids*, across every merge so far.
+
+    Selected by object in the query rather than filtered after a full scan, in
+    :data:`_READ_ORDER`.
+    """
     from brightway_flows.filesystem import CONSENSUS_DB_FILEPATH
 
     db_path = CONSENSUS_DB_FILEPATH if db_path is None else db_path
-    wanted = {str(i) for i in flow_object_ids if i}
+    wanted = sorted({str(i) for i in flow_object_ids if i})
     out: dict[str, list[PropertyStatementRow]] = {}
     if not wanted:
         return out
     connection = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
     connection.row_factory = sqlite3.Row
     try:
-        create_table_exists = connection.execute(
-            "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?", (TABLE,)
-        ).fetchone()
-        if not create_table_exists:
+        if not table_exists(connection, TABLE):
             return out
-        for record in connection.execute(f"SELECT * FROM {TABLE} ORDER BY list_name, list_version, source_flow_name"):
-            if record["flow_object_id"] not in wanted:
-                continue
-            out.setdefault(record["flow_object_id"], []).append(
-                PropertyStatementRow(
-                    run_id=record["run_id"] or "",
-                    list_name=record["list_name"],
-                    list_version=record["list_version"],
-                    source_flow_uuid=record["source_flow_uuid"],
-                    source_flow_name=record["source_flow_name"] or "",
-                    elementary_flow_uuid=record["elementary_flow_uuid"],
-                    flow_object_id=record["flow_object_id"] or "",
-                    quantity=record["quantity"],
-                    quantity_iri=record["quantity_iri"],
-                    value=float(record["value"]),
-                    unit=record["unit"],
-                    per_unit=record["per_unit"],
-                    stated_by=record["stated_by"],
-                    used_for_conversion=bool(record["used_for_conversion"]),
-                    provenance=orjson.loads(record["provenance_json"] or "{}"),
-                    comment=record["comment"] or "",
-                )
+        order = ", ".join(_READ_ORDER)
+        for start in range(0, len(wanted), _IN_CLAUSE_LIMIT):
+            slice_ = wanted[start:start + _IN_CLAUSE_LIMIT]
+            placeholders = ", ".join("?" for _ in slice_)
+            records = connection.execute(
+                f"SELECT * FROM {TABLE} WHERE flow_object_id IN ({placeholders}) "
+                f"ORDER BY {order}",
+                slice_,
             )
+            for record in records:
+                out.setdefault(record["flow_object_id"], []).append(_row_from(record))
     finally:
         connection.close()
     return out
+
+
+def _row_from(record: sqlite3.Row) -> PropertyStatementRow:
+    return (
+        PropertyStatementRow(
+            run_id=record["run_id"] or "",
+            list_name=record["list_name"],
+            list_version=record["list_version"],
+            source_flow_uuid=record["source_flow_uuid"],
+            source_flow_name=record["source_flow_name"] or "",
+            elementary_flow_uuid=record["elementary_flow_uuid"],
+            flow_object_id=record["flow_object_id"] or "",
+            quantity=record["quantity"],
+            quantity_iri=record["quantity_iri"],
+            value=float(record["value"]),
+            unit=record["unit"],
+            per_unit=record["per_unit"],
+            stated_by=record["stated_by"],
+            used_for_conversion=bool(record["used_for_conversion"]),
+            provenance=orjson.loads(record["provenance_json"] or "{}"),
+            comment=record["comment"] or "",
+        )
+    )

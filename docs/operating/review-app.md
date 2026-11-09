@@ -173,7 +173,9 @@ value a kilogram, Stepwise's 19.1 by its method — **What each list says a unit
 of this flow is** lists every such statement the lists' rows carried onto the
 flow, which one the mapping converted by, and, above the table, how far apart
 the lists' numbers lie across the whole substance: *net calorific value: 18.01
-to 19.1 MJ per kg, 6 statements from 4 lists*
+to 19.1 MJ per kg, 6 statements from 4 lists*, as the `fed5d71` build of
+ecoinvent 3.12, ecoinvent 3.8, BAFU 2026 v1, Stepwise 2006 and AGRIBALYSE 3.2
+read for `Hard Coal`
 ([#407](https://github.com/brightway-labs/brightway-flows/issues/407)). The
 section appears only on a flow some list states something about.
 

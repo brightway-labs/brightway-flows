@@ -149,7 +149,7 @@ RULINGS: tuple[CuratedFile, ...] = (
     ),
     CuratedFile(
         "flow-object-property-values.json",
-        "brightway_flows.flow_object_properties",
+        "brightway_flows.merge.flow_object_properties",
         "One unit of this consensus substance is worth this much of this "
         "quantity -- the reference value a list stating nothing of its own "
         "would borrow, with its reason -- and the class of substance spans this "

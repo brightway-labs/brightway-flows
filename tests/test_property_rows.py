@@ -13,6 +13,8 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 
+import orjson
+
 from brightway_flows.domain.flow import Flow
 from brightway_flows.domain.property_statements import StatementOrigin, vendor_statement
 from brightway_flows.domain.quantities import (
@@ -152,6 +154,60 @@ class TableTestCase(unittest.TestCase):
         (first,) = [row for row in rows["fo-hard-coal"] if row.list_name == "stepwise"]
         self.assertEqual(first.provenance, {"prov:wasDerivedFrom": "export.csv"})
         self.assertTrue(first.used_for_conversion)
+
+    def test_every_column_is_a_field_or_an_encoding_of_one(self):
+        """`as_tuple` is driven by `COLUMNS`, so a column added to one place
+        and not the other is an `AttributeError` here, not a value under the
+        wrong name in the table."""
+        row = self._row()
+        self.assertEqual(len(row.as_tuple()), len(COLUMNS))
+        for column, value in zip(COLUMNS, row.as_tuple()):
+            with self.subTest(column=column):
+                if column == "provenance_json":
+                    self.assertEqual(orjson.loads(value), row.provenance)
+                elif column == "used_for_conversion":
+                    self.assertEqual(value, 1)
+                else:
+                    self.assertEqual(value, getattr(row, column))
+
+    def test_a_written_row_reads_back_equal(self):
+        row = self._row(used_for_conversion=False, comment="")
+        write_rows([row], list_name="stepwise", list_version="2006-1.09", db_path=self.db)
+        (read,) = read_rows(["fo-hard-coal"], db_path=self.db)["fo-hard-coal"]
+        self.assertEqual(read, row)
+
+    def test_rows_of_one_source_row_come_back_in_one_order(self):
+        """Stepwise's `Coal, hard` carries a gross value and a method factor
+        under one list, version and name; the read orders them by quantity,
+        origin, units and value, with the row id last, so two builds publish
+        the entry's provenance in one order."""
+        shuffled = [
+            self._row(quantity=GROSS_CALORIFIC_VALUE, quantity_iri=quantity(GROSS_CALORIFIC_VALUE).iri, value=19.1, stated_by="vendor-flow"),
+            self._row(quantity=CALORIFIC_VALUE, quantity_iri=quantity(CALORIFIC_VALUE).iri, value=19.1, stated_by="vendor-method"),
+            self._row(quantity=CALORIFIC_VALUE, quantity_iri=quantity(CALORIFIC_VALUE).iri, value=19.1, stated_by="flow-name"),
+        ]
+        for order in (shuffled, list(reversed(shuffled)), [shuffled[1], shuffled[2], shuffled[0]]):
+            write_rows(order, list_name="stepwise", list_version="2006-1.09", db_path=self.db)
+            read = read_rows(["fo-hard-coal"], db_path=self.db)["fo-hard-coal"]
+            self.assertEqual(
+                [(r.quantity, r.stated_by) for r in read],
+                [
+                    (CALORIFIC_VALUE, "flow-name"),
+                    (CALORIFIC_VALUE, "vendor-method"),
+                    (GROSS_CALORIFIC_VALUE, "vendor-flow"),
+                ],
+            )
+
+    def test_more_substances_than_one_statement_can_name_are_read(self):
+        """Selected in the query, in slices under SQLite's parameter limit."""
+        ids = [f"fo-{n:04d}" for n in range(1200)]
+        write_rows(
+            [self._row(flow_object_id=i, source_flow_uuid=i) for i in ids],
+            list_name="stepwise", list_version="2006-1.09", db_path=self.db,
+        )
+        read = read_rows(ids + ["fo-absent"], db_path=self.db)
+        self.assertEqual(sorted(read), ids)
+        self.assertEqual(set(read_rows(ids[:3], db_path=self.db)), set(ids[:3]))
 
     def test_reading_a_database_without_the_table_is_empty(self):
         bare = Path(self.tmp.name) / "bare.sqlite3"
