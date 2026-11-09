@@ -352,6 +352,7 @@ class FactorPageTestCase(unittest.TestCase):
                 "coverage_skipped_not_in_own_list": 30339,
                 "ef_jrc_factors_published": 5,
                 "ef_ecoinvent_centre_factors_published": 4,
+                "ef_ecoinvent_centre_3_12_factors_published": 4,
                 "ef_greendelta_factors_published": 3,
                 "ef_consensus_factors_published": 6,
             },
@@ -1204,7 +1205,7 @@ class WhatAssessSeesTestCase(FactorPageTestCase):
         )
 
     def test_the_terminal_report_leads_with_the_agreement(self):
-        """Seven numbers, and the choice is the point: the headline of this
+        """Eight numbers, and the choice is the point: the headline of this
         layer is that the implementations of one method agree."""
         lines = _factor_lines(
             SimpleNamespace(measures=collect_measures(self.connection())),
@@ -1220,7 +1221,13 @@ class WhatAssessSeesTestCase(FactorPageTestCase):
         # `ef_jrc_factors_published` -- and this section lost four of its seven
         # lines with nothing going red, the number #157, #165 and #347 all bound
         # among them.  Naming the labels is what makes a rename say so.
-        for label in ("the JRC's", "the ecoinvent Centre's", "GreenDelta's", "this list's"):
+        for label in (
+            "the JRC's",
+            "the ecoinvent Centre's",
+            "the ecoinvent Centre's 3.12 workbook's",
+            "GreenDelta's",
+            "this list's",
+        ):
             self.assertIn(label, rendered)
 
     def test_the_report_omits_the_section_when_nothing_characterised(self):
