@@ -49,6 +49,7 @@ Three readers:
 
 from __future__ import annotations
 
+import math
 import re
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass
@@ -284,17 +285,33 @@ class AmbiguousPropertyStatementsError(ValueError):
     """Two statements answered the same question about one flow."""
 
 
+def same_number(left: PropertyStatement, right: PropertyStatement) -> bool:
+    """Whether two statements state one number, whatever units each is in.
+
+    The method's 451,000 MJ per kilogram and the name's 451 GJ per kilogram
+    are one number; comparing the raw value and unit text would read them as
+    two and raise where there is nothing to rule on.  *left* is scaled onto
+    *right*'s units through `units.json` on both ends; two statements whose
+    units the table cannot bring together are not the same number.
+    """
+    unit = quantity_factor(left.unit, right.unit)
+    per = quantity_factor(left.per_unit, right.per_unit)
+    if unit is None or per is None or not per:
+        return False
+    return math.isclose(left.value * unit / per, right.value, rel_tol=1e-9)
+
+
 def _one_of(
     candidates: list[PropertyStatement], *, step: str, target_quantity: str
 ) -> PropertyStatement | None:
     """The one answer among *candidates*, or ``None`` for none.
 
     Two statements that state the same number -- the method's 30.3 MJ per
-    kilogram and the 30.3 in the flow's name -- are one answer said twice,
-    and the first stands.  Two different numbers are a question.
+    kilogram and the 30.3 in the flow's name, or 451 GJ beside 451,000 MJ --
+    are one answer said twice, and the first stands (:func:`same_number`).
+    Two different numbers are a question.
     """
-    distinct = {(s.value, s.unit, s.per_unit) for s in candidates}
-    if len(distinct) > 1:
+    if any(not same_number(candidates[0], other) for other in candidates[1:]):
         described = "; ".join(
             f"{s.value} {s.unit} of {s.quantity} per {s.per_unit} ({s.stated_by})"
             for s in candidates
@@ -452,7 +469,7 @@ def vendor_statement(
     per_unit: str,
     stated_by: StatementOrigin,
     primary_source: Sequence[str],
-    derived_from: str,
+    derived_from: str | None,
     generated_by: str,
     attributed_to: str,
     comment: str,
@@ -460,9 +477,10 @@ def vendor_statement(
     """A statement a vendor's own file makes, with its provenance spelled out.
 
     What the adapters and the name reader build: *derived_from* is the file
-    the number was read out of, *primary_source* says where in it, and
-    *attributed_to* is the list that said it.  The record's own checks refuse
-    a value that converts nothing.
+    the number was read out of -- ``None`` for a number read off the flow's
+    own name, which is a primary source and not a file -- *primary_source*
+    says where in it, and *attributed_to* is the list that said it.  The
+    record's own checks refuse a value that converts nothing.
     """
     return PropertyStatement(
         quantity=quantity,

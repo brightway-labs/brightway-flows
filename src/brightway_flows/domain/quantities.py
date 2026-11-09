@@ -214,7 +214,19 @@ def quantity_for_unit(unit: str) -> str | None:
 #: A parenthetical qualifier on a vendor's label -- SimaPro's `Specific weight
 #: (for absolutely dry, u=0%)` -- which says how the value was measured, not
 #: what it measures.
-_PARENTHETICAL = re.compile(r"\s*\([^)]*\)")
+_PARENTHETICAL = re.compile(r"\s*\(([^)]*)\)")
+
+_WORD = re.compile(r"[a-z0-9]+")
+
+
+@lru_cache(maxsize=1)
+def _vocabulary_words() -> frozenset[str]:
+    """Every word any quantity is spelled with: `net`, `hhv`, `heating`, ..."""
+    words: set[str] = set()
+    for q in load_quantities().values():
+        for spelling in (q.label, *q.aliases):
+            words.update(_WORD.findall(spelling.casefold()))
+    return frozenset(words)
 
 
 @lru_cache(maxsize=1)
@@ -234,6 +246,12 @@ def quantity_for_label(label: str) -> str | None:
     weight` once its measurement qualifier is dropped.  Case and spacing do
     not count.  ``None`` for a label no row spells, which is how a parser
     passes over `wet mass` or `carbon content, fossil` without guessing.
+
+    A parenthetical is dropped only when it is a qualifier.  One that uses a
+    word the vocabulary itself is spelled with -- `Heating value (net)`,
+    `Calorific value (lower)` -- is saying what the value measures, and
+    dropping it would read a stated basis as unstated; such a label is either
+    an alias the file lists in full or ``None``, never a guess.
     """
     text = " ".join(str(label or "").casefold().split())
     if not text:
@@ -241,6 +259,13 @@ def quantity_for_label(label: str) -> str | None:
     found = _by_label().get(text)
     if found is not None:
         return found
+    inner_words = {
+        word
+        for match in _PARENTHETICAL.finditer(text)
+        for word in _WORD.findall(match.group(1))
+    }
+    if inner_words & _vocabulary_words():
+        return None
     stripped = " ".join(_PARENTHETICAL.sub("", text).split())
     return _by_label().get(stripped) if stripped != text else None
 

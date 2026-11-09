@@ -2,6 +2,7 @@
   "list_name": "agribalyse",
   "list_version": "3.2",
   "role": "source",
+  "vendor_states_properties": true,
   "merge_priority": 400,
   "simapro_origin": true,
   "simapro": {

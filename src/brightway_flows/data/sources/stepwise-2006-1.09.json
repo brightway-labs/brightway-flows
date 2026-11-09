@@ -2,6 +2,7 @@
   "list_name": "stepwise",
   "list_version": "2006-1.09",
   "role": "source",
+  "vendor_states_properties": true,
   "merge_priority": 300,
   "simapro_origin": true,
   "adapter": "brightway_flows.integrations.stepwise:fetch",

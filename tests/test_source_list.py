@@ -12,9 +12,11 @@ so the manifests are under test too: a mistake in one of them is a build that
 resolves and then produces the wrong artifact.
 """
 
+import dataclasses
 import shutil
 import tempfile
 import unittest
+from unittest import mock
 from contextlib import contextmanager
 from dataclasses import FrozenInstanceError
 from pathlib import Path
@@ -576,6 +578,32 @@ class ManifestValidationTestCase(unittest.TestCase):
     def test_simapro_origin_is_carried_through(self):
         self.assertTrue(self._build(simapro_origin=True).simapro_origin)
 
+    def test_vendor_states_properties_defaults_to_false_and_must_be_a_boolean(self):
+        """What lets `load_flows` tell an extraction made before the adapter
+        read the vendor's statements from a release whose file states none."""
+        self.assertFalse(self._build().vendor_states_properties)
+        self.assertTrue(self._build(vendor_states_properties=True).vendor_states_properties)
+        for value in ("true", 1, None):
+            with self.subTest(value=value):
+                with self.assertRaises(ValueError) as ctx:
+                    self._build(vendor_states_properties=value)
+                self.assertIn("vendor_states_properties", str(ctx.exception))
+
+    def test_the_lists_whose_adapters_read_the_vendors_statements_say_so(self):
+        flagged = {
+            key for key, source in known_source_lists().items()
+            if source.vendor_states_properties
+        }
+        self.assertEqual(
+            flagged,
+            {
+                "ecoinvent-3.8", "ecoinvent-3.9.1", "ecoinvent-3.10.1",
+                "ecoinvent-3.11", "ecoinvent-3.12", "ecoinvent-3.13",
+                "stepwise-2006-1.09",
+                "agribalyse-3.2",
+            },
+        )
+
     def test_a_boolean_merge_priority_is_rejected(self):
         """`True` is an `int` in Python, and is not a position in an order."""
         with self.assertRaises(ValueError):
@@ -769,6 +797,55 @@ class LoadFlowsTestCase(unittest.TestCase):
             source.flows_path.write_bytes(orjson.dumps({"flows": []}))
             with self.assertRaises(ValueError):
                 source.load_flows()
+
+    def test_an_extraction_that_predates_the_vendor_readers_is_refused(self):
+        """Every data directory extracted before #407 phase B holds the rows
+        without `property_statements`; such a list used to load and fail
+        later, blaming a ruling that was right.  Where the manifest says a
+        fresh extraction states something, a file with none on any row is
+        stale, and the message names the command that rewrites it."""
+        with tempfile.TemporaryDirectory() as tmp:
+            stale = dataclasses.replace(
+                self._source(tmp, [self.ROW]), vendor_states_properties=True
+            )
+            with self.assertRaises(ValueError) as ctx:
+                stale.load_flows()
+            message = str(ctx.exception)
+            self.assertIn("property_statements", message)
+            self.assertIn("fetch-source ecoinvent-3.12", message)
+            # One row carrying the key is a fresh extraction of a release
+            # that states little; a list whose manifest does not say so is
+            # never asked.
+            fresh = [dict(self.ROW), {**self.ROW, "uuid": "u-2", "property_statements": []}]
+            stale.flows_path.write_bytes(orjson.dumps(fresh))
+            self.assertEqual(len(stale.load_flows()), 2)
+            self.assertEqual(len(self._source(tmp, [self.ROW]).load_flows()), 1)
+
+    def test_a_name_states_its_energy_for_an_additional_row_too(self):
+        """The name reader runs after the additional rows are in, so a curated
+        row named `..., 30.3 MJ per kg` carries its statement like any row the
+        vendor shipped, and before the fixes, which rename such rows."""
+        calls: list[str] = []
+
+        def record(name):
+            def _record(*args, **kwargs):
+                calls.append(name)
+            return _record
+
+        with tempfile.TemporaryDirectory() as tmp:
+            source = dataclasses.replace(
+                self._source(tmp, [self.ROW]),
+                simapro_origin=True,
+                additional_flows_path=Path(tmp) / "additional.json",
+                manual_fixes_path=Path(tmp) / "fixes.json",
+            )
+            with (
+                mock.patch("brightway_flows.sources.apply_additional_flows", record("additional")),
+                mock.patch("brightway_flows.sources.add_statements_from_names", record("names")),
+                mock.patch("brightway_flows.sources.apply_manual_fixes", record("fixes")),
+            ):
+                source.load_flows()
+        self.assertEqual(calls, ["additional", "names", "fixes", "fixes"])
 
 
 class PreparedMatchTableLoadingTestCase(unittest.TestCase):

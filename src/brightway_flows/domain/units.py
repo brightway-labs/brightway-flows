@@ -184,6 +184,18 @@ def unit_row_for(unit: str) -> dict[str, Any] | None:
     return row
 
 
+def quantity_kind_of(unit: str) -> str:
+    """The quantity-kind IRI of *unit*'s `units.json` row, or ``""`` for a unit
+    the table does not know.
+
+    The one spelling of a question four modules used to answer each for
+    themselves: whether a statement's unit is of its quantity's kind, whether
+    two units are of one kind, whether a unit is known at all.
+    """
+    row = unit_row_for(unit)
+    return str(row.get("quantity_kind_iri") or "") if row is not None else ""
+
+
 def canonical_unit(
     unit: str, units_index: dict[str, dict[str, Any]] | None = None
 ) -> str:

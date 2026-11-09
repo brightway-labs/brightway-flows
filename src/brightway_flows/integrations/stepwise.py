@@ -64,7 +64,7 @@ from brightway_flows.domain.quantities import (
     quantity,
     quantity_for_label,
 )
-from brightway_flows.domain.units import unit_row_for
+from brightway_flows.domain.units import quantity_kind_of
 from brightway_flows.downloads import FILES_BRIGHTWAY_DEV, PinnedFile
 from brightway_flows.integrations.ecoinvent import normalize_cas_number
 from brightway_flows.sources import SourceList
@@ -152,11 +152,6 @@ _PROPERTY_LINE = re.compile(r"^\s*(?P<label>[^:]+?)\s*:\s*(?P<rest>\S.*?)\s*$")
 STEPWISE_ENERGY_CATEGORY = "Non-renewable energy"
 
 
-def _kind_of(unit: str) -> str:
-    row = unit_row_for(unit)
-    return str(row.get("quantity_kind_iri") or "") if row is not None else ""
-
-
 def statements_from_substance_comment(
     comment: str,
     *,
@@ -189,7 +184,7 @@ def statements_from_substance_comment(
     """
     statements: list[PropertyStatement] = []
     refused: list[str] = []
-    flow_kind = _kind_of(flow_unit)
+    flow_kind = quantity_kind_of(flow_unit)
     for line in str(comment or "").splitlines():
         match = _PROPERTY_LINE.match(line)
         if match is None:
@@ -202,7 +197,7 @@ def statements_from_substance_comment(
             refused.append(line.strip())
             continue
         value, unit, per_unit = parsed
-        unit_kind, per_kind = _kind_of(unit), _kind_of(per_unit)
+        unit_kind, per_kind = quantity_kind_of(unit), quantity_kind_of(per_unit)
         if (
             value <= 0
             or not unit_kind
@@ -281,9 +276,9 @@ def _method_statement(
     """
     if amount <= 0 or not per_unit:
         return None
-    if _kind_of(per_unit) == quantity(CALORIFIC_VALUE).quantity_kind_iri:
+    if quantity_kind_of(per_unit) == quantity(CALORIFIC_VALUE).quantity_kind_iri:
         return None
-    if not _kind_of(per_unit):
+    if not quantity_kind_of(per_unit):
         return None
     return vendor_statement(
         quantity=CALORIFIC_VALUE,

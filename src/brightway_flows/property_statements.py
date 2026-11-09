@@ -62,7 +62,7 @@ from brightway_flows.domain.quantities import (
     quantity_for_ilcd_flow_property,
     quantity_for_unit,
 )
-from brightway_flows.domain.units import unit_row_for
+from brightway_flows.domain.units import quantity_kind_of
 from brightway_flows.filesystem import FLOW_PROPERTIES_FILEPATH
 from brightway_flows.manual_fixes import UNIT_CONVERSION_KEY
 from brightway_flows.simapro_names import energy_stated_in_name
@@ -123,13 +123,6 @@ def _releases(value: Any) -> list[str]:
     return [str(item).strip() for item in value if str(item or "").strip()]
 
 
-def _kind_of(unit: str) -> str:
-    row = unit_row_for(unit)
-    if row is None:
-        return ""
-    return str(row.get("quantity_kind_iri") or "")
-
-
 def _check_units(
     *, quantity_slug: str, unit: str, per_unit: str, where: str
 ) -> None:
@@ -142,8 +135,8 @@ def _check_units(
         refusal `match_overrides._validate_conversion` makes for the same
         reason.
     """
-    unit_kind = _kind_of(unit)
-    per_kind = _kind_of(per_unit)
+    unit_kind = quantity_kind_of(unit)
+    per_kind = quantity_kind_of(per_unit)
     if not unit_kind:
         raise ValueError(f"{where} states a unit {unit!r} that units.json does not know.")
     if not per_kind:
@@ -616,7 +609,7 @@ def attach_property_statements(flows: Iterable[Any], loaded: PropertyStatements)
             )
             if unit
         ]
-        unknown = [unit for unit in spellings if not _kind_of(unit)]
+        unknown = [unit for unit in spellings if not quantity_kind_of(unit)]
         if unknown:
             raise ValueError(
                 f"{statements[0].provenance.was_derived_from or loaded.filename} "
@@ -626,9 +619,9 @@ def attach_property_statements(flows: Iterable[Any], loaded: PropertyStatements)
                 f"does not know. Add the unit to units.json or alias it; the "
                 f"statement cannot be checked against a unit of no kind."
             )
-        units = {_kind_of(unit) for unit in spellings}
+        units = {quantity_kind_of(unit) for unit in spellings}
         for statement in statements:
-            per_kind = _kind_of(statement.per_unit)
+            per_kind = quantity_kind_of(statement.per_unit)
             if units and per_kind not in units:
                 raise ValueError(
                     f"{statement.provenance.was_derived_from or loaded.filename} "
@@ -713,7 +706,9 @@ def add_statements_from_names(rows: Sequence[dict[str, Any]], *, label: str) -> 
             per_unit=per_unit,
             stated_by=StatementOrigin.FLOW_NAME,
             primary_source=[f"the flow's own name: `{name}`"],
-            derived_from="the flow's name",
+            # The name is the primary source itself; there is no file between
+            # it and the number for `prov:wasDerivedFrom` to name.
+            derived_from=None,
             generated_by=f"load_{label}",
             attributed_to=label,
             comment=(
@@ -737,14 +732,21 @@ def refuse_a_pair_stated_twice(
     *,
     label: str,
     reference_quantities: Mapping[str, str] | None = None,
+    flows: Iterable[Any] = (),
 ) -> None:
     """Refuse an override factor for a pair a statement also converts.
 
     One number, one home.  An override row keeps a `conversion_factor` only
     for a pair fact no property of the flow expresses -- an ore's share of its
     metal, mine gas at 1.0 from plain to standard cubic metres -- and a row
-    that states one where the list's statements file already converts the
-    same pair is two copies that can disagree.
+    that states one where a statement already converts the same pair is two
+    copies that can disagree.
+
+    Since phase B most numbers are the vendor's, read off its file onto the
+    flow rather than written in *loaded*, so the statements asked are the
+    flow's own where *flows* are given -- the merge hands over the list it is
+    about to match, with every statement attached -- and the curated file's
+    for a flow not among them.
 
     "Converts" is the merge's own question, asked the merge's way
     (:func:`~brightway_flows.domain.property_statements.statement_converting`):
@@ -758,6 +760,11 @@ def refuse_a_pair_stated_twice(
     :raises ValueError: naming the row and the statement.
     """
     quantities = reference_quantities or {}
+    on_the_flow = {
+        flow.uuid: tuple(flow.property_statements)
+        for flow in flows
+        if getattr(flow, "property_statements", None)
+    }
     for row in rows:
         if not isinstance(row, dict) or str(row.get("route") or "") != "override":
             continue
@@ -767,7 +774,7 @@ def refuse_a_pair_stated_twice(
         source = row.get("source") if isinstance(row.get("source"), dict) else {}
         target = row.get("target") if isinstance(row.get("target"), dict) else {}
         uuid = str(source.get("uuid") or source.get("identifier") or "").strip()
-        statements = loaded.statements.get(uuid, ())
+        statements = on_the_flow.get(uuid) or loaded.statements.get(uuid, ())
         if not statements:
             continue
         source_unit = str(source.get("unit") or "")
@@ -786,14 +793,19 @@ def refuse_a_pair_stated_twice(
         if converting is None:
             continue
         statement, derived = converting
+        stated_in = statement.provenance.was_derived_from or (
+            loaded.filename
+            if statement.stated_by is StatementOrigin.CURATED
+            else f"the flow's own {statement.stated_by}"
+        )
         raise ValueError(
             f"{label}: the override for {source.get('name') or uuid} ({uuid}) "
             f"states a conversion_factor of {factor} from "
             f"{source.get('unit')!r} to {target.get('unit_name')!r}, and "
-            f"{loaded.filename} states its {statement.quantity} as "
-            f"{statement.value} {statement.unit} per {statement.per_unit}, "
-            f"which converts the same pair ({derived}). One number has one "
-            f"home: drop the factor from the override."
+            f"{stated_in} states its {statement.quantity} as "
+            f"{statement.value} {statement.unit} per {statement.per_unit} "
+            f"({statement.stated_by}), which converts the same pair ({derived}). "
+            f"One number has one home: drop the factor from the override."
         )
 
 

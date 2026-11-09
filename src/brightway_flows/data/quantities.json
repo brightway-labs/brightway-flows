@@ -23,7 +23,7 @@
     {
       "slug": "net-calorific-value",
       "label": "Net calorific value",
-      "aliases": ["net calorific value", "lower heating value", "lower heating value (LHV)", "LHV", "NCV", "heating value, net", "lower calorific value", "inferior calorific value"],
+      "aliases": ["net calorific value", "lower heating value", "lower heating value (LHV)", "LHV", "NCV", "heating value, net", "heating value (net)", "calorific value (net)", "heating value (lower)", "lower calorific value", "inferior calorific value"],
       "ilcd_flow_property_uuid": "93a60a56-a3c8-11da-a746-0800200c9a66",
       "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy",
       "qudt_match": {"relation": "skos:broader", "iri": "http://qudt.org/vocab/quantitykind/HeatingValue"},
@@ -32,7 +32,7 @@
     {
       "slug": "gross-calorific-value",
       "label": "Gross calorific value",
-      "aliases": ["gross calorific value", "higher heating value", "higher heating value (HHV)", "HHV", "GCV", "heating value, gross", "upper heating value", "superior calorific value"],
+      "aliases": ["gross calorific value", "higher heating value", "higher heating value (HHV)", "HHV", "GCV", "heating value, gross", "heating value (gross)", "calorific value (gross)", "heating value (higher)", "upper heating value", "superior calorific value"],
       "ilcd_flow_property_uuid": "93a60a56-a3c8-14da-a746-0800200c9a66",
       "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy",
       "qudt_match": {"relation": "skos:broader", "iri": "http://qudt.org/vocab/quantitykind/HeatingValue"},

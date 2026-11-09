@@ -15,15 +15,15 @@ from brightway_flows.domain.property_statements import (
     vendor_statement,
 )
 from brightway_flows.domain.quantities import quantity, quantity_for_label
-from brightway_flows.domain.units import unit_row_for
+from brightway_flows.domain.units import quantity_kind_of
 from brightway_flows.filesystem import DATA_DIR
 from brightway_flows.sources import SourceList, source_flows_path
-
-logger = structlog.get_logger(__name__)
 from brightway_flows.transformers.unit_normalization import (
     build_units_index,
     resolve_unit_notation,
 )
+
+logger = structlog.get_logger(__name__)
 
 
 def normalize_cas_number(value: str) -> str:
@@ -148,10 +148,10 @@ def statements_from_properties(
             unit, per_unit = prop_unit, flow_unit
         if not unit or not per_unit:
             continue
-        unit_kind = _kind_of(unit)
+        unit_kind = quantity_kind_of(unit)
         if not unit_kind or unit_kind != quantity(slug).quantity_kind_iri:
             continue
-        if unit_kind == _kind_of(per_unit) or not _kind_of(per_unit):
+        if unit_kind == quantity_kind_of(per_unit) or not quantity_kind_of(per_unit):
             continue
         comment = _text(prop.get("comment"))
         statements.append(
@@ -176,11 +176,6 @@ def statements_from_properties(
             )
         )
     return statements
-
-
-def _kind_of(unit: str) -> str:
-    row = unit_row_for(unit)
-    return str(row.get("quantity_kind_iri") or "") if row is not None else ""
 
 
 def reformat(obj: dict) -> dict:

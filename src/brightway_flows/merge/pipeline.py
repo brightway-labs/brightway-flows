@@ -110,6 +110,7 @@ from brightway_flows.pipeline.sqlite import (
     recompute_match_strengths,
 )
 from brightway_flows.pipeline.timings import RunTimings
+from brightway_flows.property_statements import refuse_a_pair_stated_twice
 from brightway_flows.sources import (
     SourceList,
     load_prepared_match_table,
@@ -466,12 +467,21 @@ def merge_source_list(
         if flow.cas_numbers
     }
 
+    replace_table = load_prepared_match_table(source, registered_as=registered_as)
+    # One number, one home, asked once more over the flows themselves: the
+    # load checked the override factors against the curated file, and most
+    # statements are the vendor's, on the flow and in no file (#407).
+    refuse_a_pair_stated_twice(
+        replace_table,
+        source.load_property_statements(),
+        label=source.key,
+        reference_quantities=indexes.reference_quantities,
+        flows=source_flows,
+    )
     with timings.stage("merge_match_rows", detail=source.key):
         match_source_rows(
             source_flows=source_flows,
-            replace_table=load_prepared_match_table(
-                source, registered_as=registered_as
-            ),
+            replace_table=replace_table,
             units_index=units_index,
             indexes=indexes,
             accumulator=accumulator,

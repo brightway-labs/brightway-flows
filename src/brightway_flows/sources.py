@@ -455,6 +455,15 @@ class SourceList:
     #: refuses the block on a list the lineage did not shape.
     geography_split: str = ""
 
+    #: Whether a fresh extraction of this list writes `property_statements`
+    #: on at least one row: the adapter reads a heating value, a density or a
+    #: method factor off the vendor's own file (#407, phase B).  From the
+    #: manifest's ``vendor_states_properties``, false by default.  What lets
+    #: :meth:`load_flows` tell an extraction made before the adapter read them
+    #: from one of a list with no reader: the first has to be re-fetched, and
+    #: without the flag it loads and fails later blaming a ruling.
+    vendor_states_properties: bool = False
+
     @property
     def key(self) -> str:
         """Stable identifier used on the command line and as a report key."""
@@ -623,6 +632,12 @@ class SourceList:
         if isinstance(priority, bool):  # `bool` is an `int`, and not one here.
             raise ValueError(f"{path.name}: merge_priority must be an integer.")
 
+        vendor_states = payload.get("vendor_states_properties", False)
+        if not isinstance(vendor_states, bool):
+            raise ValueError(
+                f"{path.name}: vendor_states_properties must be true or false, not "
+                f"{vendor_states!r}."
+            )
         simapro = payload.get("simapro_origin", False)
         if not isinstance(simapro, bool):
             raise ValueError(
@@ -690,6 +705,7 @@ class SourceList:
             merge_priority=priority if isinstance(priority, int) else 0,
             simapro_origin=simapro,
             geography_split=geography_split,
+            vendor_states_properties=vendor_states,
         )
 
     def missing_curated_inputs(self) -> list[tuple[str, Path]]:
@@ -749,12 +765,7 @@ class SourceList:
         if not isinstance(payload, list):
             raise ValueError(f"Expected list payload in {self.flows_path}")
         rows = [row for row in payload if isinstance(row, dict)]
-
-        # Before every fix, because the fixes rename these rows: `Uranium, 451
-        # GJ per kg` becomes `Uranium` in megajoules under the lineage's fixes,
-        # and the statement is about the row as the vendor shipped it.
-        if self.simapro_origin:
-            add_statements_from_names(rows, label=self.key)
+        self._refuse_a_stale_extraction(rows)
 
         # Before the fixes, so that a fix can name an added row: both files are
         # curated, and which of them a given flow arrived by is not something a
@@ -766,6 +777,14 @@ class SourceList:
                 source=self.source_label,
                 label=self.key,
             )
+
+        # After the additional rows, so that one whose name states its energy
+        # gets its statement like any row the vendor shipped, and before every
+        # fix, because the fixes rename these rows: `Uranium, 451 GJ per kg`
+        # becomes `Uranium` in megajoules under the lineage's fixes, and the
+        # statement is about the row as it was named.
+        if self.simapro_origin:
+            add_statements_from_names(rows, label=self.key)
 
         if self.manual_fixes_path is not None:
             apply_manual_fixes(rows, self.manual_fixes_path, label=self.key)
@@ -833,6 +852,32 @@ class SourceList:
         refuse_a_fix_stated_twice(flows, label=self.key)
         logger.info("loaded_source_flows", source=self.key, count=len(flows))
         return flows
+
+    def _refuse_a_stale_extraction(self, rows: list[dict[str, Any]]) -> None:
+        """Refuse an extraction made before the adapter read the vendor's statements.
+
+        Every data directory extracted before phase B of #407 holds this
+        list's rows without `property_statements`, and such a list loads: the
+        failure comes later, from a ruling that names a quantity the vendor
+        is said to state and finds none, or a uranium row with no method
+        factor to relabel -- messages that send a reader to a ruling that is
+        right.  The manifest says whether a fresh extraction states anything
+        (:attr:`vendor_states_properties`); where it does and no row carries
+        the key, the extraction predates the reader and the fix is to run it
+        again.
+
+        :raises ValueError: naming the file and the command that rewrites it.
+        """
+        if not self.vendor_states_properties:
+            return
+        if any("property_statements" in row for row in rows):
+            return
+        raise ValueError(
+            f"{self.flows_path} carries no `property_statements` on any row, and "
+            f"the {self.key} adapter reads the vendor's statements onto its rows "
+            f"since #407 phase B: the file was extracted before it did. Run "
+            f"`brightway-flows {self.fetch_command}` to extract it again."
+        )
 
     def _strip_unit_suffixes(self, rows: list[dict[str, Any]]) -> None:
         """Take the unit back out of the names of *rows*, in place (#67).

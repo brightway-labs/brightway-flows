@@ -33,6 +33,7 @@ from brightway_flows.domain.property_statements import (
     factor_between,
     parse_value_per_unit,
     quantity_read_for,
+    same_number,
     statement_converting,
     vendor_statement,
 )
@@ -274,6 +275,30 @@ class ChooseStatementTestCase(unittest.TestCase):
         named = _stmt(CALORIFIC_VALUE, 30.3, "MJ", "kg", StatementOrigin.FLOW_NAME)
         chosen = choose_statement([named, method], target_quantity=CALORIFIC_VALUE)
         self.assertIn(chosen, (named, method))
+
+    def test_the_same_number_in_two_units_is_one_answer(self):
+        """The method's 451,000 MJ per kilogram and the name's 451 GJ per
+        kilogram are one number: Stepwise's uranium rows carry both, both
+        ruled fission energy, and comparing the raw value and unit text read
+        them as two and raised where there was nothing to rule on."""
+        method = _stmt(FISSION_ENERGY, 451_000, "MJ", "kg", StatementOrigin.VENDOR_METHOD)
+        named = _stmt(FISSION_ENERGY, 451, "GJ", "kg", StatementOrigin.FLOW_NAME)
+        self.assertTrue(same_number(method, named))
+        self.assertTrue(same_number(named, method))
+        chosen = choose_statement([method, named], target_quantity=FISSION_ENERGY)
+        self.assertIs(chosen, method)
+
+    def test_two_different_numbers_in_two_units_are_still_a_question(self):
+        method = _stmt(FISSION_ENERGY, 451_000, "MJ", "kg", StatementOrigin.VENDOR_METHOD)
+        named = _stmt(FISSION_ENERGY, 560, "GJ", "kg", StatementOrigin.FLOW_NAME)
+        self.assertFalse(same_number(method, named))
+        with self.assertRaises(AmbiguousPropertyStatementsError):
+            choose_statement([method, named], target_quantity=FISSION_ENERGY)
+
+    def test_numbers_whose_units_the_table_cannot_bring_together_differ(self):
+        per_kg = _stmt(CALORIFIC_VALUE, 36.0, "MJ", "kg", StatementOrigin.VENDOR_METHOD)
+        per_m3 = _stmt(CALORIFIC_VALUE, 36.0, "MJ", "m3", StatementOrigin.FLOW_NAME)
+        self.assertFalse(same_number(per_kg, per_m3))
 
     def test_a_rule_for_another_target_is_not_applied(self):
         rule = ConversionRule(onto=CALORIFIC_VALUE, convert_by=FISSION_ENERGY, comment="no")
@@ -918,6 +943,28 @@ class RefusePairStatedTwiceTestCase(LoaderFixtureTestCase):
         }
         refuse_a_pair_stated_twice([row], self.loaded(), label="test-1.0")
 
+    def test_the_vendors_statement_on_the_flow_counts(self):
+        """Since phase B most numbers are the vendor's, on the flow and in no
+        curated file; handed the flows, the refusal asks them."""
+        row = {
+            "route": "override",
+            "conversion_factor": 43.4,
+            "source": {"uuid": "crude", "unit": "kg", "name": "Oil, crude"},
+            "target": {"unit_name": "MJ"},
+        }
+        crude = Flow(uuid="crude", name="Oil, crude", unit="kg")
+        crude.property_statements = [
+            _stmt(NET_CALORIFIC_VALUE, 43.4, "MJ", "kg", StatementOrigin.VENDOR_FLOW)
+        ]
+        refuse_a_pair_stated_twice([row], PropertyStatements(), label="test-1.0")
+        with self.assertRaises(ValueError) as caught:
+            refuse_a_pair_stated_twice(
+                [row], PropertyStatements(), label="test-1.0", flows=[crude]
+            )
+        message = str(caught.exception)
+        self.assertIn("Oil, crude", message)
+        self.assertIn("vendor-flow", message)
+
 
 class RefuseFixStatedTwiceTestCase(LoaderFixtureTestCase):
     """The same rule for the other curated route, the manual fix.
@@ -1334,6 +1381,13 @@ class VendorAndCuratorTestCase(LoaderFixtureTestCase):
         self.assertEqual((gas.quantity, gas.value, gas.unit, gas.per_unit), (CALORIFIC_VALUE, 46.8, "MJ", "kg"))
         self.assertIs(gas.stated_by, StatementOrigin.FLOW_NAME)
         self.assertEqual(gas.provenance.was_attributed_to, "stepwise-2006-1.09")
+        # The name is the primary source; no file stands between it and the
+        # number, so nothing is named as derived from (rule 16).
+        self.assertIsNone(gas.provenance.was_derived_from)
+        self.assertEqual(
+            gas.provenance.had_primary_source,
+            ["the flow's own name: `Gas, natural, 46.8 MJ per kg`"],
+        )
         ore = PropertyStatement.from_dict(rows[1]["property_statements"][0])
         self.assertEqual((ore.value, ore.unit), (332.0, "GJ"))
         self.assertEqual(factor_between(ore, "kg", "MJ"), 332000.0)
