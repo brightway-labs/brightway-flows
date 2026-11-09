@@ -258,10 +258,16 @@ def _stat_key(key: str) -> str:
     The comparison counts `only:ecoinvent Centre` -- the implementation's own
     name, because the set of them is not fixed -- and a stat key is read from a
     log line and a baseline diff, so the punctuation and the spaces come out.
+    `ecoinvent Centre (3.12)` becomes `ecoinvent_Centre_3_12`: the parentheses
+    go the way the dots do, so the key reads like the slug-derived
+    `ef_ecoinvent_centre_3_12_*` statistics about the same implementation and
+    needs no escaping in a shell or a regular expression.
     """
-    for character in (":", "-", " ", "."):
+    for character in (":", "-", " ", ".", "(", ")"):
         key = key.replace(character, "_")
-    return key.replace("__", "_").strip("_")
+    while "__" in key:
+        key = key.replace("__", "_")
+    return key.strip("_")
 
 
 def _factor_count(items: list[ReviewQueueItem]) -> int:

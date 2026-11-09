@@ -50,6 +50,7 @@ from brightway_flows.lcia.matching import (
 from brightway_flows.lcia.pipeline import (
     _declined_numbers,
     _definition_for,
+    _stat_key,
     characterise,
 )
 from brightway_flows.lcia.report import FindingKind
@@ -651,6 +652,31 @@ class TheCategoryOfAFactorTestCase(unittest.TestCase):
         )
         with self.assertRaises(ValueError):
             _definition_for(METHOD, stray, implementation=JRC)
+
+
+class TheStatKeyTestCase(unittest.TestCase):
+    """A count key, read from a log line and a baseline diff, so the punctuation
+    comes out -- all of it.  `ecoinvent Centre (3.12)` is the first
+    implementation name with parentheses, and the key it produced
+    (`coverage_ef_ecoinvent_Centre_(3_12)`) was the one statistic about that
+    implementation spelled unlike its `ef_ecoinvent_centre_3_12_*` neighbours."""
+
+    def test_an_implementation_name_with_parentheses_reads_like_its_slug(self):
+        self.assertEqual(
+            _stat_key("only:ecoinvent Centre (3.12)"), "only_ecoinvent_Centre_3_12"
+        )
+
+    def test_the_keys_already_in_the_baseline_do_not_move(self):
+        for key, expected in (
+            ("only:ecoinvent Centre", "only_ecoinvent_Centre"),
+            ("ef:GreenDelta", "ef_GreenDelta"),
+            (
+                "stepwise-2006:2.-0 LCA consultants",
+                "stepwise_2006_2_0_LCA_consultants",
+            ),
+        ):
+            with self.subTest(key):
+                self.assertEqual(_stat_key(key), expected)
 
 
 class TheTablesTestCase(unittest.TestCase):
