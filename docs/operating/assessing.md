@@ -37,7 +37,8 @@ rather than one the merge had to invent.
 
 Copied from the full build of `8593061` on 23 November 2026 (run
 `20261123T1447073459200000`), the build `expectations/baseline.json` was
-recorded from.
+recorded from. Every ecoinvent 3.12 row lands on an existing flow because
+ecoinvent 3.13 is merged first and 3.12's rows find the flows it created.
 
 **Expectations** — the statements in `expectations/`, each graded against this
 build. For anything that does not hold, it prints what the merge decided
