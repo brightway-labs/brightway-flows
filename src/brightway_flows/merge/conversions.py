@@ -102,6 +102,7 @@ curated file said it.
 
 from __future__ import annotations
 
+import math
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any
@@ -110,8 +111,7 @@ from brightway_flows.domain.common import Provenance
 from brightway_flows.domain.property_statements import (
     ConversionRule,
     PropertyStatement,
-    choose_statement,
-    factor_between,
+    statement_converting,
 )
 from brightway_flows.domain.quantities import quantity, quantity_for_unit
 from brightway_flows.domain.units import (
@@ -399,14 +399,26 @@ def conversion_from_property_statements(
 ) -> tuple[UnitConversion, PropertyStatement] | None:
     """The conversion a flow's own statements give for this pair, and which one.
 
-    Only the statements whose units bridge the pair are candidates -- one per
-    standard cubic metre answers nothing for a row in plain cubic metres, and
-    stepping aside is right there (#292) -- and
+    :func:`~brightway_flows.domain.property_statements.statement_converting`
+    does the choosing: only the statements whose units bridge the pair are
+    candidates -- one per standard cubic metre answers nothing for a row in
+    plain cubic metres, and stepping aside is right there (#292) -- each is
+    asked what it measures in the direction it is read, so a density stated
+    kilograms per cubic metre answers a kilogram row on a cubic-metre target
+    as a volume, and
     :func:`~brightway_flows.domain.property_statements.choose_statement` picks
     among them by quantity: the target's own, a basis-unstated calorific
     value, or what the list's *rules* say.  ``None`` where no statement
     bridges the pair or none is of a quantity that may convert onto this
     target.
+
+    A target in standard cubic metres is such a target.  `units.json` files
+    `sm3` as an amount of substance, which no quantity is the generic of, and
+    EF's ILCD property for its coal-mine gas says *volume*, which a statement
+    in cubic metres would bridge onto only by treating a standard cubic metre
+    as a cubic metre -- the reading #292 refused.  So the two AGRIBALYSE
+    off-gas rows keep their 1.254 as a pair fact on the override, and this
+    returns ``None`` for them by design rather than by accident.
 
     The factor is :func:`~brightway_flows.domain.property_statements.factor_between`,
     so a statement written in the direction its mapping uses publishes its own
@@ -416,18 +428,17 @@ def conversion_from_property_statements(
     """
     if not statements or not target_quantity:
         return None
-    bridging = [
-        statement
-        for statement in statements
-        if factor_between(statement, source_unit, target_unit) is not None
-    ]
-    chosen = choose_statement(bridging, target_quantity=target_quantity, rules=rules)
-    if chosen is None:
+    converting = statement_converting(
+        statements,
+        source_unit=source_unit,
+        target_unit=target_unit,
+        target_quantity=target_quantity,
+        rules=rules,
+    )
+    if converting is None:
         return None
-    factor = factor_between(chosen, source_unit, target_unit)
-    if factor is None or not states_more_than_the_unit_table(
-        source_unit, target_unit, factor
-    ):
+    chosen, factor = converting
+    if not states_more_than_the_unit_table(source_unit, target_unit, factor):
         return None
     return (
         UnitConversion(
@@ -474,10 +485,24 @@ def conversion_to_publish(
     *overrides_file* for a curated prepared row and *correspondence_file* for a
     table's; a statement's is *statements_file*, and its provenance carries the
     statement's own primary sources as well.
+
+    :raises ValueError: when a stated factor and a statement both convert the
+        pair and disagree.  One number has one home: the load refuses an
+        override or a fix that restates a pair a statement converts, and this
+        is the backstop for a factor that reached the merge by any other route
+        -- a correspondence table's -- so that a curated number never wins
+        over the vendor's silently.
     """
     source_iri = unit_iri_for(source_unit) or ""
     target_iri = unit_iri_for(target_unit) or ""
     units = [iri for iri in (source_iri, target_iri) if iri]
+    derived = conversion_from_property_statements(
+        property_statements,
+        source_unit=source_unit,
+        target_unit=target_unit,
+        target_quantity=target_quantity,
+        rules=conversion_rules,
+    )
     if conversion is not None and conversion.holds_between(
         source_unit=source_unit, target_unit=target_unit
     ):
@@ -486,6 +511,19 @@ def conversion_to_publish(
             if conversion.basis is ConversionBasis.CURATED
             else correspondence_file
         )
+        if derived is not None and not math.isclose(
+            derived[0].factor, conversion.factor, rel_tol=1e-9
+        ):
+            statement = derived[1]
+            raise ValueError(
+                f"{stated_in or 'A stated conversion'} states {conversion.factor} "
+                f"from {source_unit!r} to {target_unit!r}, and the flow's own "
+                f"{statement.quantity} -- {statement.value} {statement.unit} per "
+                f"{statement.per_unit}, stated by {statement.stated_by} in "
+                f"{statements_file or 'its property statements'} -- converts the "
+                f"same pair at {derived[0].factor}. One number has one home: "
+                f"drop the factor, or rule which number stands."
+            )
         return PublishedConversion(
             factor=conversion.factor,
             basis=conversion.basis,
@@ -497,13 +535,6 @@ def conversion_to_publish(
             ),
             comment=conversion.comment,
         )
-    derived = conversion_from_property_statements(
-        property_statements,
-        source_unit=source_unit,
-        target_unit=target_unit,
-        target_quantity=target_quantity,
-        rules=conversion_rules,
-    )
     if derived is not None:
         from_statements, statement = derived
         return PublishedConversion(

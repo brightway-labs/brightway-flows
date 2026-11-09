@@ -441,7 +441,22 @@ megajoule a net calorific value, and `ef-3.1-property-statements.json` rules it
 An override row may still state a `conversion_factor`, for a pair fact no
 property of the flow expresses — titanium's share of its ore, mine gas at 1.0
 from plain to standard cubic metres — and a row stating one for a pair the
-list's statements already convert is refused at load.
+list's statements already convert is refused at load. "Convert" is the merge's
+own question: what the target measures and what the list's rules say, so a
+fission energy on a flow whose override converts onto a net-calorific-value
+target does not refuse the override's factor, because the merge would not have
+converted by it either. The same rule holds for a manual fix that rebased a
+row's unit with a factor, and, as a backstop, for a factor that reaches the
+merge by any route and disagrees with the flow's own statement: the build
+stops, naming both numbers, rather than letting the curated one win silently.
+
+A target in standard cubic metres takes no statement at all. `units.json` files
+`sm3` as an amount of substance, which no quantity is the generic of, and a
+statement in cubic metres bridges onto it only by reading a standard cubic metre
+as a cubic metre, which the project refused in
+[#292](https://github.com/brightway-labs/brightway-flows/issues/292). So
+AGRIBALYSE's two coal-mine off-gas rows keep their 1.254 as a pair fact on the
+override, by design.
 
 ## Adapters
 

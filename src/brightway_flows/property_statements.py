@@ -39,7 +39,7 @@ list's file once per run, and a test hands it a fixture.
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -52,15 +52,17 @@ from brightway_flows.domain.property_statements import (
     ConversionRule,
     PropertyStatement,
     StatementOrigin,
-    factor_between,
+    statement_converting,
 )
 from brightway_flows.domain.quantities import (
     load_quantities,
     quantity,
     quantity_for_ilcd_flow_property,
+    quantity_for_unit,
 )
 from brightway_flows.domain.units import unit_row_for
 from brightway_flows.filesystem import FLOW_PROPERTIES_FILEPATH
+from brightway_flows.manual_fixes import UNIT_CONVERSION_KEY
 
 logger = structlog.get_logger(__name__)
 
@@ -410,6 +412,9 @@ def attach_property_statements(flows: Iterable[Any], loaded: PropertyStatements)
         than the flow's unit -- a heating value per cubic metre on a flow in
         kilograms -- checked against the unit the vendor shipped as well as the
         one the flow is carried in, because a manual fix may have rebased it.
+        A unit `units.json` does not know is not a kind the statement can be
+        checked against, and is named as what is missing rather than blamed on
+        the statement.
     :returns: how many flows received statements.
     """
     attached = 0
@@ -417,11 +422,21 @@ def attach_property_statements(flows: Iterable[Any], loaded: PropertyStatements)
         statements = loaded.statements.get(flow.uuid)
         if not statements:
             continue
-        units = {
-            _kind_of(str(unit))
+        spellings = [
+            str(unit)
             for unit in (flow.unit, getattr(flow.provided, "unit", None))
             if unit
-        }
+        ]
+        unknown = [unit for unit in spellings if not _kind_of(unit)]
+        if unknown:
+            raise ValueError(
+                f"{loaded.filename} states {statements[0].quantity} of "
+                f"{flow.name or flow.uuid} ({flow.uuid}), and the flow is measured "
+                f"in {', '.join(repr(unit) for unit in unknown)}, which units.json "
+                f"does not know. Add the unit to units.json or alias it; the "
+                f"statement cannot be checked against a unit of no kind."
+            )
+        units = {_kind_of(unit) for unit in spellings}
         for statement in statements:
             per_kind = _kind_of(statement.per_unit)
             if units and per_kind not in units:
@@ -445,7 +460,11 @@ def attach_property_statements(flows: Iterable[Any], loaded: PropertyStatements)
 
 
 def refuse_a_pair_stated_twice(
-    rows: Sequence[dict[str, Any]], loaded: PropertyStatements, *, label: str
+    rows: Sequence[dict[str, Any]],
+    loaded: PropertyStatements,
+    *,
+    label: str,
+    reference_quantities: Mapping[str, str] | None = None,
 ) -> None:
     """Refuse an override factor for a pair a statement also converts.
 
@@ -455,8 +474,18 @@ def refuse_a_pair_stated_twice(
     that states one where the list's statements file already converts the
     same pair is two copies that can disagree.
 
+    "Converts" is the merge's own question, asked the merge's way
+    (:func:`~brightway_flows.domain.property_statements.statement_converting`):
+    what the target measures -- *reference_quantities* where EF's ILCD
+    property or the base list's ruling says, the unit's generic quantity
+    otherwise -- and the list's conversion rules.  A fission energy on a flow
+    whose override converts onto a net-calorific-value target does not convert
+    it, so the override's factor is not refused for it; refusing on the units
+    alone would make the curator drop a factor the merge then cannot replace.
+
     :raises ValueError: naming the row and the statement.
     """
+    quantities = reference_quantities or {}
     for row in rows:
         if not isinstance(row, dict) or str(row.get("route") or "") != "override":
             continue
@@ -466,33 +495,99 @@ def refuse_a_pair_stated_twice(
         source = row.get("source") if isinstance(row.get("source"), dict) else {}
         target = row.get("target") if isinstance(row.get("target"), dict) else {}
         uuid = str(source.get("uuid") or source.get("identifier") or "").strip()
-        for statement in loaded.statements.get(uuid, ()):
-            derived = factor_between(
-                statement,
-                str(source.get("unit") or ""),
-                str(target.get("unit_name") or ""),
-            )
-            if derived is None:
-                continue
-            raise ValueError(
-                f"{label}: the override for {source.get('name') or uuid} ({uuid}) "
-                f"states a conversion_factor of {factor} from "
-                f"{source.get('unit')!r} to {target.get('unit_name')!r}, and "
-                f"{loaded.filename} states its {statement.quantity} as "
-                f"{statement.value} {statement.unit} per {statement.per_unit}, "
-                f"which converts the same pair ({derived}). One number has one "
-                f"home: drop the factor from the override."
-            )
+        statements = loaded.statements.get(uuid, ())
+        if not statements:
+            continue
+        source_unit = str(source.get("unit") or "")
+        target_unit = str(target.get("unit_name") or "")
+        target_uuid = str(target.get("uuid") or target.get("identifier") or "").strip()
+        target_quantity = (
+            quantities.get(target_uuid) if target_uuid else None
+        ) or quantity_for_unit(target_unit) or ""
+        converting = statement_converting(
+            statements,
+            source_unit=source_unit,
+            target_unit=target_unit,
+            target_quantity=target_quantity,
+            rules=loaded.rules,
+        )
+        if converting is None:
+            continue
+        statement, derived = converting
+        raise ValueError(
+            f"{label}: the override for {source.get('name') or uuid} ({uuid}) "
+            f"states a conversion_factor of {factor} from "
+            f"{source.get('unit')!r} to {target.get('unit_name')!r}, and "
+            f"{loaded.filename} states its {statement.quantity} as "
+            f"{statement.value} {statement.unit} per {statement.per_unit}, "
+            f"which converts the same pair ({derived}). One number has one "
+            f"home: drop the factor from the override."
+        )
+
+
+def refuse_a_fix_stated_twice(flows: Iterable[Any], *, label: str) -> None:
+    """Refuse a manual fix's factor for a pair the flow's own statements convert.
+
+    The other route a curated factor takes (`manual_fixes`): a fix that
+    rebases a row's unit states how many of the new unit the vendor's is, and
+    `merge.conversions.conversion_from_source_flow` reads it back off the
+    flow.  The same rule as :func:`refuse_a_pair_stated_twice`, for the same
+    reason -- a fix factor the merge takes first, beside a statement that
+    converts the same pair, is a second copy that can disagree and win
+    silently.  The fix's target is a unit, not a flow, so what it measures is
+    the unit's generic quantity.
+
+    :raises ValueError: naming the flow, the fix and the statement.
+    """
+    for flow in flows:
+        statements = getattr(flow, "property_statements", None)
+        if not statements:
+            continue
+        extra = getattr(flow, "extra", None)
+        stated = extra.get(UNIT_CONVERSION_KEY) if isinstance(extra, dict) else None
+        if not isinstance(stated, dict):
+            continue
+        factor = stated.get("factor")
+        if isinstance(factor, bool) or not isinstance(factor, (int, float)):
+            continue
+        source_unit = str(stated.get("source_unit") or "").strip()
+        target_unit = str(stated.get("target_unit") or "").strip()
+        converting = statement_converting(
+            statements,
+            source_unit=source_unit,
+            target_unit=target_unit,
+            target_quantity=quantity_for_unit(target_unit) or "",
+        )
+        if converting is None:
+            continue
+        statement, derived = converting
+        raise ValueError(
+            f"{label}: the manual fix for {flow.name or flow.uuid} ({flow.uuid}) in "
+            f"{stated.get('stated_in') or 'the manual fixes file'} states a "
+            f"conversion_factor of {factor} from {source_unit!r} to "
+            f"{target_unit!r}, and the flow's own {statement.quantity} -- "
+            f"{statement.value} {statement.unit} per {statement.per_unit}, stated "
+            f"by {statement.stated_by} -- converts the same pair ({derived}). "
+            f"One number has one home: drop the factor from the fix."
+        )
 
 
 def reference_quantities_from_ilcd(path: Path | None = None) -> dict[str, str]:
     """What each EF 3.1 flow's unit measures, from its ILCD flow property.
 
     `extract` writes `flow-properties.json` from the ILCD flow datasets: for
-    every flow, its flow properties and their `meanValue`s.  A flow with
-    exactly one property at 1.0 is measured in that property -- `Hard Coal` in
-    net calorific value, `Water` in mass -- and that is what tells the merge
-    which of a source flow's statements converts onto it.
+    every flow, its flow properties and their `meanValue`s, and which of them
+    the dataset's `quantitativeReference` names as the reference property
+    (`reference_property_id`).  That property is what the flow is measured in
+    -- `Hard Coal` in net calorific value, `Water` in mass -- and that is what
+    tells the merge which of a source flow's statements converts onto it.
+
+    A file extracted before the reference was recorded falls back to the
+    older inference: a flow with exactly one property at 1.0 is measured in
+    it.  That rule misses a flow whose reference property is normalised away
+    from 1.0 (a `Mass*time` stated per year reads 365.25 after unit
+    normalisation) and one with two properties at 1.0, so the flows it skips
+    are counted and logged, and re-extracting EF is what answers for them.
 
     Empty, with a log line, when the file is not there: a bounded build that
     never extracted EF falls back to the unit's generic quantity, which is what
@@ -507,17 +602,34 @@ def reference_quantities_from_ilcd(path: Path | None = None) -> dict[str, str]:
     if not isinstance(values, list):
         raise ValueError(f"{path.name} has no 'flow_property_values' list.")
     by_uuid: dict[str, str] = {}
+    inferred = 0
+    undecided: list[str] = []
     for entry in values:
         if not isinstance(entry, dict):
             continue
-        properties = [
-            p for p in (entry.get("properties") or [])
-            if isinstance(p, dict) and p.get("amount") == 1.0
-        ]
-        if len(properties) != 1:
-            continue
-        slug = quantity_for_ilcd_flow_property(str(properties[0].get("property_id") or ""))
         uuid = str(entry.get("flow_uuid") or "").strip()
-        if slug and uuid:
+        if not uuid:
+            continue
+        reference = str(entry.get("reference_property_id") or "").strip()
+        if not reference:
+            at_one = [
+                p for p in (entry.get("properties") or [])
+                if isinstance(p, dict) and p.get("amount") == 1.0
+            ]
+            if len(at_one) != 1:
+                undecided.append(uuid)
+                continue
+            reference = str(at_one[0].get("property_id") or "")
+            inferred += 1
+        slug = quantity_for_ilcd_flow_property(reference)
+        if slug:
             by_uuid[uuid] = slug
+    if inferred or undecided:
+        logger.info(
+            "flow_properties_without_a_recorded_reference",
+            path=str(path),
+            inferred_from_the_one_property_at_one=inferred,
+            undecided=len(undecided),
+            undecided_flows=undecided[:10],
+        )
     return by_uuid
