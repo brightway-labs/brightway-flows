@@ -556,11 +556,19 @@ def source_list_factors(
 ) -> FactorSource:
     """One registered list's implementation, whichever it is.
 
-    :raises ValueError: if nothing here knows the file format the list's adapter
-        wrote.  An implementation reading a list and being skipped would publish
-        24 categories of 25 with nothing saying so.
+    :raises ValueError: if the list declares no ``lcia`` block, or if nothing
+        here knows the file format the list's adapter wrote.  An implementation
+        reading a list and being skipped would publish 24 categories of 25 with
+        nothing saying so.  `source_list_for` refuses the first case too, but
+        `factors_for(..., source=...)` takes a list it never looked at, and an
+        assertion there is a message with no words in it, and nothing at all
+        under ``python -O``.
     """
-    assert source.lcia is not None
+    if source.lcia is None:
+        raise ValueError(
+            f"{source.key} declares no lcia block, and {implementation.name} "
+            f"reads its factors from it."
+        )
     reader = _READERS.get(source.lcia.adapter)
     if reader is None:
         known = ", ".join(sorted(_READERS))
