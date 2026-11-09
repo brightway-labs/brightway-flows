@@ -118,6 +118,28 @@ def _source(by_flow, *, implementation, consensus):
     )
 
 
+class TheReaderRefusesAListWithNoLciaBlockTestCase(unittest.TestCase):
+    """`source_list_for` refuses a list with no `lcia` block, but
+    `factors_for(..., source=...)` takes a manifest it never looked at, so the
+    reader has to say so itself -- in words, and under `python -O` too, which an
+    `assert` is not."""
+
+    def test_it_raises_a_value_error_that_names_the_list(self):
+        from brightway_flows.lcia.sources import source_list_factors
+        from brightway_flows.sources import SourceList
+
+        bare = SourceList(
+            list_name="ecoinvent",
+            list_version="3.13",
+            flows_path=Path("/nonexistent/ecoinvent-3.13-flows.json"),
+        )
+        self.assertIsNone(bare.lcia)
+        with self.assertRaises(ValueError) as raised:
+            source_list_factors(ECOINVENT, bare)
+        self.assertIn(bare.key, str(raised.exception))
+        self.assertIn(ECOINVENT.name, str(raised.exception))
+
+
 class TheJrcNeedsNoMatchingTestCase(unittest.TestCase):
     """Its factors are already on consensus flows: EF is the base list."""
 
