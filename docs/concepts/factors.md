@@ -31,9 +31,10 @@ makes the disagreements findable.
 ## Five implementations, one method
 
 `implemented_by` is the field the whole layer turns on. There is no correct
-implementation of a method:
+implementation of a method. The counts are from the six-list build of a4d92fd,
+characterised on 2026-11-05 with the 3.13 workbook deciding:
 
-- **`European Commission — JRC`** — 318,774 factors over 88,907 flows. EF 3.1 is
+- **`European Commission — JRC`** — 318,766 factors over 88,903 flows. EF 3.1 is
   the base list, so these arrive already on consensus flows: an identity join,
   and one hop where the build has since merged the flow they were read off into
   another (below). 51,944 of them are a stated zero, which is a claim
@@ -52,7 +53,7 @@ implementation of a method:
   ecotoxicity factors, twelve climate-change factors — is a row in the
   difference report rather than a memory
   ([#459](https://github.com/brightway-labs/brightway-flows/issues/459)).
-- **`GreenDelta`** — 25,266 factors over 1,509 flows, read from the openLCA
+- **`GreenDelta`** — 25,261 factors over 1,510 flows, read from the openLCA
   method package `fetch-lcia bafu-2026-v1` downloads: `EF 3.1 Method (adapted)`
   from *openLCA LCIA methods 2.8.0*, as BAFU's openLCA distribution ships it.
   Their flows are found two ways. Most take the same two hops as ecoinvent's,
