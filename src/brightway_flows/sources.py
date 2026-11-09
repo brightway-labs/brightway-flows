@@ -37,7 +37,7 @@ from __future__ import annotations
 
 import importlib
 from dataclasses import dataclass
-from functools import lru_cache
+from functools import cached_property, lru_cache
 from pathlib import Path
 from collections.abc import Iterable, Mapping, Sequence
 from typing import Any, Protocol
@@ -60,6 +60,8 @@ from brightway_flows.property_statements import (
     PropertyStatements,
     attach_property_statements,
     load_property_statements,
+    reference_quantities_from_ilcd,
+    refuse_a_fix_stated_twice,
     refuse_a_pair_stated_twice,
 )
 from brightway_flows.simapro_names import (
@@ -519,15 +521,22 @@ class SourceList:
     def load_property_statements(self) -> PropertyStatements:
         """This list's property statements, resolved for its release.
 
-        Empty for a list whose manifest names no file.  Read twice per merge --
-        once onto the flows, once against the override rows -- which is a cheap
-        second parse of a small file, and the loader takes a path, so it is not
-        cached (rule 13).
+        Empty for a list whose manifest names no file.  Read several times per
+        merge -- onto the flows, against the override rows, into the merge
+        indexes, and once per list `resolve_through` loads -- so the parse and
+        the vintage check are done once per `SourceList` and kept: the path
+        and the release are the manifest's and fixed for the object's life,
+        which is the case rule 13 lets a loader cache.  The module loader
+        itself still takes a path and is not cached.
 
         :raises ValueError: for a statement nobody checked against this
             release, naming the row; see
             :mod:`brightway_flows.property_statements`.
         """
+        return self._property_statements
+
+    @cached_property
+    def _property_statements(self) -> PropertyStatements:
         return load_property_statements(
             self.property_statements_path,
             release=self.list_version,
@@ -803,6 +812,10 @@ class SourceList:
         # of the flow, and a key dropped into the raw row would land in
         # `Flow.extra` -- the shape `_unit_conversion` takes and #407 retires.
         attach_property_statements(flows, self.load_property_statements())
+        # One number, one home, for the other curated route: a fix that
+        # rebased a row's unit may keep its factor only for a pair no
+        # statement of the flow converts (#407).
+        refuse_a_fix_stated_twice(flows, label=self.key)
         logger.info("loaded_source_flows", source=self.key, count=len(flows))
         return flows
 
@@ -1333,8 +1346,18 @@ def load_prepared_match_table(
         registered_as=registered_as,
     )
     # One number, one home: an override may keep a factor only for a pair
-    # fact no statement of the flow expresses (#407).
-    refuse_a_pair_stated_twice(rows, source.load_property_statements(), label=source.key)
+    # fact no statement of the flow converts (#407).  Asked the merge's way,
+    # with what each target measures, so that a factor is refused exactly when
+    # the merge would have derived one in its place.
+    refuse_a_pair_stated_twice(
+        rows,
+        source.load_property_statements(),
+        label=source.key,
+        reference_quantities={
+            **reference_quantities_from_ilcd(),
+            **base_source_list().load_property_statements().reference_quantities,
+        },
+    )
     return rows
 
 

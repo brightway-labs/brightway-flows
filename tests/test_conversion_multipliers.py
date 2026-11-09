@@ -1066,18 +1066,64 @@ class FlowPropertyRouteTestCase(unittest.TestCase):
     def test_a_curated_factor_that_holds_comes_first(self):
         """A pair fact outranks a flow fact.  Where an override states a
         factor between the pair's units it is the curator's decision about
-        this pair, and the statement is not consulted."""
+        this pair, and it is what the mapping publishes.  The statement is
+        still consulted, to check the two agree (the next case)."""
         target_row, _ = self._record(
             statements=[_statement()],
+            conversion=UnitConversion(9.41, "kg", "MJ", basis=ConversionBasis.CURATED),
+        )
+        metadata = target_row.source_refs[0]["source_metadata"]
+        self.assertEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 9.41)
+        self.assertEqual(metadata[CONVERSION_BASIS_KEY], ConversionBasis.CURATED)
+        self.assertNotIn(CONVERSION_QUANTITY_KEY, metadata)
+        association = target_row.concept_associations[0]
+        self.assertEqual(association[QUDT_CONVERSION_MULTIPLIER_CURIE], 9.41)
+        self.assertEqual(association[CONVERSION_BASIS_KEY], ConversionBasis.CURATED)
+
+    def test_a_curated_factor_that_disagrees_with_the_statement_is_refused(self):
+        """One number, one home.  The load refuses an override or a fix that
+        restates a pair a statement converts; a factor that reached the merge
+        by any route and disagrees with the flow's own statement is refused
+        here, naming both, rather than winning silently."""
+        with self.assertRaises(ValueError) as caught:
+            self._record(
+                statements=[_statement()],
+                conversion=UnitConversion(9.5, "kg", "MJ", basis=ConversionBasis.CURATED),
+            )
+        message = str(caught.exception)
+        self.assertIn("9.5", message)
+        self.assertIn("9.41", message)
+        self.assertIn("calorific-value", message)
+
+    def test_a_curated_factor_for_a_pair_the_statement_does_not_convert_stands(self):
+        """A gross value on a flow whose target is net, with no rule saying
+        gross converts onto net: the statement does not convert the pair, so
+        the curated factor is a pair fact and stands unquestioned."""
+        target_row, _ = self._record(
+            statements=[_statement(quantity="gross-calorific-value", value=9.9)],
             conversion=UnitConversion(9.5, "kg", "MJ", basis=ConversionBasis.CURATED),
+            reference_quantities={"elem-1": "net-calorific-value"},
         )
         metadata = target_row.source_refs[0]["source_metadata"]
         self.assertEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 9.5)
         self.assertEqual(metadata[CONVERSION_BASIS_KEY], ConversionBasis.CURATED)
-        self.assertNotIn(CONVERSION_QUANTITY_KEY, metadata)
-        association = target_row.concept_associations[0]
-        self.assertEqual(association[QUDT_CONVERSION_MULTIPLIER_CURIE], 9.5)
-        self.assertEqual(association[CONVERSION_BASIS_KEY], ConversionBasis.CURATED)
+
+    def test_a_density_read_inverted_converts_a_kilogram_row_onto_a_cubic_metre(self):
+        """`1025 kg of mass per m3` is how a curated file states sea water,
+        and a kilogram row of it landing on a cubic-metre target is answered
+        by reading it the other way: one kilogram is 1/1025 cubic metres.
+        The statement is asked what it measures in that reading -- a volume
+        -- so it is chosen for a volume target rather than passed over as a
+        mass."""
+        target_row, _ = self._record(
+            statements=[_statement(quantity="mass", value=1025.0, unit="kg", per_unit="m3")],
+            unit="kg",
+            target_unit="m3",
+        )
+        metadata = target_row.source_refs[0]["source_metadata"]
+        self.assertAlmostEqual(metadata[QUDT_CONVERSION_MULTIPLIER_CURIE], 1 / 1025.0)
+        self.assertEqual(metadata[CONVERSION_BASIS_KEY], ConversionBasis.FLOW_PROPERTY)
+        self.assertEqual(metadata[CONVERSION_QUANTITY_KEY], _quantity_iri("mass"))
 
     def test_a_curated_factor_that_no_longer_holds_yields_to_the_statement(self):
         """The ore share was stated kilograms to kilograms; on a pair that is

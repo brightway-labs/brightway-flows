@@ -32,13 +32,18 @@ Three readers:
   target of a given quantity -- the exact one, else a basis-unstated calorific
   value, else what the list's conversion rule says -- which is how net and
   gross coexist on one flow and the choice between them is data.
+  :func:`statement_converting` puts the two together for one unit pair: the
+  statements that bridge it, each asked what it measures *in the direction
+  it is read* (:func:`quantity_read_for`), and the one of them that converts
+  onto the target.  The merge and the load-time refusals both go through it,
+  so they cannot answer differently.
 * The codec pair and :data:`PROPERTY_STATEMENTS_SCHEMA` carry the statements
   on `Flow.property_statements` across the file boundary.
 """
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
 from typing import Any, ClassVar
@@ -49,6 +54,7 @@ from brightway_flows.domain.quantities import (
     GROSS_CALORIFIC_VALUE,
     NET_CALORIFIC_VALUE,
     quantity,
+    quantity_for_unit,
 )
 from brightway_flows.domain.records import SerialisableRecord
 from brightway_flows.domain.units import quantity_factor
@@ -198,6 +204,37 @@ def factor_between(
     return None
 
 
+def reads_forward(
+    statement: PropertyStatement, source_unit: str, target_unit: str
+) -> bool:
+    """Whether *statement* bridges the pair in the direction it is written."""
+    return (
+        quantity_factor(source_unit, statement.per_unit) is not None
+        and quantity_factor(statement.unit, target_unit) is not None
+    )
+
+
+def quantity_read_for(
+    statement: PropertyStatement, source_unit: str, target_unit: str
+) -> str | None:
+    """What *statement* measures when it is read for this unit pair.
+
+    Its own quantity, read in the direction it is written.  Read inverted --
+    `1025 kg of mass per m3` answering a kilogram row on a cubic-metre target
+    -- it says how much *volume* a kilogram is, so it answers for what its
+    `per_unit` generically measures.  Without this a density stated kilograms
+    per cubic metre could bridge a kilogram-to-cubic-metre pair
+    (:func:`factor_between` reads it inverted) and still never be chosen,
+    because :func:`choose_statement` would compare `mass` against `volume`.
+    ``None`` where the statement does not bridge the pair at all.
+    """
+    if reads_forward(statement, source_unit, target_unit):
+        return statement.quantity
+    if factor_between(statement, source_unit, target_unit) is not None:
+        return quantity_for_unit(statement.per_unit)
+    return None
+
+
 @dataclass(frozen=True)
 class ConversionRule:
     """A list's ruling that one quantity converts onto a target of another.
@@ -248,6 +285,7 @@ def choose_statement(
     *,
     target_quantity: str,
     rules: Sequence[ConversionRule] = (),
+    quantity_of: Callable[[PropertyStatement], str | None] | None = None,
 ) -> PropertyStatement | None:
     """Which of *statements* converts onto a target measuring *target_quantity*.
 
@@ -259,17 +297,24 @@ def choose_statement(
     3. Else what the list's conversion *rules* say converts onto this target.
     4. Else nothing.
 
+    *quantity_of* is what a statement measures for the caller's purpose; by
+    default its own quantity.  :func:`statement_converting` passes
+    :func:`quantity_read_for`, so a density read inverted is asked about as a
+    volume.
+
     :raises AmbiguousPropertyStatementsError: when two statements answer at
         one step.  Two gross values for one flow from two of the vendor's own
         sources is a question for a ruling, never for file order (rule 14).
     """
+    measures = quantity_of or (lambda statement: statement.quantity)
     candidates = list(statements)
-    exact = [s for s in candidates if s.quantity == target_quantity]
+    exact = [s for s in candidates if measures(s) == target_quantity]
     chosen = _one_of(exact, step="exactly", target_quantity=target_quantity)
     if chosen is not None:
         return chosen
     unstated = [
-        s for s in candidates if _basis_unstated_pair(s.quantity, target_quantity)
+        s for s in candidates
+        if _basis_unstated_pair(measures(s) or "", target_quantity)
     ]
     chosen = _one_of(
         unstated, step="with the basis unstated", target_quantity=target_quantity
@@ -279,7 +324,7 @@ def choose_statement(
     for rule in rules:
         if rule.onto != target_quantity:
             continue
-        ruled = [s for s in candidates if s.quantity == rule.convert_by]
+        ruled = [s for s in candidates if measures(s) == rule.convert_by]
         chosen = _one_of(
             ruled, step=f"by the rule converting {rule.convert_by!r}",
             target_quantity=target_quantity,
@@ -287,3 +332,48 @@ def choose_statement(
         if chosen is not None:
             return chosen
     return None
+
+
+def statement_converting(
+    statements: Iterable[PropertyStatement],
+    *,
+    source_unit: str,
+    target_unit: str,
+    target_quantity: str,
+    rules: Sequence[ConversionRule] = (),
+) -> tuple[PropertyStatement, float] | None:
+    """The statement that converts *source_unit* onto a *target_unit* of
+    *target_quantity*, with the factor it gives, or ``None``.
+
+    Only the statements whose units bridge the pair are candidates -- one per
+    standard cubic metre answers nothing for a row in plain cubic metres, and
+    stepping aside is right there (#292) -- and each is asked what it measures
+    in the direction it is read (:func:`quantity_read_for`) before
+    :func:`choose_statement` picks among them.  The factor is computed once
+    per statement, here, and handed back with the choice.
+
+    ``None`` for an empty *target_quantity*: a target whose unit no quantity
+    is the generic of -- a standard cubic metre, an area -- has nothing to ask
+    a statement for, so a factor onto it stays a pair fact on the override.
+    """
+    if not target_quantity:
+        return None
+    candidates: list[PropertyStatement] = []
+    factors: dict[int, float] = {}
+    measures: dict[int, str | None] = {}
+    for statement in statements:
+        factor = factor_between(statement, source_unit, target_unit)
+        if factor is None:
+            continue
+        candidates.append(statement)
+        factors[id(statement)] = factor
+        measures[id(statement)] = quantity_read_for(statement, source_unit, target_unit)
+    chosen = choose_statement(
+        candidates,
+        target_quantity=target_quantity,
+        rules=rules,
+        quantity_of=lambda statement: measures[id(statement)],
+    )
+    if chosen is None:
+        return None
+    return chosen, factors[id(chosen)]

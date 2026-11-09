@@ -31,6 +31,8 @@ from brightway_flows.domain.property_statements import (
     decode_statements,
     encode_statements,
     factor_between,
+    quantity_read_for,
+    statement_converting,
 )
 from brightway_flows.domain.quantities import (
     CALORIFIC_VALUE,
@@ -41,12 +43,14 @@ from brightway_flows.domain.quantities import (
     VOLUME,
 )
 from brightway_flows.domain.units import unit_row_for
+from brightway_flows.manual_fixes import UNIT_CONVERSION_KEY
 from brightway_flows.property_statements import (
     DECISIONS_SCHEMA_VERSION,
     PropertyStatements,
     attach_property_statements,
     load_property_statements,
     reference_quantities_from_ilcd,
+    refuse_a_fix_stated_twice,
     refuse_a_pair_stated_twice,
 )
 from brightway_flows.sources import (
@@ -249,6 +253,60 @@ class ChooseStatementTestCase(unittest.TestCase):
     def test_nothing_applicable_is_none(self):
         self.assertIsNone(choose_statement([], target_quantity=NET_CALORIFIC_VALUE))
         self.assertIsNone(choose_statement([self.net], target_quantity=MASS))
+
+
+class ReadingQuantityTestCase(unittest.TestCase):
+    """What a statement measures depends on the direction it is read in.
+
+    `1025 kg of mass per m3` read forward, for a cubic-metre row onto a
+    kilogram target, is a mass.  Read inverted, for a kilogram row onto a
+    cubic-metre target, it says how many cubic metres a kilogram is, which is
+    a volume -- and `choose_statement` must be asked about it as one, or a
+    density that bridges the pair is never chosen for it.
+    """
+
+    def setUp(self):
+        self.density = _stmt(MASS, 1025.0, "kg", "m3")
+
+    def test_read_forward_it_is_its_own_quantity(self):
+        self.assertEqual(quantity_read_for(self.density, "m3", "kg"), MASS)
+
+    def test_read_inverted_it_is_what_its_per_unit_measures(self):
+        self.assertEqual(quantity_read_for(self.density, "kg", "m3"), VOLUME)
+
+    def test_a_pair_it_does_not_bridge_is_none(self):
+        self.assertIsNone(quantity_read_for(self.density, "kg", "MJ"))
+
+    def test_statement_converting_chooses_the_inverted_density_for_a_volume_target(self):
+        chosen = statement_converting(
+            [self.density], source_unit="kg", target_unit="m3", target_quantity=VOLUME
+        )
+        self.assertIsNotNone(chosen)
+        statement, factor = chosen
+        self.assertIs(statement, self.density)
+        self.assertAlmostEqual(factor, 1 / 1025.0)
+
+    def test_statement_converting_reads_a_statement_forward_at_its_own_number(self):
+        net = _stmt(NET_CALORIFIC_VALUE, 18.2, "MJ", "kg")
+        chosen = statement_converting(
+            [net], source_unit="kg", target_unit="MJ", target_quantity=NET_CALORIFIC_VALUE
+        )
+        self.assertEqual(chosen, (net, 18.2))
+
+    def test_statement_converting_is_none_for_a_target_of_no_quantity(self):
+        net = _stmt(NET_CALORIFIC_VALUE, 18.2, "MJ", "kg")
+        self.assertIsNone(
+            statement_converting([net], source_unit="kg", target_unit="MJ", target_quantity="")
+        )
+
+    def test_statement_converting_passes_over_what_does_not_convert_the_target(self):
+        fission = _stmt(FISSION_ENERGY, 560_000, "MJ", "kg")
+        self.assertIsNone(
+            statement_converting(
+                [fission], source_unit="kg", target_unit="MJ",
+                target_quantity=NET_CALORIFIC_VALUE,
+            )
+        )
 
 
 class PropertyStatementRecordTestCase(unittest.TestCase):
@@ -678,6 +736,16 @@ class AttachTestCase(LoaderFixtureTestCase):
         coal = Flow(uuid="coal-hard", unit="t", provided=ProvidedValues(unit="t"))
         self.assertEqual(attach_property_statements([coal], self.loaded()), 1)
 
+    def test_a_unit_the_table_does_not_know_is_named_as_what_is_missing(self):
+        """The statement is right and the unit table is what lacks the
+        spelling; the message says so rather than blaming the statement."""
+        coal = Flow(uuid="coal-hard", unit="kilogrammes", provided=ProvidedValues(unit="kilogrammes"))
+        with self.assertRaises(ValueError) as caught:
+            attach_property_statements([coal], self.loaded())
+        message = str(caught.exception)
+        self.assertIn("'kilogrammes'", message)
+        self.assertIn("units.json does not know", message)
+
     def test_nothing_to_attach_returns_zero(self):
         flows = [Flow(uuid="water", unit="m3")]
         self.assertEqual(attach_property_statements(flows, PropertyStatements()), 0)
@@ -721,6 +789,66 @@ class RefusePairStatedTwiceTestCase(LoaderFixtureTestCase):
         }
         refuse_a_pair_stated_twice([row], self.loaded(), label="test-1.0")
 
+    def test_a_factor_for_a_pair_the_statement_bridges_but_does_not_convert_passes(self):
+        """A fission energy per kilogram bridges a kilogram-to-megajoule pair
+        and converts nothing onto a net-calorific-value target.  Refusing the
+        override's factor on the units alone would have the curator drop a
+        number the merge then cannot replace."""
+        loaded = self.load(statements=[_entry(quantity=FISSION_ENERGY, value=560_000)])
+        row = {
+            "route": "override",
+            "conversion_factor": 560_000,
+            "source": {"uuid": "coal-hard", "unit": "kg"},
+            "target": {"uuid": "ef-coal", "unit_name": "MJ"},
+        }
+        refuse_a_pair_stated_twice(
+            [row], loaded, label="test-1.0",
+            reference_quantities={"ef-coal": NET_CALORIFIC_VALUE},
+        )
+
+    def test_the_targets_reference_quantity_decides(self):
+        """The same fission energy onto a target ruled fission energy does
+        convert the pair, and the override's factor is refused."""
+        loaded = self.load(statements=[_entry(quantity=FISSION_ENERGY, value=560_000)])
+        row = {
+            "route": "override",
+            "conversion_factor": 560_000,
+            "source": {"uuid": "coal-hard", "unit": "kg"},
+            "target": {"uuid": "ef-uranium", "unit_name": "MJ"},
+        }
+        with self.assertRaises(ValueError):
+            refuse_a_pair_stated_twice(
+                [row], loaded, label="test-1.0",
+                reference_quantities={"ef-uranium": FISSION_ENERGY},
+            )
+
+    def test_the_lists_conversion_rules_count(self):
+        """A gross value does not convert onto a net target until the list's
+        rule says so; with the rule, the override's factor is a second copy."""
+        row = {
+            "route": "override",
+            "conversion_factor": 19.1,
+            "source": {"uuid": "coal-hard", "unit": "kg"},
+            "target": {"uuid": "ef-coal", "unit_name": "MJ"},
+        }
+        gross = _entry(quantity=GROSS_CALORIFIC_VALUE, value=19.1)
+        without = self.load(statements=[gross])
+        refuse_a_pair_stated_twice(
+            [row], without, label="test-1.0",
+            reference_quantities={"ef-coal": NET_CALORIFIC_VALUE},
+        )
+        with_rule = self.load(
+            statements=[gross],
+            conversion_rules=[
+                {"onto": NET_CALORIFIC_VALUE, "convert_by": GROSS_CALORIFIC_VALUE, "comment": "x"}
+            ],
+        )
+        with self.assertRaises(ValueError):
+            refuse_a_pair_stated_twice(
+                [row], with_rule, label="test-1.0",
+                reference_quantities={"ef-coal": NET_CALORIFIC_VALUE},
+            )
+
     def test_a_row_that_is_not_an_override_passes(self):
         row = {
             "route": "prepared",
@@ -746,6 +874,52 @@ class RefusePairStatedTwiceTestCase(LoaderFixtureTestCase):
             "target": {"unit_name": "MJ"},
         }
         refuse_a_pair_stated_twice([row], self.loaded(), label="test-1.0")
+
+
+class RefuseFixStatedTwiceTestCase(LoaderFixtureTestCase):
+    """The same rule for the other curated route, the manual fix.
+
+    A fix that rebased a row's unit records the pair and its factor on the
+    flow, where `conversion_from_source_flow` reads it first.  Beside a
+    statement that converts the same pair it is a second copy that would win
+    silently, so the load refuses it.
+    """
+
+    def _flow(self, factor=0.001, source_unit="kg", target_unit="m3", statements=()):
+        flow = Flow(uuid="water", name="Water", unit=target_unit, provided=ProvidedValues(unit=source_unit))
+        flow.extra = {
+            UNIT_CONVERSION_KEY: {
+                "factor": factor,
+                "source_unit": source_unit,
+                "target_unit": target_unit,
+                "stated_in": "test-manual-fixes.json",
+            }
+        }
+        flow.property_statements = list(statements)
+        return flow
+
+    def test_a_fix_factor_for_a_pair_a_statement_converts_is_refused(self):
+        flow = self._flow(statements=[_stmt(VOLUME, 0.001, "m3", "kg")])
+        with self.assertRaises(ValueError) as caught:
+            refuse_a_fix_stated_twice([flow], label="test-1.0")
+        message = str(caught.exception)
+        self.assertIn("test-manual-fixes.json", message)
+        self.assertIn("water", message)
+        self.assertIn("volume", message)
+
+    def test_a_density_read_inverted_counts_too(self):
+        flow = self._flow(statements=[_stmt(MASS, 1000.0, "kg", "m3")])
+        with self.assertRaises(ValueError):
+            refuse_a_fix_stated_twice([flow], label="test-1.0")
+
+    def test_a_fix_for_a_pair_no_statement_converts_passes(self):
+        flow = self._flow(statements=[_stmt(NET_CALORIFIC_VALUE, 18.2, "MJ", "kg")])
+        refuse_a_fix_stated_twice([flow], label="test-1.0")
+
+    def test_a_flow_without_a_fix_or_without_statements_passes(self):
+        refuse_a_fix_stated_twice([Flow(uuid="water", unit="m3")], label="test-1.0")
+        bare = self._flow()
+        refuse_a_fix_stated_twice([bare], label="test-1.0")
 
 
 class ReferenceQuantitiesFromIlcdTestCase(LoaderFixtureTestCase):
@@ -790,6 +964,33 @@ class ReferenceQuantitiesFromIlcdTestCase(LoaderFixtureTestCase):
         self.assertEqual(
             reference_quantities_from_ilcd(path),
             {"hard-coal": NET_CALORIFIC_VALUE, "water": MASS},
+        )
+
+    def test_the_recorded_reference_property_is_preferred(self):
+        """A file written since the extractor records the dataset's
+        `quantitativeReference` is read from it, whatever sits at 1.0."""
+        path = self.write_properties(
+            [
+                {
+                    "flow_uuid": "land-time",
+                    "source": "EF 3.1",
+                    "reference_property_id": ILCD_MASS,
+                    "properties": [{"property_id": ILCD_MASS, "amount": 365.25, "meta": {}}],
+                },
+                {
+                    "flow_uuid": "two-at-one",
+                    "source": "EF 3.1",
+                    "reference_property_id": ILCD_NET_CALORIFIC_VALUE,
+                    "properties": [
+                        {"property_id": ILCD_NET_CALORIFIC_VALUE, "amount": 1.0, "meta": {}},
+                        {"property_id": ILCD_MASS, "amount": 1.0, "meta": {}},
+                    ],
+                },
+            ]
+        )
+        self.assertEqual(
+            reference_quantities_from_ilcd(path),
+            {"land-time": MASS, "two-at-one": NET_CALORIFIC_VALUE},
         )
 
     def test_a_flow_with_two_reference_properties_maps_to_nothing(self):

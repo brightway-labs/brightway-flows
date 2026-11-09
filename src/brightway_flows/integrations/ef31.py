@@ -592,6 +592,16 @@ def extract_flow_property_values(
     if not flow_uuid:
         return {"flow_uuid": "", "source": source, "properties": []}
 
+    # Which property the dataset is measured in, by the internal id its
+    # `quantitativeReference` names.  Recorded beside the values so that a
+    # reader does not have to infer it from which one sits at 1.0
+    # (`property_statements.reference_quantities_from_ilcd`).
+    reference_internal_id = root.findtext(
+        ".//flow:flowInformation/flow:quantitativeReference/"
+        "flow:referenceToReferenceFlowProperty",
+        namespaces=NAMESPACES,
+    )
+    reference_property_id = ""
     values: list[dict] = []
     for fp in root.findall(".//flow:flowProperties/flow:flowProperty", NAMESPACES):
         ref = fp.find("flow:referenceToFlowPropertyDataSet", NAMESPACES)
@@ -600,6 +610,11 @@ def extract_flow_property_values(
         property_id = ref.get("refObjectId")
         if not property_id:
             continue
+        if (
+            reference_internal_id is not None
+            and fp.get("dataSetInternalID") == reference_internal_id.strip()
+        ):
+            reference_property_id = property_id
         amount_text = fp.findtext("flow:meanValue", namespaces=NAMESPACES)
         if amount_text is None:
             continue
@@ -627,6 +642,7 @@ def extract_flow_property_values(
     return {
         "flow_uuid": flow_uuid,
         "source": source,
+        "reference_property_id": reference_property_id,
         "properties": values,
     }
 
