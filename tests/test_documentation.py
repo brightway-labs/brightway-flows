@@ -889,6 +889,79 @@ class PlacementTableTestCase(unittest.TestCase):
         self.assertTrue(checked, "no column of the sample table reached a measure")
 
 
+class ImplementationCountsTestCase(unittest.TestCase):
+    """Two pages print each implementation's published factors from one build.
+
+    `deciding-factors/implementations.md` has them as a table and
+    `concepts/factors.md` as a bulleted list, each naming the build it was
+    copied from, and both drifted the way the placement sample did: while
+    #459 was being reviewed the table said the consensus published 336,579
+    EF 3.1 factors for a build whose baseline said 327,263 (the gap was the
+    Stepwise consensus's other 9,316, counted into the wrong row), and the
+    list quoted the JRC and GreenDelta from one build and the ecoinvent Centre
+    from another.  The baseline is the one build figure the repository keeps,
+    so each printed count is held to the measure `characterise` writes for that
+    implementation, where the baseline has one.
+    """
+
+    TABLE_PAGE = DOCS / "deciding-factors" / "implementations.md"
+    LIST_PAGE = DOCS / "concepts" / "factors.md"
+    BASELINE = ROOT / "expectations" / "baseline.json"
+
+    #: The name a page prints, against the prefix `characterise` writes that
+    #: implementation's statistics under (#348 put each under its method's slug).
+    PREFIXES = {
+        "European Commission — JRC": "ef_jrc",
+        "ecoinvent Centre": "ef_ecoinvent_centre",
+        "ecoinvent Centre (3.12)": "ef_ecoinvent_centre_3_12",
+        "GreenDelta": "ef_greendelta",
+        "brightway-flows": "ef_consensus",
+        "2.-0 LCA consultants (Stepwise 2006)": "stepwise-2006_twenty_zero_lca",
+        "brightway-flows (Stepwise 2006)": "stepwise-2006_consensus",
+    }
+    #: ``| ecoinvent Centre (3.12) | transcription | **no** | 27,346 | 7,939 |``
+    TABLE_ROW = re.compile(
+        r"^\| ([^|]+?) \| [^|]+ \| [^|]+ \| ([\d,]+) \| ([\d,]+|—) \|\s*$",
+        re.MULTILINE,
+    )
+    #: ``- **`GreenDelta`** — 25,261 factors over 1,510 flows``
+    LIST_ROW = re.compile(
+        r"^- \*\*`([^`]+)`\*\* — ([\d,]+) factors over ([\d,]+) flows", re.MULTILINE
+    )
+
+    def setUp(self):
+        self.measures = json.loads(self.BASELINE.read_text())["measures"]
+
+    def _check(self, page, rows):
+        self.assertTrue(rows, f"no implementation counts found in {page.name}")
+        checked = 0
+        for name, factors, flows in rows:
+            prefix = self.PREFIXES.get(name)
+            self.assertIsNotNone(
+                prefix, f"{page.name} names an implementation this test does not know: {name!r}"
+            )
+            for printed, column in ((factors, "factors_published"), (flows, "flows_characterised")):
+                key = f"factors.{prefix}_{column}"
+                if printed == "—" or key not in self.measures:
+                    continue
+                checked += 1
+                with self.subTest(page=page.name, measure=key):
+                    self.assertEqual(
+                        int(printed.replace(",", "")),
+                        self.measures[key],
+                        f"{page.name} prints {printed} for {key}; `assess --record` "
+                        f"last wrote {self.measures[key]}. Re-copy the count from a "
+                        "build, or record the baseline from the build it came from.",
+                    )
+        self.assertTrue(checked, f"no count in {page.name} reached a measure")
+
+    def test_the_implementations_table_matches_the_baseline(self):
+        self._check(self.TABLE_PAGE, self.TABLE_ROW.findall(self.TABLE_PAGE.read_text()))
+
+    def test_the_implementations_list_matches_the_baseline(self):
+        self._check(self.LIST_PAGE, self.LIST_ROW.findall(self.LIST_PAGE.read_text()))
+
+
 class PublishedCategoryCountTestCase(unittest.TestCase):
     """The number of impact categories is arithmetic over the method files.
 

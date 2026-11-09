@@ -72,9 +72,9 @@ the 3.13 workbook deciding:
 | ecoinvent Centre | transcription | yes | 27,342 | 7,965 |
 | ecoinvent Centre (3.12) | transcription | **no** | 27,346 | 7,939 |
 | GreenDelta | transcription | **no** | 25,261 | 1,510 |
-| brightway-flows | consensus | no | 336,579 | — |
+| brightway-flows | consensus | no | 327,263 | — |
 | 2.-0 LCA consultants (Stepwise 2006) | reference | yes | 9,623 | 6,007 |
-| brightway-flows (Stepwise 2006) | consensus | no | 9,623 | — |
+| brightway-flows (Stepwise 2006) | consensus | no | 18,939 | — |
 
 ## Where a voice's numbers come from
 
