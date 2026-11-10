@@ -123,10 +123,13 @@ else. Merge a different version, or several lists at once, by naming each: see
 ## Characterisation factors
 
 `build` publishes flows. `characterise` publishes what a flow is worth under an
-impact category, and who says so. It needs the ecoinvent licence too, for the
-ecoinvent Centre's implementation:
+impact category, and who says so. The ecoinvent Centre's deciding
+implementation is read from the 3.13 workbook, which needs the ecoinvent
+licence; its 3.12 implementation is read from the file ecoinvent publishes on
+GitHub under CC BY-NC 4.0, which needs none:
 
 ```bash
+uv run brightway-flows fetch-lcia ecoinvent-3.13
 uv run brightway-flows fetch-lcia ecoinvent-3.12
 uv run brightway-flows characterise
 ```

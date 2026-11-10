@@ -455,7 +455,10 @@ def ecoinvent_factors(
     """The ecoinvent Centre's factors, as ``fetch-lcia`` wrote them.
 
     Keyed by ecoinvent flow UUID, which is what the file states and what
-    `elementary_flow_sources` joins on.
+    `elementary_flow_sources` joins on.  One reader for two adapters: the
+    workbook's (``integrations.ecoinvent_lcia``) and the public mapped file's
+    (``integrations.ecoinvent_lcia_public``) write one file format, and the
+    file itself says which it came from.
 
     :raises FileNotFoundError: if nothing has fetched them, naming the command
         that does. A `characterise` run that quietly published one implementation
@@ -544,8 +547,12 @@ def stepwise_factors(
 #: publisher's name: the format is a property of the file the adapter fetched,
 #: and one publisher can be read twice -- the ecoinvent Centre's 3.13 workbook
 #: decides and its 3.12 one is kept to be compared -- while a name keys one.
+#: Two adapters share a reader where they write one format: the workbook
+#: adapter and the public mapped file's write the same file, and
+#: `ecoinvent_factors` reads either.
 _READERS: dict[str, Any] = {
     "brightway_flows.integrations.ecoinvent_lcia:fetch": ecoinvent_factors,
+    "brightway_flows.integrations.ecoinvent_lcia_public:fetch": ecoinvent_factors,
     "brightway_flows.integrations.greendelta_lcia:fetch": greendelta_factors,
     "brightway_flows.integrations.stepwise_lcia:fetch": stepwise_factors,
 }

@@ -217,6 +217,14 @@ class MethodImplementation:
     #: and :func:`_check` says so out loud -- a package that mints its own is a
     #: join that has to be written before the row can change.
     identifiers_from: str = ""
+    #: The terms the publisher states for the file its numbers were read from,
+    #: where they are not this list's own data licence: the ecoinvent Centre's
+    #: 3.12 implementation is read from a file ecoinvent publishes under CC
+    #: BY-NC 4.0, and a reader of the rows has to be able to see that on them.
+    #: Published in ``ImpactCategory.meta``.  Empty where the publisher states
+    #: nothing this list has recorded, which is not a statement that there are
+    #: no terms.
+    licence: str = ""
     #: Slugs this implementation was published under before, newest last.  A
     #: category's id is a hash of an IRI the slug is a segment of, so a renamed
     #: slug moved every one of its categories, and a migration from a release
@@ -645,6 +653,7 @@ def _implementation(entry: Any, *, path: Path) -> MethodImplementation:
         source=str(entry.get("source") or ""),
         release=str(entry.get("release") or ""),
         identifiers_from=str(entry.get("identifiers_from") or ""),
+        licence=str(entry.get("licence") or ""),
         previous_slugs=_previous_slugs(entry, path=path),
     )
 

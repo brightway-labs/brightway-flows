@@ -69,6 +69,18 @@ later workbook carries its release in the segment and in the name,
 `ecoinvent-centre-3-13` and `ecoinvent Centre (3.13)`, so a reader holding a
 factor row can tell which workbook stated it without opening this page.
 
+The two are also read from different places, and that matters for who may
+hold the numbers. The 3.13 workbook sits behind ecoinvent's login, and only a
+licence holder can fetch it. The 3.12 implementation is read from the file
+ecoinvent publishes at [github.com/ecoinvent/lcia](https://github.com/ecoinvent/lcia),
+`EF v3.1_mapped_3.12.csv`, which states the workbook's 27,415 EF v3.1 factors
+at the same numbers and 3,212 cells of `0.0` where the workbook has no row,
+dropped on the way in. Anyone can regenerate that implementation with
+`fetch-lcia ecoinvent-3.12`, and its terms are the publisher's, CC BY-NC 4.0,
+not this list's ODbL: the implementation's row states the licence, and every
+category of `ecoinvent Centre (3.12)` carries it as `meta.licence` so a reader
+of the published rows sees it where the numbers are.
+
 So for EF 3.1 the flowchart's first question is asked of two voices, the JRC's
 and the ecoinvent Centre's; for Stepwise 2006, of one.
 
@@ -93,8 +105,9 @@ it is one of three routes:
 - **published flows** — the implementation's own list is the base list, so its
   factors are already on consensus flows. The JRC's.
 - **a source list** — the factors name somebody else's flows, and the merge says
-  which consensus flow each became. The ecoinvent Centre's workbook names
-  ecoinvent flows; GreenDelta's package names the ecoinvent identifiers it was
+  which consensus flow each became. The ecoinvent Centre's workbook and its
+  public mapped file both name ecoinvent flows, the workbook by name and
+  compartment and the file by UUID; GreenDelta's package names the ecoinvent identifiers it was
   built against, and walks whichever release has them; Stepwise's SimaPro export
   names its own rows.
 - **derived** — ours, from the rest.

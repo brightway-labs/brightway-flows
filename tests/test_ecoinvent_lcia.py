@@ -1,12 +1,15 @@
 """EF 3.1 as the ecoinvent Centre implements it, and what is checked at ingest.
 
 The second implementation of a method this list holds, and the first that is not
-the method's own publisher's. Two releases of the workbook are read: 3.13's
-decides, and 3.12's is kept beside it to be compared (#459). Every number below
-is measured against `LCIA Implementation 3.12.xlsx` and the 9,850 ecoinvent 3.12
-biosphere flows this project has already extracted, or against the 3.13 workbook
-and its 9,893, and the point of asserting them in the adapter rather than
-recording them once is that each is a fact about a release:
+the method's own publisher's. The 3.13 workbook is read by this adapter and
+decides; the 3.12 implementation is kept beside it to be compared (#459), and
+since the file ecoinvent publishes states it factor for factor it is read from
+that instead, by `integrations.ecoinvent_lcia_public` and
+`tests/test_ecoinvent_lcia_public.py`. Every number below was first measured
+against `LCIA Implementation 3.12.xlsx` and the 9,850 ecoinvent 3.12 biosphere
+flows this project extracted, then against the 3.13 workbook and its 9,893, and
+the point of asserting them in the adapter rather than recording them once is
+that each is a fact about a release:
 
 * the flow triple is the workbook's only name for a flow, and it resolves
   exactly -- 7,960 of 7,960, with no ecoinvent flow sharing a triple with
@@ -339,19 +342,21 @@ class TheFileRoundTripsTestCase(unittest.TestCase):
 
 
 class TheManifestDeclaresItTestCase(unittest.TestCase):
-    def test_ecoinvent_3_13_and_3_12_declare_an_lcia_block(self):
-        for version in ("3.13", "3.12"):
-            with self.subTest(version=version):
-                source = known_source_lists()[f"ecoinvent-{version}"]
-                self.assertIsNotNone(source.lcia)
-                self.assertEqual(
-                    [method.name for method in source.lcia.methods], [ECOINVENT_METHOD]
-                )
-                self.assertEqual(source.lcia.methods[0].no_long_term, "EF v3.1 no LT")
-                self.assertEqual(
-                    source.lcia.factors_path.name,
-                    f"ecoinvent-{version}-lcia-factors.json",
-                )
+    def test_ecoinvent_3_13_declares_the_workbook(self):
+        """3.12's manifest reads the file ecoinvent publishes instead, which
+        `tests/test_ecoinvent_lcia_public.py` holds."""
+        source = known_source_lists()["ecoinvent-3.13"]
+        self.assertIsNotNone(source.lcia)
+        self.assertEqual(
+            source.lcia.adapter, "brightway_flows.integrations.ecoinvent_lcia:fetch"
+        )
+        self.assertEqual(
+            [method.name for method in source.lcia.methods], [ECOINVENT_METHOD]
+        )
+        self.assertEqual(source.lcia.methods[0].no_long_term, "EF v3.1 no LT")
+        self.assertEqual(
+            source.lcia.factors_path.name, "ecoinvent-3.13-lcia-factors.json"
+        )
 
     def test_the_two_workbooks_are_two_implementations_of_one_publisher(self):
         """3.13's decides and 3.12's does not, and the manifests name them apart:
@@ -397,21 +402,28 @@ class TheManifestDeclaresItTestCase(unittest.TestCase):
     def test_the_adapter_it_names_is_importable(self):
         from brightway_flows.sources import load_adapter
 
-        source = known_source_lists()["ecoinvent-3.12"]
+        source = known_source_lists()["ecoinvent-3.13"]
         self.assertTrue(callable(load_adapter(source, dotted_path=source.lcia.adapter)))
 
 
 class WhatAFetchWroteTestCase(unittest.TestCase):
-    """The measured numbers, against a file a real fetch produced.
+    """The measured numbers, against a file a real fetch of the 3.13 workbook
+    produced.
 
     Skipped where nothing has fetched: the workbook is 40 MB behind ecoinvent's
-    login and no test may download it.
+    login and no test may download it.  The 3.12 numbers these were first
+    measured against -- 27,415 factors over 7,960 flows, 27,190 rows in the
+    `no LT` sibling -- are now `tests/test_ecoinvent_lcia_public.py`'s, read
+    from the public file, which has no sibling to check.  Twelve factors fewer
+    and 24 flows more than 3.12's: the seven retired `2-Propen-1-ol` rows and
+    the renumbered isomers leave, the 50 rows 3.13 added arrive, and the
+    long-term subtraction drops the same 225 rows in the same two compartments.
     """
 
-    RELEASE = "3.12"
-    FACTORS = 27_415
-    FLOWS = 7_960
-    ROWS_IN_SIBLING = 27_190
+    RELEASE = "3.13"
+    FACTORS = 27_403
+    FLOWS = 7_984
+    ROWS_IN_SIBLING = 27_178
 
     def setUp(self):
         source = known_source_lists()[f"ecoinvent-{self.RELEASE}"]
@@ -464,18 +476,3 @@ class WhatAFetchWroteTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-
-class WhatThe313FetchWroteTestCase(WhatAFetchWroteTestCase):
-    """The same measurements against the 3.13 workbook, the one that decides.
-
-    Twelve factors fewer and 24 flows more than 3.12's: the seven retired
-    `2-Propen-1-ol` rows and the renumbered isomers leave, the 50 rows 3.13
-    added arrive, and the long-term subtraction drops the same 225 rows in the
-    same two compartments.
-    """
-
-    RELEASE = "3.13"
-    FACTORS = 27_403
-    FLOWS = 7_984
-    ROWS_IN_SIBLING = 27_178
