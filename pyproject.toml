@@ -12,7 +12,6 @@ authors = [
 ]
 requires-python = ">=3.14.3"
 dependencies = [
-    "bleach>=6.3.0",
     "bw-simapro-csv>=0.4.3",
     "chemformula>=1.5.1",
     "ecoinvent-interface>=3.1",
