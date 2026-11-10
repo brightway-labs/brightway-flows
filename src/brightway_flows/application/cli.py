@@ -117,7 +117,7 @@ def characterise(
 
     Runs after `build` and reads what it wrote: EF 3.1 as the JRC published it,
     which is already on the flows, and EF 3.1 as the ecoinvent Centre implemented
-    it, which `fetch-lcia ecoinvent-3.12` fetched. Both are transcriptions --
+    it, which `fetch-lcia ecoinvent-3.13` fetched. Both are transcriptions --
     nothing here changes a number either of them stated.
 
     Writes the `lcia_*` tables into the same database, and touches none of the

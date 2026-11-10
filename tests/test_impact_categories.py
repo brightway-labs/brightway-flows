@@ -64,12 +64,14 @@ from brightway_flows.lcia.categories import _category, retired_impact_category_i
 
 #: EF 3.1's five implementations, by slug, in file order.  The ecoinvent
 #: Centre is read twice: its 3.13 workbook decides, and its 3.12 workbook is
-#: kept to be compared, under a slug of its own so that the deciding
-#: implementation's category ids did not move when the release did.
+#: kept to be compared.  The 3.12 workbook keeps the slug `ecoinvent-centre`,
+#: which release 1.1.0 published its category ids under, and every later
+#: workbook carries its release in the slug -- see
+#: `test_the_ecoinvent_slug_is_the_3_12_workbook_for_good`.
 JRC, ECOINVENT, ECOINVENT_PREVIOUS, GREENDELTA, CONSENSUS = (
     "jrc",
+    "ecoinvent-centre-3-13",
     "ecoinvent-centre",
-    "ecoinvent-centre-3-12",
     "greendelta",
     "brightway-flows",
 )
@@ -147,7 +149,7 @@ STEPWISE_SLUGS: tuple[str, ...] = (
 PUBLISHED_IRIS: tuple[str, ...] = tuple(
     f"{_PREFIX}/{implementation}/long/{slug}"
     for implementation in (
-        "jrc", "ecoinvent-centre", "ecoinvent-centre-3-12", "greendelta",
+        "jrc", "ecoinvent-centre-3-13", "ecoinvent-centre", "greendelta",
         "brightway-flows",
     )
     for slug in SLUGS
@@ -166,11 +168,13 @@ PINNED_IDS: dict[str, str] = {
     f"{_PREFIX}/greendelta/long/acidification": (
         "c3042d91-346d-54a7-a094-83a928813c13"
     ),
+    f"{_PREFIX}/ecoinvent-centre-3-13/long/acidification": (
+        "3432075e-d598-5fd9-8889-80209315156d"
+    ),
+    # The id release 1.1.0 published for the 3.12 workbook's category, and the
+    # reason the slug stays with that workbook.
     f"{_PREFIX}/ecoinvent-centre/long/acidification": (
         "2e55a9ec-4781-5eaf-9523-af49223e7fc8"
-    ),
-    f"{_PREFIX}/ecoinvent-centre-3-12/long/acidification": (
-        "f80f21c6-d9d0-541b-8a2b-2ea240e67b50"
     ),
     f"{_PREFIX}/brightway-flows/long/acidification": (
         "9e2fdedd-ad4a-5381-8725-681a744c95da"
@@ -310,11 +314,17 @@ class CrosswalkTestCase(unittest.TestCase):
         find its way to one of our 25 rows.  Every row carries the earlier
         spelling; one of them differs -- `photochemical ozone formation`
         against 3.1's `oxidant` -- and three EF 3.0 categories, the `metals`
-        halves of the toxicity families, have no row at all."""
+        halves of the toxicity families, have no row at all.
+
+        The earlier spellings sit on the 3.12 workbook's row, `ecoinvent-centre`:
+        the oldest workbook this list holds, and the slug whose lineage reaches
+        back to the releases that shipped EF v3.0.  The index unions every
+        implementation's earlier names, so a score finds its row whichever
+        workbook decides."""
         index = by_stated_method_category()
         for category in ef_method().categories:
             with self.subTest(category.name):
-                earlier = category.earlier[ECOINVENT]
+                earlier = category.earlier[ECOINVENT_PREVIOUS]
                 self.assertEqual([row.method for row in earlier], ["EF v3.0"])
                 self.assertIs(index[("EF v3.0", earlier[0].name)], category)
                 self.assertIs(
@@ -379,6 +389,27 @@ class CrosswalkTestCase(unittest.TestCase):
         self.assertEqual(
             method.implementation(ECOINVENT).factors.stated_method, ECOINVENT_METHOD
         )
+
+    def test_the_ecoinvent_slug_is_the_3_12_workbook_for_good(self):
+        """A category's id is a hash of an IRI its implementation's slug is a
+        segment of, and release 1.1.0 published the 3.12 workbook's 25 ids
+        under `ecoinvent-centre`.  A consumer who linked a method to them
+        keeps them, so that slug is the 3.12 workbook permanently, and every
+        later workbook of the same publisher carries its release in both slug
+        and name: `ecoinvent-centre-3-13`, `ecoinvent Centre (3.13)`."""
+        method = ef_method()
+        frozen = method.implementation("ecoinvent-centre")
+        self.assertEqual((frozen.release, frozen.name), ("3.12", "ecoinvent Centre (3.12)"))
+        later = [
+            row for row in method.implementations
+            if row.name.startswith("ecoinvent Centre") and row.slug != "ecoinvent-centre"
+        ]
+        self.assertTrue(later)
+        for row in later:
+            with self.subTest(row.slug):
+                self.assertTrue(row.release)
+                self.assertEqual(row.slug, f"ecoinvent-centre-{row.release.replace('.', '-')}")
+                self.assertEqual(row.name, f"ecoinvent Centre ({row.release})")
 
     def test_only_two_of_the_five_decide_anything(self):
         """Everything transcribed is compared; only a deciding implementation is
@@ -707,7 +738,7 @@ class MalformedMethodFileTestCase(unittest.TestCase):
 
     def test_an_earlier_spelling_of_the_ingested_method_is_refused(self):
         def change(payload):
-            payload["categories"][0]["earlier"][ECOINVENT][0]["method"] = (
+            payload["categories"][0]["earlier"][ECOINVENT_PREVIOUS][0]["method"] = (
                 ECOINVENT_METHOD
             )
 

@@ -101,7 +101,7 @@
         "substance_cas": "22537-31-1",
         "category": "Human toxicity, non-cancer",
         "context_display": "Environmental → Air → Unknown",
-        "implemented_by": "ecoinvent Centre"
+        "implemented_by": "ecoinvent Centre (3.13)"
       },
       "expect": {
         "amount": "1.3532E-05"

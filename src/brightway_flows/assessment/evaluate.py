@@ -425,7 +425,7 @@ def _resolve_source_rows(
 #: holds and what a query written before `characterise` existed still means.
 FACTOR_CLAIMS: dict[str, str] = {
     "jrc_factors": "European Commission — JRC",
-    "ecoinvent_factors": "ecoinvent Centre",
+    "ecoinvent_factors": "ecoinvent Centre (3.13)",
     "consensus_factors": "brightway-flows",
 }
 

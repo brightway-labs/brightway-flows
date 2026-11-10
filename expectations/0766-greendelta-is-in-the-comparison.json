@@ -35,7 +35,7 @@
       "title": "All 27,403 factors the ecoinvent Centre's 3.13 file states for EF 3.1 are read",
       "subject": {
         "kind": "measure",
-        "key": "factors.ef_ecoinvent_centre_factors_stated"
+        "key": "factors.ef_ecoinvent_centre_3_13_factors_stated"
       },
       "expect": {
         "at_least": 27403,
@@ -49,7 +49,7 @@
       "title": "All 27,415 factors the ecoinvent Centre's 3.12 file states for EF 3.1 are read",
       "subject": {
         "kind": "measure",
-        "key": "factors.ef_ecoinvent_centre_3_12_factors_stated"
+        "key": "factors.ef_ecoinvent_centre_factors_stated"
       },
       "expect": {
         "at_least": 27415,

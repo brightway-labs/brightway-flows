@@ -43,7 +43,7 @@
         "flow_name": "Water vapour",
         "context_display": "Environmental → Air → Unknown",
         "category": "Water use",
-        "implemented_by": "ecoinvent Centre"
+        "implemented_by": "ecoinvent Centre (3.13)"
       },
       "expect": {
         "exists": true,

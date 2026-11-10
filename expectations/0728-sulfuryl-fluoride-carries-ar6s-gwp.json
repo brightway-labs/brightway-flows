@@ -66,7 +66,7 @@
         "flow_name": "Sulphuryl Difluoride",
         "context_display": "Environmental → Air → Unknown",
         "category": "Climate change",
-        "implemented_by": "ecoinvent Centre"
+        "implemented_by": "ecoinvent Centre (3.13)"
       },
       "expect": {
         "exists": true,

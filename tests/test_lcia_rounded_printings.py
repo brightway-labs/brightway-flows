@@ -38,7 +38,7 @@ from brightway_flows.lcia.precision import (
 SUBSTANCE = "fo-the-halocarbon"
 SLUG = "climate-change"
 JRC = "European Commission — JRC"
-ECOINVENT = "ecoinvent Centre"
+ECOINVENT = "ecoinvent Centre (3.13)"
 
 
 @dataclass(frozen=True)

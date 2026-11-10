@@ -258,9 +258,9 @@ def _stat_key(key: str) -> str:
     The comparison counts `only:ecoinvent Centre` -- the implementation's own
     name, because the set of them is not fixed -- and a stat key is read from a
     log line and a baseline diff, so the punctuation and the spaces come out.
-    `ecoinvent Centre (3.12)` becomes `ecoinvent_Centre_3_12`: the parentheses
+    `ecoinvent Centre (3.13)` becomes `ecoinvent_Centre_3_13`: the parentheses
     go the way the dots do, so the key reads like the slug-derived
-    `ef_ecoinvent_centre_3_12_*` statistics about the same implementation and
+    `ef_ecoinvent_centre_3_13_*` statistics about the same implementation and
     needs no escaping in a shell or a regular expression.
     """
     for character in (":", "-", " ", ".", "(", ")"):
