@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.14.3"
 resolution-markers = [
     "sys_platform == 'win32'",
@@ -116,17 +116,14 @@ wheels = [
 name = "brightway-flows"
 version = "1.0.0"
 source = { editable = "." }
+default-groups = ["dev", "docs"]
 dependencies = [
     { name = "bleach" },
     { name = "bw-simapro-csv" },
     { name = "chemformula" },
     { name = "ecoinvent-interface" },
-    { name = "flask" },
-    { name = "gunicorn" },
     { name = "httpx" },
     { name = "jsonschema" },
-    { name = "mkdocs" },
-    { name = "mkdocs-material" },
     { name = "openpyxl" },
     { name = "orjson" },
     { name = "pandas" },
@@ -135,8 +132,6 @@ dependencies = [
     { name = "py2opsin" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
-    { name = "pygments" },
-    { name = "pytest" },
     { name = "randonneur" },
     { name = "randonneur-data" },
     { name = "rdkit" },
@@ -146,12 +141,25 @@ dependencies = [
     { name = "xmltodict" },
 ]
 
+[package.optional-dependencies]
+webapp = [
+    { name = "flask" },
+    { name = "gunicorn" },
+    { name = "markdown" },
+    { name = "pygments" },
+    { name = "pymdown-extensions" },
+    { name = "pyyaml" },
+]
+
 [package.dev-dependencies]
 dev = [
+    { name = "brightway-flows", extra = ["webapp"] },
     { name = "pyld" },
+    { name = "pytest" },
 ]
 docs = [
     { name = "mkdocs" },
+    { name = "mkdocs-material" },
 ]
 
 [package.metadata]
@@ -160,12 +168,11 @@ requires-dist = [
     { name = "bw-simapro-csv", specifier = ">=0.4.3" },
     { name = "chemformula", specifier = ">=1.5.1" },
     { name = "ecoinvent-interface", specifier = ">=3.1" },
-    { name = "flask", specifier = ">=3.1.3" },
-    { name = "gunicorn", specifier = ">=25.3.0" },
+    { name = "flask", marker = "extra == 'webapp'", specifier = ">=3.1.3" },
+    { name = "gunicorn", marker = "extra == 'webapp'", specifier = ">=25.3.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "jsonschema", specifier = ">=4.25" },
-    { name = "mkdocs", specifier = ">=1.6.1" },
-    { name = "mkdocs-material", specifier = ">=9.7.4" },
+    { name = "markdown", marker = "extra == 'webapp'", specifier = ">=3.10.2" },
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "orjson", specifier = ">=3.11.7" },
     { name = "pandas", specifier = ">=3.0.1" },
@@ -174,8 +181,9 @@ requires-dist = [
     { name = "py2opsin", specifier = ">=1.2.0" },
     { name = "pydantic", specifier = ">=2.12.5" },
     { name = "pydantic-settings", specifier = ">=2.13.1" },
-    { name = "pygments", specifier = ">=2.19.2" },
-    { name = "pytest", specifier = ">=9.0.2" },
+    { name = "pygments", marker = "extra == 'webapp'", specifier = ">=2.19.2" },
+    { name = "pymdown-extensions", marker = "extra == 'webapp'", specifier = ">=10.21" },
+    { name = "pyyaml", marker = "extra == 'webapp'", specifier = ">=6.0.3" },
     { name = "randonneur", specifier = ">=0.7.2" },
     { name = "randonneur-data", specifier = ">=0.7.2" },
     { name = "rdkit", specifier = ">=2026.3.1" },
@@ -184,10 +192,18 @@ requires-dist = [
     { name = "typer", specifier = ">=0.24.0" },
     { name = "xmltodict", specifier = ">=1.0.4" },
 ]
+provides-extras = ["webapp"]
 
 [package.metadata.requires-dev]
-dev = [{ name = "pyld", specifier = ">=2.0.4" }]
-docs = [{ name = "mkdocs" }]
+dev = [
+    { name = "brightway-flows", extras = ["webapp"] },
+    { name = "pyld", specifier = ">=2.0.4" },
+    { name = "pytest", specifier = ">=9.0.2" },
+]
+docs = [
+    { name = "mkdocs", specifier = ">=1.6.1" },
+    { name = "mkdocs-material", specifier = ">=9.7.4" },
+]
 
 [[package]]
 name = "brotli"
