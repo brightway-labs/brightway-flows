@@ -23,10 +23,11 @@ leaves the links out, so neither is needed for it to render.
 
 ## Prerequisites
 
-Install gunicorn into the project:
+gunicorn and Flask come with the `webapp` extra, which `uv sync` installs in
+a checkout:
 
 ```bash
-uv add gunicorn
+uv sync
 ```
 
 ## Running with gunicorn
