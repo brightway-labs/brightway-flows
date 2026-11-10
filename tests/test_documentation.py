@@ -912,8 +912,8 @@ class ImplementationCountsTestCase(unittest.TestCase):
     #: implementation's statistics under (#348 put each under its method's slug).
     PREFIXES = {
         "European Commission — JRC": "ef_jrc",
-        "ecoinvent Centre": "ef_ecoinvent_centre",
-        "ecoinvent Centre (3.12)": "ef_ecoinvent_centre_3_12",
+        "ecoinvent Centre (3.13)": "ef_ecoinvent_centre_3_13",
+        "ecoinvent Centre (3.12)": "ef_ecoinvent_centre",
         "GreenDelta": "ef_greendelta",
         "brightway-flows": "ef_consensus",
         "2.-0 LCA consultants (Stepwise 2006)": "stepwise-2006_twenty_zero_lca",

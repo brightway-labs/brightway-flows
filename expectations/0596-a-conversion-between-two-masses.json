@@ -25,7 +25,7 @@
         "flow_name": "Zirconium",
         "context_display": "Resource → Ground",
         "category": "Resource use, minerals and metals",
-        "implemented_by": "ecoinvent Centre"
+        "implemented_by": "ecoinvent Centre (3.13)"
       },
       "expect": {
         "amount": "5.44E-06"
@@ -40,7 +40,7 @@
         "kind": "factor",
         "flow_name": "Baddeleyite",
         "category": "Resource use, minerals and metals",
-        "implemented_by": "ecoinvent Centre"
+        "implemented_by": "ecoinvent Centre (3.13)"
       },
       "expect": {
         "amount": "4.0273E-06"
@@ -53,7 +53,7 @@
       "title": "The ecoinvent Centre states no two colliding numbers about zirconium",
       "subject": {
         "kind": "measure",
-        "key": "factors.ef_ecoinvent_centre_factor-collision",
+        "key": "factors.ef_ecoinvent_centre_3_13_factor-collision",
         "value_when_absent": 0
       },
       "expect": {

@@ -127,8 +127,8 @@ that misses both is a flow this list has never carried; a lookup that hits
 
 Written by `characterise`, which runs after a build. Two methods in one file.
 Five implementations of EF 3.1: **the European Commission's JRC**, **the
-ecoinvent Centre's** (its 3.13 workbook), **the ecoinvent Centre's 3.12
-workbook** under the name `ecoinvent Centre (3.12)`, **GreenDelta's**, and
+ecoinvent Centre's 3.13 workbook** under the name `ecoinvent Centre (3.13)`,
+**its 3.12 workbook** under `ecoinvent Centre (3.12)`, **GreenDelta's**, and
 **this list's**, which publishes the numbers the two deciding implementations —
 the JRC's and the ecoinvent Centre's — agree on and asks a curator about the
 rest. Two of Stepwise 2006: **2.-0 LCA
@@ -214,7 +214,7 @@ states, with each side's number, the ratio and a band:
       "method": "ef",
       "elementary_flow_uuid": "1c9d4f7b-803f-4b74-b5fa-8bf642c94b2c",
       "category_slug": "ecotoxicity-freshwater", "geography": "",
-      "implemented_by": "ecoinvent Centre", "amount": 4368.7,
+      "implemented_by": "ecoinvent Centre (3.13)", "amount": 4368.7,
       "source_flow_uuid": "0ec92f76-932f-4407-bd4f-eb9aa426e099",
       "band": "over-100x", "ratio": 1441.48, "derivation": null
     }

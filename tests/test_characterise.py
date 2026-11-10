@@ -67,7 +67,7 @@ from brightway_flows.sources import LciaMethodSpec, LciaSpec, SourceList
 #: no fixture here registers and is skipped.
 METHOD = ef_method()
 JRC = METHOD.reference
-ECOINVENT = METHOD.implementation("ecoinvent-centre")
+ECOINVENT = METHOD.implementation("ecoinvent-centre-3-13")
 CONSENSUS = METHOD.consensus
 
 #: A category on each side, so a test names what the files name.
@@ -681,7 +681,7 @@ class TheStatKeyTestCase(unittest.TestCase):
     comes out -- all of it.  `ecoinvent Centre (3.12)` is the first
     implementation name with parentheses, and the key it produced
     (`coverage_ef_ecoinvent_Centre_(3_12)`) was the one statistic about that
-    implementation spelled unlike its `ef_ecoinvent_centre_3_12_*` neighbours."""
+    implementation spelled unlike its slug-derived neighbours."""
 
     def test_an_implementation_name_with_parentheses_reads_like_its_slug(self):
         self.assertEqual(
@@ -910,7 +910,7 @@ class EndToEndTestCase(unittest.TestCase):
                 adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
                 factors_path=factors_path,
                 methods=(LciaMethodSpec(name="EF v3.1", no_long_term=None),),
-                implemented_by="ecoinvent Centre",
+                implemented_by="ecoinvent Centre (3.13)",
             ),
         )
         self.stats = characterise(self.db, source_lists={"ecoinvent-3.13": self.source})
@@ -927,7 +927,7 @@ class EndToEndTestCase(unittest.TestCase):
 
     def test_both_implementations_are_published(self):
         self.assertEqual(self.stats["ef_jrc_factors_published"], 1)
-        self.assertEqual(self.stats["ef_ecoinvent_centre_factors_published"], 1)
+        self.assertEqual(self.stats["ef_ecoinvent_centre_3_13_factors_published"], 1)
 
     def test_every_category_of_every_method_is_written(self):
         """Including the ones no implementation filled: the category set is what
@@ -962,7 +962,7 @@ class EndToEndTestCase(unittest.TestCase):
     def test_the_row_that_reached_no_flow_is_a_finding(self):
         rows = self._rows("SELECT kind, implemented_by FROM lcia_findings")
         self.assertEqual(
-            rows, [(str(FindingKind.FLOW_NOT_REACHED), "ecoinvent Centre")]
+            rows, [(str(FindingKind.FLOW_NOT_REACHED), "ecoinvent Centre (3.13)")]
         )
 
     def test_running_it_again_produces_the_same_tables(self):
@@ -1112,7 +1112,7 @@ class WhatTheUnderlyingModelContradictsTestCase(unittest.TestCase):
                 adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
                 factors_path=factors_path,
                 methods=(LciaMethodSpec(name="EF v3.1", no_long_term=None),),
-                implemented_by="ecoinvent Centre",
+                implemented_by="ecoinvent Centre (3.13)",
             ),
         )
         self.stats = characterise(self.db, source_lists={"ecoinvent-3.13": self.source})

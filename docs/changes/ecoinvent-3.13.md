@@ -13,9 +13,10 @@ nothing (`ecoinvent-3.13-additional-flows.json` records the comparison).
 
 Its LCIA implementation workbook, `ecoinvent 3.13_LCIA_implementation.7z`,
 is the ecoinvent Centre's rendering of EF 3.1 that this list compares the
-JRC's against since [#459](https://github.com/brightway-labs/brightway-flows/issues/459);
-the 3.12 workbook is still read and published beside it, as
-`ecoinvent Centre (3.12)`, and decides nothing. What moved between the two is
+JRC's against since [#459](https://github.com/brightway-labs/brightway-flows/issues/459),
+published as `ecoinvent Centre (3.13)`; the 3.12 workbook is still read and
+published beside it, as `ecoinvent Centre (3.12)` under the identifiers release
+1.1.0 gave it, and decides nothing. What moved between the two is
 on the [factors page](../concepts/factors.md).
 
 The curated corrections are in `ecoinvent-3.13-manual-fixes.json`: 24

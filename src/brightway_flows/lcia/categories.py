@@ -17,7 +17,7 @@ loaded today rather than what this module knows about:
 | ``implemented_by`` | categories | where its numbers come from |
 |---|---:|---|
 | ``European Commission — JRC`` | 25 | the 25 ILCD method files in ``EF-v3.1.zip`` |
-| ``ecoinvent Centre`` | 25 | ``LCIA Implementation 3.13.xlsx``, method ``EF v3.1`` |
+| ``ecoinvent Centre (3.13)`` | 25 | ``LCIA Implementation 3.13.xlsx``, method ``EF v3.1`` |
 | ``ecoinvent Centre (3.12)`` | 25 | ``LCIA Implementation 3.12.xlsx``, method ``EF v3.1`` |
 | ``GreenDelta`` | 25 | ``bafu-greendelta-lcia.zip``, ``EF 3.1 Method (adapted)`` |
 | ``brightway-flows`` | 25 | ours, derived from the deciding two, each factor saying how |
@@ -27,7 +27,9 @@ GreenDelta's and the ecoinvent Centre's 3.12 workbook are ingested to be
 compared and not to be weighed: published, in the difference report, and kept
 out of the consensus derivation -- the 3.12 workbook because two statements by
 one publisher are not two votes (#459).  Which is which is `decides` on each
-implementation's row in the method file.
+implementation's row in the method file.  The 3.12 workbook keeps the slug
+``ecoinvent-centre``, which release 1.1.0 published its category ids under; a
+later workbook carries its release in the slug, ``ecoinvent-centre-3-13``.
 
 The categories are built here; the factors are not.  Every category this module
 returns holds an empty ``characterization_factors`` list, and filling it is the

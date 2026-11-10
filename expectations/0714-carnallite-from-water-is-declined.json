@@ -27,7 +27,7 @@
         "flow_name": "Carnallite",
         "context_display": "Resource → Water → Unknown",
         "category": "Resource use, minerals and metals",
-        "implemented_by": "ecoinvent Centre"
+        "implemented_by": "ecoinvent Centre (3.13)"
       },
       "expect": {
         "exists": true,

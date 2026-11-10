@@ -40,7 +40,7 @@ VALID = {
     "relationship": "catch-all",
     "verdict": "adopt",
     "categories": ["ecotoxicity-freshwater"],
-    "implemented_by": ["ecoinvent Centre"],
+    "implemented_by": ["ecoinvent Centre (3.13)"],
     "comment": "Every proposed number is the bucket's; measured on the build.",
 }
 
@@ -51,7 +51,7 @@ ION = {
     "relationship": "ion-of",
     "verdict": "adopt",
     "categories": ["ecotoxicity-freshwater"],
-    "implemented_by": ["ecoinvent Centre"],
+    "implemented_by": ["ecoinvent Centre (3.13)"],
     "comment": "The ion takes the element's number.",
 }
 
@@ -134,19 +134,19 @@ class LoadingTest(unittest.TestCase):
 
     def test_a_non_numeric_adopted_about_is_refused(self):
         with self.assertRaisesRegex(FactorAdoptionError, "not a number"):
-            self._load({**ION, "adopted_about": {"ecoinvent Centre": ["1.0"]}})
+            self._load({**ION, "adopted_about": {"ecoinvent Centre (3.13)": ["1.0"]}})
 
     def test_a_relationship_entry_covers_whatever_number_is_stated(self):
         entry = self._load(ION)["fo-ion"]
-        self.assertTrue(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre"}, stated={"ecoinvent Centre": 1.0}))
-        self.assertTrue(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre"}, stated={"ecoinvent Centre": 2.0}))
-        self.assertFalse(entry.covers(category_slug="land-use", speaking={"ecoinvent Centre"}, stated={"ecoinvent Centre": 1.0}))
-        self.assertFalse(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre", "Somebody else"}, stated={"ecoinvent Centre": 1.0, "Somebody else": 1.0}))
+        self.assertTrue(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.13)"}, stated={"ecoinvent Centre (3.13)": 1.0}))
+        self.assertTrue(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.13)"}, stated={"ecoinvent Centre (3.13)": 2.0}))
+        self.assertFalse(entry.covers(category_slug="land-use", speaking={"ecoinvent Centre (3.13)"}, stated={"ecoinvent Centre (3.13)": 1.0}))
+        self.assertFalse(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.13)", "Somebody else"}, stated={"ecoinvent Centre (3.13)": 1.0, "Somebody else": 1.0}))
 
     def test_a_pinned_entry_covers_only_its_numbers(self):
-        entry = self._load({**VALID, "catch_all": "", "relationship": "formula-weighted", "adopted_about": {"ecoinvent Centre": [1.646e-05]}})["fo-1"]
-        self.assertTrue(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre"}, stated={"ecoinvent Centre": 1.646e-05}))
-        self.assertFalse(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre"}, stated={"ecoinvent Centre": 1.65e-05}))
+        entry = self._load({**VALID, "catch_all": "", "relationship": "formula-weighted", "adopted_about": {"ecoinvent Centre (3.13)": [1.646e-05]}})["fo-1"]
+        self.assertTrue(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.13)"}, stated={"ecoinvent Centre (3.13)": 1.646e-05}))
+        self.assertFalse(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.13)"}, stated={"ecoinvent Centre (3.13)": 1.65e-05}))
 
 
 class DonorNumberTest(unittest.TestCase):
@@ -166,16 +166,16 @@ class DonorNumberTest(unittest.TestCase):
     def test_a_donor_entry_loads(self):
         entry = self._load({**ION, "number_from": "donor"}, method="stepwise-2006")["fo-ion"]
         self.assertIs(entry.number_from, NumberFrom.DONOR)
-        self.assertTrue(entry.takes_donor_number(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre"}))
-        self.assertFalse(entry.takes_donor_number(category_slug="land-use", speaking={"ecoinvent Centre"}))
+        self.assertTrue(entry.takes_donor_number(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.13)"}))
+        self.assertFalse(entry.takes_donor_number(category_slug="land-use", speaking={"ecoinvent Centre (3.13)"}))
         self.assertFalse(entry.takes_donor_number(category_slug="ecotoxicity-freshwater", speaking={"Somebody else"}))
 
     def test_a_donor_entry_answers_no_stated_row(self):
         entry = self._load({**ION, "number_from": "donor"})["fo-ion"]
-        self.assertFalse(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre"}, stated={"ecoinvent Centre": 1.0}))
+        self.assertFalse(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.13)"}, stated={"ecoinvent Centre (3.13)": 1.0}))
 
     def test_a_transcription_entry_takes_no_donor_number(self):
-        self.assertFalse(self._load(ION)["fo-ion"].takes_donor_number(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre"}))
+        self.assertFalse(self._load(ION)["fo-ion"].takes_donor_number(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.13)"}))
 
     def test_an_unknown_number_from_is_refused(self):
         with self.assertRaisesRegex(FactorAdoptionError, "number_from"):
@@ -187,7 +187,7 @@ class DonorNumberTest(unittest.TestCase):
 
     def test_a_donor_entry_cannot_be_pinned(self):
         with self.assertRaisesRegex(FactorAdoptionError, "cannot pin"):
-            self._load({**ION, "number_from": "donor", "adopted_about": {"ecoinvent Centre": [1.0]}})
+            self._load({**ION, "number_from": "donor", "adopted_about": {"ecoinvent Centre (3.13)": [1.0]}})
 
 
 class TheCuratedFileTest(unittest.TestCase):
@@ -224,7 +224,7 @@ class TheCuratedFileTest(unittest.TestCase):
     def test_every_entry_is_about_ecoinvents_numbers_alone(self):
         for entry in self.entries.values():
             with self.subTest(entry.substance):
-                self.assertEqual(entry.implemented_by, frozenset({"ecoinvent Centre"}))
+                self.assertEqual(entry.implemented_by, frozenset({"ecoinvent Centre (3.13)"}))
 
     def test_only_the_minerals_are_pinned(self):
         pinned = {entry.substance for entry in self.entries.values() if entry.adopted_about}

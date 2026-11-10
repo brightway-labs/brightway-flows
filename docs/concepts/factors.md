@@ -40,13 +40,14 @@ characterised on 2026-11-05 with the 3.13 workbook deciding:
   another (below). 51,944 of them are a stated zero, which is a claim
   ([#47](https://github.com/brightway-labs/brightway-flows/issues/47)):
   "assessed, and zero" is not "never assessed".
-- **`ecoinvent Centre`** — 27,342 factors over 7,965 flows, read from the
+- **`ecoinvent Centre (3.13)`** — 27,342 factors over 7,965 flows, read from the
   3.13 workbook `fetch-lcia ecoinvent-3.13` downloads. These take two hops: the
   workbook names an ecoinvent flow, the merge says which consensus flow that
   became, and only then is there a factor about a flow of ours.
 - **`ecoinvent Centre (3.12)`** — 27,346 factors over 7,939 flows, the same
   publisher's workbook one release earlier, read by `fetch-lcia ecoinvent-3.12`
-  and reached the same way. Published and compared, and never evidence: the
+  and reached the same way, under the identifiers release 1.1.0 published it
+  with. Published and compared, and never evidence: the
   ecoinvent Centre's current statement is the 3.13 workbook, and two
   statements by one publisher are not two votes. It is kept so that a number
   that moved between the two releases — the lindane and endosulfan isomers'

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "ecoinvent 3.13 publishes a new LCIA implementation workbook. Since #454 the list was merged with its factors fetched and unread, because the method file named one ecoinvent Centre implementation, read from 3.12. This points that implementation at the 3.13 workbook and keeps the 3.12 workbook as a second implementation of the same publisher, `ecoinvent Centre (3.12)`, under its own slug and `decides: false`: published and compared like GreenDelta's, never evidence, so that a number that moved between the two releases is a row in the difference report. Measured on the six-list build of a4d92fd characterised on 2026-11-05 with the 3.13 workbook deciding: the consensus publishes 327,263 EF 3.1 factors against 327,171 before, 98 added (the lindane and endosulfan isomers, which the 3.13 workbook scores under their own numbers and the JRC agrees with), 6 removed (sulfuryl fluoride's climate-change factors, which 3.13 no longer states) and 24 amounts changed (CFC-11 and HFC-134a, printed rounded by both publishers now). The proposed-factor queue goes from 32 open items to 28.",
+  "description": "ecoinvent 3.13 publishes a new LCIA implementation workbook. Since #454 the list was merged with its factors fetched and unread, because the method file named one ecoinvent Centre implementation, read from 3.12. This reads the 3.13 workbook as a second implementation of the same publisher, `ecoinvent Centre (3.13)` on the slug `ecoinvent-centre-3-13`, which decides, and keeps the 3.12 workbook as `ecoinvent Centre (3.12)` on the slug `ecoinvent-centre` that release 1.1.0 published its category identifiers under, `decides: false`: published and compared like GreenDelta's, never evidence, so that a number that moved between the two releases is a row in the difference report. The slug `ecoinvent-centre` is the 3.12 workbook for good, and every later workbook carries its release in slug and name. Measured on the six-list build of a4d92fd characterised on 2026-11-05 with the 3.13 workbook deciding: the consensus publishes 327,263 EF 3.1 factors against 327,171 before, 98 added (the lindane and endosulfan isomers, which the 3.13 workbook scores under their own numbers and the JRC agrees with), 6 removed (sulfuryl fluoride's climate-change factors, which 3.13 no longer states) and 24 amounts changed (CFC-11 and HFC-134a, printed rounded by both publishers now). The proposed-factor queue goes from 32 open items to 28.",
   "expectations": [
     {
       "id": "0459-the-3-12-workbook-is-still-published",
@@ -8,7 +8,7 @@
       "title": "The 3.12 workbook's factors are published under `ecoinvent Centre (3.12)`",
       "subject": {
         "kind": "measure",
-        "key": "factors.ef_ecoinvent_centre_3_12_factors_published"
+        "key": "factors.ef_ecoinvent_centre_factors_published"
       },
       "expect": {
         "at_least": 27000

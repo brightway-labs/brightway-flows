@@ -55,7 +55,7 @@ CONTESTED = ReviewQueueItem(
         "one_value_everywhere": True,
         "stated_values": [134.73, 53540.0],
         "implementations": [
-            "European Commission — JRC", "ecoinvent Centre",
+            "European Commission — JRC", "ecoinvent Centre (3.13)",
         ],
         "rows": [
             {
@@ -70,7 +70,7 @@ CONTESTED = ReviewQueueItem(
                         "source_flow_uuid": None,
                     },
                     {
-                        "implemented_by": "ecoinvent Centre",
+                        "implemented_by": "ecoinvent Centre (3.13)",
                         "amount": 53540.0,
                         "source_flow_uuid": "ei-1",
                     },
@@ -95,7 +95,7 @@ PROPOSED = ReviewQueueItem(
         "factor_count": 1,
         "one_value_everywhere": True,
         "stated_values": [9.9],
-        "implementations": ["ecoinvent Centre"],
+        "implementations": ["ecoinvent Centre (3.13)"],
         "rows": [
             {
                 "elementary_flow_uuid": "cf-2",
@@ -104,7 +104,7 @@ PROPOSED = ReviewQueueItem(
                 "category": "Land use",
                 "stated": [
                     {
-                        "implemented_by": "ecoinvent Centre",
+                        "implemented_by": "ecoinvent Centre (3.13)",
                         "amount": 9.9,
                         "source_flow_uuid": "ei-2",
                     }
@@ -235,7 +235,7 @@ def _write_fixture(path: Path) -> None:
         "INSERT INTO lcia_impact_categories VALUES (?, ?, ?)",
         [
             ("cat-jrc", "Ecotoxicity, freshwater", "European Commission — JRC"),
-            ("cat-ei", "Ecotoxicity, freshwater", "ecoinvent Centre"),
+            ("cat-ei", "Ecotoxicity, freshwater", "ecoinvent Centre (3.13)"),
             ("cat-ours", "Land use", "brightway-flows"),
         ],
     )
@@ -367,7 +367,7 @@ class FactorQueuePageTestCase(unittest.TestCase):
         html = self.client().get("/queue/contested-factor").get_data(as_text=True)
         self.assertIn("Every number stated about these flows", html)
         self.assertIn("European Commission", html)
-        self.assertIn("ecoinvent Centre", html)
+        self.assertIn("ecoinvent Centre (3.13)", html)
 
     def test_the_page_shows_a_number_already_declined(self):
         html = self.client().get("/queue/contested-factor").get_data(as_text=True)
@@ -386,7 +386,7 @@ class FactorQueuePageTestCase(unittest.TestCase):
         from the question rather than from a list written into the template, so
         this holds however many implementations there turn out to be."""
         html = self.client().get("/queue/proposed-factor").get_data(as_text=True)
-        self.assertIn(">ecoinvent Centre</th>", html)
+        self.assertIn(">ecoinvent Centre (3.13)</th>", html)
         self.assertNotIn(">European Commission — JRC</th>", html)
 
     def test_the_evidence_is_read_rather_than_stored(self):

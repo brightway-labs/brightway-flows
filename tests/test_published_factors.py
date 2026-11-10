@@ -51,7 +51,7 @@ from brightway_flows.webapps.app.queries.flows import _factor_counts
 #: `data/lcia-impact-categories.json` says.
 _METHOD = ef_method()
 JRC_IMPL = _METHOD.reference
-ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
+ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre-3-13")
 GREENDELTA_IMPL = _METHOD.implementation("greendelta")
 CONSENSUS_IMPL = _METHOD.consensus
 IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
@@ -153,7 +153,7 @@ class ARunThatPublishesTestCase(unittest.TestCase):
         # counts.  The ecoinvent list is 3.13, the one the deciding ecoinvent
         # Centre implementation reads; the 3.12 workbook's implementation is
         # given no list and is skipped.
-        ecoinvent_name = ef_method().by_stated_identifier("jrc")[FIRST].stated["ecoinvent-centre"].name
+        ecoinvent_name = ef_method().by_stated_identifier("jrc")[FIRST].stated["ecoinvent-centre-3-13"].name
         factors_path = root / "ecoinvent-3.13-lcia-factors.json"
         factors_path.write_bytes(orjson.dumps({
             "schema_version": 1,
@@ -175,7 +175,7 @@ class ARunThatPublishesTestCase(unittest.TestCase):
                 adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
                 factors_path=factors_path,
                 methods=(LciaMethodSpec(name="EF v3.1", no_long_term=None),),
-                implemented_by="ecoinvent Centre",
+                implemented_by="ecoinvent Centre (3.13)",
             ),
         )
         # And GreenDelta's, in the shape their adapter writes: a category
@@ -335,7 +335,7 @@ class WhatTheReviewAppShowsTestCase(ARunThatPublishesTestCase):
         # Centre's 3.12 workbook reads a list this fixture does not have.
         self.assertEqual(
             {count.implemented_by for count in counts},
-            IMPLEMENTATION_NAMES - {_METHOD.implementation("ecoinvent-centre-3-12").name},
+            IMPLEMENTATION_NAMES - {_METHOD.implementation("ecoinvent-centre").name},
         )
 
     def test_a_count_says_how_many_of_its_factors_are_zero(self):

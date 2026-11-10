@@ -54,7 +54,7 @@ METHOD = LciaMethodSpec(name="M", no_long_term="M no LT")
 #: What ecoinvent's workbook calls the method this list ingests, read from the
 #: method file rather than spelled here: it is the implementation's own
 #: statement of which workbook method its factors are.
-ECOINVENT_METHOD = ef_method().implementation("ecoinvent-centre").factors.stated_method
+ECOINVENT_METHOD = ef_method().implementation("ecoinvent-centre-3-13").factors.stated_method
 
 
 class _Sheet:
@@ -285,11 +285,11 @@ class TheCrosswalkAndTheWorkbookAgreeTestCase(unittest.TestCase):
 
     def test_the_crosswalks_own_names_pass(self):
         check_against_crosswalk(
-            self._categories(sorted(ef_method().by_stated_name("ecoinvent-centre"))), method=ECOINVENT_METHOD
+            self._categories(sorted(ef_method().by_stated_name("ecoinvent-centre-3-13"))), method=ECOINVENT_METHOD
         )
 
     def test_a_renamed_category_raises(self):
-        names = sorted(ef_method().by_stated_name("ecoinvent-centre"))
+        names = sorted(ef_method().by_stated_name("ecoinvent-centre-3-13"))
         names[0] = names[0] + " (renamed)"
         with self.assertRaises(EcoinventLciaError) as caught:
             check_against_crosswalk(self._categories(names), method=ECOINVENT_METHOD)
@@ -358,8 +358,8 @@ class TheManifestDeclaresItTestCase(unittest.TestCase):
         two implementations cannot share a name, because `implemented_by` is
         the field every published factor row carries."""
         method = ef_method()
-        current = method.implementation("ecoinvent-centre")
-        previous = method.implementation("ecoinvent-centre-3-12")
+        current = method.implementation("ecoinvent-centre-3-13")
+        previous = method.implementation("ecoinvent-centre")
         self.assertEqual((current.release, current.factors.source_list, current.decides),
                          ("3.13", "ecoinvent-3.13", True))
         self.assertEqual((previous.release, previous.factors.source_list, previous.decides),
@@ -387,7 +387,7 @@ class TheManifestDeclaresItTestCase(unittest.TestCase):
         self.assertEqual(
             declared,
             {
-                "ecoinvent-3.13": "ecoinvent Centre",
+                "ecoinvent-3.13": "ecoinvent Centre (3.13)",
                 "ecoinvent-3.12": "ecoinvent Centre (3.12)",
                 "bafu-2026-v1": "GreenDelta",
                 "stepwise-2006-1.09": "2.-0 LCA consultants",
@@ -444,7 +444,7 @@ class WhatAFetchWroteTestCase(unittest.TestCase):
     def test_the_categories_are_the_crosswalks(self):
         self.assertEqual(
             {row["category"] for row in self.method["categories"]},
-            set(ef_method().by_stated_name("ecoinvent-centre")),
+            set(ef_method().by_stated_name("ecoinvent-centre-3-13")),
         )
 
     def test_every_factor_reaches_a_flow_and_a_category(self):
@@ -452,7 +452,7 @@ class WhatAFetchWroteTestCase(unittest.TestCase):
         self.assertEqual(len(factors), self.FACTORS)
         self.assertTrue(all(factor.flow_uuid for factor in factors))
         self.assertEqual(
-            {factor.category.name for factor in factors}, set(ef_method().by_stated_name("ecoinvent-centre"))
+            {factor.category.name for factor in factors}, set(ef_method().by_stated_name("ecoinvent-centre-3-13"))
         )
 
     def test_no_no_lt_category_is_published(self):

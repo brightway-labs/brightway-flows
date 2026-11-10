@@ -18,7 +18,7 @@
           10624.0,
           785920.0
         ],
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           15445.0,
           20761.0,
           53540.0,
@@ -42,7 +42,7 @@
           10624.0,
           785920.0
         ],
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           15445.0,
           20761.0,
           53540.0,
@@ -68,7 +68,7 @@
           2.38e-07,
           3.1009e-07
         ],
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           1.7644e-08,
           2.2034e-08,
           2.2942e-08,
@@ -96,7 +96,7 @@
           2.38e-07,
           3.1009e-07
         ],
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           1.7644e-08,
           2.2034e-08,
           2.2942e-08,
@@ -112,11 +112,11 @@
       "category_slug": "climate-change",
       "queue": "proposed-factor",
       "decision": "publish",
-      "implemented_by": "ecoinvent Centre",
+      "implemented_by": "ecoinvent Centre (3.13)",
       "substance": "Carbon Dioxide, To Soil Or Biomass Stock",
       "category": "Climate change",
       "ruled_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           -1.0
         ]
       },
@@ -127,11 +127,11 @@
       "category_slug": "climate-change-land-use",
       "queue": "proposed-factor",
       "decision": "publish",
-      "implemented_by": "ecoinvent Centre",
+      "implemented_by": "ecoinvent Centre (3.13)",
       "substance": "Carbon Dioxide, To Soil Or Biomass Stock",
       "category": "Climate change-Land use and land use change",
       "ruled_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           -1.0
         ]
       },
@@ -145,7 +145,7 @@
       "substance": "Carnallite",
       "category": "Resource use, minerals and metals",
       "ruled_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           1.037548743806311e-05
         ]
       },
@@ -156,30 +156,30 @@
       "category_slug": "climate-change",
       "queue": "proposed-factor",
       "decision": "publish",
-      "implemented_by": "ecoinvent Centre",
+      "implemented_by": "ecoinvent Centre (3.12)",
       "substance": "Sulphuryl Difluoride",
       "category": "Climate change",
       "ruled_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
           4630.0
         ]
       },
-      "comment": "Sulfuryl fluoride is the fumigant a house is tented with for drywood termites -- Vikane and ProFume, on the market since 1959 and grown into that role as the replacement for methyl bromide after the Montreal Protocol phase-out. Nothing consumes it: at the end of a fumigation the charge is vented to the open air, deliberately, and it then survives about 36 years, destroyed not by OH -- which barely touches it, partial lifetime some 300 years -- but by hydrolysis in the surface ocean. The ecoinvent Centre states 4630 kg CO2-eq per kilogram for it in the two air compartments its flow list has; the JRC states nothing for it under any climate category.\n\n**The number is the IPCC's, read straight off.** AR6 Table 7.SM.7 gives the substance a full row -- lifetime 36.0 years, radiative efficiency 0.211 W m-2 ppb-1, GWP20 7510, GWP100 4630, GWP500 1410 -- and 4630 is that row's GWP100 with no rounding, conversion or weighting applied to it. ecoinvent says as much in its own v3.12 implementation report: Table 19 of §15.3.1 lists the substance among four climate factors that changed since v3.11, with the v3.11 cell blank and the v3.12 cell 4630, and the text reads 'The CF for Sulfuryl fluoride was added following IPCC 2021'. §16.3.3 and Table 23 say the same for the EN15804 variant.\n\n**And it is not a number still in dispute.** #342 is three substances -- sulfur hexafluoride, CFC-11, HFC-134a -- where the two implementations copied that same table at different moments and got different numbers. This substance is not one of them: the earlier printing and the corrected one both say 4630, so the adoption does not settle the vintage question by the back door.\n\n**Nor is it a stand-in.** #131 declines six proposed factors that are a chemical relative's number filling a gap in EF's coverage. Nothing of that kind is happening here -- this is sulfuryl fluoride's own line in the IPCC's table, adopted as ecoinvent's statement of it rather than inherited from a neighbour.\n\nWhat this does not fix, and a reader should know: it fills the two air compartments ecoinvent has a flow for -- non-urban air or from high stacks, and unspecified -- and leaves the four this list carries from EF 3.1's flow list empty, including urban ground level and indoor, which is precisely how the chemical is released. That asymmetry is neither source's judgement; ecoinvent's own §7.3.1 rule is the opposite, 'the same CF is assigned to an exchange emitted to air for all the sub-compartments'. A ruling cannot reach the other four, because `publish` takes a number an implementation stated for that flow and nobody stated one there. It needs a general rule about air sub-compartments, which is its own change. See #151.\n\n**Since #459 this ruling applies to nothing.** The ecoinvent Centre's 3.13 workbook keeps both air rows with their ecotoxicity factors and states no climate-change factor for either, so no implementation that decides proposes 4630 and there is no proposal for this ruling to publish. `ruled_about` records the 4630 the ecoinvent Centre stated when the ruling was written, which was its 3.12 workbook's number; that number is now published under `ecoinvent Centre (3.12)` only. Publishing a number no current publisher states needs a route of its own, and the claims in `expectations/0728` and `0731` that read 4630 are pending until one exists. The ruling stays as a record and asks again if a release restates the number.\n\nThe aggregate category, where the factor reaches every climate score. (#151)"
+      "comment": "Sulfuryl fluoride is the fumigant a house is tented with for drywood termites -- Vikane and ProFume, on the market since 1959 and grown into that role as the replacement for methyl bromide after the Montreal Protocol phase-out. Nothing consumes it: at the end of a fumigation the charge is vented to the open air, deliberately, and it then survives about 36 years, destroyed not by OH -- which barely touches it, partial lifetime some 300 years -- but by hydrolysis in the surface ocean. The ecoinvent Centre states 4630 kg CO2-eq per kilogram for it in the two air compartments its flow list has; the JRC states nothing for it under any climate category.\n\n**The number is the IPCC's, read straight off.** AR6 Table 7.SM.7 gives the substance a full row -- lifetime 36.0 years, radiative efficiency 0.211 W m-2 ppb-1, GWP20 7510, GWP100 4630, GWP500 1410 -- and 4630 is that row's GWP100 with no rounding, conversion or weighting applied to it. ecoinvent says as much in its own v3.12 implementation report: Table 19 of §15.3.1 lists the substance among four climate factors that changed since v3.11, with the v3.11 cell blank and the v3.12 cell 4630, and the text reads 'The CF for Sulfuryl fluoride was added following IPCC 2021'. §16.3.3 and Table 23 say the same for the EN15804 variant.\n\n**And it is not a number still in dispute.** #342 is three substances -- sulfur hexafluoride, CFC-11, HFC-134a -- where the two implementations copied that same table at different moments and got different numbers. This substance is not one of them: the earlier printing and the corrected one both say 4630, so the adoption does not settle the vintage question by the back door.\n\n**Nor is it a stand-in.** #131 declines six proposed factors that are a chemical relative's number filling a gap in EF's coverage. Nothing of that kind is happening here -- this is sulfuryl fluoride's own line in the IPCC's table, adopted as ecoinvent's statement of it rather than inherited from a neighbour.\n\nWhat this does not fix, and a reader should know: it fills the two air compartments ecoinvent has a flow for -- non-urban air or from high stacks, and unspecified -- and leaves the four this list carries from EF 3.1's flow list empty, including urban ground level and indoor, which is precisely how the chemical is released. That asymmetry is neither source's judgement; ecoinvent's own §7.3.1 rule is the opposite, 'the same CF is assigned to an exchange emitted to air for all the sub-compartments'. A ruling cannot reach the other four, because `publish` takes a number an implementation stated for that flow and nobody stated one there. It needs a general rule about air sub-compartments, which is its own change. See #151.\n\n**Since #459 this ruling applies to nothing.** The ecoinvent Centre's 3.13 workbook, `ecoinvent Centre (3.13)`, keeps both air rows with their ecotoxicity factors and states no climate-change factor for either, so no implementation that decides proposes 4630 and there is no proposal for this ruling to publish. `implemented_by` and `ruled_about` name `ecoinvent Centre (3.12)`, the workbook that stated 4630 when the ruling was written and still publishes it, compared and not weighed. Publishing a number no current publisher states needs a route of its own, and the claims in `expectations/0728` and `0731` that read 4630 are pending until one exists. The ruling stays as a record and asks again if a release restates the number.\n\nThe aggregate category, where the factor reaches every climate score. (#151)"
     },
     {
       "flow_object_id": "fo-2173e6fdffc50464",
       "category_slug": "climate-change-fossil",
       "queue": "proposed-factor",
       "decision": "publish",
-      "implemented_by": "ecoinvent Centre",
+      "implemented_by": "ecoinvent Centre (3.12)",
       "substance": "Sulphuryl Difluoride",
       "category": "Climate change-Fossil",
       "ruled_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
           4630.0
         ]
       },
-      "comment": "Sulfuryl fluoride is the fumigant a house is tented with for drywood termites -- Vikane and ProFume, on the market since 1959 and grown into that role as the replacement for methyl bromide after the Montreal Protocol phase-out. Nothing consumes it: at the end of a fumigation the charge is vented to the open air, deliberately, and it then survives about 36 years, destroyed not by OH -- which barely touches it, partial lifetime some 300 years -- but by hydrolysis in the surface ocean. The ecoinvent Centre states 4630 kg CO2-eq per kilogram for it in the two air compartments its flow list has; the JRC states nothing for it under any climate category.\n\n**The number is the IPCC's, read straight off.** AR6 Table 7.SM.7 gives the substance a full row -- lifetime 36.0 years, radiative efficiency 0.211 W m-2 ppb-1, GWP20 7510, GWP100 4630, GWP500 1410 -- and 4630 is that row's GWP100 with no rounding, conversion or weighting applied to it. ecoinvent says as much in its own v3.12 implementation report: Table 19 of §15.3.1 lists the substance among four climate factors that changed since v3.11, with the v3.11 cell blank and the v3.12 cell 4630, and the text reads 'The CF for Sulfuryl fluoride was added following IPCC 2021'. §16.3.3 and Table 23 say the same for the EN15804 variant.\n\n**And it is not a number still in dispute.** #342 is three substances -- sulfur hexafluoride, CFC-11, HFC-134a -- where the two implementations copied that same table at different moments and got different numbers. This substance is not one of them: the earlier printing and the corrected one both say 4630, so the adoption does not settle the vintage question by the back door.\n\n**Nor is it a stand-in.** #131 declines six proposed factors that are a chemical relative's number filling a gap in EF's coverage. Nothing of that kind is happening here -- this is sulfuryl fluoride's own line in the IPCC's table, adopted as ecoinvent's statement of it rather than inherited from a neighbour.\n\nWhat this does not fix, and a reader should know: it fills the two air compartments ecoinvent has a flow for -- non-urban air or from high stacks, and unspecified -- and leaves the four this list carries from EF 3.1's flow list empty, including urban ground level and indoor, which is precisely how the chemical is released. That asymmetry is neither source's judgement; ecoinvent's own §7.3.1 rule is the opposite, 'the same CF is assigned to an exchange emitted to air for all the sub-compartments'. A ruling cannot reach the other four, because `publish` takes a number an implementation stated for that flow and nobody stated one there. It needs a general rule about air sub-compartments, which is its own change. See #151.\n\n**Since #459 this ruling applies to nothing.** The ecoinvent Centre's 3.13 workbook keeps both air rows with their ecotoxicity factors and states no climate-change factor for either, so no implementation that decides proposes 4630 and there is no proposal for this ruling to publish. `ruled_about` records the 4630 the ecoinvent Centre stated when the ruling was written, which was its 3.12 workbook's number; that number is now published under `ecoinvent Centre (3.12)` only. Publishing a number no current publisher states needs a route of its own, and the claims in `expectations/0728` and `0731` that read 4630 are pending until one exists. The ruling stays as a record and asks again if a release restates the number.\n\nThe fossil sub-category. ecoinvent files this substance's factor in `climate change` and `climate change: fossil` and in neither of the biogenic or land-use sub-categories, which is what a synthetic fluorinated gas of industrial origin should do: there is no biogenic carbon in it and no land-use transformation behind it. This ruling follows that filing rather than choosing it. (#151)"
+      "comment": "Sulfuryl fluoride is the fumigant a house is tented with for drywood termites -- Vikane and ProFume, on the market since 1959 and grown into that role as the replacement for methyl bromide after the Montreal Protocol phase-out. Nothing consumes it: at the end of a fumigation the charge is vented to the open air, deliberately, and it then survives about 36 years, destroyed not by OH -- which barely touches it, partial lifetime some 300 years -- but by hydrolysis in the surface ocean. The ecoinvent Centre states 4630 kg CO2-eq per kilogram for it in the two air compartments its flow list has; the JRC states nothing for it under any climate category.\n\n**The number is the IPCC's, read straight off.** AR6 Table 7.SM.7 gives the substance a full row -- lifetime 36.0 years, radiative efficiency 0.211 W m-2 ppb-1, GWP20 7510, GWP100 4630, GWP500 1410 -- and 4630 is that row's GWP100 with no rounding, conversion or weighting applied to it. ecoinvent says as much in its own v3.12 implementation report: Table 19 of §15.3.1 lists the substance among four climate factors that changed since v3.11, with the v3.11 cell blank and the v3.12 cell 4630, and the text reads 'The CF for Sulfuryl fluoride was added following IPCC 2021'. §16.3.3 and Table 23 say the same for the EN15804 variant.\n\n**And it is not a number still in dispute.** #342 is three substances -- sulfur hexafluoride, CFC-11, HFC-134a -- where the two implementations copied that same table at different moments and got different numbers. This substance is not one of them: the earlier printing and the corrected one both say 4630, so the adoption does not settle the vintage question by the back door.\n\n**Nor is it a stand-in.** #131 declines six proposed factors that are a chemical relative's number filling a gap in EF's coverage. Nothing of that kind is happening here -- this is sulfuryl fluoride's own line in the IPCC's table, adopted as ecoinvent's statement of it rather than inherited from a neighbour.\n\nWhat this does not fix, and a reader should know: it fills the two air compartments ecoinvent has a flow for -- non-urban air or from high stacks, and unspecified -- and leaves the four this list carries from EF 3.1's flow list empty, including urban ground level and indoor, which is precisely how the chemical is released. That asymmetry is neither source's judgement; ecoinvent's own §7.3.1 rule is the opposite, 'the same CF is assigned to an exchange emitted to air for all the sub-compartments'. A ruling cannot reach the other four, because `publish` takes a number an implementation stated for that flow and nobody stated one there. It needs a general rule about air sub-compartments, which is its own change. See #151.\n\n**Since #459 this ruling applies to nothing.** The ecoinvent Centre's 3.13 workbook, `ecoinvent Centre (3.13)`, keeps both air rows with their ecotoxicity factors and states no climate-change factor for either, so no implementation that decides proposes 4630 and there is no proposal for this ruling to publish. `implemented_by` and `ruled_about` name `ecoinvent Centre (3.12)`, the workbook that stated 4630 when the ruling was written and still publishes it, compared and not weighed. Publishing a number no current publisher states needs a route of its own, and the claims in `expectations/0728` and `0731` that read 4630 are pending until one exists. The ruling stays as a record and asks again if a release restates the number.\n\nThe fossil sub-category. ecoinvent files this substance's factor in `climate change` and `climate change: fossil` and in neither of the biogenic or land-use sub-categories, which is what a synthetic fluorinated gas of industrial origin should do: there is no biogenic carbon in it and no land-use transformation behind it. This ruling follows that filing rather than choosing it. (#151)"
     },
     {
       "flow_object_id": "fo-21903c3421b5c942",
@@ -193,11 +193,11 @@
         "European Commission — JRC": [
           25200.0
         ],
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
           24300.0
         ]
       },
-      "comment": "Sulfur hexafluoride is the insulating gas in high-voltage switchgear and the most potent greenhouse gas either implementation characterises. The JRC's EF 3.1 states 25200 kg CO2-eq per kilogram in all six air compartments; ecoinvent's implementation of the same method states 24300 in the four its own flow list has. 3.6% apart is outside `FACTOR_TOLERANCE`, so the merge published neither, and the list scored an SF6 emission to unspecified air at zero while scoring one at aircraft cruise height at 25200 -- because those are the two compartments where only the JRC speaks.\n\n**The JRC's number is AR6 as published.** Table 7.SM.7 of the Chapter 7 supplementary material reads `Sulfur hexafluoride SF6 3200 0.567 445 18300 2250 25200 10700 34100 11.2 26200 12.1 30600` -- lifetime 3200 years, radiative efficiency 0.567 W m-2 ppb-1, GWP100 25200 -- in the report on ipcc.ch, in the final government distribution, and in the authors' machine-readable supplement, which has not changed since September 2021. The February 2022 errata amends one row of Table 7.15 (methane) and nothing else in the chapter. EF 3.1's climate category is that table, and 25200 is what it says.\n\n**ecoinvent's number is a different atmospheric lifetime, not a corrected printing.** Their v3.12 report (§7.3.4, Table 9) moves SF6 from 18300/25200/34100 to 18200/24300/29000 for GWP20/100/500 and calls the change negligible. It is not a rounding: hold AR6's radiative efficiency and replace the 3200-year lifetime with one near 1000 years, and the three horizons come out at 18175, 24358 and 28986 -- ecoinvent's three numbers to three significant figures, and AR6's lifetime reproduces none of them. A shorter lifetime is what a decade of measurements suggests: WMO's 2022 Ozone Assessment annex lists SF6 at the 3200-year lifetime with an alternative range of 850-1280 years (Ray et al. 2017, Kovacs et al. 2017), and its own metrics, 18400/24700/29800, sit about 1.6% above ecoinvent's, which is the ratio of WMO's radiative efficiency to AR6's.\n\nSo this is not two teams transcribing one table differently. It is ecoinvent updating an input the method's own publisher has not updated. The JRC's number is published because this list publishes EF 3.1, and EF 3.1's climate change category is IPCC AR6's table: adopting a lifetime AR6 did not adopt would make our EF 3.1 something other than EF 3.1, silently, in the column a practitioner reads as EF's.\n\nWhat this ruling does not claim is that 25200 is the better science. It probably is not -- the newer lifetime estimates are measurements and AR6's 3200 years is an older model result, and WMO 2022 already prints the alternative beside it. The argument is about which question this list answers. ecoinvent's 24300 stays published under ecoinvent's name, where a reader who wants the newer lifetime can find it and say so in their own assessment; and if AR7 adopts it, `ruled_about` ends this ruling rather than letting it outlive its evidence. See #342.\n\n**Since #459 this ruling applies to nothing.** The ecoinvent Centre's 3.13 workbook states AR6's 25200, so the two deciding implementations agree and the merge publishes 25200 as `agreed` with nothing left to settle. `ruled_about` records the 24300 the ecoinvent Centre stated when the ruling was written, which was its 3.12 workbook's number; that number is now published under `ecoinvent Centre (3.12)`, not under `ecoinvent Centre`. The ruling stays as a record of why 25200 was published while the two disagreed, and asks again if a release restates 24300.\n\nThe aggregate category, where the factor reaches every climate score."
+      "comment": "Sulfur hexafluoride is the insulating gas in high-voltage switchgear and the most potent greenhouse gas either implementation characterises. The JRC's EF 3.1 states 25200 kg CO2-eq per kilogram in all six air compartments; ecoinvent's implementation of the same method states 24300 in the four its own flow list has. 3.6% apart is outside `FACTOR_TOLERANCE`, so the merge published neither, and the list scored an SF6 emission to unspecified air at zero while scoring one at aircraft cruise height at 25200 -- because those are the two compartments where only the JRC speaks.\n\n**The JRC's number is AR6 as published.** Table 7.SM.7 of the Chapter 7 supplementary material reads `Sulfur hexafluoride SF6 3200 0.567 445 18300 2250 25200 10700 34100 11.2 26200 12.1 30600` -- lifetime 3200 years, radiative efficiency 0.567 W m-2 ppb-1, GWP100 25200 -- in the report on ipcc.ch, in the final government distribution, and in the authors' machine-readable supplement, which has not changed since September 2021. The February 2022 errata amends one row of Table 7.15 (methane) and nothing else in the chapter. EF 3.1's climate category is that table, and 25200 is what it says.\n\n**ecoinvent's number is a different atmospheric lifetime, not a corrected printing.** Their v3.12 report (§7.3.4, Table 9) moves SF6 from 18300/25200/34100 to 18200/24300/29000 for GWP20/100/500 and calls the change negligible. It is not a rounding: hold AR6's radiative efficiency and replace the 3200-year lifetime with one near 1000 years, and the three horizons come out at 18175, 24358 and 28986 -- ecoinvent's three numbers to three significant figures, and AR6's lifetime reproduces none of them. A shorter lifetime is what a decade of measurements suggests: WMO's 2022 Ozone Assessment annex lists SF6 at the 3200-year lifetime with an alternative range of 850-1280 years (Ray et al. 2017, Kovacs et al. 2017), and its own metrics, 18400/24700/29800, sit about 1.6% above ecoinvent's, which is the ratio of WMO's radiative efficiency to AR6's.\n\nSo this is not two teams transcribing one table differently. It is ecoinvent updating an input the method's own publisher has not updated. The JRC's number is published because this list publishes EF 3.1, and EF 3.1's climate change category is IPCC AR6's table: adopting a lifetime AR6 did not adopt would make our EF 3.1 something other than EF 3.1, silently, in the column a practitioner reads as EF's.\n\nWhat this ruling does not claim is that 25200 is the better science. It probably is not -- the newer lifetime estimates are measurements and AR6's 3200 years is an older model result, and WMO 2022 already prints the alternative beside it. The argument is about which question this list answers. ecoinvent's 24300 stays published under ecoinvent's name, where a reader who wants the newer lifetime can find it and say so in their own assessment; and if AR7 adopts it, `ruled_about` ends this ruling rather than letting it outlive its evidence. See #342.\n\n**Since #459 this ruling applies to nothing.** The ecoinvent Centre's 3.13 workbook, `ecoinvent Centre (3.13)`, states AR6's 25200, so the two deciding implementations agree and the merge publishes 25200 as `agreed` with nothing left to settle. `ruled_about` names `ecoinvent Centre (3.12)`, the workbook that stated 24300 when the ruling was written and still publishes it, compared and not weighed. The ruling stays as a record of why 25200 was published while the two disagreed, and asks again if a release restates 24300.\n\nThe aggregate category, where the factor reaches every climate score."
     },
     {
       "flow_object_id": "fo-21903c3421b5c942",
@@ -211,11 +211,11 @@
         "European Commission — JRC": [
           25200.0
         ],
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
           24300.0
         ]
       },
-      "comment": "Sulfur hexafluoride is the insulating gas in high-voltage switchgear and the most potent greenhouse gas either implementation characterises. The JRC's EF 3.1 states 25200 kg CO2-eq per kilogram in all six air compartments; ecoinvent's implementation of the same method states 24300 in the four its own flow list has. 3.6% apart is outside `FACTOR_TOLERANCE`, so the merge published neither, and the list scored an SF6 emission to unspecified air at zero while scoring one at aircraft cruise height at 25200 -- because those are the two compartments where only the JRC speaks.\n\n**The JRC's number is AR6 as published.** Table 7.SM.7 of the Chapter 7 supplementary material reads `Sulfur hexafluoride SF6 3200 0.567 445 18300 2250 25200 10700 34100 11.2 26200 12.1 30600` -- lifetime 3200 years, radiative efficiency 0.567 W m-2 ppb-1, GWP100 25200 -- in the report on ipcc.ch, in the final government distribution, and in the authors' machine-readable supplement, which has not changed since September 2021. The February 2022 errata amends one row of Table 7.15 (methane) and nothing else in the chapter. EF 3.1's climate category is that table, and 25200 is what it says.\n\n**ecoinvent's number is a different atmospheric lifetime, not a corrected printing.** Their v3.12 report (§7.3.4, Table 9) moves SF6 from 18300/25200/34100 to 18200/24300/29000 for GWP20/100/500 and calls the change negligible. It is not a rounding: hold AR6's radiative efficiency and replace the 3200-year lifetime with one near 1000 years, and the three horizons come out at 18175, 24358 and 28986 -- ecoinvent's three numbers to three significant figures, and AR6's lifetime reproduces none of them. A shorter lifetime is what a decade of measurements suggests: WMO's 2022 Ozone Assessment annex lists SF6 at the 3200-year lifetime with an alternative range of 850-1280 years (Ray et al. 2017, Kovacs et al. 2017), and its own metrics, 18400/24700/29800, sit about 1.6% above ecoinvent's, which is the ratio of WMO's radiative efficiency to AR6's.\n\nSo this is not two teams transcribing one table differently. It is ecoinvent updating an input the method's own publisher has not updated. The JRC's number is published because this list publishes EF 3.1, and EF 3.1's climate change category is IPCC AR6's table: adopting a lifetime AR6 did not adopt would make our EF 3.1 something other than EF 3.1, silently, in the column a practitioner reads as EF's.\n\nWhat this ruling does not claim is that 25200 is the better science. It probably is not -- the newer lifetime estimates are measurements and AR6's 3200 years is an older model result, and WMO 2022 already prints the alternative beside it. The argument is about which question this list answers. ecoinvent's 24300 stays published under ecoinvent's name, where a reader who wants the newer lifetime can find it and say so in their own assessment; and if AR7 adopts it, `ruled_about` ends this ruling rather than letting it outlive its evidence. See #342.\n\n**Since #459 this ruling applies to nothing.** The ecoinvent Centre's 3.13 workbook states AR6's 25200, so the two deciding implementations agree and the merge publishes 25200 as `agreed` with nothing left to settle. `ruled_about` records the 24300 the ecoinvent Centre stated when the ruling was written, which was its 3.12 workbook's number; that number is now published under `ecoinvent Centre (3.12)`, not under `ecoinvent Centre`. The ruling stays as a record of why 25200 was published while the two disagreed, and asks again if a release restates 24300.\n\nThe fossil sub-category, where both implementations file this substance and neither files it as biogenic or land-use: a synthetic fluorinated gas of industrial origin. Ruled separately from the aggregate because the queue asks separately, and an answer to one is not an answer to the other."
+      "comment": "Sulfur hexafluoride is the insulating gas in high-voltage switchgear and the most potent greenhouse gas either implementation characterises. The JRC's EF 3.1 states 25200 kg CO2-eq per kilogram in all six air compartments; ecoinvent's implementation of the same method states 24300 in the four its own flow list has. 3.6% apart is outside `FACTOR_TOLERANCE`, so the merge published neither, and the list scored an SF6 emission to unspecified air at zero while scoring one at aircraft cruise height at 25200 -- because those are the two compartments where only the JRC speaks.\n\n**The JRC's number is AR6 as published.** Table 7.SM.7 of the Chapter 7 supplementary material reads `Sulfur hexafluoride SF6 3200 0.567 445 18300 2250 25200 10700 34100 11.2 26200 12.1 30600` -- lifetime 3200 years, radiative efficiency 0.567 W m-2 ppb-1, GWP100 25200 -- in the report on ipcc.ch, in the final government distribution, and in the authors' machine-readable supplement, which has not changed since September 2021. The February 2022 errata amends one row of Table 7.15 (methane) and nothing else in the chapter. EF 3.1's climate category is that table, and 25200 is what it says.\n\n**ecoinvent's number is a different atmospheric lifetime, not a corrected printing.** Their v3.12 report (§7.3.4, Table 9) moves SF6 from 18300/25200/34100 to 18200/24300/29000 for GWP20/100/500 and calls the change negligible. It is not a rounding: hold AR6's radiative efficiency and replace the 3200-year lifetime with one near 1000 years, and the three horizons come out at 18175, 24358 and 28986 -- ecoinvent's three numbers to three significant figures, and AR6's lifetime reproduces none of them. A shorter lifetime is what a decade of measurements suggests: WMO's 2022 Ozone Assessment annex lists SF6 at the 3200-year lifetime with an alternative range of 850-1280 years (Ray et al. 2017, Kovacs et al. 2017), and its own metrics, 18400/24700/29800, sit about 1.6% above ecoinvent's, which is the ratio of WMO's radiative efficiency to AR6's.\n\nSo this is not two teams transcribing one table differently. It is ecoinvent updating an input the method's own publisher has not updated. The JRC's number is published because this list publishes EF 3.1, and EF 3.1's climate change category is IPCC AR6's table: adopting a lifetime AR6 did not adopt would make our EF 3.1 something other than EF 3.1, silently, in the column a practitioner reads as EF's.\n\nWhat this ruling does not claim is that 25200 is the better science. It probably is not -- the newer lifetime estimates are measurements and AR6's 3200 years is an older model result, and WMO 2022 already prints the alternative beside it. The argument is about which question this list answers. ecoinvent's 24300 stays published under ecoinvent's name, where a reader who wants the newer lifetime can find it and say so in their own assessment; and if AR7 adopts it, `ruled_about` ends this ruling rather than letting it outlive its evidence. See #342.\n\n**Since #459 this ruling applies to nothing.** The ecoinvent Centre's 3.13 workbook, `ecoinvent Centre (3.13)`, states AR6's 25200, so the two deciding implementations agree and the merge publishes 25200 as `agreed` with nothing left to settle. `ruled_about` names `ecoinvent Centre (3.12)`, the workbook that stated 24300 when the ruling was written and still publishes it, compared and not weighed. The ruling stays as a record of why 25200 was published while the two disagreed, and asks again if a release restates 24300.\n\nThe fossil sub-category, where both implementations file this substance and neither files it as biogenic or land-use: a synthetic fluorinated gas of industrial origin. Ruled separately from the aggregate because the queue asks separately, and an answer to one is not an answer to the other."
     },
     {
       "flow_object_id": "fo-757b6ee59c695209",
@@ -225,7 +225,7 @@
       "substance": "Water vapour",
       "category": "Water use",
       "ruled_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           42.95
         ]
       },
@@ -239,7 +239,7 @@
       "substance": "Peat, Horticulture",
       "category": "Resource use, fossils",
       "ruled_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           9.76
         ]
       },
@@ -250,11 +250,11 @@
       "category_slug": "resource-use-fossils",
       "queue": "proposed-factor",
       "decision": "publish",
-      "implemented_by": "ecoinvent Centre",
+      "implemented_by": "ecoinvent Centre (3.13)",
       "substance": "Gas, Mine, Off-gas, Process, Coal Mining",
       "category": "Resource use, fossils",
       "ruled_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           36.0
         ]
       },
@@ -265,11 +265,11 @@
       "category_slug": "particulate-matter",
       "queue": "proposed-factor",
       "decision": "publish",
-      "implemented_by": "ecoinvent Centre",
+      "implemented_by": "ecoinvent Centre (3.13)",
       "substance": "Particles (PM2.5 - PM10)",
       "category": "EF-particulate Matter",
       "ruled_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.13)": [
           6.94042e-07,
           5.48544e-05
         ]

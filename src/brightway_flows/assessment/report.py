@@ -188,9 +188,12 @@ def _factor_lines(assessment: Assessment, paint: Any) -> list[str]:
     wanted = (
         ("factors.factors_published", "factors, over every implementation"),
         ("factors.ef_jrc_factors_published", "the JRC's"),
-        ("factors.ef_ecoinvent_centre_factors_published", "the ecoinvent Centre's"),
         (
-            "factors.ef_ecoinvent_centre_3_12_factors_published",
+            "factors.ef_ecoinvent_centre_3_13_factors_published",
+            "the ecoinvent Centre's, from its 3.13 workbook",
+        ),
+        (
+            "factors.ef_ecoinvent_centre_factors_published",
             "the ecoinvent Centre's 3.12 workbook's, compared and not weighed",
         ),
         ("factors.ef_greendelta_factors_published", "GreenDelta's"),
