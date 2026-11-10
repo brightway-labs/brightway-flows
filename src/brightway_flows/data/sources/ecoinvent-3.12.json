@@ -7,13 +7,12 @@
   "flow_iri_prefix": "https://vocab.brightway.one/ecoinvent/3.12/flow/",
   "prepared_match_table": null,
   "lcia": {
-    "adapter": "brightway_flows.integrations.ecoinvent_lcia:fetch",
-    "factors": "ecoinvent-3.12-lcia-factors.json",
+    "adapter": "brightway_flows.integrations.ecoinvent_lcia_public:fetch",
+    "factors": "ecoinvent-3.12-lcia-factors-public.json",
     "implemented_by": "ecoinvent Centre (3.12)",
     "methods": [
       {
-        "name": "EF v3.1",
-        "no_long_term": "EF v3.1 no LT"
+        "name": "EF v3.1"
       }
     ]
   },

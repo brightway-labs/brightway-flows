@@ -18,7 +18,7 @@ loaded today rather than what this module knows about:
 |---|---:|---|
 | ``European Commission — JRC`` | 25 | the 25 ILCD method files in ``EF-v3.1.zip`` |
 | ``ecoinvent Centre (3.13)`` | 25 | ``LCIA Implementation 3.13.xlsx``, method ``EF v3.1`` |
-| ``ecoinvent Centre (3.12)`` | 25 | ``LCIA Implementation 3.12.xlsx``, method ``EF v3.1`` |
+| ``ecoinvent Centre (3.12)`` | 25 | ``EF v3.1_mapped_3.12.csv`` from ecoinvent's public ``lcia`` repository, CC BY-NC 4.0 |
 | ``GreenDelta`` | 25 | ``bafu-greendelta-lcia.zip``, ``EF 3.1 Method (adapted)`` |
 | ``brightway-flows`` | 25 | ours, derived from the deciding two, each factor saying how |
 
@@ -166,6 +166,11 @@ def _meta(
         meta["method_uuid"] = stated.identifier
     if implementation.release:
         meta["release"] = implementation.release
+    if implementation.licence:
+        # The publisher's terms for the file the numbers came from, where they
+        # are not this list's: a row read from ecoinvent's public mapped file
+        # is CC BY-NC 4.0 whatever the file it is published in says.
+        meta["licence"] = implementation.licence
     # The method name this publisher files the category under, wherever the
     # publisher states it.  ecoinvent's workbook states one on every category row
     # (`EF v3.1` in its `Method` column) and GreenDelta's package states one for

@@ -45,8 +45,14 @@ characterised on 2026-11-05 with the 3.13 workbook deciding:
   workbook names an ecoinvent flow, the merge says which consensus flow that
   became, and only then is there a factor about a flow of ours.
 - **`ecoinvent Centre (3.12)`** — 27,346 factors over 7,939 flows, the same
-  publisher's workbook one release earlier, read by `fetch-lcia ecoinvent-3.12`
-  and reached the same way, under the identifiers release 1.1.0 published it
+  publisher's implementation one release earlier, read by
+  `fetch-lcia ecoinvent-3.12` from the file ecoinvent publishes at
+  [github.com/ecoinvent/lcia](https://github.com/ecoinvent/lcia) rather than
+  from the workbook. That file states the 3.12 workbook's 27,415 EF v3.1
+  factors at the same numbers, needs no ecoinvent licence to download, and is
+  published under CC BY-NC 4.0, which is not this list's data licence: every
+  category row of this implementation says so under `meta.licence`. Reached
+  the same way as 3.13's, under the identifiers release 1.1.0 published it
   with. Published and compared, and never evidence: the
   ecoinvent Centre's current statement is the 3.13 workbook, and two
   statements by one publisher are not two votes. It is kept so that a number
@@ -829,7 +835,8 @@ part:
   not reassessed —
   `https://csl.noaa.gov/assessments/ozone/2022/downloads/Annex_2022OzoneAssessment.pdf`.
 - **ecoinvent's own report**, `LCIA Implementation 3.12.pdf`, shipped with the
-  release and cached by `fetch-lcia` beside the workbook. §7.3.1 says where their
+  release and cached beside the workbook by a workbook fetch such as
+  `fetch-lcia ecoinvent-3.13`. §7.3.1 says where their
   IPCC numbers come from and states the rule that one air factor covers every air
   sub-compartment; §7.3.4 and Table 9 list every climate factor that changed since
   3.11; §15.3.1 and Table 19 do the same for their EF implementation.

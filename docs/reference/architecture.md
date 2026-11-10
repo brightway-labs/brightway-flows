@@ -300,9 +300,13 @@ The factors arrive through the integrations, one adapter per implementation.
 `integrations/ef31.py` already parses EF 3.1's 25 method files as part of
 `extract`, so the JRC's factors ride in on the base list's own flows.
 `integrations/ecoinvent_lcia.py` is the second, reached by `fetch-lcia
-ecoinvent-3.12`: a source list's manifest may declare an `lcia` block naming an
+ecoinvent-3.13`: a source list's manifest may declare an `lcia` block naming an
 adapter and a file, on the same terms as its `inputs.flows`, and
-`sources.fetch_source_lcia` holds it to the path the manifest states. A build
+`sources.fetch_source_lcia` holds it to the path the manifest states.
+`integrations/ecoinvent_lcia_public.py` reads the same implementation one
+release earlier from the mapped file ecoinvent publishes on GitHub, pinned to
+a commit and a digest through `downloads.PinnedFile`, and writes the workbook
+adapter's file format so `lcia/sources.py` reads both with one reader. A build
 reads none of it — `characterise` matches the factors onto the consensus flows
 afterwards, reading the database `build` wrote and writing the `lcia_*` tables into
 it. That order is worth protecting: iterating on a rule about factors costs a
