@@ -247,7 +247,7 @@
     "label": "Kilowatt Hour",
     "definition": "The kilowatt hour, or kilowatt-hour, (symbol $kW \\cdot h$, $kW h$ or $kWh$) is a unit of energy equal to 1000 watt hours or 3.6 megajoules. For constant power, energy in watt hours is the product of power in watts and time in hours. The kilowatt hour is most commonly known as a billing unit for energy delivered to consumers by electric utilities.",
     "conversion_multiplier": 3600000.0,
-    "notation": "kwh",
+    "notation": "kWh",
     "reference_unit_iri": "https://vocab.brightway.one/units/unit/J",
     "quantity_kind_iri": "https://vocab.brightway.one/units/quantity-kind/Energy"
   },

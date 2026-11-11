@@ -22,6 +22,7 @@ from brightway_flows.domain.lcia.records import (
     flow_entries,
     stated_category,
 )
+from brightway_flows.domain.units import UNITS_FILEPATH, normalize_unit_token
 from brightway_flows.filesystem import EF31_ZIP_FILEPATH
 from brightway_flows.integrations.chebi import load_chebi_index
 from brightway_flows.pipeline import normalize
@@ -67,7 +68,6 @@ NAMESPACES: dict[str, str] = {
     "ecn": "http://eplca.jrc.ec.europa.eu/ILCD/Extensions/2018/ECNumber",
 }
 XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
-UNITS_FILEPATH = PACKAGE_DATA_DIR / "units.json"
 CHEBI_UI_PREFIX = "https://www.ebi.ac.uk/chebi/searchId.do?chebiId="
 
 UNIT_ALIASES: dict[str, tuple[str, float]] = {
@@ -426,13 +426,6 @@ def get_reference_unit(zf: ZipFile, flow_member: str, root: Element) -> str | No
     return None
 
 
-def _normalize_unit_token(value: str) -> str:
-    token = value.strip().lower()
-    token = token.replace("·", ".").replace("*", ".")
-    token = token.replace(" ", "")
-    return token
-
-
 def _load_units_index() -> dict[str, dict]:
     data = orjson.loads(UNITS_FILEPATH.read_bytes())
     by_notation: dict[str, dict] = {}
@@ -441,9 +434,9 @@ def _load_units_index() -> dict[str, dict]:
         notation = row.get("notation")
         label = row.get("label")
         if isinstance(notation, str) and notation.strip():
-            by_notation[_normalize_unit_token(notation)] = row
+            by_notation[normalize_unit_token(notation)] = row
         if isinstance(label, str) and label.strip():
-            by_label[_normalize_unit_token(label)] = row
+            by_label[normalize_unit_token(label)] = row
     return {
         "by_notation": by_notation,
         "by_label": by_label,
@@ -451,10 +444,10 @@ def _load_units_index() -> dict[str, dict]:
 
 
 def _resolve_unit(unit_name: str, units_index: dict[str, dict]) -> tuple[dict | None, float]:
-    token = _normalize_unit_token(unit_name)
+    token = normalize_unit_token(unit_name)
     if token in UNIT_ALIASES:
         mapped, multiplier = UNIT_ALIASES[token]
-        entry = units_index["by_notation"].get(_normalize_unit_token(mapped))
+        entry = units_index["by_notation"].get(normalize_unit_token(mapped))
         return entry, multiplier
     entry = units_index["by_notation"].get(token)
     if entry is not None:

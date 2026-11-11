@@ -30,6 +30,20 @@ Chlorobenzene, released from a medium stack over open country, in kilograms.
 That is what your row is, in this list's words, and the identifier is what you
 write down.
 
+## Preserve the amount's unit
+
+A millijoule is not a megajoule. Their prefixes, `m` and `M`, differ in scale;
+the [SI prefix table](https://www.bipm.org/en/measurement-units/si-prefixes)
+defines them separately. The unit readers preserve this distinction before
+normalising a source row. Since this vocabulary does not define `mJ`, it stays
+unresolved; it cannot inherit the megajoule unit or its factor. A source build
+reports the unsupported spelling rather than changing the amount's meaning.
+
+Ordinary provider spellings such as `KG`, `Kilograms`, `L`, `Tonnes`, `BQ` and
+`kbq` still resolve. Kilowatt-hour uses `kWh`; historical `kwh` remains an alias
+of that same unit. A resolved unit supplies quantity information, while substance
+identity and environmental context still need their own evidence.
+
 ## Ask about the whole list at once
 
 Reading the consensus list takes a couple of seconds and answering a row takes
