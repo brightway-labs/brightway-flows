@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Three substances carried two climate numbers apiece, or none, because the JRC's EF 3.1 and ecoinvent's implementation of it read IPCC AR6 differently. Two of those splits are one number printed twice -- AR6's Chapter 7 Table 7.15 assesses CFC-11 at `6226 ±2297` and HFC-134a at `1526 ±577`, and the supplementary Table 7.SM.7 rounds them to 6230 and 1530 -- so `lcia-rounded-printings.json` publishes the precise value in the two compartments where only the rounded transcription had a flow. The third is not: AR6 assesses sulfur hexafluoride with a 3200-year lifetime and prints 25200, ecoinvent's 24300 is that radiative efficiency with a lifetime near 1000 years, and a ruling publishes the method's own publisher's number. After both, each substance states one number in every compartment it is published in. See #342.",
+  "description": "Three substances carried two climate numbers apiece, or none, because the JRC's EF 3.1 and ecoinvent's implementation of it read IPCC AR6 differently. Two of those splits are one number printed twice -- AR6's Chapter 7 Table 7.15 assesses CFC-11 at `6226 ±2297` and HFC-134a at `1526 ±577`, and the supplementary Table 7.SM.7 rounds them to 6230 and 1530 -- so `lcia-rounded-printings.json` publishes the precise value in the two compartments where only the rounded transcription had a flow. The third is not: AR6 assesses sulfur hexafluoride with a 3200-year lifetime and prints 25200, ecoinvent's 24300 is that radiative efficiency with a lifetime near 1000 years, and a ruling publishes the method's own publisher's number. After both, each substance states one number in every compartment it is published in. See #342.\n\nSince #459 the ecoinvent Centre implementation is read from the 3.13 workbook, and all three cases moved with it. 3.13 states SF6 at 25,200, AR6's number, so the ruling that published the JRC's 25,200 over 3.12's 24,300 applies to nothing and the row is `agreed`. 3.13 prints CFC-11 and HFC-134a as 6,230 and 1,530, the supplement's rounded printings the JRC prints, so both deciding implementations now state the rounded value everywhere and the four rows of `lcia-rounded-printings.json`, written about a build where only the JRC printed it, are retired: the list publishes what its two publishers agree on, 6,230 and 1,530 in every air compartment, and `refined` is no longer a derivation any factor carries. The 3.12 workbook stays published as `ecoinvent Centre (3.12)` and decides nothing, which is where 24,300, 6,226 and 1,526 can still be read.",
   "expectations": [
     {
       "id": "0724-sulfur-hexafluoride-is-worth-something-in-unspecified-air",
@@ -16,9 +16,9 @@
       "expect": {
         "exists": true,
         "amount": "25200",
-        "derivation": "ruled"
+        "derivation": "agreed"
       },
-      "comment": "The compartment an inventory writes to when it does not say where the emission went, and the one the disagreement blocked: before the ruling this list published nothing here, so the most potent greenhouse gas either implementation characterises scored zero. 25200 is AR6 Table 7.SM.7's own GWP100, which is the table EF 3.1's climate category names."
+      "comment": "The compartment an inventory writes to when it does not say where the emission went, and the one the disagreement blocked: before the ruling this list published nothing here, so the most potent greenhouse gas either implementation characterises scored zero. 25200 is AR6 Table 7.SM.7's own GWP100, which is the table EF 3.1's climate category names. `agreed` rather than `ruled` since #459: the 3.13 workbook states 25,200 itself, so the ruling has nothing to settle."
     },
     {
       "id": "0724-and-in-the-fossil-sub-category",
@@ -34,9 +34,9 @@
       "expect": {
         "exists": true,
         "amount": "25200",
-        "derivation": "ruled"
+        "derivation": "agreed"
       },
-      "comment": "Both queue items are ruled, so both are claimed. A ruling on the aggregate and not on the sub-category that adds up to it would publish a substance into one and not the other."
+      "comment": "Both queue items are ruled, so both are claimed. A ruling on the aggregate and not on the sub-category that adds up to it would publish a substance into one and not the other. `agreed` since #459, as above."
     },
     {
       "id": "0724-sulfur-hexafluoride-states-one-number-everywhere",
@@ -59,24 +59,41 @@
     {
       "id": "0724-ecoinvent-still-states-its-own-number",
       "issue": 724,
-      "title": "ecoinvent's 24,300 is still published under ecoinvent's name",
+      "title": "ecoinvent's 3.13 workbook states 25,200, and its 3.12 workbook's 24,300 is still published under its own name",
       "subject": {
         "kind": "factor",
         "flow_name": "Sulfur hexafluoride",
         "context_display": "Environmental → Air → Unknown",
         "category": "Climate change",
-        "implemented_by": "ecoinvent Centre"
+        "implemented_by": "ecoinvent Centre (3.13)"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "25200"
+      },
+      "comment": "A ruling picks what this list publishes and erases nobody. ecoinvent's number reflects a shorter atmospheric lifetime than AR6 assessed, which is probably the better science and is certainly the newer; a practitioner who wants it can see it here and say so in their assessment. Rewritten for #459: the ecoinvent Centre's current workbook, 3.13, states AR6's 25,200; its 3.12 workbook stated 24,300 and is the next claim."
+    },
+    {
+      "id": "0724-ecoinvent-3-12-stated-the-shorter-lifetime",
+      "issue": 724,
+      "title": "The ecoinvent Centre's 3.12 workbook still states 24,300 under its own name",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sulfur hexafluoride",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Climate change",
+        "implemented_by": "ecoinvent Centre (3.12)"
       },
       "expect": {
         "exists": true,
         "amount": "24300"
       },
-      "comment": "A ruling picks what this list publishes and erases nobody. ecoinvent's number reflects a shorter atmospheric lifetime than AR6 assessed, which is probably the better science and is certainly the newer; a practitioner who wants it can see it here and say so in their assessment."
+      "comment": "The number this file's ruling was about, kept readable: the 3.12 workbook is published as a non-deciding implementation since #459, so a reader can see that ecoinvent moved from a 1,000-year lifetime back to AR6's between 3.12 and 3.13."
     },
     {
       "id": "0724-cfc-11-is-one-number-at-cruise-height-too",
       "issue": 724,
-      "title": "CFC-11 is worth 6,226 in every air compartment, not 6,230 in two of them",
+      "title": "CFC-11 is worth 6,230 at cruise height, as it is in every air compartment",
       "subject": {
         "kind": "factor",
         "flow_name": "Trichlorofluoromethane",
@@ -86,15 +103,15 @@
       },
       "expect": {
         "exists": true,
-        "amount": "6226",
-        "derivation": "refined"
+        "amount": "6230",
+        "derivation": "sole"
       },
-      "comment": "One of the two compartments ecoinvent has no flow for, where the JRC's rounded transcription used to go out unopposed. `derivation: refined` rather than `sole` says a curated printing acted, and points at the file that cites the two AR6 tables."
+      "comment": "One of the two compartments ecoinvent has no flow for, where the JRC's rounded transcription used to go out unopposed. `derivation: refined` rather than `sole` says a curated printing acted, and points at the file that cites the two AR6 tables. Rewritten for #459: with the 3.13 workbook printing 6,230 as the JRC does, the two publishers agree on the rounded printing in the four compartments both have, and the cruise-height row, where the JRC is alone, states the same number as `sole`. One substance, one number, which is what this file is about."
     },
     {
       "id": "0724-hfc-134a-likewise",
       "issue": 724,
-      "title": "HFC-134a is worth 1,526 indoors, as it is everywhere else",
+      "title": "HFC-134a is worth 1,530 indoors, as it is everywhere else",
       "subject": {
         "kind": "factor",
         "flow_name": "1,1,1,2-Tetrafluoroethane",
@@ -104,10 +121,10 @@
       },
       "expect": {
         "exists": true,
-        "amount": "1526",
-        "derivation": "refined"
+        "amount": "1530",
+        "derivation": "sole"
       },
-      "comment": "The refrigerant, and the other of the two substances AR6 prints twice. Indoor air rather than cruise height, so that both of the compartments the refinement reaches are claimed across the two substances."
+      "comment": "The refrigerant, and the other of the two substances AR6 prints twice. Indoor air rather than cruise height, so that both of the compartments the refinement reaches are claimed across the two substances. Rewritten for #459, as CFC-11 above."
     },
     {
       "id": "0724-the-jrc-still-prints-what-the-supplement-prints",
@@ -127,18 +144,35 @@
       "comment": "The transcription is not touched. 6230 is exactly what Table 7.SM.7 prints, the JRC transcribed it correctly, and a reader comparing this list against EF 3.1 has to see the difference rather than have it quietly reconciled -- the stance the moved-factor and contradicted-factor machinery already takes."
     },
     {
+      "id": "0724-ecoinvent-3-12-stated-the-chapter-value",
+      "issue": 724,
+      "title": "The ecoinvent Centre's 3.12 workbook still states Chapter 7's 6,226 for CFC-11",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Trichlorofluoromethane",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Climate change",
+        "implemented_by": "ecoinvent Centre (3.12)"
+      },
+      "expect": {
+        "exists": true,
+        "amount": "6226"
+      },
+      "comment": "Table 7.15's value, as 3.12 transcribed it, published under the 3.12 workbook's own name since #459 so that the move to the supplement's 6,230 in 3.13 is a row in the difference report rather than a memory."
+    },
+    {
       "id": "0724-only-the-two-documented-substances-are-refined",
       "issue": 724,
-      "title": "Eight factors are refined, and not one more",
+      "title": "No factor is refined now that both publishers print the rounded value",
       "subject": {
         "kind": "measure",
         "key": "factors.ef_rounded_printings_refined",
         "value_when_absent": 0
       },
       "expect": {
-        "equals": 8
+        "equals": 0
       },
-      "comment": "Two substances, two categories, two compartments each. Claimed exactly rather than bounded below, because the guardrail is the count: 97 (substance, category) groups on this build publish two values agreeing within 2%, and 93 of them are freshwater ecotoxicity where the two values are two compartments' own numbers. A refinement that grew past eight without a curator adding a cited row would be this file having become a tolerance rule."
+      "comment": "Two substances, two categories, two compartments each. Claimed exactly rather than bounded below, because the guardrail is the count: 97 (substance, category) groups on this build publish two values agreeing within 2%, and 93 of them are freshwater ecotoxicity where the two values are two compartments' own numbers. A refinement that grew past eight without a curator adding a cited row would be this file having become a tolerance rule. Zero since #459: the four printings were retired when the 3.13 workbook adopted the rounded values, so the mechanism answers no question in this build; it stays registered for the next release that prints a number at two precisions."
     }
   ]
 }

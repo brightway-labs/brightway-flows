@@ -117,12 +117,14 @@ class TheManifestAndTheMethodFileAgreeTestCase(unittest.TestCase):
         self.assertEqual(reference.factors.source_list, STEPWISE_KEY)
         self.assertEqual(reference.factors.stated_method, STATED_METHOD)
 
-    def test_a_reader_is_registered_for_the_publisher(self):
+    def test_a_reader_is_registered_for_the_adapter(self):
         # An implementation reading a list with no reader for its file format
         # raises at characterisation; this is the same claim, one import earlier.
+        # Keyed on the adapter that wrote the file, not the publisher (#459).
         from brightway_flows.lcia.sources import _READERS
 
-        self.assertIn("2.-0 LCA consultants", _READERS)
+        source = known_source_lists()[STEPWISE_KEY]
+        self.assertIn(source.lcia.adapter, _READERS)
 
 
 class TheRescalingTestCase(unittest.TestCase):

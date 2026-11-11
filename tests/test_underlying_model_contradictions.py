@@ -59,7 +59,7 @@ from brightway_flows.pipeline.review_records import ReviewQueue, Severity
 #: `data/lcia-impact-categories.json` says.
 _METHOD = ef_method()
 JRC_IMPL = _METHOD.reference
-ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
+ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre-3-13")
 CONSENSUS_IMPL = _METHOD.consensus
 IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
 

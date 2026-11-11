@@ -67,10 +67,16 @@ from brightway_flows.webapps.app.queries import factors as queries
 #: `data/lcia-impact-categories.json` says.
 _METHOD = ef_method()
 JRC_IMPL = _METHOD.reference
-ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
+ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre-3-13")
 GREENDELTA_IMPL = _METHOD.implementation("greendelta")
 CONSENSUS_IMPL = _METHOD.consensus
 IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
+#: The fixture writes a factor for every implementation but the ecoinvent
+#: Centre's 3.12 workbook, which is published and compared and is not what the
+#: pages are about.
+NAMES_WITH_A_FIXTURE_ROW = IMPLEMENTATION_NAMES - {
+    _METHOD.implementation("ecoinvent-centre").name
+}
 
 #: The category every fixture factor is under, in all four implementations.
 SLUG = sorted(definition.slug for definition in impact_categories())[0]
@@ -345,6 +351,7 @@ class FactorPageTestCase(unittest.TestCase):
                 "coverage_skipped_long_term": 9018,
                 "coverage_skipped_not_in_own_list": 30339,
                 "ef_jrc_factors_published": 5,
+                "ef_ecoinvent_centre_3_13_factors_published": 4,
                 "ef_ecoinvent_centre_factors_published": 4,
                 "ef_greendelta_factors_published": 3,
                 "ef_consensus_factors_published": 6,
@@ -507,10 +514,10 @@ class AnImplementationThatPublishedNothingTestCase(FactorPageTestCase):
             "UPDATE lcia_runs SET stats_json = ?",
             (orjson.dumps({
                 "difference_shared": 2, "difference_identical": 1,
-                "ef_ecoinvent_centre_factors_stated": 27415,
-                "ef_ecoinvent_centre_factors_published": 0,
-                "ef_ecoinvent_centre_source_flows_merged": 0,
-                "ef_ecoinvent_centre_flow-not-reached": 7960,
+                "ef_ecoinvent_centre_3_13_factors_stated": 27415,
+                "ef_ecoinvent_centre_3_13_factors_published": 0,
+                "ef_ecoinvent_centre_3_13_source_flows_merged": 0,
+                "ef_ecoinvent_centre_3_13_flow-not-reached": 7960,
                 **extra,
             }).decode(),),
         )
@@ -560,7 +567,7 @@ class TheCategoryPageTestCase(FactorPageTestCase):
     def test_a_category_is_addressed_by_method_version_and_slug(self):
         detail = self.detail()
         self.assertEqual(detail.label, "EF 3.1")
-        self.assertEqual(len(detail.ids), 4)
+        self.assertEqual(len(detail.ids), 5)
         self.assertEqual(detail.implementations[0], CONSENSUS_IMPL.name)
 
     def test_an_unknown_category_is_a_404(self):
@@ -814,11 +821,11 @@ class TheCategoryComparisonTestCase(FactorPageTestCase):
         self.assertEqual(
             self.detail().slugs[JRC_IMPL.name], "jrc"
         )
-        self.assertEqual(self.detail().named("ecoinvent-centre"),
+        self.assertEqual(self.detail().named("ecoinvent-centre-3-13"),
                          ECOINVENT_IMPL.name)
         html = self.text(
             f"/factors/category/ef/3.1/{SLUG}/differences"
-            "?left=jrc&right=ecoinvent-centre"
+            "?left=jrc&right=ecoinvent-centre-3-13"
         )
         self.assertIn("53,540", html)
 
@@ -1198,7 +1205,7 @@ class WhatAssessSeesTestCase(FactorPageTestCase):
         )
 
     def test_the_terminal_report_leads_with_the_agreement(self):
-        """Seven numbers, and the choice is the point: the headline of this
+        """Eight numbers, and the choice is the point: the headline of this
         layer is that the implementations of one method agree."""
         lines = _factor_lines(
             SimpleNamespace(measures=collect_measures(self.connection())),
@@ -1214,7 +1221,13 @@ class WhatAssessSeesTestCase(FactorPageTestCase):
         # `ef_jrc_factors_published` -- and this section lost four of its seven
         # lines with nothing going red, the number #157, #165 and #347 all bound
         # among them.  Naming the labels is what makes a rename say so.
-        for label in ("the JRC's", "the ecoinvent Centre's", "GreenDelta's", "this list's"):
+        for label in (
+            "the JRC's",
+            "the ecoinvent Centre's, from its 3.13 workbook",
+            "the ecoinvent Centre's 3.12 workbook's",
+            "GreenDelta's",
+            "this list's",
+        ):
             self.assertIn(label, rendered)
 
     def test_the_report_omits_the_section_when_nothing_characterised(self):
@@ -1255,7 +1268,7 @@ class OneFlowsFactorsTestCase(FactorPageTestCase):
         self.assertEqual({row.method for row in rows}, {"EF 3.1"})
         self.assertEqual(
             {row.implemented_by for row in rows},
-            IMPLEMENTATION_NAMES,
+            NAMES_WITH_A_FIXTURE_ROW,
         )
         stated = {row.implemented_by: row.amount for row in rows}
         self.assertEqual(stated[JRC_IMPL.name], 1.5)

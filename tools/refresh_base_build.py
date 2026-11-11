@@ -553,6 +553,7 @@ def report(args: argparse.Namespace) -> int:
             " no table a comparison reads --"
             "\n  but the review webapp and `assess` read this build too, so"
             " finish it with:"
+            "\n    brightway-flows fetch-lcia ecoinvent-3.13"
             "\n    brightway-flows fetch-lcia ecoinvent-3.12"
             "\n    brightway-flows characterise"
         )

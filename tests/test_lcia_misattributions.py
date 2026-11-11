@@ -212,7 +212,7 @@ class TheFactorStaysPut(unittest.TestCase):
         stated = {
             (SLUG, SOURCE): {
                 "European Commission — JRC": (0.14,),
-                "ecoinvent Centre": (0.14,),
+                "ecoinvent Centre (3.13)": (0.14,),
             }
         }
         rows = [FakeRow("carcinogen-rural", FakeFactor(0.14), "sole")]

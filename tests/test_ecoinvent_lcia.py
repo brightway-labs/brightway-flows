@@ -1,10 +1,15 @@
 """EF 3.1 as the ecoinvent Centre implements it, and what is checked at ingest.
 
 The second implementation of a method this list holds, and the first that is not
-the method's own publisher's. Every number below is measured against
-`LCIA Implementation 3.12.xlsx` and the 9,850 ecoinvent 3.12 biosphere flows this
-project has already extracted, and the point of asserting them in the adapter
-rather than recording them once is that each is a fact about a release:
+the method's own publisher's. The 3.13 workbook is read by this adapter and
+decides; the 3.12 implementation is kept beside it to be compared (#459), and
+since the file ecoinvent publishes states it factor for factor it is read from
+that instead, by `integrations.ecoinvent_lcia_public` and
+`tests/test_ecoinvent_lcia_public.py`. Every number below was first measured
+against `LCIA Implementation 3.12.xlsx` and the 9,850 ecoinvent 3.12 biosphere
+flows this project extracted, then against the 3.13 workbook and its 9,893, and
+the point of asserting them in the adapter rather than recording them once is
+that each is a fact about a release:
 
 * the flow triple is the workbook's only name for a flow, and it resolves
   exactly -- 7,960 of 7,960, with no ecoinvent flow sharing a triple with
@@ -52,7 +57,7 @@ METHOD = LciaMethodSpec(name="M", no_long_term="M no LT")
 #: What ecoinvent's workbook calls the method this list ingests, read from the
 #: method file rather than spelled here: it is the implementation's own
 #: statement of which workbook method its factors are.
-ECOINVENT_METHOD = ef_method().implementation("ecoinvent-centre").factors.stated_method
+ECOINVENT_METHOD = ef_method().implementation("ecoinvent-centre-3-13").factors.stated_method
 
 
 class _Sheet:
@@ -283,11 +288,11 @@ class TheCrosswalkAndTheWorkbookAgreeTestCase(unittest.TestCase):
 
     def test_the_crosswalks_own_names_pass(self):
         check_against_crosswalk(
-            self._categories(sorted(ef_method().by_stated_name("ecoinvent-centre"))), method=ECOINVENT_METHOD
+            self._categories(sorted(ef_method().by_stated_name("ecoinvent-centre-3-13"))), method=ECOINVENT_METHOD
         )
 
     def test_a_renamed_category_raises(self):
-        names = sorted(ef_method().by_stated_name("ecoinvent-centre"))
+        names = sorted(ef_method().by_stated_name("ecoinvent-centre-3-13"))
         names[0] = names[0] + " (renamed)"
         with self.assertRaises(EcoinventLciaError) as caught:
             check_against_crosswalk(self._categories(names), method=ECOINVENT_METHOD)
@@ -337,20 +342,41 @@ class TheFileRoundTripsTestCase(unittest.TestCase):
 
 
 class TheManifestDeclaresItTestCase(unittest.TestCase):
-    def test_ecoinvent_3_12_declares_an_lcia_block(self):
-        source = known_source_lists()["ecoinvent-3.12"]
+    def test_ecoinvent_3_13_declares_the_workbook(self):
+        """3.12's manifest reads the file ecoinvent publishes instead, which
+        `tests/test_ecoinvent_lcia_public.py` holds."""
+        source = known_source_lists()["ecoinvent-3.13"]
         self.assertIsNotNone(source.lcia)
+        self.assertEqual(
+            source.lcia.adapter, "brightway_flows.integrations.ecoinvent_lcia:fetch"
+        )
         self.assertEqual(
             [method.name for method in source.lcia.methods], [ECOINVENT_METHOD]
         )
         self.assertEqual(source.lcia.methods[0].no_long_term, "EF v3.1 no LT")
         self.assertEqual(
-            source.lcia.factors_path.name, "ecoinvent-3.12-lcia-factors.json"
+            source.lcia.factors_path.name, "ecoinvent-3.13-lcia-factors.json"
         )
+
+    def test_the_two_workbooks_are_two_implementations_of_one_publisher(self):
+        """3.13's decides and 3.12's does not, and the manifests name them apart:
+        two implementations cannot share a name, because `implemented_by` is
+        the field every published factor row carries."""
+        method = ef_method()
+        current = method.implementation("ecoinvent-centre-3-13")
+        previous = method.implementation("ecoinvent-centre")
+        self.assertEqual((current.release, current.factors.source_list, current.decides),
+                         ("3.13", "ecoinvent-3.13", True))
+        self.assertEqual((previous.release, previous.factors.source_list, previous.decides),
+                         ("3.12", "ecoinvent-3.12", False))
+        self.assertEqual(current.factors.stated_method, previous.factors.stated_method)
+        lists = known_source_lists()
+        self.assertEqual(lists["ecoinvent-3.13"].lcia.implemented_by, current.name)
+        self.assertEqual(lists["ecoinvent-3.12"].lcia.implemented_by, previous.name)
 
     def test_which_lists_declare_one(self):
         """EF 3.1's factors are in its own flow records, and no ecoinvent
-        release but 3.12 publishes an implementation.  BAFU's manifest declares
+        release but 3.13 and 3.12 publishes an implementation.  BAFU's manifest declares
         one because its openLCA distribution ships GreenDelta's package -- the
         artifact is BAFU's, the implementation is not, which is what
         `implemented_by` is there to keep apart.
@@ -366,7 +392,8 @@ class TheManifestDeclaresItTestCase(unittest.TestCase):
         self.assertEqual(
             declared,
             {
-                "ecoinvent-3.12": "ecoinvent Centre",
+                "ecoinvent-3.13": "ecoinvent Centre (3.13)",
+                "ecoinvent-3.12": "ecoinvent Centre (3.12)",
                 "bafu-2026-v1": "GreenDelta",
                 "stepwise-2006-1.09": "2.-0 LCA consultants",
             },
@@ -375,19 +402,31 @@ class TheManifestDeclaresItTestCase(unittest.TestCase):
     def test_the_adapter_it_names_is_importable(self):
         from brightway_flows.sources import load_adapter
 
-        source = known_source_lists()["ecoinvent-3.12"]
+        source = known_source_lists()["ecoinvent-3.13"]
         self.assertTrue(callable(load_adapter(source, dotted_path=source.lcia.adapter)))
 
 
 class WhatAFetchWroteTestCase(unittest.TestCase):
-    """The measured numbers, against a file a real fetch produced.
+    """The measured numbers, against a file a real fetch of the 3.13 workbook
+    produced.
 
     Skipped where nothing has fetched: the workbook is 40 MB behind ecoinvent's
-    login and no test may download it.
+    login and no test may download it.  The 3.12 numbers these were first
+    measured against -- 27,415 factors over 7,960 flows, 27,190 rows in the
+    `no LT` sibling -- are now `tests/test_ecoinvent_lcia_public.py`'s, read
+    from the public file, which has no sibling to check.  Twelve factors fewer
+    and 24 flows more than 3.12's: the seven retired `2-Propen-1-ol` rows and
+    the renumbered isomers leave, the 50 rows 3.13 added arrive, and the
+    long-term subtraction drops the same 225 rows in the same two compartments.
     """
 
+    RELEASE = "3.13"
+    FACTORS = 27_403
+    FLOWS = 7_984
+    ROWS_IN_SIBLING = 27_178
+
     def setUp(self):
-        source = known_source_lists()["ecoinvent-3.12"]
+        source = known_source_lists()[f"ecoinvent-{self.RELEASE}"]
         self.path = source.lcia.factors_path
         if not self.path.exists():
             self.skipTest(f"{self.path} has not been fetched here")
@@ -397,13 +436,13 @@ class WhatAFetchWroteTestCase(unittest.TestCase):
     def test_the_counts(self):
         self.assertEqual(self.method["method"], ECOINVENT_METHOD)
         self.assertEqual(len(self.method["categories"]), 25)
-        self.assertEqual(self.method["factor_count"], 27_415)
-        self.assertEqual(self.method["flow_count"], 7_960)
+        self.assertEqual(self.method["factor_count"], self.FACTORS)
+        self.assertEqual(self.method["flow_count"], self.FLOWS)
 
     def test_the_long_term_check(self):
         check = self.method["long_term_check"]
         self.assertEqual(check["checked_against"], "EF v3.1 no LT")
-        self.assertEqual(check["rows_in_sibling"], 27_190)
+        self.assertEqual(check["rows_in_sibling"], self.ROWS_IN_SIBLING)
         self.assertEqual(check["rows_dropped"], 225)
         self.assertEqual(
             [(row["compartment"], row["subcompartment"], row["rows"])
@@ -417,15 +456,15 @@ class WhatAFetchWroteTestCase(unittest.TestCase):
     def test_the_categories_are_the_crosswalks(self):
         self.assertEqual(
             {row["category"] for row in self.method["categories"]},
-            set(ef_method().by_stated_name("ecoinvent-centre")),
+            set(ef_method().by_stated_name("ecoinvent-centre-3-13")),
         )
 
     def test_every_factor_reaches_a_flow_and_a_category(self):
         factors = load_factors(self.path)[ECOINVENT_METHOD]
-        self.assertEqual(len(factors), 27_415)
+        self.assertEqual(len(factors), self.FACTORS)
         self.assertTrue(all(factor.flow_uuid for factor in factors))
         self.assertEqual(
-            {factor.category.name for factor in factors}, set(ef_method().by_stated_name("ecoinvent-centre"))
+            {factor.category.name for factor in factors}, set(ef_method().by_stated_name("ecoinvent-centre-3-13"))
         )
 
     def test_no_no_lt_category_is_published(self):

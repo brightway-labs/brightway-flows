@@ -52,7 +52,7 @@ from brightway_flows.pipeline.review_records import ReviewQueue, Severity
 #: `data/lcia-impact-categories.json` says.
 _METHOD = ef_method()
 JRC_IMPL = _METHOD.reference
-ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
+ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre-3-13")
 CONSENSUS_IMPL = _METHOD.consensus
 IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
 
@@ -455,9 +455,27 @@ class TheCuratedRulingsTestCase(unittest.TestCase):
             str(ReviewQueue.CONTESTED_FACTOR): {JRC, ECOINVENT},
             str(ReviewQueue.PROPOSED_FACTOR): {ECOINVENT},
         }
+        # Four rulings were written about numbers the 3.12 workbook stated and
+        # the 3.13 workbook does not -- sulfur hexafluoride's 24300, sulphuryl
+        # difluoride's 4630 -- so since #459 they apply to nothing.  They name
+        # the workbook that stated the number, `ecoinvent Centre (3.12)`, which
+        # no longer decides: a `ruled_about` claiming the 3.13 workbook stated
+        # 24300 would be a record of something that never happened.  Listed
+        # here so that the next dormant ruling has to be as deliberate.
+        previous = _METHOD.implementation("ecoinvent-centre").name
+        dormant = {
+            "ef|fo-21903c3421b5c942|climate-change",
+            "ef|fo-21903c3421b5c942|climate-change-fossil",
+            "ef|fo-2173e6fdffc50464|climate-change",
+            "ef|fo-2173e6fdffc50464|climate-change-fossil",
+        }
+        self.assertTrue(dormant <= {ruling.item_key for ruling in self.rulings.values()})
         for ruling in self.rulings.values():
             with self.subTest(ruling=ruling.item_key):
-                self.assertEqual(set(ruling.ruled_about), expected[ruling.queue])
+                wanted = expected[ruling.queue]
+                if ruling.item_key in dormant:
+                    wanted = {previous if name == ECOINVENT else name for name in wanted}
+                self.assertEqual(set(ruling.ruled_about), wanted)
                 self.assertTrue(all(ruling.ruled_about.values()))
 
     def test_every_one_cites_the_issue_it_came_from(self):

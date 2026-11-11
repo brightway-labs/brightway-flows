@@ -1,29 +1,35 @@
 """The impact categories of every method, one set of rows per implementation.
 
 There is no correct implementation of an LCIA method.  EF 3.1 as the JRC
-published it, as the ecoinvent Centre implemented it and as GreenDelta shipped it
-for openLCA are three renderings of one method against three flow lists, and none
-is another's mistake; this list publishes all three, transcribed, plus a fourth
-that is its own judgement about what these flows should carry.
-``implemented_by`` is not a concept threaded through a pipeline -- it is a field
-on ``ImpactCategory``, so "four implementations" is literally four sets of
-category rows.
+published it, as the ecoinvent Centre implemented it -- twice, in its 3.13
+workbook and in its 3.12 one -- and as GreenDelta shipped it for openLCA are
+four renderings of one method against their own flow lists, and none is
+another's mistake; this list publishes all four, transcribed, plus a fifth that
+is its own judgement about what these flows should carry.  ``implemented_by`` is
+not a concept threaded through a pipeline -- it is a field on
+``ImpactCategory``, so "five implementations" is literally five sets of category
+rows.
 
 Nothing here names a method or an implementation.  Both are read from the method
-files (``domain.lcia.crosswalk``), so EF 3.1's four implementations are what is
+files (``domain.lcia.crosswalk``), so EF 3.1's five implementations are what is
 loaded today rather than what this module knows about:
 
 | ``implemented_by`` | categories | where its numbers come from |
 |---|---:|---|
 | ``European Commission — JRC`` | 25 | the 25 ILCD method files in ``EF-v3.1.zip`` |
-| ``ecoinvent Centre`` | 25 | ``LCIA Implementation 3.12.xlsx``, method ``EF v3.1`` |
+| ``ecoinvent Centre (3.13)`` | 25 | ``LCIA Implementation 3.13.xlsx``, method ``EF v3.1`` |
+| ``ecoinvent Centre (3.12)`` | 25 | ``EF v3.1_mapped_3.12.csv`` from ecoinvent's public ``lcia`` repository, CC BY-NC 4.0 |
 | ``GreenDelta`` | 25 | ``bafu-greendelta-lcia.zip``, ``EF 3.1 Method (adapted)`` |
 | ``brightway-flows`` | 25 | ours, derived from the deciding two, each factor saying how |
 
-**Three of the four are transcriptions, and only two of those decide anything.**
-GreenDelta's is ingested to be compared and not to be weighed: it is published,
-it is in the difference report, and it is kept out of the consensus derivation.
-Which is which is `decides` on each implementation's row in the method file.
+**Four of the five are transcriptions, and only two of those decide anything.**
+GreenDelta's and the ecoinvent Centre's 3.12 workbook are ingested to be
+compared and not to be weighed: published, in the difference report, and kept
+out of the consensus derivation -- the 3.12 workbook because two statements by
+one publisher are not two votes (#459).  Which is which is `decides` on each
+implementation's row in the method file.  The 3.12 workbook keeps the slug
+``ecoinvent-centre``, which release 1.1.0 published its category ids under; a
+later workbook carries its release in the slug, ``ecoinvent-centre-3-13``.
 
 The categories are built here; the factors are not.  Every category this module
 returns holds an empty ``characterization_factors`` list, and filling it is the
@@ -160,6 +166,11 @@ def _meta(
         meta["method_uuid"] = stated.identifier
     if implementation.release:
         meta["release"] = implementation.release
+    if implementation.licence:
+        # The publisher's terms for the file the numbers came from, where they
+        # are not this list's: a row read from ecoinvent's public mapped file
+        # is CC BY-NC 4.0 whatever the file it is published in says.
+        meta["licence"] = implementation.licence
     # The method name this publisher files the category under, wherever the
     # publisher states it.  ecoinvent's workbook states one on every category row
     # (`EF v3.1` in its `Method` column) and GreenDelta's package states one for

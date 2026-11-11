@@ -284,7 +284,7 @@ about is one the merge has already placed. Its design is
 | Module | Responsibility |
 |---|---|
 | `pipeline` | `characterise`: the order the steps below run in |
-| `categories` | the 138 `ImpactCategory` objects — EF 3.1's 25 categories times four implementations, Stepwise 2006's 19 times two — and the IRI and id each is published under |
+| `categories` | the 163 `ImpactCategory` objects — EF 3.1's 25 categories times five implementations, Stepwise 2006's 19 times two — and the IRI and id each is published under |
 | `sources` | which implementations exist and where each one's factors come from |
 | `matching` | getting a factor onto a consensus flow: which flow, and in what unit |
 | `conversion` | a factor stated per one unit, published per another |
@@ -300,9 +300,13 @@ The factors arrive through the integrations, one adapter per implementation.
 `integrations/ef31.py` already parses EF 3.1's 25 method files as part of
 `extract`, so the JRC's factors ride in on the base list's own flows.
 `integrations/ecoinvent_lcia.py` is the second, reached by `fetch-lcia
-ecoinvent-3.12`: a source list's manifest may declare an `lcia` block naming an
+ecoinvent-3.13`: a source list's manifest may declare an `lcia` block naming an
 adapter and a file, on the same terms as its `inputs.flows`, and
-`sources.fetch_source_lcia` holds it to the path the manifest states. A build
+`sources.fetch_source_lcia` holds it to the path the manifest states.
+`integrations/ecoinvent_lcia_public.py` reads the same implementation one
+release earlier from the mapped file ecoinvent publishes on GitHub, pinned to
+a commit and a digest through `downloads.PinnedFile`, and writes the workbook
+adapter's file format so `lcia/sources.py` reads both with one reader. A build
 reads none of it — `characterise` matches the factors onto the consensus flows
 afterwards, reading the database `build` wrote and writing the `lcia_*` tables into
 it. That order is worth protecting: iterating on a rule about factors costs a
@@ -320,7 +324,7 @@ joined by ours.
 
 `domain/lcia/crosswalk.py` reads one file per LCIA method, listed in its
 `METHOD_FILEPATHS`. `data/lcia-impact-categories.json` is EF 3.1's: the method,
-its four implementations and where each one's factors are read from, and its 25
+its five implementations and where each one's factors are read from, and its 25
 categories with every implementation's name for each under that implementation's
 slug. `data/stepwise-2006-impact-categories.json` is the second method, the same
 shape and no module changes; nothing under `lcia/` names a method or an

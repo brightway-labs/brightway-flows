@@ -44,7 +44,7 @@
         "flow_name": "Peat, Horticulture",
         "context_display": "Resource → Biotic",
         "category": "Resource use, fossils",
-        "implemented_by": "ecoinvent Centre"
+        "implemented_by": "ecoinvent Centre (3.13)"
       },
       "expect": {
         "exists": true,

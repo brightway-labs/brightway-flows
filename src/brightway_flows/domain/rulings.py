@@ -476,7 +476,7 @@ VOCABULARIES: tuple[CuratedFile, ...] = (
     CuratedFile(
         "lcia-impact-categories.json",
         "brightway_flows.domain.lcia.crosswalk",
-        "EF 3.1: its three implementations, where each one's factors are read "
+        "EF 3.1: its implementations, where each one's factors are read "
         "from, and its 25 impact categories -- what the JRC calls each one, "
         "what ecoinvent calls it under EF v3.1 and under the EF v3.0 that "
         "ecoinvent 3.8 still ships, and the unit and area of protection it is "

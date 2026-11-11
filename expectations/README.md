@@ -166,10 +166,11 @@ published is the whole question (#415).
 
 **About a `factor`**: `exists`, `count`, and `amount` — the number itself.
 
-Four implementations of EF 3.1 are published side by side: the JRC's, which is
-the method's own publisher's; the ecoinvent Centre's; GreenDelta's, which is
-published to be compared with and decides nothing; and this list's, which takes
-one of the deciding two where they disagree. They are separate facts about one
+Five implementations of EF 3.1 are published side by side: the JRC's, which is
+the method's own publisher's; the ecoinvent Centre's 3.13 workbook, as
+`ecoinvent Centre (3.13)`; its 3.12 workbook as `ecoinvent Centre (3.12)` and GreenDelta's,
+which are published to be compared with and decide nothing; and this list's,
+which takes one of the deciding two where they disagree. They are separate facts about one
 flow, which is why `implemented_by` selects rather than being claimed — *the
 JRC says 1.3532E-06 for vanadium in air* and *ecoinvent says 1.3532E-05* are
 both true, and an expectation that could only name the flow would have to choose

@@ -12,5 +12,16 @@
     "manual_additions": "ecoinvent-unmatched-pesticide-groupings.json",
     "additional_flows": "ecoinvent-3.13-additional-flows.json",
     "match_overrides": "ecoinvent-match-overrides.json"
+  },
+  "lcia": {
+    "adapter": "brightway_flows.integrations.ecoinvent_lcia:fetch",
+    "factors": "ecoinvent-3.13-lcia-factors.json",
+    "implemented_by": "ecoinvent Centre (3.13)",
+    "methods": [
+      {
+        "name": "EF v3.1",
+        "no_long_term": "EF v3.1 no LT"
+      }
+    ]
   }
 }

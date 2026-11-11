@@ -19,7 +19,7 @@ Figures are from the build of 1 September 2026, run `20260901T0451332605450000`.
 | role | who | what it means to the method |
 |---|---|---|
 | **reference** | the JRC for EF 3.1; 2.-0 LCA consultants for Stepwise 2006 | the method's own publisher. Exactly one per method. Always decides |
-| **transcription** | the ecoinvent Centre's EF 3.1; GreenDelta's EF 3.1 | somebody else's rendering of the same method, against their own flow list |
+| **transcription** | the ecoinvent Centre's EF 3.1, from its 3.13 workbook and again from its 3.12 one; GreenDelta's EF 3.1 | somebody else's rendering of the same method, against their own flow list |
 | **consensus** | this list | ours, derived from the deciding implementations. Never decides, because it is the thing being decided |
 
 The role is what the pipeline branches on — never the name. A factor only the
@@ -52,17 +52,50 @@ never evidence for a number of ours, never a candidate in a queue, and changes n
 factor this list states. What it is for is putting a third reading of EF 3.1 in
 the difference report, where a disagreement is a question somebody can look at.
 
+The ecoinvent Centre's 3.12 workbook is the second such case
+([#459](https://github.com/brightway-labs/brightway-flows/issues/459)). When
+3.13's workbook became the one that decides, as `ecoinvent Centre (3.13)`,
+3.12's stayed in the file as an implementation of its own,
+`ecoinvent Centre (3.12)`, marked `decides: false`: the publisher's current
+statement is the 3.13 workbook, and two statements by one publisher are not two
+votes. What it is for is the difference report, where a number that moved
+between the two releases is a row rather than a memory.
+
+Each workbook is its own implementation, and the name says which. The 3.12
+workbook keeps the identifier segment `ecoinvent-centre`: release 1.1.0
+published its 25 categories under it, a category's identifier is a hash of
+that segment, and a method linked to those identifiers keeps working. Every
+later workbook carries its release in the segment and in the name,
+`ecoinvent-centre-3-13` and `ecoinvent Centre (3.13)`, so a reader holding a
+factor row can tell which workbook stated it without opening this page.
+
+The two are also read from different places, and that matters for who may
+hold the numbers. The 3.13 workbook sits behind ecoinvent's login, and only a
+licence holder can fetch it. The 3.12 implementation is read from the file
+ecoinvent publishes at [github.com/ecoinvent/lcia](https://github.com/ecoinvent/lcia),
+`EF v3.1_mapped_3.12.csv`, which states the workbook's 27,415 EF v3.1 factors
+at the same numbers and 3,212 cells of `0.0` where the workbook has no row,
+dropped on the way in. Anyone can regenerate that implementation with
+`fetch-lcia ecoinvent-3.12`, and its terms are the publisher's, CC BY-NC 4.0,
+not this list's ODbL: the implementation's row states the licence, and every
+category of `ecoinvent Centre (3.12)` carries it as `meta.licence` so a reader
+of the published rows sees it where the numbers are.
+
 So for EF 3.1 the flowchart's first question is asked of two voices, the JRC's
 and the ecoinvent Centre's; for Stepwise 2006, of one.
 
+Figures from the six-list build of a4d92fd, characterised on 2026-11-05 with
+the 3.13 workbook deciding:
+
 | implementation | role | decides | factors | flows reached |
-|---|---|---|---:|---:|
-| European Commission — JRC | reference | yes | 318,774 | 88,907 |
-| ecoinvent Centre | transcription | yes | 27,290 | 7,925 |
-| GreenDelta | transcription | **no** | 25,258 | 1,507 |
-| brightway-flows | consensus | no | 323,874 | — |
-| 2.-0 LCA consultants (Stepwise 2006) | reference | yes | 9,622 | 6,006 |
-| brightway-flows (Stepwise 2006) | consensus | no | 9,622 | — |
+|---|---|---:|---:|---:|
+| European Commission — JRC | reference | yes | 318,766 | 88,903 |
+| ecoinvent Centre (3.13) | transcription | yes | 27,342 | 7,965 |
+| ecoinvent Centre (3.12) | transcription | **no** | 27,346 | 7,939 |
+| GreenDelta | transcription | **no** | 25,261 | 1,510 |
+| brightway-flows | consensus | no | 327,263 | — |
+| 2.-0 LCA consultants (Stepwise 2006) | reference | yes | 9,623 | 6,007 |
+| brightway-flows (Stepwise 2006) | consensus | no | 18,939 | — |
 
 ## Where a voice's numbers come from
 
@@ -72,8 +105,9 @@ it is one of three routes:
 - **published flows** — the implementation's own list is the base list, so its
   factors are already on consensus flows. The JRC's.
 - **a source list** — the factors name somebody else's flows, and the merge says
-  which consensus flow each became. The ecoinvent Centre's workbook names
-  ecoinvent flows; GreenDelta's package names the ecoinvent identifiers it was
+  which consensus flow each became. The ecoinvent Centre's workbook and its
+  public mapped file both name ecoinvent flows, the workbook by name and
+  compartment and the file by UUID; GreenDelta's package names the ecoinvent identifiers it was
   built against, and walks whichever release has them; Stepwise's SimaPro export
   names its own rows.
 - **derived** — ours, from the rest.
@@ -90,7 +124,7 @@ category called *Acidification*, counted in a different unit from a different
 model, and it is not EF's; no category, no ruling, no approval and no queue
 crosses from one method to the other, and a method's contradiction model
 ([next page](model.md)) is that method's alone. What the two share is the
-flowchart. EF 3.1 with four implementations and Stepwise 2006 with one run
+flowchart. EF 3.1 with five implementations and Stepwise 2006 with one run
 through the same questions in the same order — and the convention that fills a
 blank ([page 5](blanks.md)) is written once, about our contexts, for both.
 
