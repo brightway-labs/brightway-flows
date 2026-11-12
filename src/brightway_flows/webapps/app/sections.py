@@ -172,6 +172,18 @@ SECTIONS: tuple[Section, ...] = (
         group="build",
         summary="Waiting for a person",
     ),
+    #: After the queue, because it is the other end of the same work: the queue
+    #: is what is waiting for a decision, and a case is what a decision claimed
+    #: it would make true -- and whether the recorded build agrees.
+    Section(
+        key="cases",
+        label="Cases",
+        href="/cases/",
+        blurb="What each fix claimed it would make true of the list, issue by "
+              "issue, and whether the last recorded build does it.",
+        group="build",
+        summary="Claims, graded against a build",
+    ),
     Section(
         key="merge",
         label="Merge",

@@ -43,7 +43,7 @@ class SectionGroupTestCase(unittest.TestCase):
         self.assertEqual([s["key"] for s in groups["browse"]],
                          ["flows", "substances", "factors", "checks"])
         self.assertEqual([s["key"] for s in groups["build"]],
-                         ["overview", "scores", "queue", "merge"])
+                         ["overview", "scores", "queue", "cases", "merge"])
 
     def test_every_browse_and_build_section_has_a_summary(self):
         """The panel gives every entry, the curators' tools too, one line saying
@@ -53,6 +53,18 @@ class SectionGroupTestCase(unittest.TestCase):
                 continue
             with self.subTest(section=section.key):
                 self.assertTrue(section.summary)
+
+    def test_every_browse_and_build_section_has_an_icon(self):
+        """The panel draws nothing for a key it has no icon for, so a section
+        added without one sits in the list with a gap where the others have a
+        mark -- which is how Cases first shipped."""
+        masthead = (Path(__file__).resolve().parent.parent / "src" / "brightway_flows"
+                    / "webapps" / "app" / "templates" / "partials" / "masthead.html").read_text()
+        for section in SECTIONS:
+            if section.group == "top":
+                continue
+            with self.subTest(section=section.key):
+                self.assertIn(f'key == "{section.key}" %}}<', masthead)
 
     def test_docs_lives_at_docs_not_at_the_root(self):
         """`/` becomes the homepage in step 8; the section is `/docs/` now."""

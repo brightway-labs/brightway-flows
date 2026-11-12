@@ -1,0 +1,74 @@
+{#
+  One expectations file.
+
+  The description is the file's own and is prose written for a reader, so it is
+  the lede.  Each claim then says what it is about in the file's own selectors
+  -- a list and a row name, a registry number -- because that is what a reader
+  takes to the flow pages or to their own copy of the list.
+#}
+{% extends "layout.html" %}
+{% import "partials/case_state.html" as s %}
+{% set page_title = case.title %}
+{% set active_section = "cases" %}
+
+{% block content %}
+<header class="page__header">
+  <p class="muted"><a href="{{ url_for('cases.index') }}">Cases</a></p>
+  <h1>{{ case.title }} {{ s.badge(case.state, meanings) }}</h1>
+  <p class="page__lede">{{ case.summary }}</p>
+</header>
+
+<section class="section">
+  <dl class="facts">
+    <dt>Issue</dt>
+    <dd>
+      {% for issue in case.issues %}
+      <a class="mono" href="{{ repository_url }}/issues/{{ issue }}">#{{ issue }}</a>
+      {% else %}<span class="muted">None: an invariant pinned without having been a bug first.</span>
+      {% endfor %}
+    </dd>
+    <dt>Stated in</dt>
+    <dd>
+      <a class="mono" href="{{ repository_url }}/blob/main/expectations/{{ case.filename }}">expectations/{{ case.filename }}</a>
+    </dd>
+    <dt>Graded against</dt>
+    <dd>{{ s.recorded_build(recorded) }}</dd>
+  </dl>
+</section>
+
+<section class="section">
+  <div class="section__header">
+    <h2>Claims</h2>
+    <span class="muted">{{ case.claims | length }}</span>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">What should be true</th>
+          <th scope="col">State</th>
+          <th scope="col">About</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for claim in case.claims %}
+        <tr id="{{ claim.id }}">
+          <td>
+            {{ claim.title }}
+            <div class="muted mono">{{ claim.id }}</div>
+            {% if claim.comment %}<p class="muted">{{ claim.comment }}</p>{% endif %}
+          </td>
+          <td>{{ s.badge(claim.state, meanings) }}</td>
+          <td>
+            <span class="mono">{{ claim.kind }}</span>
+            {% for key, value in claim.subject.items() %}
+            <div class="muted">{{ key }}: <span class="mono">{{ value | short_value }}</span></div>
+            {% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

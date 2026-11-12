@@ -459,7 +459,7 @@ class LinkIntegrityTestCase(unittest.TestCase):
         self.assertEqual(
             keys,
             ["docs", "download", "about", "flows", "substances", "factors", "checks",
-             "overview", "scores", "queue", "merge"],
+             "overview", "scores", "queue", "cases", "merge"],
         )
         self.assertEqual(
             [section["key"] for group in navigation().values() for section in group],

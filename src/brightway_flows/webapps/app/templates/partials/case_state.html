@@ -1,0 +1,28 @@
+{#
+  A claim's or a case's state as a badge.
+
+  Four colours for six states, by what a reader does about each: a claim the
+  build contradicts is the only kind that is wrong, the ones waiting on work or
+  on a merge are a queue, and one written after the recorded build is only news.
+#}
+{% macro badge(state, meanings) %}
+{% set kind = {'unmet': 'blocking', 'error': 'blocking', 'unresolved': 'review',
+               'pending': 'review', 'unrecorded': 'info', 'met': 'ok'}[state.value] %}
+<span class="tag tag--{{ kind }}" title="{{ meanings[state] }}">{{ state.value }}</span>
+{% endmacro %}
+
+{#
+  The build the statuses were recorded against, named rather than implied: a
+  status is only true of the run that produced it.
+#}
+{% macro recorded_build(recorded) %}
+{% if recorded %}
+Statuses are those of the build recorded on
+{{ recorded.timestamp | timestamp }}
+(run <span class="mono">{{ recorded.pipeline_run_id }}</span>{% if recorded.sources %},
+merging {{ recorded.sources | join(", ") }}{% endif %}).
+{% else %}
+No build has been recorded in <code>expectations/baseline.json</code>, so no
+claim has a status yet.
+{% endif %}
+{% endmacro %}
