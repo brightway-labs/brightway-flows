@@ -28,6 +28,7 @@ from pathlib import Path
 
 from flask import Flask, render_template
 
+from brightway_flows.assessment.expectations import EXPECTATIONS_DIR
 from brightway_flows.filesystem import CONSENSUS_DB_FILEPATH, DATA_DIR
 from brightway_flows.webapps.app import db, documentation, filters
 from brightway_flows.webapps.app.publication import PUBLICATION
@@ -42,6 +43,7 @@ from brightway_flows.webapps.app.views import (
     about,
     agrochemicals,
     browse,
+    cases,
     changes,
     checks,
     contexts,
@@ -73,12 +75,14 @@ def create_app(
     database_path: Path | None = None,
     docs_path: Path | None = None,
     data_dir: Path | None = None,
+    expectations_path: Path | None = None,
 ) -> Flask:
     """Build the application.
 
     *database_path* defaults to the platform data directory, *docs_path* to the
-    `docs/` tree of the checkout this package is running from, and *data_dir* to
-    the directory the database is in.  All three are parameters so a test can
+    `docs/` tree of the checkout this package is running from, *data_dir* to
+    the directory the database is in, and *expectations_path* to the checkout's
+    `expectations/`.  All four are parameters so a test can
     point an app at a fixture without setting an environment variable.  Nothing
     is read here: a missing database is a page, not a start-up failure, because
     the app is how you find out that the pipeline has not been run, and the same
@@ -104,10 +108,12 @@ def create_app(
         or documentation.default_root(_HERE)
     )
 
+    app.config["CONSENSUS_EXPECTATIONS_PATH"] = Path(expectations_path or EXPECTATIONS_DIR)
+
     app.teardown_appcontext(db.close_connection)
     filters.register(app)
     for section in (overview, flows, substances, agrochemicals, land, water,
-                    particles, elements, factors, scores, checks, queue, merge, changes,
+                    particles, elements, factors, scores, checks, queue, cases, merge, changes,
                     contexts, docs, browse, download, about, search, home):
         app.register_blueprint(section.blueprint)
     # The flow-object pages answer to their old `/substances` addresses too.
