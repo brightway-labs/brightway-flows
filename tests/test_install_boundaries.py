@@ -92,9 +92,14 @@ BASE = {
     "tqdm",
 }
 
-#: Runs first in the child: note each watched package the first time anything
-#: asks for it, and the nearest of our own modules on the stack. Returning
-#: `None` hands the import on to the real finders.
+#: Runs first in the child: note each watched package the first time one of our
+#: own modules asks for it. Returning `None` hands the import on to the real
+#: finders.
+#:
+#: Only an import one of our modules makes itself. A package that is installed
+#: gets imported by others that can use it -- structlog draws its tracebacks
+#: with rich, and rich with pygments, when they are there -- and that is not a
+#: need of ours: in an install without them it does not happen.
 _RECORDER = """
 import json, os, sys
 
@@ -107,14 +112,11 @@ class _Recorder:
         top = name.partition(".")[0]
         if top in WATCHED and top not in SEEN:
             frame = sys._getframe(1)
-            importer = "?"
-            while frame is not None:
-                module = frame.f_globals.get("__name__", "")
-                if module.startswith("brightway_flows"):
-                    importer = module
-                    break
+            while frame is not None and "importlib" in frame.f_code.co_filename:
                 frame = frame.f_back
-            SEEN[top] = importer
+            importer = frame.f_globals.get("__name__", "") if frame else ""
+            if importer.startswith("brightway_flows"):
+                SEEN[top] = importer
         return None
 
 
@@ -231,9 +233,6 @@ class ThePlainInstallAnswersAQuestionTestCase(_Boundary):
             self.report["result"], {"matched": True, "flow": "ef-chlorobenzene-rural"}
         )
 
-    # Step 2 and 3 of the split: the matcher's import path is cut, then the
-    # packages move to the `pipeline` extra.
-    @unittest.expectedFailure
     def test_it_imports_nothing_the_plain_install_lacks(self):
         self.assertEqual(
             self.report["seen"],
