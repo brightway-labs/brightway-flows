@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "description": "Three source rows name, under an ordinary second name, a substance EF 3.1 already ships with its registry number, and each mints a second copy of it. BAFU's `P-cyanophenol` is 4-cyanophenol, 767-00-0; it is one of the twenty-seven names #103 listed and one of seven that still mint on 4e2bec7, and it is the one a registry record names exactly. Stepwise's `Amylene, beta-cis-` and `Amylene, trans-beta-` are cis- and trans-2-pentene, 627-20-3 and 646-04-8. None of the three rows ships a number, no sibling row carries one, and Common Chemistry lists each spelling under the number: `p-Cyanophenol`, `cis-β-Amylene`, `trans-β-Amylene`. EF 3.1 ships the same spellings as synonyms on the three targets. Measured on a build of 4e2bec7 that merged BAFU 2026 v1, Stepwise 2006 and AGRIBALYSE 3.2 (run of 13 November 2026), and on release 1.1.0: all three are `created`. The minted P-cyanophenol carries nothing; in release 1.1.0 the two minted amylenes carry Stepwise's own two factors and none of EF's. The fix writes the number on the row, as #103 did for nineteen names.",
+  "expectations": [
+    {
+      "id": "0471-bafu-p-cyanophenol-reaches-4-cyanophenol",
+      "issue": 471,
+      "title": "BAFU's `P-cyanophenol` lands on 4-Cyanophenol",
+      "subject": {
+        "kind": "source_row",
+        "list": "bafu",
+        "cas": "767-00-0"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "4-Cyanophenol",
+        "row_count": 1
+      },
+      "comment": "BAFU row 64eae87e, emissions to soil / industrial, kg, ships no registry number. On the build of 4e2bec7 it minted fo-17e6cc196130ee14, a substance with no number, no formula and no factors, beside the `4-Cyanophenol` EF 3.1 ships under 767-00-0 in thirteen compartments. Common Chemistry's record for 767-00-0 lists `p-Cyanophenol`. Selected by the number the fix states and not by name, for the reason 0512 gives: a row that joins a substance no longer answers to the vendor's spelling. No other BAFU row carries this number, so the count is one."
+    },
+    {
+      "id": "0471-stepwise-cis-beta-amylene-reaches-cis-2-pentene",
+      "issue": 471,
+      "title": "Stepwise's `Amylene, beta-cis-` lands on Cis-2-pentene",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "cas": "627-20-3"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Cis-2-pentene",
+        "row_count": 1
+      },
+      "comment": "Stepwise row 81b5295d, Air / (unspecified), kg, ships no registry number. On the build of 4e2bec7 it minted fo-d0b5a50cf00c3068, typed `unclassified`. β-Amylene is 2-pentene, and Common Chemistry's record for 627-20-3, `cis-2-Pentene`, lists `cis-β-Amylene`. This is not the `Amylene` of 25377-72-4, the isomer mixture this list publishes as `Pentylene`: the row names the position and the geometry, and the mixture's record names neither. No other Stepwise row carries this number."
+    },
+    {
+      "id": "0471-stepwise-trans-beta-amylene-reaches-trans-2-pentene",
+      "issue": 471,
+      "title": "Stepwise's `Amylene, trans-beta-` lands on Trans-2-pentene",
+      "subject": {
+        "kind": "source_row",
+        "list": "stepwise",
+        "cas": "646-04-8"
+      },
+      "expect": {
+        "outcome": "matched",
+        "basis": "cas",
+        "target_name": "Trans-2-pentene",
+        "row_count": 1
+      },
+      "comment": "Stepwise row 5b715bff, Air / (unspecified), kg, ships no registry number. On the build of 4e2bec7 it minted fo-9d41c9c0359e4d15, typed `unclassified`. Common Chemistry's record for 646-04-8, `trans-2-Pentene`, lists `trans-β-Amylene`. The twin of the claim above, stated separately because the two rows carry two numbers. No other Stepwise row carries this number."
+    }
+  ]
+}

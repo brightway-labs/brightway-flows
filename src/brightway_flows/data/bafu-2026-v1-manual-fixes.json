@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Manual corrections for BAFU 2026 v1 elementary flows, applied to the extracted records before anything reads them. Flows are matched on the field that names the substance where the correction is about the substance: BAFU has no per-flow identifier of its own, and it repeats a substance once per subcompartment, so a rule keyed on one row would go stale the moment a subcompartment is added.\n\nNineteen of these state a registry number BAFU left off a row whose substance this list already publishes (#103). Each one is a substance under two ordinary names -- `Arsine` for hydrogen arsenide, `Methyl Mercaptan` for methanethiol -- where no pattern connects the spellings and no rule could derive one, so the number is what says they are the same thing. Two of them are ties a rule could not have broken even in principle: `1-Pentanol` reaches both pentan-1-ol and the isomer-unspecified `Pentanol`, and `Nitrogen Monoxide` reaches both nitric oxide and the NOx aggregate, which carry different characterisation factors. Writing the number moves the row onto `basis=cas` and off the name evidence entirely, which is the point: a number is the strongest thing a row can carry, and a wrong one is silent, so each comment names the substance it asserts and the copy the row minted without it.",
+  "description": "Manual corrections for BAFU 2026 v1 elementary flows, applied to the extracted records before anything reads them. Flows are matched on the field that names the substance where the correction is about the substance: BAFU has no per-flow identifier of its own, and it repeats a substance once per subcompartment, so a rule keyed on one row would go stale the moment a subcompartment is added.\n\nNineteen of these state a registry number BAFU left off a row whose substance this list already publishes (#103, and `P-cyanophenol` in #471). Each one is a substance under two ordinary names -- `Arsine` for hydrogen arsenide, `Methyl Mercaptan` for methanethiol -- where no pattern connects the spellings and no rule could derive one, so the number is what says they are the same thing. Two of them are ties a rule could not have broken even in principle: `1-Pentanol` reaches both pentan-1-ol and the isomer-unspecified `Pentanol`, and `Nitrogen Monoxide` reaches both nitric oxide and the NOx aggregate, which carry different characterisation factors. Writing the number moves the row onto `basis=cas` and off the name evidence entirely, which is the point: a number is the strongest thing a row can carry, and a wrong one is silent, so each comment names the substance it asserts and the copy the row minted without it.",
   "fixes": [
     {
       "match": {
@@ -451,6 +451,17 @@
         "106-44-5"
       ],
       "comment": "`p-` and `para-` are the same positional prefix, and 4-methylphenol is one substance. The list publishes it as `Para-cresol` and already answers to `4-Cresol`, `4-Methylphenol` and `p-Kresol`. BAFU ships no registry number under this name and no sibling row carries one, so nothing upstream can supply it and the name is the only evidence there is. So the row minted fo-21b92ebb29008322: a second substance with no registry number and no characterisation factors, sitting beside the `Para-cresol` this list already publishes under 106-44-5. Measured on the build of b03c940bae73 (run 58da3bd39637). With the number written the row matches on `basis=cas`, like every other BAFU row whose substance the vendor did number. (#103)"
+    },
+    {
+      "match": {
+        "name": "P-cyanophenol"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "767-00-0"
+      ],
+      "comment": "`p-` is the 4- position, and 4-hydroxybenzonitrile is one substance. The list publishes it as `4-Cyanophenol`, from EF 3.1, and Common Chemistry's record for 767-00-0 lists `p-Cyanophenol` among its names. BAFU ships no registry number under this name and no sibling row carries one, so nothing upstream can supply it and the name is the only evidence there is. So the row minted fo-17e6cc196130ee14: a second substance with no registry number and no characterisation factors, sitting beside the `4-Cyanophenol` this list already publishes under 767-00-0. It is one of the twenty-seven names #103 listed, and #103's numbers did not include it. Measured on the build of 4e2bec7bfdfd (13 November 2026) and on release 1.1.0. With the number written the row matches on `basis=cas`, like every other BAFU row whose substance the vendor did number. (#471)"
     },
     {
       "match": {
