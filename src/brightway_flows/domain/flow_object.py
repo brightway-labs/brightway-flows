@@ -11,6 +11,16 @@ from brightway_flows.domain.vocabulary import (
     SKOS_DEFINITION_IRI,
 )
 
+#: Property key recording which base-list flows an element object was matched
+#: to.  Published in `flow_objects.properties` and read by the element-coverage
+#: review table, so it names the base list of the day it was minted rather than
+#: the base list: renaming it is a data migration, not a refactor (#14).
+#:
+#: Here beside the record whose `properties` it keys, rather than with the code
+#: that writes it in `flow_layers.elements`: the review application reads the
+#: key, and that module fetches from PubChem.
+BASE_REFERENCES_PROPERTY = "ef31_references"
+
 
 def stable_flow_object_id(prefix: str, basis: str) -> str:
     """A flow object identifier derived from what makes the object that object.
