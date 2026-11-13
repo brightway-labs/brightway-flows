@@ -239,9 +239,9 @@ def apply_additional_flows(
         looks decided and is not.
     """
     # Imported here, not at module scope: `sources` imports this module, and
-    # importing a `transformers` submodule runs `transformers/__init__`, which
-    # reaches `pipeline` and back into `sources`.  Same cycle `load_flows`
-    # already breaks this way for `pipeline.loading`.
+    # `transformers.unit_normalization` imports `pipeline`, which reaches back
+    # into `sources`.  Same cycle `load_flows` already breaks this way for
+    # `pipeline.loading`.
     from brightway_flows.transformers.unit_normalization import (
         build_units_index,
         resolve_unit_notation,

@@ -983,7 +983,7 @@ It is not a copy of the input row: it holds what would otherwise be destroyed.
 
 `_sources` maps a field name to the transformer that last wrote it. Unlike the
 other two it has no reader: `apply_transformers` writes it
-(`pipeline/engine.py`), and nothing in `src/` reads it back — not the merge, not
+(`pipeline/transforming.py`), and nothing in `src/` reads it back — not the merge, not
 the export, not the webapp. The only code that looks at it is the test asserting
 it gets written.
 

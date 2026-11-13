@@ -332,7 +332,7 @@ Points to observe:
 - Return changes; do not mutate flows. Mutating bypasses the change log, and
   `AGENTS.md` requires that data changes carry structured provenance.
 - Always set `comment`. It is what a reviewer sees in the webapp.
-- Register the class in `transformers/__init__.py`; order matters and is
+- Register the class in `transformers/chain.py`; order matters and is
   documented in [Harmonisation steps](harmonisation-steps.md).
 - **Read by attribute, never `.get()`.** Records have no `get()`, so
   `flow.cas_numbrs` raises immediately instead of quietly evaluating to `None`.

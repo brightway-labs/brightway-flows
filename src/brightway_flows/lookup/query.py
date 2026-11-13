@@ -24,6 +24,8 @@ See ``plans/lookup-api.md`` §3.1, §3.5 and §3.6.
 
 from __future__ import annotations
 
+import importlib
+
 from dataclasses import dataclass, field, replace
 from collections.abc import Sequence
 from typing import Any
@@ -49,7 +51,7 @@ from brightway_flows.domain.flow import Flow, ProvidedValues
 from brightway_flows.domain.units import build_units_index, resolve_unit_notation
 from brightway_flows.merge.matching import _source_labels
 from brightway_flows.merge.state import SourceRow
-from brightway_flows.pipeline.engine import apply_transformers
+from brightway_flows.pipeline.transforming import apply_transformers
 from brightway_flows.filesystem import SIMAPRO_LINEAGE_FIXES_FILEPATH
 from brightway_flows.manual_fixes import UNIT_CONVERSION_KEY, apply_manual_fixes
 from brightway_flows.simapro_names import (
@@ -58,7 +60,6 @@ from brightway_flows.simapro_names import (
     prepare_row_for_matching,
 )
 from brightway_flows.sources import SourceList
-from brightway_flows.transformers import DEFAULT_TRANSFORMERS
 
 logger = structlog.get_logger(__name__)
 
@@ -582,6 +583,41 @@ def query_flow(query: FlowQuery, *, source: SourceList) -> Flow:
     )
 
 
+def _step_class(name: str) -> type:
+    """The class of the step called *name*, from the module of the same name.
+
+    Not looked up in `DEFAULT_TRANSFORMERS`, although that is the list these
+    steps are a subset of: reading it imports every step of the chain, and with
+    them the packages that fetch from Common Chemistry and PubChem and read a
+    structure, none of which a plain install has. Each step here lives in the
+    module named after it, so that is where it is taken from, and
+    `tests/test_lookup_matcher.py` checks that what this finds is the class the
+    chain runs, in the chain's order.
+    """
+    try:
+        module = importlib.import_module(f"brightway_flows.transformers.{name}")
+    except ModuleNotFoundError as error:
+        if error.name != f"brightway_flows.transformers.{name}":
+            raise
+        module = None
+    for candidate in vars(module).values() if module is not None else ():
+        if (
+            isinstance(candidate, type)
+            and candidate.__module__ == module.__name__
+            and getattr(candidate, "name", None) == name
+        ):
+            return candidate
+    # A step renamed or dropped from the chain, which is a real change to what
+    # a build does to a row -- so it is a failure here rather than a lookup
+    # that quietly enriches less than the build it claims to reproduce.
+    raise ValueError(
+        f"`DEFAULT_TRANSFORMERS` has no step called {name!r} in a module of "
+        "that name. The lookup runs a named subset of the chain, so a step that "
+        "is renamed or removed has to be renamed or removed here too -- see "
+        "`.claude/skills/adding-a-transformer`."
+    )
+
+
 @dataclass
 class OfflineEnrichment:
     """The steps of the chain that can run on one row, offline, in order.
@@ -597,22 +633,9 @@ class OfflineEnrichment:
         wanted = OFFLINE_TRANSFORMER_NAMES + (
             (CHEBI_TRANSFORMER_NAME,) if chebi else ()
         )
-        by_name = {cls_.name: cls_ for cls_ in DEFAULT_TRANSFORMERS}
-        missing = [name for name in wanted if name not in by_name]
-        if missing:
-            # A step renamed or dropped from the chain, which is a real change
-            # to what a build does to a row -- so it is a failure here rather
-            # than a lookup that quietly enriches less than the build it claims
-            # to reproduce.
-            raise ValueError(
-                f"`DEFAULT_TRANSFORMERS` has no step called {missing}. The lookup "
-                "runs a named subset of the chain, so a step that is renamed or "
-                "removed has to be renamed or removed here too -- see "
-                "`.claude/skills/adding-a-transformer`."
-            )
         transformers = []
         for name in wanted:
-            transformer = by_name[name]()
+            transformer = _step_class(name)()
             transformer.setup()
             transformers.append(transformer)
         return cls(transformers=transformers)

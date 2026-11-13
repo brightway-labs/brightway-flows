@@ -91,7 +91,7 @@ transformer's name, and nothing should start.
 
 ## 4. Register it in three places
 
-All in `src/brightway_flows/transformers/__init__.py`:
+All in `src/brightway_flows/transformers/chain.py`:
 
 1. the import,
 2. the entry in `DEFAULT_TRANSFORMERS`, at the position decided in step 2,

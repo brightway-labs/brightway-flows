@@ -7,6 +7,12 @@ calling it.  `merge_source_list` takes the `SourceList`, which is the identity
 the rest of the merge uses; import it from `brightway_flows.merge.pipeline`.
 """
 
-from brightway_flows.merge.pipeline import merge_source_list
+from brightway_flows._lazy import lazy_exports
 
-__all__ = ["merge_source_list"]
+#: Imported when first used: `merge.matching` and `merge.store` are read by the
+#: lookup and by the review application, neither of which runs a merge.
+_EXPORTS = {"merge_source_list": "pipeline"}
+
+__getattr__, __dir__ = lazy_exports(__name__, _EXPORTS)
+
+__all__ = sorted(_EXPORTS)

@@ -519,11 +519,40 @@ class TheOfflineEnrichmentTestCase(_Matcher):
         a lookup that quietly enriches less than the build it claims to
         reproduce."""
         with mock.patch(
-            "brightway_flows.lookup.query.DEFAULT_TRANSFORMERS", []
+            "brightway_flows.lookup.query.OFFLINE_TRANSFORMER_NAMES",
+            ("bootstrap_labels", "a_step_nobody_wrote"),
         ):
             with self.assertRaises(ValueError) as caught:
                 OfflineEnrichment.build()
         self.assertIn("DEFAULT_TRANSFORMERS", str(caught.exception))
+        self.assertIn("a_step_nobody_wrote", str(caught.exception))
+
+    def test_a_module_that_holds_no_step_of_its_name_is_a_failure_too(self):
+        """`pubchem` is a module of the chain, and the step in it is called
+        `pubchem_enrichment`: asking for the module's name finds no step."""
+        with mock.patch(
+            "brightway_flows.lookup.query.OFFLINE_TRANSFORMER_NAMES", ("chain",)
+        ):
+            with self.assertRaises(ValueError):
+                OfflineEnrichment.build()
+
+    def test_each_step_is_the_class_the_chain_runs_in_the_chain_s_order(self):
+        """The lookup takes each step from the module named after it, so that
+        asking a question does not import the whole chain. That is only the
+        same thing as taking it from `DEFAULT_TRANSFORMERS` while each of them
+        is in the chain, under that name, in this order -- which is checked
+        here, where the whole chain can be imported."""
+        from brightway_flows.lookup.query import _step_class
+        from brightway_flows.transformers import DEFAULT_TRANSFORMERS
+
+        names = OFFLINE_TRANSFORMER_NAMES + (CHEBI_TRANSFORMER_NAME,)
+        positions = []
+        for name in names:
+            with self.subTest(step=name):
+                step = _step_class(name)
+                self.assertIn(step, DEFAULT_TRANSFORMERS)
+                positions.append(DEFAULT_TRANSFORMERS.index(step))
+        self.assertEqual(positions, sorted(positions))
 
     def test_a_synonym_the_caller_supplied_reaches_the_label_index(self):
         """`bootstrap_labels` purges `synonyms` without moving them anywhere, so

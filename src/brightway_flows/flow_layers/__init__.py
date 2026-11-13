@@ -18,8 +18,14 @@ working.
 siblings in `brightway_flows.domain.elementary_flow`.
 """
 
+from brightway_flows._lazy import lazy_exports
 from brightway_flows.domain.elementary_flow import ElementaryFlow
-from brightway_flows.flow_layers.layering import resolve_flow_layers
+
+#: Imported when first used: `layering` reaches the element and ion fetchers,
+#: and `flow_layers.land_hierarchy` is read by the lookup, which fetches nothing.
+_EXPORTS = {"resolve_flow_layers": "layering"}
+
+__getattr__, __dir__ = lazy_exports(__name__, _EXPORTS)
 
 __all__ = [
     "ElementaryFlow",

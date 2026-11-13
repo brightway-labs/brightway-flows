@@ -11,7 +11,6 @@ from pathlib import Path
 
 import orjson
 
-from brightway_flows.downloads import PinnedFile
 from brightway_flows.filesystem import CHEBI_JSON_GZ_FILEPATH
 from brightway_flows.pipeline import normalize
 
@@ -37,6 +36,11 @@ CHEBI_JSON_GZ_SHA256 = (
 
 def download_chebi(*, force: bool = False) -> Path:
     """The ChEBI dump of :data:`CHEBI_RELEASE`, downloaded unless it is here."""
+    # Imported here, not above: `downloads` needs `httpx`, and reading an index
+    # that is already in the data directory -- which is all the lookup and the
+    # review application do -- has to work without it.
+    from brightway_flows.downloads import PinnedFile
+
     return PinnedFile(urls=(CHEBI_JSON_GZ_URL,), sha256=CHEBI_JSON_GZ_SHA256).download(
         CHEBI_JSON_GZ_FILEPATH, force=force
     )
