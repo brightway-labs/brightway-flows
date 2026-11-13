@@ -46,7 +46,7 @@ from brightway_flows.domain.vocabulary import (
     PROV_HAD_PRIMARY_SOURCE_CURIE,
 )
 from brightway_flows.filesystem import PUBCHEM_ELEMENTS_CACHE_FILEPATH
-from brightway_flows.flow_layers.elements import BASE_REFERENCES_PROPERTY
+from brightway_flows.domain.flow_object import BASE_REFERENCES_PROPERTY
 from brightway_flows.pipeline.review_records import (
     ChangeEvent,
     ContextDefaultMapping,
