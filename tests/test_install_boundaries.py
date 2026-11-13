@@ -266,9 +266,6 @@ class TheApplicationReadsABuildTestCase(_Boundary):
         self.assertEqual(failed, {})
         self.assertGreater(len(self.report["result"]), 20)
 
-    # Step 4 of the split: the application's queries stop reaching the
-    # fetchers through the packages they sit in.
-    @unittest.expectedFailure
     def test_it_imports_nothing_only_the_pipeline_uses(self):
         self.assertEqual(
             self.report["seen"],
