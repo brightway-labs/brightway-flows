@@ -22,7 +22,6 @@ from typing import Any
 
 import orjson
 
-from brightway_flows.chem import structure_values_from_smiles
 from brightway_flows.domain.vocabulary import IRIS, Term
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 
@@ -89,6 +88,10 @@ def structure_corrections() -> tuple[StructureCorrection, ...]:
             )
         claimed.add(cas)
         smiles = str(entry["smiles"]).strip()
+        # Imported here, not above: `chem` is RDKit, which a build has and a
+        # lookup does not (`tests/test_install_boundaries.py`).
+        from brightway_flows.chem import structure_values_from_smiles
+
         values = structure_values_from_smiles(smiles)
         if values is None:
             raise ValueError(

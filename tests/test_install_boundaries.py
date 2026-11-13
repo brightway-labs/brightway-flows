@@ -92,29 +92,51 @@ BASE = {
     "tqdm",
 }
 
-#: Runs first in the child: note each watched package the first time anything
-#: asks for it, and the nearest of our own modules on the stack. Returning
-#: `None` hands the import on to the real finders.
+#: Runs first in the child: note each watched package the first time one of our
+#: own modules asks for it.
+#:
+#: Only an import one of our modules makes itself. A package that is installed
+#: gets imported by others that can use it -- structlog draws its tracebacks
+#: with rich, and rich with pygments, when they are there -- and that is not a
+#: need of ours: in an install without them it does not happen.
+#:
+#: Two hooks, because each misses what the other sees. Every `import` statement
+#: goes through `builtins.__import__`, including one for a package something
+#: else already loaded -- which the finders are never asked about, so a module
+#: of ours importing pygments after rich did would pass unseen. The finder sees
+#: `importlib.import_module`, which does not go through `__import__`; returning
+#: `None` from it hands the import on to the real finders.
 _RECORDER = """
-import json, os, sys
+import builtins, json, os, sys
 
 WATCHED = set(json.loads(os.environ["BOUNDARY_WATCHED"]))
 SEEN = {}
 
 
+def _note(name, importer):
+    top = name.partition(".")[0]
+    if top in WATCHED and top not in SEEN and importer.startswith("brightway_flows"):
+        SEEN[top] = importer
+
+
+_import = builtins.__import__
+
+
+def _recording_import(name, globals=None, locals=None, fromlist=(), level=0):
+    if level == 0:
+        _note(name, (globals or {}).get("__name__", ""))
+    return _import(name, globals, locals, fromlist, level)
+
+
+builtins.__import__ = _recording_import
+
+
 class _Recorder:
     def find_spec(self, name, path=None, target=None):
-        top = name.partition(".")[0]
-        if top in WATCHED and top not in SEEN:
-            frame = sys._getframe(1)
-            importer = "?"
-            while frame is not None:
-                module = frame.f_globals.get("__name__", "")
-                if module.startswith("brightway_flows"):
-                    importer = module
-                    break
-                frame = frame.f_back
-            SEEN[top] = importer
+        frame = sys._getframe(1)
+        while frame is not None and "importlib" in frame.f_code.co_filename:
+            frame = frame.f_back
+        _note(name, frame.f_globals.get("__name__", "") if frame else "")
         return None
 
 
@@ -231,9 +253,6 @@ class ThePlainInstallAnswersAQuestionTestCase(_Boundary):
             self.report["result"], {"matched": True, "flow": "ef-chlorobenzene-rural"}
         )
 
-    # Step 2 and 3 of the split: the matcher's import path is cut, then the
-    # packages move to the `pipeline` extra.
-    @unittest.expectedFailure
     def test_it_imports_nothing_the_plain_install_lacks(self):
         self.assertEqual(
             self.report["seen"],
@@ -277,6 +296,41 @@ class TheApplicationReadsABuildTestCase(_Boundary):
             "The application imported packages only the pipeline needs:\n"
             + _offenders(self.report["seen"]),
         )
+
+
+class OneStepImportsOnlyItselfTestCase(unittest.TestCase):
+    """`brightway_flows.transformers` offers every step by name, and imports the
+    whole chain to answer one. A step's own module, asked for by name from the
+    package, is not one of those names."""
+
+    def test_from_the_package_a_step_s_module_does_not_import_the_chain(self):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                "import sys\n"
+                "from brightway_flows.transformers import unit_normalization\n"
+                "print(unit_normalization.__name__)\n"
+                "print('brightway_flows.transformers.chain' in sys.modules)",
+            ],
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr[-4000:])
+        self.assertEqual(
+            completed.stdout.split(),
+            ["brightway_flows.transformers.unit_normalization", "False"],
+        )
+
+    def test_a_step_s_class_is_still_offered_by_the_package(self):
+        from brightway_flows.transformers import (
+            DEFAULT_TRANSFORMERS,
+            UnitNormalizationTransformer,
+        )
+        from brightway_flows.transformers import __all__ as offered
+
+        self.assertIn(UnitNormalizationTransformer, DEFAULT_TRANSFORMERS)
+        self.assertIn("UnitNormalizationTransformer", offered)
 
 
 class TheDeclaredDependenciesTestCase(unittest.TestCase):

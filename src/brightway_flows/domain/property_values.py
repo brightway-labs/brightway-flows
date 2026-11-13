@@ -41,7 +41,6 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
-from brightway_flows.chem import collapse_duplicate_smiles
 from brightway_flows.domain.common import Provenance
 from brightway_flows.domain.inchikey import without_redundant_flat_keys
 from brightway_flows.domain.vocabulary import (
@@ -228,6 +227,11 @@ def collapse_smiles_spellings(properties: Any) -> tuple[dict[str, Any], Counter]
         # dropping it while collapsing duplicates would lose it silently.
         if len(values) < 2 or not all(_is_smiles_text(v) for v in values):
             continue
+        # Imported here, not above: `chem` is RDKit, which a build has and a
+        # lookup does not, and the records this module describes are read by
+        # both (`tests/test_install_boundaries.py`).
+        from brightway_flows.chem import collapse_duplicate_smiles
+
         survivors, dropped = collapse_duplicate_smiles(list(values))
         if not dropped:
             continue
@@ -314,6 +318,11 @@ def redundant_smiles_slots(properties: Any) -> int:
         # promises rather than reporting a slot it has decided not to touch.
         if len(values) < 2 or not all(_is_smiles_text(v) for v in values):
             continue
+        # Imported here, not above: `chem` is RDKit, which a build has and a
+        # lookup does not, and the records this module describes are read by
+        # both (`tests/test_install_boundaries.py`).
+        from brightway_flows.chem import collapse_duplicate_smiles
+
         _, dropped = collapse_duplicate_smiles(list(values))
         if dropped:
             redundant += 1
