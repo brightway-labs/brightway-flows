@@ -9,6 +9,28 @@
       "field": "cas_numbers",
       "remove_value": "7727-37-9",
       "comment": "7727-37-9 is dinitrogen -- N2, the inert gas that is most of the air. `Nitrogen, organic bound` is not a compound: it is the nitrogen locked inside the organic matter of a discharge, reported as a mass of nitrogen, and no registry number can name it, because a number names one compound and this is a measurement over many. Stepwise writes the gas's number on all five of its organic-bound rows -- water unspecified, groundwater, groundwater long-term, ocean and river -- exactly as EF 3.1 and all five ecoinvent versions do on their five and BAFU on its four. A shared registry number is how this project decides two things are one substance, so left alone these rows fuse with the gas and are published as `Dinitrogen`, with the gas's structure and synonyms (#57). Removed rather than corrected, because there is nothing to correct it to; with it gone the rows group by name onto the flow object the other lists' organic-bound rows reach. Stepwise's own six `Nitrogen` rows keep the number, which is theirs. The method itself says the two are not one row: it characterises both for aquatic eutrophication and gives them different numbers where it has reason to -- 2.6 for organic-bound nitrogen to the ocean against 3.1 for nitrogen -- so a fusion that made them one flow would have to discard one of those. The reasoning and the evidence are in `ef-3.1-manual-fixes.json`."
+    },
+    {
+      "match": {
+        "name": "Amylene, beta-cis-"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "627-20-3"
+      ],
+      "comment": "β-Amylene is the old name for 2-pentene, and Stepwise's SimaPro-style `Amylene, beta-cis-` is its cis isomer. The list publishes it as `Cis-2-pentene`, from EF 3.1, and Common Chemistry's record for 627-20-3 lists `cis-β-Amylene` among its names. Stepwise ships no registry number on this row and no sibling row carries one, so the name is the only evidence there is, and no label the substance publishes equals Stepwise's inverted spelling. So the row minted fo-d0b5a50cf00c3068: a second substance, typed `unclassified`, with no registry number, carrying only Stepwise's own two factors and none of EF's. This is not the bare `Amylene` of 25377-72-4, the isomer mixture the list publishes as `Pentylene`: the row states the position and the geometry, and the mixture's record states neither. Measured on the build of 4e2bec7bfdfd (13 November 2026) and on release 1.1.0. With the number written the row matches on `basis=cas`. (#471)"
+    },
+    {
+      "match": {
+        "name": "Amylene, trans-beta-"
+      },
+      "field": "cas_numbers",
+      "original_value": null,
+      "new_value": [
+        "646-04-8"
+      ],
+      "comment": "β-Amylene is the old name for 2-pentene, and Stepwise's SimaPro-style `Amylene, trans-beta-` is its trans isomer. The list publishes it as `Trans-2-pentene`, from EF 3.1, and Common Chemistry's record for 646-04-8 lists `trans-β-Amylene` among its names. Stepwise ships no registry number on this row and no sibling row carries one, so the name is the only evidence there is, and no label the substance publishes equals Stepwise's inverted spelling. So the row minted fo-9d41c9c0359e4d15: a second substance, typed `unclassified`, with no registry number, carrying only Stepwise's own two factors and none of EF's. This is not the bare `Amylene` of 25377-72-4, the isomer mixture the list publishes as `Pentylene`: the row states the position and the geometry, and the mixture's record states neither. Measured on the build of 4e2bec7bfdfd (13 November 2026) and on release 1.1.0. With the number written the row matches on `basis=cas`. (#471)"
     }
   ]
 }
