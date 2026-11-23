@@ -1,0 +1,84 @@
+{#
+  One expectations file.
+
+  Headed with the file's name as it is written, and the facts a reader came for
+  -- the issue, the file, the build -- before the description: the descriptions
+  run to several paragraphs, which is an account to read and not a lede.  Each
+  expectation then says what it is about in the file's own selectors -- a list
+  and a row name, a registry number -- because that is what a reader takes to
+  the flow pages or to their own copy of the list.
+#}
+{% extends "layout.html" %}
+{% import "partials/expectation_state.html" as s %}
+{% set page_title = file.id %}
+{% set active_section = "expectations" %}
+
+{% block content %}
+<header class="page__header">
+  <p class="muted"><a href="{{ url_for('expectations.index') }}">Expectations</a></p>
+  <h1><span class="mono">{{ file.id }}</span> {{ s.badge(file.state, meanings) }}</h1>
+</header>
+
+<section class="section">
+  <dl class="facts">
+    <dt>Issue</dt>
+    <dd>
+      {% for issue in file.issues %}
+      <a class="mono" href="{{ repository_url }}/issues/{{ issue }}">#{{ issue }}</a>
+      {% else %}<span class="muted">None: an invariant pinned without having been a bug first.</span>
+      {% endfor %}
+    </dd>
+    <dt>Stated in</dt>
+    <dd>
+      <a class="mono" href="{{ repository_url }}/blob/main/expectations/{{ file.filename }}">expectations/{{ file.filename }}</a>
+    </dd>
+    <dt>Graded against</dt>
+    <dd>{{ s.recorded_build(recorded) }}</dd>
+  </dl>
+</section>
+
+{% if file.paragraphs %}
+<section class="section">
+  <div class="section__header"><h2>Why this file exists</h2></div>
+  {% for paragraph in file.paragraphs %}
+  <p>{{ paragraph | code_spans }}</p>
+  {% endfor %}
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="section__header">
+    <h2>Expectations</h2>
+    <span class="muted">{{ file.expectations | length }}</span>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">What should be true</th>
+          <th scope="col">State</th>
+          <th scope="col">About</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for expectation in file.expectations %}
+        <tr id="{{ expectation.id }}">
+          <td>
+            {{ expectation.title | code_spans }}
+            <div class="muted mono">{{ expectation.id }}</div>
+            {% if expectation.comment %}<p class="muted">{{ expectation.comment | code_spans }}</p>{% endif %}
+          </td>
+          <td>{{ s.badge(expectation.state, meanings) }}</td>
+          <td>
+            <span class="mono">{{ expectation.kind }}</span>
+            {% for key, value in expectation.subject.items() %}
+            <div class="muted">{{ key }}: <span class="mono">{{ value | short_value }}</span></div>
+            {% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

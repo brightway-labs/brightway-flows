@@ -1,0 +1,28 @@
+{#
+  The expectations are not where the application looked.
+
+  Its own empty state, as the documentation has: an installed package carries
+  the code and not `expectations/`, and an empty table would tell a reader that
+  no file matches their filters when there is no directory to filter.
+#}
+{% extends "layout.html" %}
+{% set page_title = "No expectations" %}
+{% set active_section = "expectations" %}
+
+{% block content %}
+<div class="empty">
+  <h1>No expectations here</h1>
+  <p>
+    The pages are read from the project's <code>expectations/</code> directory,
+    and it is not at:
+  </p>
+  <pre><code>{{ expectations_path }}</code></pre>
+  <p class="muted">
+    The application shows the expectations of the checkout it is running from.
+    An installed package carries the code and not the files, so run it from a
+    checkout, or point it at one:
+  </p>
+  <pre><code>BRIGHTWAY_FLOWS_EXPECTATIONS_DIR=/path/to/brightway-flows/expectations \
+  uv run brightway-flows webapp</code></pre>
+</div>
+{% endblock %}

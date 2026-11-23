@@ -1,0 +1,101 @@
+{#
+  Every expectations file, as a work list.
+
+  Sorted by state unless asked otherwise, so the expectations the recorded
+  build does not meet are what a reader sees first, and the hundred and more
+  that hold are below them rather than in the way.
+#}
+{% extends "layout.html" %}
+{% import "partials/table.html" as t %}
+{% import "partials/expectation_state.html" as s %}
+{% set page_title = "Expectations" %}
+{% set active_section = "expectations" %}
+
+{% block content %}
+<header class="page__header">
+  <h1>Expectations</h1>
+  <p class="page__lede">
+    A change that says it fixes something states what it expects as data —
+    <em>the BAFU rows named <code>Water</code> land on a flow that already
+    exists</em> — and every build is graded against it. Each row below is one
+    such file: the issue it answers, what it expects, and whether the build
+    does it.
+  </p>
+  <p class="page__lede muted">{{ s.recorded_build(recorded) }}</p>
+</header>
+
+<form class="filters" method="get" action="{{ url_for('expectations.index') }}">
+  {# The state is held by the chips below; searching must not drop it. #}
+  <input type="hidden" name="state" value="{{ state }}">
+  <input type="hidden" name="sort" value="{{ sort }}">
+  <div class="filters__search">
+    <label class="visually-hidden" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ query }}"
+           placeholder="A substance, a list, or an issue as #381…" data-search>
+    <button class="button" type="submit">Search</button>
+    {{ t.reset('expectations.index') }}
+  </div>
+  <div class="filters__selects">
+    {{ t.select("source", "Source list", source, sources | zip_same) }}
+  </div>
+</form>
+
+{{ t.badge_filter("State", "state", state, states, 'expectations.index', args,
+                  all_count=state_total) }}
+
+{% if page.rows %}
+{{ t.pager(page, 'expectations.index', args) }}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">{{ t.sort_header("File", "file", sort, 'expectations.index', args) }}</th>
+        <th scope="col">Issue</th>
+        <th scope="col">{{ t.sort_header("State", "state", sort, 'expectations.index', args) }}</th>
+        <th scope="col" class="num">{{ t.sort_header("Expectations", "expectations", sort, 'expectations.index', args) }}</th>
+        <th scope="col">Source lists</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for file in page.rows %}
+      <tr>
+        <td>
+          <a class="mono" href="{{ url_for('expectations.detail', file_id=file.id) }}">{{ file.id }}</a>
+        </td>
+        <td>
+          {% for issue in file.issues %}
+          <a class="mono" href="{{ repository_url }}/issues/{{ issue }}">#{{ issue }}</a>
+          {% else %}<span class="muted">—</span>{% endfor %}
+        </td>
+        <td>{{ s.badge(file.state, meanings) }}</td>
+        <td class="num">
+          {{ file.expectations | length }}
+          {% if file.state.value != 'met' %}
+          <div class="muted">{{ file.counts[file.state] }} {{ file.state.value }}</div>
+          {% endif %}
+        </td>
+        <td>{{ file.lists | join(", ") or "—" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ t.pager(page, 'expectations.index', args) }}
+{% else %}
+{{ t.nothing_matches("No expectations file matches these filters.") }}
+{% endif %}
+
+<section class="section">
+  <div class="section__header"><h2>What the states mean</h2></div>
+  <dl class="facts">
+    {% for state, meaning in meanings.items() %}
+    <dt>{{ s.badge(state, meanings) }}</dt>
+    <dd>{{ meaning }}</dd>
+    {% endfor %}
+  </dl>
+  <p class="muted">
+    A file takes the state of its expectation that most needs a reader, in the
+    order above: one unmet expectation among nine met ones is an unmet file.
+  </p>
+</section>
+{% endblock %}
