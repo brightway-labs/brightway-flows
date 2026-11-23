@@ -55,7 +55,19 @@ TABLES = (
         git_commit TEXT NOT NULL DEFAULT '', git_dirty INTEGER NOT NULL DEFAULT 0
     )
     """,
-    "CREATE TABLE merge_run_inputs (source_key TEXT, rows_read INTEGER)",
+    """
+    CREATE TABLE merge_runs (
+        run_id TEXT PRIMARY KEY, started_at TEXT NOT NULL, finished_at TEXT,
+        schema_version INTEGER NOT NULL, stats_json TEXT
+    )
+    """,
+    """
+    CREATE TABLE merge_run_inputs (
+        run_id TEXT NOT NULL, list_name TEXT NOT NULL, list_version TEXT NOT NULL,
+        sequence INTEGER NOT NULL, row_count INTEGER NOT NULL DEFAULT 0,
+        max_rows INTEGER
+    )
+    """,
     """
     CREATE TABLE merge_outcomes (
         list_name TEXT, list_version TEXT, source_uuid TEXT, source_name TEXT,
@@ -96,7 +108,12 @@ def write_build(
     commit: str | None = COMMIT,
     dirty: bool = False,
     with_inputs: bool = True,
+    merged: tuple[str, ...] | None = None,
+    finished: bool = True,
+    max_rows: int | None = None,
 ) -> Path:
+    """A build database.  By default its one merge run finished, unbounded,
+    over every default list, which is what a usable before side is."""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.unlink(missing_ok=True)
     connection = sqlite3.connect(path)
@@ -111,6 +128,20 @@ def write_build(
             "INSERT INTO pipeline_runs (run_id, git_commit, git_dirty) VALUES ('r1', ?, ?)",
             (commit, int(dirty)),
         )
+    connection.execute(
+        "INSERT INTO merge_runs (run_id, started_at, finished_at, schema_version)"
+        " VALUES ('m1', '2026-11-23T14:38:19+00:00', ?, 2)",
+        ("2026-11-23T15:00:00+00:00" if finished else None,),
+    )
+    if with_inputs:
+        lists = tool.DEFAULT_SOURCES if merged is None else merged
+        for sequence, source in enumerate(lists):
+            name, version = source.split("-", 1)
+            connection.execute(
+                "INSERT INTO merge_run_inputs (run_id, list_name, list_version,"
+                " sequence, max_rows) VALUES ('m1', ?, ?, ?, ?)",
+                (name, version, sequence, max_rows),
+            )
     connection.execute(
         "INSERT INTO merge_outcomes (list_name, list_version, source_uuid,"
         " outcome, detail_json)"
@@ -354,6 +385,40 @@ class SurveyTestCase(TempCase):
         self.assertIsNone(usable)
         self.assertIn("does not descend from", reasons[0])
 
+    def test_a_build_whose_merge_never_finished_does_not(self):
+        # The stamp is written before the merge starts, so a build that stopped
+        # part-way carries the wanted commit and has placed no source row.
+        write_build(self.database, COMMIT, finished=False)
+        usable, reasons = self._survey(COMMIT)
+        self.assertIsNone(usable)
+        self.assertIn("never finished", reasons[0])
+
+    def test_a_build_with_no_merge_recorded_does_not(self):
+        write_build(self.database, COMMIT)
+        connection = sqlite3.connect(self.database)
+        connection.execute("DELETE FROM merge_runs")
+        connection.commit()
+        connection.close()
+        usable, reasons = self._survey(COMMIT)
+        self.assertIsNone(usable)
+        self.assertIn("records no merge", reasons[0])
+
+    def test_a_build_that_left_out_a_list_does_not(self):
+        write_build(self.database, COMMIT, merged=("ecoinvent-3.12", "bafu-2026-v1"))
+        usable, reasons = self._survey(COMMIT)
+        self.assertIsNone(usable)
+        self.assertIn("did not merge ecoinvent-3.13", reasons[0])
+
+    def test_a_bounded_build_does_not(self):
+        write_build(self.database, COMMIT, max_rows=50)
+        usable, reasons = self._survey(COMMIT)
+        self.assertIsNone(usable)
+        self.assertIn("row limit", reasons[0])
+
+    def test_a_build_from_before_merge_run_inputs_is_judged_on_its_merge_run(self):
+        write_build(self.database, COMMIT, with_inputs=False)
+        self.assertEqual(self._survey(COMMIT), (COMMIT, []))
+
     def test_a_git_that_will_not_answer_ancestry_is_a_no(self):
         write_build(self.database, COMMIT)
         usable, reasons = self._survey(OTHER, ancestor=None)
@@ -500,13 +565,13 @@ class CharacteriseTestCase(TempCase):
 class RefreshTestCase(TempCase):
     """What `--build` leaves behind, in the order it leaves it."""
 
-    def _report(self, characterised=True):
+    def _report(self, characterised=True, finished=True):
         database = self.shared / "consensus-flows.sqlite3"
         built = []
 
         def fake_build(tree, shared, sources):
             built.append(sources)
-            write_build(database, COMMIT)
+            write_build(database, COMMIT, finished=finished)
 
         def fake_characterise(tree, shared):
             # The claim under test: by the time this runs the extract exists.
@@ -516,7 +581,7 @@ class RefreshTestCase(TempCase):
         for name, replacement in (
             ("wanted_commit", lambda ref, fetch: COMMIT),
             ("git", lambda *args, **kwargs: "a subject"),
-            ("survey", lambda shared, wanted: (None, ["needs one"])),
+            ("survey", lambda shared, wanted, sources: (None, ["needs one"])),
             ("build_worktree", lambda commit, path: path),
             ("run_build", fake_build),
             ("run_characterise", fake_characterise),
@@ -545,6 +610,12 @@ class RefreshTestCase(TempCase):
         status, _ = self._report(characterised=False)
         self.assertEqual(status, 2)
         self.assertTrue(tool.archived_path(self.shared, COMMIT).exists())
+
+
+    def test_a_build_whose_merge_did_not_finish_is_not_copied(self):
+        status, _ = self._report(finished=False)
+        self.assertEqual(status, 2)
+        self.assertFalse(tool.archived_path(self.shared, COMMIT).exists())
 
 
 class DefaultsTestCase(unittest.TestCase):

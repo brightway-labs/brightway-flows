@@ -43,11 +43,15 @@ It exits 0 having copied the 144 MB a comparison reads into
 `base-builds/<commit>.sqlite3`, and that is the whole beginning of an
 investigation done in a second rather than in the ten minutes or more a build
 that merges a source list takes. It exits 1 with the reason when what is stored
-cannot answer, which is one of three:
+cannot answer, which is one of four:
 
 - **it does not say which revision it came from, or came from a modified tree.**
   Unstamped is a build older than #101 or one made outside a repository; a
   modified tree is not a build of its commit.
+- **its merge did not finish, or did not cover the lists asked for.** The stamp
+  is written before the merge starts, so a build that failed part-way carries
+  the right commit and has placed no row; a bounded build or one that left out a
+  list answers for fewer rows than the comparison will ask about.
 - **this branch does not descend from it**, so a diff against it would report
   what the branch does not have.
 - **commits since it decide where a row goes** — `merge/`, `transformers/`,

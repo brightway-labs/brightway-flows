@@ -263,6 +263,57 @@ def stamp(database: Path) -> tuple[str, bool] | None:
     return commit, bool(fields.get("git_dirty"))
 
 
+def merge_reasons(database: Path, sources: tuple[str, ...]) -> list[str]:
+    """Why the stored build did not finish merging `sources`, or nothing if it did.
+
+    The stamp is written by the harmonisation stage, before the merge starts, so
+    a build that failed or was stopped during the merge carries the commit it
+    was asked for and no source row placed by it.  On 2026-11-23 a `--build`
+    that stopped on a missing ecoinvent 3.13 extract left exactly that, and the
+    next run archived it as the before side: a comparison against it would have
+    reported every row of every list as new.  So the last merge run has to have
+    finished, unbounded, over every list a before side is asked to have.
+    """
+    connection = sqlite3.connect(f"file:{database}?mode=ro", uri=True)
+    try:
+        try:
+            run = connection.execute(
+                "select run_id, started_at, finished_at from merge_runs"
+                " order by started_at desc, rowid desc limit 1"
+            ).fetchone()
+        except sqlite3.OperationalError:
+            return ["the stored build records no merge, so it placed no source row"]
+        if run is None:
+            return ["the stored build records no merge, so it placed no source row"]
+        run_id, started_at, finished_at = run
+        if not finished_at:
+            return [
+                f"the stored build's merge, started {started_at}, never finished"
+                " -- a build that failed or was stopped part-way"
+            ]
+        try:
+            inputs = connection.execute(
+                "select list_name, list_version, max_rows from merge_run_inputs"
+                " where run_id = ?",
+                (run_id,),
+            ).fetchall()
+        except sqlite3.OperationalError:
+            # Older than #308: the build does not say what it merged, and the
+            # comparison's own header is what checks that both sides agree.
+            return []
+    finally:
+        connection.close()
+    merged = {f"{name}-{version}" for name, version, _ in inputs}
+    reasons = []
+    missing = [source for source in sources if source not in merged]
+    if missing:
+        reasons.append(f"the stored build did not merge {', '.join(missing)}")
+    bounded = sorted(f"{name}-{version}" for name, version, limit in inputs if limit is not None)
+    if bounded:
+        reasons.append(f"the stored build merged {', '.join(bounded)} with a row limit")
+    return reasons
+
+
 def is_ancestor(earlier: str, later: str) -> bool | None:
     """Answered by exit status -- 0 yes, 1 no, anything else an error.
 
@@ -284,7 +335,9 @@ def deciding_commits(earlier: str, later: str) -> list[str]:
     return log.splitlines() if log else []
 
 
-def survey(shared: Path, wanted: str) -> tuple[str | None, list[str]]:
+def survey(
+    shared: Path, wanted: str, sources: tuple[str, ...] = DEFAULT_SOURCES
+) -> tuple[str | None, list[str]]:
     """The stored build's commit if it answers for `wanted`, and why not if it does not.
 
     Returning the commit rather than True: where the stored build is older than
@@ -303,6 +356,9 @@ def survey(shared: Path, wanted: str) -> tuple[str | None, list[str]]:
         return None, [
             f"the stored build came from a modified tree, so it is not a build of {commit[:12]}"
         ]
+    unfinished = merge_reasons(shared / "consensus-flows.sqlite3", sources)
+    if unfinished:
+        return None, unfinished
     if commit == wanted:
         return commit, []
 
@@ -507,7 +563,7 @@ def report(args: argparse.Namespace) -> int:
     print(f"This branch left main at  {wanted[:12]}  {git('log', '-1', '--format=%s', wanted)}")
     print(f"Stored build in           {shared}")
 
-    usable, reasons = survey(shared, wanted)
+    usable, reasons = survey(shared, wanted, tuple(args.source))
     if usable:
         note = "" if usable == wanted else " (older, but nothing since it moves a row)"
         print(f"Stored build is           {usable[:12]}{note}")
@@ -539,6 +595,12 @@ def report(args: argparse.Namespace) -> int:
     recorded = stamp(shared / "consensus-flows.sqlite3")
     if recorded != (wanted, False):
         print(f"\nThe build stamped {recorded}, not ({wanted[:12]}, clean); not copying it.")
+        return 2
+    unfinished = merge_reasons(shared / "consensus-flows.sqlite3", tuple(args.source))
+    if unfinished:
+        print("\nThe build did not finish its merge; not copying it.")
+        for reason in unfinished:
+            print(f"  -- {reason}")
         return 2
     publish(shared, wanted, args.keep)
 
