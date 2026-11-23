@@ -7,8 +7,7 @@ each minted a second copy.  The fix writes the number on the row.
 
 Two halves, as for every fix that fills in what a source left out.  The number
 goes on, and a row beside it that the fix does not name keeps what it shipped:
-Stepwise's `1-Pentene` is a pentene that is neither of these, and a spelling
-BAFU does not ship is left alone.
+Stepwise's `1-Pentene` is a pentene that is neither of these.
 """
 
 from __future__ import annotations
@@ -18,6 +17,7 @@ import unittest
 
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 from brightway_flows.manual_fixes import apply_manual_fixes
+from brightway_flows.pipeline.redirects import load_retired_minted_flow_ids
 
 BAFU_FIXES = PACKAGE_DATA_DIR / "bafu-2026-v1-manual-fixes.json"
 STEPWISE_FIXES = PACKAGE_DATA_DIR / "stepwise-2006-manual-fixes.json"
@@ -26,6 +26,12 @@ P_CYANOPHENOL = "64eae87e-9ee8-5893-b1c0-96702b46d2c1"
 CIS = "81b5295d-e6d5-5c36-9d51-73b49371f703"
 TRANS = "5b715bff-fcca-5f9e-b516-ceab73e7257e"
 ONE_PENTENE = "4d075748-1edf-53e5-a863-a2c96f56ff2d"
+
+#: The identifier the renumbering retired for the minted P-cyanophenol flow in
+#: Ground -> Industrial, and the substance the row now reaches.
+RETIRED_P_CYANOPHENOL = "f37fe236738810e7b8ff306907072f0418bb1beb"
+FOUR_CYANOPHENOL = "fo-d9eedca3b8d92223"
+GROUND_INDUSTRIAL = "https://vocab.brightway.one/flow-contexts/envi-grou-indu"
 
 #: The row as `bafu-2026-v1.json` ships it.
 BAFU_ROWS = [
@@ -85,11 +91,17 @@ class RowsThatNameAHeldSubstanceTestCase(unittest.TestCase):
         fixed = _fixed(STEPWISE_ROWS, STEPWISE_FIXES, "stepwise-2006-1.09")
         self.assertEqual(fixed[ONE_PENTENE]["cas_numbers"], ["109-67-1"])
 
-    def test_the_name_is_matched_as_shipped_and_not_in_another_case(self):
-        """`P-cyanophenol` is BAFU's capitalisation; `p-Cyanophenol` is not a row."""
-        rows = [{**BAFU_ROWS[0], "name": "p-Cyanophenol"}]
-        fixed = _fixed(rows, BAFU_FIXES, "bafu-2026-v1")
-        self.assertNotIn("cas_numbers", fixed[P_CYANOPHENOL])
+    def test_the_retired_p_cyanophenol_identifier_follows_the_row(self):
+        """The minted P-cyanophenol substance is gone, but the row still lands in
+        Ground -> Industrial, now on 4-Cyanophenol.  The identifier published for
+        the old flow points there, as #424 did for Fenpropimorph, rather than
+        resolving to nothing."""
+        retired = {
+            record.identifier: record for record in load_retired_minted_flow_ids()
+        }
+        record = retired[RETIRED_P_CYANOPHENOL]
+        self.assertEqual(record.flow_object_id, FOUR_CYANOPHENOL)
+        self.assertEqual(record.context_iri, GROUND_INDUSTRIAL)
 
     def test_applying_twice_changes_nothing_further(self):
         rows = copy.deepcopy(STEPWISE_ROWS)
