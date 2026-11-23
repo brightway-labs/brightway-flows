@@ -545,8 +545,8 @@ def stepwise_factors(
 #: because three publishers ship three file formats and none is a general case
 #: of another.  Keyed on the manifest's ``lcia.adapter`` rather than on the
 #: publisher's name: the format is a property of the file the adapter fetched,
-#: and one publisher can be read twice -- the ecoinvent Centre's 3.13 workbook
-#: decides and its 3.12 one is kept to be compared -- while a name keys one.
+#: and one publisher can be read twice -- the ecoinvent Centre's 3.12 and 3.13
+#: implementations, both deciding -- while a name keys one.
 #: Two adapters share a reader where they write one format: the workbook
 #: adapter and the public mapped file's write the same file, and
 #: `ecoinvent_factors` reads either.

@@ -940,7 +940,14 @@ class ImplementationCountsTestCase(unittest.TestCase):
             self.assertIsNotNone(
                 prefix, f"{page.name} names an implementation this test does not know: {name!r}"
             )
-            for printed, column in ((factors, "factors_published"), (flows, "flows_characterised")):
+            # A closed implementation publishes nothing, and its count is what
+            # it read and kept back (`MethodImplementation.open`).
+            published = (
+                "factors_withheld"
+                if f"factors.{prefix}_factors_withheld" in self.measures
+                else "factors_published"
+            )
+            for printed, column in ((factors, published), (flows, "flows_characterised")):
                 key = f"factors.{prefix}_{column}"
                 if printed == "—" or key not in self.measures:
                     continue
@@ -969,7 +976,9 @@ class PublishedCategoryCountTestCase(unittest.TestCase):
     checkable without one: every method file states its categories and its
     implementations, and the published set is the sum of one times the other.
     It moved from 100 to 138 when Stepwise 2006 was added, and the pages that
-    quote it are not the pages anybody edits when adding a method.
+    quote it are not the pages anybody edits when adding a method.  Only open
+    implementations publish categories (`MethodImplementation.open`), so the
+    ecoinvent Centre's 3.13 workbook is read and not counted: 138 still.
     """
 
     #: `138 categories`, `the 138 `ImpactCategory` objects`.  A page wraps, so
@@ -983,9 +992,9 @@ class PublishedCategoryCountTestCase(unittest.TestCase):
     #: against the match with its whitespace collapsed, so a wrapped line reads
     #: the same as an unwrapped one.
     NOT_THE_PUBLISHED_SET = {
-        "25 categories",  # EF 3.1's own, times five implementations
+        "25 categories",  # EF 3.1's own, times four open implementations
         "19 categories",  # Stepwise 2006's own, times two
-        "125 categories",  # EF 3.1's five implementations, in `using/outputs.md`
+        "100 categories",  # EF 3.1's four open implementations, in `using/outputs.md`
         # Ours alone, 25 + 19: the ones 1.0.0 published under `consensus-flow-list`,
         # in `using/outputs.md`.  Checked against the method files in
         # `test_impact_categories.RetiredCategoryIdsTestCase`.
@@ -996,14 +1005,15 @@ class PublishedCategoryCountTestCase(unittest.TestCase):
         from brightway_flows.domain.lcia.crosswalk import lcia_methods
 
         return sum(
-            len(method.categories) * len(method.implementations)
+            len(method.categories) * len(method.published)
             for method in lcia_methods()
         )
 
     def test_the_arithmetic_is_what_the_method_files_say(self):
-        # 25 x 5 + 19 x 2. Stated here so that a method file gaining an
-        # implementation is a number this test moves rather than one it accepts.
-        self.assertEqual(self._expected(), 163)
+        # 25 x 4 + 19 x 2. Stated here so that a method file gaining an
+        # open implementation is a number this test moves rather than one it
+        # accepts.
+        self.assertEqual(self._expected(), 138)
 
     def test_no_page_states_a_stale_category_count(self):
         expected = self._expected()

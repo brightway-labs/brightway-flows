@@ -116,6 +116,14 @@ first question — *does any deciding implementation state a number here?* — i
 asked of the JRC and the ecoinvent Centre for EF 3.1, and of one publisher for
 Stepwise.
 
+The ecoinvent Centre is read twice, from its 3.12 and its 3.13 implementation,
+and both decide: a number that changed between the two releases is a question
+somebody should look at, not something the newer release settles by being
+newer. They still count as **one voice**, because one publisher repeating itself
+is not two publishers agreeing. And only the 3.12 release is published; the
+3.13 workbook is not yet public, so its numbers count here and appear nowhere
+under its own name.
+
 Copper to surface water, freshwater ecotoxicity: the JRC states 46.47592828149169
 CTUe/kg, the ecoinvent Centre states the same to the last digit, GreenDelta too.
 Two deciding voices, one number: published as `agreed`.
@@ -148,9 +156,11 @@ today, 110 factors, and none has been ruled.
 
 ## 3. Do the voices agree?
 
-Two or more deciding implementations state a number, and they are within 2 % of
+Two or more deciding publishers state a number, and they are within 2 % of
 each other: the more precise printing is published as `agreed`, and the other is
-recorded beside it. Two percent is the same line the rest of this project draws
+recorded beside it. Publishers, not implementations: the ecoinvent Centre's 3.12
+and 3.13 releases agreeing with each other, with the JRC silent, is still only
+the ecoinvent Centre speaking, and goes to section 4. Two percent is the same line the rest of this project draws
 between a rounding and a disagreement, and it is never crossed over a zero or a
 sign change — a stated zero against a number is two implementations disagreeing
 about whether something has an effect at all.
@@ -248,16 +258,11 @@ writes its own word so a reader can tell it from a decision:
 - a number `derive()` put on the wrong flow is **moved** to the flow it is about
   (`data/lcia-misattributed-factors.json`, 5 factors);
 - a rounded printing one implementation states is replaced by the precise value
-  its own source states — **refined** (`data/lcia-rounded-printings.json`; 8 on
-  that build, none since the 3.13 workbook printed the same rounding as the JRC
-  and the file's four rows were retired,
-  [#459](https://github.com/brightway-labs/brightway-flows/issues/459));
+  its own source states — **refined** (`data/lcia-rounded-printings.json`, 8);
 - a context nobody characterises is filled from the neighbour the convention
   names — **carried** (`data/context-carry-rules.json`, stage 5 above).
-  Sulphuryl difluoride's 4,630 kg CO₂‑eq reached the urban ground level from
-  unspecified air this way, and did not reach indoor air, which is a wall;
-  since the 3.13 workbook states no climate-change factor for the gas there is
-  nothing to carry (#459).
+  Sulphuryl difluoride's 4,630 kg CO₂‑eq reaches the urban ground level from
+  unspecified air this way, and does not reach indoor air, which is a wall.
 
 ## 7. Checking any of it
 

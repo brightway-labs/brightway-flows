@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "ecoinvent 3.13 publishes a new LCIA implementation workbook. Since #454 the list was merged with its factors fetched and unread, because the method file named one ecoinvent Centre implementation, read from 3.12. This reads the 3.13 workbook as a second implementation of the same publisher, `ecoinvent Centre (3.13)` on the slug `ecoinvent-centre-3-13`, which decides, and keeps the 3.12 workbook as `ecoinvent Centre (3.12)` on the slug `ecoinvent-centre` that release 1.1.0 published its category identifiers under, `decides: false`: published and compared like GreenDelta's, never evidence, so that a number that moved between the two releases is a row in the difference report. The slug `ecoinvent-centre` is the 3.12 workbook for good, and every later workbook carries its release in slug and name. Measured on the six-list build of a4d92fd characterised on 2026-11-05 with the 3.13 workbook deciding: the consensus publishes 327,263 EF 3.1 factors against 327,171 before, 98 added (the lindane and endosulfan isomers, which the 3.13 workbook scores under their own numbers and the JRC agrees with), 6 removed (sulfuryl fluoride's climate-change factors, which 3.13 no longer states) and 24 amounts changed (CFC-11 and HFC-134a, printed rounded by both publishers now). The proposed-factor queue goes from 32 open items to 28.",
+  "description": "ecoinvent 3.13 publishes a new LCIA implementation workbook. Since #454 the list was merged with its factors fetched and unread, because the method file named one ecoinvent Centre implementation, read from 3.12. This reads the 3.13 workbook as a second implementation of the same publisher, `ecoinvent Centre (3.13)` on the slug `ecoinvent-centre-3-13`, beside the 3.12 one, `ecoinvent Centre (3.12)` on the slug `ecoinvent-centre` that release 1.1.0 published its category identifiers under. The slug `ecoinvent-centre` is the 3.12 workbook for good, and every later workbook carries its release in slug and name. Both workbooks decide: two releases are two statements, and a number that moved between them is a question rather than the newer release winning by default. They are one publisher, so where only the two of them state a number and agree, that is a proposal and not `agreed`. The 3.13 workbook is closed: ecoinvent publishes no 3.13 file in its public LCIA repository, so its numbers inform this list's and none is written to the database or either factor file under its name. What it changes, on the build named in the pull request: the lindane and endosulfan isomers, which the 3.12 workbook scores with the parent's numbers and the 3.13 workbook with their own, become questions between the two releases rather than being settled by either.",
   "expectations": [
     {
       "id": "0459-the-3-12-workbook-is-still-published",
@@ -13,25 +13,38 @@
       "expect": {
         "at_least": 27000
       },
-      "comment": "27,346 on the six-list build of a4d92fd characterised on 2026-11-05 with the 3.13 workbook deciding, over 7,939 flows; `at_least`, because a merge that reaches a few more or fewer of 3.12's rows should not fail the claim that the implementation is there. That the deciding implementation reads the 3.13 workbook in full is `0766-every-factor-ecoinvent-states-is-read`, whose bound moved to the 3.13 file's 27,403 in this change; a second claim here on the same key with the same bound would flip with it and tell the grader nothing more."
+      "comment": "27,346 on the build of `1e67f3c`, over 7,939 flows; `at_least`, because a merge that reaches a few more or fewer of 3.12's rows should not fail the claim that the implementation is there. That the 3.13 workbook is read in full is `0766-every-factor-ecoinvent-states-is-read`."
     },
     {
-      "id": "0459-five-implementations-of-twenty-five-categories",
+      "id": "0459-the-3-13-workbook-is-read-and-withheld",
       "issue": 459,
-      "title": "Five implementations of EF 3.1's 25 categories are published",
+      "title": "The 3.13 workbook's factors are matched onto this list's flows and none is published",
+      "subject": {
+        "kind": "measure",
+        "key": "factors.ef_ecoinvent_centre_3_13_factors_withheld"
+      },
+      "expect": {
+        "at_least": 27000
+      },
+      "comment": "The count `characterise` writes for a closed implementation in place of `factors_published`: what reached a flow and was handed to the consensus derivation, and was written nowhere. 27,342 on the build of `1e67f3c`."
+    },
+    {
+      "id": "0459-four-open-implementations-of-twenty-five-categories",
+      "issue": 459,
+      "title": "EF 3.1's 25 categories are published under its four open implementations and not under the closed one",
       "subject": {
         "kind": "measure",
         "key": "factors.impact_categories"
       },
       "expect": {
-        "at_least": 125
+        "equals": 138
       },
-      "comment": "100 before: a fifth `implemented_by` is 25 more category rows (`0766-a-fourth-implementation-is-twenty-five-more-categories` made the same claim of the fourth). 163 with Stepwise's 38."
+      "comment": "100 for EF 3.1 -- the JRC, the 3.12 workbook, GreenDelta and this list -- and Stepwise 2006's 38. The 3.13 workbook's 25 are minted for the run, because its factors are keyed on them, and never written: a category row nobody can see the factors of would say an implementation exists that does not. An equality, so that opening it is a change somebody makes on purpose."
     },
     {
-      "id": "0459-alpha-endosulfan-takes-the-isomers-number",
+      "id": "0459-alpha-endosulfan-is-a-question-between-two-releases",
       "issue": 459,
-      "title": "Alpha-endosulfan to unspecified air carries the isomer's freshwater ecotoxicity factor, 42,351, agreed by both publishers",
+      "title": "Alpha-endosulfan to unspecified air carries no freshwater ecotoxicity factor while the 3.12 and 3.13 workbooks disagree about it",
       "subject": {
         "kind": "factor",
         "flow_name": "A-endosulfan",
@@ -40,11 +53,9 @@
         "implemented_by": "brightway-flows"
       },
       "expect": {
-        "exists": true,
-        "amount": "42351",
-        "derivation": "agreed"
+        "exists": false
       },
-      "comment": "On the build before #459 this flow carried no consensus factor: the 3.12 workbook scored the alpha rows with the parent's number, 11,499, and the proposal was an open queue item (#456). The 3.13 workbook states the JRC's 42,351."
+      "comment": "The JRC and the 3.13 workbook state the isomer's own 42,351; the 3.12 workbook scored the alpha rows with the parent's 11,499 (#456). Both workbooks decide, so the row is contested and nothing is published until a curator rules, which is what a number one release corrected should be: a question somebody answers, not the newer release winning by default. A ruling that publishes 42,351 should replace this claim with one for its number and `derivation: ruled`."
     },
     {
       "id": "0459-the-3-12-workbook-still-states-the-parents-number",
@@ -61,21 +72,37 @@
         "exists": true,
         "amount": "11499"
       },
-      "comment": "What keeping the 3.12 workbook is for: the row that shows the vendor's number moved, beside the one it moved to."
+      "comment": "The other side of the question above, published under the 3.12 workbook's own name."
     },
     {
-      "id": "0459-the-isomer-questions-are-closed",
+      "id": "0459-the-3-13-workbook-is-not-published-under-its-name",
       "issue": 459,
-      "title": "The proposed-factor queue holds no more than 28 open items with the 3.13 workbook deciding",
+      "title": "Nothing is published for the same flow under the 3.13 workbook's name",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "A-endosulfan",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Ecotoxicity, freshwater",
+        "implemented_by": "ecoinvent Centre (3.13)"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "It states 42,351 here, and that number is one of the three the question above is between; the workbook is closed, so it is read and not republished."
+    },
+    {
+      "id": "0459-the-proposed-queue-with-both-workbooks-deciding",
+      "issue": 459,
+      "title": "The proposed-factor queue holds no more open items than it did on the build this change was measured on",
       "subject": {
         "kind": "measure",
         "key": "factors.ef_consensus_proposed-factor_items_open",
         "value_when_absent": 0
       },
       "expect": {
-        "at_most": 28
+        "at_most": 50
       },
-      "comment": "A ceiling on the queue, which is what a measure can say: the twelve items #456 and #457 opened for the endosulfan isomers and propyl propionate are closed by the 3.13 workbook, and eight new ones, for the two fumarate esters 3.13 is the first list to ship, replace them, so 32 open items become 28 on the six-list build of a4d92fd characterised on 2026-11-05 with the 3.13 workbook deciding -- the same bound as `0752-the-proposed-queue-shrank`. That a particular isomer's question is closed is a claim about a factor, not about the queue, and `0459-alpha-endosulfan-takes-the-isomers-number` makes it: a consensus factor exists for the flow whose proposal was the open item."
+      "comment": "A ceiling, as `0752-the-proposed-queue-shrank` is. 32 open items on main's build of `8593061`, with the 3.12 workbook deciding alone; 50 on the build of `1e67f3c` (run `20261123T2334105411510000`) with both deciding. The 18 added: eight for `Sodium Stearyl Fumarate` and `Monostearyl Fumarate`, the two rows 3.13 is the first list to ship, which only it scores; and ten for the α- and β-hexachlorocyclohexane rows only ecoinvent characterises, where 3.12 states lindane's number and 3.13 the isomer's own, so the decline in `lcia-factor-adoptions.json` cannot answer them and a curator has to."
     }
   ]
 }

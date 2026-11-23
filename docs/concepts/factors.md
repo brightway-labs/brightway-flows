@@ -31,8 +31,8 @@ makes the disagreements findable.
 ## Five implementations, one method
 
 `implemented_by` is the field the whole layer turns on. There is no correct
-implementation of a method. The counts are from the six-list build of a4d92fd,
-characterised on 2026-11-05 with the 3.13 workbook deciding:
+implementation of a method. Five are read and four are published. The counts are
+from the six-list build of `1e67f3c` on 23 November 2026 (run `20261123T2334105411510000`):
 
 - **`European Commission — JRC`** — 318,766 factors over 88,903 flows. EF 3.1 is
   the base list, so these arrive already on consensus flows: an identity join,
@@ -40,26 +40,23 @@ characterised on 2026-11-05 with the 3.13 workbook deciding:
   another (below). 51,944 of them are a stated zero, which is a claim
   ([#47](https://github.com/brightway-labs/brightway-flows/issues/47)):
   "assessed, and zero" is not "never assessed".
-- **`ecoinvent Centre (3.13)`** — 27,342 factors over 7,965 flows, read from the
-  3.13 workbook `fetch-lcia ecoinvent-3.13` downloads. These take two hops: the
-  workbook names an ecoinvent flow, the merge says which consensus flow that
-  became, and only then is there a factor about a flow of ours.
-- **`ecoinvent Centre (3.12)`** — 27,346 factors over 7,939 flows, the same
-  publisher's implementation one release earlier, read by
+- **`ecoinvent Centre (3.12)`** — 27,346 factors over 7,939 flows, read by
   `fetch-lcia ecoinvent-3.12` from the file ecoinvent publishes at
-  [github.com/ecoinvent/lcia](https://github.com/ecoinvent/lcia) rather than
-  from the workbook. That file states the 3.12 workbook's 27,415 EF v3.1
-  factors at the same numbers, needs no ecoinvent licence to download, and is
-  published under CC BY-NC 4.0, which is not this list's data licence: every
-  category row of this implementation says so under `meta.licence`. Reached
-  the same way as 3.13's, under the identifiers release 1.1.0 published it
-  with. Published and compared, and never evidence: the
-  ecoinvent Centre's current statement is the 3.13 workbook, and two
-  statements by one publisher are not two votes. It is kept so that a number
-  that moved between the two releases — the lindane and endosulfan isomers'
-  ecotoxicity factors, twelve climate-change factors — is a row in the
-  difference report rather than a memory
-  ([#459](https://github.com/brightway-labs/brightway-flows/issues/459)).
+  [github.com/ecoinvent/lcia](https://github.com/ecoinvent/lcia). That file
+  states the 3.12 workbook's 27,415 EF v3.1 factors at the same numbers, needs no
+  ecoinvent licence to download, and is published under CC BY-NC 4.0, which is
+  not this list's data licence: every category row of this implementation says
+  so under `meta.licence`. These take two hops: the file names an ecoinvent
+  flow, the merge says which consensus flow that became, and only then is there
+  a factor about a flow of ours.
+- **`ecoinvent Centre (3.13)`** — 27,342 factors over 7,965 flows, read from
+  the 3.13 workbook `fetch-lcia ecoinvent-3.13` downloads, the same way, and
+  **not published**. ecoinvent has not released a 3.13 file, and the workbook's
+  terms let it inform this list's numbers but not be republished. So it decides
+  beside the 3.12 release and nothing of its own appears in any output
+  ([#459](https://github.com/brightway-labs/brightway-flows/issues/459)). The
+  two releases are one publisher and count as one voice: where only they speak,
+  nobody independent has agreed with them.
 - **`GreenDelta`** — 25,261 factors over 1,510 flows, read from the openLCA
   method package `fetch-lcia bafu-2026-v1` downloads: `EF 3.1 Method (adapted)`
   from *openLCA LCIA methods 2.8.0*, as BAFU's openLCA distribution ships it.
@@ -201,8 +198,8 @@ of it — so there is nothing to cross-check and every consensus factor of it is
 of its own: the method's own publisher decides, ours does not, and the derivation
 that reconciles five implementations of EF reconciles one of Stepwise.
 
-So the published set is 163 categories: EF 3.1's 25 times five, and Stepwise
-2006's 19 times two.
+So the published set is 138 categories: EF 3.1's 25 times its four open
+implementations, and Stepwise 2006's 19 times two.
 
 **What a Stepwise number means is written in its method file, with whose words
 those are.** An EF 3.1 category's `indicator` is transcribed from a publisher:
@@ -229,11 +226,13 @@ number a run counts about a method — how many factors an implementation stated
 how many the curators have ruled on — is counted under that method's name.
 
 **Whether an implementation decides is on its row**, not in a list in the code.
-GreenDelta's and the ecoinvent Centre's 3.12 workbook say `decides: false` and
-are published, transcribed and compared like the rest; the JRC's and the
-ecoinvent Centre's 3.13 workbook say `decides: true` and are what the consensus
-implementation is derived from. The method's own publisher always
-decides, and ours never does, because ours is the thing being decided.
+GreenDelta's says `decides: false` and is published, transcribed and compared
+like the rest; the JRC's and both of the ecoinvent Centre's releases say
+`decides: true` and are what the consensus implementation is derived from. The
+method's own publisher always decides, and ours never does, because ours is the
+thing being decided. **Whether it is published is on its row too**, as `open`:
+the ecoinvent Centre's 3.13 release says `open: false`, and the method's own
+publisher and ours must be open.
 
 The one thing that *is* shared is this list's own name: `brightway-flows` is
 the implementation this list publishes for every method it characterises, because
@@ -457,10 +456,7 @@ Sulphuryl difluoride is the gas a house is tented with for termites. At the end 
 a fumigation the whole charge is vented to the open air, over a suburb, and it
 lasts about 36 years up there. Until recently this list said that kilogram was
 worth **4,630 kg CO₂-eq released from a rural stack and nothing at all released
-over the suburb** — a claim neither of its sources makes. (The worked example
-below is from the build that stated 4,630; since ecoinvent's 3.13 workbook
-stopped stating a climate-change factor for the gas, the list publishes none —
-see *What ecoinvent 3.13 changed* further down.)
+over the suburb** — a claim neither of its sources makes.
 
 Nobody decided that. ecoinvent has a flow for two air sub-compartments and EF 3.1
 has six, so four of the six had no factor from anyone, and this list published
@@ -713,9 +709,8 @@ as `sole`. The list published 6,230 for CFC-11 released at cruise height and
 6,226 for CFC-11 released anywhere else: one substance, one category, two
 numbers, and nothing on the page to say they were the same number.
 
-That is what `data/lcia-rounded-printings.json` fixed, and its whole content was
-those four rows (two substances × two climate categories) until ecoinvent 3.13
-printed the supplement's values too (*What ecoinvent 3.13 changed*, below). A refined factor says
+That is what `data/lcia-rounded-printings.json` fixes, and its whole content is
+those four rows (two substances × two climate categories). A refined factor says
 `derivation: refined`, which is neither `agreed` nor `sole`, because neither
 happened: nobody agreed with anybody, and the value published is not the one the
 lone implementation stated.
@@ -791,27 +786,27 @@ three and been wrong twice.
 
 ### What ecoinvent 3.13 changed
 
-All three cases moved when the ecoinvent Centre implementation was read from the
-3.13 workbook instead of the 3.12 one
-([#459](https://github.com/brightway-labs/brightway-flows/issues/459)), and
-each moved differently. The 3.12 workbook stays published as
-`ecoinvent Centre (3.12)`, which decides nothing, so every number below can
-still be read under the publisher that stated it.
+ecoinvent 3.13 states two of the three cases differently from 3.12, and both
+releases decide, so this table is all three releases' numbers side by side
+([#459](https://github.com/brightway-labs/brightway-flows/issues/459)). None of
+the answers moved. The 3.13 release's own numbers are read and not published,
+which is why its column is here and not in any output file.
 
-| case | 3.12 said | 3.13 says | what the list publishes now |
-|---|---:|---:|---|
-| CFC-11, HFC-134a | 6,226 and 1,526, Chapter 7's values | 6,230 and 1,530, the supplement's | 6,230 and 1,530 in every air compartment, `agreed` where both speak and `sole` where only the JRC does. Both publishers now print the same rounding, so the four rows of `lcia-rounded-printings.json` were retired: a row kept would have been this list overriding two publishers who agree. The file is empty and says why; the refiner stays for the next release that prints one assessment twice. |
-| Sulfur hexafluoride | 24,300, the shorter lifetime | 25,200, AR6's table | 25,200, `agreed`. The ruling that published the JRC's number over ecoinvent's applies to nothing and stays in the file as a record; ecoinvent adopted the table. |
-| Sulphuryl difluoride | 4,630, AR6's own number | nothing for either air row | **Nothing.** The row is still in 3.13 with its two ecotoxicity factors, but no climate-change factor, so no implementation that decides proposes 4,630 and the `publish` ruling has no proposal to publish. The claims in `expectations/0728` are marked pending: publishing a number no current publisher states needs a route of its own, and until it exists the fumigant's GWP is read only under `ecoinvent Centre (3.12)`. |
+| case | the JRC | ecoinvent 3.12 | ecoinvent 3.13 | what the list publishes |
+|---|---:|---:|---:|---|
+| CFC-11, HFC-134a | 6,230 and 1,530 | 6,226 and 1,526 | 6,230 and 1,530 | 6,226 and 1,526 in every air compartment. All three agree within tolerance where ecoinvent has a flow, and the more precise printing is kept; the four rows of `lcia-rounded-printings.json` carry it to the two compartments only the JRC has. |
+| Sulfur hexafluoride | 25,200 | 24,300 | 25,200 | 25,200, `ruled`. Still a disagreement between two publishers, now with ecoinvent's own later release on the JRC's side; the ruling records all three numbers. |
+| Sulphuryl difluoride | nothing | 4,630 | nothing for either air row | 4,630, `ruled`. A release that stops stating a number does not contradict it, so the question is still the proposal the ruling answered. |
 
-On the six-list build of a4d92fd, characterised on 2026-11-05 with the 3.13
-workbook deciding, the consensus implementation publishes 327,263 EF 3.1
-factors against 327,171 with the 3.12 one: 98 added — the lindane and
-endosulfan isomers, which 3.13 scores under their own registry numbers and the
-JRC agrees with, so the 36 proposed-factor items their parents' numbers had
-opened are closed — 6 removed, sulphuryl difluoride's, and 24 changed, CFC-11's
-and HFC-134a's. Eight proposed-factor items open for the two fumarate esters 3.13
-is the first list to ship.
+Where the two releases disagree about a number the JRC does not state, nothing
+settles it without a curator. The lindane and endosulfan isomers are the cases
+on this build: 3.12 scored α‑, β‑ and δ‑hexachlorocyclohexane with lindane's
+numbers and the two endosulfan isomers with endosulfan's, and 3.13 scores each
+under its own registry number. On the build of `1e67f3c` that is 32 open
+questions over 126 factors. The contested ones were already open when only
+3.12 decided, because the JRC disagreed with it; what reading 3.13 adds is ten
+proposals in compartments only ecoinvent has, where its two releases now
+disagree.
 
 ### Where to check any of this
 
@@ -917,7 +912,7 @@ and the 24 pairs left are chromium's, which Stepwise characterises itself.
 
 | Want | Look |
 |---|---|
-| One flow's factors, all five implementations | The flow's page in the [review application](../operating/review-app.md), or `lcia_characterization_factors` |
+| One flow's factors, all four published implementations | The flow's page in the [review application](../operating/review-app.md), or `lcia_characterization_factors` |
 | The categories, and how much each implementation fills | `/factors` in the review application |
 | Where the implementations disagree | `/factors/differences`, or [`lcia-differences.json`](../using/outputs.md) |
 | Where *two named* implementations of one category disagree | `/factors/category/<method>/<version>/<slug>/differences` in the review application |
@@ -930,7 +925,7 @@ and the 24 pairs left are chromium's, which Stepwise characterises itself.
 Two things to know before querying:
 
 - **`elementary_flows.lcia_factor_count` is the JRC's non-zero factors**, and
-  keeps that meaning now that there are five implementations, so a query written
+  keeps that meaning now that there are four published implementations, so a query written
   before `characterise` existed still answers what it always answered. The
   per-implementation count is `lcia_flow_factor_counts`, a view over the factors
   themselves so the two cannot drift apart.
