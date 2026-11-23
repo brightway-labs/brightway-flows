@@ -10,7 +10,7 @@ Two other pages are worth knowing about:
 code lives, and [`docs/reference/data-model.md`](docs/reference/data-model.md)
 says what each record class is for.
 
-Two jobs have a procedure rather than a rule, and each is a skill:
+Three jobs have a procedure rather than a rule, and each is a skill:
 
 - [`.claude/skills/adding-a-transformer`](.claude/skills/adding-a-transformer/SKILL.md),
   for adding, removing or reordering a step in the harmonisation chain. Read it
@@ -20,6 +20,11 @@ Two jobs have a procedure rather than a rule, and each is a skill:
   for changing where the merge puts a source row. Read it before writing the
   fix: the row is named and the build is measured first, and the expectation is
   written while it still fails.
+- [`.claude/skills/reviewing-a-contributed-change`](.claude/skills/reviewing-a-contributed-change/SKILL.md),
+  for reviewing a pull request somebody else wrote that moves a row, edits
+  `data/` or changes the chain. Read it before approving one: the contributor's
+  build usually has no ecoinvent and no factors, so the full build, the
+  `characterise` run and the baseline are the maintainer's.
 
 ## Records
 
