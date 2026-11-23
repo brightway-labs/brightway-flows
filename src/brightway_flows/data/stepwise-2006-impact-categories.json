@@ -12,6 +12,7 @@
       "name": "2.-0 LCA consultants",
       "role": "reference",
       "decides": true,
+      "open": true,
       "release": "Stepwise2006 v1.09",
       "source": "the SimaPro {methods} CSV export, method Stepwise_2006_IPCC2021_CorrectedNatureOccupation",
       "factors": {
@@ -26,6 +27,7 @@
       "previous_slugs": ["consensus-flow-list"],
       "role": "consensus",
       "decides": false,
+      "open": true,
       "source": "ours, derived from the deciding implementations, each factor saying how",
       "factors": {
         "from": "derived"

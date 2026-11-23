@@ -51,10 +51,10 @@ from brightway_flows.webapps.app.queries.flows import _factor_counts
 #: `data/lcia-impact-categories.json` says.
 _METHOD = ef_method()
 JRC_IMPL = _METHOD.reference
-ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre-3-13")
+ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
 GREENDELTA_IMPL = _METHOD.implementation("greendelta")
 CONSENSUS_IMPL = _METHOD.consensus
-IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
+IMPLEMENTATION_NAMES = {row.name for row in _METHOD.published}
 
 #: Two crosswalked categories, so one flow can carry a number and a stated zero
 #: without the two colliding on the key that says they are one factor.
@@ -130,7 +130,7 @@ class ARunThatPublishesTestCase(unittest.TestCase):
         connection.executemany(
             "INSERT INTO elementary_flow_sources VALUES (?, ?, ?, ?, ?)",
             [
-                ("cf-1", "ecoinvent", "3.13", "ei-1",
+                ("cf-1", "ecoinvent", "3.12", "ei-1",
                  orjson.dumps({"unit": "kg"}).decode()),
                 # GreenDelta's package names flows by the ecoinvent UUID it was
                 # built against, so its row is resolved through a release of
@@ -153,8 +153,8 @@ class ARunThatPublishesTestCase(unittest.TestCase):
         # counts.  The ecoinvent list is 3.13, the one the deciding ecoinvent
         # Centre implementation reads; the 3.12 workbook's implementation is
         # given no list and is skipped.
-        ecoinvent_name = ef_method().by_stated_identifier("jrc")[FIRST].stated["ecoinvent-centre-3-13"].name
-        factors_path = root / "ecoinvent-3.13-lcia-factors.json"
+        ecoinvent_name = ef_method().by_stated_identifier("jrc")[FIRST].stated["ecoinvent-centre"].name
+        factors_path = root / "ecoinvent-3.12-lcia-factors.json"
         factors_path.write_bytes(orjson.dumps({
             "schema_version": 1,
             "methods": [{
@@ -169,13 +169,13 @@ class ARunThatPublishesTestCase(unittest.TestCase):
         }))
         self.source = SourceList(
             list_name="ecoinvent",
-            list_version="3.13",
+            list_version="3.12",
             flows_path=root / "flows.json",
             lcia=LciaSpec(
                 adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
                 factors_path=factors_path,
                 methods=(LciaMethodSpec(name="EF v3.1", no_long_term=None),),
-                implemented_by="ecoinvent Centre (3.13)",
+                implemented_by="ecoinvent Centre (3.12)",
             ),
         )
         # And GreenDelta's, in the shape their adapter writes: a category
@@ -210,13 +210,13 @@ class ARunThatPublishesTestCase(unittest.TestCase):
                 factors_path=greendelta_path,
                 methods=(LciaMethodSpec(name="EF 3.1 Method (adapted)"),),
                 implemented_by="GreenDelta",
-                resolve_through=("ecoinvent-3.13", "ecoinvent-3.8"),
+                resolve_through=("ecoinvent-3.12", "ecoinvent-3.8"),
             ),
         )
         self.stats = characterise(
             self.db,
             source_lists={
-                "ecoinvent-3.13": self.source,
+                "ecoinvent-3.12": self.source,
                 "bafu-2026-v1": self.greendelta,
             },
         )
@@ -331,11 +331,11 @@ class WhatTheReviewAppShowsTestCase(ARunThatPublishesTestCase):
         """Not the largest count: the implementation this list publishes."""
         counts = self._counts()
         self.assertEqual(counts[0].implemented_by, CONSENSUS_IMPL.name)
-        # Every implementation the fixture registered a list for: the ecoinvent
-        # Centre's 3.12 workbook reads a list this fixture does not have.
+        # Every open implementation: the ecoinvent Centre's 3.13 workbook reads
+        # a list this fixture does not have, and is closed besides.
         self.assertEqual(
             {count.implemented_by for count in counts},
-            IMPLEMENTATION_NAMES - {_METHOD.implementation("ecoinvent-centre").name},
+            IMPLEMENTATION_NAMES,
         )
 
     def test_a_count_says_how_many_of_its_factors_are_zero(self):
@@ -438,14 +438,15 @@ class TheFilesTestCase(ARunThatPublishesTestCase):
             set(factor), {field.name for field in fields(CharacterizationFactor)}
         )
 
-    def test_every_implementation_of_every_method_is_in_the_file(self):
+    def test_every_open_implementation_of_every_method_is_in_the_file(self):
         """The categories come from the method files, not from the factors.
 
         So a method whose list this run did not merge still has its category
         rows in the file, carrying no factors -- which is what
         `consensus_categories_awaiting_factors` counts. Stepwise 2006's
         publisher is here for that reason: it is a registered method, and this
-        fixture merges no Stepwise flows.
+        fixture merges no Stepwise flows. A closed implementation is the
+        exception, and has no rows at all.
         """
         from brightway_flows.domain.lcia.crosswalk import lcia_methods
 
@@ -453,7 +454,9 @@ class TheFilesTestCase(ARunThatPublishesTestCase):
             implementation.name
             for method in lcia_methods()
             for implementation in method.implementations
+            if implementation.open
         }
+        self.assertNotIn(_METHOD.implementation("ecoinvent-centre-3-13").name, expected)
         self.assertEqual(
             {
                 category["implemented_by"]
@@ -501,7 +504,7 @@ class TheFilesTestCase(ARunThatPublishesTestCase):
         characterise(
             self.db,
             source_lists={
-                "ecoinvent-3.13": self.source,
+                "ecoinvent-3.12": self.source,
                 "bafu-2026-v1": self.greendelta,
             },
         )

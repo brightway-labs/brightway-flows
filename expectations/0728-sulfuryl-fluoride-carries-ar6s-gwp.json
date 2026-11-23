@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Sulfuryl fluoride -- the gas a house is tented with for drywood termites, vented to the open air at the end of every job and lasting some 36 years there -- has a GWP100 of 4630 in IPCC AR6 Table 7.SM.7. ecoinvent's v3.12 implementation of EF 3.1 added that number 'following IPCC 2021' (§15.3.1, Table 19); EF 3.1 states nothing for the substance under any climate category, though it characterises it for freshwater ecotoxicity in all thirteen of its contexts. So the factor reached `queue/proposed-factor`, and `lcia-factor-rulings.json` adopts it, as ecoinvent's own statement of the IPCC's number. It reaches only the two air compartments ecoinvent has a flow for; the four this list carries from EF 3.1's flow list stay empty, which is #151's follow-up and not this claim's business. The claim that urban air stays empty was here until #152 filled it, which is what that expectation was written for.",
+  "description": "Sulfuryl fluoride -- the gas a house is tented with for drywood termites, vented to the open air at the end of every job and lasting some 36 years there -- has a GWP100 of 4630 in IPCC AR6 Table 7.SM.7. ecoinvent's v3.12 implementation of EF 3.1 added that number 'following IPCC 2021' (§15.3.1, Table 19); EF 3.1 states nothing for the substance under any climate category, though it characterises it for freshwater ecotoxicity in all thirteen of its contexts. So the factor reached `queue/proposed-factor`, and `lcia-factor-rulings.json` adopts it, as ecoinvent's own statement of the IPCC's number. It reaches only the two air compartments ecoinvent has a flow for; the four this list carries from EF 3.1's flow list stay empty, which is #151's follow-up and not this claim's business. The claim that urban air stays empty was here until #152 filled it, which is what that expectation was written for.\n\nSince #459 both of the ecoinvent Centre's workbooks decide. The 3.12 workbook still states 4,630 in both air compartments; the 3.13 workbook keeps both rows with their ecotoxicity factors and states no climate-change factor for either. A release that stops stating a number does not contradict it, so the question is still the proposal the ruling answered and 4,630 is still published.",
   "expectations": [
     {
       "id": "0728-the-list-publishes-ar6s-number-for-unspecified-air",
@@ -18,8 +18,7 @@
         "amount": "4630",
         "derivation": "ruled"
       },
-      "comment": "The compartment an inventory writes to when it does not say where the emission went, which for a substance released by opening a tent is most of them. Before the ruling this list published nothing here and the gas scored zero. `derivation` is claimed alongside the number because the two are different facts: 4630 could in principle arrive as a restatement of a twin, and this one arrives because somebody signed for it. Pending since #459: the ecoinvent Centre's 3.13 workbook states no climate-change factor for either sulfuryl fluoride air row (it keeps the rows and their two ecotoxicity factors), so no implementation that decides proposes 4,630 and the `publish` ruling applies to nothing. The number is AR6's and the ruling stays in `lcia-factor-rulings.json`; publishing it again needs a route that does not wait for a vendor to propose it, which is a change of its own.",
-      "pending": true
+      "comment": "The compartment an inventory writes to when it does not say where the emission went, which for a substance released by opening a tent is most of them. Before the ruling this list published nothing here and the gas scored zero. `derivation` is claimed alongside the number because the two are different facts: 4630 could in principle arrive as a restatement of a twin, and this one arrives because somebody signed for it."
     },
     {
       "id": "0728-the-fossil-sub-category-carries-it-too",
@@ -36,8 +35,7 @@
         "exists": true,
         "amount": "4630"
       },
-      "comment": "ecoinvent files this substance in `climate change` and `climate change: fossil` and in neither of the biogenic or land-use sub-categories, which is what a synthetic fluorinated gas of industrial origin should do. Both items are ruled, so both are claimed; a ruling on one and not the other would publish a substance into the aggregate and not into the sub-category that adds up to it. Pending since #459: the ecoinvent Centre's 3.13 workbook states no climate-change factor for either sulfuryl fluoride air row (it keeps the rows and their two ecotoxicity factors), so no implementation that decides proposes 4,630 and the `publish` ruling applies to nothing. The number is AR6's and the ruling stays in `lcia-factor-rulings.json`; publishing it again needs a route that does not wait for a vendor to propose it, which is a change of its own.",
-      "pending": true
+      "comment": "ecoinvent files this substance in `climate change` and `climate change: fossil` and in neither of the biogenic or land-use sub-categories, which is what a synthetic fluorinated gas of industrial origin should do. Both items are ruled, so both are claimed; a ruling on one and not the other would publish a substance into the aggregate and not into the sub-category that adds up to it."
     },
     {
       "id": "0728-the-high-stack-compartment-carries-it-as-well",
@@ -54,26 +52,24 @@
         "exists": true,
         "amount": "4630"
       },
-      "comment": "ecoinvent's `air / non-urban air or from high stacks`, which this list's context vocabulary calls a medium rural stack. Named separately from the compartment above because a ruling is keyed on the substance and category rather than on a flow: it should reach every flow the implementation spoke about, not the first one. Pending since #459: the ecoinvent Centre's 3.13 workbook states no climate-change factor for either sulfuryl fluoride air row (it keeps the rows and their two ecotoxicity factors), so no implementation that decides proposes 4,630 and the `publish` ruling applies to nothing. The number is AR6's and the ruling stays in `lcia-factor-rulings.json`; publishing it again needs a route that does not wait for a vendor to propose it, which is a change of its own.",
-      "pending": true
+      "comment": "ecoinvent's `air / non-urban air or from high stacks`, which this list's context vocabulary calls a medium rural stack. Named separately from the compartment above because a ruling is keyed on the substance and category rather than on a flow: it should reach every flow the implementation spoke about, not the first one."
     },
     {
       "id": "0728-ecoinvent-still-says-so-under-its-own-name",
       "issue": 728,
-      "title": "ecoinvent's 3.13 workbook no longer says so under its own name; its 3.12 workbook still does",
+      "title": "The ecoinvent Centre's 3.12 workbook's 4,630 is still published as the Centre's",
       "subject": {
         "kind": "factor",
         "flow_name": "Sulphuryl Difluoride",
         "context_display": "Environmental → Air → Unknown",
         "category": "Climate change",
-        "implemented_by": "ecoinvent Centre (3.13)"
+        "implemented_by": "ecoinvent Centre (3.12)"
       },
       "expect": {
         "exists": true,
         "amount": "4630"
       },
-      "comment": "Adopting a number does not absorb it. The transcription stays published under the name of whoever made it, so a reader can see that this list's number and ecoinvent's are the same number rather than two arrivals at one answer. Pending since #459: the ecoinvent Centre's 3.13 workbook states no climate-change factor for either sulfuryl fluoride air row (it keeps the rows and their two ecotoxicity factors), so no implementation that decides proposes 4,630 and the `publish` ruling applies to nothing. The number is AR6's and the ruling stays in `lcia-factor-rulings.json`; publishing it again needs a route that does not wait for a vendor to propose it, which is a change of its own.",
-      "pending": true
+      "comment": "Adopting a number does not absorb it. The transcription stays published under the name of whoever made it, so a reader can see that this list's number and ecoinvent's are the same number rather than two arrivals at one answer."
     },
     {
       "id": "0728-the-jrc-still-says-nothing",
@@ -92,21 +88,20 @@
       "comment": "The silence that made this a proposal rather than an agreement, and it has to stay legible after the ruling. If EF 3.1 ever states a number here the question is a different one -- two implementations disagreeing, or agreeing -- and `ruled_about` sends it back to the queue rather than letting this decision stand over it."
     },
     {
-      "id": "0728-ecoinvent-3-12-said-so",
+      "id": "0728-the-3-13-workbook-states-nothing-here",
       "issue": 728,
-      "title": "The ecoinvent Centre's 3.12 workbook still states 4,630 under its own name",
+      "title": "Nothing is published for sulfuryl fluoride's climate change under the ecoinvent Centre's 3.13 workbook",
       "subject": {
         "kind": "factor",
         "flow_name": "Sulphuryl Difluoride",
         "context_display": "Environmental → Air → Unknown",
         "category": "Climate change",
-        "implemented_by": "ecoinvent Centre (3.12)"
+        "implemented_by": "ecoinvent Centre (3.13)"
       },
       "expect": {
-        "exists": true,
-        "amount": "4630"
+        "exists": false
       },
-      "comment": "The 3.12 workbook is published as a non-deciding implementation since #459, so the number this file is about is still on the record under the publisher that stated it."
+      "comment": "Twice true: the 3.13 workbook states no climate-change factor for the substance, and it is closed, so nothing of its is published under its name anyway (#459). The first is why the ruling's `ruled_about` names the 3.12 workbook alone."
     }
   ]
 }

@@ -141,7 +141,8 @@ STEPWISE_SLUGS: tuple[str, ...] = (
 #: Every published impact-category IRI, stated as the five segments it is made
 #: of rather than as one string, so that a change to any segment -- the
 #: implementation's name, the timeframe, a slug -- is a failure here rather than
-#: a silent renaming of 138 published identifiers.
+#: a silent renaming of 138 published identifiers.  The ecoinvent Centre's 3.13
+#: workbook is closed, so none of its 25 is here (`MethodImplementation.open`).
 #:
 #: `acidification` and `eutrophication-terrestrial` appear under both methods,
 #: which is the point of the method segment: one slug, two categories, counted
@@ -149,8 +150,7 @@ STEPWISE_SLUGS: tuple[str, ...] = (
 PUBLISHED_IRIS: tuple[str, ...] = tuple(
     f"{_PREFIX}/{implementation}/long/{slug}"
     for implementation in (
-        "jrc", "ecoinvent-centre-3-13", "ecoinvent-centre", "greendelta",
-        "brightway-flows",
+        "jrc", "ecoinvent-centre", "greendelta", "brightway-flows",
     )
     for slug in SLUGS
 ) + tuple(
@@ -411,17 +411,37 @@ class CrosswalkTestCase(unittest.TestCase):
                 self.assertEqual(row.slug, f"ecoinvent-centre-{row.release.replace('.', '-')}")
                 self.assertEqual(row.name, f"ecoinvent Centre ({row.release})")
 
-    def test_only_two_of_the_five_decide_anything(self):
-        """Everything transcribed is compared; only a deciding implementation is
-        evidence. GreenDelta's is here to be compared with (#157), and so is the
-        ecoinvent Centre's 3.12 workbook now that its 3.13 one decides (#459):
-        two statements by one publisher are not two votes."""
+    def test_three_of_the_five_decide_and_two_of_those_are_one_voice(self):
+        """Everything open is compared; only a deciding implementation is
+        evidence. GreenDelta's is here to be compared with (#157). Both of the
+        ecoinvent Centre's workbooks decide -- two releases are two statements
+        -- and they are one publisher, so agreeing with each other is not
+        agreement (#459)."""
         method = ef_method()
-        self.assertEqual([row.slug for row in method.deciding], [JRC, ECOINVENT])
+        self.assertEqual(
+            [row.slug for row in method.deciding], [JRC, ECOINVENT, ECOINVENT_PREVIOUS]
+        )
         self.assertFalse(method.implementation(GREENDELTA).decides)
-        self.assertFalse(method.implementation(ECOINVENT_PREVIOUS).decides)
         self.assertTrue(method.reference.decides)
         self.assertFalse(method.consensus.decides)
+        self.assertEqual(
+            {method.implementation(ECOINVENT).voice, method.implementation(ECOINVENT_PREVIOUS).voice},
+            {"ecoinvent Centre"},
+        )
+        self.assertEqual(len({row.voice for row in method.deciding}), 2)
+
+    def test_only_the_3_13_workbook_is_closed(self):
+        """Its numbers decide and are never written out: ecoinvent has not
+        published a 3.13 file, and the workbook's terms do not allow
+        republishing it. Every other implementation is open, and the reference
+        and the consensus have to be."""
+        for method in (ef_method(), lcia_method("stepwise-2006")):
+            for row in method.implementations:
+                with self.subTest(method=method.slug, implementation=row.slug):
+                    self.assertEqual(
+                        row.open, (method.slug, row.slug) != ("ef", ECOINVENT)
+                    )
+        self.assertNotIn(ECOINVENT, [row.slug for row in ef_method().published])
 
     def test_greendelta_kept_the_jrc_identifiers_and_says_so(self):
         """Their package transcribed the ILCD files and left the UUIDs in place,
@@ -441,12 +461,13 @@ class PublishedCategoryTestCase(unittest.TestCase):
     """The 100 records, and the identifiers they carry."""
 
     def test_each_method_publishes_its_categories_once_per_implementation(self):
-        """EF 3.1's 25 times four, and Stepwise 2006's 19 times two.
+        """EF 3.1's 25 times its four open implementations, and Stepwise 2006's
+        19 times two.  The closed 3.13 workbook's 25 are minted and not published.
 
         Two rather than four is not an omission: one publisher renders Stepwise,
         so it has a reference implementation and ours and nothing in between.
         """
-        self.assertEqual(len(published_impact_categories()), 163)
+        self.assertEqual(len(published_impact_categories()), 138)
         for slug, categories, implementations in (
             ("ef", 25, 5),
             ("stepwise-2006", 19, 2),
@@ -472,15 +493,22 @@ class PublishedCategoryTestCase(unittest.TestCase):
                 self.assertEqual(category.id, impact_category_id(category.meta["iri"]))
 
     def test_the_pinned_ids(self):
-        by_iri = {c.meta["iri"]: c for c in published_impact_categories()}
+        """Over every implementation, the closed one included: its ids are what
+        the run keys its factors on, and what it will publish once it opens."""
+        by_iri = {
+            c.meta["iri"]: c
+            for method in (ef_method(), lcia_method("stepwise-2006"))
+            for implementation in method.implementations
+            for c in impact_categories_for(method.slug, implementation.slug)
+        }
         for iri, expected in PINNED_IDS.items():
             with self.subTest(iri):
                 self.assertEqual(str(by_iri[iri].id), expected)
 
     def test_no_two_categories_share_an_identifier(self):
         categories = published_impact_categories()
-        self.assertEqual(len({category.id for category in categories}), 163)
-        self.assertEqual(len({category.meta["iri"] for category in categories}), 163)
+        self.assertEqual(len({category.id for category in categories}), 138)
+        self.assertEqual(len({category.meta["iri"] for category in categories}), 138)
 
     def test_each_category_carries_its_own_method_and_version(self):
         """One `method` record per method, shared by its categories.
@@ -815,6 +843,39 @@ class MalformedMethodFileTestCase(unittest.TestCase):
             payload["implementations"][4]["decides"] = True
 
         with self.assertRaises(ValueError):
+            self._read(change)
+
+    def test_an_implementation_that_does_not_say_whether_it_is_open_raises(self):
+        """Open by omission would be a licence breached by omission."""
+
+        def change(payload):
+            del payload["implementations"][1]["open"]
+
+        with self.assertRaisesRegex(ValueError, "open"):
+            self._read(change)
+
+    def test_a_closed_reference_raises(self):
+        def change(payload):
+            payload["implementations"][0]["open"] = False
+
+        with self.assertRaisesRegex(ValueError, "closed"):
+            self._read(change)
+
+    def test_a_closed_consensus_raises(self):
+        def change(payload):
+            payload["implementations"][4]["open"] = False
+
+        with self.assertRaisesRegex(ValueError, "closed"):
+            self._read(change)
+
+    def test_a_second_implementation_speaking_for_the_reference_raises(self):
+        """A number only the reference states is `sole`; a second release of the
+        reference's own would make that a statement about one of several."""
+
+        def change(payload):
+            payload["implementations"][3]["publisher"] = payload["implementations"][0]["name"]
+
+        with self.assertRaisesRegex(ValueError, "own publisher"):
             self._read(change)
 
     def test_a_borrowed_identifier_that_stopped_matching_raises(self):

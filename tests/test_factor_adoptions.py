@@ -142,6 +142,13 @@ class LoadingTest(unittest.TestCase):
         self.assertTrue(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.13)"}, stated={"ecoinvent Centre (3.13)": 2.0}))
         self.assertFalse(entry.covers(category_slug="land-use", speaking={"ecoinvent Centre (3.13)"}, stated={"ecoinvent Centre (3.13)": 1.0}))
         self.assertFalse(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.13)", "Somebody else"}, stated={"ecoinvent Centre (3.13)": 1.0, "Somebody else": 1.0}))
+        # Everybody speaking has to be named; everybody named need not speak.
+        both = {**ION, "implemented_by": ["ecoinvent Centre (3.12)", "ecoinvent Centre (3.13)"]}
+        entry = self._load(both)["fo-ion"]
+        self.assertTrue(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.12)"}, stated={"ecoinvent Centre (3.12)": 1.0}))
+        self.assertTrue(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.12)", "ecoinvent Centre (3.13)"}, stated={"ecoinvent Centre (3.12)": 1.0, "ecoinvent Centre (3.13)": 1.0}))
+        self.assertFalse(entry.covers(category_slug="ecotoxicity-freshwater", speaking={"ecoinvent Centre (3.12)", "Somebody else"}, stated={"ecoinvent Centre (3.12)": 1.0, "Somebody else": 1.0}))
+        self.assertFalse(entry.covers(category_slug="ecotoxicity-freshwater", speaking=set(), stated={}))
 
     def test_a_pinned_entry_covers_only_its_numbers(self):
         entry = self._load({**VALID, "catch_all": "", "relationship": "formula-weighted", "adopted_about": {"ecoinvent Centre (3.13)": [1.646e-05]}})["fo-1"]
@@ -221,10 +228,16 @@ class TheCuratedFileTest(unittest.TestCase):
             }),
         )
 
-    def test_every_entry_is_about_ecoinvents_numbers_alone(self):
+    def test_every_entry_is_about_both_of_ecoinvents_workbooks(self):
+        """Both of the ecoinvent Centre's workbooks decide, and a substance's
+        proposed rows are stated by either or both: a compartment one release
+        has no flow for is a row the other states alone."""
         for entry in self.entries.values():
             with self.subTest(entry.substance):
-                self.assertEqual(entry.implemented_by, frozenset({"ecoinvent Centre (3.13)"}))
+                self.assertEqual(
+                    entry.implemented_by,
+                    frozenset({"ecoinvent Centre (3.12)", "ecoinvent Centre (3.13)"}),
+                )
 
     def test_only_the_minerals_are_pinned(self):
         pinned = {entry.substance for entry in self.entries.values() if entry.adopted_about}

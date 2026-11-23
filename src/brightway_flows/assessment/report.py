@@ -176,25 +176,26 @@ def _factor_lines(assessment: Assessment, paint: Any) -> list[str]:
     than shown as zeros -- "nobody has asked yet" is a different statement from
     "characterised by nobody".
 
-    The five per-implementation counts are EF 3.1's, named by that method's
+    The per-implementation counts are EF 3.1's, named by that method's
     slug: a statistic about one method's own work carries it (`ef_jrc_…`), and
     only the run's totals -- `factors_published`, the difference counts -- do
-    not.  Every implementation the total counts has a line, including the
-    ecoinvent Centre's 3.12 workbook, which decides nothing and is published to
-    be compared (#459): a total over five with four lines under it leaves a
-    reader to wonder where the rest went.  A second registered method wants a
-    section per method rather than another line here.
+    not.  Every implementation the total counts has a line: a total over four
+    with three lines under it leaves a reader to wonder where the rest went.
+    The ecoinvent Centre's 3.13 workbook is closed and is not in the total, so
+    its line says what was read and kept back rather than what was published.
+    A second registered method wants a section per method rather than another
+    line here.
     """
     wanted = (
-        ("factors.factors_published", "factors, over every implementation"),
+        ("factors.factors_published", "factors, over every open implementation"),
         ("factors.ef_jrc_factors_published", "the JRC's"),
         (
-            "factors.ef_ecoinvent_centre_3_13_factors_published",
-            "the ecoinvent Centre's, from its 3.13 workbook",
+            "factors.ef_ecoinvent_centre_factors_published",
+            "the ecoinvent Centre's, from its 3.12 workbook",
         ),
         (
-            "factors.ef_ecoinvent_centre_factors_published",
-            "the ecoinvent Centre's 3.12 workbook's, compared and not weighed",
+            "factors.ef_ecoinvent_centre_3_13_factors_withheld",
+            "the ecoinvent Centre's 3.13 workbook's, read and not published",
         ),
         ("factors.ef_greendelta_factors_published", "GreenDelta's"),
         ("factors.ef_consensus_factors_published", "this list's"),

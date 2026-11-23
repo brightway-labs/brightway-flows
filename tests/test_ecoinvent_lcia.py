@@ -1,10 +1,10 @@
 """EF 3.1 as the ecoinvent Centre implements it, and what is checked at ingest.
 
 The second implementation of a method this list holds, and the first that is not
-the method's own publisher's. The 3.13 workbook is read by this adapter and
-decides; the 3.12 implementation is kept beside it to be compared (#459), and
-since the file ecoinvent publishes states it factor for factor it is read from
-that instead, by `integrations.ecoinvent_lcia_public` and
+the method's own publisher's. The 3.13 workbook is read by this adapter, and
+decides beside the 3.12 implementation (#459) without being published: it is
+closed. The 3.12 implementation is read from the file ecoinvent publishes, which
+states it factor for factor, by `integrations.ecoinvent_lcia_public` and
 `tests/test_ecoinvent_lcia_public.py`. Every number below was first measured
 against `LCIA Implementation 3.12.xlsx` and the 9,850 ecoinvent 3.12 biosphere
 flows this project extracted, then against the 3.13 workbook and its 9,893, and
@@ -359,16 +359,22 @@ class TheManifestDeclaresItTestCase(unittest.TestCase):
         )
 
     def test_the_two_workbooks_are_two_implementations_of_one_publisher(self):
-        """3.13's decides and 3.12's does not, and the manifests name them apart:
-        two implementations cannot share a name, because `implemented_by` is
-        the field every published factor row carries."""
+        """Both decide, only 3.12's is open, and they speak for one publisher.
+        The manifests name them apart: two implementations cannot share a name,
+        because `implemented_by` is the field every published factor row
+        carries."""
         method = ef_method()
         current = method.implementation("ecoinvent-centre-3-13")
         previous = method.implementation("ecoinvent-centre")
-        self.assertEqual((current.release, current.factors.source_list, current.decides),
-                         ("3.13", "ecoinvent-3.13", True))
-        self.assertEqual((previous.release, previous.factors.source_list, previous.decides),
-                         ("3.12", "ecoinvent-3.12", False))
+        self.assertEqual(
+            (current.release, current.factors.source_list, current.decides, current.open),
+            ("3.13", "ecoinvent-3.13", True, False),
+        )
+        self.assertEqual(
+            (previous.release, previous.factors.source_list, previous.decides, previous.open),
+            ("3.12", "ecoinvent-3.12", True, True),
+        )
+        self.assertEqual(current.voice, previous.voice)
         self.assertEqual(current.factors.stated_method, previous.factors.stated_method)
         lists = known_source_lists()
         self.assertEqual(lists["ecoinvent-3.13"].lcia.implemented_by, current.name)

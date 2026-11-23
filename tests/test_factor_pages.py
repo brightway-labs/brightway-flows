@@ -67,16 +67,14 @@ from brightway_flows.webapps.app.queries import factors as queries
 #: `data/lcia-impact-categories.json` says.
 _METHOD = ef_method()
 JRC_IMPL = _METHOD.reference
-ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre-3-13")
+ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
 GREENDELTA_IMPL = _METHOD.implementation("greendelta")
 CONSENSUS_IMPL = _METHOD.consensus
-IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
-#: The fixture writes a factor for every implementation but the ecoinvent
-#: Centre's 3.12 workbook, which is published and compared and is not what the
-#: pages are about.
-NAMES_WITH_A_FIXTURE_ROW = IMPLEMENTATION_NAMES - {
-    _METHOD.implementation("ecoinvent-centre").name
-}
+#: The implementations a page can show: the open ones.  The ecoinvent Centre's
+#: 3.13 workbook is closed, so a build has no category or factor of its to show.
+IMPLEMENTATION_NAMES = {row.name for row in _METHOD.published}
+#: The fixture writes a factor for every implementation a page can show.
+NAMES_WITH_A_FIXTURE_ROW = IMPLEMENTATION_NAMES
 
 #: The category every fixture factor is under, in all four implementations.
 SLUG = sorted(definition.slug for definition in impact_categories())[0]
@@ -514,10 +512,10 @@ class AnImplementationThatPublishedNothingTestCase(FactorPageTestCase):
             "UPDATE lcia_runs SET stats_json = ?",
             (orjson.dumps({
                 "difference_shared": 2, "difference_identical": 1,
-                "ef_ecoinvent_centre_3_13_factors_stated": 27415,
-                "ef_ecoinvent_centre_3_13_factors_published": 0,
-                "ef_ecoinvent_centre_3_13_source_flows_merged": 0,
-                "ef_ecoinvent_centre_3_13_flow-not-reached": 7960,
+                "ef_ecoinvent_centre_factors_stated": 27415,
+                "ef_ecoinvent_centre_factors_published": 0,
+                "ef_ecoinvent_centre_source_flows_merged": 0,
+                "ef_ecoinvent_centre_flow-not-reached": 7960,
                 **extra,
             }).decode(),),
         )
@@ -567,7 +565,9 @@ class TheCategoryPageTestCase(FactorPageTestCase):
     def test_a_category_is_addressed_by_method_version_and_slug(self):
         detail = self.detail()
         self.assertEqual(detail.label, "EF 3.1")
-        self.assertEqual(len(detail.ids), 5)
+        # One per open implementation: the ecoinvent Centre's 3.13 workbook is
+        # closed and its category is never written.
+        self.assertEqual(len(detail.ids), 4)
         self.assertEqual(detail.implementations[0], CONSENSUS_IMPL.name)
 
     def test_an_unknown_category_is_a_404(self):
@@ -821,11 +821,11 @@ class TheCategoryComparisonTestCase(FactorPageTestCase):
         self.assertEqual(
             self.detail().slugs[JRC_IMPL.name], "jrc"
         )
-        self.assertEqual(self.detail().named("ecoinvent-centre-3-13"),
+        self.assertEqual(self.detail().named("ecoinvent-centre"),
                          ECOINVENT_IMPL.name)
         html = self.text(
             f"/factors/category/ef/3.1/{SLUG}/differences"
-            "?left=jrc&right=ecoinvent-centre-3-13"
+            "?left=jrc&right=ecoinvent-centre"
         )
         self.assertIn("53,540", html)
 
@@ -1223,8 +1223,7 @@ class WhatAssessSeesTestCase(FactorPageTestCase):
         # among them.  Naming the labels is what makes a rename say so.
         for label in (
             "the JRC's",
-            "the ecoinvent Centre's, from its 3.13 workbook",
-            "the ecoinvent Centre's 3.12 workbook's",
+            "the ecoinvent Centre's, from its 3.12 workbook",
             "GreenDelta's",
             "this list's",
         ):

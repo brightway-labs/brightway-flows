@@ -4,32 +4,35 @@ There is no correct implementation of an LCIA method.  EF 3.1 as the JRC
 published it, as the ecoinvent Centre implemented it -- twice, in its 3.13
 workbook and in its 3.12 one -- and as GreenDelta shipped it for openLCA are
 four renderings of one method against their own flow lists, and none is
-another's mistake; this list publishes all four, transcribed, plus a fifth that
-is its own judgement about what these flows should carry.  ``implemented_by`` is
-not a concept threaded through a pipeline -- it is a field on
-``ImpactCategory``, so "five implementations" is literally five sets of category
-rows.
+another's mistake; this list reads all four, transcribed, and publishes a fifth
+that is its own judgement about what these flows should carry.
+``implemented_by`` is not a concept threaded through a pipeline -- it is a field
+on ``ImpactCategory``, so "five implementations" is literally five sets of
+category rows.
 
 Nothing here names a method or an implementation.  Both are read from the method
 files (``domain.lcia.crosswalk``), so EF 3.1's five implementations are what is
 loaded today rather than what this module knows about:
 
-| ``implemented_by`` | categories | where its numbers come from |
-|---|---:|---|
-| ``European Commission — JRC`` | 25 | the 25 ILCD method files in ``EF-v3.1.zip`` |
-| ``ecoinvent Centre (3.13)`` | 25 | ``LCIA Implementation 3.13.xlsx``, method ``EF v3.1`` |
-| ``ecoinvent Centre (3.12)`` | 25 | ``EF v3.1_mapped_3.12.csv`` from ecoinvent's public ``lcia`` repository, CC BY-NC 4.0 |
-| ``GreenDelta`` | 25 | ``bafu-greendelta-lcia.zip``, ``EF 3.1 Method (adapted)`` |
-| ``brightway-flows`` | 25 | ours, derived from the deciding two, each factor saying how |
+| ``implemented_by`` | categories | decides | open | where its numbers come from |
+|---|---:|---|---|---|
+| ``European Commission — JRC`` | 25 | yes | yes | the 25 ILCD method files in ``EF-v3.1.zip`` |
+| ``ecoinvent Centre (3.13)`` | 25 | yes | no | ``LCIA Implementation 3.13.xlsx``, method ``EF v3.1`` |
+| ``ecoinvent Centre (3.12)`` | 25 | yes | yes | ``EF v3.1_mapped_3.12.csv`` from ecoinvent's public ``lcia`` repository, CC BY-NC 4.0 |
+| ``GreenDelta`` | 25 | no | yes | ``bafu-greendelta-lcia.zip``, ``EF 3.1 Method (adapted)`` |
+| ``brightway-flows`` | 25 | -- | yes | ours, derived from the deciding three, each factor saying how |
 
-**Four of the five are transcriptions, and only two of those decide anything.**
-GreenDelta's and the ecoinvent Centre's 3.12 workbook are ingested to be
-compared and not to be weighed: published, in the difference report, and kept
-out of the consensus derivation -- the 3.12 workbook because two statements by
-one publisher are not two votes (#459).  Which is which is `decides` on each
-implementation's row in the method file.  The 3.12 workbook keeps the slug
-``ecoinvent-centre``, which release 1.1.0 published its category ids under; a
-later workbook carries its release in the slug, ``ecoinvent-centre-3-13``.
+**Two flags, and they answer different questions.**  `decides` is whether a
+number of theirs may become one of ours: GreenDelta's is ingested to be
+compared and not to be weighed.  The ecoinvent Centre's two workbooks both
+decide, and they are one publisher (`publisher` on their rows), so agreeing with
+each other is not agreement (`lcia.consensus.derive`).  `open` is whether a
+number of theirs may be written out at all: the 3.13 workbook has no public
+release, so its categories are minted for the run and never published, and
+:func:`published_impact_categories` leaves them out.  The 3.12 workbook keeps
+the slug ``ecoinvent-centre``, which release 1.1.0 published its category ids
+under; a later workbook carries its release in the slug,
+``ecoinvent-centre-3-13``.
 
 The categories are built here; the factors are not.  Every category this module
 returns holds an empty ``characterization_factors`` list, and filling it is the
@@ -276,14 +279,18 @@ def consensus_categories_for(method_slug: str) -> tuple[ImpactCategory, ...]:
 
 @lru_cache(maxsize=None)
 def published_impact_categories() -> tuple[ImpactCategory, ...]:
-    """Every category of every implementation of every method.
+    """Every category of every open implementation of every method.
 
-    75 today: EF 3.1's 25, three times over.
+    A closed implementation's categories are minted -- its factors are keyed on
+    them while the run reads it -- and never published: a category row with no
+    factors would say an implementation exists that nobody can see, and the ids
+    would land in a release snapshot as categories created
+    (`MethodImplementation.open`).
     """
     return tuple(
         category
         for method in lcia_methods()
-        for implementation in method.implementations
+        for implementation in method.published
         for category in impact_categories_for(method.slug, implementation.slug)
     )
 
