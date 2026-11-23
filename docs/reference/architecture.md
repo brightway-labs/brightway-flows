@@ -161,7 +161,8 @@ responsibility and the package re-exports the surface transformers use, so
 
 | Module | Responsibility |
 |---|---|
-| `engine` | `Change`, `Transformer`, `run_pipeline` |
+| `transforming` | `Change`, `Transformer`, `apply_transformers` |
+| `engine` | `run_pipeline`, the whole build |
 | `loading` | reading input files into validated `Flow` records |
 | `provenance` | the PROV-O graph for a run |
 | `exporting` | projection onto the simplified published export |
