@@ -181,6 +181,17 @@ file that Stepwise happens not to trigger.
 | `Nitrogen, organic bound` — five rows | `Water / (unspecified)`; `Water / groundwater`; `Water / groundwater, long-term`; `Water / ocean`; `Water / river` | kg | 7727-37-9 | *removed* | 7727-37-9 is dinitrogen, N₂, the inert gas that is most of the air. Organically bound nitrogen is not a compound: it is the nitrogen locked inside the organic matter of a discharge, reported as a mass of nitrogen, and no registry number can name it. A shared number is how this list decides two things are one substance, so left alone these rows would fuse with the gas and be published as `Dinitrogen`. Removed rather than replaced because there is nothing to replace it with; without it the rows group by name onto the same substance the other lists' organic-bound rows reach. Stepwise's own method treats the two as different — it gives organic-bound nitrogen to the ocean an aquatic eutrophication factor of 2.6 against 3.1 for nitrogen. Stepwise's six `Nitrogen` rows keep the CAS number, which is theirs ([#57](https://github.com/brightway-labs/brightway-flows/issues/57)). In `stepwise-2006-manual-fixes.json`. |
 | `Uranium-238` — two rows | `Air / (unspecified)`; `Water / (unspecified)` | kBq | 7440-61-1 | 24678-82-8 | 7440-61-1 is uranium the element, a mass; the row is the activity of one isotope, in becquerels, and the isotope's own CAS number is 24678-82-8, which ecoinvent ships on every `Uranium-238` row and the consensus substance carries. A stated number outranks a name it disagrees with, so with the element's number Stepwise's two rows reached `Uranium` and `Uranium Alpha` and matched neither ([#147](https://github.com/brightway-labs/brightway-flows/issues/147)). With the isotope's number both land on Uranium-238. The same habit is in BAFU, so the fix is in `simapro-lineage-manual-fixes.json` and applies to rows of any SimaPro-shaped list that carry the element's number. |
 
+Two more rows shipped no number and are given one
+([#471](https://github.com/brightway-labs/brightway-flows/issues/471)). Each
+names, under an old name, a substance EF 3.1 ships with its number, and
+without it each minted a second substance, which carries Stepwise's own two
+factors and none of EF's.
+
+| Stepwise row | Compartment | Unit | CAS supplied | The substance, as the list names it |
+|---|---|---|---|---|
+| `Amylene, beta-cis-` | `Air / (unspecified)` | kg | 627-20-3 | Cis-2-pentene — β-amylene is 2-pentene, and Common Chemistry lists `cis-β-Amylene` under this number |
+| `Amylene, trans-beta-` | `Air / (unspecified)` | kg | 646-04-8 | Trans-2-pentene — Common Chemistry lists `trans-β-Amylene` under this number |
+
 The lineage file also renames one Stepwise row without touching its CAS number:
 `Carbon dioxide, in air` (`Raw / (unspecified)`, kg, 124-38-9) becomes
 `Carbon dioxide, biogenic, in air`. Carbon dioxide taken from the air is
