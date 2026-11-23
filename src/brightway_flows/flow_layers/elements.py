@@ -25,7 +25,11 @@ from typing import Any
 import httpx
 
 from brightway_flows.domain.elementary_flow import ElementaryFlow
-from brightway_flows.domain.flow_object import FlowObject, stable_flow_object_id
+from brightway_flows.domain.flow_object import (
+    BASE_REFERENCES_PROPERTY as BASE_REFERENCES_PROPERTY,
+    FlowObject,
+    stable_flow_object_id,
+)
 from brightway_flows.domain.nuclides import (
     ELEMENTS,
     Nuclide,
@@ -59,12 +63,6 @@ from brightway_flows.flow_layers.labels import (
 )
 from brightway_flows.flow_layers.provenance import _element_property_provenance
 from brightway_flows.sources import base_source_label
-
-#: Property key recording which base-list flows an element object was matched
-#: to.  Published in `flow_objects.properties` and read by the element-coverage
-#: review table, so it names the base list of the day it was minted rather than
-#: the base list: renaming it is a data migration, not a refactor (#14).
-BASE_REFERENCES_PROPERTY = "ef31_references"
 
 #: How far the two half-lives may differ before the record is refused.  They
 #: come from independent sources for the same nuclide, so agreement is the

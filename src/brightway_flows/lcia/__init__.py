@@ -21,22 +21,21 @@ two.  A method is a file, and nothing in this package names one.
 | ``store`` | the LCIA tables, in the file ``build`` wrote |
 """
 
-from brightway_flows.lcia.categories import (
-    consensus_categories_for,
-    impact_categories_for,
-    impact_category_id,
-    impact_category_iri,
-    published_impact_categories,
-    published_method,
-)
-from brightway_flows.lcia.pipeline import characterise
+from brightway_flows._lazy import lazy_exports
 
-__all__ = [
-    "characterise",
-    "consensus_categories_for",
-    "impact_categories_for",
-    "impact_category_id",
-    "impact_category_iri",
-    "published_impact_categories",
-    "published_method",
-]
+#: Imported when first used: the review application reads `lcia.differences`
+#: and the stored tables, and `pipeline` -- which computes them -- reads
+#: ecoinvent's own files to do it.
+_EXPORTS = {
+    "characterise": "pipeline",
+    "consensus_categories_for": "categories",
+    "impact_categories_for": "categories",
+    "impact_category_id": "categories",
+    "impact_category_iri": "categories",
+    "published_impact_categories": "categories",
+    "published_method": "categories",
+}
+
+__getattr__, __dir__ = lazy_exports(__name__, _EXPORTS)
+
+__all__ = sorted(_EXPORTS)
