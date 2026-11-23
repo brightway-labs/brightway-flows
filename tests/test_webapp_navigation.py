@@ -43,7 +43,7 @@ class SectionGroupTestCase(unittest.TestCase):
         self.assertEqual([s["key"] for s in groups["browse"]],
                          ["flows", "substances", "factors", "checks"])
         self.assertEqual([s["key"] for s in groups["build"]],
-                         ["overview", "scores", "queue", "cases", "merge"])
+                         ["overview", "scores", "queue", "expectations", "merge"])
 
     def test_every_browse_and_build_section_has_a_summary(self):
         """The panel gives every entry, the curators' tools too, one line saying
@@ -57,7 +57,7 @@ class SectionGroupTestCase(unittest.TestCase):
     def test_every_browse_and_build_section_has_an_icon(self):
         """The panel draws nothing for a key it has no icon for, so a section
         added without one sits in the list with a gap where the others have a
-        mark -- which is how Cases first shipped."""
+        mark."""
         masthead = (Path(__file__).resolve().parent.parent / "src" / "brightway_flows"
                     / "webapps" / "app" / "templates" / "partials" / "masthead.html").read_text()
         for section in SECTIONS:

@@ -360,6 +360,32 @@ def highlight(value: Any, query: str) -> Markup:
     return Markup("".join(pieces))
 
 
+_CODE_SPAN = re.compile(r"`([^`]+)`")
+
+
+def code_spans(value: Any) -> Markup:
+    """*value* with what its author put between backticks set as code.
+
+    The descriptions, titles and comments in `expectations/` are written the
+    way a commit message is -- prose, with `Water` or `merge_outcomes` in
+    backticks -- and printed verbatim they show the backticks.  Only that one
+    convention is read: the files are not markdown, and a renderer would make
+    emphasis out of an asterisk nobody meant as one.
+
+    Escaped first and wrapped afterwards, as `highlight` does, so nothing in a
+    file can open a tag.
+    """
+    text = str(value or "")
+    pieces: list[str] = []
+    position = 0
+    for match in _CODE_SPAN.finditer(text):
+        pieces.append(str(escape(text[position:match.start()])))
+        pieces.append(f"<code>{escape(match.group(1))}</code>")
+        position = match.end()
+    pieces.append(str(escape(text[position:])))
+    return Markup("".join(pieces))
+
+
 def zip_same(values: Any) -> list[tuple[str, str]]:
     """A list of strings as `(value, label)` pairs, for `select`.
 
@@ -418,5 +444,6 @@ def register(app: Flask) -> None:
     app.jinja_env.filters["plain_text"] = plain_text
     app.jinja_env.filters["highlight"] = highlight
     app.jinja_env.filters["zip_same"] = zip_same
+    app.jinja_env.filters["code_spans"] = code_spans
     app.jinja_env.filters["type_label"] = _type_label
     app.jinja_env.filters["short_value"] = short_value

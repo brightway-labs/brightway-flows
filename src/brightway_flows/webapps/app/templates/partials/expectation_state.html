@@ -1,9 +1,10 @@
 {#
-  A claim's or a case's state as a badge.
+  An expectation's or a file's state as a badge.
 
-  Four colours for six states, by what a reader does about each: a claim the
-  build contradicts is the only kind that is wrong, the ones waiting on work or
-  on a merge are a queue, and one written after the recorded build is only news.
+  Four colours for six states, by what a reader does about each: an expectation
+  the build contradicts is the only kind that is wrong, the ones waiting on work
+  or on a rewrite are a queue, and one written after the recorded build is only
+  news.
 #}
 {% macro badge(state, meanings) %}
 {% set kind = {'unmet': 'blocking', 'error': 'blocking', 'unresolved': 'review',
@@ -23,6 +24,6 @@ Statuses are those of the build recorded on
 merging {{ recorded.sources | join(", ") }}{% endif %}).
 {% else %}
 No build has been recorded in <code>expectations/baseline.json</code>, so no
-claim has a status yet.
+expectation has a status yet.
 {% endif %}
 {% endmacro %}

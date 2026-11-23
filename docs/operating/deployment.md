@@ -59,6 +59,7 @@ or pass `--chdir /path/to/brightway-flows`.
 |---|---|---|---|
 | `BRIGHTWAY_FLOWS_DATA_DIR` | all | platform data directory | Where `consensus-flows.sqlite3` is read from |
 | `BRIGHTWAY_FLOWS_DOCS_DIR` | all | the checkout's `docs/` | Where the documentation served at `/docs/` is read from |
+| `BRIGHTWAY_FLOWS_EXPECTATIONS_DIR` | all | the checkout's `expectations/` | Where the files shown at `/expectations/` are read from |
 
 There is no variable that takes the SQLite database off the site. It may be
 published, so `/run/` and `/download/` both offer it and nothing has to be

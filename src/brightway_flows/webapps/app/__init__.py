@@ -43,13 +43,13 @@ from brightway_flows.webapps.app.views import (
     about,
     agrochemicals,
     browse,
-    cases,
     changes,
     checks,
     contexts,
     docs,
     download,
     elements,
+    expectations,
     factors,
     flows,
     home,
@@ -108,12 +108,18 @@ def create_app(
         or documentation.default_root(_HERE)
     )
 
-    app.config["CONSENSUS_EXPECTATIONS_PATH"] = Path(expectations_path or EXPECTATIONS_DIR)
+    # As the documentation: a deployment that is not a checkout names where its
+    # copy of `expectations/` is, and one that has none gets a page saying so.
+    app.config["CONSENSUS_EXPECTATIONS_PATH"] = Path(
+        expectations_path
+        or os.environ.get("BRIGHTWAY_FLOWS_EXPECTATIONS_DIR")
+        or EXPECTATIONS_DIR
+    )
 
     app.teardown_appcontext(db.close_connection)
     filters.register(app)
     for section in (overview, flows, substances, agrochemicals, land, water,
-                    particles, elements, factors, scores, checks, queue, cases, merge, changes,
+                    particles, elements, factors, scores, checks, queue, expectations, merge, changes,
                     contexts, docs, browse, download, about, search, home):
         app.register_blueprint(section.blueprint)
     # The flow-object pages answer to their old `/substances` addresses too.

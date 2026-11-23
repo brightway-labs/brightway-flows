@@ -31,7 +31,7 @@ which application used to own the page:
 | Factors | What is this flow worth, and where do two methods disagree? | **built** |
 | Checks | Where might an identity resolution have gone wrong? | **built** |
 | Queue | Which decisions need a human? | **built** |
-| Cases | What did each fix claim it would make true, and does the recorded build do it? | **built** |
+| Expectations | What did each fix say it would make true, and does the recorded build do it? | **built** |
 | Merge | What happened when a source list was merged in? | **built** |
 
 **The homepage is the front page, and the documentation is at `/docs/`.** `/`
@@ -476,30 +476,37 @@ Two pages the input application owned that have consensus-layer meaning:
 
 ---
 
-## Cases
+## Expectations
 
-What each fix claimed, and whether the build does it.
+What each fix said it would make true, and whether the build does it.
 
 A BAFU row named `Water` tied every water substance that shares its registry
 number, and the merge refuses a tie, so those rows went unplaced. The change
 that fixed it did not say so in a sentence: it wrote
 *the BAFU rows named `Water` land on a consensus flow that already exists* into
 `expectations/0381-bafu-water-names.json`, where `brightway-flows assess` can
-check it against any build. **Cases** is that directory as pages. One case is
-one file — the issue it answers, the file's own account of what was wrong, and
-each claim with the row, flow or substance it is about.
+check it against any build. **Expectations** is that directory as pages. Each
+file has a page — the issue it answers, the file's own account of what was
+wrong, and each expectation with the row, flow or substance it is about.
 
-Every claim carries a state. It is the status `assess --record` last wrote into
-`expectations/baseline.json`, so it is true of one build, and the page names
-that build above the table. Two states say what a status cannot: **pending** is
-a claim the project has agreed is not true yet, and **unrecorded** is one
-written after the recorded build. A case takes the state of its claim that most
-needs a reader, and the table opens sorted that way, so what the build does not
-do is at the top.
+Every expectation carries a state. It is the status `assess --record` last
+wrote into `expectations/baseline.json`, so it is true of one build, and the
+page names that build above the table. Two states say what a status cannot:
+**pending** is an expectation the project has agreed is not true yet, and
+**unrecorded** is one written after the recorded build. Pending stands in for
+*unmet* only. An expectation about a row the recorded build no longer has stays
+**unresolved** even when it is marked pending, because it needs rewriting
+rather than waiting. A file takes the state of its expectation that most needs
+a reader, and the table opens sorted that way, so what the build does not do is
+at the top.
 
 Nothing is entered here. The page reads the two things a pull request already
 changes, which is why it needs no database and is never behind them. Searching
-for `#381` finds the case for that issue.
+for `#381` finds the file for that issue.
+
+The files are read from the checkout the application runs from. An installed
+package has none, and says where it looked; `BRIGHTWAY_FLOWS_EXPECTATIONS_DIR`
+points it at a copy.
 
 ---
 
