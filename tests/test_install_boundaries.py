@@ -261,8 +261,6 @@ class ThePlainInstallAnswersAQuestionTestCase(_Boundary):
             + _offenders(self.report["seen"]),
         )
 
-    # Step 2: `filesystem` makes the directory when it is imported.
-    @unittest.expectedFailure
     def test_it_makes_no_data_directory(self):
         self.assertFalse(
             self.data_dir.exists(),

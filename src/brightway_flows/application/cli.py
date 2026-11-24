@@ -1216,7 +1216,11 @@ def release_migrations(
 
 def main() -> None:
     """Entry point for the ``brightway-flows`` console script."""
-    from brightway_flows.filesystem import DATA_DIR
+    from brightway_flows.filesystem import ensure_data_dir
+
+    # Made here rather than when `filesystem` is imported, so that importing
+    # the matcher makes nothing. Every command may write into it.
+    DATA_DIR = ensure_data_dir()
 
     # To stderr: `score-comparison-config` prints JSON for another program to
     # read, and a greeting on stdout ahead of it is not JSON.

@@ -57,6 +57,10 @@ directory:
 | Linux | `~/.local/share/brightway-flows/` |
 | Windows | `%LOCALAPPDATA%\brightway-labs\brightway-flows\` |
 
+The directory is made the first time a `brightway-flows` command runs. A
+program that only asks the matcher where its rows go reads a build that is
+already there and never makes it.
+
 Override it with an environment variable:
 
 ```bash
