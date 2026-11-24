@@ -52,7 +52,12 @@ from brightway_flows.pipeline.review_records import ReviewQueue, Severity
 #: `data/lcia-impact-categories.json` says.
 _METHOD = ef_method()
 JRC_IMPL = _METHOD.reference
+#: The ecoinvent Centre's 3.12 workbook, which is open: a ruled factor shows
+#: the number it was ruled against, and only an open implementation's number
+#: may be shown.
 ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
+#: Its 3.13 workbook, which is closed.
+CLOSED_IMPL = _METHOD.implementation("ecoinvent-centre-3-13")
 CONSENSUS_IMPL = _METHOD.consensus
 IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
 
@@ -130,6 +135,28 @@ class ARuledContestedFactorTestCase(unittest.TestCase):
             [_ruling()], jrc={"cf-1": 1.0}, ecoinvent={"cf-1": 100.0}
         )
         self.assertEqual(published[0].also_stated, 100.0)
+
+    def test_a_closed_implementation_is_never_the_number_beside_it(self):
+        """Ruled against the ecoinvent Centre's 3.13 workbook, the factor shows
+        no number beside its own: the workbook is closed, and `also_stated` is
+        written on every ruled factor."""
+        published, _questions, _applied = derive(
+            stated={
+                JRC_IMPL: _keyed({"cf-1": 1.0}),
+                CLOSED_IMPL: _keyed({"cf-1": 100.0}),
+            },
+            reference=JRC_IMPL,
+            substances={"cf-1": SUBSTANCE},
+            rulings={
+                ruling.key: ruling
+                for ruling in [
+                    _ruling(ruled_about={JRC: (1.0,), CLOSED_IMPL.name: (100.0,)})
+                ]
+            },
+        )
+        self.assertEqual(
+            [(row.factor.amount, row.also_stated) for row in published], [(1.0, None)]
+        )
 
     def test_a_ruled_row_stays_on_the_page_it_was_asked_on(self):
         _published, questions, _applied = _derive(
@@ -445,19 +472,37 @@ class TheCuratedRulingsTestCase(unittest.TestCase):
         is the whole of the staleness contract.
 
         *Which* implementations those are is the queue's business.  A contested
-        question is two implementations disagreeing, so both are recorded; a
-        proposed one is a number only ecoinvent states, and recording a second
-        implementation would be recording a silence as a number.  `covers()`
-        compares the two sets exactly, so a ruling that named the JRC on a
-        proposed question would stop applying the moment the build agreed with it.
+        question is the JRC and the ecoinvent Centre disagreeing, and both of
+        the Centre's workbooks decide, so all three are recorded; a proposed one
+        is a number only the ecoinvent Centre states, and recording the JRC
+        would be recording a silence as a number.  `covers()` compares the sets
+        exactly, so a ruling that named the JRC on a proposed question would
+        stop applying the moment the build agreed with it.
         """
+        both = {ECOINVENT, CLOSED_IMPL.name}
         expected = {
-            str(ReviewQueue.CONTESTED_FACTOR): {JRC, ECOINVENT},
-            str(ReviewQueue.PROPOSED_FACTOR): {ECOINVENT},
+            str(ReviewQueue.CONTESTED_FACTOR): {JRC} | both,
+            str(ReviewQueue.PROPOSED_FACTOR): both,
         }
+        # Sulphuryl difluoride's two rulings are about a number only the 3.12
+        # workbook states: the 3.13 workbook keeps both air rows and states no
+        # climate-change factor for either, so it is not speaking and is not
+        # recorded.  Listed so that the next ruling one workbook is silent on
+        # has to be as deliberate.
+        only_the_3_12_workbook = {
+            "ef|fo-2173e6fdffc50464|climate-change",
+            "ef|fo-2173e6fdffc50464|climate-change-fossil",
+        }
+        self.assertTrue(
+            only_the_3_12_workbook
+            <= {ruling.item_key for ruling in self.rulings.values()}
+        )
         for ruling in self.rulings.values():
             with self.subTest(ruling=ruling.item_key):
-                self.assertEqual(set(ruling.ruled_about), expected[ruling.queue])
+                wanted = expected[ruling.queue]
+                if ruling.item_key in only_the_3_12_workbook:
+                    wanted = {ECOINVENT}
+                self.assertEqual(set(ruling.ruled_about), wanted)
                 self.assertTrue(all(ruling.ruled_about.values()))
 
     def test_every_one_cites_the_issue_it_came_from(self):

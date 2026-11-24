@@ -60,6 +60,10 @@ SHARED_PATTERNS: tuple[str, ...] = (
     # one *is* downloadable -- the project hosts the copy it read -- but it is
     # 9.6 MB and the same bytes on every branch, so a worktree links it.
     "bafu-greendelta-lcia.zip",
+    # ecoinvent's public mapped method files, one per method and release, under
+    # the repository's own names -- 3 MB each, pinned to a commit, the same
+    # bytes on every branch.
+    "* v*_mapped_*.csv",
     "Stepwise2006_v1.09.csv",
     # AGRIBALYSE's SimaPro process export, under the name ADEME circulates it
     # as -- 507 MB, and downloadable only from this project's gzipped copy, so

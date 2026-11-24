@@ -140,9 +140,12 @@ class Derivation(StrEnum):
 
     #: Only the JRC states it.  Most of the implementation.
     SOLE = "sole"
-    #: Both state it and they agree.  The more precise number is kept, which is
-    #: the same judgement `pipeline.deduplication` makes about two rows that
-    #: turn out to be one flow: `0.000118` and `0.00011755` are one number.
+    #: Two publishers state it and every deciding implementation that speaks
+    #: agrees.  Two publishers, not two implementations: the ecoinvent Centre's
+    #: 3.12 and 3.13 workbooks agreeing with each other is one publisher
+    #: repeating itself, and is a proposal.  The more precise number is kept,
+    #: which is the same judgement `pipeline.deduplication` makes about two rows
+    #: that turn out to be one flow: `0.000118` and `0.00011755` are one number.
     AGREED = "agreed"
     #: A curator ruled, in `data/lcia-factor-rulings.json`.  Its own value rather
     #: than folding into `agreed`, because a reader has to be able to tell a
@@ -248,6 +251,27 @@ def _most_precise(
         ):
             best = candidate
     return best
+
+
+def _also_stated(
+    speaking: list[tuple[MethodImplementation, MatchedFactor]], *, besides: str
+) -> float | None:
+    """The other number a published factor shows beside its own.
+
+    The first implementation other than *besides* that is open.  A closed
+    implementation's number may decide ours and may not be written out
+    (`MethodImplementation.open`), and `also_stated` is written on every agreed
+    and ruled factor -- 20,000 rows of it would be most of the implementation.
+    ``None`` where only closed implementations spoke besides.
+    """
+    return next(
+        (
+            matched.factor.amount
+            for implementation, matched in speaking
+            if implementation.name != besides and implementation.open
+        ),
+        None,
+    )
 
 
 def _ruling_for(
@@ -529,6 +553,12 @@ def derive(
             (matched for impl, matched in speaking if impl is reference), None
         )
         contradiction = contradicted.get((substances.get(key[0], ""), key[1]))
+        # Who is speaking, as opposed to how many implementations: the ecoinvent
+        # Centre's 3.12 and 3.13 workbooks are two implementations and one
+        # publisher, and a number only they state is one publisher's number
+        # however many releases repeat it.  Agreement needs two of these.
+        voices = {implementation.voice for implementation, _ in speaking}
+        agree = _all_agree(amounts.values())
 
         if contradiction is None and len(speaking) == 1 and from_reference is not None:
             published.append(replace(from_reference, derivation=str(Derivation.SOLE)))
@@ -537,20 +567,14 @@ def derive(
             )
             continue
 
-        if (
-            contradiction is None
-            and len(speaking) > 1
-            and _all_agree(amounts.values())
-        ):
+        if contradiction is None and len(voices) > 1 and agree:
             keeps = _most_precise(speaking)
             published.append(
                 replace(
                     keeps[1],
                     derivation=str(Derivation.AGREED),
-                    also_stated=next(
-                        matched.factor.amount
-                        for implementation, matched in speaking
-                        if implementation is not keeps[0]
+                    also_stated=_also_stated(
+                        speaking, besides=keeps[0].name
                     ),
                 )
             )
@@ -574,11 +598,15 @@ def derive(
         # A ruling written for either of the other queues stops applying, because
         # a ruling is keyed on its queue -- the same thing that happens to one
         # whose numbers have moved, and for the same reason.
+        #
+        # Contested means two publishers disagree.  One publisher speaking alone
+        # -- in one release or in two, agreeing or not -- is a proposal: nobody
+        # independent of it has said anything about the number.
         queue = (
             ReviewQueue.CONTRADICTED_FACTOR
             if contradiction is not None
             else ReviewQueue.CONTESTED_FACTOR
-            if len(speaking) > 1
+            if len(voices) > 1
             else ReviewQueue.PROPOSED_FACTOR
         )
         ruling = _ruling_for(
@@ -622,13 +650,8 @@ def derive(
                         replace(
                             keeps,
                             derivation=str(Derivation.RULED),
-                            also_stated=next(
-                                (
-                                    other
-                                    for name, other in amounts.items()
-                                    if name != ruling.implemented_by
-                                ),
-                                None,
+                            also_stated=_also_stated(
+                                speaking, besides=ruling.implemented_by
                             ),
                         )
                     )
@@ -637,13 +660,17 @@ def derive(
             # questions is too many to leave a curator no way of saying "looked
             # at, and no".
             evidence["ruled"] = _ruled(ruling, amount)
-        elif queue is ReviewQueue.PROPOSED_FACTOR:
+        elif queue is ReviewQueue.PROPOSED_FACTOR and agree:
             # Nobody disputes it and no curator has answered it individually.
             # Two things can still settle it without one, and both are decided
             # after the loop: this list may already publish the same number for
             # the same substance in another context, or a person may have signed
-            # for the substance taking another substance's number.
-            deferred.append((key, speaking[0][1], evidence))
+            # for the substance taking another substance's number.  Where one
+            # publisher states it in two releases, the more precise printing is
+            # the number in question.  Where its two releases *disagree*, there
+            # is no one number to restate or adopt, and the row waits for a
+            # ruling naming the release.
+            deferred.append((key, _most_precise(speaking)[1], evidence))
             continue
         questions.append((str(queue), key[1], evidence))
 

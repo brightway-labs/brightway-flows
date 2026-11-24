@@ -166,16 +166,22 @@ class FactorAdoption:
     #: The catch-all whose numbers these are, for a reader of the record.
     catch_all: str = ""
     comment: str = ""
-    #: Every implementation this was written about.  One name today, and stated
-    #: rather than assumed: an adoption of ecoinvent's number is not an adoption
-    #: of a third implementation's arriving later.
+    #: Every implementation this was written about, and stated rather than
+    #: assumed: an adoption of ecoinvent's number is not an adoption of a third
+    #: implementation's arriving later.  A row is answered when everybody
+    #: speaking on it is named here -- not necessarily everybody named: the
+    #: ecoinvent Centre's 3.12 and 3.13 workbooks are both named on most
+    #: entries, and a compartment one of them has no flow for is a row the
+    #: other states alone.  Unlike a ruling, an adoption is a decision about a
+    #: substance rather than a choice between numbers on one row, so a named
+    #: implementation going silent leaves nothing undecided.
     implemented_by: frozenset[str] = field(default_factory=frozenset)
     #: The numbers this was made about, keyed by `implemented_by`, where the
     #: adoption is about the numbers.  Empty where the reason is a relationship
     #: that survives a revision; stated for the minerals, whose reason is an
     #: arithmetic checked against today's element factors.  Checked the way a
-    #: ruling's `ruled_about` is: exactly, and every implementation the row
-    #: hears from.
+    #: ruling's `ruled_about` is, number by number, for every implementation
+    #: the row hears from.
     adopted_about: dict[str, tuple[float, ...]] = field(default_factory=dict)
     #: Whose number the factor carries: the transcription's stated row, or the
     #: donor's published one where nobody states the recipient (#197).
@@ -195,8 +201,12 @@ class FactorAdoption:
         return (
             self.number_from is NumberFrom.DONOR
             and category_slug in self.categories
-            and speaking == set(self.implemented_by)
+            and self._hears(speaking)
         )
+
+    def _hears(self, speaking: set[str]) -> bool:
+        """Whether everybody speaking is somebody this entry was written about."""
+        return bool(speaking) and speaking <= set(self.implemented_by)
 
     def covers(
         self, *, category_slug: str, speaking: set[str], stated: dict[str, float]
@@ -211,11 +221,11 @@ class FactorAdoption:
         """
         if self.number_from is not NumberFrom.TRANSCRIPTION:
             return False
-        if category_slug not in self.categories or speaking != set(self.implemented_by):
+        if category_slug not in self.categories or not self._hears(speaking):
             return False
         if not self.adopted_about:
             return True
-        return set(stated) == set(self.adopted_about) and all(
+        return set(stated) <= set(self.adopted_about) and all(
             amount in self.adopted_about[implementation]
             for implementation, amount in stated.items()
         )

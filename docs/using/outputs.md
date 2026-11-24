@@ -127,10 +127,17 @@ that misses both is a flow this list has never carried; a lookup that hits
 
 Written by `characterise`, which runs after a build. Two methods in one file.
 Four implementations of EF 3.1: **the European Commission's JRC**, **the
-ecoinvent Centre's**, **GreenDelta's**, and **this list's**, which publishes the
-numbers the two deciding implementations — the JRC's and the ecoinvent Centre's
-— agree on and asks a curator about the rest. Two of Stepwise 2006: **2.-0 LCA
-consultants'**, and this list's beside it.
+ecoinvent Centre's**, from its 3.12 release, under the name
+`ecoinvent Centre (3.12)`, **GreenDelta's**, and **this list's**, which publishes
+the numbers the deciding implementations agree on and asks a curator about the
+rest. Those are the JRC's and both of the ecoinvent Centre's releases, 3.12 and
+3.13. The 3.13 release is not in the file: ecoinvent has not published it, and
+its numbers inform this list's without being republished. Two of Stepwise 2006:
+**2.-0 LCA consultants'**, and this list's beside it.
+
+The ecoinvent Centre's 3.12 numbers are ecoinvent's, read from the file it
+publishes under CC BY-NC 4.0, which is not this list's data licence. Each of
+that implementation's categories says so under `meta.licence`.
 
 ```json
 {
@@ -212,7 +219,7 @@ states, with each side's number, the ratio and a band:
       "method": "ef",
       "elementary_flow_uuid": "1c9d4f7b-803f-4b74-b5fa-8bf642c94b2c",
       "category_slug": "ecotoxicity-freshwater", "geography": "",
-      "implemented_by": "ecoinvent Centre", "amount": 4368.7,
+      "implemented_by": "ecoinvent Centre (3.12)", "amount": 4368.7,
       "source_flow_uuid": "0ec92f76-932f-4407-bd4f-eb9aa426e099",
       "band": "over-100x", "ratio": 1441.48, "derivation": null
     }

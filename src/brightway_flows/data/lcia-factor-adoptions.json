@@ -16,7 +16,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "8 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `2,4-dichlorophenoxyacetic Acid, Isopropyl Ester` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -33,7 +34,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Abamectin` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -50,7 +52,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Alanycarb` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -67,7 +70,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Benthiavalicarb` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -84,7 +88,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "4 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Bicyclopyrone` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -101,7 +106,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Boscalid` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -118,7 +124,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Chlorfenapyr` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -135,7 +142,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Chlorimuron-ethyl` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -152,7 +160,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Chlorthal` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -169,7 +178,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Chlozolinate` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -186,7 +196,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Cinidon ethyl` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -203,7 +214,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "28 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Copper Oxychloride` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -220,7 +232,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "8 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Copper hydroxide` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -237,7 +250,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Cycluron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -254,7 +268,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Demeton-S-methylsulfon` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -271,7 +286,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Diafenthiuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -288,7 +304,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "20 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Diflufenzopyr` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -305,7 +322,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Dimefuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -322,7 +340,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Diofenolan` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -339,7 +358,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "24 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Emamectin Benzoate` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -356,7 +376,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Ethaboxam` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -373,7 +394,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Etoxazole` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -390,7 +412,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Flurenol` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -407,7 +430,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Fosetyl` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -424,7 +448,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Furathiocarb` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -441,7 +466,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Glufosinate` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -458,7 +484,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Glyphosate-trimesium` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -475,7 +502,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Guazatine` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -492,7 +520,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Halosulfuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -509,7 +538,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Hexaconazole` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -526,7 +556,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Hexaflumuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -543,7 +574,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Iodosulfuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -560,7 +592,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Kaolin` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -577,7 +610,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `MCPA-methyl` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -594,7 +628,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Magnesium Phosphide` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -611,7 +646,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "4 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Mecoprop` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -628,7 +664,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Mepanipyrim` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -645,7 +682,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Mepronil` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -662,7 +700,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Mesosulfuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -679,7 +718,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Novaluron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -696,7 +736,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Oxasulfuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -713,7 +754,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Pethoxamid` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -730,7 +772,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Potassium Soap` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -747,7 +790,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Primisulfuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -764,7 +808,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "20 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Pydiflumetofen` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -781,7 +826,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "28 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Pyraflufen-ethyl` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -798,7 +844,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Pyroxasulfone` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -815,7 +862,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Quinoxyfen` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -832,7 +880,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Saflufenacil` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -849,7 +898,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Sodium Fluorosilicate` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -866,7 +916,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Spinetoram` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -883,7 +934,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "4 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Spinetoram J` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -900,7 +952,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "4 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Spinetoram L` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -917,7 +970,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Spinosad` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -934,7 +988,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Tebutam` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -951,7 +1006,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Thiacloprid` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -968,7 +1024,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Thiocyclam` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -985,7 +1042,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Tolfenpyrad` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -1002,7 +1060,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Insecticides, Unspecified`. ecoinvent's correspondence table routes `Triazamate` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -1019,7 +1078,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Herbicides, Unspecified`. ecoinvent's correspondence table routes `Tribenuron` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -1036,7 +1096,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "32 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Trifloxystrobin` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -1053,7 +1114,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, and every one of them is a number this list already publishes for `Fungicides, Unspecified`. ecoinvent's correspondence table routes `Zoxamide` into that catch-all and its own implementation of EF 3.1 characterises it there, so the numbers it states for the named substance are the bucket's. This project declines the bucket mapping and publishes the substance under its own name (#76, #206), which leaves EF's publisher silent about it and nobody to contest the numbers. Accepted as the best available characterisation of a substance EF 3.1 does not characterise at all."
     },
@@ -1067,10 +1129,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          1.646069874734259e-05
+        ],
+        "ecoinvent Centre (3.13)": [
           1.646069874734259e-05
         ]
       },
@@ -1086,10 +1152,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          1.289527155951242e-05
+        ],
+        "ecoinvent Centre (3.13)": [
           1.289527155951242e-05
         ]
       },
@@ -1105,10 +1175,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          1.487682358264349e-08
+        ],
+        "ecoinvent Centre (3.13)": [
           1.487682358264349e-08
         ]
       },
@@ -1124,10 +1198,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          4.359192788208415e-05
+        ],
+        "ecoinvent Centre (3.13)": [
           4.359192788208415e-05
         ]
       },
@@ -1143,10 +1221,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          4.546229782733242e-05
+        ],
+        "ecoinvent Centre (3.13)": [
           4.546229782733242e-05
         ]
       },
@@ -1162,10 +1244,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          3.594873850013939e-05
+        ],
+        "ecoinvent Centre (3.13)": [
           3.594873850013939e-05
         ]
       },
@@ -1181,10 +1267,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          4.47267721886607e-05
+        ],
+        "ecoinvent Centre (3.13)": [
           4.47267721886607e-05
         ]
       },
@@ -1200,10 +1290,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          0.0001032000834805801
+        ],
+        "ecoinvent Centre (3.13)": [
           0.0001032000834805801
         ]
       },
@@ -1219,10 +1313,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          0.07951769754147683
+        ],
+        "ecoinvent Centre (3.13)": [
           0.07951769754147683
         ]
       },
@@ -1238,10 +1336,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          0.7168591779648544
+        ],
+        "ecoinvent Centre (3.13)": [
           0.7168591779648544
         ]
       },
@@ -1257,10 +1359,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          1.605118217945055e-06
+        ],
+        "ecoinvent Centre (3.13)": [
           1.605118217945055e-06
         ]
       },
@@ -1276,10 +1382,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          4.027307698550536e-06
+        ],
+        "ecoinvent Centre (3.13)": [
           4.027307698550536e-06
         ]
       },
@@ -1295,10 +1405,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          6.544113975666994e-12
+        ],
+        "ecoinvent Centre (3.13)": [
           6.544113975666994e-12
         ]
       },
@@ -1314,10 +1428,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          5.823075919490471e-10
+        ],
+        "ecoinvent Centre (3.13)": [
           5.823075919490471e-10
         ]
       },
@@ -1333,10 +1451,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          2.662463869501793e-10
+        ],
+        "ecoinvent Centre (3.13)": [
           2.662463869501793e-10
         ]
       },
@@ -1352,10 +1474,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          3.92505016360851e-10
+        ],
+        "ecoinvent Centre (3.13)": [
           3.92505016360851e-10
         ]
       },
@@ -1371,10 +1497,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          3.88e-10
+        ],
+        "ecoinvent Centre (3.13)": [
           3.88e-10
         ]
       },
@@ -1390,10 +1520,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          5.343572902983674e-10
+        ],
+        "ecoinvent Centre (3.13)": [
           5.343572902983674e-10
         ]
       },
@@ -1409,10 +1543,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          2.30891845598087e-10
+        ],
+        "ecoinvent Centre (3.13)": [
           2.30891845598087e-10
         ]
       },
@@ -1428,10 +1566,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          0.0004841517196535228
+        ],
+        "ecoinvent Centre (3.13)": [
           0.0004841517196535228
         ]
       },
@@ -1447,10 +1589,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          0.0005695390920980382
+        ],
+        "ecoinvent Centre (3.13)": [
           0.0005695390920980382
         ]
       },
@@ -1466,10 +1612,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          0.0006737119420848294
+        ],
+        "ecoinvent Centre (3.13)": [
           0.0006737119420848294
         ]
       },
@@ -1485,10 +1635,14 @@
         "resource-use-minerals-and-metals"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "adopted_about": {
-        "ecoinvent Centre": [
+        "ecoinvent Centre (3.12)": [
+          4.326195358839062e-07
+        ],
+        "ecoinvent Centre (3.13)": [
           4.326195358839062e-07
         ]
       },
@@ -1510,7 +1664,8 @@
         "human-toxicity-non-cancer-inorganics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "10 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Lithium. EF 3.1's flow list has no ion of lithium; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
     },
@@ -1530,7 +1685,8 @@
         "human-toxicity-non-cancer-inorganics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "16 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Antimony. EF 3.1's flow list has no ion of antimony; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
     },
@@ -1550,7 +1706,8 @@
         "human-toxicity-non-cancer-inorganics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "10 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Copper. EF 3.1's flow list has no ion of copper; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
     },
@@ -1568,7 +1725,8 @@
         "ecotoxicity-freshwater-inorganics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "2 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, every one of them the number this list publishes for Tin. EF 3.1's flow list has no ion of tin; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
     },
@@ -1586,7 +1744,8 @@
         "ecotoxicity-freshwater-inorganics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "2 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, every one of them the number this list publishes for Iron. EF 3.1's flow list has no ion of iron; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
     },
@@ -1608,7 +1767,8 @@
         "human-toxicity-non-cancer-inorganics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "24 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, `human-toxicity-cancer`, `human-toxicity-cancer-inorganics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Arsenic. EF 3.1's flow list has no ion of arsenic; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
     },
@@ -1628,7 +1788,8 @@
         "human-toxicity-non-cancer-inorganics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "16 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-inorganics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Titanium. EF 3.1's flow list has no ion of titanium; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
     },
@@ -1646,7 +1807,8 @@
         "human-toxicity-non-cancer-inorganics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "14 factors in `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Aluminium. EF 3.1's flow list has no ion of aluminium; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
     },
@@ -1664,7 +1826,8 @@
         "human-toxicity-non-cancer-inorganics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "14 factors in `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Cobalt. EF 3.1's flow list has no ion of cobalt; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
     },
@@ -1682,7 +1845,8 @@
         "human-toxicity-non-cancer-inorganics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in `human-toxicity-non-cancer`, `human-toxicity-non-cancer-inorganics`, every one of them the number this list publishes for Selenium. EF 3.1's flow list has no ion of selenium; ecoinvent ships one and gives it the element's numbers, and the build records the ion as `ion_of` the element. Adopted as a population on 2026-09-01 (#329 group 1, #156), unpinned: a revised factor for the element is still the element's factor reaching its ion."
     },
@@ -1702,7 +1866,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "6 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, every one of them acrylic acid's. Acrylate is the acid's anion -- the same species in water, one proton apart, 71 daltons against 72 -- and EF 3.1 characterises only the acid. Adopted on 2026-09-01 with that correction stated: a kilogram of the anion is 1.4% more molecules than a kilogram of the acid, and the number is taken as it stands."
     },
@@ -1722,7 +1887,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "28 factors in `ecotoxicity-freshwater`, `ecotoxicity-freshwater-organics`, `human-toxicity-non-cancer`, `human-toxicity-non-cancer-organics`, every one of them the sodium salt's. The herbicide and its sodium salt are the same active species; the sodium is 23 daltons of 487, so a kilogram of the free compound is 5% more of it than a kilogram of the salt, and EF 3.1 characterises only the salt. Adopted on 2026-09-01 with that correction stated rather than applied: the number is taken as the salt's (#329 group 1)."
     },
@@ -1739,7 +1905,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Cropland` and for 9 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Cropland, conservation tillage` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1756,7 +1923,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Wetland, not used, inland` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1773,7 +1941,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From dump site, slag compartment` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1790,7 +1959,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To urban or industrial fallow`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To urban or industrial fallow, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1807,7 +1977,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To grassland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To grassland, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1824,7 +1995,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Snow and ice, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1841,7 +2013,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From forest, natural` and for 1 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From forest, not used, primary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1858,7 +2031,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To wetland, not used, coastal` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1875,7 +2049,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From pasture, man-made` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1892,7 +2067,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Pasture, extensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Pasture, man-made, extensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1909,7 +2085,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From grassland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From grassland, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1926,7 +2103,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From pasture, extensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From pasture, man-made, extensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1943,7 +2121,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Barren land, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1960,7 +2139,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From barren land, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1977,7 +2157,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To dump site, slag compartment` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -1994,7 +2175,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To dump site, sanitary landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2011,7 +2193,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From wetland, not used, inland` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2028,7 +2211,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Forest, natural` and for 1 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Forest, not used, primary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2045,7 +2229,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From dump site, inert material landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2062,7 +2247,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To snow and ice, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2079,7 +2265,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Unspecified, natural`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Unspecified, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2096,7 +2283,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Grassland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Grassland, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2113,7 +2301,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Pasture, man-made` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2130,7 +2319,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Cropland` and for 9 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Cropland, reduced tillage` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2147,7 +2337,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To unspecified, natural`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To unspecified, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2164,7 +2355,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Urban or industrial fallow`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Urban or industrial fallow, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2181,7 +2373,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From urban or industrial fallow`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From urban or industrial fallow, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2198,7 +2391,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To pasture, man-made` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2215,7 +2409,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To pasture, intensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To pasture, man-made, intensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2232,7 +2427,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To forest, natural` and for 1 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To forest, not used, primary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2249,7 +2445,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Grassland, natural, grazed` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2266,7 +2463,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To shrubland`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To shrubland, sclerophyllous` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2283,7 +2481,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From dump site, residual material landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2300,7 +2499,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From pasture, intensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From pasture, man-made, intensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2317,7 +2517,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To forest, secondary`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To forest, not used, secondary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2334,7 +2535,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From unspecified, natural`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From unspecified, natural, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2351,7 +2553,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From snow and ice, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2368,7 +2571,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From shrubland`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From shrubland, sclerophyllous` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2385,7 +2589,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From forest, secondary`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From forest, not used, secondary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2402,7 +2607,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To pasture, extensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To pasture, man-made, extensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2419,7 +2625,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From dump site, sanitary landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2436,7 +2643,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To barren land` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To barren land, not used` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2453,7 +2661,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Shrubland`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Shrubland, sclerophyllous` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2470,7 +2679,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To grassland, natural, grazed` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2487,7 +2697,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To wetland, not used, inland` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2504,7 +2715,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From pasture` and for 2 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From grassland, natural, grazed` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2521,7 +2733,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Forest, secondary`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Forest, not used, secondary` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2538,7 +2751,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Pasture, intensive`. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Pasture, man-made, intensive` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2555,7 +2769,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `From wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `From wetland, not used, coastal` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2572,7 +2787,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Cropland` and for 9 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Cropland, conventional tillage` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2589,7 +2805,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To dump site, residual material landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2606,7 +2823,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `Wetland` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `Wetland, not used, coastal` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2623,7 +2841,8 @@
         "land-use"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "One `land-use` factor, the number this list publishes for `To dump site` and for 3 other classes of the same family. EF 3.1 prices one number per land family and ecoinvent extends it to the subtype it ships; `To dump site, inert material landfill` is a class of this list's land taxonomy that EF's list does not have. Adopted as a population on 2026-09-01 (#132, #329 group 2); the donor is the family's own class, named here because the taxonomy records no parent for this variant."
     },
@@ -2640,7 +2859,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "4 factors, every one of them the number this list publishes for `Oils, Unspecified`. A catch-all's number reaching a named substance is the shape this file adopts one substance at a time, and this one is declined: a named glycol is not an unspecified oil, and the bucket's number carries nothing about it (#329 group 3)."
     },
@@ -2657,7 +2877,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "4 factors, every one of them the number this list publishes for `Fungicides, Unspecified`. A catch-all's number reaching a named substance is the shape this file adopts one substance at a time, and this one is declined: most of fenpropimorph's proposed factors are the bucket's and sixteen are numbers of ecoinvent's own, so it stays a question rather than being carried in on the strength of its neighbours -- the refusal this file has recorded since #155."
     },
@@ -2679,7 +2900,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "30 factors, every one of them Lindane's. Where EF 3.1 characterises both δ-Hexachlorocyclohexane and Lindane it holds them 21 to 34x, never identical, over 130 comparisons (#131): EF's own numbers say the two are different substances. ecoinvent's implementation substituted the relative; this list declines the substitution on the record, and the row stays a question until somebody states a number for δ-Hexachlorocyclohexane itself."
     },
@@ -2701,7 +2923,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "18 factors, every one of them Lindane's. Where EF 3.1 characterises both α-Hexachlorocyclohexane and Lindane it holds them 21 to 34x, never identical, over 130 comparisons (#131): EF's own numbers say the two are different substances. ecoinvent's implementation substituted the relative; this list declines the substitution on the record, and the row stays a question until somebody states a number for α-Hexachlorocyclohexane itself."
     },
@@ -2721,7 +2944,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors, every one of them cyhalothrin's. Lambda-cyhalothrin is the resolved isomer pair of cyhalothrin, and where EF 3.1 characterises both it holds them a median 236x and up to 1,442x apart, never identical (#131). ecoinvent's implementation routes the substance onto cyhalothrin's flow; this list publishes it under its own name and declines the substitution: nothing is published until somebody states a number for lambda-cyhalothrin itself."
     },
@@ -2743,7 +2967,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "18 factors, every one of them Lindane's. Where EF 3.1 characterises both β-Hexachlorocyclohexane and Lindane it holds them 21 to 34x, never identical, over 130 comparisons (#131): EF's own numbers say the two are different substances. ecoinvent's implementation substituted the relative; this list declines the substitution on the record, and the row stays a question until somebody states a number for β-Hexachlorocyclohexane itself."
     },
@@ -2761,7 +2986,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "8 factors, every one of them Mecoprop's. Where EF 3.1 characterises both (R)-2-(4-chloro-2-methylphenoxy)propionic Acid and Mecoprop it holds them a median 3.9x and up to 13x, never identical, over 26 comparisons (#131): EF's own numbers say the two are different substances. ecoinvent's implementation substituted the relative; this list declines the substitution on the record, and the row stays a question until somebody states a number for (R)-2-(4-chloro-2-methylphenoxy)propionic Acid itself."
     },
@@ -2778,7 +3004,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "12 factors in four categories, every one of them the number this list publishes for `Herbicides, Unspecified` -- or for one of the named pesticides adopted from that bucket, which is the same number. A catch-all's number reaching a named substance is the shape this file adopts one substance at a time, and this one is declined: 2,4-D is a named herbicide EF characterises in its own right in other categories, and the bucket's number is not its (#329 group 3)."
     },
@@ -2798,7 +3025,8 @@
         "human-toxicity-non-cancer-organics"
       ],
       "implemented_by": [
-        "ecoinvent Centre"
+        "ecoinvent Centre (3.12)",
+        "ecoinvent Centre (3.13)"
       ],
       "comment": "16 factors, every one of them Rabon's. Where EF 3.1 characterises both Tetrachlorvinphos and Rabon it holds them a median 1.3x and up to 47x, never identical, over 26 comparisons (#131): EF's own numbers say the two are different substances. ecoinvent's implementation substituted the relative; this list declines the substitution on the record, and the row stays a question until somebody states a number for Tetrachlorvinphos itself."
     }

@@ -123,10 +123,14 @@ else. Merge a different version, or several lists at once, by naming each: see
 ## Characterisation factors
 
 `build` publishes flows. `characterise` publishes what a flow is worth under an
-impact category, and who says so. It needs the ecoinvent licence too, for the
-ecoinvent Centre's implementation:
+impact category, and who says so. The ecoinvent Centre's implementation is read
+twice. Its 3.12 release comes from the file ecoinvent publishes on GitHub under
+CC BY-NC 4.0, which needs no licence. Its 3.13 release comes from the workbook,
+which needs the ecoinvent licence; it informs this list's own numbers and is
+never published:
 
 ```bash
+uv run brightway-flows fetch-lcia ecoinvent-3.13
 uv run brightway-flows fetch-lcia ecoinvent-3.12
 uv run brightway-flows characterise
 ```
@@ -138,11 +142,13 @@ publishing one implementation when the other's file has not been fetched.
 
 **There is no correct implementation of an LCIA method**, so the list publishes
 four of EF 3.1: as the European Commission's JRC published it, as the ecoinvent
-Centre implemented it, as GreenDelta transcribed it, and as this list judges it
-should be implemented given these flows. The first three are transcriptions and
-change no number anybody stated. The fourth is judgment, is labelled as such
-wherever it appears, and publishes nothing where the deciding implementations —
-the JRC's and the ecoinvent Centre's — disagree and no curator has ruled;
+Centre implemented it in ecoinvent 3.12, as GreenDelta transcribed it, and as
+this list judges it should be implemented given these flows. The first three are
+transcriptions and change no number anybody stated. The fourth is judgment, is
+labelled as such wherever it appears, and publishes nothing where the deciding
+implementations — the JRC's and both of the ecoinvent Centre's releases —
+disagree and no curator has ruled. Two releases of the ecoinvent Centre's are
+one voice: where only they speak, nobody independent has agreed with them.
 GreenDelta's is published to be compared with and decides nothing.
 
 A second method is published beside it: **Stepwise 2006**, as 2.-0 LCA

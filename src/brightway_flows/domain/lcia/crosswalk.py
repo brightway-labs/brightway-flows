@@ -198,12 +198,30 @@ class MethodImplementation:
     slug: str
     name: str
     role: ImplementationRole
-    #: Whether a number of theirs may become a number of ours.  Every
+    #: Whether a number of theirs may become a number of ours.  Every open
     #: implementation is published and compared; only a deciding one is evidence
     #: (`lcia.consensus.derive`).
     decides: bool
+    #: Whether its numbers may leave the build.  A closed implementation is read,
+    #: and decides if `decides` says so, but none of its categories, factors,
+    #: difference rows, coverage rows or findings is written to a table or a
+    #: file: the database and the two factor files are published as they stand,
+    #: on the website and in every release, so a number written there is a
+    #: number redistributed.  The ecoinvent Centre's 3.13 workbook is the case:
+    #: its terms allow it to inform this list's own numbers, and nothing yet
+    #: allows republishing it.  Stated on every row rather than defaulted,
+    #: because an implementation that is open by omission is a licence breached
+    #: by omission.
+    open: bool
     #: Where its numbers are read from.
     factors: FactorSpec
+    #: Who stands behind the numbers, where that is not the implementation
+    #: itself.  Two releases of one publisher's rendering are two implementations
+    #: -- the ecoinvent Centre's 3.12 and 3.13 workbooks -- and one voice: where
+    #: only they speak and agree, nobody independent has agreed with them
+    #: (`lcia.consensus.derive`).  Empty means the implementation is its own
+    #: publisher; read it through :attr:`voice`.
+    publisher: str = ""
     #: Where its numbers come from, in the words a reader of the section wants.
     source: str = ""
     #: The release of the implementer's own product the transcription was read
@@ -217,6 +235,14 @@ class MethodImplementation:
     #: and :func:`_check` says so out loud -- a package that mints its own is a
     #: join that has to be written before the row can change.
     identifiers_from: str = ""
+    #: The terms the publisher states for the file its numbers were read from,
+    #: where they are not this list's own data licence: the ecoinvent Centre's
+    #: 3.12 implementation is read from a file ecoinvent publishes under CC
+    #: BY-NC 4.0, and a reader of the rows has to be able to see that on them.
+    #: Published in ``ImpactCategory.meta``.  Empty where the publisher states
+    #: nothing this list has recorded, which is not a statement that there are
+    #: no terms.
+    licence: str = ""
     #: Slugs this implementation was published under before, newest last.  A
     #: category's id is a hash of an IRI the slug is a segment of, so a renamed
     #: slug moved every one of its categories, and a migration from a release
@@ -227,6 +253,12 @@ class MethodImplementation:
     @property
     def ours(self) -> bool:
         return self.role is ImplementationRole.CONSENSUS
+
+    @property
+    def voice(self) -> str:
+        """The publisher this implementation speaks for: `publisher`, or its
+        own name where it states none."""
+        return self.publisher or self.name
 
 
 @dataclass(frozen=True, slots=True)
@@ -395,12 +427,30 @@ class LCIAMethodDefinition:
         transcription ingested to be compared is published in full and is never
         evidence, which is `decides` on its own row.  The consensus
         implementation is absent for the opposite reason -- it is the thing being
-        derived -- and the reference is always here.
+        derived -- and the reference is always here.  Nor only published ones: a
+        closed implementation can decide, which is what the ecoinvent Centre's
+        3.13 workbook does.  Two releases of one publisher may both be here;
+        `derive` counts them as one voice (:attr:`MethodImplementation.voice`).
         """
         return tuple(
             implementation
             for implementation in self.implementations
             if implementation.decides
+        )
+
+    @property
+    def published(self) -> tuple[MethodImplementation, ...]:
+        """The implementations whose numbers leave the build: every open one.
+
+        A closed implementation is still in :attr:`deciding` and
+        :attr:`transcriptions` -- it is read and it can inform a number of ours
+        -- and is absent here, so nothing written from this tuple carries a
+        number of its own.
+        """
+        return tuple(
+            implementation
+            for implementation in self.implementations
+            if implementation.open
         )
 
     @property
@@ -636,15 +686,26 @@ def _implementation(entry: Any, *, path: Path) -> MethodImplementation:
             f"whether it decides, and whether a number of theirs may become one "
             f"of ours is not a thing to leave to a default."
         )
+    is_open = entry.get("open")
+    if not isinstance(is_open, bool):
+        raise ValueError(
+            f"{path.name}: the implementation {entry.get('slug')!r} does not say "
+            f"whether it is open, and whether its numbers may be published is a "
+            f"question about its publisher's terms, not a thing to leave to a "
+            f"default."
+        )
     return MethodImplementation(
         slug=_text(entry, "slug", path=path),
         name=_text(entry, "name", path=path),
         role=role,
         decides=decides,
+        open=is_open,
+        publisher=str(entry.get("publisher") or "").strip(),
         factors=_factors(entry.get("factors"), slug=entry.get("slug"), path=path),
         source=str(entry.get("source") or ""),
         release=str(entry.get("release") or ""),
         identifiers_from=str(entry.get("identifiers_from") or ""),
+        licence=str(entry.get("licence") or ""),
         previous_slugs=_previous_slugs(entry, path=path),
     )
 
@@ -812,6 +873,26 @@ def _check(method: LCIAMethodDefinition, *, path: Path) -> None:
         raise ValueError(
             f"{path.name}: the consensus implementation decides, and it is the "
             f"thing being decided."
+        )
+    for implementation in (method.reference, method.consensus):
+        if not implementation.open:
+            raise ValueError(
+                f"{path.name}: {implementation.slug!r} is closed, and a method "
+                f"whose own publisher or whose consensus cannot be published "
+                f"publishes nothing."
+            )
+    sharing = [
+        implementation.slug
+        for implementation in method.implementations
+        if implementation is not method.reference
+        and implementation.voice == method.reference.voice
+    ]
+    if sharing:
+        raise ValueError(
+            f"{path.name}: {', '.join(sharing)} speak for the method's own "
+            f"publisher, {method.reference.voice!r}. A number only the reference "
+            f"states is published as `sole`, and that is a statement about one "
+            f"implementation, not about one publisher's several."
         )
     current = {row.slug for row in method.implementations}
     retired: set[str] = set()

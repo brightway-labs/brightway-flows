@@ -116,6 +116,14 @@ first question — *does any deciding implementation state a number here?* — i
 asked of the JRC and the ecoinvent Centre for EF 3.1, and of one publisher for
 Stepwise.
 
+The ecoinvent Centre is read twice, from its 3.12 and its 3.13 implementation,
+and both decide: a number that changed between the two releases is a question
+somebody should look at, not something the newer release settles by being
+newer. They still count as **one voice**, because one publisher repeating itself
+is not two publishers agreeing. And only the 3.12 release is published; the
+3.13 workbook is not yet public, so its numbers count here and appear nowhere
+under its own name.
+
 Copper to surface water, freshwater ecotoxicity: the JRC states 46.47592828149169
 CTUe/kg, the ecoinvent Centre states the same to the last digit, GreenDelta too.
 Two deciding voices, one number: published as `agreed`.
@@ -148,9 +156,11 @@ today, 110 factors, and none has been ruled.
 
 ## 3. Do the voices agree?
 
-Two or more deciding implementations state a number, and they are within 2 % of
+Two or more deciding publishers state a number, and they are within 2 % of
 each other: the more precise printing is published as `agreed`, and the other is
-recorded beside it. Two percent is the same line the rest of this project draws
+recorded beside it. Publishers, not implementations: the ecoinvent Centre's 3.12
+and 3.13 releases agreeing with each other, with the JRC silent, is still only
+the ecoinvent Centre speaking, and goes to section 4. Two percent is the same line the rest of this project draws
 between a rounding and a disagreement, and it is never crossed over a zero or a
 sign change — a stated zero against a number is two implementations disagreeing
 about whether something has an effect at all.

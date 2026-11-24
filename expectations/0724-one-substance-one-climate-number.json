@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Three substances carried two climate numbers apiece, or none, because the JRC's EF 3.1 and ecoinvent's implementation of it read IPCC AR6 differently. Two of those splits are one number printed twice -- AR6's Chapter 7 Table 7.15 assesses CFC-11 at `6226 ±2297` and HFC-134a at `1526 ±577`, and the supplementary Table 7.SM.7 rounds them to 6230 and 1530 -- so `lcia-rounded-printings.json` publishes the precise value in the two compartments where only the rounded transcription had a flow. The third is not: AR6 assesses sulfur hexafluoride with a 3200-year lifetime and prints 25200, ecoinvent's 24300 is that radiative efficiency with a lifetime near 1000 years, and a ruling publishes the method's own publisher's number. After both, each substance states one number in every compartment it is published in. See #342.",
+  "description": "Three substances carried two climate numbers apiece, or none, because the JRC's EF 3.1 and ecoinvent's implementation of it read IPCC AR6 differently. Two of those splits are one number printed twice -- AR6's Chapter 7 Table 7.15 assesses CFC-11 at `6226 ±2297` and HFC-134a at `1526 ±577`, and the supplementary Table 7.SM.7 rounds them to 6230 and 1530 -- so `lcia-rounded-printings.json` publishes the precise value in the two compartments where only the rounded transcription had a flow. The third is not: AR6 assesses sulfur hexafluoride with a 3200-year lifetime and prints 25200, ecoinvent's 24300 is that radiative efficiency with a lifetime near 1000 years, and a ruling publishes the method's own publisher's number. After both, each substance states one number in every compartment it is published in. See #342.\n\nSince #459 the ecoinvent Centre is read twice, and both of its workbooks decide. The 3.12 workbook still states 24,300 for SF6 and Chapter 7's 6,226 and 1,526; the 3.13 workbook states AR6's 25,200 and the supplement's 6,230 and 1,530, as the JRC does. Neither changes an answer here: SF6 is still a disagreement between publishers, now asked by three implementations, and the ruling records all three; CFC-11 and HFC-134a still agree within tolerance where ecoinvent has a flow, the more precise 6,226 and 1,526 are kept, and the four printings still refine the two compartments only the JRC has. The 3.13 workbook is closed, so its numbers are not published under its name, which the last claim here holds.",
   "expectations": [
     {
       "id": "0724-sulfur-hexafluoride-is-worth-something-in-unspecified-air",
@@ -59,13 +59,13 @@
     {
       "id": "0724-ecoinvent-still-states-its-own-number",
       "issue": 724,
-      "title": "ecoinvent's 24,300 is still published under ecoinvent's name",
+      "title": "The ecoinvent Centre's 3.12 workbook's 24,300 is still published under its own name",
       "subject": {
         "kind": "factor",
         "flow_name": "Sulfur hexafluoride",
         "context_display": "Environmental → Air → Unknown",
         "category": "Climate change",
-        "implemented_by": "ecoinvent Centre"
+        "implemented_by": "ecoinvent Centre (3.12)"
       },
       "expect": {
         "exists": true,
@@ -139,6 +139,22 @@
         "equals": 8
       },
       "comment": "Two substances, two categories, two compartments each. Claimed exactly rather than bounded below, because the guardrail is the count: 97 (substance, category) groups on this build publish two values agreeing within 2%, and 93 of them are freshwater ecotoxicity where the two values are two compartments' own numbers. A refinement that grew past eight without a curator adding a cited row would be this file having become a tolerance rule."
+    },
+    {
+      "id": "0724-the-3-13-workbook-is-not-published",
+      "issue": 724,
+      "title": "The ecoinvent Centre's 3.13 workbook's 25,200 for sulfur hexafluoride is read and not published",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sulfur hexafluoride",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Climate change",
+        "implemented_by": "ecoinvent Centre (3.13)"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "The 3.13 workbook decides -- its 25,200 is one of the three numbers the ruling above records -- and is closed: ecoinvent has published no 3.13 file, and the workbook's terms do not let this list republish it. So no factor of its is written under its name, here or anywhere (#459)."
     }
   ]
 }

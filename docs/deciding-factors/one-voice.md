@@ -141,6 +141,25 @@ differ. Stepwise's model does not tell a metal's oxidation states apart, so the
 `Antimony(5+)`, `Arsenic(3+)` and `Arsenic(5+)`, `Copper(2+)`, `Iron(2+)` and
 `Iron(3+)` — which no inventory merged today emits.
 
+## Two releases of one publisher
+
+The ecoinvent Centre is read twice, from its 3.12 and its 3.13 implementation of
+EF 3.1, and both decide. Two releases are still one voice. Where the JRC is
+silent and both releases state the same number, nobody independent has agreed
+with anybody: the question is the one this page is about, and the routes above
+answer it the way they would answer one release.
+
+Where the two releases disagree, none of those routes can answer, because there
+is no single number to restate or adopt. α‑endosulfan is the case. ecoinvent
+3.12 scored the isomer with endosulfan's own numbers, and 3.13 scores it under
+its own registry number, as the JRC does
+([#456](https://github.com/brightway-labs/brightway-flows/issues/456)). In the
+compartments EF also characterises, that is a disagreement between publishers
+and goes to the contested queue. In the ones only ecoinvent has, it is a
+proposal carrying two numbers, and it waits for a curator to rule which, if
+either, this list publishes. The newer release does not win by being newer:
+which number is right is exactly what a curator is for.
+
 ## What is left is a question
 
 A transcription's number that none of the above vouches for is a

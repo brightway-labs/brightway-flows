@@ -143,6 +143,20 @@ def greendelta_lcia_zip_path() -> Path:
     return DATA_DIR / "bafu-greendelta-lcia.zip"
 
 
+def ecoinvent_public_lcia_csv_path(list_version: str, method: str) -> Path:
+    """One method's mapped file from ecoinvent's public LCIA repository, under
+    the name the repository gives it: ``EF v3.1_mapped_3.12.csv``.
+
+    Derived from the release and the method because the repository holds one
+    file per pair, and kept under the publisher's own filename, as BAFU's
+    archive and Stepwise's export are, so that the file in the data directory
+    is recognisably the one at ``github.com/ecoinvent/lcia`` and
+    `tools/seed_data_dir.py` can share it between worktrees
+    (`integrations.ecoinvent_lcia_public`).
+    """
+    return DATA_DIR / f"{method}_mapped_{list_version}.csv"
+
+
 ELEMENTARY_FLOWS_FILEPATH = DATA_DIR / "elementary-flows.json"
 FLOW_OBJECTS_FILEPATH = DATA_DIR / "flow-objects.json"
 FLOW_PROPERTIES_FILEPATH = DATA_DIR / "flow-properties.json"

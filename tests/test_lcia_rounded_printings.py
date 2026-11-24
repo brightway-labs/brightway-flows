@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import json
 import unittest
+
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -35,7 +36,7 @@ from brightway_flows.lcia.precision import (
 SUBSTANCE = "fo-the-halocarbon"
 SLUG = "climate-change"
 JRC = "European Commission — JRC"
-ECOINVENT = "ecoinvent Centre"
+ECOINVENT = "ecoinvent Centre (3.12)"
 
 
 @dataclass(frozen=True)
@@ -278,8 +279,10 @@ class TheCuratedFileHoldsWhatIssue724Says(unittest.TestCase):
     def test_every_row_refines_the_jrcs_printing(self):
         """Which direction the refinement runs is the claim, not an accident.
 
-        The JRC transcribed the supplement and ecoinvent the chapter; a row
-        pointing the other way would be publishing a rounding.
+        The JRC transcribed the supplement and the ecoinvent Centre's 3.12
+        workbook the chapter; a row pointing the other way would be publishing a
+        rounding.  The 3.13 workbook transcribed the supplement too, which is
+        recorded in `stated_about` and changes nothing about the direction.
         """
         self.assertEqual(
             {row.implemented_by for row in self.printings.values()}, {JRC}
@@ -306,6 +309,16 @@ class TheCuratedFileHoldsWhatIssue724Says(unittest.TestCase):
             "fo-21903c3421b5c942",
             {row.flow_object_id for row in self.printings.values()},
         )
+
+
+    def test_every_row_records_all_three_deciding_implementations(self):
+        """The JRC and both of the ecoinvent Centre's workbooks speak in the
+        compartments ecoinvent has, so a row that left one out would stop
+        applying (#459)."""
+        names = {implementation.name for implementation in ef_method().deciding}
+        for row in self.printings.values():
+            with self.subTest(substance=row.substance, category=row.category):
+                self.assertEqual(set(row.stated_about), names)
 
 
 class TheStatedIndexIsShared(unittest.TestCase):

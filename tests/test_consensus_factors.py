@@ -47,7 +47,10 @@ from brightway_flows.pipeline.review_records import ReviewQueue, Severity
 #: `data/lcia-impact-categories.json` says.
 _METHOD = ef_method()
 JRC_IMPL = _METHOD.reference
+#: The ecoinvent Centre's 3.12 workbook, which decides and is open; its 3.13
+#: workbook decides too, is the same publisher, and is closed.
 ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
+LATER_IMPL = _METHOD.implementation("ecoinvent-centre-3-13")
 CONSENSUS_IMPL = _METHOD.consensus
 IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
 
@@ -374,6 +377,130 @@ class TheQuestionsAreGroupedTestCase(unittest.TestCase):
         ]
         self.assertEqual([row.flow_object_id for row in rows], ["fo-2", "fo-1"])
         self.assertEqual([row.item_index for row in rows], [0, 1])
+
+
+class OnePublisherIsOneVoiceTestCase(unittest.TestCase):
+    """The ecoinvent Centre's 3.12 and 3.13 workbooks both decide and are one
+    publisher.  Agreement needs two publishers, so the two workbooks agreeing
+    with each other is a proposal, and the two disagreeing with nobody else
+    speaking is a proposal too -- with two numbers, which nothing but a ruling
+    can choose between (#459)."""
+
+    def _derive(self, *, jrc=None, earlier=None, later=None, **kwargs):
+        return derive(
+            stated={
+                JRC_IMPL: _keyed(jrc or []),
+                ECOINVENT_IMPL: _keyed(earlier or []),
+                LATER_IMPL: _keyed(later or []),
+            },
+            reference=JRC_IMPL,
+            substances={"cf-1": "fo-1", "cf-2": "fo-1"},
+            **kwargs,
+        )
+
+    def test_the_two_releases_agreeing_is_not_agreement(self):
+        published, questions, _applied = self._derive(
+            earlier=[_matched(5.0, ecoinvent=True)],
+            later=[_matched(5.0, ecoinvent=True)],
+        )
+        self.assertEqual(published, [])
+        self.assertEqual(
+            [(queue, {e["implemented_by"] for e in evidence["stated"]}) for queue, _slug, evidence in questions],
+            [(str(ReviewQueue.PROPOSED_FACTOR), {ECOINVENT_IMPL.name, LATER_IMPL.name})],
+        )
+
+    def test_one_release_agreeing_with_the_jrc_is(self):
+        published, questions, _applied = self._derive(
+            jrc=[_matched(5.0)], later=[_matched(5.0, ecoinvent=True)]
+        )
+        self.assertEqual(questions, [])
+        self.assertEqual([row.derivation for row in published], [str(Derivation.AGREED)])
+
+    def test_the_jrc_and_both_releases_agreeing_is_agreement(self):
+        published, questions, _applied = self._derive(
+            jrc=[_matched(5.0)],
+            earlier=[_matched(5.0, ecoinvent=True)],
+            later=[_matched(5.0, ecoinvent=True)],
+        )
+        self.assertEqual(questions, [])
+        self.assertEqual([row.derivation for row in published], [str(Derivation.AGREED)])
+
+    def test_the_releases_disagreeing_beside_the_jrc_is_contested(self):
+        """Sulfur hexafluoride: the JRC and 3.13 state 25,200, 3.12 states
+        24,300.  One release agreeing with the JRC does not outvote the other."""
+        _published, questions, _applied = self._derive(
+            jrc=[_matched(25200.0)],
+            earlier=[_matched(24300.0, ecoinvent=True)],
+            later=[_matched(25200.0, ecoinvent=True)],
+        )
+        self.assertEqual(
+            [queue for queue, _slug, _evidence in questions],
+            [str(ReviewQueue.CONTESTED_FACTOR)],
+        )
+
+    def test_the_releases_disagreeing_alone_is_a_proposal_nothing_settles(self):
+        """The alpha-endosulfan shape, where the JRC is silent: 3.12 states the
+        parent's number and 3.13 the isomer's.  A twin elsewhere or a signed
+        adoption could settle a proposal with one number; with two there is
+        nothing to restate or adopt, so it waits for a ruling."""
+        adoption = FactorAdoption(
+            flow_object_id="fo-1",
+            substance="Kresoxim-methyl",
+            relationship=Relationship.SUBSTITUTE,
+            verdict=AdoptionVerdict.ADOPT,
+            categories=frozenset({SLUG}),
+            catch_all="Pesticides, unspecified",
+            comment="test",
+            implemented_by=frozenset({ECOINVENT_IMPL.name, LATER_IMPL.name}),
+        )
+        published, questions, _applied = self._derive(
+            jrc=[_matched(11499.0, flow="cf-2")],
+            earlier=[_matched(11499.0, ecoinvent=True)],
+            later=[_matched(42351.0, ecoinvent=True)],
+            adoptions={"fo-1": adoption},
+        )
+        self.assertEqual(
+            [(row.elementary_flow_uuid, row.derivation) for row in published],
+            [("cf-2", str(Derivation.SOLE))],
+        )
+        self.assertEqual(
+            [(queue, evidence["elementary_flow_uuid"]) for queue, _slug, evidence in questions],
+            [(str(ReviewQueue.PROPOSED_FACTOR), "cf-1")],
+        )
+        self.assertNotIn("ruled", questions[0][2])
+
+    def test_agreeing_releases_are_settled_like_any_proposal(self):
+        """The same number from both releases restates a twin the way one
+        release's would."""
+        published, questions, _applied = self._derive(
+            jrc=[_matched(5.0, flow="cf-2")],
+            earlier=[_matched(5.0, ecoinvent=True)],
+            later=[_matched(5.0, ecoinvent=True)],
+        )
+        self.assertEqual(questions, [])
+        self.assertEqual(
+            sorted((row.elementary_flow_uuid, row.derivation) for row in published),
+            [("cf-1", str(Derivation.RESTATED)), ("cf-2", str(Derivation.SOLE))],
+        )
+
+    def test_the_number_beside_an_agreed_factor_is_an_open_implementations(self):
+        """`also_stated` is written on every agreed factor; the closed 3.13
+        workbook's number is never it."""
+        published, _questions, _applied = self._derive(
+            jrc=[_matched(5.0001)], later=[_matched(5.0, ecoinvent=True)]
+        )
+        self.assertEqual(
+            [(row.factor.amount, row.also_stated) for row in published], [(5.0001, None)]
+        )
+        published, _questions, _applied = self._derive(
+            jrc=[_matched(5.0001)],
+            earlier=[_matched(5.0002, ecoinvent=True)],
+            later=[_matched(5.0, ecoinvent=True)],
+        )
+        self.assertEqual(
+            [(row.factor.amount, row.also_stated) for row in published], [(5.0001, 5.0002)]
+        )
+
 
 
 if __name__ == "__main__":

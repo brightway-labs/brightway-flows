@@ -54,7 +54,7 @@ JRC_IMPL = _METHOD.reference
 ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
 GREENDELTA_IMPL = _METHOD.implementation("greendelta")
 CONSENSUS_IMPL = _METHOD.consensus
-IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
+IMPLEMENTATION_NAMES = {row.name for row in _METHOD.published}
 
 #: Two crosswalked categories, so one flow can carry a number and a stated zero
 #: without the two colliding on the key that says they are one factor.
@@ -148,8 +148,11 @@ class ARunThatPublishesTestCase(unittest.TestCase):
         connection.close()
 
         # ecoinvent states the same number for the same category, so the
-        # consensus implementation has something to agree with and all four
-        # implementations appear in the counts.
+        # consensus implementation has something to agree with and every
+        # implementation this fixture registers a list for appears in the
+        # counts.  The ecoinvent list is 3.13, the one the deciding ecoinvent
+        # Centre implementation reads; the 3.12 workbook's implementation is
+        # given no list and is skipped.
         ecoinvent_name = ef_method().by_stated_identifier("jrc")[FIRST].stated["ecoinvent-centre"].name
         factors_path = root / "ecoinvent-3.12-lcia-factors.json"
         factors_path.write_bytes(orjson.dumps({
@@ -172,7 +175,7 @@ class ARunThatPublishesTestCase(unittest.TestCase):
                 adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
                 factors_path=factors_path,
                 methods=(LciaMethodSpec(name="EF v3.1", no_long_term=None),),
-                implemented_by="ecoinvent Centre",
+                implemented_by="ecoinvent Centre (3.12)",
             ),
         )
         # And GreenDelta's, in the shape their adapter writes: a category
@@ -328,6 +331,8 @@ class WhatTheReviewAppShowsTestCase(ARunThatPublishesTestCase):
         """Not the largest count: the implementation this list publishes."""
         counts = self._counts()
         self.assertEqual(counts[0].implemented_by, CONSENSUS_IMPL.name)
+        # Every open implementation: the ecoinvent Centre's 3.13 workbook reads
+        # a list this fixture does not have, and is closed besides.
         self.assertEqual(
             {count.implemented_by for count in counts},
             IMPLEMENTATION_NAMES,
@@ -433,14 +438,15 @@ class TheFilesTestCase(ARunThatPublishesTestCase):
             set(factor), {field.name for field in fields(CharacterizationFactor)}
         )
 
-    def test_every_implementation_of_every_method_is_in_the_file(self):
+    def test_every_open_implementation_of_every_method_is_in_the_file(self):
         """The categories come from the method files, not from the factors.
 
         So a method whose list this run did not merge still has its category
         rows in the file, carrying no factors -- which is what
         `consensus_categories_awaiting_factors` counts. Stepwise 2006's
         publisher is here for that reason: it is a registered method, and this
-        fixture merges no Stepwise flows.
+        fixture merges no Stepwise flows. A closed implementation is the
+        exception, and has no rows at all.
         """
         from brightway_flows.domain.lcia.crosswalk import lcia_methods
 
@@ -448,7 +454,9 @@ class TheFilesTestCase(ARunThatPublishesTestCase):
             implementation.name
             for method in lcia_methods()
             for implementation in method.implementations
+            if implementation.open
         }
+        self.assertNotIn(_METHOD.implementation("ecoinvent-centre-3-13").name, expected)
         self.assertEqual(
             {
                 category["implemented_by"]

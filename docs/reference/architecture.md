@@ -285,7 +285,7 @@ about is one the merge has already placed. Its design is
 | Module | Responsibility |
 |---|---|
 | `pipeline` | `characterise`: the order the steps below run in |
-| `categories` | the 138 `ImpactCategory` objects — EF 3.1's 25 categories times four implementations, Stepwise 2006's 19 times two — and the IRI and id each is published under |
+| `categories` | the 138 published `ImpactCategory` objects — EF 3.1's 25 categories times its four open implementations, Stepwise 2006's 19 times two — and the IRI and id each is published under; a closed implementation's 25 are minted for the run and never published |
 | `sources` | which implementations exist and where each one's factors come from |
 | `matching` | getting a factor onto a consensus flow: which flow, and in what unit |
 | `conversion` | a factor stated per one unit, published per another |
@@ -301,9 +301,13 @@ The factors arrive through the integrations, one adapter per implementation.
 `integrations/ef31.py` already parses EF 3.1's 25 method files as part of
 `extract`, so the JRC's factors ride in on the base list's own flows.
 `integrations/ecoinvent_lcia.py` is the second, reached by `fetch-lcia
-ecoinvent-3.12`: a source list's manifest may declare an `lcia` block naming an
+ecoinvent-3.13`: a source list's manifest may declare an `lcia` block naming an
 adapter and a file, on the same terms as its `inputs.flows`, and
-`sources.fetch_source_lcia` holds it to the path the manifest states. A build
+`sources.fetch_source_lcia` holds it to the path the manifest states.
+`integrations/ecoinvent_lcia_public.py` reads the same implementation one
+release earlier from the mapped file ecoinvent publishes on GitHub, pinned to
+a commit and a digest through `downloads.PinnedFile`, and writes the workbook
+adapter's file format so `lcia/sources.py` reads both with one reader. A build
 reads none of it — `characterise` matches the factors onto the consensus flows
 afterwards, reading the database `build` wrote and writing the `lcia_*` tables into
 it. That order is worth protecting: iterating on a rule about factors costs a
@@ -321,13 +325,27 @@ joined by ours.
 
 `domain/lcia/crosswalk.py` reads one file per LCIA method, listed in its
 `METHOD_FILEPATHS`. `data/lcia-impact-categories.json` is EF 3.1's: the method,
-its four implementations and where each one's factors are read from, and its 25
+its five implementations, where each one's factors are read from, whether each
+`decides`, whether each is `open` and, where two are one publisher's, the
+`publisher` they share, and its 25
 categories with every implementation's name for each under that implementation's
 slug. `data/stepwise-2006-impact-categories.json` is the second method, the same
 shape and no module changes; nothing under `lcia/` names a method or an
 implementation. It is registered as a
 vocabulary rather than a ruling: nobody is overruling the pipeline, this is what
 the words mean.
+
+`decides` and `open` are separate questions. A closed implementation — the
+ecoinvent Centre's 3.13 workbook, whose terms do not allow republishing it — is
+read, matched and handed to `consensus.derive` like any other, and
+`pipeline._characterise_method` keeps it out of everything that is written: its
+factors and findings, both reports, and the category rows
+(`categories.published_impact_categories`). `consensus` shows only an open
+implementation's number as `also_stated`. The cut is at the write rather than in
+a release step because the review application serves the build's own database
+and factor files. `derive` counts `MethodImplementation.voice`, not
+implementations, so two releases of one publisher are one voice in `agreed` and
+`contested`.
 
 A category slug is unique inside a method and not across methods — two methods
 can both have an `acidification`, counted in different units from different

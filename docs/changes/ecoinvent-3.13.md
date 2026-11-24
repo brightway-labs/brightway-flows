@@ -11,6 +11,16 @@ earlier release too. All four system models — cutoff, APOS, consequential and
 EN15804 — ship the same 9,893 exchanges, so reading the cutoff release loses
 nothing (`ecoinvent-3.13-additional-flows.json` records the comparison).
 
+Its LCIA implementation workbook, `ecoinvent 3.13_LCIA_implementation.7z`,
+is read as a second rendering of EF 3.1 by the ecoinvent Centre,
+`ecoinvent Centre (3.13)`, beside its 3.12 one
+([#459](https://github.com/brightway-labs/brightway-flows/issues/459)). Both
+decide what this list publishes, as one voice. The 3.13 workbook's own numbers
+are not published: ecoinvent has not released a public 3.13 file, and the
+workbook's terms do not allow republishing it. Where the two releases
+disagree, the factor is a question for a curator. What that changed is on the
+[factors page](../concepts/factors.md).
+
 The curated corrections are in `ecoinvent-3.13-manual-fixes.json`: 24
 entries, of which 5 alter a registry number, 5 a name, 11 a synonym list and
 3 a unit. Twenty are 3.12's; 3.13 ships seven of 3.12's corrections itself —

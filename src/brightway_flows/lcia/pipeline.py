@@ -258,10 +258,16 @@ def _stat_key(key: str) -> str:
     The comparison counts `only:ecoinvent Centre` -- the implementation's own
     name, because the set of them is not fixed -- and a stat key is read from a
     log line and a baseline diff, so the punctuation and the spaces come out.
+    `ecoinvent Centre (3.13)` becomes `ecoinvent_Centre_3_13`: the parentheses
+    go the way the dots do, so the key reads like the slug-derived
+    `ef_ecoinvent_centre_3_13_*` statistics about the same implementation and
+    needs no escaping in a shell or a regular expression.
     """
-    for character in (":", "-", " ", "."):
+    for character in (":", "-", " ", ".", "(", ")"):
         key = key.replace(character, "_")
-    return key.replace("__", "_").strip("_")
+    while "__" in key:
+        key = key.replace("__", "_")
+    return key.strip("_")
 
 
 def _factor_count(items: list[ReviewQueueItem]) -> int:
@@ -661,10 +667,20 @@ def _characterise_method(
             conversions=conversions,
             collision_rulings=collision_rulings,
         )
-        factors.update(grouped)
-        findings.extend(found)
         transcribed[implementation.slug] = matched
         reached[implementation.slug] = {row.elementary_flow_uuid for row in matched}
+        if not implementation.open:
+            # Read, and handed to `derive` below if it decides, and written
+            # nowhere: its rows are its publisher's, and its publisher has not
+            # let them be republished (`MethodImplementation.open`).  What
+            # `_transcribe` counted as published was matched and not published,
+            # so the count is renamed rather than left to say otherwise.
+            own = f"{prefix}_{implementation.slug.replace('-', '_')}"
+            stats[f"{own}_factors_withheld"] = stats.pop(f"{own}_factors_published")
+            stats[f"{own}_findings_withheld"] = len(found)
+            continue
+        factors.update(grouped)
+        findings.extend(found)
 
     # Only the implementations the method file says decide.  A transcription
     # ingested to be compared is published and compared and decides nothing:
@@ -973,11 +989,20 @@ def _characterise_method(
     # out would leave the reader to do by hand what #157 did by hand.  Keyed the
     # same way, so a row of the report and a row of the implementation still
     # cannot disagree about what was compared.
+    #
+    # Open implementations only.  Both reports are written out row by row, and
+    # a difference row carries each side's amount: comparing a closed
+    # implementation would publish it one row at a time.
+    open_transcribed = {
+        slug: rows
+        for slug, rows in transcribed.items()
+        if method.implementation(slug).open
+    }
     compared = {
         method.implementation(slug): _comparable(
             method, rows, method.implementation(slug)
         )
-        for slug, rows in transcribed.items()
+        for slug, rows in open_transcribed.items()
     }
     differences, difference_counts = compare(
         method=method.slug,
@@ -988,9 +1013,18 @@ def _characterise_method(
     )
     gaps, coverage_counts = coverage(
         method=method.slug,
-        characterised=_characterised(method, transcribed, flows=flows),
+        characterised=_characterised(method, open_transcribed, flows=flows),
         flows=flows,
-        own_flows=_own_flows(db_path, method=method, lists=lists, reached=reached),
+        own_flows=_own_flows(
+            db_path,
+            method=method,
+            lists={
+                slug: source
+                for slug, source in lists.items()
+                if method.implementation(slug).open
+            },
+            reached=reached,
+        ),
     )
     # One coverage row per context with blanks, on the consensus implementation:
     # the other rows say where a *transcription* skipped a flow its list has,

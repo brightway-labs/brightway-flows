@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Sulfuryl fluoride -- the gas a house is tented with for drywood termites, vented to the open air at the end of every job and lasting some 36 years there -- has a GWP100 of 4630 in IPCC AR6 Table 7.SM.7. ecoinvent's v3.12 implementation of EF 3.1 added that number 'following IPCC 2021' (§15.3.1, Table 19); EF 3.1 states nothing for the substance under any climate category, though it characterises it for freshwater ecotoxicity in all thirteen of its contexts. So the factor reached `queue/proposed-factor`, and `lcia-factor-rulings.json` adopts it, as ecoinvent's own statement of the IPCC's number. It reaches only the two air compartments ecoinvent has a flow for; the four this list carries from EF 3.1's flow list stay empty, which is #151's follow-up and not this claim's business. The claim that urban air stays empty was here until #152 filled it, which is what that expectation was written for.",
+  "description": "Sulfuryl fluoride -- the gas a house is tented with for drywood termites, vented to the open air at the end of every job and lasting some 36 years there -- has a GWP100 of 4630 in IPCC AR6 Table 7.SM.7. ecoinvent's v3.12 implementation of EF 3.1 added that number 'following IPCC 2021' (§15.3.1, Table 19); EF 3.1 states nothing for the substance under any climate category, though it characterises it for freshwater ecotoxicity in all thirteen of its contexts. So the factor reached `queue/proposed-factor`, and `lcia-factor-rulings.json` adopts it, as ecoinvent's own statement of the IPCC's number. It reaches only the two air compartments ecoinvent has a flow for; the four this list carries from EF 3.1's flow list stay empty, which is #151's follow-up and not this claim's business. The claim that urban air stays empty was here until #152 filled it, which is what that expectation was written for.\n\nSince #459 both of the ecoinvent Centre's workbooks decide. The 3.12 workbook still states 4,630 in both air compartments; the 3.13 workbook keeps both rows with their ecotoxicity factors and states no climate-change factor for either. A release that stops stating a number does not contradict it, so the question is still the proposal the ruling answered and 4,630 is still published.",
   "expectations": [
     {
       "id": "0728-the-list-publishes-ar6s-number-for-unspecified-air",
@@ -57,13 +57,13 @@
     {
       "id": "0728-ecoinvent-still-says-so-under-its-own-name",
       "issue": 728,
-      "title": "ecoinvent's 4,630 is still published as ecoinvent's",
+      "title": "The ecoinvent Centre's 3.12 workbook's 4,630 is still published as the Centre's",
       "subject": {
         "kind": "factor",
         "flow_name": "Sulphuryl Difluoride",
         "context_display": "Environmental → Air → Unknown",
         "category": "Climate change",
-        "implemented_by": "ecoinvent Centre"
+        "implemented_by": "ecoinvent Centre (3.12)"
       },
       "expect": {
         "exists": true,
@@ -86,6 +86,22 @@
         "exists": false
       },
       "comment": "The silence that made this a proposal rather than an agreement, and it has to stay legible after the ruling. If EF 3.1 ever states a number here the question is a different one -- two implementations disagreeing, or agreeing -- and `ruled_about` sends it back to the queue rather than letting this decision stand over it."
+    },
+    {
+      "id": "0728-the-3-13-workbook-states-nothing-here",
+      "issue": 728,
+      "title": "Nothing is published for sulfuryl fluoride's climate change under the ecoinvent Centre's 3.13 workbook",
+      "subject": {
+        "kind": "factor",
+        "flow_name": "Sulphuryl Difluoride",
+        "context_display": "Environmental → Air → Unknown",
+        "category": "Climate change",
+        "implemented_by": "ecoinvent Centre (3.13)"
+      },
+      "expect": {
+        "exists": false
+      },
+      "comment": "Twice true: the 3.13 workbook states no climate-change factor for the substance, and it is closed, so nothing of its is published under its name anyway (#459). The first is why the ruling's `ruled_about` names the 3.12 workbook alone."
     }
   ]
 }

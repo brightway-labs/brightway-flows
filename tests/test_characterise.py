@@ -18,6 +18,8 @@ flow, and the invariant the tables hold as a primary key.
 
 from __future__ import annotations
 
+import gzip
+
 import sqlite3
 import tempfile
 import unittest
@@ -50,8 +52,11 @@ from brightway_flows.lcia.matching import (
 from brightway_flows.lcia.pipeline import (
     _declined_numbers,
     _definition_for,
+    _stat_key,
     characterise,
 )
+from brightway_flows.lcia.publish import artifact_paths
+from brightway_flows.pipeline.review_tables import create_review_tables
 from brightway_flows.lcia.report import FindingKind
 from brightway_flows.lcia.sources import FactorSource
 from brightway_flows.lcia.store import (
@@ -60,7 +65,11 @@ from brightway_flows.lcia.store import (
 )
 from brightway_flows.sources import LciaMethodSpec, LciaSpec, SourceList
 
-#: EF 3.1, and its three implementations by role.
+#: EF 3.1, and the implementations a fixture stands in for, by role.  The
+#: fixture's ecoinvent list is the one the ecoinvent Centre's 3.12 workbook is
+#: read from, which decides and is open; the 3.13 workbook's implementation
+#: reads a list most fixtures here do not register, and is skipped.  The one
+#: that does is `AClosedImplementationTestCase`.
 METHOD = ef_method()
 JRC = METHOD.reference
 ECOINVENT = METHOD.implementation("ecoinvent-centre")
@@ -112,6 +121,28 @@ def _source(by_flow, *, implementation, consensus):
         flows_are_consensus=consensus,
         read_from="a test",
     )
+
+
+class TheReaderRefusesAListWithNoLciaBlockTestCase(unittest.TestCase):
+    """`source_list_for` refuses a list with no `lcia` block, but
+    `factors_for(..., source=...)` takes a manifest it never looked at, so the
+    reader has to say so itself -- in words, and under `python -O` too, which an
+    `assert` is not."""
+
+    def test_it_raises_a_value_error_that_names_the_list(self):
+        from brightway_flows.lcia.sources import source_list_factors
+        from brightway_flows.sources import SourceList
+
+        bare = SourceList(
+            list_name="ecoinvent",
+            list_version="3.12",
+            flows_path=Path("/nonexistent/ecoinvent-3.12-flows.json"),
+        )
+        self.assertIsNone(bare.lcia)
+        with self.assertRaises(ValueError) as raised:
+            source_list_factors(ECOINVENT, bare)
+        self.assertIn(bare.key, str(raised.exception))
+        self.assertIn(ECOINVENT.name, str(raised.exception))
 
 
 class TheJrcNeedsNoMatchingTestCase(unittest.TestCase):
@@ -650,6 +681,31 @@ class TheCategoryOfAFactorTestCase(unittest.TestCase):
             _definition_for(METHOD, stray, implementation=JRC)
 
 
+class TheStatKeyTestCase(unittest.TestCase):
+    """A count key, read from a log line and a baseline diff, so the punctuation
+    comes out -- all of it.  `ecoinvent Centre (3.12)` is the first
+    implementation name with parentheses, and the key it produced
+    (`coverage_ef_ecoinvent_Centre_(3_12)`) was the one statistic about that
+    implementation spelled unlike its slug-derived neighbours."""
+
+    def test_an_implementation_name_with_parentheses_reads_like_its_slug(self):
+        self.assertEqual(
+            _stat_key("only:ecoinvent Centre (3.12)"), "only_ecoinvent_Centre_3_12"
+        )
+
+    def test_the_keys_already_in_the_baseline_do_not_move(self):
+        for key, expected in (
+            ("only:ecoinvent Centre", "only_ecoinvent_Centre"),
+            ("ef:GreenDelta", "ef_GreenDelta"),
+            (
+                "stepwise-2006:2.-0 LCA consultants",
+                "stepwise_2006_2_0_LCA_consultants",
+            ),
+        ):
+            with self.subTest(key):
+                self.assertEqual(_stat_key(key), expected)
+
+
 class TheTablesTestCase(unittest.TestCase):
     """What `characterise` writes, and the invariant it holds as a key."""
 
@@ -859,7 +915,7 @@ class EndToEndTestCase(unittest.TestCase):
                 adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
                 factors_path=factors_path,
                 methods=(LciaMethodSpec(name="EF v3.1", no_long_term=None),),
-                implemented_by="ecoinvent Centre",
+                implemented_by="ecoinvent Centre (3.12)",
             ),
         )
         self.stats = characterise(self.db, source_lists={"ecoinvent-3.12": self.source})
@@ -883,9 +939,10 @@ class EndToEndTestCase(unittest.TestCase):
         the list publishes, and a count of zero is honest where leaving them out
         would say they do not exist.
 
-        138 -- EF 3.1's 25 times four implementations, Stepwise 2006's 19 times
-        two. This fixture merges no Stepwise flows, so all 19 of its consensus
-        categories are awaiting factors alongside EF's 25."""
+        138 -- EF 3.1's 25 times its four open implementations, Stepwise
+        2006's 19 times two. The ecoinvent Centre's 3.13 workbook is closed and
+        has no rows. This fixture merges no Stepwise flows, so all 19 of its
+        consensus categories are awaiting factors alongside EF's 25."""
         self.assertEqual(len(self._rows("SELECT * FROM lcia_impact_categories")), 138)
         self.assertEqual(self.stats["consensus_categories_awaiting_factors"], 44)
 
@@ -911,7 +968,7 @@ class EndToEndTestCase(unittest.TestCase):
     def test_the_row_that_reached_no_flow_is_a_finding(self):
         rows = self._rows("SELECT kind, implemented_by FROM lcia_findings")
         self.assertEqual(
-            rows, [(str(FindingKind.FLOW_NOT_REACHED), "ecoinvent Centre")]
+            rows, [(str(FindingKind.FLOW_NOT_REACHED), "ecoinvent Centre (3.12)")]
         )
 
     def test_running_it_again_produces_the_same_tables(self):
@@ -957,6 +1014,132 @@ _MEDIA_OF = {
     "https://vocab.brightway.one/flow-contexts/envi-grou-agri": "Ground",
     "https://vocab.brightway.one/flow-contexts/envi-grou-noag": "Ground",
 }
+
+
+class AClosedImplementationTestCase(EndToEndTestCase):
+    """The same build with the ecoinvent Centre's 3.13 workbook read as well.
+
+    It decides and it is closed: its number reaches the question the two
+    workbooks ask about `cf-1`, and nothing of its own reaches a table or a
+    file.  The other cases of `EndToEndTestCase` run again over this build, so
+    every one of them holds with a closed implementation beside the open ones.
+    """
+
+    LATER = METHOD.implementation("ecoinvent-centre-3-13")
+
+    def setUp(self):
+        super().setUp()
+        root = Path(self.tmp.name)
+        connection = sqlite3.connect(self.db)
+        connection.execute(
+            "INSERT INTO elementary_flow_sources VALUES (?, ?, ?, ?, ?)",
+            ("cf-1", "ecoinvent", "3.13", "ei-1", orjson.dumps({"unit": "kg"}).decode()),
+        )
+        # The queue a question is written to, which the parent fixture leaves
+        # out because none of its cases reads it.
+        create_review_tables(connection)
+        connection.commit()
+        connection.close()
+        later_path = root / "ecoinvent-3.13-lcia-factors.json"
+        later_path.write_bytes(
+            orjson.dumps(
+                {
+                    "schema_version": 1,
+                    "methods": [
+                        {
+                            "method": "EF v3.1",
+                            "categories": [
+                                {"category": ECOINVENT_CATEGORY, "indicator": "i",
+                                 "unit": "u"}
+                            ],
+                            "factors": [
+                                {"flow_uuid": "ei-1",
+                                 "category": ECOINVENT_CATEGORY, "amount": 7.7},
+                                {"flow_uuid": "ei-405",
+                                 "category": ECOINVENT_CATEGORY, "amount": 1.0},
+                            ],
+                        }
+                    ],
+                }
+            )
+        )
+        self.later = SourceList(
+            list_name="ecoinvent",
+            list_version="3.13",
+            flows_path=root / "flows-3.13.json",
+            lcia=LciaSpec(
+                adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
+                factors_path=later_path,
+                methods=(LciaMethodSpec(name="EF v3.1", no_long_term=None),),
+                implemented_by=self.LATER.name,
+            ),
+        )
+        self.stats = characterise(
+            self.db,
+            source_lists={"ecoinvent-3.12": self.source, "ecoinvent-3.13": self.later},
+        )
+
+    def test_running_it_again_produces_the_same_tables(self):
+        before = self._rows(
+            "SELECT * FROM lcia_characterization_factors ORDER BY 1, 2, 3"
+        )
+        characterise(
+            self.db,
+            source_lists={"ecoinvent-3.12": self.source, "ecoinvent-3.13": self.later},
+        )
+        self.assertEqual(
+            self._rows("SELECT * FROM lcia_characterization_factors ORDER BY 1, 2, 3"),
+            before,
+        )
+
+    def test_its_number_reaches_the_question(self):
+        """The JRC states 1.5, the 3.12 workbook 9.9 and the 3.13 workbook 7.7
+        for one flow and category: a contested question carrying all three, so
+        a curator can see the closed workbook's number while choosing."""
+        payloads = [
+            orjson.loads(payload)
+            for (payload,) in self._rows(
+                "SELECT payload_json FROM review_queue WHERE queue_name = 'contested-factor'"
+            )
+        ]
+        stated = {
+            (entry["implemented_by"], entry["amount"])
+            for payload in payloads
+            for row in payload["rows"]
+            for entry in row["stated"]
+        }
+        self.assertEqual(
+            stated, {(JRC.name, 1.5), (ECOINVENT.name, 9.9), (self.LATER.name, 7.7)}
+        )
+
+    def test_nothing_of_its_own_is_written(self):
+        later = self.LATER.name
+        for table in (
+            "lcia_impact_categories",
+            "lcia_findings",
+            "lcia_differences",
+            "lcia_coverage",
+        ):
+            with self.subTest(table=table):
+                self.assertEqual(
+                    self._rows(f"SELECT count(*) FROM {table} WHERE implemented_by = '{later}'"),
+                    [(0,)],
+                )
+        self.assertEqual(
+            self._rows("SELECT count(*) FROM lcia_characterization_factors WHERE amount = 7.7"),
+            [(0,)],
+        )
+        factors_path, differences_path = artifact_paths(self.db)
+        for path in (factors_path, differences_path):
+            with self.subTest(path=path.name):
+                raw = path.read_bytes()
+                text = (gzip.decompress(raw) if path.suffix == ".gz" else raw).decode()
+                self.assertNotIn(later, text)
+
+    def test_what_it_read_is_counted_as_withheld(self):
+        self.assertEqual(self.stats["ef_ecoinvent_centre_3_13_factors_withheld"], 1)
+        self.assertEqual(self.stats["ef_ecoinvent_centre_3_13_findings_withheld"], 1)
+        self.assertNotIn("ef_ecoinvent_centre_3_13_factors_published", self.stats)
 
 
 class WhatTheUnderlyingModelContradictsTestCase(unittest.TestCase):
@@ -1061,7 +1244,7 @@ class WhatTheUnderlyingModelContradictsTestCase(unittest.TestCase):
                 adapter="brightway_flows.integrations.ecoinvent_lcia:fetch",
                 factors_path=factors_path,
                 methods=(LciaMethodSpec(name="EF v3.1", no_long_term=None),),
-                implemented_by="ecoinvent Centre",
+                implemented_by="ecoinvent Centre (3.12)",
             ),
         )
         self.stats = characterise(self.db, source_lists={"ecoinvent-3.12": self.source})

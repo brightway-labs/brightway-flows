@@ -170,22 +170,33 @@ def _published_lines(assessment: Assessment, paint: Any) -> list[str]:
 def _factor_lines(assessment: Assessment, paint: Any) -> list[str]:
     """What the characterisation says, where there is one.
 
-    Seven numbers out of the `factors.*` measures, and the choice is the point:
+    Eight numbers out of the `factors.*` measures, and the choice is the point:
     the headline of this layer is the *agreement* between the implementations of
     one method, so that is what a reader sees without asking for a diff.  Absent entirely from a build nothing has characterised, rather
     than shown as zeros -- "nobody has asked yet" is a different statement from
     "characterised by nobody".
 
-    The four per-implementation counts are EF 3.1's, named by that method's
+    The per-implementation counts are EF 3.1's, named by that method's
     slug: a statistic about one method's own work carries it (`ef_jrc_…`), and
     only the run's totals -- `factors_published`, the difference counts -- do
-    not.  A second registered method wants a section per method rather than
-    another line here.
+    not.  Every implementation the total counts has a line: a total over four
+    with three lines under it leaves a reader to wonder where the rest went.
+    The ecoinvent Centre's 3.13 workbook is closed and is not in the total, so
+    its line says what was read and kept back rather than what was published.
+    A second registered method wants a section per method rather than another
+    line here.
     """
     wanted = (
-        ("factors.factors_published", "factors, over four implementations"),
+        ("factors.factors_published", "factors, over every open implementation"),
         ("factors.ef_jrc_factors_published", "the JRC's"),
-        ("factors.ef_ecoinvent_centre_factors_published", "the ecoinvent Centre's"),
+        (
+            "factors.ef_ecoinvent_centre_factors_published",
+            "the ecoinvent Centre's, from its 3.12 workbook",
+        ),
+        (
+            "factors.ef_ecoinvent_centre_3_13_factors_withheld",
+            "the ecoinvent Centre's 3.13 workbook's, read and not published",
+        ),
         ("factors.ef_greendelta_factors_published", "GreenDelta's"),
         ("factors.ef_consensus_factors_published", "this list's"),
         ("factors.difference_shared", "triples more than one of them states"),
