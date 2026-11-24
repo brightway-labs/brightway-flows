@@ -35,6 +35,16 @@ def insert_statement(table: str, columns: Sequence[str]) -> str:
     return f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
 
 
+def table_exists(connection: sqlite3.Connection, name: str) -> bool:
+    """Whether *name* is a table of the open database."""
+    return (
+        connection.execute(
+            "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?", (name,)
+        ).fetchone()
+        is not None
+    )
+
+
 def drop_relation(connection: sqlite3.Connection, name: str) -> None:
     """Remove *name* whether it is a table or a view.
 

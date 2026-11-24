@@ -43,6 +43,7 @@ from brightway_flows.merge.report import (
     PreparedMatch,
     UnmatchedRow,
 )
+from brightway_flows.merge.property_rows import create_table as create_property_rows
 from brightway_flows.merge.species import redefines
 from brightway_flows.pipeline.sqlite_schema import insert_statement
 from brightway_flows.sources import SourceList
@@ -476,6 +477,7 @@ def create_merge_tables(connection: sqlite3.Connection) -> None:
     _add_missing_columns(connection, "merge_run_inputs", _ADDED_RUN_INPUT_COLUMNS)
     for statement in INDEXES:
         connection.execute(statement)
+    create_property_rows(connection)
 
 
 def _outcome_row(outcome: MergeOutcome) -> tuple[Any, ...]:

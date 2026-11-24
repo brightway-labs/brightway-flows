@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "description": "What one unit of a consensus substance is worth in another quantity, as this project states it, with the range the class of substance spans (#407, phase C). A source list says what *its* kilogram of hard coal is -- 18.01 MJ, 18.2, 19.1 -- and those statements live on the source flows and are published on the mappings. This file is for the substance: one reference value per substance and quantity, which a list that states nothing of its own would borrow (none does today), and a class range from a published table, so that a reader sees where the lists' numbers sit in what the substance can be. The reference value is a decision with a reason, never a mean the code works out: here it is the number the base list's own implementer counts, ecoinvent's EF 3.1 LCIA implementation, because EF 3.1 is the list every other is merged into and that implementation is where its megajoule flows get their numbers. The class range is the IPCC's 2006 default range (Guidelines for National Greenhouse Gas Inventories, Volume 2, Table 1.2, lower and upper bounds of the net calorific value) where the IPCC tabulates the fuel, and a stated physical range otherwise; it is natural variability, not the lists' disagreement, and the two are kept apart on the flow object: the lists' spread is derived at build time from their statements and never written here. A statement outside the class range is counted by the build as a warning, not refused: a list may well model a coal the IPCC's percentiles do not cover.",
+  "values": [
+    {
+      "flow_object_id": "fo-83837092807da333",
+      "label": "Hard Coal",
+      "quantity": "net-calorific-value",
+      "value": 18.01,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "primary_source": ["ecoinvent's EF 3.1 LCIA Implementation workbook, sheet CFs, category `Resource use, fossils`: the factor on `Coal, hard, unspecified, in ground`, 18.01 MJ per kg, the same in every release from 3.8 to 3.12"],
+      "class_range": {
+        "min": 11.5,
+        "max": 32.2,
+        "basis": "net calorific value, as received; sub-bituminous coal's lower bound to anthracite's upper bound, the IPCC's 2.5 and 97.5 percentiles",
+        "primary_source": ["IPCC 2006 Guidelines for National Greenhouse Gas Inventories, Vol. 2, Table 1.2: Sub-Bituminous Coal 18.9 (11.5-26.0), Other Bituminous Coal 25.8 (19.9-30.5), Anthracite 26.7 (21.6-32.2) TJ/Gg"]
+      },
+      "comment": "The lists state 18.01, 18.2 and 19.1 MJ/kg, every one a low value for a hard coal: the IPCC's default for other bituminous coal is 25.8. That is the lists' convention for an unspecified coal as received, and the range here spans the three IPCC classes `hard coal` covers rather than one of them. The workbook's basis is unstated; EF 3.1's `Hard Coal` flow measures net calorific value, so that is what this value is published as."
+    },
+    {
+      "flow_object_id": "fo-76e5fa3b224dcd42",
+      "label": "Brown Coal",
+      "quantity": "net-calorific-value",
+      "value": 9.41,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "primary_source": ["ecoinvent's EF 3.1 LCIA Implementation workbook, sheet CFs, category `Resource use, fossils`: the factor on `Coal, brown, in ground`, 9.41 MJ per kg, the same in every release from 3.8 to 3.12"],
+      "class_range": {
+        "min": 5.5,
+        "max": 21.6,
+        "basis": "net calorific value, as received; the IPCC's 2.5 and 97.5 percentiles for lignite",
+        "primary_source": ["IPCC 2006 Guidelines for National Greenhouse Gas Inventories, Vol. 2, Table 1.2: Lignite 11.9 (5.50-21.6) TJ/Gg"]
+      },
+      "comment": "The lists state 8.75 (AGRIBALYSE's lower heating value), 9.41 (ecoinvent and BAFU) and 9.9 (Stepwise's method, the higher heating value). The workbook's basis is unstated; EF 3.1's `Brown Coal` flow measures net calorific value."
+    },
+    {
+      "flow_object_id": "fo-6dc597941b42bfee",
+      "label": "Crude Oil",
+      "quantity": "net-calorific-value",
+      "value": 43.4,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "primary_source": ["ecoinvent 3.12 ElementaryExchanges.xml, exchange `Oil, crude`, property `heating value, net`: 43.4 MJ per kg, based on Meili et al. (2022) section 5.1; the same number the EF 3.1 LCIA Implementation workbook carries from 3.9.1"],
+      "class_range": {
+        "min": 40.1,
+        "max": 44.8,
+        "basis": "net calorific value; the IPCC's 2.5 and 97.5 percentiles for crude oil",
+        "primary_source": ["IPCC 2006 Guidelines for National Greenhouse Gas Inventories, Vol. 2, Table 1.2: Crude Oil 42.3 (40.1-44.8) TJ/Gg"]
+      },
+      "comment": "The lists state 42.3 (ecoinvent 3.8), 43.1 (BAFU), 43.2 (AGRIBALYSE), 43.4 (ecoinvent from 3.9.1) and 45.8 (Stepwise, the higher heating value, outside the net range as a gross value should be). ecoinvent revised its number at 3.9 following Meili et al. (2022), and the revised one is the reference."
+    },
+    {
+      "flow_object_id": "fo-634eaeddc2496342",
+      "label": "Natural Gas",
+      "quantity": "net-calorific-value",
+      "value": 36.0,
+      "unit": "MJ",
+      "per_unit": "sm3",
+      "primary_source": ["ecoinvent 3.12 ElementaryExchanges.xml, exchange `Gas, natural`, property `heating value, net`: 36 MJ per standard cubic metre, based on Meili et al. (2022) section 5.1"],
+      "comment": "Per standard cubic metre, because that is how ecoinvent measures the resource from 3.9.1 and the only basis more than one list shares (BAFU borrows it). The lists also state the gas per kilogram, from 30.3 to 46.8 MJ, and per plain cubic metre, from 34.5 to 40.3; those are process-specific gases whose names say what they are, and no single reference per kilogram would be theirs. No class range: the IPCC tabulates natural gas per mass only (48.0, 46.5-50.4 TJ/Gg), which does not bound a volume."
+    },
+    {
+      "flow_object_id": "fo-45935aa51b158f4c",
+      "label": "Peat",
+      "quantity": "net-calorific-value",
+      "value": 9.76,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "primary_source": ["IPCC 2006 Guidelines for National Greenhouse Gas Inventories, Vol. 2, Table 1.2: Peat 9.76 TJ/Gg, the number BAFU's statement also carries; ecoinvent ships no peat resource, so its implementation has no number to prefer"],
+      "class_range": {
+        "min": 7.8,
+        "max": 12.5,
+        "basis": "net calorific value; the IPCC's 2.5 and 97.5 percentiles for peat",
+        "primary_source": ["IPCC 2006 Guidelines for National Greenhouse Gas Inventories, Vol. 2, Table 1.2: Peat 9.76 (7.80-12.5) TJ/Gg"]
+      },
+      "comment": "BAFU states 9.76 and Stepwise's method 9.9, both within the range."
+    },
+    {
+      "flow_object_id": "fo-93d10c394b58394e",
+      "label": "Uranium",
+      "quantity": "fission-energy",
+      "value": 560000.0,
+      "unit": "MJ",
+      "per_unit": "kg",
+      "primary_source": ["ecoinvent's documentation of its natural uranium resource: 560 GJ per kilogram, a gross fission energy content; the EF 3.1 LCIA Implementation workbook's factor on `Uranium, in ground`, and the number every list that ships uranium by mass states"],
+      "comment": "No class range. The other numbers the lists carry for uranium -- 451 GJ/kg, 2,291 GJ/kg, 332 GJ/kg for the oxide in ore, 1.11 GJ/kg for the ore -- are not natural variability but fuel-cycle assumptions and ore grades (`docs/findings/units.md`), and a range spanning them would say that a kilogram of uranium can be any of them, which is not what a range means."
+    },
+    {
+      "flow_object_id": "fo-4c8d5ea2fe574622",
+      "label": "Sea water",
+      "quantity": "mass",
+      "value": 1025.0,
+      "unit": "kg",
+      "per_unit": "m3",
+      "primary_source": ["ecoinvent's EF 3.1 LCIA Implementation: `Water, salt, ocean` at 1025 kg per cubic metre, the density of sea water (1024.6 at 35 g/kg salinity and 15 degC) as the implementation rounds it"],
+      "class_range": {
+        "min": 1020.0,
+        "max": 1030.0,
+        "basis": "surface sea water, salinity 33 to 37 g/kg, 0 to 30 degC",
+        "primary_source": ["UNESCO 1981 equation of state of seawater (EOS-80): the density of surface water across the open ocean's salinity and temperature range"]
+      },
+      "comment": "Every list that converts a volume of sea water to a mass does so at 1025."
+    },
+    {
+      "flow_object_id": "fo-464532a8f956fd39",
+      "label": "Water",
+      "quantity": "mass",
+      "value": 1000.0,
+      "unit": "kg",
+      "per_unit": "m3",
+      "primary_source": ["the density of fresh water, 1,000 kg per cubic metre, the figure every list's conversion uses"],
+      "class_range": {
+        "min": 997.0,
+        "max": 1000.0,
+        "basis": "pure water at atmospheric pressure between 0 and 25 degC",
+        "primary_source": ["CRC Handbook of Chemistry and Physics, density of water: 999.84 kg/m3 at 0 degC, 999.97 at 4 degC, 997.05 at 25 degC"]
+      },
+      "comment": "AGRIBALYSE states the inverse, 0.001 cubic metres per kilogram, on its kilogram rows; the flow object states the density the way a density is stated."
+    },
+    {
+      "flow_object_id": "fo-35c89da53ceae55f",
+      "label": "Rainwater",
+      "quantity": "mass",
+      "value": 1000.0,
+      "unit": "kg",
+      "per_unit": "m3",
+      "primary_source": ["the density of fresh water, 1,000 kg per cubic metre, the figure every list's conversion uses"],
+      "class_range": {
+        "min": 997.0,
+        "max": 1000.0,
+        "basis": "pure water at atmospheric pressure between 0 and 25 degC",
+        "primary_source": ["CRC Handbook of Chemistry and Physics, density of water: 999.84 kg/m3 at 0 degC, 999.97 at 4 degC, 997.05 at 25 degC"]
+      },
+      "comment": "AGRIBALYSE's `Water, rain` is the one rain flow converted by mass, at 1000."
+    }
+  ]
+}
