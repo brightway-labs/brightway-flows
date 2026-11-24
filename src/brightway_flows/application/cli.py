@@ -1220,9 +1220,9 @@ def main() -> None:
 
     # Made here rather than when `filesystem` is imported, so that importing
     # the matcher makes nothing. Every command may write into it.
-    DATA_DIR = ensure_data_dir()
+    directory = ensure_data_dir()
 
     # To stderr: `score-comparison-config` prints JSON for another program to
     # read, and a greeting on stdout ahead of it is not JSON.
-    typer.echo(f"Data caching directory: {DATA_DIR}", err=True)
+    typer.echo(f"Data caching directory: {directory}", err=True)
     app()
