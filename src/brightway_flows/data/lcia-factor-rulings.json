@@ -331,6 +331,790 @@
         ]
       },
       "comment": "The coarse band takes PM10's number, and here it is the ecoinvent Centre stating it rather than this list's convention carrying it. Until stage 3 of plans/particle-family.md (#196) ecoinvent's `Particulate Matter, > 2.5 um and < 10um` reached EF's `particles (PM10)` by the five override rows of #37, so its factors sat on PM10 and the coarse band was blank; with those rows retired the rows land on `Particles (PM2.5 - PM10)`, the band they name, and the ecoinvent Centre's transcription now states 5.48544e-5 there in unspecified, urban ground-level and long-term air and 6.94042e-7 in non-urban air -- exactly the numbers the JRC states for PM10 in those compartments, and exactly what data/particle-size-carry-rules.json carries onto the band in the seven compartments where nobody speaks. A stated number outranks a carried one and needs a person: the owner's ruling of 2 September 2026 (plan section 6.4) is that the coarse band takes PM10's number under EF, with the limitations page's double-count concern recorded beside it, and this entry is that ruling on the four compartments an implementation happens to state. Published as `ruled`; the other seven stay `carried`."
+    },
+    {
+      "flow_object_id": "fo-37445e65f873944e",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "β-Endosulfan",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "European Commission — JRC": [
+          83358.0,
+          83359.0,
+          152320.0,
+          212080.0,
+          10224000.0
+        ],
+        "ecoinvent Centre (3.12)": [
+          4420.3,
+          10278.0,
+          11499.0,
+          1980800.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          83358.0,
+          83359.0,
+          152320.0,
+          212080.0,
+          10224000.0
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-37445e65f873944e",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "β-Endosulfan",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "European Commission — JRC": [
+          83358.0,
+          83359.0,
+          152320.0,
+          212080.0,
+          10224000.0
+        ],
+        "ecoinvent Centre (3.12)": [
+          4420.3,
+          10278.0,
+          11499.0,
+          1980800.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          83358.0,
+          83359.0,
+          152320.0,
+          212080.0,
+          10224000.0
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-8786c629d8e12ae2",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "α-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "European Commission — JRC": [
+          2144.6,
+          2155.9,
+          2208.8,
+          54842.0
+        ],
+        "ecoinvent Centre (3.12)": [
+          145980.0,
+          148830.0,
+          237430.0,
+          3470200.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          2144.6,
+          2155.9,
+          2208.8,
+          54842.0
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-8786c629d8e12ae2",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "α-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "European Commission — JRC": [
+          2144.6,
+          2155.9,
+          2208.8,
+          54842.0
+        ],
+        "ecoinvent Centre (3.12)": [
+          145980.0,
+          148830.0,
+          237430.0,
+          3470200.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          2144.6,
+          2155.9,
+          2208.8,
+          54842.0
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-8786c629d8e12ae2",
+      "category_slug": "human-toxicity-cancer",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "α-Hexachlorocyclohexane",
+      "category": "Human toxicity, cancer",
+      "ruled_about": {
+        "European Commission — JRC": [
+          2.8469e-05,
+          4.3186e-05,
+          6.6385e-05,
+          7.003e-05,
+          7.9225e-05,
+          0.00014937
+        ],
+        "ecoinvent Centre (3.12)": [
+          1.4576e-05,
+          1.6355e-05,
+          1.721e-05,
+          1.9513e-05,
+          5.865e-05,
+          0.00010974
+        ],
+        "ecoinvent Centre (3.13)": [
+          2.8469e-05,
+          4.3186e-05,
+          6.6385e-05,
+          7.003e-05,
+          7.9225e-05,
+          0.00014937
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-8786c629d8e12ae2",
+      "category_slug": "human-toxicity-cancer-organics",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "α-Hexachlorocyclohexane",
+      "category": "Human toxicity, cancer_organics",
+      "ruled_about": {
+        "European Commission — JRC": [
+          2.8469e-05,
+          4.3186e-05,
+          6.6385e-05,
+          7.003e-05,
+          7.9225e-05,
+          0.00014937
+        ],
+        "ecoinvent Centre (3.12)": [
+          1.4576e-05,
+          1.6355e-05,
+          1.721e-05,
+          1.9513e-05,
+          5.865e-05,
+          0.00010974
+        ],
+        "ecoinvent Centre (3.13)": [
+          2.8469e-05,
+          4.3186e-05,
+          6.6385e-05,
+          7.003e-05,
+          7.9225e-05,
+          0.00014937
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-90b40201fe98966a",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "δ-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "European Commission — JRC": [
+          5074.7,
+          5172.9,
+          8148.2,
+          8148.3,
+          118890.0
+        ],
+        "ecoinvent Centre (3.12)": [
+          145980.0,
+          148830.0,
+          237430.0,
+          3470200.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          5074.7,
+          5172.9,
+          8148.2,
+          8148.3,
+          118890.0
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-90b40201fe98966a",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "δ-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "European Commission — JRC": [
+          5074.7,
+          5172.9,
+          8148.2,
+          8148.3,
+          118890.0
+        ],
+        "ecoinvent Centre (3.12)": [
+          145980.0,
+          148830.0,
+          237430.0,
+          3470200.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          5074.7,
+          5172.9,
+          8148.2,
+          8148.3,
+          118890.0
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-abd2a26865a998ab",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "β-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "European Commission — JRC": [
+          3775.1,
+          3848.1,
+          6061.6,
+          88446.0
+        ],
+        "ecoinvent Centre (3.12)": [
+          145980.0,
+          148830.0,
+          237430.0,
+          3470200.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          3775.1,
+          3848.1,
+          6061.6,
+          88446.0
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-abd2a26865a998ab",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "β-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "European Commission — JRC": [
+          3775.1,
+          3848.1,
+          6061.6,
+          88446.0
+        ],
+        "ecoinvent Centre (3.12)": [
+          145980.0,
+          148830.0,
+          237430.0,
+          3470200.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          3775.1,
+          3848.1,
+          6061.6,
+          88446.0
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-abd2a26865a998ab",
+      "category_slug": "human-toxicity-cancer",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "β-Hexachlorocyclohexane",
+      "category": "Human toxicity, cancer",
+      "ruled_about": {
+        "European Commission — JRC": [
+          1.1068e-05,
+          1.59e-05,
+          1.677e-05,
+          1.7109e-05,
+          1.8712e-05,
+          3.5258e-05
+        ],
+        "ecoinvent Centre (3.12)": [
+          1.4576e-05,
+          1.6355e-05,
+          1.721e-05,
+          1.9513e-05,
+          5.865e-05,
+          0.00010974
+        ],
+        "ecoinvent Centre (3.13)": [
+          1.1068e-05,
+          1.59e-05,
+          1.677e-05,
+          1.7109e-05,
+          1.8712e-05,
+          3.5258e-05
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-abd2a26865a998ab",
+      "category_slug": "human-toxicity-cancer-organics",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "β-Hexachlorocyclohexane",
+      "category": "Human toxicity, cancer_organics",
+      "ruled_about": {
+        "European Commission — JRC": [
+          1.1068e-05,
+          1.59e-05,
+          1.677e-05,
+          1.7109e-05,
+          1.8712e-05,
+          3.5258e-05
+        ],
+        "ecoinvent Centre (3.12)": [
+          1.4576e-05,
+          1.6355e-05,
+          1.721e-05,
+          1.9513e-05,
+          5.865e-05,
+          0.00010974
+        ],
+        "ecoinvent Centre (3.13)": [
+          1.1068e-05,
+          1.59e-05,
+          1.677e-05,
+          1.7109e-05,
+          1.8712e-05,
+          3.5258e-05
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-c19144363b9c8f46",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "A-endosulfan",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "European Commission — JRC": [
+          28210.0,
+          35419.0,
+          42351.0,
+          3703800.0
+        ],
+        "ecoinvent Centre (3.12)": [
+          4420.3,
+          10278.0,
+          11499.0,
+          1980800.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          28210.0,
+          35419.0,
+          42351.0,
+          3703800.0
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-c19144363b9c8f46",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "contested-factor",
+      "decision": "publish",
+      "implemented_by": "European Commission — JRC",
+      "substance": "A-endosulfan",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "European Commission — JRC": [
+          28210.0,
+          35419.0,
+          42351.0,
+          3703800.0
+        ],
+        "ecoinvent Centre (3.12)": [
+          4420.3,
+          10278.0,
+          11499.0,
+          1980800.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          28210.0,
+          35419.0,
+          42351.0,
+          3703800.0
+        ]
+      },
+      "comment": "ecoinvent's 3.12 workbook characterises the isomers of two organochlorine pesticides with their parent's factors: α-, β- and δ-hexachlorocyclohexane carry lindane's (γ-hexachlorocyclohexane) numbers, and α- and β-endosulfan carry technical endosulfan's, in every context and category this question covers -- 84 rows, none an exception. The JRC's EF 3.1 gives each isomer a number of its own, and ecoinvent's 3.13 workbook now states exactly the JRC's number in every one of those rows. For α-hexachlorocyclohexane in freshwater ecotoxicity, emitted to unspecified air, that is 2,208.8 from the JRC and from 3.13 against 148,830 from 3.12, which is lindane's.\n\nThe JRC's number is published. The isomers differ in toxicity and persistence, and a factor for one is not a factor for another; 3.12's numbers read as a mapping from the isomer to its parent rather than as a characterisation of the isomer, and the publisher's own later release has replaced them with the JRC's. Until this ruling the consensus list published nothing for these rows, because two publishers disagreed. See #456, where the same mapping to the parent was found in ecoinvent's flow list, and #459, which brought in the 3.13 workbook."
+    },
+    {
+      "flow_object_id": "fo-37445e65f873944e",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "β-Endosulfan",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          4420.3
+        ],
+        "ecoinvent Centre (3.13)": [
+          83359.0
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-37445e65f873944e",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "β-Endosulfan",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          4420.3
+        ],
+        "ecoinvent Centre (3.13)": [
+          83359.0
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-8786c629d8e12ae2",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "α-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          237430.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          2144.6
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-8786c629d8e12ae2",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "α-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          237430.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          2144.6
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-8786c629d8e12ae2",
+      "category_slug": "human-toxicity-cancer",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "α-Hexachlorocyclohexane",
+      "category": "Human toxicity, cancer",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          9.6392e-06
+        ],
+        "ecoinvent Centre (3.13)": [
+          1.3751e-05
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-8786c629d8e12ae2",
+      "category_slug": "human-toxicity-cancer-organics",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "α-Hexachlorocyclohexane",
+      "category": "Human toxicity, cancer_organics",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          9.6392e-06
+        ],
+        "ecoinvent Centre (3.13)": [
+          1.3751e-05
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-90b40201fe98966a",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "δ-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          237430.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          8148.2
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-90b40201fe98966a",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "δ-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          237430.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          8148.2
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-abd2a26865a998ab",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "β-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          237430.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          6061.6
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-abd2a26865a998ab",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "β-Hexachlorocyclohexane",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          237430.0
+        ],
+        "ecoinvent Centre (3.13)": [
+          6061.6
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-abd2a26865a998ab",
+      "category_slug": "human-toxicity-cancer",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "β-Hexachlorocyclohexane",
+      "category": "Human toxicity, cancer",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          9.6392e-06
+        ],
+        "ecoinvent Centre (3.13)": [
+          5.0276e-06
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-abd2a26865a998ab",
+      "category_slug": "human-toxicity-cancer-organics",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "β-Hexachlorocyclohexane",
+      "category": "Human toxicity, cancer_organics",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          9.6392e-06
+        ],
+        "ecoinvent Centre (3.13)": [
+          5.0276e-06
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-c19144363b9c8f46",
+      "category_slug": "ecotoxicity-freshwater",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "A-endosulfan",
+      "category": "Ecotoxicity, freshwater",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          4420.3
+        ],
+        "ecoinvent Centre (3.13)": [
+          28211.0
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-c19144363b9c8f46",
+      "category_slug": "ecotoxicity-freshwater-organics",
+      "queue": "proposed-factor",
+      "decision": "publish",
+      "implemented_by": "ecoinvent Centre (3.13)",
+      "substance": "A-endosulfan",
+      "category": "Ecotoxicity, freshwater_organics",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          4420.3
+        ],
+        "ecoinvent Centre (3.13)": [
+          28211.0
+        ]
+      },
+      "comment": "Silvicultural soil (`Environmental → Ground → Silvicultural`) is a compartment only ecoinvent's flow list has, so the JRC states nothing here and the two ecoinvent workbooks are the only evidence. They disagree in the same way they do in every other compartment: the 3.12 workbook gives the isomer its parent's number -- lindane's for α-, β- and δ-hexachlorocyclohexane, technical endosulfan's for α- and β-endosulfan, which 3.12 states for the parent in this same compartment -- and the 3.13 workbook gives the isomer its own. For α-endosulfan in freshwater ecotoxicity that is 28,211 from 3.13 against 4,420.3 from 3.12, which is endosulfan's.\n\n3.13's number is published. Where 3.13 and the JRC both speak about these isomers they agree in every row (the contested rulings on the same substances), so 3.13 is the release that characterises the isomer rather than its parent. This publishes one factor per question from the 3.13 workbook, which is closed: one number for one flow, not the workbook. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-37445e65f873944e",
+      "category_slug": "human-toxicity-non-cancer",
+      "queue": "proposed-factor",
+      "decision": "decline",
+      "substance": "β-Endosulfan",
+      "category": "Human toxicity, non-cancer",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          2.4187e-07,
+          7.7159e-07,
+          1.3013e-06,
+          2.1892e-06,
+          4.6649e-06,
+          1.7748e-05,
+          3.0022e-05
+        ]
+      },
+      "comment": "Only the ecoinvent Centre's 3.12 workbook states a non-cancer human toxicity number for alpha- and beta-endosulfan, and in every compartment it is technical endosulfan's own number (silvicultural soil: 2.4187e-07 for the isomer and for the parent). The JRC states none for either isomer, and the 3.13 workbook, which gives each isomer its own number wherever it scores one, states none here either. So the only evidence is the parent's number carried onto the isomer -- the substitution the contested rulings on the same substances reject -- and it is declined, as the lindane decline in `lcia-factor-adoptions.json` declines the same rows for the hexachlorocyclohexane isomers. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-37445e65f873944e",
+      "category_slug": "human-toxicity-non-cancer-organics",
+      "queue": "proposed-factor",
+      "decision": "decline",
+      "substance": "β-Endosulfan",
+      "category": "Human toxicity, non-cancer_organics",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          2.4187e-07,
+          7.7159e-07,
+          1.3013e-06,
+          2.1892e-06,
+          4.6649e-06,
+          1.7748e-05,
+          3.0022e-05
+        ]
+      },
+      "comment": "Only the ecoinvent Centre's 3.12 workbook states a non-cancer human toxicity number for alpha- and beta-endosulfan, and in every compartment it is technical endosulfan's own number (silvicultural soil: 2.4187e-07 for the isomer and for the parent). The JRC states none for either isomer, and the 3.13 workbook, which gives each isomer its own number wherever it scores one, states none here either. So the only evidence is the parent's number carried onto the isomer -- the substitution the contested rulings on the same substances reject -- and it is declined, as the lindane decline in `lcia-factor-adoptions.json` declines the same rows for the hexachlorocyclohexane isomers. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-c19144363b9c8f46",
+      "category_slug": "human-toxicity-non-cancer",
+      "queue": "proposed-factor",
+      "decision": "decline",
+      "substance": "A-endosulfan",
+      "category": "Human toxicity, non-cancer",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          2.4187e-07,
+          7.7159e-07,
+          1.3013e-06,
+          2.1892e-06,
+          4.6649e-06,
+          1.7748e-05,
+          3.0022e-05
+        ]
+      },
+      "comment": "Only the ecoinvent Centre's 3.12 workbook states a non-cancer human toxicity number for alpha- and beta-endosulfan, and in every compartment it is technical endosulfan's own number (silvicultural soil: 2.4187e-07 for the isomer and for the parent). The JRC states none for either isomer, and the 3.13 workbook, which gives each isomer its own number wherever it scores one, states none here either. So the only evidence is the parent's number carried onto the isomer -- the substitution the contested rulings on the same substances reject -- and it is declined, as the lindane decline in `lcia-factor-adoptions.json` declines the same rows for the hexachlorocyclohexane isomers. See #456 and #459."
+    },
+    {
+      "flow_object_id": "fo-c19144363b9c8f46",
+      "category_slug": "human-toxicity-non-cancer-organics",
+      "queue": "proposed-factor",
+      "decision": "decline",
+      "substance": "A-endosulfan",
+      "category": "Human toxicity, non-cancer_organics",
+      "ruled_about": {
+        "ecoinvent Centre (3.12)": [
+          2.4187e-07,
+          7.7159e-07,
+          1.3013e-06,
+          2.1892e-06,
+          4.6649e-06,
+          1.7748e-05,
+          3.0022e-05
+        ]
+      },
+      "comment": "Only the ecoinvent Centre's 3.12 workbook states a non-cancer human toxicity number for alpha- and beta-endosulfan, and in every compartment it is technical endosulfan's own number (silvicultural soil: 2.4187e-07 for the isomer and for the parent). The JRC states none for either isomer, and the 3.13 workbook, which gives each isomer its own number wherever it scores one, states none here either. So the only evidence is the parent's number carried onto the isomer -- the substitution the contested rulings on the same substances reject -- and it is declined, as the lindane decline in `lcia-factor-adoptions.json` declines the same rows for the hexachlorocyclohexane isomers. See #456 and #459."
     }
   ]
 }

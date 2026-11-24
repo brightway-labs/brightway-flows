@@ -58,6 +58,16 @@ JRC_IMPL = _METHOD.reference
 ECOINVENT_IMPL = _METHOD.implementation("ecoinvent-centre")
 #: Its 3.13 workbook, which is closed.
 CLOSED_IMPL = _METHOD.implementation("ecoinvent-centre-3-13")
+
+#: Ruled in both factor queues: the 3.12 workbook states the parent's number
+#: (lindane's, technical endosulfan's) for each of them (#456, #459).
+ISOMERS = (
+    "α-Hexachlorocyclohexane",
+    "β-Hexachlorocyclohexane",
+    "δ-Hexachlorocyclohexane",
+    "A-endosulfan",
+    "β-Endosulfan",
+)
 CONSENSUS_IMPL = _METHOD.consensus
 IMPLEMENTATION_NAMES = {row.name for row in _METHOD.implementations}
 
@@ -398,7 +408,7 @@ class TheCuratedRulingsTestCase(unittest.TestCase):
     def setUp(self):
         self.rulings = load_factor_rulings()
 
-    def test_nine_substances_are_ruled(self):
+    def test_fourteen_substances_are_ruled(self):
         substances = {ruling.substance for ruling in self.rulings.values()}
         self.assertEqual(
             substances,
@@ -412,6 +422,7 @@ class TheCuratedRulingsTestCase(unittest.TestCase):
                 "Water vapour",
                 "Peat, Horticulture",
                 "Gas, Mine, Off-gas, Process, Coal Mining",
+                *ISOMERS,
             },
         )
 
@@ -440,7 +451,11 @@ class TheCuratedRulingsTestCase(unittest.TestCase):
         mine off-gas is the same queue and the opposite verdict (#161): EF files
         a fossil fuel among the material resources, in standard cubic metres, so
         neither resource indicator reaches it, and the ruling publishes the 36
-        the JRC's own rule produces.
+        the JRC's own rule produces.  The isomers of hexachlorocyclohexane and
+        endosulfan are in both queues (#456, #459): the 3.12 workbook gives each
+        its parent's number, the JRC and the 3.13 workbook its own, and in
+        silvicultural soil, where the JRC is silent, the 3.13 workbook's number
+        is published.
         """
         by_substance: dict[str, set[str]] = {}
         for ruling in self.rulings.values():
@@ -463,6 +478,16 @@ class TheCuratedRulingsTestCase(unittest.TestCase):
                 "Peat, Horticulture": {str(ReviewQueue.PROPOSED_FACTOR)},
                 "Gas, Mine, Off-gas, Process, Coal Mining": {
                     str(ReviewQueue.PROPOSED_FACTOR)
+                },
+                # The isomers are asked in both: the JRC speaks in its own
+                # compartments, and in silvicultural soil only the two ecoinvent
+                # workbooks do (#456, #459).
+                **{
+                    isomer: {
+                        str(ReviewQueue.CONTESTED_FACTOR),
+                        str(ReviewQueue.PROPOSED_FACTOR),
+                    }
+                    for isomer in ISOMERS
                 },
             },
         )
@@ -492,6 +517,13 @@ class TheCuratedRulingsTestCase(unittest.TestCase):
         only_the_3_12_workbook = {
             "ef|fo-2173e6fdffc50464|climate-change",
             "ef|fo-2173e6fdffc50464|climate-change-fossil",
+            # The endosulfan isomers' non-cancer human toxicity: the 3.12
+            # workbook states the parent's number and the 3.13 workbook none,
+            # and the ruling declines it (#456).
+            "ef|fo-37445e65f873944e|human-toxicity-non-cancer",
+            "ef|fo-37445e65f873944e|human-toxicity-non-cancer-organics",
+            "ef|fo-c19144363b9c8f46|human-toxicity-non-cancer",
+            "ef|fo-c19144363b9c8f46|human-toxicity-non-cancer-organics",
         }
         self.assertTrue(
             only_the_3_12_workbook
@@ -513,12 +545,21 @@ class TheCuratedRulingsTestCase(unittest.TestCase):
     def test_the_category_twins_are_ruled_the_same_way(self):
         """EF ships an aggregate category and its organics or inorganics half,
         and the same disagreement appears in both. A ruling on one and not the
-        other would publish two different numbers for one substance."""
-        by_substance: dict[str, set[str]] = {}
+        other would publish two different numbers for one substance.
+
+        Per queue and per pair of twins, because one substance can rightly be
+        answered differently across them: the endosulfan isomers publish the
+        JRC's number where it disagrees with the 3.12 workbook, the 3.13
+        workbook's where the JRC is silent, and decline the parent's non-cancer
+        number nobody else states."""
+        by_substance: dict[tuple[str, str, str], set[str]] = {}
         for ruling in self.rulings.values():
-            by_substance.setdefault(ruling.substance, set()).add(
-                f"{ruling.verdict}:{ruling.implemented_by}"
+            family = ruling.category_slug.removesuffix("-organics").removesuffix(
+                "-inorganics"
             )
+            by_substance.setdefault(
+                (ruling.substance, ruling.queue, family), set()
+            ).add(f"{ruling.verdict}:{ruling.implemented_by}")
         for substance, verdicts in by_substance.items():
             with self.subTest(substance=substance):
                 self.assertEqual(len(verdicts), 1)

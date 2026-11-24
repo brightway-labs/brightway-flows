@@ -103,7 +103,7 @@ So for EF 3.1 the flowchart's first question is asked of two voices, the JRC's
 and the ecoinvent Centre's, the second speaking through two releases; for
 Stepwise 2006, of one.
 
-Figures from the six-list build of `1e67f3c` on 23 November 2026 (run `20261123T2334105411510000`). The 3.13 release's count is what
+Figures from the six-list build of `08e0136` on 24 November 2026 (run `20261124T0755302069730000`). The 3.13 release's count is what
 was read and kept back rather than published:
 
 | implementation | role | decides | factors | flows reached |
@@ -112,7 +112,7 @@ was read and kept back rather than published:
 | ecoinvent Centre (3.12) | transcription | yes | 27,346 | 7,939 |
 | ecoinvent Centre (3.13) | transcription | yes, not published | 27,342 | 7,965 |
 | GreenDelta | transcription | **no** | 25,261 | 1,510 |
-| brightway-flows | consensus | no | 327,173 | — |
+| brightway-flows | consensus | no | 327,271 | — |
 | 2.-0 LCA consultants (Stepwise 2006) | reference | yes | 9,623 | 6,007 |
 | brightway-flows (Stepwise 2006) | consensus | no | 18,947 | — |
 
