@@ -16,6 +16,8 @@ from __future__ import annotations
 
 import unittest
 
+from vendor_statements import STEPWISE_CARRIERS
+
 from brightway_flows.filesystem import PACKAGE_DATA_DIR
 from brightway_flows.integrations.stepwise import _flow_uuid
 from brightway_flows.match_overrides import load_match_overrides
@@ -64,21 +66,17 @@ class TheFileTestCase(unittest.TestCase):
         # nothing and looks exactly like a decision.
         #
         # The unit is part of the identifier, so a row that crosses a unit is
-        # checked against the unit the vendor ships it in -- the `per_unit` of
-        # the flow's statement in `stepwise-2006-property-statements.json`,
-        # where the heating values live since #407; the rows that state no
-        # property are kilograms, carbon dioxide among them.
-        stated = resolve_source_list(KEY).load_property_statements().statements
+        # checked against the unit the vendor ships it in -- for the twelve
+        # energy carriers the unit `tests/vendor_statements.py` copies from the
+        # export's substance block, since #407's phase B read the heating
+        # values off the export itself; the rows that state no property are
+        # kilograms, carbon dioxide among them.
         for override in self.overrides:
             with self.subTest(override.source_name):
                 self.assertTrue(override.source_context)
                 compartment, subcompartment = override.source_context
-                statements = stated.get(override.source_uuid, ())
-                unit = (
-                    override.source_unit
-                    or (statements[0].per_unit if statements else "")
-                    or "kg"
-                )
+                carrier = STEPWISE_CARRIERS.get(override.source_uuid)
+                unit = override.source_unit or (carrier[1] if carrier else "") or "kg"
                 self.assertEqual(
                     _flow_uuid(override.source_name, compartment, subcompartment, unit),
                     override.source_uuid,

@@ -2,6 +2,7 @@
   "list_name": "ecoinvent",
   "list_version": "3.9.1",
   "role": "source",
+  "vendor_states_properties": true,
   "merge_priority": 100,
   "adapter": "brightway_flows.integrations.ecoinvent:fetch",
   "flow_iri_prefix": "https://vocab.brightway.one/ecoinvent/3.9.1/flow/",

@@ -105,6 +105,7 @@ Resources
 Water, river, FR;in water;m3;0,001;Undefined;0;0;0;
 Occupation, annual crop;land;m2a;2,0;Undefined;0;0;0;
 Transformation, from annual crop;land;m2;0,1;Undefined;0;0;0;
+Coal, hard;in ground;kg;0,5;Undefined;0;0;0;
 
 Materials/fuels
 
@@ -275,6 +276,9 @@ Raw materials
 Water, river, FR;m3;007732-18-5;
 Occupation, annual crop;m2a;;
 Transformation, from annual crop;m2;;
+Coal, hard;kg;;"Synonyms: Anthracite; Hard coal
+Higher heating value (HHV): 19.1 MJ/kg
+Lower heating value (LHV): 18.2 MH/kg"
 
 End
 

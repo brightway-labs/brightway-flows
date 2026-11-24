@@ -284,5 +284,62 @@ class IriTestCase(unittest.TestCase):
         self.assertIs(quantities.QUANTITY_IRI_PREFIX, QUANTITY_IRI_PREFIX)
 
 
+class LabelTestCase(unittest.TestCase):
+    """A vendor's label for a property is matched against the file's spellings.
+
+    This is what the adapters read SimaPro's substance block and ecoinvent's
+    property list with (#407, phase B), so a label the file does not spell is
+    passed over rather than guessed at.
+    """
+
+    def test_the_vendors_spellings_resolve(self):
+        from brightway_flows.domain.quantities import quantity_for_label
+
+        for label, slug in {
+            "Higher heating value (HHV)": "gross-calorific-value",
+            "Lower heating value (LHV)": "net-calorific-value",
+            "heating value, net": "net-calorific-value",
+            "heating value, gross": "gross-calorific-value",
+            "Net calorific value": "net-calorific-value",
+            "HHV": "gross-calorific-value",
+            "  lower   heating value  ": "net-calorific-value",
+        }.items():
+            with self.subTest(label=label):
+                self.assertEqual(quantity_for_label(label), slug)
+
+    def test_a_measurement_qualifier_in_parentheses_is_dropped(self):
+        from brightway_flows.domain.quantities import quantity_for_label
+
+        self.assertEqual(
+            quantity_for_label("Specific weight (for absolutely dry, u=0%)"), "mass"
+        )
+
+    def test_a_label_the_file_does_not_spell_is_none(self):
+        from brightway_flows.domain.quantities import quantity_for_label
+
+        for label in ("wet mass", "carbon content, fossil", "Formula", "", "Synonyms"):
+            with self.subTest(label=label):
+                self.assertIsNone(quantity_for_label(label))
+
+    def test_a_parenthetical_that_names_the_basis_is_not_dropped(self):
+        """`Heating value (net)` says what the value measures, and dropping
+        the parenthesis would read a stated basis as unstated.  The spellings
+        the file lists resolve to their basis; one it does not list is passed
+        over rather than read as `calorific-value`."""
+        from brightway_flows.domain.quantities import quantity_for_label
+
+        for label, slug in {
+            "Heating value (net)": "net-calorific-value",
+            "Heating value (gross)": "gross-calorific-value",
+            "Calorific value (net)": "net-calorific-value",
+            "heating value (lower)": "net-calorific-value",
+        }.items():
+            with self.subTest(label=label):
+                self.assertEqual(quantity_for_label(label), slug)
+        for label in ("Calorific value (lower)", "Heating value (HHV)", "Energy content (net)"):
+            with self.subTest(label=label):
+                self.assertIsNone(quantity_for_label(label))
+
+
 if __name__ == "__main__":
     unittest.main()

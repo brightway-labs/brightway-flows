@@ -61,7 +61,10 @@ import structlog
 
 from brightway_flows.downloads import FILES_BRIGHTWAY_DEV, PinnedFile
 from brightway_flows.integrations.ecoinvent import normalize_cas_number
-from brightway_flows.integrations.stepwise import parse_substance_comment
+from brightway_flows.integrations.stepwise import (
+    parse_substance_comment,
+    statements_from_substance_comment,
+)
 from brightway_flows.sources import SourceList
 
 logger = structlog.get_logger(__name__)
@@ -175,10 +178,14 @@ def _exchanged_flows(blocks: list[Any]) -> dict[tuple[str, str, str], int]:
 
 def extract_elementary_flows(csv_path: Path, *, source: str) -> list[dict[str, Any]]:
     """The flows AGRIBALYSE's processes exchange, as source-list records."""
-    return flows_from_blocks(list(_parsed(csv_path).blocks), source=source)
+    return flows_from_blocks(
+        list(_parsed(csv_path).blocks), source=source, export=csv_path.name
+    )
 
 
-def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]:
+def flows_from_blocks(
+    blocks: list[Any], *, source: str, export: str = ""
+) -> list[dict[str, Any]]:
     """The flows *blocks* exchange, as source-list records.
 
     Faithful to what the export says.  A registry number is written as the
@@ -187,13 +194,23 @@ def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]
     counted, for Stepwise's reason: inventing a unit would hide which rows are
     missing from a file a correction could name.  (In the 3.2 export that
     count is zero.)
+
+    The heating values and specific weights the substance block's comment
+    states are written as ``property_statements`` on the record, read by the
+    same reader Stepwise's are
+    (:func:`~brightway_flows.integrations.stepwise.statements_from_substance_comment`):
+    the two exports share SimaPro's substance library, and 25 of its rows say
+    what a kilogram or cubic metre of the flow is worth in megajoules.
+    *export* is the file's name, for the statements' provenance.
     """
     substances = _substances(blocks)
     exchanged = _exchanged_flows(blocks)
 
     records: list[dict[str, Any]] = []
     without_substance_row: list[str] = []
+    unread_property_lines: list[str] = []
     exchange_rows_seen = 0
+    statements_written = 0
 
     for (compartment, name, subcompartment), count in sorted(exchanged.items()):
         exchange_rows_seen += count
@@ -204,7 +221,8 @@ def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]
             continue
 
         unit = str(substance.get("unit") or "").strip()
-        synonyms, comment = parse_substance_comment(str(substance.get("comment") or ""))
+        raw_comment = str(substance.get("comment") or "")
+        synonyms, comment = parse_substance_comment(raw_comment)
         context = [compartment, subcompartment] if subcompartment else [compartment]
         record: dict[str, Any] = {
             "uuid": _flow_uuid(name, compartment, subcompartment, unit),
@@ -221,6 +239,14 @@ def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]
             record["synonyms"] = synonyms
         if comment:
             record["general_comment"] = comment
+        statements, refused = statements_from_substance_comment(
+            raw_comment, flow_unit=unit, row_name=name, block=heading,
+            export=export, source=source,
+        )
+        unread_property_lines.extend(f"{name}: {line}" for line in refused)
+        if statements:
+            record["property_statements"] = [s.to_dict() for s in statements]
+            statements_written += len(statements)
         records.append(record)
 
     if without_substance_row:
@@ -229,12 +255,22 @@ def flows_from_blocks(blocks: list[Any], *, source: str) -> list[dict[str, Any]]
             count=len(without_substance_row),
             rows=without_substance_row[:10],
         )
+    if unread_property_lines:
+        logger.warning(
+            "agribalyse_property_lines_not_read",
+            count=len(unread_property_lines),
+            lines=unread_property_lines[:10],
+        )
     logger.info(
         "agribalyse_elementary_flows_extracted",
         flows=len(records),
         exchange_rows=exchange_rows_seen,
         with_cas=sum(1 for row in records if "cas_numbers" in row),
         with_synonyms=sum(1 for row in records if "synonyms" in row),
+        with_property_statements=sum(
+            1 for row in records if "property_statements" in row
+        ),
+        property_statements=statements_written,
         contexts=len({tuple(row["context"]) for row in records}),
         units=sorted({row["unit"] for row in records}),
     )
@@ -279,7 +315,9 @@ def fetch(source: SourceList, *, force: bool = False) -> Path:
             "than reading it under this list's key."
         )
 
-    records = flows_from_blocks(list(parsed.blocks), source=source.source_label)
+    records = flows_from_blocks(
+        list(parsed.blocks), source=source.source_label, export=csv_path.name
+    )
     source.flows_path.write_bytes(orjson.dumps(records, option=orjson.OPT_INDENT_2))
     logger.info(
         "agribalyse_flows_written", path=str(source.flows_path), flows=len(records)
