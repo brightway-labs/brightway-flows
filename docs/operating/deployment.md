@@ -23,19 +23,29 @@ leaves the links out, so neither is needed for it to render.
 
 ## Prerequisites
 
-Install gunicorn into the project:
+gunicorn and Flask come with the `webapp` extra. A server that only serves a
+build it was given needs nothing else, and none of what fetching and building
+need:
 
 ```bash
-uv add gunicorn
+uv sync --no-default-groups --extra webapp
 ```
+
+That is 38 packages. A plain `uv sync` installs everything a checkout uses —
+129 packages, with what fetching, building and testing need — and serves the
+same application.
+
+**Start the server with `uv run --no-sync`**, as every command on this page
+does. A bare `uv run` first brings the environment up to what a checkout
+installs, so the first start would put the other 91 packages back.
 
 ## Running with gunicorn
 
 There is one WSGI entry point, `wsgi/app.py`. Run it from the project root
-using `uv run`:
+using `uv run --no-sync`:
 
 ```bash
-uv run gunicorn --bind 127.0.0.1:5000 --workers 2 wsgi.app:application
+uv run --no-sync gunicorn --bind 127.0.0.1:5000 --workers 2 wsgi.app:application
 ```
 
 This block used to list four, on ports 5001 to 5004 — one of which,
@@ -50,7 +60,8 @@ read-only connection and closes it. The applications this replaces read a
 anything.
 
 `uv run` ensures gunicorn uses the project's virtualenv and has the project
-package on the path. Run from the project root so that `wsgi/` is importable,
+package on the path, and `--no-sync` has it use the environment as `uv sync`
+left it. Run from the project root so that `wsgi/` is importable,
 or pass `--chdir /path/to/brightway-flows`.
 
 ### Environment variables
@@ -101,7 +112,7 @@ After=network.target
 User=www-data
 WorkingDirectory=/path/to/brightway-flows
 Environment=BRIGHTWAY_FLOWS_DATA_DIR=/srv/brightway-flows
-ExecStart=/usr/local/bin/uv run gunicorn \
+ExecStart=/usr/local/bin/uv run --no-sync gunicorn \
     --bind 127.0.0.1:5000 \
     --workers 2 \
     wsgi.app:application

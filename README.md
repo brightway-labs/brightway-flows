@@ -58,6 +58,20 @@ build it locally with `uv run mkdocs serve`.
 | Know what's broken | [Known limitations](docs/reference/limitations.md) |
 | Modify the code | [Architecture](docs/reference/architecture.md), [Data model](docs/reference/data-model.md) |
 
+## Installing only part of it
+
+A checkout installs everything, and the quick start below assumes one. A
+project that depends on this package installs only the part it uses:
+
+| You want to | Install |
+|---|---|
+| Ask which consensus flow a row of your own list is | `brightway-flows` |
+| Fetch the source lists and run a build | `brightway-flows[pipeline]` |
+| Read a build in the review application, or serve it | `brightway-flows[webapp]` |
+
+The first is 16 packages, against 101 and 38 for the other two. See
+[Installation](docs/operating/install.md#installing-only-part-of-it).
+
 ## Quick start
 
 Requires Python ≥ 3.14, [`uv`](https://docs.astral.sh/uv/), and Java (for
@@ -185,7 +199,8 @@ of them and is now the whole thing.
 Seven sections: the overview, flows, substances, the factors, checks, the
 decision queues and the merge outcome. See [The review application](docs/operating/review-app.md)
 for what each holds, and [Deployment](docs/operating/deployment.md) for serving
-it in production.
+it in production, where a server needs only the `webapp` extra and none of what
+a build installs.
 
 ## Matching a list of your own
 

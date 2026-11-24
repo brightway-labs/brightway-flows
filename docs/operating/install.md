@@ -26,7 +26,29 @@ uv run brightway-flows --help
 ```
 
 `uv run` builds the environment on first use, so there is no separate install
-step. Every command below is run the same way.
+step. Every command below is run the same way. A checkout installs everything:
+the build, the review application, the tests and the documentation tooling.
+
+## Installing only part of it
+
+The package is used three ways, and a project that depends on it installs only
+the part it uses:
+
+| You want to | Install | Brings |
+|---|---|---|
+| Ask which consensus flow a row of your own list is, against a build somebody else ran ([Matching your own list](../using/matching-your-own-list.md)) | `brightway-flows` | 16 packages |
+| Fetch the source lists and run a build | `brightway-flows[pipeline]` | 101 packages |
+| Read a build in the review application, or serve it | `brightway-flows[webapp]` | 38 packages |
+
+The counts are of the packages in a fresh environment on Python 3.14, from the
+lock file in this checkout, counting the package itself. The plain install
+has the `brightway-flows` command but not what runs it, so a command there
+stops and says which extra to install:
+
+```text
+This command needs `typer`, which is not installed. It comes with
+`brightway-flows[pipeline]` or `brightway-flows[webapp]`.
+```
 
 ## Register the Common Chemistry key
 
