@@ -132,7 +132,10 @@ def compare(
         keys.update(factors)
 
     shared = 0
-    for key in keys:
+    # Sorted, because a set of string tuples iterates in hash-seed order: the
+    # counts and the rows would come out in a different order on every run of
+    # one build, and characterising a build twice has to write the same bytes.
+    for key in sorted(keys):
         speaking = [
             (implementation, factors[key])
             for implementation, factors in stated.items()

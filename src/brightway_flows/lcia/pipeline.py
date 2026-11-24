@@ -1200,9 +1200,12 @@ def characterise(
         for category in consensus_categories_for(method.slug)
         if str(category.id) not in factors
     )
-    for key, count in difference_counts.items():
+    # In key order rather than the order the counters were filled: `coverage`
+    # walks sets of flow UUIDs, so which count it meets first changes with the
+    # hash seed, and these keys are written into `stats_json` and both files.
+    for key, count in sorted(difference_counts.items()):
         stats[f"difference_{_stat_key(key)}"] = count
-    for key, count in coverage_counts.items():
+    for key, count in sorted(coverage_counts.items()):
         stats[f"coverage_{_stat_key(key)}"] = count
 
     for queue, items in queues.items():

@@ -24,7 +24,11 @@ Two things the report must get right, and both are here:
 
 from __future__ import annotations
 
+import os
+import subprocess
+import sys
 import unittest
+from pathlib import Path
 
 from brightway_flows.domain.lcia.records import StatedFactor, stated_category
 from brightway_flows.domain.lcia.crosswalk import ef_method
@@ -239,6 +243,39 @@ class WhatTheReportHoldsTestCase(unittest.TestCase):
         )
 
 
+    def test_two_processes_count_in_the_same_order(self):
+        """#477: the counts and the rows come out in one order whatever the
+        hash seed, because `characterise` copies them into `stats_json` and
+        both published files, and characterising one build twice has to write
+        the same bytes.  A set's order is fixed for the life of a process, so
+        this is asked of two interpreters started under different seeds."""
+        outputs = [
+            subprocess.run(
+                [sys.executable, str(Path(__file__)), "--print-compare-order"],
+                capture_output=True, text=True, check=True,
+                env={**os.environ, "PYTHONHASHSEED": seed},
+            ).stdout
+            for seed in ("1", "2", "3")
+        ]
+        self.assertTrue(outputs[0])
+        self.assertEqual(outputs[0], outputs[1])
+        self.assertEqual(outputs[0], outputs[2])
+
+
+def _print_compare_order():
+    """Enough keys, spread over every count, for two seeds to disagree."""
+    rows, counts = _compare(
+        jrc=[_matched(float(n), flow=f"cf-{n}") for n in range(1, 13)]
+        + [_matched(0.0, flow=f"cf-zero-{n}") for n in range(4)],
+        ecoinvent=[
+            _matched(float(n) * (1, 1.5, 50, 500)[n % 4], flow=f"cf-{n}", source="ei")
+            for n in range(6, 20)
+        ],
+    )
+    print(list(counts))
+    print([(row.elementary_flow_uuid, row.implemented_by) for row in rows])
+
+
 class TheCoverageSummaryTestCase(unittest.TestCase):
     """Counts by compartment and category; never a list of flows."""
 
@@ -314,4 +351,7 @@ class TheCoverageSummaryTestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    if sys.argv[1:] == ["--print-compare-order"]:
+        _print_compare_order()
+    else:
+        unittest.main()
