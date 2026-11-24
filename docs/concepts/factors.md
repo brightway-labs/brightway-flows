@@ -802,11 +802,17 @@ Where the two releases disagree about a number the JRC does not state, nothing
 settles it without a curator. The lindane and endosulfan isomers are the cases
 on this build: 3.12 scored α‑, β‑ and δ‑hexachlorocyclohexane with lindane's
 numbers and the two endosulfan isomers with endosulfan's, and 3.13 scores each
-under its own registry number. On the build of `1e67f3c` that is 32 open
-questions over 126 factors. The contested ones were already open when only
-3.12 decided, because the JRC disagreed with it; what reading 3.13 adds is ten
-proposals in compartments only ecoinvent has, where its two releases now
-disagree.
+with its own. A curator has ruled on both kinds of question:
+
+| where | the JRC | ecoinvent 3.12 | ecoinvent 3.13 | what the list publishes |
+|---|---:|---:|---:|---|
+| α‑endosulfan to unspecified air, freshwater ecotoxicity | 42,351 | 11,499 (endosulfan's) | 42,351 | 42,351, `ruled`: the JRC's number, in all 84 factors where 3.12 gives an isomer its parent's |
+| α‑endosulfan to silvicultural soil, freshwater ecotoxicity | nothing | 4,420.3 (endosulfan's) | 28,211 | 28,211, `ruled`: 3.13's number, in all 14 factors of the compartment only ecoinvent has |
+
+Publishing one of 3.13's numbers for one flow is not publishing the 3.13
+workbook, which stays closed. The endosulfan isomers' non-cancer human toxicity
+is declined: only 3.12 states a number there, the parent's, and 3.13 states
+none, so the only evidence is the substitution the other rulings reject.
 
 ### Where to check any of this
 
