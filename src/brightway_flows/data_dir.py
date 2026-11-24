@@ -2,7 +2,7 @@
 
 A module of its own, importing nothing from the project and doing nothing on
 import, because the tools ask it too: `tools/seed_data_dir.py` and the others
-want the machine-wide directory without `filesystem`'s `mkdir`, and without the
+want the machine-wide directory without importing `filesystem`, and without the
 variable, which by the time they run points somewhere else.
 """
 

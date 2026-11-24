@@ -42,8 +42,24 @@ SIMAPRO_LINEAGE_FIXES_FILEPATH = PACKAGE_DATA_DIR / "simapro-lineage-manual-fixe
 
 #: `BRIGHTWAY_FLOWS_DATA_DIR`, else the machine-wide directory; either under the
 #: project's old name where only that one exists (`data_dir`).
+#:
+#: Named here, and made by `ensure_data_dir` where something is about to write
+#: into it -- not on import. A program that imports the matcher to ask where a
+#: row goes reads a build and writes nothing, and importing this module used to
+#: leave an empty directory in its user's home.
 DATA_DIR = data_dir()
-DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def ensure_data_dir() -> Path:
+    """Make the data directory if it is not there yet, and return it.
+
+    Called by the `brightway-flows` command before any subcommand runs, which
+    is how the pipeline is started: every write into the directory comes from a
+    command. A program that runs pipeline code without the command calls it
+    first. The matcher and the review application only read, and do not.
+    """
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    return DATA_DIR
 
 APP_SETTINGS_FILEPATH = DATA_DIR / "settings.json"
 CHEBI_JSON_GZ_FILEPATH = DATA_DIR / "chebi.json.gz"

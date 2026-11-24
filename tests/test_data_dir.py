@@ -45,3 +45,42 @@ class EnvDataDirTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TheCommandMakesTheDirectoryTestCase(unittest.TestCase):
+    """Importing `filesystem` makes nothing; running the command makes the
+    directory before any subcommand writes into it."""
+
+    def _run(self, code: str, directory: Path) -> None:
+        import subprocess
+        import sys
+
+        completed = subprocess.run(
+            [sys.executable, "-c", code],
+            capture_output=True,
+            text=True,
+            env=dict(os.environ, BRIGHTWAY_FLOWS_DATA_DIR=str(directory)),
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr[-4000:])
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.directory = Path(self._tmp.name) / "never-made"
+
+    def test_importing_the_paths_makes_nothing(self):
+        self._run("import brightway_flows.filesystem", self.directory)
+        self.assertFalse(self.directory.exists())
+
+    def test_the_command_makes_it(self):
+        self._run(
+            "import sys\n"
+            "from brightway_flows.application.cli import main\n"
+            "sys.argv = ['brightway-flows', '--help']\n"
+            "try:\n"
+            "    main()\n"
+            "except SystemExit as exit:\n"
+            "    sys.exit(exit.code)\n",
+            self.directory,
+        )
+        self.assertTrue(self.directory.is_dir())

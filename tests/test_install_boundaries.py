@@ -190,6 +190,21 @@ RESULT["/substances/fo-benzene"] = client.get(
 ).status_code
 """
 
+#: As `wsgi/app.py` starts it: no database named, so it looks in the data
+#: directory, which here was never made.
+_WEBAPP_UNBUILT = """
+from brightway_flows.webapps.app import create_app
+
+app = create_app()
+app.config["TESTING"] = True
+client = app.test_client()
+RESULT = {}
+for rule in app.url_map.iter_rules():
+    if rule.arguments or "GET" not in rule.methods:
+        continue
+    RESULT[rule.rule] = client.get(rule.rule, follow_redirects=True).status_code
+"""
+
 _REPORT = """
 print("BOUNDARY" + json.dumps({"seen": SEEN, "result": RESULT}))
 """
@@ -265,8 +280,6 @@ class ThePlainInstallAnswersAQuestionTestCase(_Boundary):
             + _offenders(self.report["seen"]),
         )
 
-    # Step 2: `filesystem` makes the directory when it is imported.
-    @unittest.expectedFailure
     def test_it_makes_no_data_directory(self):
         self.assertFalse(
             self.data_dir.exists(),
@@ -297,6 +310,30 @@ class TheApplicationReadsABuildTestCase(_Boundary):
             "The application imported packages only the pipeline needs:\n"
             + _offenders(self.report["seen"]),
         )
+
+
+class TheApplicationBeforeAnyBuildTestCase(_Boundary):
+    """The review application on a machine where nothing was fetched or built.
+
+    It is started by gunicorn and not by the `brightway-flows` command, so
+    nothing has made the data directory. It reads, so it has no need of one:
+    every page says there is no build, and none of them fails.
+    """
+
+    body = _WEBAPP_UNBUILT
+    watched = set(PIPELINE_ONLY)
+
+    def test_every_page_without_an_argument_answers(self):
+        failed = {
+            path: status
+            for path, status in self.report["result"].items()
+            if status >= 500
+        }
+        self.assertEqual(failed, {})
+        self.assertGreater(len(self.report["result"]), 20)
+
+    def test_it_makes_no_data_directory(self):
+        self.assertFalse(self.data_dir.exists())
 
 
 class OneStepImportsOnlyItselfTestCase(unittest.TestCase):

@@ -137,6 +137,13 @@ class DryRunTestCase(unittest.TestCase):
             "check_context_iris": mock.patch(
                 "brightway_flows.pipeline.sqlite.check_context_iris_are_written"
             ),
+            # The same again: it adds a `run_timings` row to the database in
+            # the real data directory, and where there is no data directory --
+            # nothing makes one for a `build` called without the command -- it
+            # fails to open it.
+            "timings": mock.patch(
+                "brightway_flows.pipeline.review_tables.write_run_timings"
+            ),
         }
         started = {name: self.enterContext(patch) for name, patch in patches.items()}
         source = kwargs.pop("source", ["ecoinvent-3.12"])
