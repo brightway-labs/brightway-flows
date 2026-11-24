@@ -11,11 +11,6 @@ import structlog
 import typer
 
 from brightway_flows.filesystem import CHEBI_JSON_GZ_FILEPATH, PACKAGE_DATA_DIR
-from brightway_flows.integrations.ef31 import download_ef31
-from brightway_flows.integrations.glad_mapping import (
-    download_glad_ilcd_to_simapro,
-    parse_glad_ilcd_to_simapro_workbook,
-)
 from brightway_flows.settings import save_commonchemistry_api_key
 from brightway_flows.sources import base_source_list
 
@@ -72,6 +67,8 @@ def download(
     force: bool = typer.Option(False, "--force", "-f", help="Re-download even if the file exists."),
 ) -> None:
     """Download the EF 3.1 ZIP archive."""
+    from brightway_flows.integrations.ef31 import download_ef31
+
     download_ef31(force=force)
 
 
@@ -238,6 +235,10 @@ def extract(
     does the same thing on its own (#244).
     """
     from brightway_flows.integrations.ef31 import fetch as fetch_ef31
+    from brightway_flows.integrations.glad_mapping import (
+        download_glad_ilcd_to_simapro,
+        parse_glad_ilcd_to_simapro_workbook,
+    )
 
     base = base_source_list()
     output_path = fetch_ef31(base, force=force, keep_zip=keep_zip)
@@ -254,6 +255,11 @@ def ingest_glad_mapping(
     force: bool = typer.Option(False, "--force", "-f", help="Re-download even if the file exists."),
 ) -> None:
     """Download and parse GLAD ILCD->SimaPro mapping workbook to JSON."""
+    from brightway_flows.integrations.glad_mapping import (
+        download_glad_ilcd_to_simapro,
+        parse_glad_ilcd_to_simapro_workbook,
+    )
+
     workbook = download_glad_ilcd_to_simapro(force=force)
     output = parse_glad_ilcd_to_simapro_workbook(workbook)
     logger.info("saved_glad_mapping_json", path=str(output))

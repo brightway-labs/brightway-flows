@@ -23,12 +23,16 @@ leaves the links out, so neither is needed for it to render.
 
 ## Prerequisites
 
-gunicorn and Flask come with the `webapp` extra, which `uv sync` installs in
-a checkout:
+gunicorn and Flask come with the `webapp` extra. A server that only serves a
+build it was given needs nothing else, and none of what fetching and building
+need:
 
 ```bash
-uv sync
+uv sync --no-default-groups --extra webapp
 ```
+
+A plain `uv sync` installs everything a checkout uses, which serves the same
+application.
 
 ## Running with gunicorn
 

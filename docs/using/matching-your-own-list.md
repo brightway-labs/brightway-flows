@@ -4,7 +4,9 @@ You have a flow list — your own, a client's, a version of SimaPro nobody here
 has fetched — and one question about every row of it: **which consensus flow is
 this?**
 
-You can ask, one row at a time, without building anything.
+You can ask, one row at a time, without building anything. A program that
+only asks needs the plain install, `brightway-flows`, and none of what a build
+needs — no ecoinvent reader, no structure toolkit, no web server.
 
 ```python
 from brightway_flows.lookup import FlowMatcher, FlowQuery

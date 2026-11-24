@@ -172,6 +172,10 @@ from pathlib import Path
 
 from brightway_flows.webapps.app import create_app
 
+# The command that starts it, which holds every other command too: what they
+# need is imported where they run, not when the command line is read.
+import brightway_flows.application.cli
+
 database = Path(os.environ["BOUNDARY_DB"])
 app = create_app(database, docs_path=Path(os.environ["BOUNDARY_DOCS"]), data_dir=database.parent)
 app.config["TESTING"] = True
@@ -343,31 +347,45 @@ class TheDeclaredDependenciesTestCase(unittest.TestCase):
             for extra, specs in project.get("optional-dependencies", {}).items()
         }
 
-    # Step 3.
-    @unittest.expectedFailure
     def test_the_plain_install_is_the_matcher_s_and_nothing_else(self):
         self.assertEqual(self.base, BASE)
 
-    # Step 3.
-    @unittest.expectedFailure
     def test_the_pipeline_extra_brings_what_a_build_imports(self):
         wanted = set(PIPELINE_ONLY.values()) | set(PIPELINE_AND_WEBAPP.values())
         # Declared nowhere: it is what stops being installed.
         wanted.discard("pandas")
         self.assertEqual(self.extras.get("pipeline"), wanted)
 
-    # Step 3 and 4: the extra exists once #464 lands, and gains `rdkit`,
-    # `typer` and `markupsafe` here.
-    @unittest.expectedFailure
     def test_the_webapp_extra_brings_what_the_application_imports(self):
         wanted = set(WEBAPP_ONLY.values()) | set(PIPELINE_AND_WEBAPP.values())
         self.assertEqual(self.extras.get("webapp"), wanted)
 
-    # Step 3.
-    @unittest.expectedFailure
     def test_nothing_declares_pandas(self):
         declared = self.base.union(*self.extras.values())
         self.assertNotIn("pandas", declared)
+
+
+class TheCommandNamesTheMissingExtraTestCase(unittest.TestCase):
+    """A plain install has the `brightway-flows` command and not what runs it.
+    Which extra a missing package comes with is read from the installed
+    package's metadata, so it says what `pyproject.toml` says."""
+
+    def test_a_package_one_extra_brings(self):
+        from brightway_flows import _extras_bringing
+
+        self.assertEqual(_extras_bringing("httpx"), ["pipeline"])
+        self.assertEqual(_extras_bringing("flask.app"), ["webapp"])
+
+    def test_a_package_both_extras_bring(self):
+        from brightway_flows import _extras_bringing
+
+        self.assertEqual(_extras_bringing("typer"), ["pipeline", "webapp"])
+
+    def test_a_package_the_plain_install_brings_or_nobody_declares(self):
+        from brightway_flows import _extras_bringing
+
+        self.assertEqual(_extras_bringing("orjson"), [])
+        self.assertEqual(_extras_bringing("no_such_package"), [])
 
 
 def _name(specifier: str) -> str:

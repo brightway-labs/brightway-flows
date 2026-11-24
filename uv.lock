@@ -1,5 +1,5 @@
 version = 1
-revision = 5
+revision = 3
 requires-python = ">=3.14.3"
 resolution-markers = [
     "sys_platform == 'win32'",
@@ -104,43 +104,47 @@ wheels = [
 name = "brightway-flows"
 version = "1.1.0"
 source = { editable = "." }
-default-groups = ["dev", "docs"]
 dependencies = [
+    { name = "orjson" },
+    { name = "pint" },
+    { name = "platformdirs" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "randonneur-data" },
+    { name = "structlog" },
+    { name = "tqdm" },
+]
+
+[package.optional-dependencies]
+pipeline = [
     { name = "bw-simapro-csv" },
     { name = "chemformula" },
     { name = "ecoinvent-interface" },
     { name = "httpx" },
     { name = "jsonschema" },
+    { name = "lxml" },
     { name = "openpyxl" },
-    { name = "orjson" },
-    { name = "pandas" },
-    { name = "pint" },
-    { name = "platformdirs" },
     { name = "py2opsin" },
-    { name = "pydantic" },
-    { name = "pydantic-settings" },
     { name = "randonneur" },
-    { name = "randonneur-data" },
     { name = "rdkit" },
-    { name = "structlog" },
-    { name = "tqdm" },
     { name = "typer" },
     { name = "xmltodict" },
 ]
-
-[package.optional-dependencies]
 webapp = [
     { name = "flask" },
     { name = "gunicorn" },
     { name = "markdown" },
+    { name = "markupsafe" },
     { name = "pygments" },
     { name = "pymdown-extensions" },
     { name = "pyyaml" },
+    { name = "rdkit" },
+    { name = "typer" },
 ]
 
 [package.dev-dependencies]
 dev = [
-    { name = "brightway-flows", extra = ["webapp"] },
+    { name = "brightway-flows", extra = ["pipeline", "webapp"] },
     { name = "pyld" },
     { name = "pytest" },
 ]
@@ -151,38 +155,41 @@ docs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "bw-simapro-csv", specifier = ">=0.4.3" },
-    { name = "chemformula", specifier = ">=1.5.1" },
-    { name = "ecoinvent-interface", specifier = ">=3.1" },
+    { name = "bw-simapro-csv", marker = "extra == 'pipeline'", specifier = ">=0.4.3" },
+    { name = "chemformula", marker = "extra == 'pipeline'", specifier = ">=1.5.1" },
+    { name = "ecoinvent-interface", marker = "extra == 'pipeline'", specifier = ">=3.1" },
     { name = "flask", marker = "extra == 'webapp'", specifier = ">=3.1.3" },
     { name = "gunicorn", marker = "extra == 'webapp'", specifier = ">=25.3.0" },
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "jsonschema", specifier = ">=4.25" },
+    { name = "httpx", marker = "extra == 'pipeline'", specifier = ">=0.28.1" },
+    { name = "jsonschema", marker = "extra == 'pipeline'", specifier = ">=4.25" },
+    { name = "lxml", marker = "extra == 'pipeline'", specifier = ">=6.0.2" },
     { name = "markdown", marker = "extra == 'webapp'", specifier = ">=3.10.2" },
-    { name = "openpyxl", specifier = ">=3.1.5" },
+    { name = "markupsafe", marker = "extra == 'webapp'", specifier = ">=3.0.3" },
+    { name = "openpyxl", marker = "extra == 'pipeline'", specifier = ">=3.1.5" },
     { name = "orjson", specifier = ">=3.11.7" },
-    { name = "pandas", specifier = ">=3.0.1" },
     { name = "pint", specifier = ">=0.25.2" },
     { name = "platformdirs", specifier = ">=4.9.2" },
-    { name = "py2opsin", specifier = ">=1.2.0" },
+    { name = "py2opsin", marker = "extra == 'pipeline'", specifier = ">=1.2.0" },
     { name = "pydantic", specifier = ">=2.12.5" },
     { name = "pydantic-settings", specifier = ">=2.13.1" },
     { name = "pygments", marker = "extra == 'webapp'", specifier = ">=2.19.2" },
     { name = "pymdown-extensions", marker = "extra == 'webapp'", specifier = ">=10.21" },
     { name = "pyyaml", marker = "extra == 'webapp'", specifier = ">=6.0.3" },
-    { name = "randonneur", specifier = ">=0.7.2" },
+    { name = "randonneur", marker = "extra == 'pipeline'", specifier = ">=0.7.2" },
     { name = "randonneur-data", specifier = ">=0.7.2" },
-    { name = "rdkit", specifier = ">=2026.3.1" },
+    { name = "rdkit", marker = "extra == 'pipeline'", specifier = ">=2026.3.1" },
+    { name = "rdkit", marker = "extra == 'webapp'", specifier = ">=2026.3.1" },
     { name = "structlog", specifier = ">=25.5.0" },
     { name = "tqdm", specifier = ">=4.67.3" },
-    { name = "typer", specifier = ">=0.24.0" },
-    { name = "xmltodict", specifier = ">=1.0.4" },
+    { name = "typer", marker = "extra == 'pipeline'", specifier = ">=0.24.0" },
+    { name = "typer", marker = "extra == 'webapp'", specifier = ">=0.24.0" },
+    { name = "xmltodict", marker = "extra == 'pipeline'", specifier = ">=1.0.4" },
 ]
-provides-extras = ["webapp"]
+provides-extras = ["pipeline", "webapp"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "brightway-flows", extras = ["webapp"] },
+    { name = "brightway-flows", extras = ["pipeline", "webapp"] },
     { name = "pyld", specifier = ">=2.0.4" },
     { name = "pytest", specifier = ">=9.0.2" },
 ]
