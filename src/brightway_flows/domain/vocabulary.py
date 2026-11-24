@@ -95,6 +95,12 @@ class MintedNamespace(StrEnum):
 
     FLOW_CONTEXTS = "https://vocab.brightway.one/flow-contexts/"
     UNITS = "https://vocab.brightway.one/units/unit/"
+    #: The quantities a list can state about a flow (`quantities.json`): net
+    #: and gross calorific value, fission energy, mass, volume, radioactivity.
+    #: Minted beside the units because QUDT does not split net from gross and
+    #: has no per-mass fission kind; each row records the QUDT kind it matches
+    #: or narrows.
+    QUANTITIES = "https://vocab.brightway.one/quantity/"
     EF31_FLOW = "https://vocab.brightway.one/ef/3.1/flow/"
     #: BAFU versions by export rather than by year: 2026 v1 is followed by a v2
     #: in the same year, and they are different releases of the list.
@@ -507,6 +513,11 @@ class Term(StrEnum):
     #: The PROV record for that multiplier: the two unit IRIs, and the file
     #: that stated it -- `units.json` for a `unit-table` factor.
     CONVERSION_PROVENANCE = "conversionProvenance"
+    #: The quantity a `flow-property` multiplier was derived through, as the
+    #: IRI of a `quantities.json` row: `.../quantity/gross-calorific-value`.
+    #: Present only on that basis, and what tells a reader that Stepwise's
+    #: 19.1 MJ/kg is a gross value landing on EF's net-calorific-value flow.
+    CONVERSION_QUANTITY = "conversionQuantity"
 
     # ── PROV ─────────────────────────────────────────────────────────────────
     WAS_GENERATED_BY = "wasGeneratedBy"
@@ -585,6 +596,7 @@ _NAMESPACE_OF: dict[Term, Namespace] = {
             Term.SUMS_OVER, Term.EXPRESSED_AS, Term.AGGREGATE_MEASUREMENT,
             Term.EXCLUDED_SOURCE_CONCEPT, Term.EXCLUSION_REASON,
             Term.CONVERSION_BASIS, Term.CONVERSION_PROVENANCE,
+            Term.CONVERSION_QUANTITY,
         )
     },
     **{
@@ -932,6 +944,7 @@ BRIGHTWAY_EXCLUDED_SOURCE_CONCEPT_CURIE = curie(Term.EXCLUDED_SOURCE_CONCEPT)
 BRIGHTWAY_EXCLUSION_REASON_CURIE = curie(Term.EXCLUSION_REASON)
 BRIGHTWAY_CONVERSION_BASIS_CURIE = curie(Term.CONVERSION_BASIS)
 BRIGHTWAY_CONVERSION_PROVENANCE_CURIE = curie(Term.CONVERSION_PROVENANCE)
+BRIGHTWAY_CONVERSION_QUANTITY_CURIE = curie(Term.CONVERSION_QUANTITY)
 ORIGIN_QUALIFIER_IRI_PREFIX = MintedNamespace.ORIGIN_QUALIFIER_VALUES.value
 
 
@@ -1017,6 +1030,7 @@ def flow_object_iri(flow_object_id: str) -> str:
 EF31_FLOW_IRI_PREFIX = MintedNamespace.EF31_FLOW.value
 SIMAPRO_102_FLOW_IRI_PREFIX = MintedNamespace.SIMAPRO_102_FLOW.value
 UNIT_IRI_PREFIX = MintedNamespace.UNITS.value
+QUANTITY_IRI_PREFIX = MintedNamespace.QUANTITIES.value
 UNIT_IRI_GM_PER_MOL = f"{UNIT_IRI_PREFIX}GM-PER-MOL"
 UNIT_IRI_NUM = f"{UNIT_IRI_PREFIX}NUM"
 #: `chemrof:half_life` is a number of years, so the value carries the unit

@@ -536,6 +536,53 @@
         "title": "Properties",
         "type": "object"
       },
+      "property_statements": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "comment": {
+              "type": "string"
+            },
+            "per_unit": {
+              "type": "string"
+            },
+            "provenance": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "quantity": {
+              "type": "string"
+            },
+            "stated_by": {
+              "enum": [
+                "vendor-flow",
+                "vendor-method",
+                "flow-name",
+                "curated"
+              ],
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "quantity",
+            "value",
+            "unit",
+            "per_unit",
+            "stated_by",
+            "provenance",
+            "comment"
+          ],
+          "type": "object"
+        },
+        "title": "Property Statements",
+        "type": "array"
+      },
       "references": {
         "items": {},
         "title": "References",

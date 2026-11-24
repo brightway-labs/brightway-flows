@@ -60,10 +60,12 @@ from brightway_flows.merge.contexts import (
     _context_for_new_flow,
     water_body_from_material,
 )
+from brightway_flows.domain.property_statements import PropertyStatement
 from brightway_flows.merge.conversions import (
     UnitConversion,
     conversion_from_source_flow,
     conversion_to_publish,
+    target_quantity_for,
 )
 from brightway_flows.merge.matching import _classification_values
 from brightway_flows.merge.provenance import (
@@ -290,6 +292,12 @@ def create_flows_for_unmatched_rows(
             conversion=conversion_from_source_flow(
                 source_flow_by_uuid.get(row.source_uuid)
             ),
+            property_statements=tuple(
+                getattr(
+                    source_flow_by_uuid.get(row.source_uuid), "property_statements", None
+                )
+                or ()
+            ),
             units_index=units_index,
             indexes=indexes,
             accumulator=accumulator,
@@ -416,6 +424,7 @@ def _add_created_flow(
     minted_flow_object: bool,
     flow_unit: CreatedFlowUnit | None = None,
     conversion: UnitConversion | None = None,
+    property_statements: tuple[PropertyStatement, ...] = (),
 ) -> CreatedFlow:
     """Add one elementary flow for *row* on *flow_object*, and report it.
 
@@ -469,6 +478,7 @@ def _add_created_flow(
     # the row, and the row's own unit everywhere else.
     provenance_unit = conversion.source_unit if conversion else row.source_unit
     overrides = indexes.source.match_overrides_path
+    statements_path = getattr(indexes.source, "property_statements_path", None)
     published = conversion_to_publish(
         conversion,
         source_unit=provenance_unit,
@@ -476,6 +486,16 @@ def _add_created_flow(
         generated_by=str(indexes.source.merge_activity),
         correspondence_file=str(indexes.mapping_file or ""),
         overrides_file=str(overrides.name) if overrides is not None else "",
+        property_statements=property_statements,
+        # A flow being created has no ILCD property: its unit measures what
+        # the unit generically does.
+        target_quantity=target_quantity_for(
+            "", stated_unit, reference_quantities=indexes.reference_quantities
+        ),
+        conversion_rules=indexes.conversion_rules,
+        statements_file=(
+            str(statements_path.name) if statements_path is not None else ""
+        ),
     )
     unit_mismatch = bool(
         row.source_unit

@@ -37,7 +37,7 @@ from __future__ import annotations
 
 import importlib
 from dataclasses import dataclass
-from functools import lru_cache
+from functools import cached_property, lru_cache
 from pathlib import Path
 from collections.abc import Iterable, Mapping, Sequence
 from typing import Any, Protocol
@@ -56,6 +56,14 @@ from brightway_flows.additional_flows import (
 )
 from brightway_flows.manual_fixes import apply_manual_fixes
 from brightway_flows.match_overrides import apply_match_overrides
+from brightway_flows.property_statements import (
+    PropertyStatements,
+    attach_property_statements,
+    load_property_statements,
+    reference_quantities_from_ilcd,
+    refuse_a_fix_stated_twice,
+    refuse_a_pair_stated_twice,
+)
 from brightway_flows.simapro_names import (
     canonical_geography_code,
     split_geography_suffix,
@@ -86,6 +94,7 @@ _ROLES = (BASE_ROLE, SOURCE_ROLE)
 #: directory, and it is produced by a fetch rather than authored.
 _CURATED_INPUTS = (
     "manual_fixes", "manual_additions", "additional_flows", "match_overrides",
+    "property_statements",
 )
 
 #: Where a list's mappings back to the consensus flows come from.  The manifest
@@ -344,6 +353,11 @@ class SourceList:
     #: says, applied by :func:`load_prepared_match_table`.  Not a manual fix: a
     #: fix names a field on a source flow, and a target uuid is not one.
     match_overrides_path: Path | None = None
+    #: What this list states about one unit of its own flows -- heating
+    #: values, densities, specific activities -- and the two quantity rulings
+    #: beside them, applied by :func:`load_flows` and read by the merge.  See
+    #: :mod:`brightway_flows.property_statements`.
+    property_statements_path: Path | None = None
     #: Minted IRI prefix for this list's flows.  Load-bearing: it is the
     #: `xkos:sourceConcept` `@id` in `concept_associations`, which is published
     #: and read downstream, so a list's prefix cannot change once it has shipped.
@@ -504,6 +518,32 @@ class SourceList:
         """`prov:wasGeneratedBy` for values this merge writes."""
         return f"merge_{self.list_name}"
 
+    def load_property_statements(self) -> PropertyStatements:
+        """This list's property statements, resolved for its release.
+
+        Empty for a list whose manifest names no file.  Read several times per
+        merge -- onto the flows, against the override rows, into the merge
+        indexes, and once per list `resolve_through` loads -- so the parse and
+        the vintage check are done once per `SourceList` and kept: the path
+        and the release are the manifest's and fixed for the object's life,
+        which is the case rule 13 lets a loader cache.  The module loader
+        itself still takes a path and is not cached.
+
+        :raises ValueError: for a statement nobody checked against this
+            release, naming the row; see
+            :mod:`brightway_flows.property_statements`.
+        """
+        return self._property_statements
+
+    @cached_property
+    def _property_statements(self) -> PropertyStatements:
+        return load_property_statements(
+            self.property_statements_path,
+            release=self.list_version,
+            label=self.key,
+            generated_by=self.merge_activity,
+        )
+
     @property
     def algorithm_addition_source(self) -> str:
         """`source` given to flows this list caused the merge to create.
@@ -637,6 +677,7 @@ class SourceList:
             manual_additions_path=curated("manual_additions"),
             additional_flows_path=curated("additional_flows"),
             match_overrides_path=curated("match_overrides"),
+            property_statements_path=curated("property_statements"),
             prepared_match_table=table,
             flow_iri_prefix=payload["flow_iri_prefix"].strip(),
             concept_associations=spec,
@@ -767,6 +808,14 @@ class SourceList:
                 path=str(self.flows_path),
                 skipped=skipped,
             )
+        # On the records, after they are built: a statement is a typed field
+        # of the flow, and a key dropped into the raw row would land in
+        # `Flow.extra` -- the shape `_unit_conversion` takes and #407 retires.
+        attach_property_statements(flows, self.load_property_statements())
+        # One number, one home, for the other curated route: a fix that
+        # rebased a row's unit may keep its factor only for a pair no
+        # statement of the flow converts (#407).
+        refuse_a_fix_stated_twice(flows, label=self.key)
         logger.info("loaded_source_flows", source=self.key, count=len(flows))
         return flows
 
@@ -1289,13 +1338,27 @@ def load_prepared_match_table(
     necessary but not sufficient to consume a transitive table directly; the
     composed tables this project checks in use `replace` and `uuid`.
     """
-    return apply_match_overrides(
+    rows = apply_match_overrides(
         _declared_match_table(source),
         source.match_overrides_path,
         label=source.key,
         release=source.list_version,
         registered_as=registered_as,
     )
+    # One number, one home: an override may keep a factor only for a pair
+    # fact no statement of the flow converts (#407).  Asked the merge's way,
+    # with what each target measures, so that a factor is refused exactly when
+    # the merge would have derived one in its place.
+    refuse_a_pair_stated_twice(
+        rows,
+        source.load_property_statements(),
+        label=source.key,
+        reference_quantities={
+            **reference_quantities_from_ilcd(),
+            **base_source_list().load_property_statements().reference_quantities,
+        },
+    )
+    return rows
 
 
 def _declared_match_table(source: SourceList) -> list[dict]:

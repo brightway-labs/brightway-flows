@@ -258,8 +258,14 @@ class RecordedCrossingsTestCase(unittest.TestCase):
             self.assertNotIn(pair, stated, f"{pair}: override would mint")
 
     def test_every_mapping_states_its_density(self):
+        """The override names the target; the density is a property of the
+        row's water, stated in `agribalyse-3.2-property-statements.json` since
+        #407 -- `volume` per kilogram for the intakes, `mass` per cubic metre
+        for the rain -- and the merge derives the mapping's factor from it."""
+        from brightway_flows.domain.property_statements import factor_between
         from brightway_flows.filesystem import PACKAGE_DATA_DIR
         from brightway_flows.match_overrides import load_match_overrides
+        from brightway_flows.sources import known_source_lists
 
         rows = {
             (r.source_uuid, r.target_uuid): r
@@ -267,11 +273,17 @@ class RecordedCrossingsTestCase(unittest.TestCase):
                 PACKAGE_DATA_DIR / "agribalyse-3.2-match-overrides.json"
             )
         }
+        stated = known_source_lists()["agribalyse-3.2"].load_property_statements()
         for pair, factor in self.CROSSINGS.items():
-            self.assertIn(pair, rows, f"{pair}: no override states the factor")
-            row = rows[pair]
-            self.assertTrue(row.converts, f"{pair}: no conversion on the row")
-            self.assertEqual(row.factor_for("3.2"), factor)
+            source_uuid, _target = pair
+            self.assertIn(pair, rows, f"{pair}: no override names the target")
+            self.assertFalse(rows[pair].converts, f"{pair}: factor still on the row")
+            statements = stated.statements.get(source_uuid, ())
+            self.assertEqual(len(statements), 1, f"{pair}: one density expected")
+            statement = statements[0]
+            source_unit, target_unit = ("m3", "kg") if factor == 1000.0 else ("kg", "m3")
+            self.assertEqual(statement.quantity, "mass" if factor == 1000.0 else "volume")
+            self.assertEqual(factor_between(statement, source_unit, target_unit), factor)
 
     def test_the_salt_rows_use_the_ocean_pairs_density(self):
         """One density for one ocean: 1025 kg/m3 is what ecoinvent's

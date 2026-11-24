@@ -1,10 +1,18 @@
-"""The conversion factor a correspondence table states for a mapped flow.
+"""The conversion factor a mapping publishes, and where it comes from.
 
 A factor is a statement about a *pair*: one unit of this source flow is `factor`
-units of that target flow.  It is not a property of either flow on its own --
-9.41 is not a fact about brown coal until it is 9.41 MJ per kg -- which is why
-it is recorded on the mapping and never on a consensus flow or a flow object.
-`qudt:conversionMultiplier` on an `xkos:ConceptAssociation` is where it lands.
+units of that target flow.  `qudt:conversionMultiplier` on an
+`xkos:ConceptAssociation` is where it lands, and it lands nowhere else: 9.41 is
+what a kilogram of ecoinvent's brown coal becomes on EF's `Brown Coal` in
+megajoules, and that number belongs to the mapping.  What the number is *derived
+from* is a different thing.  "One kilogram of this brown coal is 9.41 MJ of
+calorific value" is a fact about the source flow, said by its list, and since
+#407 it lives on the flow as a property statement
+(:mod:`brightway_flows.domain.property_statements`), with its unit, its basis
+and who said it; :func:`conversion_to_publish` reads it off the flow to derive
+the pair's multiplier, and publishes which quantity it came through.  A factor
+on an override row remains for a pair fact no property of the flow expresses --
+an ore's share of its metal, mine gas at 1.0 from plain to standard cubic metres.
 
 Being pairwise is also why carrying it needs a guard.  A source flow can reach a
 consensus flow by a route the correspondence table did not name -- the table's
@@ -62,8 +70,15 @@ so a source-specific density and a change of SI prefix read alike.
     The factor `units.json` implies between two units of one quantity kind.
     True of any flow measured in them, so a reader can use it without the row's
     identifier.
+``flow-property``
+    Derived from a statement the source list makes about one unit of its own
+    flow -- 18.2 MJ of net calorific value per kilogram of AGRIBALYSE's hard
+    coal -- in that list's `*-property-statements.json`.  `conversion_quantity`
+    beside it names the quantity, which is how a reader tells Stepwise's gross
+    19.1 from AGRIBALYSE's net 18.2 on the same target.
 
-:func:`conversion_to_publish` is the one place that chooses between them.
+:func:`conversion_to_publish` is the one place that chooses between them, in
+the order stated factor, statement, unit table.
 
 The test is applied once.  :meth:`UnitConversion.holds_between` is the last
 place a factor can be refused, and what survives it is written out unexamined --
@@ -87,13 +102,22 @@ curated file said it.
 
 from __future__ import annotations
 
+import math
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any
 
 from brightway_flows.domain.common import Provenance
+from brightway_flows.domain.property_statements import (
+    ConversionRule,
+    PropertyStatement,
+    statement_converting,
+)
+from brightway_flows.domain.quantities import quantity, quantity_for_unit
 from brightway_flows.domain.units import (
     CONVERSION_BASIS_KEY,
     CONVERSION_PROVENANCE_KEY,
+    CONVERSION_QUANTITY_KEY,
     UNITS_FILEPATH,
     ConversionBasis,
     states_more_than_the_unit_table,
@@ -324,14 +348,108 @@ class PublishedConversion:
     basis: ConversionBasis
     provenance: Provenance
     comment: str = ""
+    #: The quantity slug a `flow-property` factor was derived through --
+    #: `gross-calorific-value` on a Stepwise coal row -- and ``None`` on every
+    #: other basis.  Published as the quantity's IRI, so a reader can see that
+    #: 19.1 is a gross value landing on a net-calorific-value flow.
+    quantity: str | None = None
 
     def to_metadata(self) -> dict[str, Any]:
-        """The three keys a source reference and a concept association carry."""
-        return {
+        """The keys a source reference and a concept association carry.
+
+        Three for every basis, and the quantity as a fourth where the factor
+        was derived from a statement.
+        """
+        metadata = {
             QUDT_CONVERSION_MULTIPLIER_CURIE: self.factor,
             CONVERSION_BASIS_KEY: self.basis.value,
             CONVERSION_PROVENANCE_KEY: self.provenance.to_dict(),
         }
+        if self.quantity:
+            metadata[CONVERSION_QUANTITY_KEY] = quantity(self.quantity).iri
+        return metadata
+
+
+def target_quantity_for(
+    target_uuid: str,
+    target_unit: str,
+    *,
+    reference_quantities: Mapping[str, str],
+) -> str:
+    """What a target flow's unit measures, as a quantity slug.
+
+    What EF 3.1 states for the flow in its ILCD flow property, or what the base
+    list's statements file rules for it, where either says; else what the
+    unit generically measures -- kilograms a mass, megajoules a calorific value
+    of unstated basis, which is what a flow the merge created in megajoules
+    is until somebody says more.  Empty for a unit no quantity is the generic
+    of, and then no statement converts onto the flow.
+    """
+    stated = reference_quantities.get(target_uuid) if target_uuid else None
+    return stated or quantity_for_unit(target_unit) or ""
+
+
+def conversion_from_property_statements(
+    statements: Sequence[PropertyStatement],
+    *,
+    source_unit: str,
+    target_unit: str,
+    target_quantity: str,
+    rules: Sequence[ConversionRule] = (),
+) -> tuple[UnitConversion, PropertyStatement] | None:
+    """The conversion a flow's own statements give for this pair, and which one.
+
+    :func:`~brightway_flows.domain.property_statements.statement_converting`
+    does the choosing: only the statements whose units bridge the pair are
+    candidates -- one per standard cubic metre answers nothing for a row in
+    plain cubic metres, and stepping aside is right there (#292) -- each is
+    asked what it measures in the direction it is read, so a density stated
+    kilograms per cubic metre answers a kilogram row on a cubic-metre target
+    as a volume, and
+    :func:`~brightway_flows.domain.property_statements.choose_statement` picks
+    among them by quantity: the target's own, a basis-unstated calorific
+    value, or what the list's *rules* say.  ``None`` where no statement
+    bridges the pair or none is of a quantity that may convert onto this
+    target.
+
+    A target in standard cubic metres is such a target.  `units.json` files
+    `sm3` as an amount of substance, which no quantity is the generic of, and
+    EF's ILCD property for its coal-mine gas says *volume*, which a statement
+    in cubic metres would bridge onto only by treating a standard cubic metre
+    as a cubic metre -- the reading #292 refused.  So the two AGRIBALYSE
+    off-gas rows keep their 1.254 as a pair fact on the override, and this
+    returns ``None`` for them by design rather than by accident.
+
+    The factor is :func:`~brightway_flows.domain.property_statements.factor_between`,
+    so a statement written in the direction its mapping uses publishes its own
+    number unchanged.  A statement that `units.json` already implies -- there
+    is none, the loader refuses them -- would be refused here too, by the same
+    test every other basis passes.
+    """
+    if not statements or not target_quantity:
+        return None
+    converting = statement_converting(
+        statements,
+        source_unit=source_unit,
+        target_unit=target_unit,
+        target_quantity=target_quantity,
+        rules=rules,
+    )
+    if converting is None:
+        return None
+    chosen, factor = converting
+    if not states_more_than_the_unit_table(source_unit, target_unit, factor):
+        return None
+    return (
+        UnitConversion(
+            factor=factor,
+            source_unit=source_unit,
+            target_unit=target_unit,
+            comment=chosen.comment,
+            basis=ConversionBasis.FLOW_PROPERTY,
+        ),
+        chosen,
+    )
 
 
 def conversion_to_publish(
@@ -342,24 +460,49 @@ def conversion_to_publish(
     generated_by: str,
     correspondence_file: str = "",
     overrides_file: str = "",
+    property_statements: Sequence[PropertyStatement] = (),
+    target_quantity: str = "",
+    conversion_rules: Sequence[ConversionRule] = (),
+    statements_file: str = "",
 ) -> PublishedConversion | None:
     """The conversion a mapping from *source_unit* to *target_unit* publishes.
 
     A stated *conversion* that still holds between the two units comes first,
-    because it says something the unit table cannot.  Otherwise, where the two
-    units differ and `units.json` converts between them, its factor: a becquerel
-    is 0.001 kilobecquerels whichever flow is measured in them.  ``None`` where
-    the units are one unit, and where nothing converts them -- a mass onto an
-    energy with no stated heating value stays a crossing, reported elsewhere.
+    because it says something the unit table cannot.  Then what the source
+    flow's own *property_statements* give for the pair, chosen by the
+    *target_quantity* and the list's *conversion_rules*
+    (:func:`conversion_from_property_statements`): a heating value, a density,
+    a specific activity, stated about the flow by its list and published with
+    basis `flow-property` and the quantity it came through.  Otherwise, where
+    the two units differ and `units.json` converts between them, its factor: a
+    becquerel is 0.001 kilobecquerels whichever flow is measured in them.
+    ``None`` where the units are one unit, and where nothing converts them -- a
+    mass onto an energy with no stated heating value stays a crossing, reported
+    elsewhere.
 
     *generated_by* is the merge activity that writes the mapping.  The file a
     stated factor came from is the conversion's own where it knows it, else
     *overrides_file* for a curated prepared row and *correspondence_file* for a
-    table's.
+    table's; a statement's is *statements_file*, and its provenance carries the
+    statement's own primary sources as well.
+
+    :raises ValueError: when a stated factor and a statement both convert the
+        pair and disagree.  One number has one home: the load refuses an
+        override or a fix that restates a pair a statement converts, and this
+        is the backstop for a factor that reached the merge by any other route
+        -- a correspondence table's -- so that a curated number never wins
+        over the vendor's silently.
     """
     source_iri = unit_iri_for(source_unit) or ""
     target_iri = unit_iri_for(target_unit) or ""
     units = [iri for iri in (source_iri, target_iri) if iri]
+    derived = conversion_from_property_statements(
+        property_statements,
+        source_unit=source_unit,
+        target_unit=target_unit,
+        target_quantity=target_quantity,
+        rules=conversion_rules,
+    )
     if conversion is not None and conversion.holds_between(
         source_unit=source_unit, target_unit=target_unit
     ):
@@ -368,6 +511,19 @@ def conversion_to_publish(
             if conversion.basis is ConversionBasis.CURATED
             else correspondence_file
         )
+        if derived is not None and not math.isclose(
+            derived[0].factor, conversion.factor, rel_tol=1e-9
+        ):
+            statement = derived[1]
+            raise ValueError(
+                f"{stated_in or 'A stated conversion'} states {conversion.factor} "
+                f"from {source_unit!r} to {target_unit!r}, and the flow's own "
+                f"{statement.quantity} -- {statement.value} {statement.unit} per "
+                f"{statement.per_unit}, stated by {statement.stated_by} in "
+                f"{statements_file or 'its property statements'} -- converts the "
+                f"same pair at {derived[0].factor}. One number has one home: "
+                f"drop the factor, or rule which number stands."
+            )
         return PublishedConversion(
             factor=conversion.factor,
             basis=conversion.basis,
@@ -378,6 +534,24 @@ def conversion_to_publish(
                 was_derived_from=stated_in or None,
             ),
             comment=conversion.comment,
+        )
+    if derived is not None:
+        from_statements, statement = derived
+        return PublishedConversion(
+            factor=from_statements.factor,
+            basis=ConversionBasis.FLOW_PROPERTY,
+            provenance=Provenance(
+                was_generated_by=generated_by,
+                was_attributed_to="brightway-flows",
+                had_primary_source=[
+                    *units,
+                    *([statements_file] if statements_file else []),
+                    *statement.provenance.had_primary_source,
+                ],
+                was_derived_from=statements_file or None,
+            ),
+            comment=statement.comment,
+            quantity=statement.quantity,
         )
     if not source_iri or not target_iri or source_iri == target_iri:
         return None
