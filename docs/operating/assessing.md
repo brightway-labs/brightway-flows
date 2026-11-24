@@ -35,8 +35,8 @@ rather than one the merge had to invent.
   agribalyse-3.2            5,485         49      5,347          0         89          0      3,154          0        98.4%
 ```
 
-Copied from the full build of `8593061` on 23 November 2026 (run
-`20261123T1447073459200000`), the build `expectations/baseline.json` was
+Copied from the full build of `1e67f3c` on 23 November 2026 (run
+`20261123T2334105411510000`), the build `expectations/baseline.json` was
 recorded from. Every ecoinvent 3.12 row lands on an existing flow because
 ecoinvent 3.13 is merged first and 3.12's rows find the flows it created.
 
