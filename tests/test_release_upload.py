@@ -67,9 +67,16 @@ Built from the same five lists as 1.0.0.
 class FakeZenodo:
     """One record, its latest version 1.1.0, and at most one draft."""
 
-    def __init__(self, *, held: str = "1.1.0", corrupt: str | None = None):
+    def __init__(
+        self, *, held: str = "1.1.0", corrupt: str | None = None,
+        drops: str | None = None, html: bool = False,
+    ):
         self.held = held
         self.corrupt = corrupt
+        #: A file whose upload the connection drops during.
+        self.drops = drops
+        #: Answer the first request with a page rather than with JSON.
+        self.html = html
         self.requests: list[tuple[str, str]] = []
         self.draft_files: dict[str, bytes] = {}
         self.metadata: dict | None = None
@@ -104,6 +111,10 @@ class FakeZenodo:
         path, method = request.url.path, request.method
         self.requests.append((method, path))
         deposition = f"/api/deposit/depositions/{DRAFT}"
+        if self.html:
+            return httpx.Response(200, text="<html>maintenance</html>")
+        if method == "PUT" and self.drops and path.endswith("/" + self.drops):
+            raise httpx.WriteError("connection reset", request=request)
         if (method, path) == ("GET", f"/api/records/{CONCEPT}/versions/latest"):
             return httpx.Response(
                 301, headers={"Location": f"https://zenodo.test/api/records/{LATEST}"}
@@ -432,6 +443,23 @@ class RefusedBeforeAnythingChangesTestCase(ReleaseOnDiskTestCase):
         self.notes.write_text("# What changed in each release\n", encoding="utf-8")
         self.assertRefused(FakeZenodo(), "no section headed")
 
+    def test_a_date_that_is_not_one(self):
+        """Before the database is uploaded, not in the last request after it."""
+        for date in ("01-12-2026", "2026-12", "2026-13-01", "2026-02-30", "soon"):
+            with self.subTest(date):
+                service = FakeZenodo()
+                self.assertRefused(service, "not a date written", publication_date=date)
+                self.assertEqual(service.requests, [])
+
+    def test_a_notes_file_that_is_not_there(self):
+        self.notes.unlink()
+        self.assertRefused(FakeZenodo(), "the upload failed: FileNotFoundError")
+
+    def test_an_answer_that_is_not_json(self):
+        self.assertRefused(
+            FakeZenodo(html=True), "the upload failed.*nothing was changed on Zenodo"
+        )
+
 
 class RefusedByZenodoTestCase(ReleaseOnDiskTestCase):
     def test_a_file_that_arrived_damaged_stops_the_upload_unpublished(self):
@@ -442,6 +470,17 @@ class RefusedByZenodoTestCase(ReleaseOnDiskTestCase):
         self.assertNotIn("consensus-flows.sqlite3", [
             path.rsplit("/", 1)[1] for method, path in service.requests if method == "PUT"
         ])
+
+    def test_a_dropped_connection_names_the_draft_it_left(self):
+        """Not a traceback: the database is 2.6 GB and a line can drop."""
+        service = FakeZenodo(drops="consensus-flows.sqlite3")
+        with self.assertRaisesRegex(
+            ZenodoError,
+            rf"the upload failed: WriteError.*draft {DRAFT} is left on Zenodo.*again",
+        ):
+            self.upload(service, publish=True)
+        self.assertFalse(service.published)
+        self.upload(FakeZenodo())
 
     def test_a_rejected_token_says_what_a_token_needs(self):
         transport = httpx.MockTransport(lambda _request: httpx.Response(401, text="no"))
@@ -477,6 +516,35 @@ class TheCommandTestCase(ReleaseOnDiskTestCase):
         self.assertEqual(result.exit_code, 2)
         self.assertIn("--concept-record", result.output)
 
+    def test_a_draft_is_not_written_where_an_application_reads(self):
+        """A draft has no DOI that resolves and nothing to download, so an
+        application that found it as `release.json` would claim a release
+        nobody can get -- and stop reading the build beside it."""
+        service = FakeZenodo()
+        with (
+            mock.patch.object(zenodo, "make_client", lambda *_a, **_k: service.client()),
+            mock.patch.object(zenodo, "RELEASES_DIR", self.releases),
+            mock.patch.object(zenodo, "RELEASE_NOTES_FILEPATH", self.notes),
+        ):
+            result = self.invoke("--release-file", str(self.data / "release.json"))
+        self.assertEqual(result.exit_code, 0, result.output)
+        self.assertFalse((self.data / "release.json").exists())
+        draft = read_published_release(self.data / "release.draft.json")
+        self.assertEqual(draft.version, "1.2.0")
+        self.assertIn("rename it to release.json", result.output.replace("\n", " "))
+
+    def test_a_failed_upload_is_an_error_line_and_not_a_traceback(self):
+        service = FakeZenodo(drops="lcia-factors.json.gz")
+        with (
+            mock.patch.object(zenodo, "make_client", lambda *_a, **_k: service.client()),
+            mock.patch.object(zenodo, "RELEASES_DIR", self.releases),
+            mock.patch.object(zenodo, "RELEASE_NOTES_FILEPATH", self.notes),
+        ):
+            result = self.invoke()
+        self.assertEqual(result.exit_code, 2)
+        self.assertIn("error: the upload failed", result.output)
+        self.assertNotIn("Traceback", result.output)
+
     def test_it_writes_the_release_file(self):
         service = FakeZenodo()
         seen: dict = {}
@@ -490,10 +558,13 @@ class TheCommandTestCase(ReleaseOnDiskTestCase):
             mock.patch.object(zenodo, "RELEASES_DIR", self.releases),
             mock.patch.object(zenodo, "RELEASE_NOTES_FILEPATH", self.notes),
         ):
-            result = self.invoke("--release-file", str(self.data / "release.json"))
+            result = self.invoke(
+                "--publish", "--release-file", str(self.data / "release.json")
+            )
         self.assertEqual(result.exit_code, 0, result.output)
         self.assertEqual(seen, {"token": "secret", "sandbox": False})
-        self.assertIn("as a draft, not published", result.output)
+        self.assertIn("Published 1.2.0", result.output)
+        self.assertFalse((self.data / "release.draft.json").exists())
         self.assertNotIn("secret", result.output)
         release = read_published_release(self.data / "release.json")
         self.assertEqual(

@@ -41,7 +41,7 @@ starting the application asks nothing of Zenodo. If the database is not
 there and cannot be downloaded, the application still starts, serves the
 documentation, and says on every data page which command to run.
 
-Three cases read a build on the host instead of a release:
+Two cases read a build on the host instead of a release:
 
 - `BRIGHTWAY_FLOWS_WEBAPP_LOCAL=1` is set, or the application was started
   with `brightway-flows webapp --local`. This is for development, and for a
@@ -51,8 +51,13 @@ Three cases read a build on the host instead of a release:
 - There is no `release.json`. The application has no release to download, so
   it reads the data directory, and the version, date, DOI and checksums are
   shown as placeholders.
-- `release.json` is named by `BRIGHTWAY_FLOWS_RELEASE_FILE` and is missing or
-  malformed. This one is an error: the application does not start.
+
+One case is an error, and the application does not start: a `release.json`
+that is malformed — in the data directory or wherever
+`BRIGHTWAY_FLOWS_RELEASE_FILE` points — or one that the variable names and
+that is not there. That holds for a server reading a local build as well,
+because the file is still where its version and DOI come from. The message
+names the file and what is wrong with it.
 
 It also serves this documentation at `/docs/`, read from the `docs/` directory
 of the checkout it runs from. Nothing is built: the markdown is rendered per

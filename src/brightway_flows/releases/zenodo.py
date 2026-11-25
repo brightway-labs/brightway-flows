@@ -30,6 +30,7 @@ and the description changed.
 
 from __future__ import annotations
 
+import datetime
 import hashlib
 import html
 import re
@@ -277,6 +278,7 @@ def check_release_files(version: str, files: list[ReleaseFile]) -> ReleaseStamp:
 # -- what the record says ------------------------------------------------------
 
 _HEADING = re.compile(r"^## (?P<version>\S+) — (?P<date>\d{4}-\d{2}-\d{2})\s*$")
+_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _LINK = re.compile(r"\[([^\]]+)\]\([^)]*\)")
 
 
@@ -331,6 +333,26 @@ def describe(notes: ReleaseNotes) -> str:
         f'See the full changelog at the <a href="{RELEASE_NOTES_URL}">GitHub source '
         "repo</a>.</p>"
     )
+
+
+def checked_date(text: str) -> str:
+    """*text* if it is a calendar date written ``2026-12-01``.
+
+    Checked before anything is uploaded: the date is sent in the last request,
+    after the database, and it is also written to the release file, which
+    takes no other form.
+
+    :raises ZenodoError: for any other spelling, or a day that does not exist.
+    """
+    try:
+        if not _DATE.match(text):
+            raise ValueError(text)
+        datetime.date.fromisoformat(text)
+    except ValueError as error:
+        raise ZenodoError(
+            f"the publication date {text!r} is not a date written YYYY-MM-DD"
+        ) from error
+    return text
 
 
 def version_metadata(
@@ -422,9 +444,38 @@ def _open_draft(client: httpx.Client, latest_id: str) -> dict[str, Any]:
     return _checked(client.get(draft_url), "reading the new version's draft").json()
 
 
-def upload_release(
+def upload_release(client: httpx.Client, **options: Any) -> UploadResult:
+    """Upload a release as a new version of the record: `_upload_release`,
+    with every way it can fail reported as a `ZenodoError`.
+
+    A dropped connection during the database, an answer that is not JSON, a
+    notes file that is not there: none is a refusal by Zenodo, and each would
+    otherwise end the command in a traceback that says nothing about the draft
+    it left behind.
+
+    :raises ZenodoError: for anything refused or failed, here or at Zenodo.
+    """
+    progress: dict[str, str] = {}
+    try:
+        return _upload_release(client, progress=progress, **options)
+    except ZenodoError:
+        raise
+    except (httpx.HTTPError, OSError, ValueError, KeyError, TypeError) as error:
+        left = (
+            f"; draft {progress['draft_id']} is left on Zenodo, and running the "
+            "command again replaces its files"
+            if "draft_id" in progress
+            else "; nothing was changed on Zenodo"
+        )
+        raise ZenodoError(
+            f"the upload failed: {type(error).__name__}: {error}{left}"
+        ) from error
+
+
+def _upload_release(
     client: httpx.Client,
     *,
+    progress: dict[str, str],
     version: str,
     previous_version: str | None = None,
     database: Path | None = None,
@@ -443,12 +494,14 @@ def upload_release(
     leave whoever holds the latest with nothing to apply.
 
     Everything that can be refused is refused before a draft is opened: the
-    notes, the six files and which build made them, and the release Zenodo
-    holds.  *report* is told each step as it happens, for a command to print.
+    notes, the date, the six files and which build made them, and the release
+    Zenodo holds.  *report* is told each step as it happens, for a command to
+    print, and *progress* is told the draft's number once there is one.
 
     :raises ZenodoError: for anything refused, here or by Zenodo.
     """
     notes = read_release_notes(version, notes_path)
+    publication_date = checked_date(publication_date or notes.date)
     latest = latest_version(client, concept_record_id)
     latest_id = str(latest["id"])
     held = str((latest.get("metadata") or {}).get("version") or "")
@@ -481,6 +534,7 @@ def upload_release(
 
     draft = _open_draft(client, latest_id)
     draft_id = str(draft["id"])
+    progress["draft_id"] = draft_id
     links = draft.get("links") or {}
     bucket = links.get("bucket")
     if not bucket:
@@ -519,7 +573,6 @@ def upload_release(
             )
         uploaded.append(UploadedFile(file.key, file.name, size, sha256, md5))
 
-    publication_date = publication_date or notes.date
     _checked(
         client.put(
             deposition,

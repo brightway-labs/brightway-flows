@@ -499,8 +499,11 @@ refused as stale.
    make a record and a token on <https://sandbox.zenodo.org> and add
    `--sandbox --concept-record <that record's number>`.
 
-   The command ends by writing the release file, `release.json` in the data
-   directory: the version, the release before it, the date, the DOI, and
+   The command ends by writing the release file in the data directory —
+   `release.json` if you published with `--publish`, and
+   `release.draft.json` for a draft, which no application reads. Once you
+   have published the draft on Zenodo, rename it to `release.json`. It
+   holds the version, the release before it, the date, the DOI, and
    the name, size and SHA-256 of each file it uploaded. It looks like this:
 
    ```json

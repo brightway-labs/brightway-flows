@@ -805,7 +805,14 @@ def webapp(
     )
     # `None` rather than `False` where the flag is not given, so the variable
     # is still asked.
-    create_app(local=True if local else None).run(host=host, port=port, debug=debug)
+    from brightway_flows.published_release import ReleaseFileError
+
+    try:
+        application = create_app(local=True if local else None)
+    except ReleaseFileError as error:
+        typer.echo(f"error: {error}", err=True)
+        raise typer.Exit(code=2) from error
+    application.run(host=host, port=port, debug=debug)
 
 
 @app.command()
@@ -1295,7 +1302,9 @@ def release_upload(
         help=(
             "Where to write the release file. Defaults to the file "
             "BRIGHTWAY_FLOWS_RELEASE_FILE names, else release.json in the data "
-            "directory. A rehearsal with --sandbox writes none unless this is given."
+            "directory. A draft is written beside it as release.draft.json, to "
+            "rename once it is published. A rehearsal with --sandbox writes "
+            "none unless this is given."
         ),
     ),
 ) -> None:
@@ -1313,7 +1322,8 @@ def release_upload(
     --publish is given.  Writes the release file -- the version, the DOI, the
     date, and the name, size and SHA-256 of each uploaded file -- which is
     what the review application reads to say which release it serves and to
-    download it.
+    download it.  For a draft it is written as release.draft.json, which no
+    application reads, to be renamed once the draft is published.
     """
     from brightway_flows.published_release import (
         release_file_path,
@@ -1368,15 +1378,19 @@ def release_upload(
     if sandbox and release_file is None:
         typer.echo("A rehearsal: no release file written.")
     else:
-        written = write_published_release(
-            result.release, release_file or release_file_path()
-        )
+        target = release_file or release_file_path()
+        if not result.published:
+            # Not under the name the application reads: a draft has no DOI
+            # that resolves and no file that can be downloaded, and an
+            # application given it would claim a release nobody can get.
+            target = target.with_name(f"{target.stem}.draft{target.suffix}")
+        written = write_published_release(result.release, target)
         typer.echo(f"Wrote {written}")
         if not result.published:
             typer.echo(
-                "It names the draft's DOI, which resolves once the draft is "
-                "published. Until then an application given this file cannot "
-                "download the release."
+                "It describes the draft. Once the draft is published on Zenodo, "
+                f"rename it to {(release_file or release_file_path()).name}: "
+                "that is the file the review application reads."
             )
     logger.info(
         "release_uploaded",

@@ -126,8 +126,12 @@ def create_app(
     A missing database is a page, not a start-up failure, because the app is
     how you find out that the pipeline has not been run; the same is true of a
     missing `docs/`, and of a release that could not be downloaded.  A release
-    file that is named and cannot be read is a start-up failure: serving some
-    other data under a release's name would be worse than not starting.
+    file that is malformed, or that is named and is not there, is a start-up
+    failure, with *local* as without: the file is where every page's version
+    and DOI come from, and a file read in part or passed over would put some
+    other release's name on the data.
+
+    :raises ReleaseFileError: for such a release file.
     """
     app = Flask(
         __name__,

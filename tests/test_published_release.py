@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import dataclasses
 import hashlib
+import http.client
 import io
 import os
 import tempfile
@@ -40,7 +41,8 @@ from brightway_flows.published_release import (
     release_directory,
 )
 from brightway_flows.webapps import app as webapp
-from brightway_flows.webapps.app import LOCAL_ENV, create_app
+from brightway_flows.webapps.app import LOCAL_ENV, artifacts, create_app
+from brightway_flows.webapps.app.publication import PUBLICATION
 
 BODIES = {
     "release-snapshot.json.gz": b"the snapshot",
@@ -68,7 +70,15 @@ RELEASE = PublishedRelease(
 class FakeZenodoFiles:
     """`urlopen`, answering for the record's files."""
 
-    def __init__(self, *, bodies=None, resumes=True, down=False, failing=0, gone=False):
+    def __init__(
+        self, *, bodies=None, resumes=True, down=False, failing=0, gone=False,
+        failing_code=500, unsatisfiable=False, cut_off=False,
+    ):
+        self.failing_code = failing_code
+        #: Answer a request for a range with 416, as a server does when asked
+        #: to start past the end of what it has.
+        self.unsatisfiable = unsatisfiable
+        self.cut_off = cut_off
         self.bodies = dict(bodies or BODIES)
         self.resumes = resumes
         self.down = down
@@ -88,8 +98,14 @@ class FakeZenodoFiles:
         if self.failing:
             self.failing -= 1
             raise urllib.error.HTTPError(
-                request.full_url, 500, "INTERNAL SERVER ERROR", {}, None
+                request.full_url, self.failing_code, "FAILING", {}, None
             )
+        if self.unsatisfiable and byte_range:
+            raise urllib.error.HTTPError(
+                request.full_url, 416, "RANGE NOT SATISFIABLE", {}, None
+            )
+        if self.cut_off:
+            raise http.client.IncompleteRead(b"", 10)
         body = self.bodies[name]
         response = io.BytesIO(body)
         response.status = 200
@@ -168,6 +184,15 @@ class TheReleaseFileTestCase(_TmpTestCase):
                     "name": "../f", "size": 1, "sha256": "0" * 64}}}
             ),
             "an unknown field": orjson.dumps({**good, "licence": "x"}),
+            "a version that is a way out of the directory": orjson.dumps(
+                {**good, "version": ".."}
+            ),
+            "a version that is the directory": orjson.dumps({**good, "version": "."}),
+            "a version with a slash": orjson.dumps({**good, "version": "1/2"}),
+            "a dotted name": orjson.dumps(
+                {**good, "files": {**good["files"], "flows": {
+                    "name": "..", "size": 1, "sha256": "0" * 64}}}
+            ),
             "no doi": orjson.dumps({k: v for k, v in good.items() if k != "doi"}),
         }
         for name, content in cases.items():
@@ -272,6 +297,55 @@ class TheDownloadTestCase(_TmpTestCase):
             fetch_release(RELEASE, self.directory)
         self.assertEqual(missing_files(RELEASE, self.directory), [])
         self.assertEqual(len(zenodo.requests), 3)
+
+    def test_being_asked_to_slow_down_is_asked_again(self):
+        """429 and 408 are in the 400s and are not refusals."""
+        for code in (429, 408):
+            with self.subTest(code):
+                zenodo = FakeZenodoFiles(failing=2, failing_code=code)
+                with zenodo.patch():
+                    fetch_release(RELEASE, self.directory)
+                self.assertEqual(len(zenodo.requests), 3)
+                (self.directory / "consensus-flows.sqlite3").unlink()
+
+    def test_a_partial_file_the_server_cannot_carry_on_from_is_started_over(self):
+        self.directory.mkdir(parents=True)
+        (self.directory / "consensus-flows.sqlite3.part").write_bytes(b"x" * 10)
+        zenodo = FakeZenodoFiles(unsatisfiable=True)
+        with zenodo.patch():
+            fetch_release(RELEASE, self.directory)
+        self.assertEqual(
+            zenodo.requests,
+            [("consensus-flows.sqlite3", "bytes=10-"), ("consensus-flows.sqlite3", None)],
+        )
+        self.assertEqual(missing_files(RELEASE, self.directory), [])
+
+    def test_a_server_that_only_ever_answers_416_is_a_download_error(self):
+        """Not a `FileNotFoundError` for the partial file just removed.  The
+        file the server has is shorter than the one recorded, so every other
+        try leaves a partial file and the next is told it cannot carry on."""
+        short = BODIES["consensus-flows.sqlite3"][:20]
+        zenodo = FakeZenodoFiles(
+            bodies={**BODIES, "consensus-flows.sqlite3": short}, unsatisfiable=True
+        )
+        self.directory.mkdir(parents=True)
+        (self.directory / "consensus-flows.sqlite3.part").write_bytes(b"x" * 25)
+        with zenodo.patch(), self.assertRaises(ReleaseDownloadError):
+            fetch_release(RELEASE, self.directory)
+
+    def test_a_response_cut_off_part_way_is_a_download_error(self):
+        zenodo = FakeZenodoFiles(cut_off=True)
+        with zenodo.patch(), self.assertRaisesRegex(ReleaseDownloadError, "IncompleteRead"):
+            fetch_release(RELEASE, self.directory)
+        self.assertEqual(len(zenodo.requests), published_release._ATTEMPTS)
+
+    def test_a_directory_that_cannot_be_written_is_a_download_error(self):
+        blocked = self.tmp / "a-file"
+        blocked.write_bytes(b"")
+        with FakeZenodoFiles().patch(), self.assertRaisesRegex(
+            ReleaseDownloadError, "cannot be written"
+        ):
+            fetch_release(RELEASE, blocked / "published" / "1.2.0")
 
     def test_a_file_that_is_not_there_is_not_asked_for_again(self):
         """An unpublished draft, or a release file naming the wrong record."""
@@ -452,6 +526,60 @@ class WhichDataTheApplicationReadsTestCase(_TmpTestCase):
     def test_a_named_release_file_that_cannot_be_read_stops_the_start(self):
         with self.assertRaises(ReleaseFileError):
             create_app(release_path=self.tmp / "nowhere.json")
+
+    def test_a_malformed_release_file_stops_the_start_local_or_not(self):
+        """The file is where the version and the DOI come from either way."""
+        (self.tmp / "release.json").write_bytes(b'{"version": "1.2.0"}')
+        for local in (None, True):
+            with self.subTest(local=local), self.assertRaises(ReleaseFileError):
+                create_app(local=local)
+
+    def test_the_command_says_what_is_wrong_with_the_file(self):
+        (self.tmp / "release.json").write_bytes(b"{")
+        result = CliRunner().invoke(cli, ["webapp", "--local"])
+        self.assertEqual(result.exit_code, 2)
+        self.assertIn("is not a release file", result.output)
+        self.assertNotIn("Traceback", result.output)
+
+    def test_a_download_that_fails_any_way_at_all_still_starts(self):
+        """A cut-off response and an unwritable directory, which are not the
+        errors `urlopen` documents."""
+        write_release_file(self.tmp, RELEASE)
+        self.zenodo.cut_off = True
+        app = create_app()
+        self.assertEqual(app.test_client().get("/run/").status_code, 200)
+        (self.tmp / "published").rename(self.tmp / "moved")
+        (self.tmp / "published").write_bytes(b"")
+        self.zenodo.cut_off = False
+        app = create_app()
+        self.assertEqual(app.test_client().get("/run/").status_code, 200)
+
+    def test_with_no_release_named_the_newest_snapshot_and_migration_are_found(self):
+        """Somebody preparing a release, before its release file exists."""
+        releases = self.tmp / "releases"
+        (releases / "migrations").mkdir(parents=True)
+        (releases / "1.1.0.json.gz").write_bytes(b"old")
+        (releases / "1.2.0.json.gz").write_bytes(b"new snapshot")
+        os.utime(releases / "1.1.0.json.gz", (1, 1))
+        (releases / "migrations" / "1.1.0__1.2.0.zip").write_bytes(b"zip")
+        found = {
+            entry.key: entry
+            for entry in artifacts.available(
+                self.tmp / "consensus-flows.sqlite3", self.tmp, PUBLICATION
+            )
+        }
+        self.assertTrue(found["snapshot"].exists)
+        self.assertEqual(found["snapshot"].filename, "1.2.0.json.gz")
+        self.assertTrue(found["migration"].exists)
+        self.assertEqual(found["migration"].filename, "1.1.0__1.2.0.zip")
+
+    def test_with_no_release_and_no_files_the_names_keep_their_shape(self):
+        app = create_app(local=True)
+        app.config["TESTING"] = True
+        body = app.test_client().get("/download/").get_data(as_text=True)
+        self.assertIn("&lt;previous&gt;__&lt;version&gt;.zip", body)
+        self.assertNotIn("the previous release__this.zip", body)
+        self.assertNotIn("None.json.gz", body)
 
 
 class TheDownloadCommandTestCase(_TmpTestCase):

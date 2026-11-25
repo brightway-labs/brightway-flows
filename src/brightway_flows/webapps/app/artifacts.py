@@ -85,24 +85,48 @@ ARTIFACTS: tuple[tuple[str, str, str, str], ...] = (
 )
 
 #: What the migration is called where no release is named: an installation
-#: with no release file, reading a build of its own.
+#: with no release file, reading a build of its own.  The words are for the
+#: title and the description; the file name keeps the shape of one, since
+#: nothing says which two releases it would run between.
 _NO_RELEASE = {"previous": "the previous release", "version": "this"}
+_NO_RELEASE_FILENAME = {"previous": "<previous>", "version": "<version>"}
 
 
 def entries(
     publication: Publication | None = None,
 ) -> tuple[tuple[str, str, str, str], ...]:
     """`ARTIFACTS` with the migration named after *publication*'s release."""
-    names = dict(_NO_RELEASE)
-    if publication is not None and publication.version and publication.previous_version:
-        names = {
+    names, in_filename = _NO_RELEASE, _NO_RELEASE_FILENAME
+    if _names_a_release(publication):
+        names = in_filename = {
             "previous": publication.previous_version,
             "version": publication.version,
         }
     return tuple(
-        (key, title.format(**names), filename.format(**names), text.format(**names))
+        (
+            key,
+            title.format(**names),
+            filename.format(**in_filename),
+            text.format(**names),
+        )
         for key, title, filename, text in ARTIFACTS
     )
+
+
+def _names_a_release(publication: Publication | None) -> bool:
+    return bool(
+        publication is not None
+        and publication.version
+        and publication.previous_version
+    )
+
+
+def _newest(directory: Path, pattern: str) -> Path | None:
+    """The most recently written file in *directory* matching *pattern*."""
+    if not directory.is_dir():
+        return None
+    found = [path for path in directory.glob(pattern) if path.is_file()]
+    return max(found, key=lambda path: path.stat().st_mtime, default=None)
 
 
 #: The artifacts a release offers on `/download/`, in the Download board's
@@ -126,6 +150,7 @@ def _path(
     data_dir: Path,
     database_path: Path,
     version: str | None,
+    migration_named: bool,
 ) -> Path:
     """Where to look for one artifact.
 
@@ -144,10 +169,22 @@ def _path(
         return Path(database_path)
     # `release-snapshot` and `release-migrations` write under `releases/`,
     # the snapshot named by its version rather than by the name Zenodo gives it.
+    #
+    # Where no release is named there is no version to look under, so the
+    # file is whichever snapshot or migration this data directory was last
+    # given: what `release-snapshot` and `release-migrations` just wrote, for
+    # somebody preparing a release before its release file exists.
+    releases = Path(data_dir) / "releases"
     if key == "snapshot":
-        return Path(data_dir) / "releases" / f"{version}.json.gz"
+        if version is None:
+            return _newest(releases, "*.json.gz") or releases / filename
+        return releases / f"{version}.json.gz"
     if key == "migration":
-        return Path(data_dir) / "releases" / "migrations" / filename
+        if not migration_named:
+            return _newest(releases / "migrations", "*.zip") or (
+                releases / "migrations" / filename
+            )
+        return releases / "migrations" / filename
     return Path(data_dir) / filename
 
 
@@ -217,6 +254,8 @@ def artifact(
     the artifact carries its address on Zenodo, so a file this machine does
     not hold is still a row with a size and a link.
     """
+    version = (publication.version or None) if publication else None
+    named = _names_a_release(publication)
     for slug, title, filename, description in entries(publication):
         if slug != key:
             continue
@@ -225,8 +264,16 @@ def artifact(
             filename,
             data_dir=data_dir or DATA_DIR,
             database_path=database_path or CONSENSUS_DB_FILEPATH,
-            version=publication.version if publication else None,
+            version=version,
+            migration_named=named,
         )
+        looked_for = (slug == "snapshot" and version is None) or (
+            slug == "migration" and not named
+        )
+        if looked_for and path.is_file():
+            # Found by looking rather than by name, so the name shown is the
+            # file's own.
+            filename = path.name
         found = Artifact(
             key=slug,
             title=title,

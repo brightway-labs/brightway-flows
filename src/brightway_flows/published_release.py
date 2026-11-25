@@ -43,6 +43,7 @@ from __future__ import annotations
 
 import contextlib
 import hashlib
+import http.client
 import os
 import time
 import urllib.error
@@ -141,10 +142,16 @@ class PublishedRelease:
 # -- the file ------------------------------------------------------------------
 
 
+#: A version or a file name, each of which becomes one component of a path
+#: under the data directory: letters, digits and `._+-`, starting with a
+#: letter or a digit, so neither `.` nor `..` nor anything with a slash.
+_PATH_COMPONENT = r"^[0-9A-Za-z][0-9A-Za-z._+-]*$"
+
+
 class _FilePayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    name: str = Field(min_length=1, pattern=r"^[^/\\]+$")
+    name: str = Field(pattern=_PATH_COMPONENT)
     size: int = Field(ge=0)
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
@@ -152,8 +159,8 @@ class _FilePayload(BaseModel):
 class _ReleasePayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    version: str = Field(min_length=1, pattern=r"^[^/\\]+$")
-    previous_version: str = Field(min_length=1, pattern=r"^[^/\\]+$")
+    version: str = Field(pattern=_PATH_COMPONENT)
+    previous_version: str = Field(pattern=_PATH_COMPONENT)
     release_date: str = Field(pattern=r"^\d{4}-\d{2}-\d{2}$")
     doi: str = Field(pattern=r"^10\.\d+/\S+$")
     record_url: str = Field(pattern=r"^https://\S+$")
@@ -290,6 +297,15 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+#: Answers in the 400s that asking again can change: the server timed the
+#: request out, or wants fewer requests.  Every other one is a refusal.
+_RETRIED_CLIENT_ERRORS = frozenset({408, 429})
+
+
+def _size(part: Path) -> int:
+    return part.stat().st_size if part.exists() else 0
+
+
 def _download(url: str, part: Path, size: int) -> None:
     """Fetch *url* into *part*, asking again where the server fails or the
     transfer is cut off.
@@ -299,31 +315,35 @@ def _download(url: str, part: Path, size: int) -> None:
         read -- is raised at once.
     """
     for attempt in range(1, _ATTEMPTS + 1):
-        before = part.stat().st_size if part.exists() else 0
+        before = _size(part)
         try:
             _download_once(url, part, size)
         except ReleaseDownloadError as error:
             cause = error.__cause__
-            refused = isinstance(cause, urllib.error.HTTPError) and (
-                400 <= cause.code < 500
-            )
-            if refused and cause.code == 416 and before:
+            code = cause.code if isinstance(cause, urllib.error.HTTPError) else None
+            if code == 416 and before:
                 # What is here is not the start of what the server has, so
-                # there is nothing to carry on from.
-                part.unlink()
+                # there is nothing to carry on from: the next try starts over.
+                part.unlink(missing_ok=True)
+                if attempt == _ATTEMPTS:
+                    raise
                 continue
+            refused = (
+                code is not None
+                and 400 <= code < 500
+                and code not in _RETRIED_CLIENT_ERRORS
+            )
             if refused or attempt == _ATTEMPTS:
                 raise
             time.sleep(_WAIT_SECONDS * attempt)
             continue
-        arrived = part.stat().st_size
+        arrived = _size(part)
         if arrived >= size or arrived == before:
             # All of it -- or the server has no more to give, and the file is
             # not the one recorded.  The caller's checksum says which.
             return
     raise ReleaseDownloadError(
-        f"{url}: {part.stat().st_size:,} of {size:,} bytes arrived in "
-        f"{_ATTEMPTS} tries"
+        f"{url}: {_size(part):,} of {size:,} bytes arrived in {_ATTEMPTS} tries"
     )
 
 
@@ -347,8 +367,10 @@ def _download_once(url: str, part: Path, size: int) -> None:
             with part.open("ab" if resumed else "wb") as handle:
                 while chunk := response.read(_CHUNK):
                     handle.write(chunk)
-    except (urllib.error.URLError, OSError) as error:
-        raise ReleaseDownloadError(f"{url}: {error}") from error
+    except (urllib.error.URLError, http.client.HTTPException, OSError) as error:
+        # `HTTPException` as well: a response cut off part-way is an
+        # `IncompleteRead`, which is neither of the other two.
+        raise ReleaseDownloadError(f"{url}: {error or repr(error)}") from error
 
 
 def fetch_release(
@@ -370,6 +392,21 @@ def fetch_release(
     directory = directory or release_directory(release)
     if not missing_files(release, directory):
         return directory
+    try:
+        _fetch_missing(release, directory, report)
+    except OSError as error:
+        # A directory that cannot be written, a full disk: the release is not
+        # here and cannot be put here, which is what the caller is told for
+        # every other reason too.
+        raise ReleaseDownloadError(
+            f"release {release.version} cannot be written to {directory}: {error}"
+        ) from error
+    return directory
+
+
+def _fetch_missing(
+    release: PublishedRelease, directory: Path, report: Callable[[str], None]
+) -> None:
     with _locked(directory):
         for file in missing_files(release, directory):
             destination = local_path(file, directory)
@@ -388,4 +425,3 @@ def fetch_release(
                     f"{arrived}, and the release file records {file.sha256}"
                 )
             part.replace(destination)
-    return directory
