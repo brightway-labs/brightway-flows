@@ -55,6 +55,7 @@ build it locally with `uv run mkdocs serve`.
 | Run the pipeline | [Installation](docs/operating/install.md), [Running a transform](docs/operating/running.md) |
 | Review the decisions | [The review application](docs/operating/review-app.md), [How a flow is decided](docs/deciding/index.md) |
 | Know whether a change worked | [Assessing a build](docs/operating/assessing.md), [`expectations/`](expectations/README.md) |
+| Publish a release | [Making a release](docs/operating/releasing.md) |
 | Know what's broken | [Known limitations](docs/reference/limitations.md) |
 | Modify the code | [Architecture](docs/reference/architecture.md), [Data model](docs/reference/data-model.md) |
 

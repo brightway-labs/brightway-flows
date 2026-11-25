@@ -22,7 +22,7 @@ Download page and the foot of the Build page list all six, with the sizes
 `release.json` records, and link to Zenodo for them.
 
 `release.json` is written by `brightway-flows release-upload` when the release
-is uploaded ([Publishing a release](running.md#publishing-a-release)). The
+is uploaded ([Making a release](releasing.md#5-upload-to-zenodo)). The
 application looks for it in the data directory, or at the path
 `BRIGHTWAY_FLOWS_RELEASE_FILE` names. It is also where the version, the date,
 the DOI and the checksums on the homepage and the Download page come from.
