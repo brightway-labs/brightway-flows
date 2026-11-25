@@ -462,13 +462,45 @@ refused as stale.
 3. Write the migration from the previous release, answer everything in
    `unresolved.json`, and add what it holds to the release's section of the
    notes.
-4. Upload a new version of the
-   [Zenodo record](https://doi.org/10.5281/zenodo.22857949):
-   `harmonised-flows-simple.json.gz`, `lcia-factors.json.gz`,
-   `lcia-differences.json` and `consensus-flows.sqlite3` as before, the
-   release's snapshot renamed to `release-snapshot.json.gz`, the zip of the
-   migration from the previous release (`1.0.0__1.1.0.zip` for 1.1.0), and
-   the release's notes as the version's description.
+4. Upload the release to the
+   [Zenodo record](https://doi.org/10.5281/zenodo.22857949) as a new
+   version:
+
+   ```bash
+   export ZENODO_ACCESS_TOKEN=...      # see below
+   uv run brightway-flows release-upload --version 1.2.0
+   ```
+
+   It uploads six files: `harmonised-flows-simple.json.gz`,
+   `lcia-factors.json.gz`, `lcia-differences.json` and
+   `consensus-flows.sqlite3`, the release's snapshot renamed to
+   `release-snapshot.json.gz`, and the zip of the migration from the release
+   Zenodo already holds (`1.1.0__1.2.0.zip` for 1.2.0). It sets the
+   version's title, its date and its description, which is the first
+   paragraph of the release's section of the notes.
+
+   Before it changes anything on Zenodo it refuses a release that is not
+   ready: a file that is missing, a file that another build wrote (the data
+   directory holds whichever build ran last), a snapshot of an untagged
+   commit or of a tree with uncommitted changes, notes with no section for
+   the release, or a migration that starts from a release other than the
+   latest one on Zenodo.
+
+   **The upload is left as a draft.** A published version keeps its DOI and
+   its files for good, so read the draft at the address the command prints,
+   and press Publish there. To publish in the same step, add `--publish`.
+   A run that was interrupted can be started again: the files already on the
+   draft are replaced.
+
+   The token is a personal access token of the Zenodo account that owns the
+   record, made under Applications in the account's settings with the
+   `deposit:write` and `deposit:actions` scopes. Keep it in the environment
+   and out of the repository. To rehearse without touching the real record,
+   make a record and a token on <https://sandbox.zenodo.org> and add
+   `--sandbox --concept-record <that record's number>`.
+
+   The command ends by printing the version's DOI and the SHA-256 of each
+   file it uploaded, which step 6 needs.
 5. Push the tag.
 6. Point the website at the new Zenodo version. Its homepage, masthead,
    Download page and citation do not read the version from `pyproject.toml`
@@ -485,6 +517,8 @@ refused as stale.
      from the files as uploaded. Zenodo shows only an MD5, and a rebuild does
      not reproduce the bytes.
 
+   `release-upload` prints all five, ready to paste.
+
    Then change the release's numbers in `tests/test_publication.py`,
    `tests/test_webapp_download_about.py`, `tests/test_webapp_home.py` and
    `tests/test_webapp_navigation.py`, the DOI badge at the top of
@@ -499,6 +533,7 @@ refused as stale.
 | `release-snapshot` | Record what this build publishes, named by the git tag on its commit, for `release-migrations` to read |
 | `release-snapshot-upgrade` | Bring a snapshot written in an earlier format up to this one, from the factor file its release published |
 | `release-migrations` | Write the randonneur migrations — substances, flows, impact categories, factors — from one recorded release to the next, check them by applying them, and list what could not be resolved |
+| `release-upload` | Upload a recorded release to Zenodo as a new version of the list's record — the snapshot, the three JSON exports, the migration and the database — after checking that one build made them; a draft unless `--publish` is given |
 | `fetch-source <key>` | Fetch one source list's flows, whichever list it is |
 | `fetch-lcia <key>` | Fetch one source list's characterisation factors |
 | `download` | Download the EF 3.1 ZIP |

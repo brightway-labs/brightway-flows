@@ -1220,6 +1220,139 @@ def release_migrations(
     typer.echo(f"Wrote {write_migration_archive(files)}")
 
 
+@app.command("release-upload")
+def release_upload(
+    version: str = typer.Option(
+        ...,
+        "--version",
+        help="The release to upload, as release-snapshot recorded it: 1.2.0.",
+    ),
+    previous_version: str | None = typer.Option(
+        None,
+        "--from",
+        help=(
+            "The release the migration starts from. Defaults to the latest "
+            "version on Zenodo, and is refused if it is any other."
+        ),
+    ),
+    database: Path | None = typer.Option(
+        None,
+        "--database",
+        help=(
+            "The release's build. Defaults to the data directory's "
+            "consensus-flows.sqlite3; the three JSON exports are read from beside it."
+        ),
+    ),
+    publication_date: str | None = typer.Option(
+        None,
+        "--publication-date",
+        help="Defaults to the date in the release's heading in docs/using/releases.md.",
+    ),
+    publish: bool = typer.Option(
+        False,
+        "--publish",
+        help=(
+            "Publish the version once it is uploaded. It cannot be undone: a "
+            "published version keeps its DOI and its files for good. Without "
+            "this the upload is left as a draft to read and publish on Zenodo."
+        ),
+    ),
+    sandbox: bool = typer.Option(
+        False,
+        "--sandbox",
+        help=(
+            "Rehearse on sandbox.zenodo.org, with a token of that site and "
+            "--concept-record naming a record there."
+        ),
+    ),
+    concept_record: str | None = typer.Option(
+        None,
+        "--concept-record",
+        help="The record to add a version to. Defaults to the list's own, 22857949.",
+    ),
+) -> None:
+    """Upload a release to Zenodo as a new version of the list's record.
+
+    Run it last: after `build`, `characterise`, `release-snapshot` and
+    `release-migrations`, with the release's notes written.  It uploads the
+    snapshot, the three JSON exports, the migration from the release Zenodo
+    already holds and the database, and sets the version's title, date and
+    description.  Before it changes anything it checks that all six files are
+    there, that the same build made them, and that the snapshot is of a tagged
+    commit and a clean tree.
+
+    Needs ZENODO_ACCESS_TOKEN in the environment.  Leaves a draft unless
+    --publish is given, and prints the DOI and the SHA-256 of each uploaded
+    file, which are what the website's publication facts are changed to.
+    """
+    from brightway_flows.releases.zenodo import (
+        CONCEPT_RECORD_ID,
+        ZenodoError,
+        make_client,
+        upload_release,
+    )
+    from brightway_flows.settings import get_settings
+
+    token = get_settings().zenodo_access_token
+    if token is None:
+        typer.echo(
+            "error: set ZENODO_ACCESS_TOKEN to a personal access token with the "
+            "`deposit:write` and `deposit:actions` scopes",
+            err=True,
+        )
+        raise typer.Exit(code=2)
+    if sandbox and not concept_record:
+        typer.echo(
+            "error: --sandbox needs --concept-record; the list's own record is "
+            "not on sandbox.zenodo.org",
+            err=True,
+        )
+        raise typer.Exit(code=2)
+    try:
+        with make_client(token.get_secret_value(), sandbox=sandbox) as client:
+            result = upload_release(
+                client,
+                version=version,
+                previous_version=previous_version,
+                database=database,
+                publication_date=publication_date,
+                concept_record_id=concept_record or CONCEPT_RECORD_ID,
+                publish=publish,
+                report=typer.echo,
+            )
+    except ZenodoError as error:
+        typer.echo(f"error: {error}", err=True)
+        raise typer.Exit(code=2) from error
+
+    if result.published:
+        typer.echo(f"Published {result.version}: {result.url}")
+    else:
+        typer.echo(
+            f"Uploaded {result.version} as a draft, not published. Read it and "
+            f"publish it at {result.url}"
+        )
+    typer.echo(
+        "\nFor src/brightway_flows/webapps/app/publication.py, once it is published:"
+    )
+    typer.echo(f'    version="{result.version}",')
+    typer.echo(f'    previous_version="{result.previous_version}",')
+    typer.echo(f'    release_date="{result.publication_date}",')
+    typer.echo(f'    doi="{result.doi}",')
+    typer.echo("    checksums={")
+    for file in result.files:
+        typer.echo(f'        "{file.key}": "{file.sha256}",')
+    typer.echo("    },")
+    logger.info(
+        "release_uploaded",
+        version=result.version,
+        previous_version=result.previous_version,
+        record_id=result.record_id,
+        doi=result.doi,
+        published=result.published,
+        sandbox=sandbox,
+    )
+
+
 def main() -> None:
     """Entry point for the ``brightway-flows`` console script."""
     from brightway_flows.filesystem import ensure_data_dir
