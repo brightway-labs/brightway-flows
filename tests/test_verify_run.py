@@ -254,6 +254,45 @@ class NoiseIsIgnoredTestCase(HarnessTestCase):
         self.assertIn("<volatile>", text)
         self.assertNotIn("run-abc", text)
 
+    def add_stats_json(self, data_dir: Path, stats: dict) -> None:
+        """`lcia_runs.stats_json`: a run's stats, stored as a JSON string."""
+        conn = sqlite3.connect(data_dir / "consensus-flows.sqlite3")
+        conn.execute("CREATE TABLE lcia_runs (method TEXT, stats_json TEXT)")
+        conn.execute(
+            "INSERT INTO lcia_runs VALUES (?, ?)", ("ipcc", orjson.dumps(stats).decode())
+        )
+        conn.commit()
+        conn.close()
+
+    def test_volatile_keys_inside_a_json_cell_are_masked(self):
+        """#476: the run id is a key inside `stats_json`, not a column."""
+        left_dir, right_dir = self.build_data_dir("a"), self.build_data_dir("b")
+        self.add_stats_json(left_dir, {"build_run_id": "20261123T1626147191810000", "factors": 5})
+        self.add_stats_json(right_dir, {"build_run_id": "20261123T1626121735720000", "factors": 5})
+        left, right = self.snapshot(left_dir), self.snapshot(right_dir)
+        text = (left / "consensus-flows.sqlite3" / "lcia_runs.tsv").read_text()
+        self.assertNotIn("20261123T", text)
+        self.assertIn("<volatile>", text)
+        self.assertIdentical(left, right)
+
+    def test_a_changed_value_inside_a_json_cell_is_still_caught(self):
+        left_dir, right_dir = self.build_data_dir("a"), self.build_data_dir("b")
+        self.add_stats_json(left_dir, {"build_run_id": "r-1", "factors": 5})
+        self.add_stats_json(right_dir, {"build_run_id": "r-2", "factors": 6})
+        self.assertDiffers(self.snapshot(left_dir), self.snapshot(right_dir))
+
+    def test_a_json_cell_without_volatile_keys_is_dumped_as_it_stands(self):
+        """Only a cell the mask changes is re-encoded, so key order and spacing
+        in every other payload column reach the snapshot untouched."""
+        data_dir = self.build_data_dir("a")
+        conn = sqlite3.connect(data_dir / "consensus-flows.sqlite3")
+        conn.execute("CREATE TABLE payloads (body TEXT)")
+        conn.execute("INSERT INTO payloads VALUES (?)", ('{"b": 1, "a": [2, 3]}',))
+        conn.commit()
+        conn.close()
+        text = (self.snapshot(data_dir) / "consensus-flows.sqlite3" / "payloads.tsv").read_text()
+        self.assertIn(orjson.dumps('{"b": 1, "a": [2, 3]}').decode(), text)
+
     def test_row_insertion_order_does_not_matter(self):
         """Same rows, written in a different order: the same database."""
         left = self.snapshot(self.build_data_dir("a", db_rows=ROWS))

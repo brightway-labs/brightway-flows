@@ -316,6 +316,28 @@ def dumpable_tables(conn: sqlite3.Connection) -> list[str]:
     return [name for name in names if not name.startswith(shadows)]
 
 
+def scrub_json_cell(cell: str, data_dir: str) -> str | None:
+    """*cell* with its nested volatile keys masked, if it holds a JSON document
+    that masking changes; otherwise None.
+
+    Several columns hold a JSON document as text -- `lcia_runs.stats_json`
+    carries `build_run_id` -- and a column-name mask cannot see inside one, so
+    two otherwise identical builds always differed there by the build's
+    timestamp (#476).  A cell the mask leaves alone is returned as None and
+    dumped as it stands, so its key order and spacing still reach the snapshot.
+    """
+    if not cell.startswith(("{", "[")):
+        return None
+    try:
+        parsed = orjson.loads(cell)
+    except orjson.JSONDecodeError:
+        return None
+    scrubbed = scrub(parsed, data_dir)
+    if scrubbed == parsed:
+        return None
+    return orjson.dumps(scrubbed).decode()
+
+
 def dump_table(conn: sqlite3.Connection, table: str, data_dir: str) -> bytes:
     """One table as sorted, JSON-encoded rows.
 
@@ -337,6 +359,8 @@ def dump_table(conn: sqlite3.Connection, table: str, data_dir: str) -> bytes:
             value = row[index]
             if columns[index] in VOLATILE_KEYS:
                 value = PLACEHOLDER
+            elif isinstance(value, str) and (scrubbed := scrub_json_cell(value, data_dir)):
+                value = scrubbed
             elif isinstance(value, str) and data_dir in value:
                 value = value.replace(data_dir, DATA_DIR_PLACEHOLDER)
             elif isinstance(value, bytes):
