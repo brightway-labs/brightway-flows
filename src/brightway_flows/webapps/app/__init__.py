@@ -108,9 +108,10 @@ def create_app(
 
     **Which data it reads.**  By default the published release: the one the
     release file names (*release_path*, else `BRIGHTWAY_FLOWS_RELEASE_FILE`,
-    else `release.json` in the data directory), whose files are downloaded
+    else `release.json` in the data directory), whose database is downloaded
     from Zenodo into `published/<version>/` of the data directory the first
-    time and read from there afterwards.  With *local*, with
+    time and read from there afterwards.  The release's other five files are
+    not fetched: no page reads them, and a reader is sent to Zenodo for them.  With *local*, with
     `BRIGHTWAY_FLOWS_WEBAPP_LOCAL=1`, or when *database_path* or *data_dir* is
     given, it reads the build on this machine instead, as it always did: the
     database from the data directory and the exports from beside it.  An

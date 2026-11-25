@@ -14,8 +14,9 @@ Setting `BRIGHTWAY_FLOWS_WEBAPP_LOCAL=1` says the same.
 
 Without `--local` it serves the published release: the one named by
 `release.json` in the data directory, which it downloads from Zenodo the first
-time it starts (2.8 GB for release 1.1.0) and reads from
-`published/<version>/` afterwards. A data directory with no `release.json`
+time it starts and reads from `published/<version>/` afterwards. What it
+downloads is the release's database, 2.6 GB for release 1.1.0; the release's
+other files stay on Zenodo, and the pages link to them there. A data directory with no `release.json`
 names no release, so there the application reads the local build either way.
 
 `--host`, `--port` and `--debug` are the other options. A missing database is

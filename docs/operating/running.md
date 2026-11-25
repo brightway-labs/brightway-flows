@@ -526,19 +526,19 @@ refused as stale.
 5. Push the tag.
 6. Point the website at the new Zenodo version, once it is published.
    The website reads which release it serves from the release file, and
-   downloads that release's six files from Zenodo, so there is nothing to
+   downloads that release's database from Zenodo, so there is nothing to
    edit and no build to copy. Put the `release.json` that step 4 wrote in
    the web server's data directory (or wherever its
    `BRIGHTWAY_FLOWS_RELEASE_FILE` points), then on the server:
 
    ```bash
-   uv run --no-sync brightway-flows release-download    # 2.8 GB, once
+   uv run --no-sync brightway-flows release-download    # the database, 2.6 GB, once
    sudo systemctl restart bwf-review
    ```
 
    The homepage, the masthead, the Download page and every citation format
    now name the new version, its date and its DOI, and Download shows the
-   new checksums. The previous release's files stay in
+   new checksums. The previous release's database stays in
    `published/<its version>/` of the data directory until you delete them.
    [Deployment](deployment.md#which-data-it-serves) has the detail.
 7. On a branch, change the DOI badge at the top of `README.md` and add the
@@ -551,7 +551,7 @@ refused as stale.
 |---|---|
 | `release-snapshot` | Record what this build publishes, named by the git tag on its commit, for `release-migrations` to read |
 | `release-snapshot-upgrade` | Bring a snapshot written in an earlier format up to this one, from the factor file its release published |
-| `release-download` | Download the published release the release file names into the data directory, where the review application reads it; only what is missing, and checked against each file's SHA-256 |
+| `release-download` | Download the database of the published release the release file names into the data directory, where the review application reads it; resumed if interrupted, and checked against its SHA-256 |
 | `release-migrations` | Write the randonneur migrations — substances, flows, impact categories, factors — from one recorded release to the next, check them by applying them, and list what could not be resolved |
 | `release-upload` | Upload a recorded release to Zenodo as a new version of the list's record — the snapshot, the three JSON exports, the migration and the database — after checking that one build made them; a draft unless `--publish` is given |
 | `fetch-source <key>` | Fetch one source list's flows, whichever list it is |

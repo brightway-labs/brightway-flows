@@ -34,6 +34,9 @@ def _found(key: str) -> artifacts.Artifact | None:
         Path(current_app.config["CONSENSUS_DB_PATH"]),
         Path(current_app.config["CONSENSUS_DATA_DIR"]),
         current_app.config["CURRENT_PUBLICATION"](),
+        # Only where the release is what is being served: over a local build
+        # this page is about that build's own files.
+        current_app.config["SERVED_RELEASE"],
     )
 
 
@@ -43,6 +46,9 @@ def _artifacts() -> list[artifacts.Artifact]:
         Path(current_app.config["CONSENSUS_DB_PATH"]),
         Path(current_app.config["CONSENSUS_DATA_DIR"]),
         current_app.config["CURRENT_PUBLICATION"](),
+        # Only where the release is what is being served: over a local build
+        # this page is about that build's own files.
+        current_app.config["SERVED_RELEASE"],
     )
 
 

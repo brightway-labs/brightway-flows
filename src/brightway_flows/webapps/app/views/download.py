@@ -35,7 +35,16 @@ def index():
     return render_template(
         "download.html",
         files=[
-            artifacts.artifact(key, database_path, data_dir, publication)
+            artifacts.artifact(
+                key,
+                database_path,
+                data_dir,
+                publication,
+                # Once the release has a DOI the rows are the archived files,
+                # so their sizes are too, even over a local build.  Until
+                # then the page offers this build's own copies.
+                current_app.config["PUBLISHED_RELEASE"] if publication.doi else None,
+            )
             for key in artifacts.RELEASE_KEYS
         ],
     )

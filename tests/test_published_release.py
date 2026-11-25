@@ -7,6 +7,7 @@ can be carried on the way a real one is.  Nothing here touches the network.
 
 from __future__ import annotations
 
+import dataclasses
 import hashlib
 import io
 import os
@@ -18,6 +19,7 @@ from unittest import mock
 
 import orjson
 from release_fixture import RELEASE_1_1_0, write_release_file
+from test_webapp_controls import _write_fixture
 from typer.testing import CliRunner
 
 from brightway_flows import published_release
@@ -30,6 +32,7 @@ from brightway_flows.published_release import (
     ReleaseFile,
     ReleaseFileError,
     fetch_release,
+    fetched_files,
     load_published_release,
     local_path,
     missing_files,
@@ -180,30 +183,27 @@ class TheDownloadTestCase(_TmpTestCase):
         super().setUp()
         self.directory = release_directory(RELEASE, self.tmp)
 
-    def test_the_directory_is_laid_out_as_a_data_directory(self):
+    def test_only_the_database_is_fetched(self):
+        """The one file the application reads.  The other five are files a
+        reader downloads, and a reader gets them from Zenodo."""
         self.assertEqual(self.directory, self.tmp / "published" / "1.2.0")
+        self.assertEqual([file.key for file in fetched_files(RELEASE)], ["database"])
         zenodo = FakeZenodoFiles()
         with zenodo.patch():
             fetch_release(RELEASE, self.directory)
+        self.assertEqual(zenodo.requests, [("consensus-flows.sqlite3", None)])
         self.assertEqual(
             sorted(
                 str(path.relative_to(self.directory))
                 for path in self.directory.rglob("*")
                 if path.is_file() and not path.name.startswith(".")
             ),
-            [
-                "consensus-flows.sqlite3",
-                "harmonised-flows-simple.json.gz",
-                "lcia-differences.json",
-                "lcia-factors.json.gz",
-                "releases/1.2.0.json.gz",
-                "releases/migrations/1.1.0__1.2.0.zip",
-            ],
+            ["consensus-flows.sqlite3"],
         )
-        for file in RELEASE.files:
-            self.assertEqual(
-                local_path(RELEASE, file, self.directory).read_bytes(), BODIES[file.name]
-            )
+        database = RELEASE.file("database")
+        self.assertEqual(
+            local_path(database, self.directory).read_bytes(), BODIES[database.name]
+        )
         self.assertEqual(missing_files(RELEASE, self.directory), [])
 
     def test_a_release_already_there_asks_nothing_of_the_network(self):
@@ -214,17 +214,18 @@ class TheDownloadTestCase(_TmpTestCase):
             fetch_release(RELEASE, self.directory)
         self.assertEqual(zenodo.requests, [])
 
-    def test_only_what_is_missing_is_downloaded(self):
+    def test_a_database_of_another_size_is_downloaded_again(self):
         with FakeZenodoFiles().patch():
             fetch_release(RELEASE, self.directory)
-        (self.directory / "lcia-factors.json.gz").unlink()
+        (self.directory / "consensus-flows.sqlite3").write_bytes(b"cut short")
         zenodo = FakeZenodoFiles()
         lines: list[str] = []
         with zenodo.patch():
             fetch_release(RELEASE, self.directory, report=lines.append)
-        self.assertEqual(zenodo.requests, [("lcia-factors.json.gz", None)])
+        self.assertEqual(zenodo.requests, [("consensus-flows.sqlite3", None)])
         self.assertEqual(len(lines), 1)
-        self.assertIn("lcia-factors.json.gz of 1.2.0", lines[0])
+        self.assertIn("consensus-flows.sqlite3 of 1.2.0", lines[0])
+        self.assertEqual(missing_files(RELEASE, self.directory), [])
 
     def test_an_interrupted_download_carries_on_where_it_stopped(self):
         body = BODIES["consensus-flows.sqlite3"]
@@ -247,15 +248,15 @@ class TheDownloadTestCase(_TmpTestCase):
 
     def test_other_bytes_than_the_release_s_are_refused_and_removed(self):
         zenodo = FakeZenodoFiles(
-            bodies={**BODIES, "lcia-factors.json.gz": b"not factors"}
+            bodies={**BODIES, "consensus-flows.sqlite3": b"not the database"}
         )
         with zenodo.patch(), self.assertRaisesRegex(
-            ReleaseDownloadError, "lcia-factors.json.gz of 1.2.0 arrived with SHA-256"
+            ReleaseDownloadError, "consensus-flows.sqlite3 of 1.2.0 arrived with SHA-256"
         ):
             fetch_release(RELEASE, self.directory)
-        self.assertFalse((self.directory / "lcia-factors.json.gz").exists())
-        self.assertFalse((self.directory / "lcia-factors.json.gz.part").exists())
-        self.assertIn(RELEASE.file("factors"), missing_files(RELEASE, self.directory))
+        self.assertFalse((self.directory / "consensus-flows.sqlite3").exists())
+        self.assertFalse((self.directory / "consensus-flows.sqlite3.part").exists())
+        self.assertIn(RELEASE.file("database"), missing_files(RELEASE, self.directory))
 
     def test_zenodo_not_answering_is_a_download_error(self):
         zenodo = FakeZenodoFiles(down=True)
@@ -270,7 +271,7 @@ class TheDownloadTestCase(_TmpTestCase):
         with zenodo.patch():
             fetch_release(RELEASE, self.directory)
         self.assertEqual(missing_files(RELEASE, self.directory), [])
-        self.assertEqual(len(zenodo.requests), 8)
+        self.assertEqual(len(zenodo.requests), 3)
 
     def test_a_file_that_is_not_there_is_not_asked_for_again(self):
         """An unpublished draft, or a release file naming the wrong record."""
@@ -303,7 +304,7 @@ class WhichDataTheApplicationReadsTestCase(_TmpTestCase):
         self.assertEqual(app.config["CONSENSUS_DB_PATH"], directory / "consensus-flows.sqlite3")
         self.assertEqual(app.config["CONSENSUS_DATA_DIR"], directory)
         self.assertEqual(app.config["SERVED_RELEASE"], RELEASE)
-        self.assertEqual(len(self.zenodo.requests), 6)
+        self.assertEqual(self.zenodo.requests, [("consensus-flows.sqlite3", None)])
         self.assertEqual(
             app.config["CONSENSUS_DB_PATH"].read_bytes(), BODIES["consensus-flows.sqlite3"]
         )
@@ -315,15 +316,84 @@ class WhichDataTheApplicationReadsTestCase(_TmpTestCase):
         create_app()
         self.assertEqual(self.zenodo.requests, [])
 
-    def test_the_download_page_lists_the_downloaded_files(self):
-        write_release_file(self.tmp, RELEASE)
+    def test_the_download_page_sizes_every_file_from_the_release_file(self):
+        """Five of the six are not on this machine, and each still has a row,
+        a size and its checksum."""
+        release = dataclasses.replace(
+            RELEASE,
+            files=tuple(
+                dataclasses.replace(file, size=size)
+                for file, size in zip(
+                    RELEASE.files,
+                    (59_500_000, 45_900_000, 16_400_000, 29_500_000, 6_400_000,
+                     len(BODIES["consensus-flows.sqlite3"])),
+                    strict=True,
+                )
+            ),
+        )
+        write_release_file(self.tmp, release)
         app = create_app()
         app.config["TESTING"] = True
         body = app.test_client().get("/download/").get_data(as_text=True)
         self.assertIn("Latest release · 1.2.0 · Released 2026-12-01", body)
         self.assertIn("Migration from 1.1.0", body)
         self.assertIn("1.1.0__1.2.0.zip", body)
-        self.assertIn(RELEASE.checksums["database"], body)
+        for size in ("59.5 MB", "45.9 MB", "16.4 MB", "29.5 MB", "6.4 MB"):
+            with self.subTest(size):
+                self.assertIn(f"<span>{size}</span>", body)
+        for key in ARTIFACT_KEYS:
+            self.assertIn(release.checksums[key], body)
+        self.assertNotIn("Not in this build", body)
+
+    def test_the_build_page_links_the_files_it_does_not_hold_to_zenodo(self):
+        """The database is served from here; the other five are rows with the
+        release's size and Zenodo's address, not absences."""
+        fixture = self.tmp / "fixture.sqlite3"
+        _write_fixture(fixture)
+        body = fixture.read_bytes()
+        release = dataclasses.replace(
+            RELEASE,
+            files=tuple(
+                ReleaseFile(
+                    file.key, file.name, len(body), hashlib.sha256(body).hexdigest()
+                )
+                if file.key == "database"
+                else file
+                for file in RELEASE.files
+            ),
+        )
+        self.zenodo.bodies["consensus-flows.sqlite3"] = body
+        write_release_file(self.tmp, release)
+        app = create_app()
+        app.config["TESTING"] = True
+        client = app.test_client()
+        response = client.get("/run/")
+        self.assertEqual(response.status_code, 200)
+        page = response.get_data(as_text=True)
+        self.assertIn("6 of\n      6 published", page)
+        self.assertIn('href="/run/download/database"', page)
+        for key in ("snapshot", "flows", "factors", "differences", "migration"):
+            with self.subTest(key):
+                file = release.file(key)
+                self.assertIn(
+                    f'href="{release.record_url}/files/{file.name}?download=1"', page
+                )
+                self.assertNotIn(f"/run/download/{key}", page)
+                self.assertEqual(client.get(f"/run/download/{key}").status_code, 404)
+        self.assertNotIn("this run did not write it", page)
+        served = client.get("/run/download/database")
+        self.addCleanup(served.close)
+        self.assertEqual(served.status_code, 200)
+
+    def test_over_a_local_build_the_download_page_still_sizes_the_release(self):
+        """The page is about the release wherever one is named."""
+        write_release_file(self.tmp, RELEASE)
+        (self.tmp / "lcia-factors.json.gz").write_bytes(b"x" * 5000)
+        app = create_app(local=True)
+        app.config["TESTING"] = True
+        body = app.test_client().get("/download/").get_data(as_text=True)
+        self.assertIn(f"<span>{len(BODIES['lcia-factors.json.gz'])} bytes</span>", body)
+        self.assertNotIn("5.0 kB", body)
 
     def test_the_flag_reads_the_local_build_and_still_names_the_release(self):
         write_release_file(self.tmp, RELEASE)
@@ -394,7 +464,7 @@ class TheDownloadCommandTestCase(_TmpTestCase):
         with FakeZenodoFiles().patch():
             result = self.invoke()
         self.assertEqual(result.exit_code, 0, result.output)
-        self.assertIn("6 files downloaded", result.output)
+        self.assertIn("database downloaded", result.output)
         self.assertIn(str(self.tmp / "published" / "1.2.0"), result.output.replace("\n", ""))
         with FakeZenodoFiles(down=True).patch():
             again = self.invoke()

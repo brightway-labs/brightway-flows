@@ -26,13 +26,14 @@ there; the default one need not be, and an installation without it has no
 release to speak of -- its pages show a placeholder for each of these facts
 and it serves whatever build is in its data directory.
 
-**What is fetched.**  The six files, into ``published/<version>/`` of the data
-directory, laid out the way a build and the release commands lay out a data
-directory -- the snapshot under ``releases/``, the migration under
-``releases/migrations/`` -- so the application reads a fetched release exactly
-as it reads a local build.  A file is written under a ``.part`` name, resumed
-where a run was cut off, checked against its SHA-256 and only then given its
-own name, so a file with its own name is one that arrived whole.
+**What is fetched.**  The database, into ``published/<version>/`` of the data
+directory, and nothing else.  Every page the application renders reads that
+one file; the other five are files a reader downloads, and a reader gets them
+from Zenodo, where the Download page already sends them.  What the pages say
+about those five -- that they exist, and how big they are -- is in the release
+file.  The database is written under a ``.part`` name, resumed where a run was
+cut off, checked against its SHA-256 and only then given its own name, so a
+file with its own name is one that arrived whole.
 
 Standard library only for the requests.  The review application's install
 does not bring `httpx`, and this is one ``GET`` per file.
@@ -65,6 +66,9 @@ RELEASE_FILENAME = "release.json"
 ARTIFACT_KEYS: tuple[str, ...] = (
     "snapshot", "flows", "factors", "differences", "migration", "database",
 )
+
+#: The files the application reads, and so the ones fetched.
+FETCHED_KEYS: tuple[str, ...] = ("database",)
 
 _CHUNK = 1024 * 1024
 _USER_AGENT = "brightway-flows"
@@ -232,30 +236,26 @@ def release_directory(release: PublishedRelease, data_dir: Path | None = None) -
     return (data_dir or resolve_data_dir()) / "published" / release.version
 
 
-def local_path(release: PublishedRelease, file: ReleaseFile, directory: Path) -> Path:
-    """Where *file* goes under *directory*, which is laid out as a data directory.
+def fetched_files(release: PublishedRelease) -> list[ReleaseFile]:
+    """The files of *release* the application reads: `FETCHED_KEYS`."""
+    return [file for file in release.files if file.key in FETCHED_KEYS]
 
-    Zenodo holds the six files side by side.  A data directory does not: the
-    snapshot is ``releases/<version>.json.gz`` and the migration is under
-    ``releases/migrations/``, and the application looks for them there.
-    """
-    if file.key == "snapshot":
-        return directory / "releases" / f"{release.version}.json.gz"
-    if file.key == "migration":
-        return directory / "releases" / "migrations" / file.name
+
+def local_path(file: ReleaseFile, directory: Path) -> Path:
+    """Where a fetched *file* is kept: under the name Zenodo gives it."""
     return directory / file.name
 
 
 def missing_files(release: PublishedRelease, directory: Path) -> list[ReleaseFile]:
-    """The files not yet in *directory*, without reading any of them.
+    """The fetched files not yet in *directory*, without reading any of them.
 
     A file under its own name was checked against its SHA-256 before it was
     given that name, so here its size is enough; hashing 2.6 GB on every
     start of the application would be the slowest thing it does.
     """
     missing = []
-    for file in release.files:
-        path = local_path(release, file, directory)
+    for file in fetched_files(release):
+        path = local_path(file, directory)
         if not path.is_file() or path.stat().st_size != file.size:
             missing.append(file)
     return missing
@@ -299,18 +299,27 @@ def _download(url: str, part: Path, size: int) -> None:
         read -- is raised at once.
     """
     for attempt in range(1, _ATTEMPTS + 1):
+        before = part.stat().st_size if part.exists() else 0
         try:
             _download_once(url, part, size)
         except ReleaseDownloadError as error:
             cause = error.__cause__
-            permanent = (
-                isinstance(cause, urllib.error.HTTPError) and 400 <= cause.code < 500
+            refused = isinstance(cause, urllib.error.HTTPError) and (
+                400 <= cause.code < 500
             )
-            if permanent or attempt == _ATTEMPTS:
+            if refused and cause.code == 416 and before:
+                # What is here is not the start of what the server has, so
+                # there is nothing to carry on from.
+                part.unlink()
+                continue
+            if refused or attempt == _ATTEMPTS:
                 raise
             time.sleep(_WAIT_SECONDS * attempt)
             continue
-        if part.stat().st_size >= size:
+        arrived = part.stat().st_size
+        if arrived >= size or arrived == before:
+            # All of it -- or the server has no more to give, and the file is
+            # not the one recorded.  The caller's checksum says which.
             return
     raise ReleaseDownloadError(
         f"{url}: {part.stat().st_size:,} of {size:,} bytes arrived in "
@@ -350,8 +359,8 @@ def fetch_release(
 ) -> Path:
     """Make *directory* hold *release*, downloading what it lacks.
 
-    Does nothing, and asks nothing of the network, where all six files are
-    there.  *report* is told each file as its download starts.
+    Does nothing, and asks nothing of the network, where the database is
+    already there.  *report* is told each file as its download starts.
 
     :raises ReleaseDownloadError: where a file cannot be fetched, or arrives
         as other bytes than the release file records.  What had arrived stays,
@@ -363,7 +372,7 @@ def fetch_release(
         return directory
     with _locked(directory):
         for file in missing_files(release, directory):
-            destination = local_path(release, file, directory)
+            destination = local_path(file, directory)
             destination.parent.mkdir(parents=True, exist_ok=True)
             part = destination.with_name(destination.name + ".part")
             report(

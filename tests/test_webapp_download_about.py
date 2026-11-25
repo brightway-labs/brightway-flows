@@ -183,14 +183,19 @@ class DownloadWithoutDatabaseTestCase(_NoDatabaseTestCase):
         self.assertEqual(body.count("Not in this build"), 6)
         self.assertNotIn("/run/download/flows", body)
 
-    def test_a_written_file_is_a_download_with_its_size(self):
+    def test_a_file_is_a_download_with_the_archived_file_s_size(self):
         """The release has a DOI, so the link is the archived release and
-        not this build's own copy of the file."""
+        the size is the archived file's -- not this build's own copy, which
+        an application serving a release does not even hold."""
         (self.data_dir / "lcia-differences.json").write_bytes(b"x" * 2_500)
         body = self.body("/download/")
         self.assertIn('href="https://doi.org/10.5281/zenodo.23554066"', body)
         self.assertNotIn("/run/download/differences", body)
-        self.assertIn("2.5 kB", body)
+        self.assertNotIn("2.5 kB", body)
+        for size in ("59.5 MB", "45.9 MB", "16.4 MB", "29.5 MB", "6.4 MB", "2.6 GB"):
+            with self.subTest(size):
+                self.assertIn(f"<span>{size}</span>", body)
+        self.assertIn("<strong>2.6 GB.</strong> The whole build", body)
 
     def test_every_citation_format_is_on_the_page_without_scripts(self):
         body = self.body("/download/")

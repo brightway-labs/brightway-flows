@@ -789,7 +789,7 @@ def webapp(
 
     It serves the published release: the one `release.json` in the data
     directory names (or the file BRIGHTWAY_FLOWS_RELEASE_FILE names), whose
-    files it downloads from Zenodo the first time it starts.  With --local,
+    database it downloads from Zenodo the first time it starts.  With --local,
     or where there is no release file, it reads the build in the data
     directory instead.
 
@@ -1403,11 +1403,13 @@ def release_download(
 ) -> None:
     """Download the published release, where the review application reads it.
 
-    The application does this itself the first time it starts.  Run it ahead
-    of that on a server: the database is 2.6 GB, and a web server stops a
-    worker that takes that long to start.  It downloads only what is missing,
-    carries on from where an interrupted run stopped, and checks each file
-    against the SHA-256 the release file records.
+    That is the release's database, which is the one file the application
+    reads; its other files stay on Zenodo.  The application does this itself
+    the first time it starts.  Run it ahead of that on a server: the database
+    is 2.6 GB, and a web server stops a worker that takes that long to start.
+    It does nothing where the database is already there, carries on from
+    where an interrupted run stopped, and checks the file against the SHA-256
+    the release file records.
     """
     from brightway_flows.published_release import (
         ReleaseDownloadError,
@@ -1440,7 +1442,7 @@ def release_download(
         raise typer.Exit(code=1) from error
     typer.echo(
         f"Release {release.version} is in {directory}"
-        + (f": {wanted} files downloaded." if wanted else "; nothing to download.")
+        + (": database downloaded." if wanted else "; nothing to download.")
     )
     logger.info(
         "release_downloaded",

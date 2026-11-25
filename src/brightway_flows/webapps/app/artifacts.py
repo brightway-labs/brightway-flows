@@ -19,6 +19,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from brightway_flows.filesystem import CONSENSUS_DB_FILEPATH, DATA_DIR
+from brightway_flows.published_release import PublishedRelease
 from brightway_flows.webapps.app.publication import Publication
 
 #: What each downloadable artifact is, keyed by the slug its URL uses.
@@ -171,6 +172,17 @@ class Artifact:
     #: so that a page can say a download is older than the run above it, which
     #: is what a half-finished build looks like from outside.
     modified: str = ""
+    #: Where the release keeps this file on Zenodo, or empty where the page
+    #: is not describing a release.  A file with an address has a size --
+    #: the release file's -- whether or not a copy is on this machine: an
+    #: application serving a release holds only the database.
+    url: str = ""
+
+    @property
+    def has_size(self) -> bool:
+        """Whether `size` says anything: the file is here, or the release
+        records it."""
+        return self.exists or bool(self.url)
 
     @property
     def readable_size(self) -> str:
@@ -193,11 +205,17 @@ def artifact(
     database_path: Path | None = None,
     data_dir: Path | None = None,
     publication: Publication | None = None,
+    release: PublishedRelease | None = None,
 ) -> Artifact | None:
     """The artifact *key* names, or `None` if this application has no such key.
 
     *publication* says which release the snapshot and the migration are named
     after; without one neither is looked for under a release's name.
+
+    *release* is given where the page describes the published release rather
+    than a build on this machine.  The size is then the archived file's and
+    the artifact carries its address on Zenodo, so a file this machine does
+    not hold is still a row with a size and a link.
     """
     for slug, title, filename, description in entries(publication):
         if slug != key:
@@ -221,6 +239,10 @@ def artifact(
             found.exists = True
             found.size = stat.st_size
             found.modified = datetime.fromtimestamp(stat.st_mtime, UTC).isoformat()
+        published = release.file(slug) if release is not None else None
+        if release is not None and published is not None:
+            found.size = published.size
+            found.url = release.download_url(published)
         return found
     return None
 
@@ -229,6 +251,7 @@ def available(
     database_path: Path | None = None,
     data_dir: Path | None = None,
     publication: Publication | None = None,
+    release: PublishedRelease | None = None,
 ) -> list[Artifact]:
     """Every artifact, whether or not the build wrote it.
 
@@ -239,6 +262,7 @@ def available(
     shrank to two entries would tell them nothing.
     """
     found = [
-        artifact(key, database_path, data_dir, publication) for key, *_ in ARTIFACTS
+        artifact(key, database_path, data_dir, publication, release)
+        for key, *_ in ARTIFACTS
     ]
     return [entry for entry in found if entry is not None]

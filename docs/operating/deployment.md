@@ -5,7 +5,7 @@ The [review application](review-app.md) is served on a production host using
 
 It is a read-only view over one published release. The host needs one small
 file, `release.json`, which says which release that is; the application
-downloads the release's files from Zenodo itself. It does not run the
+downloads the release's database from Zenodo itself. It does not run the
 pipeline, and no build has to be copied to the host.
 
 ## Which data it serves
@@ -13,10 +13,13 @@ pipeline, and no build has to be copied to the host.
 Release 1.1.0, for example, is six files on
 [Zenodo](https://zenodo.org/records/23554066): the database
 (`consensus-flows.sqlite3`, 2.6 GB), the three JSON exports, the release
-snapshot and the migration from 1.0.0 — 2.8 GB together. A host whose
-`release.json` names 1.1.0 downloads those six into `published/1.1.0/` of its
-data directory, checks each against the SHA-256 the file records, and serves
-them from there.
+snapshot and the migration from 1.0.0. Every page of the application reads
+the database and nothing else, so that is the one file a host downloads: a
+host whose `release.json` names 1.1.0 puts `consensus-flows.sqlite3` in
+`published/1.1.0/` of its data directory, checks it against the SHA-256 the
+file records, and serves from there. The other five stay on Zenodo. The
+Download page and the foot of the Build page list all six, with the sizes
+`release.json` records, and link to Zenodo for them.
 
 `release.json` is written by `brightway-flows release-upload` when the release
 is uploaded ([Publishing a release](running.md#publishing-a-release)). The
@@ -32,9 +35,9 @@ uv run --no-sync brightway-flows release-download
 ```
 
 gunicorn stops a worker that takes longer than its timeout to start, and
-2.6 GB takes longer than that. The command downloads only what is missing and
-carries on from where an interrupted run stopped; with all six files in
-place, starting the application asks nothing of Zenodo. If the files are not
+2.6 GB takes longer than that. The command carries on from where an
+interrupted run stopped; with the database in place it does nothing, and
+starting the application asks nothing of Zenodo. If the database is not
 there and cannot be downloaded, the application still starts, serves the
 documentation, and says on every data page which command to run.
 
