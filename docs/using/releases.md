@@ -15,8 +15,48 @@ Built from six lists: ecoinvent 3.13 joins ecoinvent 3.12, ecoinvent 3.8,
 BAFU 2026 v1, Stepwise 2006 1.09 and AGRIBALYSE 3.2, the five that 1.1.0 was
 built from.
 
+Published on [Zenodo](https://doi.org/10.5281/zenodo.24540007).
+
 A count below comes from the full build its pull request was measured on.
 That pull request names the build.
+
+### The migration from 1.1.0
+
+`1.1.0__1.2.0.zip` moves a database that loaded 1.1.0 to 1.2.0. On the
+release build of 1.2.0 (tag `1.2.0`, commit `5fa078b`, run
+`20261125T1721007573540000`) it holds:
+
+| | Created | Updated | Replaced | Deleted | Left for a person |
+|---|---:|---:|---:|---:|---:|
+| Substances | 22 | 70 | 8 | 0 | 0 |
+| Flows | 27 | 377 | 8 | 0 | 0 |
+| Impact categories | 0 | 25 | 0 | 0 | 0 |
+| Factors | 144 | 10 | 0 | 4 | 0 |
+
+Each replaced substance or flow is also listed under `delete` in its file, so
+that it leaves your list of flows. It is counted once here, as replaced. The
+eight are the five organotins in sea water, `P-cyanophenol` and the two
+amylenes, described below.
+
+- **Most updates are the new reference values.** 59 of the substance updates
+  and 371 of the flow updates add or change only the stated properties, such
+  as a heating value; the rest change a list of synonyms.
+- **The 25 updated categories are renamed, not replaced.** ecoinvent's
+  implementation of EF 3.1 is now named `ecoinvent Centre (3.12)`, to tell it
+  from the 3.13 workbook it is read beside. Each category keeps its
+  identifier and its factors.
+- **The four deleted factors moved.** They are ecoinvent's 3.12 numbers for
+  propyl propionate to water, which 1.1.0 published on ethyl methyl
+  carbonate. 1.2.0 publishes them on propyl propionate's own flow, and they
+  are among the 144 created. Of the 10 updated factors, 8 are Stepwise's
+  amylene factors following their flows to the pentenes, and 2 rewrite
+  buprofezin's 2.4343e-08 without a trailing rounding digit.
+
+Once the migration is applied, a database holds 1.2.0's 8,173 substances,
+97,846 flows, 138 impact categories and 727,214 factors, and every one of
+1.1.0's 97,827 flows in an inventory points at a flow 1.2.0 publishes. That
+was checked by applying the files to 1.1.0 with randonneur and comparing the
+result with 1.2.0, table by table. Nothing is left unresolved.
 
 ### ecoinvent 3.13
 
