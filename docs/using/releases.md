@@ -9,6 +9,165 @@ each release; see
 They list every identifier that changed. This page says why, grouped by what
 you would notice.
 
+## 1.2.0 — 2026-11-25
+
+Built from six lists: ecoinvent 3.13 joins ecoinvent 3.12, ecoinvent 3.8,
+BAFU 2026 v1, Stepwise 2006 1.09 and AGRIBALYSE 3.2, the five that 1.1.0 was
+built from.
+
+A count below comes from the full build its pull request was measured on.
+That pull request names the build.
+
+### ecoinvent 3.13
+
+- **ecoinvent 3.13 is merged, and merged first.** ecoinvent released it on
+  4 November 2026. It ships 9,893 elementary flows against 3.12's 9,850: 50
+  added, the 7 `2-Propen-1-ol` rows retired, and 100 changed under 20 names.
+  On the six-list build of commit `a4d92fd`, against the five-list build of
+  `5f06833`, the list grew from 98,120 flows to 98,141 and from 8,159
+  substances to 8,176. The number of characterised flows stayed at 73,969.
+  What was changed in 3.13's own rows is on
+  [the ecoinvent 3.13 page](../changes/ecoinvent-3.13.md)
+  ([#454](https://github.com/brightway-labs/brightway-flows/pull/454)).
+- **Two fumarate esters are their own substances.** 3.13's
+  `Sodium stearyl fumarate` (4070-80-8) and `Monostearyl fumarate`
+  (1741-93-1) both carried `Fumaric acid` as a synonym, and so both reached
+  EF 3.1's fumaric acid (110-17-8). The synonym is removed
+  ([#454](https://github.com/brightway-labs/brightway-flows/pull/454)).
+
+### Substances and their numbers
+
+ecoinvent 3.13 corrected three sets of registry numbers. The same
+corrections are now made to the earlier ecoinvent releases this list merges,
+so a row reaches the same substance whichever release it came from.
+
+- **The endosulfan isomers are not endosulfan.** ecoinvent 3.12 gave its
+  seven `Alpha-endosulfan` rows and seven `Beta-endosulfan` rows the number
+  of the technical mixture, 115-29-7, so all fourteen were published as
+  `Endosulfan`. They now carry 959-98-8 and 33213-65-9 and reach EF 3.1's
+  alpha- and beta-endosulfan flows. One flow per isomer is new, in forestry
+  soil, where EF 3.1 has none ([#460](https://github.com/brightway-labs/brightway-flows/pull/460)).
+- **Propyl propionate is not ethyl methyl carbonate.** ecoinvent 3.12's one
+  `Propyl propionate` row, to water, carried 623-53-0, which is ethyl methyl
+  carbonate, and was published under that name with that substance's
+  factors. It now carries 106-36-5 and is a substance of its own, with one
+  flow and no factor, because EF 3.1 has none for it ([#461](https://github.com/brightway-labs/brightway-flows/pull/461)).
+- **Five organotins in sea water are the dissolved cations.** ecoinvent 3.8
+  and 3.12 registered `Dibutyltin`, `Triphenyltin`, `Diphenyltin`,
+  `Phenyltin` and `Trioctyltin` to sea water with the numbers of neutral tin
+  compounds. Dibutyltin now carries 14488-53-0 and triphenyltin 668-34-8;
+  the other three carry no number, as in 3.13. The five substances and
+  their five flows have new identifiers, and AGRIBALYSE's five rows follow
+  them. None of the five flows has a factor ([#462](https://github.com/brightway-labs/brightway-flows/pull/462)).
+- **Three rows without a number reach the substance they name.** BAFU's
+  `P-cyanophenol` now reaches 4-cyanophenol (767-00-0), and Stepwise's
+  `Amylene, beta-cis-` and `Amylene, trans-beta-` reach cis-2-pentene
+  (627-20-3) and trans-2-pentene (646-04-8). Each had been published as a
+  second substance. On the six-list build of `8593061` the list went from
+  98,141 flows to 98,139 and from 8,176 substances to 8,173, and Stepwise's
+  two factors for the amylenes moved onto EF 3.1's pentene flows
+  ([#472](https://github.com/brightway-labs/brightway-flows/pull/472)).
+
+### Factors
+
+- **ecoinvent's 3.13 implementation of EF 3.1 is read, and not published.**
+  The ecoinvent Centre's 3.13 workbook is read beside its 3.12 one, and both
+  take part in deciding this list's own EF 3.1 factors. The 3.13 workbook is
+  not open, so none of its 27,342 factors is published as ecoinvent's; the
+  3.12 implementation is published as before. The two workbooks count as one
+  publisher: where they state different numbers and the JRC states none, the
+  factor waits for a ruling ([#463](https://github.com/brightway-labs/brightway-flows/pull/463)).
+- **The lindane and endosulfan isomers have their own factors.** ecoinvent's
+  3.12 workbook scores alpha-, beta- and delta-hexachlorocyclohexane with
+  lindane's numbers, and the two endosulfan isomers with endosulfan's. For
+  example, alpha-endosulfan to unspecified air, freshwater ecotoxicity, is
+  42,351 for the JRC and for the 3.13 workbook and 11,499 in the 3.12
+  workbook. 47 rulings now decide these:
+  - 84 factors take the JRC's number, which the 3.13 workbook agrees with;
+  - 14 factors in forestry soil, where the JRC states nothing, take the 3.13
+    workbook's number for the isomer;
+  - 28 non-cancer human toxicity factors for the endosulfan isomers, which
+    only the 3.12 workbook states and states with endosulfan's number, are
+    not published.
+
+  On the six-list build of `08e0136` (run `20261124T0755302069730000`) this
+  list's own EF 3.1 implementation went from 327,173 factors to 327,271
+  ([#478](https://github.com/brightway-labs/brightway-flows/pull/478)).
+
+### Units
+
+- **A converted row says which property it was converted by.** A kilogram
+  of hard coal reaches an EF 3.1 flow in megajoules through a multiplier,
+  18.2 MJ/kg for AGRIBALYSE's row. That number used to be written beside the
+  match with no unit and no statement of what it is. It is now derived from
+  a statement about the source list's own flow: AGRIBALYSE's hard coal has a
+  net calorific value of 18.2 MJ/kg, Stepwise's a gross one of 19.1, and
+  uranium's 560,000 MJ/kg is fission energy and not a heat of combustion. On
+  the five-list build of `779e1c4`, 63 mappings changed their stated basis
+  from `curated` to `flow-property`, each at the same multiplier, and each
+  now names the quantity it converted through. No multiplier changed
+  ([#443](https://github.com/brightway-labs/brightway-flows/pull/443)).
+- **Most of those numbers are now read from the vendors' own files.** The
+  heating values and densities come from SimaPro's substance comments,
+  Stepwise's method, ecoinvent's exchange properties and flow names such as
+  `Gas, natural, 46.8 MJ per kg`. 34 values that no vendor file states stay
+  curated ([#450](https://github.com/brightway-labs/brightway-flows/pull/450)).
+- **A substance carries a reference value and the range its lists state.**
+  `Hard Coal`, for example, has a net calorific value of 18.01 MJ/kg, the
+  spread of what the merged lists state, 18.01 to 19.1 from six statements
+  in four lists, and the range for the class, 11.5 to 32.2 from the IPCC's
+  2006 guidelines. Nine substances have a curated value: hard coal, brown
+  coal, crude oil, natural gas, peat, uranium, sea water, water and
+  rainwater. In `consensus-flows.sqlite3`, the new table
+  `flow_property_statements` holds every statement a source row carried
+  ([#451](https://github.com/brightway-labs/brightway-flows/pull/451)).
+
+### The files
+
+- **The counts in `stats` are in a fixed order.** In `lcia-factors.json.gz`
+  and `lcia-differences.json`, the `difference_*` and `coverage_*` counts
+  used to be written in a different order by each run of the same build.
+  They are now in alphabetical order. The values did not change
+  ([#483](https://github.com/brightway-labs/brightway-flows/pull/483)).
+
+### Installing and running
+
+These change how the package is installed and run. They do not change the
+published list.
+
+- **A plain install is the flow matcher only.** Fetching the source lists
+  and running a build need the `pipeline` extra, and the website needs the
+  `webapp` extra ([#464](https://github.com/brightway-labs/brightway-flows/pull/464)).
+- **The data directory is created by the `brightway-flows` command only.**
+  Importing the package no longer creates it ([#481](https://github.com/brightway-labs/brightway-flows/pull/481)).
+- **The source files are downloaded from pinned copies.** AGRIBALYSE, BAFU,
+  the GLAD mapping, ChEBI and the reference caches are each downloaded from
+  an address that names one version and checked against a recorded
+  checksum. EF 3.1 is downloaded from a copy when the JRC's site does not
+  answer ([#428](https://github.com/brightway-labs/brightway-flows/pull/428),
+  [#440](https://github.com/brightway-labs/brightway-flows/pull/440)).
+- **The website serves the published release.** It reads which release that
+  is from one file and downloads the release's database from Zenodo
+  ([#484](https://github.com/brightway-labs/brightway-flows/pull/484)).
+
+### Not visible in the published files
+
+These changes are to how builds are checked and released, not to anything a
+build publishes:
+- the command that uploads a release to Zenodo
+  ([#484](https://github.com/brightway-labs/brightway-flows/pull/484));
+- the tool that compares two builds, which now reads past the build's own
+  run number inside a table cell
+  ([#482](https://github.com/brightway-labs/brightway-flows/pull/482)), and the tool that
+  keeps a build of the main branch, which refuses one whose merge did not
+  finish ([#473](https://github.com/brightway-labs/brightway-flows/pull/473));
+- a page listing each recorded expectation and its status
+  ([#467](https://github.com/brightway-labs/brightway-flows/pull/467));
+- tests of which packages each kind of install imports
+  ([#468](https://github.com/brightway-labs/brightway-flows/pull/468)), and a procedure for
+  reviewing a contributed change
+  ([#474](https://github.com/brightway-labs/brightway-flows/pull/474)).
+
 ## 1.1.0 — 2026-10-21
 
 Published on [Zenodo](https://doi.org/10.5281/zenodo.23554066).
