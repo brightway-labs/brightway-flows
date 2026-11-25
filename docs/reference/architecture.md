@@ -24,10 +24,12 @@
 - `domain`: canonical domain models.
 - `transformers`: ETL transform stages.
 
-Fourteen modules sit at the top level rather than in a section: `sources`,
+Fifteen modules sit at the top level rather than in a section: `sources`,
 `chem`, `simapro_names`, `cache_archive`, `downloads`, `context_mapping`,
 `match_overrides`, `manual_fixes`, `qualifiers`, `correspondence_contexts`,
-`additional_flows`, `data_dir`, `filesystem` and `settings`. These are **not** legacy — this line used to say
+`additional_flows`, `data_dir`, `filesystem`, `settings` and
+`published_release` — the release file `releases.zenodo` writes and
+`webapps.app` reads, with the download of the release it names. These are **not** legacy — this line used to say
 they were, while `sources` was the most-imported module in the project (#92).
 They are cross-cutting: each is read by several sections and belongs to none.
 Put a new module in a section if one section owns it, and here only if more than
@@ -461,7 +463,8 @@ Inside `webapps.app`:
 
 | Module | Responsibility |
 |---|---|
-| `__init__` | `create_app()`, and the section list the navigation is built from |
+| `__init__` | `create_app()`, which decides whether the published release or a local build is read, and the section list the navigation is built from |
+| `publication` | the facts no page writes by hand: the fixed ones typed in, the release's laid over them from the release file |
 | `db` | one read-only connection per request, on `flask.g`, nothing at import |
 | `documentation` | the `docs/` tree, read and rendered per request; no build step |
 | `filters` | the Jinja filters every page shares |

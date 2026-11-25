@@ -30,6 +30,13 @@ from flask import Flask, render_template
 
 from brightway_flows.assessment.expectations import EXPECTATIONS_DIR
 from brightway_flows.filesystem import CONSENSUS_DB_FILEPATH, DATA_DIR
+from brightway_flows.published_release import (
+    PublishedRelease,
+    ReleaseDownloadError,
+    fetch_release,
+    load_published_release,
+    release_directory,
+)
 from brightway_flows.webapps.app import db, documentation, filters
 from brightway_flows.webapps.app.publication import PUBLICATION
 from brightway_flows.webapps.app.queries import navigation as navigation_queries
@@ -66,9 +73,27 @@ from brightway_flows.webapps.app.views import (
 
 _HERE = Path(__file__).resolve().parent
 
+#: Set to `1` to serve the build in the data directory rather than the
+#: published release: development, and curation of a build not yet released.
+LOCAL_ENV = "BRIGHTWAY_FLOWS_WEBAPP_LOCAL"
+
 #: Re-exported: `SECTIONS` and `navigation` are read from here by the tests and
 #: by anything that asks the package what pages it has.
-__all__ = ["SECTIONS", "create_app", "navigation"]
+__all__ = ["LOCAL_ENV", "SECTIONS", "create_app", "navigation"]
+
+
+def _serves_locally(local: bool | None, *, named: bool) -> bool:
+    """Whether this application reads a build on this machine.
+
+    Asked for outright wins.  Otherwise an application handed a database or a
+    data directory reads what it was handed, and one handed neither reads the
+    published release unless the variable says to stay local.
+    """
+    if local is not None:
+        return local
+    if named:
+        return True
+    return os.environ.get(LOCAL_ENV, "").strip().lower() in {"1", "true", "yes"}
 
 
 def create_app(
@@ -76,23 +101,46 @@ def create_app(
     docs_path: Path | None = None,
     data_dir: Path | None = None,
     expectations_path: Path | None = None,
+    release_path: Path | None = None,
+    local: bool | None = None,
 ) -> Flask:
     """Build the application.
 
-    *database_path* defaults to the platform data directory, *docs_path* to the
-    `docs/` tree of the checkout this package is running from, *data_dir* to
-    the directory the database is in, and *expectations_path* to the checkout's
-    `expectations/`.  All four are parameters so a test can
-    point an app at a fixture without setting an environment variable.  Nothing
-    is read here: a missing database is a page, not a start-up failure, because
-    the app is how you find out that the pipeline has not been run, and the same
-    is true of a missing `docs/`.
+    **Which data it reads.**  By default the published release: the one the
+    release file names (*release_path*, else `BRIGHTWAY_FLOWS_RELEASE_FILE`,
+    else `release.json` in the data directory), whose database is downloaded
+    from Zenodo into `published/<version>/` of the data directory the first
+    time and read from there afterwards.  The release's other five files are
+    not fetched: no page reads them, and a reader is sent to Zenodo for them.  With *local*, with
+    `BRIGHTWAY_FLOWS_WEBAPP_LOCAL=1`, or when *database_path* or *data_dir* is
+    given, it reads the build on this machine instead, as it always did: the
+    database from the data directory and the exports from beside it.  An
+    installation with no release file has no release to download, and reads
+    locally too.
+
+    *docs_path* defaults to the `docs/` tree of the checkout this package is
+    running from and *expectations_path* to the checkout's `expectations/`.
+    Everything is a parameter so a test can point an app at a fixture without
+    setting an environment variable.
+
+    A missing database is a page, not a start-up failure, because the app is
+    how you find out that the pipeline has not been run; the same is true of a
+    missing `docs/`, and of a release that could not be downloaded.  A release
+    file that is malformed, or that is named and is not there, is a start-up
+    failure, with *local* as without: the file is where every page's version
+    and DOI come from, and a file read in part or passed over would put some
+    other release's name on the data.
+
+    :raises ReleaseFileError: for such a release file.
     """
     app = Flask(
         __name__,
         template_folder=str(_HERE / "templates"),
         static_folder=str(_HERE / "static"),
         static_url_path="/static",
+    )
+    serves_locally = _serves_locally(
+        local, named=database_path is not None or data_dir is not None
     )
     app.config["CONSENSUS_DB_PATH"] = Path(database_path or CONSENSUS_DB_FILEPATH)
     # Where the run's JSON exports are, for the downloads on the run page.  It
@@ -102,6 +150,38 @@ def create_app(
     app.config["CONSENSUS_DATA_DIR"] = Path(
         data_dir or app.config["CONSENSUS_DB_PATH"].parent or DATA_DIR
     )
+
+    # The release file is looked for in the directory this application was
+    # pointed at, so a fixture's directory with no such file names no release
+    # whatever the machine's own data directory holds.
+    release: PublishedRelease | None = load_published_release(
+        release_path, data_dir=app.config["CONSENSUS_DATA_DIR"]
+    )
+    app.config["PUBLISHED_RELEASE"] = release
+    #: The release this application downloaded its data for, or `None` where
+    #: it reads a local build.  `no_database.html` reads it to say which of
+    #: the two commands fills the gap.
+    app.config["SERVED_RELEASE"] = None
+    if release is not None and not serves_locally:
+        directory = release_directory(release, DATA_DIR)
+        try:
+            fetch_release(release, directory, report=app.logger.warning)
+        except ReleaseDownloadError:
+            app.logger.exception("Release %s could not be downloaded", release.version)
+        app.config["SERVED_RELEASE"] = release
+        app.config["CONSENSUS_DB_PATH"] = directory / CONSENSUS_DB_FILEPATH.name
+        app.config["CONSENSUS_DATA_DIR"] = directory
+
+    def current_publication():
+        """Every fact about the release, for one request.
+
+        `PUBLICATION` is read here rather than held, so that the fixed facts
+        and the release's are joined in one place, and a test that replaces
+        one sees the page change.
+        """
+        return PUBLICATION.with_release(app.config["PUBLISHED_RELEASE"])
+
+    app.config["CURRENT_PUBLICATION"] = current_publication
     app.config["CONSENSUS_DOCS_PATH"] = Path(
         docs_path
         or os.environ.get("BRIGHTWAY_FLOWS_DOCS_DIR")
@@ -153,7 +233,8 @@ def create_app(
             "nav_sections": navigation(),
             "browse_counts": browse_counts,
             "describe_section": description,
-            "publication": PUBLICATION,
+            "publication": current_publication(),
+            "served_release": app.config["SERVED_RELEASE"],
             "repository_url": REPOSITORY_URL,
             "db_path": str(app.config["CONSENSUS_DB_PATH"]),
         }

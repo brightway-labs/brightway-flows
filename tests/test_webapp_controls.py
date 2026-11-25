@@ -24,6 +24,7 @@ What is pinned, and why each one is a defect somebody could reintroduce:
   over a different set from the table is a chip that lies.
 """
 
+import html
 import re
 import sqlite3
 import tempfile
@@ -233,9 +234,11 @@ class RunPageTestCase(_AppTestCase):
         one step has not been run.
         """
         body = self.body("/run/")
-        for _key, title, filename, _description in artifacts.ARTIFACTS:
+        for _key, title, filename, _description in artifacts.entries():
             with self.subTest(title):
-                self.assertIn(filename, body)
+                # Escaped as the page escapes it: with no release named, the
+                # migration's file name is `<previous>__<version>.zip`.
+                self.assertIn(html.escape(filename), body)
 
     def test_the_database_is_offered_as_a_download(self):
         """Decision 8 came back that it may be published (#200), so it is a

@@ -272,7 +272,7 @@
 <section class="section" id="downloads">
   <div class="section__header">
     <h2>Take it away</h2>
-    <span class="muted">{{ artifacts | selectattr("exists") | list | length }} of
+    <span class="muted">{{ artifacts | selectattr("has_size") | list | length }} of
       {{ artifacts | length }} published</span>
   </div>
   <p class="page__lede muted">
@@ -298,6 +298,10 @@
                (decision 8, #200). #}
             {% if artifact.exists %}
             <a href="{{ url_for('overview.download', key=artifact.key) }}">{{ artifact.title }}</a>
+            {% elif artifact.url %}
+            {# An application serving a release holds only the database; the
+               release's other files are on Zenodo. #}
+            <a href="{{ artifact.url }}">{{ artifact.title }}</a>
             {% else %}
             {{ artifact.title }}
             {% endif %}
@@ -305,7 +309,7 @@
           </td>
           <td>{{ artifact.description }}</td>
           <td class="num mono">
-            {% if artifact.exists %}{{ artifact.readable_size }}
+            {% if artifact.has_size %}{{ artifact.readable_size }}
             {% else %}<span class="muted">—</span>{% endif %}
           </td>
           <td>
@@ -316,6 +320,7 @@
               not been run.
             #}
             {% if artifact.exists %}{{ artifact.modified | timestamp }}
+            {% elif artifact.url %}<span class="muted">on Zenodo</span>
             {% else %}<span class="muted">this run did not write it</span>{% endif %}
           </td>
         </tr>

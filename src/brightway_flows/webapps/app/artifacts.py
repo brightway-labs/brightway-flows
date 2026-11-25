@@ -19,7 +19,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from brightway_flows.filesystem import CONSENSUS_DB_FILEPATH, DATA_DIR
-from brightway_flows.webapps.app.publication import PUBLICATION
+from brightway_flows.published_release import PublishedRelease
+from brightway_flows.webapps.app.publication import Publication
 
 #: What each downloadable artifact is, keyed by the slug its URL uses.
 #:
@@ -31,6 +32,10 @@ from brightway_flows.webapps.app.publication import PUBLICATION
 #: Only what the build publishes.  The extracted source lists, the caches and
 #: the vendor archives are inputs -- some of them licensed -- and this is the
 #: run's output.
+#:
+#: The migration's title and file name are written with the two releases it
+#: runs between left open; `entries` fills them in from the release this
+#: application serves, which is not known until it is started.
 ARTIFACTS: tuple[tuple[str, str, str, str], ...] = (
     (
         "database",
@@ -71,13 +76,57 @@ ARTIFACTS: tuple[tuple[str, str, str, str], ...] = (
     ),
     (
         "migration",
-        f"Migration from {PUBLICATION.previous_version}",
-        f"{PUBLICATION.previous_version}__{PUBLICATION.version}.zip",
-        f"What changed since {PUBLICATION.previous_version}, as four "
+        "Migration from {previous}",
+        "{previous}__{version}.zip",
+        "What changed since {previous}, as four "
         "randonneur files that move a database holding that release onto "
         "this one without reloading it.",
     ),
 )
+
+#: What the migration is called where no release is named: an installation
+#: with no release file, reading a build of its own.  The words are for the
+#: title and the description; the file name keeps the shape of one, since
+#: nothing says which two releases it would run between.
+_NO_RELEASE = {"previous": "the previous release", "version": "this"}
+_NO_RELEASE_FILENAME = {"previous": "<previous>", "version": "<version>"}
+
+
+def entries(
+    publication: Publication | None = None,
+) -> tuple[tuple[str, str, str, str], ...]:
+    """`ARTIFACTS` with the migration named after *publication*'s release."""
+    names, in_filename = _NO_RELEASE, _NO_RELEASE_FILENAME
+    if _names_a_release(publication):
+        names = in_filename = {
+            "previous": publication.previous_version,
+            "version": publication.version,
+        }
+    return tuple(
+        (
+            key,
+            title.format(**names),
+            filename.format(**in_filename),
+            text.format(**names),
+        )
+        for key, title, filename, text in ARTIFACTS
+    )
+
+
+def _names_a_release(publication: Publication | None) -> bool:
+    return bool(
+        publication is not None
+        and publication.version
+        and publication.previous_version
+    )
+
+
+def _newest(directory: Path, pattern: str) -> Path | None:
+    """The most recently written file in *directory* matching *pattern*."""
+    if not directory.is_dir():
+        return None
+    found = [path for path in directory.glob(pattern) if path.is_file()]
+    return max(found, key=lambda path: path.stat().st_mtime, default=None)
 
 
 #: The artifacts a release offers on `/download/`, in the Download board's
@@ -94,7 +143,15 @@ RELEASE_KEYS: tuple[str, ...] = (
 )
 
 
-def _path(key: str, filename: str, *, data_dir: Path, database_path: Path) -> Path:
+def _path(
+    key: str,
+    filename: str,
+    *,
+    data_dir: Path,
+    database_path: Path,
+    version: str | None,
+    migration_named: bool,
+) -> Path:
     """Where to look for one artifact.
 
     Both are parameters rather than the `filesystem` constants they default to.
@@ -112,10 +169,22 @@ def _path(key: str, filename: str, *, data_dir: Path, database_path: Path) -> Pa
         return Path(database_path)
     # `release-snapshot` and `release-migrations` write under `releases/`,
     # the snapshot named by its version rather than by the name Zenodo gives it.
+    #
+    # Where no release is named there is no version to look under, so the
+    # file is whichever snapshot or migration this data directory was last
+    # given: what `release-snapshot` and `release-migrations` just wrote, for
+    # somebody preparing a release before its release file exists.
+    releases = Path(data_dir) / "releases"
     if key == "snapshot":
-        return Path(data_dir) / "releases" / f"{PUBLICATION.version}.json.gz"
+        if version is None:
+            return _newest(releases, "*.json.gz") or releases / filename
+        return releases / f"{version}.json.gz"
     if key == "migration":
-        return Path(data_dir) / "releases" / "migrations" / filename
+        if not migration_named:
+            return _newest(releases / "migrations", "*.zip") or (
+                releases / "migrations" / filename
+            )
+        return releases / "migrations" / filename
     return Path(data_dir) / filename
 
 
@@ -140,6 +209,17 @@ class Artifact:
     #: so that a page can say a download is older than the run above it, which
     #: is what a half-finished build looks like from outside.
     modified: str = ""
+    #: Where the release keeps this file on Zenodo, or empty where the page
+    #: is not describing a release.  A file with an address has a size --
+    #: the release file's -- whether or not a copy is on this machine: an
+    #: application serving a release holds only the database.
+    url: str = ""
+
+    @property
+    def has_size(self) -> bool:
+        """Whether `size` says anything: the file is here, or the release
+        records it."""
+        return self.exists or bool(self.url)
 
     @property
     def readable_size(self) -> str:
@@ -161,9 +241,22 @@ def artifact(
     key: str,
     database_path: Path | None = None,
     data_dir: Path | None = None,
+    publication: Publication | None = None,
+    release: PublishedRelease | None = None,
 ) -> Artifact | None:
-    """The artifact *key* names, or `None` if this application has no such key."""
-    for slug, title, filename, description in ARTIFACTS:
+    """The artifact *key* names, or `None` if this application has no such key.
+
+    *publication* says which release the snapshot and the migration are named
+    after; without one neither is looked for under a release's name.
+
+    *release* is given where the page describes the published release rather
+    than a build on this machine.  The size is then the archived file's and
+    the artifact carries its address on Zenodo, so a file this machine does
+    not hold is still a row with a size and a link.
+    """
+    version = (publication.version or None) if publication else None
+    named = _names_a_release(publication)
+    for slug, title, filename, description in entries(publication):
         if slug != key:
             continue
         path = _path(
@@ -171,7 +264,16 @@ def artifact(
             filename,
             data_dir=data_dir or DATA_DIR,
             database_path=database_path or CONSENSUS_DB_FILEPATH,
+            version=version,
+            migration_named=named,
         )
+        looked_for = (slug == "snapshot" and version is None) or (
+            slug == "migration" and not named
+        )
+        if looked_for and path.is_file():
+            # Found by looking rather than by name, so the name shown is the
+            # file's own.
+            filename = path.name
         found = Artifact(
             key=slug,
             title=title,
@@ -184,12 +286,19 @@ def artifact(
             found.exists = True
             found.size = stat.st_size
             found.modified = datetime.fromtimestamp(stat.st_mtime, UTC).isoformat()
+        published = release.file(slug) if release is not None else None
+        if release is not None and published is not None:
+            found.size = published.size
+            found.url = release.download_url(published)
         return found
     return None
 
 
 def available(
-    database_path: Path | None = None, data_dir: Path | None = None
+    database_path: Path | None = None,
+    data_dir: Path | None = None,
+    publication: Publication | None = None,
+    release: PublishedRelease | None = None,
 ) -> list[Artifact]:
     """Every artifact, whether or not the build wrote it.
 
@@ -199,5 +308,8 @@ def available(
     finds out that `characterise` has not been run, and a list that quietly
     shrank to two entries would tell them nothing.
     """
-    found = [artifact(key, database_path, data_dir) for key, *_ in ARTIFACTS]
+    found = [
+        artifact(key, database_path, data_dir, publication, release)
+        for key, *_ in ARTIFACTS
+    ]
     return [entry for entry in found if entry is not None]

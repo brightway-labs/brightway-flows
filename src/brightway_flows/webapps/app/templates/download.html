@@ -70,17 +70,17 @@
           {# The database is the one file whose size decides whether somebody
              starts the download at all, so the row says so in words as well
              as in the meta line -- read off the file, never typed in. #}
-          {% if file.key == "database" and file.exists %}
+          {% if file.key == "database" and file.has_size %}
           <p class="release-files__description"><strong>{{ file.readable_size }}.</strong> The whole build, so expect a long download and that much free disk space.</p>
           {% endif %}
           <div class="release-files__meta">
             <span class="mono">{{ file.filename }}</span>
-            {% if file.exists or not publication.doi %}<span aria-hidden="true">·</span>{% endif %}
+            {% if file.has_size or not publication.doi %}<span aria-hidden="true">·</span>{% endif %}
             {# A file the build did not write keeps its row (§4): an absence
                shown as an absence, as on `/run/` -- until the release has a
                DOI, when the row is the archived file and this build's copy,
                or the lack of one, is beside the point. #}
-            {% if file.exists %}
+            {% if file.has_size %}
             <span>{{ file.readable_size }}</span>
             {% elif not publication.doi %}
             <span class="muted">Not in this build</span>

@@ -16,8 +16,8 @@ import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
-from unittest import mock
 
+from release_fixture import only_publication, write_release_file
 from test_webapp_sections import SectionTestCase
 
 from brightway_flows.webapps.app import SECTIONS, create_app, navigation
@@ -77,6 +77,7 @@ class NoDatabaseTestCase(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self._tmp.cleanup)
+        write_release_file(Path(self._tmp.name))
         app = create_app(Path(self._tmp.name) / "missing.sqlite3")
         app.config["TESTING"] = True
         self.client = app.test_client()
@@ -97,12 +98,12 @@ class NoDatabaseTestCase(unittest.TestCase):
         self.assertRegex(body, r'<nav[^>]*id="mobile-menu"[^>]*hidden')
 
     def test_the_masthead_carries_the_release_version(self):
-        """The latest release, 1.1.0; it was the chip until 1.0 was decided
-        (#200), and any publication that has not decided one draws it again."""
+        """The release the release file names, 1.1.0 here; an installation
+        with no release file draws the chip instead."""
         self.assertIn('<span class="masthead__version">1.1.0</span>', self.body("/docs/"))
 
     def test_the_version_is_a_placeholder_until_it_is_decided(self):
-        with mock.patch("brightway_flows.webapps.app.PUBLICATION", Publication()):
+        with only_publication(Publication()):
             body = self.body("/docs/")
         self.assertIn('<span class="placeholder" title="Not yet decided">[v1.0.0]</span>',
                       body)

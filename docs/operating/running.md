@@ -18,7 +18,7 @@ uv run brightway-flows build                # the actual work, EF 3.1 alone
 Then browse the result:
 
 ```bash
-uv run brightway-flows webapp     # http://127.0.0.1:5000
+uv run brightway-flows webapp --local     # http://127.0.0.1:5000
 ```
 
 ## Expect the first run to be slow
@@ -145,7 +145,7 @@ The transform's input is EF 3.1 and nothing else. Every other list is a
 ### 4. Look at the result
 
 ```bash
-uv run brightway-flows webapp     # http://127.0.0.1:5000
+uv run brightway-flows webapp --local     # http://127.0.0.1:5000
 ```
 
 One application over the database, in six sections: the overview of what the
@@ -234,7 +234,7 @@ uv run brightway-flows fetch-source ecoinvent-3.12
 uv run brightway-flows build --source ecoinvent-3.12
 
 # Review what happened
-uv run brightway-flows webapp
+uv run brightway-flows webapp --local
 ```
 
 This used to be a **two-pass** workflow: flows that matched nothing were written
@@ -462,35 +462,91 @@ refused as stale.
 3. Write the migration from the previous release, answer everything in
    `unresolved.json`, and add what it holds to the release's section of the
    notes.
-4. Upload a new version of the
-   [Zenodo record](https://doi.org/10.5281/zenodo.22857949):
-   `harmonised-flows-simple.json.gz`, `lcia-factors.json.gz`,
-   `lcia-differences.json` and `consensus-flows.sqlite3` as before, the
-   release's snapshot renamed to `release-snapshot.json.gz`, the zip of the
-   migration from the previous release (`1.0.0__1.1.0.zip` for 1.1.0), and
-   the release's notes as the version's description.
-5. Push the tag.
-6. Point the website at the new Zenodo version. Its homepage, masthead,
-   Download page and citation do not read the version from `pyproject.toml`
-   or from the build; they read it from
-   `src/brightway_flows/webapps/app/publication.py`, which still names the
-   previous release until it is changed. On a branch, set there:
-   - `version` and `previous_version`, which also name the migration's row
-     and file on Download;
-   - `release_date`, the day the Zenodo version was published;
-   - `doi`, the new version's own DOI (`10.5281/zenodo.23554066` for 1.1.0,
-     <https://zenodo.org/records/23554066>), which every Download link and
-     every citation format uses;
-   - `checksums`, the SHA-256 of each of the six uploaded files, computed
-     from the files as uploaded. Zenodo shows only an MD5, and a rebuild does
-     not reproduce the bytes.
+4. Upload the release to the
+   [Zenodo record](https://doi.org/10.5281/zenodo.22857949) as a new
+   version:
 
-   Then change the release's numbers in `tests/test_publication.py`,
-   `tests/test_webapp_download_about.py`, `tests/test_webapp_home.py` and
-   `tests/test_webapp_navigation.py`, the DOI badge at the top of
-   `README.md`, and the Zenodo link in the release's section of
-   [What changed in each release](../using/releases.md). Merge it, and
-   `git pull` on the web server.
+   ```bash
+   export ZENODO_ACCESS_TOKEN=...      # see below
+   uv run brightway-flows release-upload --version 1.2.0
+   ```
+
+   It uploads six files: `harmonised-flows-simple.json.gz`,
+   `lcia-factors.json.gz`, `lcia-differences.json` and
+   `consensus-flows.sqlite3`, the release's snapshot renamed to
+   `release-snapshot.json.gz`, and the zip of the migration from the release
+   Zenodo already holds (`1.1.0__1.2.0.zip` for 1.2.0). It sets the
+   version's title, its date and its description, which is the first
+   paragraph of the release's section of the notes.
+
+   Before it changes anything on Zenodo it refuses a release that is not
+   ready: a file that is missing, a file that another build wrote (the data
+   directory holds whichever build ran last), a snapshot of an untagged
+   commit or of a tree with uncommitted changes, notes with no section for
+   the release, or a migration that starts from a release other than the
+   latest one on Zenodo.
+
+   **The upload is left as a draft.** A published version keeps its DOI and
+   its files for good, so read the draft at the address the command prints,
+   and press Publish there. To publish in the same step, add `--publish`.
+   A run that was interrupted can be started again: the files already on the
+   draft are replaced.
+
+   The token is a personal access token of the Zenodo account that owns the
+   record, made under Applications in the account's settings with the
+   `deposit:write` and `deposit:actions` scopes. Keep it in the environment
+   and out of the repository. To rehearse without touching the real record,
+   make a record and a token on <https://sandbox.zenodo.org> and add
+   `--sandbox --concept-record <that record's number>`.
+
+   The command ends by writing the release file in the data directory —
+   `release.json` if you published with `--publish`, and
+   `release.draft.json` for a draft, which no application reads. Once you
+   have published the draft on Zenodo, rename it to `release.json`. It
+   holds the version, the release before it, the date, the DOI, and
+   the name, size and SHA-256 of each file it uploaded. It looks like this:
+
+   ```json
+   {
+     "version": "1.2.0",
+     "previous_version": "1.1.0",
+     "release_date": "2026-12-01",
+     "doi": "10.5281/zenodo.24000001",
+     "record_url": "https://zenodo.org/records/24000001",
+     "files": {
+       "database": {
+         "name": "consensus-flows.sqlite3",
+         "size": 2627653632,
+         "sha256": "e04211d1…"
+       }
+     }
+   }
+   ```
+
+   with one entry under `files` for each of the six. The checksums are of
+   the files as uploaded: Zenodo shows only an MD5, and a rebuild does not
+   reproduce the bytes. Step 6 hands this file to the website.
+5. Push the tag.
+6. Point the website at the new Zenodo version, once it is published.
+   The website reads which release it serves from the release file, and
+   downloads that release's database from Zenodo, so there is nothing to
+   edit and no build to copy. Put the `release.json` that step 4 wrote in
+   the web server's data directory (or wherever its
+   `BRIGHTWAY_FLOWS_RELEASE_FILE` points), then on the server:
+
+   ```bash
+   uv run --no-sync brightway-flows release-download    # the database, 2.6 GB, once
+   sudo systemctl restart bwf-review
+   ```
+
+   The homepage, the masthead, the Download page and every citation format
+   now name the new version, its date and its DOI, and Download shows the
+   new checksums. The previous release's database stays in
+   `published/<its version>/` of the data directory until you delete them.
+   [Deployment](deployment.md#which-data-it-serves) has the detail.
+7. On a branch, change the DOI badge at the top of `README.md` and add the
+   Zenodo link to the release's section of
+   [What changed in each release](../using/releases.md), and merge it.
 
 ## All commands
 
@@ -498,7 +554,9 @@ refused as stale.
 |---|---|
 | `release-snapshot` | Record what this build publishes, named by the git tag on its commit, for `release-migrations` to read |
 | `release-snapshot-upgrade` | Bring a snapshot written in an earlier format up to this one, from the factor file its release published |
+| `release-download` | Download the database of the published release the release file names into the data directory, where the review application reads it; resumed if interrupted, and checked against its SHA-256 |
 | `release-migrations` | Write the randonneur migrations — substances, flows, impact categories, factors — from one recorded release to the next, check them by applying them, and list what could not be resolved |
+| `release-upload` | Upload a recorded release to Zenodo as a new version of the list's record — the snapshot, the three JSON exports, the migration and the database — after checking that one build made them; a draft unless `--publish` is given |
 | `fetch-source <key>` | Fetch one source list's flows, whichever list it is |
 | `fetch-lcia <key>` | Fetch one source list's characterisation factors |
 | `download` | Download the EF 3.1 ZIP |
@@ -513,7 +571,7 @@ refused as stale.
 | `compare-scores` | Score each release's sampled unit processes through the consensus flows and factors, and compare with the vendor's own scores flow by flow |
 | `score-comparison-config` | Print, as JSON, which vendor releases the unit-process score comparison reads and where their artifacts live — for the brightway-side exporter, which cannot import this package |
 | `contexts` | Validate and regenerate context definitions |
-| `webapp` | The review application, port 5000 |
+| `webapp` | The review application, port 5000: the published release, or the build in the data directory with `--local` |
 
 `extract` and `download-ecoinvent-flows` are aliases for `fetch-source EF-3.1`
 and `fetch-source ecoinvent-<version>`. They route through the same registry

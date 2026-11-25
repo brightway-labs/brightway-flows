@@ -17,6 +17,18 @@
     This application reads one file, and it is not there:
   </p>
   <pre><code>{{ db_path }}</code></pre>
+  {% if served_release %}
+  <p>
+    This application serves release {{ served_release.version }}, which it
+    downloads from Zenodo the first time it starts, and that download has not
+    finished. Run it by hand, which carries on from where it stopped:
+  </p>
+  <pre><code>uv run brightway-flows release-download</code></pre>
+  <p class="muted">
+    To read a build on this machine instead, start the application with
+    <code>--local</code> or set <code>BRIGHTWAY_FLOWS_WEBAPP_LOCAL=1</code>.
+  </p>
+  {% else %}
   <p>Build it:</p>
   <pre><code>uv run brightway-flows build</code></pre>
   <p class="muted">
@@ -25,5 +37,6 @@
   </p>
   <pre><code>BRIGHTWAY_FLOWS_DATA_DIR=/tmp/bwf-test \
   uv run brightway-flows build --max-flows 500</code></pre>
+  {% endif %}
 </div>
 {% endblock %}

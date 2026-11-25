@@ -11,7 +11,8 @@ reader who mistyped a flow UUID got Flask's own text, outside the site's frame.
 import tempfile
 import unittest
 from pathlib import Path
-from unittest import mock
+
+from release_fixture import only_publication
 
 from brightway_flows.webapps.app import create_app
 from brightway_flows.webapps.app.publication import Publication
@@ -75,7 +76,7 @@ class FooterTestCase(unittest.TestCase):
         publication that has decided nothing, which is what any fact still
         waiting on Zenodo or legal looks like.
         """
-        with mock.patch("brightway_flows.webapps.app.PUBLICATION", Publication()):
+        with only_publication(Publication()):
             body = self.body("/docs/")
         self.assertIn('[DATA LICENCE]', body)
         self.assertIn('[CODE LICENCE]', body)

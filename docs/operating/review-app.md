@@ -3,14 +3,25 @@
 One application, one port, one database.
 
 ```bash
-uv run brightway-flows webapp            # http://127.0.0.1:5000
+uv run brightway-flows webapp --local    # http://127.0.0.1:5000, your own build
+uv run brightway-flows webapp            # the published release
 ```
 
-`--host`, `--port` and `--debug` are all it takes. It reads
-`consensus-flows.sqlite3` from the data directory and nothing else, so it shows
-whatever the last build produced. A missing database is a page naming the path
-and the command that fills it, not an error. For serving it properly, see
-[Deployment](deployment.md).
+With `--local` it reads `consensus-flows.sqlite3` from the data directory and
+nothing else, so it shows whatever the last build produced. That is the one to
+use while developing, and for reviewing a build that is not released yet.
+Setting `BRIGHTWAY_FLOWS_WEBAPP_LOCAL=1` says the same.
+
+Without `--local` it serves the published release: the one named by
+`release.json` in the data directory, which it downloads from Zenodo the first
+time it starts and reads from `published/<version>/` afterwards. What it
+downloads is the release's database, 2.6 GB for release 1.1.0; the release's
+other files stay on Zenodo, and the pages link to them there. A data directory with no `release.json`
+names no release, so there the application reads the local build either way.
+
+`--host`, `--port` and `--debug` are the other options. A missing database is
+a page naming the path and the command that fills it, not an error. For
+serving it properly, see [Deployment](deployment.md).
 
 ## Where the four applications went
 

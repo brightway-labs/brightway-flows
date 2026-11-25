@@ -135,6 +135,13 @@ class AppSettings(BaseSettings):
         # Accept persisted JSON field name and env-var style key.
         validation_alias=AliasChoices("commonchemistry_api_key", "COMMONCHEMISTRY_API_KEY"),
     )
+    #: A personal access token of the Zenodo account that owns the list's
+    #: record, with the `deposit:write` and `deposit:actions` scopes.  Read by
+    #: `release-upload` and by nothing else.
+    zenodo_access_token: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices("zenodo_access_token", "ZENODO_ACCESS_TOKEN"),
+    )
     score_comparison: ScoreComparisonSettings = Field(
         default_factory=ScoreComparisonSettings
     )
