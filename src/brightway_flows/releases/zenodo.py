@@ -17,6 +17,10 @@ has a DOI and cannot be withdrawn or have its files replaced, so
 publishes only with ``publish=True``.  A draft can be rerun over: the files
 on it are deleted and uploaded again.
 
+What was uploaded is returned as a `published_release.PublishedRelease`, which
+the command writes to ``release.json``: the file the review application reads
+to say which release it serves, and to download it.
+
 The requests are Zenodo's deposit API, <https://developers.zenodo.org>: a new
 version is opened on the latest published one, the files copied forward onto
 its draft are deleted, each file is streamed into the draft's bucket, and the
@@ -44,6 +48,8 @@ from brightway_flows.filesystem import (
     RELEASES_DIR,
     REPO_ROOT,
 )
+from brightway_flows.published_release import PublishedRelease
+from brightway_flows.published_release import ReleaseFile as PublishedFile
 from brightway_flows.releases.snapshot import (
     ReleaseStamp,
     SnapshotError,
@@ -98,8 +104,8 @@ class ZenodoError(RuntimeError):
 class ReleaseFile:
     """One file of a release: where it is, and what the record calls it.
 
-    ``key`` is the name `webapps.app.publication.CHECKSUM_ARTIFACT_KEYS` knows
-    the file by, so the checksums printed after an upload can be pasted there.
+    ``key`` is one of `published_release.ARTIFACT_KEYS`, which is how the
+    release file and the Download page name the file.
     """
 
     key: str
@@ -133,10 +139,28 @@ class UploadResult:
     previous_version: str
     record_id: str
     doi: str
+    #: Where a person reads it: the draft's page, or the record's once published.
     url: str
+    #: The version's page once it is published, whether or not it is yet.
+    record_url: str
     publication_date: str
     published: bool
     files: list[UploadedFile]
+
+    @property
+    def release(self) -> PublishedRelease:
+        """What was uploaded, as the release file records it."""
+        return PublishedRelease(
+            version=self.version,
+            previous_version=self.previous_version,
+            release_date=self.publication_date,
+            doi=self.doi,
+            record_url=self.record_url,
+            files=tuple(
+                PublishedFile(file.key, file.name, file.size, file.sha256)
+                for file in self.files
+            ),
+        )
 
 
 # -- what is uploaded ----------------------------------------------------------
@@ -527,6 +551,7 @@ def upload_release(
         record_id=draft_id,
         doi=str(reserved.get("doi") or f"10.5281/zenodo.{draft_id}"),
         url=url,
+        record_url=f"{str(client.base_url).rstrip('/')}/records/{draft_id}",
         publication_date=publication_date,
         published=publish,
         files=uploaded,

@@ -1,7 +1,7 @@
 """`/download/`: the release, its files, and how to cite it.
 
 `plans/public-site.md` §3.  The facts about the release -- the version, the
-date, the DOI, the checksums -- are `publication.py`'s, read through
+date, the DOI, the checksums -- are the release file's, read through
 `placeholder`; this view supplies only what the build itself knows: which files
 it wrote and how big they are. How the run that produced them went is
 `/run/`'s to say -- this page links there once instead of repeating it.
@@ -31,7 +31,11 @@ blueprint = Blueprint("download", __name__, url_prefix="/download")
 def index():
     database_path = Path(current_app.config["CONSENSUS_DB_PATH"])
     data_dir = Path(current_app.config["CONSENSUS_DATA_DIR"])
+    publication = current_app.config["CURRENT_PUBLICATION"]()
     return render_template(
         "download.html",
-        files=[artifacts.artifact(key, database_path, data_dir) for key in artifacts.RELEASE_KEYS],
+        files=[
+            artifacts.artifact(key, database_path, data_dir, publication)
+            for key in artifacts.RELEASE_KEYS
+        ],
     )

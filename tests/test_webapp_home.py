@@ -25,6 +25,7 @@ from pathlib import Path
 from unittest import mock
 
 from markupsafe import escape
+from release_fixture import write_release_file
 from test_webapp_download_about import _decided, _undecided
 from test_webapp_sections import _elementary, _flow, _flow_object, _write_fixture
 
@@ -217,6 +218,7 @@ class _HomeTestCase(unittest.TestCase):
         if self.with_database:
             _write_home_fixture(self.path)
         docs_path = DOCS_ROOT if self.with_docs else tmp / "no-docs"
+        write_release_file(tmp)
         app = create_app(self.path, docs_path=docs_path, data_dir=tmp)
         app.config["TESTING"] = True
         self.client = app.test_client()
@@ -432,7 +434,7 @@ class HomePageTestCase(_HomeTestCase):
         self.assertIn("[v1.0.0]", hero)
 
     def test_the_hero_carries_the_decided_version(self):
-        """The latest release, 1.1.0 (`publication.py`)."""
+        """The release the release file names, 1.1.0 here."""
         body = self.body()
         hero = body[body.index('class="home__hero"'):body.index('class="home-lookup"')]
         self.assertIn('<span class="mono">1.1.0</span>', hero)

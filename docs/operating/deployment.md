@@ -3,11 +3,53 @@
 The [review application](review-app.md) is served on a production host using
 **gunicorn** behind an **nginx** reverse proxy.
 
-It is a read-only view over one file. The host needs
-`consensus-flows.sqlite3` in the directory the application resolves, which
-`BRIGHTWAY_FLOWS_DATA_DIR` can override, and nothing else — the JSON review
-files it used to need are tables in that database now. It does not run the
-pipeline; refresh the data by running a build.
+It is a read-only view over one published release. The host needs one small
+file, `release.json`, which says which release that is; the application
+downloads the release's files from Zenodo itself. It does not run the
+pipeline, and no build has to be copied to the host.
+
+## Which data it serves
+
+Release 1.1.0, for example, is six files on
+[Zenodo](https://zenodo.org/records/23554066): the database
+(`consensus-flows.sqlite3`, 2.6 GB), the three JSON exports, the release
+snapshot and the migration from 1.0.0 — 2.8 GB together. A host whose
+`release.json` names 1.1.0 downloads those six into `published/1.1.0/` of its
+data directory, checks each against the SHA-256 the file records, and serves
+them from there.
+
+`release.json` is written by `brightway-flows release-upload` when the release
+is uploaded ([Publishing a release](running.md#publishing-a-release)). The
+application looks for it in the data directory, or at the path
+`BRIGHTWAY_FLOWS_RELEASE_FILE` names. It is also where the version, the date,
+the DOI and the checksums on the homepage and the Download page come from.
+
+The download happens the first time the application starts with a release it
+does not have. On a server, do it before starting instead:
+
+```bash
+uv run --no-sync brightway-flows release-download
+```
+
+gunicorn stops a worker that takes longer than its timeout to start, and
+2.6 GB takes longer than that. The command downloads only what is missing and
+carries on from where an interrupted run stopped; with all six files in
+place, starting the application asks nothing of Zenodo. If the files are not
+there and cannot be downloaded, the application still starts, serves the
+documentation, and says on every data page which command to run.
+
+Three cases read a build on the host instead of a release:
+
+- `BRIGHTWAY_FLOWS_WEBAPP_LOCAL=1` is set, or the application was started
+  with `brightway-flows webapp --local`. This is for development, and for a
+  review server showing a build that is not released yet. It reads
+  `consensus-flows.sqlite3` from the data directory, and still shows the
+  release's version and DOI if there is a `release.json`.
+- There is no `release.json`. The application has no release to download, so
+  it reads the data directory, and the version, date, DOI and checksums are
+  shown as placeholders.
+- `release.json` is named by `BRIGHTWAY_FLOWS_RELEASE_FILE` and is missing or
+  malformed. This one is an error: the application does not start.
 
 It also serves this documentation at `/docs/`, read from the `docs/` directory
 of the checkout it runs from. Nothing is built: the markdown is rendered per
@@ -68,7 +110,9 @@ or pass `--chdir /path/to/brightway-flows`.
 
 | Variable | App | Default | Description |
 |---|---|---|---|
-| `BRIGHTWAY_FLOWS_DATA_DIR` | all | platform data directory | Where `consensus-flows.sqlite3` is read from |
+| `BRIGHTWAY_FLOWS_DATA_DIR` | all | platform data directory | Where `release.json` is looked for, where the release is downloaded to (`published/<version>/`), and where a local build is read from |
+| `BRIGHTWAY_FLOWS_RELEASE_FILE` | all | `release.json` in the data directory | The file naming the published release to serve |
+| `BRIGHTWAY_FLOWS_WEBAPP_LOCAL` | all | unset | Set to `1` to serve the build in the data directory instead of the published release |
 | `BRIGHTWAY_FLOWS_DOCS_DIR` | all | the checkout's `docs/` | Where the documentation served at `/docs/` is read from |
 | `BRIGHTWAY_FLOWS_EXPECTATIONS_DIR` | all | the checkout's `expectations/` | Where the files shown at `/expectations/` are read from |
 
@@ -112,6 +156,8 @@ After=network.target
 User=www-data
 WorkingDirectory=/path/to/brightway-flows
 Environment=BRIGHTWAY_FLOWS_DATA_DIR=/srv/brightway-flows
+TimeoutStartSec=infinity
+ExecStartPre=/usr/local/bin/uv run --no-sync brightway-flows release-download
 ExecStart=/usr/local/bin/uv run --no-sync gunicorn \
     --bind 127.0.0.1:5000 \
     --workers 2 \
@@ -122,7 +168,13 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
-The data directory has to be readable by `User`, and is where the application
-looks for `consensus-flows.sqlite3`. It opens the file read-only, so the
-pipeline can rewrite it under a running server; restart the service afterwards
-only if you want the workers to drop their page cache.
+`ExecStartPre` downloads the release before gunicorn starts, and does nothing
+once it is there; `TimeoutStartSec=infinity` lets the first download finish.
+The data directory has to be writable by `User` for that download, and holds
+`release.json`. To move to a new release, replace `release.json` and restart
+the service.
+
+A server set to read a local build (`BRIGHTWAY_FLOWS_WEBAPP_LOCAL=1`) opens
+`consensus-flows.sqlite3` read-only, so the pipeline can rewrite it under a
+running server; restart the service afterwards only if you want the workers
+to drop their page cache. Leave `ExecStartPre` out of such a unit.

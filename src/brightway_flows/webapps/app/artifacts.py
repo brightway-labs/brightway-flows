@@ -19,7 +19,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from brightway_flows.filesystem import CONSENSUS_DB_FILEPATH, DATA_DIR
-from brightway_flows.webapps.app.publication import PUBLICATION
+from brightway_flows.webapps.app.publication import Publication
 
 #: What each downloadable artifact is, keyed by the slug its URL uses.
 #:
@@ -31,6 +31,10 @@ from brightway_flows.webapps.app.publication import PUBLICATION
 #: Only what the build publishes.  The extracted source lists, the caches and
 #: the vendor archives are inputs -- some of them licensed -- and this is the
 #: run's output.
+#:
+#: The migration's title and file name are written with the two releases it
+#: runs between left open; `entries` fills them in from the release this
+#: application serves, which is not known until it is started.
 ARTIFACTS: tuple[tuple[str, str, str, str], ...] = (
     (
         "database",
@@ -71,13 +75,33 @@ ARTIFACTS: tuple[tuple[str, str, str, str], ...] = (
     ),
     (
         "migration",
-        f"Migration from {PUBLICATION.previous_version}",
-        f"{PUBLICATION.previous_version}__{PUBLICATION.version}.zip",
-        f"What changed since {PUBLICATION.previous_version}, as four "
+        "Migration from {previous}",
+        "{previous}__{version}.zip",
+        "What changed since {previous}, as four "
         "randonneur files that move a database holding that release onto "
         "this one without reloading it.",
     ),
 )
+
+#: What the migration is called where no release is named: an installation
+#: with no release file, reading a build of its own.
+_NO_RELEASE = {"previous": "the previous release", "version": "this"}
+
+
+def entries(
+    publication: Publication | None = None,
+) -> tuple[tuple[str, str, str, str], ...]:
+    """`ARTIFACTS` with the migration named after *publication*'s release."""
+    names = dict(_NO_RELEASE)
+    if publication is not None and publication.version and publication.previous_version:
+        names = {
+            "previous": publication.previous_version,
+            "version": publication.version,
+        }
+    return tuple(
+        (key, title.format(**names), filename.format(**names), text.format(**names))
+        for key, title, filename, text in ARTIFACTS
+    )
 
 
 #: The artifacts a release offers on `/download/`, in the Download board's
@@ -94,7 +118,14 @@ RELEASE_KEYS: tuple[str, ...] = (
 )
 
 
-def _path(key: str, filename: str, *, data_dir: Path, database_path: Path) -> Path:
+def _path(
+    key: str,
+    filename: str,
+    *,
+    data_dir: Path,
+    database_path: Path,
+    version: str | None,
+) -> Path:
     """Where to look for one artifact.
 
     Both are parameters rather than the `filesystem` constants they default to.
@@ -113,7 +144,7 @@ def _path(key: str, filename: str, *, data_dir: Path, database_path: Path) -> Pa
     # `release-snapshot` and `release-migrations` write under `releases/`,
     # the snapshot named by its version rather than by the name Zenodo gives it.
     if key == "snapshot":
-        return Path(data_dir) / "releases" / f"{PUBLICATION.version}.json.gz"
+        return Path(data_dir) / "releases" / f"{version}.json.gz"
     if key == "migration":
         return Path(data_dir) / "releases" / "migrations" / filename
     return Path(data_dir) / filename
@@ -161,9 +192,14 @@ def artifact(
     key: str,
     database_path: Path | None = None,
     data_dir: Path | None = None,
+    publication: Publication | None = None,
 ) -> Artifact | None:
-    """The artifact *key* names, or `None` if this application has no such key."""
-    for slug, title, filename, description in ARTIFACTS:
+    """The artifact *key* names, or `None` if this application has no such key.
+
+    *publication* says which release the snapshot and the migration are named
+    after; without one neither is looked for under a release's name.
+    """
+    for slug, title, filename, description in entries(publication):
         if slug != key:
             continue
         path = _path(
@@ -171,6 +207,7 @@ def artifact(
             filename,
             data_dir=data_dir or DATA_DIR,
             database_path=database_path or CONSENSUS_DB_FILEPATH,
+            version=publication.version if publication else None,
         )
         found = Artifact(
             key=slug,
@@ -189,7 +226,9 @@ def artifact(
 
 
 def available(
-    database_path: Path | None = None, data_dir: Path | None = None
+    database_path: Path | None = None,
+    data_dir: Path | None = None,
+    publication: Publication | None = None,
 ) -> list[Artifact]:
     """Every artifact, whether or not the build wrote it.
 
@@ -199,5 +238,7 @@ def available(
     finds out that `characterise` has not been run, and a list that quietly
     shrank to two entries would tell them nothing.
     """
-    found = [artifact(key, database_path, data_dir) for key, *_ in ARTIFACTS]
+    found = [
+        artifact(key, database_path, data_dir, publication) for key, *_ in ARTIFACTS
+    ]
     return [entry for entry in found if entry is not None]

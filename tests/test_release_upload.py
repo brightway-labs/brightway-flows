@@ -24,6 +24,7 @@ import orjson
 from typer.testing import CliRunner
 
 from brightway_flows.application.cli import app
+from brightway_flows.published_release import ARTIFACT_KEYS, read_published_release
 from brightway_flows.releases import zenodo
 from brightway_flows.releases.zenodo import (
     ZenodoError,
@@ -255,12 +256,8 @@ class WhatIsUploadedTestCase(ReleaseOnDiskTestCase):
             ],
         )
 
-    def test_the_keys_are_the_ones_the_website_keeps_checksums_under(self):
-        from brightway_flows.webapps.app.publication import CHECKSUM_ARTIFACT_KEYS
-
-        self.assertEqual(
-            {file.key for file in self.files()}, set(CHECKSUM_ARTIFACT_KEYS)
-        )
+    def test_the_keys_are_the_ones_a_release_file_names(self):
+        self.assertEqual({file.key for file in self.files()}, set(ARTIFACT_KEYS))
 
     def test_one_build_is_accepted_and_its_stamp_returned(self):
         stamp = check_release_files("1.2.0", self.files())
@@ -318,13 +315,11 @@ class TheNotesTestCase(ReleaseOnDiskTestCase):
         with self.assertRaisesRegex(ZenodoError, "no section headed `## 1.3.0"):
             read_release_notes("1.3.0", self.notes)
 
-    def test_the_repository_s_notes_have_a_section_for_the_published_release(self):
+    def test_the_repository_s_notes_are_read_for_a_release_they_hold(self):
         """The real page, read the way an upload reads it."""
-        from brightway_flows.webapps.app.publication import PUBLICATION
-
-        notes = read_release_notes(PUBLICATION.version)
-        self.assertEqual(notes.date, PUBLICATION.release_date)
-        self.assertTrue(notes.summary)
+        notes = read_release_notes("1.1.0")
+        self.assertEqual(notes.date, "2026-10-21")
+        self.assertTrue(notes.summary.startswith("Built from the same five lists"))
 
     def test_the_description_is_escaped_html(self):
         notes = read_release_notes("1.2.0", self.notes)
@@ -482,7 +477,7 @@ class TheCommandTestCase(ReleaseOnDiskTestCase):
         self.assertEqual(result.exit_code, 2)
         self.assertIn("--concept-record", result.output)
 
-    def test_it_prints_what_the_website_is_changed_to(self):
+    def test_it_writes_the_release_file(self):
         service = FakeZenodo()
         seen: dict = {}
 
@@ -495,15 +490,36 @@ class TheCommandTestCase(ReleaseOnDiskTestCase):
             mock.patch.object(zenodo, "RELEASES_DIR", self.releases),
             mock.patch.object(zenodo, "RELEASE_NOTES_FILEPATH", self.notes),
         ):
-            result = self.invoke()
+            result = self.invoke("--release-file", str(self.data / "release.json"))
         self.assertEqual(result.exit_code, 0, result.output)
         self.assertEqual(seen, {"token": "secret", "sandbox": False})
         self.assertIn("as a draft, not published", result.output)
-        self.assertIn(f'doi="10.5281/zenodo.{DRAFT}"', result.output)
-        self.assertIn('release_date="2026-12-01"', result.output)
-        database_sha = hashlib.sha256(self.database.read_bytes()).hexdigest()
-        self.assertIn(f'"database": "{database_sha}"', result.output)
         self.assertNotIn("secret", result.output)
+        release = read_published_release(self.data / "release.json")
+        self.assertEqual(
+            (release.version, release.previous_version, release.release_date),
+            ("1.2.0", "1.1.0", "2026-12-01"),
+        )
+        self.assertEqual(release.doi, f"10.5281/zenodo.{DRAFT}")
+        self.assertEqual(release.record_url, f"https://zenodo.test/records/{DRAFT}")
+        database = release.file("database")
+        self.assertEqual(database.name, "consensus-flows.sqlite3")
+        self.assertEqual(database.size, self.database.stat().st_size)
+        self.assertEqual(
+            database.sha256, hashlib.sha256(self.database.read_bytes()).hexdigest()
+        )
+
+    def test_a_rehearsal_writes_no_release_file_unless_asked(self):
+        service = FakeZenodo()
+        with (
+            mock.patch.object(zenodo, "make_client", lambda *_a, **_k: service.client()),
+            mock.patch.object(zenodo, "RELEASES_DIR", self.releases),
+            mock.patch.object(zenodo, "RELEASE_NOTES_FILEPATH", self.notes),
+        ):
+            result = self.invoke("--sandbox", "--concept-record", CONCEPT)
+        self.assertEqual(result.exit_code, 0, result.output)
+        self.assertIn("no release file written", result.output)
+        self.assertFalse((self.data / "release.json").exists())
 
 
 if __name__ == "__main__":

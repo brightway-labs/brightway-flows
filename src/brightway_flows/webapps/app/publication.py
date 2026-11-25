@@ -6,20 +6,29 @@ DOI, a licence, a maintainer, an address or an email by hand -- it reads the
 value from here, or, while the value is `None`, renders the chip
 `partials/placeholder.html` draws instead.
 
-This module is not read from the build or from the database.  A version
-number and a data licence are not something a pipeline run produces; they are
-decided by Brightway Labs or by legal, once, and then typed in here.  Nothing
-here changes because the pipeline ran again.
+Two kinds of fact, kept apart by how often they change.
 
-Every field defaults to unset, and every one of them is decided (#200).
-`unfilled_facts` still walks them, and `tests/test_publication.py` asserts it
-comes back empty -- that is what keeps this the one place a launch blocker
+The licences, the maintainers, the address: decided by Brightway Labs or by
+legal, once, and typed in here as `PUBLICATION`.  Nothing a pipeline run
+produces, and nothing that changes because one ran again.
+
+The version, the release it follows, the date, the DOI and the checksums:
+these move with every release, and are not typed in anywhere.  They are read
+from the release file -- `brightway_flows.published_release`, which
+`release-upload` writes -- and laid over `PUBLICATION` by `with_release`.  An
+installation with no release file shows the placeholder for each.
+
+Every field defaults to unset.  `unfilled_facts` walks them, and
+`tests/test_publication.py` asserts it comes back empty for `PUBLICATION`
+under a release -- that is what keeps this the one place a launch blocker
 could hide, now that the tool which reported them is gone.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass, field, fields, replace
+
+from brightway_flows.published_release import ARTIFACT_KEYS, PublishedRelease
 
 
 @dataclass(frozen=True)
@@ -34,9 +43,7 @@ class Maintainer:
 #: exports, the migration from the release before and the database.  Keyed the
 #: same way `artifacts.ARTIFACTS` is, so the Download page can look a checksum
 #: up by the same key it already has.
-CHECKSUM_ARTIFACT_KEYS: tuple[str, ...] = (
-    "snapshot", "flows", "factors", "differences", "migration", "database",
-)
+CHECKSUM_ARTIFACT_KEYS: tuple[str, ...] = ARTIFACT_KEYS
 
 
 @dataclass(frozen=True)
@@ -46,7 +53,7 @@ class Publication:
     on this list is.
     """
 
-    # From the first Zenodo release. (plan §8)
+    # The release: read from the release file, never typed in. (plan §8)
     version: str | None = None
     #: The release the migration on Download starts from: it names the file,
     #: `<previous_version>__<version>.zip`.
@@ -75,32 +82,30 @@ class Publication:
         """The checksum for one artifact, or `None` while it is unset."""
         return self.checksums.get(artifact_key)
 
+    def with_release(self, release: PublishedRelease | None) -> Publication:
+        """These facts with *release*'s laid over them.
 
-#: The one instance every page reads.  Replaced wholesale once the facts are
-#: decided -- there is no reason to mutate a field in place, since every
-#: consumer reaches it through this name rather than holding a reference.
+        No release leaves them as they are, which for `PUBLICATION` is unset:
+        an installation that names no release claims none.
+        """
+        if release is None:
+            return self
+        return replace(
+            self,
+            version=release.version,
+            previous_version=release.previous_version,
+            release_date=release.release_date,
+            doi=release.doi,
+            checksums=release.checksums,
+        )
+
+
+#: The facts that do not move with a release.  Every page reads them through
+#: `with_release`, which adds the ones that do.
 #:
-#: What is set here is decided; what is left out is still waiting on the first
-#: Zenodo release, on legal, or on Brightway Labs (#200).
+#: What is set here is decided; what is left out is the release's, and comes
+#: from the release file.
 PUBLICATION = Publication(
-    # The latest release.  Every value here is the Zenodo record's, and moves
-    # with each release: `docs/operating/running.md`, "Publishing a release".
-    version="1.1.0",
-    previous_version="1.0.0",
-    release_date="2026-10-21",
-    doi="10.5281/zenodo.23554066",
-    # SHA-256 of each file uploaded to the Zenodo record, read off the
-    # uploaded files themselves, not off a build: a rebuild of the same commit
-    # does not reproduce these bytes, and what a reader downloads is the
-    # archived file.  Zenodo shows only an MD5.
-    checksums={
-        "snapshot": "7072cc8e67dc0e85b0d8d75bfcf307e929b4c1f20b24f0c786a8f2336b5e6bd6",
-        "flows": "47850016a251ca00d4f806f305293eaa735e3cb59219ea2a27ef7ceb12028271",
-        "factors": "a5972f7b09de42cb402b378a623b679206b47b05437329c7984e61f70d2e518e",
-        "differences": "aff0cdbf6be6af44ed361af169e408dc2548b31b637514d2491b1efd3f0b6b6c",
-        "migration": "98b6ab821ea4e3922e3c5b9d6f981a8daa7d0bd296b07e7cf54d06165c147f28",
-        "database": "e04211d17a93d75c004ac9f582efddb567ed282ea2a40c80b686c8dc920b1433",
-    },
     # Both licences are written as SPDX identifiers rather than as titles: the
     # `CITATION.cff` block on Download quotes `data_licence` straight into its
     # `license:` field, which is an SPDX identifier there, and the footer and

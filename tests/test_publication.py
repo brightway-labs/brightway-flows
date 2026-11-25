@@ -19,6 +19,7 @@ import unittest
 from pathlib import Path
 
 import flask
+from release_fixture import RELEASE_1_1_0
 
 from brightway_flows.webapps.app import create_app
 from brightway_flows.webapps.app.publication import (
@@ -76,18 +77,28 @@ class DecidedFactsTestCase(unittest.TestCase):
     reported it has been removed.
     """
 
-    def test_the_latest_release_is_1_1_0_on_2026_10_21(self):
-        self.assertEqual(PUBLICATION.version, "1.1.0")
-        self.assertEqual(PUBLICATION.previous_version, "1.0.0")
-        self.assertEqual(PUBLICATION.release_date, "2026-10-21")
-        self.assertEqual(PUBLICATION.doi, "10.5281/zenodo.23554066")
+    def test_the_release_is_not_typed_in(self):
+        """The version, the date, the DOI and the checksums move with every
+        release, and come from the release file; nothing here states them."""
+        self.assertIsNone(PUBLICATION.version)
+        self.assertIsNone(PUBLICATION.previous_version)
+        self.assertIsNone(PUBLICATION.release_date)
+        self.assertIsNone(PUBLICATION.doi)
+        self.assertEqual(PUBLICATION.checksums, {})
 
-    def test_every_released_file_has_a_sha_256(self):
-        """Read off the archived files, so each is 64 hexadecimal digits and
-        there is one per artifact the Download page lists."""
+    def test_a_release_is_laid_over_the_fixed_facts(self):
+        publication = PUBLICATION.with_release(RELEASE_1_1_0)
+        self.assertEqual(publication.version, "1.1.0")
+        self.assertEqual(publication.previous_version, "1.0.0")
+        self.assertEqual(publication.release_date, "2026-10-21")
+        self.assertEqual(publication.doi, "10.5281/zenodo.23554066")
+        self.assertEqual(publication.data_licence, PUBLICATION.data_licence)
         for key in CHECKSUM_ARTIFACT_KEYS:
             with self.subTest(key=key):
-                self.assertRegex(PUBLICATION.checksum(key) or "", r"^[0-9a-f]{64}$")
+                self.assertRegex(publication.checksum(key) or "", r"^[0-9a-f]{64}$")
+
+    def test_no_release_leaves_the_facts_as_they_are(self):
+        self.assertIs(PUBLICATION.with_release(None), PUBLICATION)
 
     def test_the_licences_are_spdx_identifiers(self):
         """`data_licence` is quoted into the `license:` field of the
@@ -121,8 +132,14 @@ class DecidedFactsTestCase(unittest.TestCase):
         self.assertIn("more formal and inclusive governance structure", governance)
 
     def test_nothing_is_left_to_decide(self):
-        """#200's "done when", and the only thing still asserting it."""
-        self.assertEqual(unfilled_facts(PUBLICATION), [])
+        """#200's "done when", and the only thing still asserting it: with a
+        release named, no fact is open."""
+        self.assertEqual(unfilled_facts(PUBLICATION.with_release(RELEASE_1_1_0)), [])
+        self.assertEqual(
+            unfilled_facts(PUBLICATION),
+            ["version", "previous_version", "release_date", "doi"]
+            + [f"checksums[{key}]" for key in CHECKSUM_ARTIFACT_KEYS],
+        )
 
 
 class PlaceholderMacroTestCase(unittest.TestCase):

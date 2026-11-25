@@ -33,6 +33,7 @@ def _found(key: str) -> artifacts.Artifact | None:
         key,
         Path(current_app.config["CONSENSUS_DB_PATH"]),
         Path(current_app.config["CONSENSUS_DATA_DIR"]),
+        current_app.config["CURRENT_PUBLICATION"](),
     )
 
 
@@ -41,6 +42,7 @@ def _artifacts() -> list[artifacts.Artifact]:
     return artifacts.available(
         Path(current_app.config["CONSENSUS_DB_PATH"]),
         Path(current_app.config["CONSENSUS_DATA_DIR"]),
+        current_app.config["CURRENT_PUBLICATION"](),
     )
 
 

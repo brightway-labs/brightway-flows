@@ -775,8 +775,23 @@ def webapp(
     host: str = typer.Option("127.0.0.1", help="Host to bind to."),
     port: int = typer.Option(5000, help="Port to listen on."),
     debug: bool = typer.Option(False, help="Run in Flask debug mode."),
+    local: bool = typer.Option(
+        False,
+        "--local",
+        help=(
+            "Read the build in the data directory rather than the published "
+            "release. For development, and for reviewing a build not yet "
+            "released. BRIGHTWAY_FLOWS_WEBAPP_LOCAL=1 says the same."
+        ),
+    ),
 ) -> None:
     """Start the review application.
+
+    It serves the published release: the one `release.json` in the data
+    directory names (or the file BRIGHTWAY_FLOWS_RELEASE_FILE names), whose
+    files it downloads from Zenodo the first time it starts.  With --local,
+    or where there is no release file, it reads the build in the data
+    directory instead.
 
     One command, where there were five.  `webapp-inputs`, `webapp-consensus`,
     `webapp-run-report` and `webapp-etl` are gone with the applications they
@@ -785,8 +800,12 @@ def webapp(
     """
     from brightway_flows.webapps.app import create_app
 
-    logger.info("starting_review_webapp", host=host, port=port, debug=debug)
-    create_app().run(host=host, port=port, debug=debug)
+    logger.info(
+        "starting_review_webapp", host=host, port=port, debug=debug, local=local
+    )
+    # `None` rather than `False` where the flag is not given, so the variable
+    # is still asked.
+    create_app(local=True if local else None).run(host=host, port=port, debug=debug)
 
 
 @app.command()
@@ -1270,6 +1289,15 @@ def release_upload(
         "--concept-record",
         help="The record to add a version to. Defaults to the list's own, 22857949.",
     ),
+    release_file: Path | None = typer.Option(
+        None,
+        "--release-file",
+        help=(
+            "Where to write the release file. Defaults to the file "
+            "BRIGHTWAY_FLOWS_RELEASE_FILE names, else release.json in the data "
+            "directory. A rehearsal with --sandbox writes none unless this is given."
+        ),
+    ),
 ) -> None:
     """Upload a release to Zenodo as a new version of the list's record.
 
@@ -1282,9 +1310,15 @@ def release_upload(
     commit and a clean tree.
 
     Needs ZENODO_ACCESS_TOKEN in the environment.  Leaves a draft unless
-    --publish is given, and prints the DOI and the SHA-256 of each uploaded
-    file, which are what the website's publication facts are changed to.
+    --publish is given.  Writes the release file -- the version, the DOI, the
+    date, and the name, size and SHA-256 of each uploaded file -- which is
+    what the review application reads to say which release it serves and to
+    download it.
     """
+    from brightway_flows.published_release import (
+        release_file_path,
+        write_published_release,
+    )
     from brightway_flows.releases.zenodo import (
         CONCEPT_RECORD_ID,
         ZenodoError,
@@ -1331,17 +1365,19 @@ def release_upload(
             f"Uploaded {result.version} as a draft, not published. Read it and "
             f"publish it at {result.url}"
         )
-    typer.echo(
-        "\nFor src/brightway_flows/webapps/app/publication.py, once it is published:"
-    )
-    typer.echo(f'    version="{result.version}",')
-    typer.echo(f'    previous_version="{result.previous_version}",')
-    typer.echo(f'    release_date="{result.publication_date}",')
-    typer.echo(f'    doi="{result.doi}",')
-    typer.echo("    checksums={")
-    for file in result.files:
-        typer.echo(f'        "{file.key}": "{file.sha256}",')
-    typer.echo("    },")
+    if sandbox and release_file is None:
+        typer.echo("A rehearsal: no release file written.")
+    else:
+        written = write_published_release(
+            result.release, release_file or release_file_path()
+        )
+        typer.echo(f"Wrote {written}")
+        if not result.published:
+            typer.echo(
+                "It names the draft's DOI, which resolves once the draft is "
+                "published. Until then an application given this file cannot "
+                "download the release."
+            )
     logger.info(
         "release_uploaded",
         version=result.version,
@@ -1350,6 +1386,67 @@ def release_upload(
         doi=result.doi,
         published=result.published,
         sandbox=sandbox,
+    )
+
+
+@app.command("release-download")
+def release_download(
+    release_file: Path | None = typer.Option(
+        None,
+        "--release-file",
+        help=(
+            "The release to download. Defaults to the file "
+            "BRIGHTWAY_FLOWS_RELEASE_FILE names, else release.json in the data "
+            "directory."
+        ),
+    ),
+) -> None:
+    """Download the published release, where the review application reads it.
+
+    The application does this itself the first time it starts.  Run it ahead
+    of that on a server: the database is 2.6 GB, and a web server stops a
+    worker that takes that long to start.  It downloads only what is missing,
+    carries on from where an interrupted run stopped, and checks each file
+    against the SHA-256 the release file records.
+    """
+    from brightway_flows.published_release import (
+        ReleaseDownloadError,
+        ReleaseFileError,
+        fetch_release,
+        load_published_release,
+        missing_files,
+        release_directory,
+        release_file_path,
+    )
+
+    try:
+        release = load_published_release(release_file)
+    except ReleaseFileError as error:
+        typer.echo(f"error: {error}", err=True)
+        raise typer.Exit(code=2) from error
+    if release is None:
+        typer.echo(
+            f"error: no release file at {release_file_path()}; `release-upload` "
+            "writes one, and BRIGHTWAY_FLOWS_RELEASE_FILE names one elsewhere",
+            err=True,
+        )
+        raise typer.Exit(code=2)
+    directory = release_directory(release)
+    wanted = len(missing_files(release, directory))
+    try:
+        fetch_release(release, directory, report=typer.echo)
+    except ReleaseDownloadError as error:
+        typer.echo(f"error: {error}", err=True)
+        raise typer.Exit(code=1) from error
+    typer.echo(
+        f"Release {release.version} is in {directory}"
+        + (f": {wanted} files downloaded." if wanted else "; nothing to download.")
+    )
+    logger.info(
+        "release_downloaded",
+        version=release.version,
+        directory=str(directory),
+        downloaded=wanted,
     )
 
 

@@ -83,7 +83,7 @@ uv run brightway-flows download
 uv run brightway-flows fetch-source EF-3.1
 uv run brightway-flows set-commonchemistry-token --token "<COMMON_CHEMISTRY_API_KEY>"
 uv run brightway-flows build
-uv run brightway-flows webapp
+uv run brightway-flows webapp --local
 ```
 
 Then open <http://127.0.0.1:5000>.
@@ -125,7 +125,7 @@ written back out as an input file in between.
 ```bash
 uv run brightway-flows fetch-source ecoinvent-3.12
 uv run brightway-flows build --source ecoinvent-3.12
-uv run brightway-flows webapp
+uv run brightway-flows webapp --local
 ```
 
 Requires credentials configured for
@@ -183,8 +183,8 @@ exactly, same float, on 98.2% of the triples more than one of them states. See
 ## The review application
 
 ```bash
-uv run brightway-flows webapp            # http://127.0.0.1:5000
-uv run brightway-flows webapp --port 8080 --host 0.0.0.0
+uv run brightway-flows webapp --local            # http://127.0.0.1:5000, your own build
+uv run brightway-flows webapp --local --port 8080 --host 0.0.0.0
 ```
 
 It reads one file, `consensus-flows.sqlite3`, and nothing else. If that file is

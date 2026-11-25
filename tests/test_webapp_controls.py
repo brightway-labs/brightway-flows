@@ -233,7 +233,7 @@ class RunPageTestCase(_AppTestCase):
         one step has not been run.
         """
         body = self.body("/run/")
-        for _key, title, filename, _description in artifacts.ARTIFACTS:
+        for _key, title, filename, _description in artifacts.entries():
             with self.subTest(title):
                 self.assertIn(filename, body)
 
