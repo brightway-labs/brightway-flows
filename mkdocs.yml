@@ -95,6 +95,7 @@ nav:
       - Running a transform: operating/running.md
       - Choosing sources: operating/sources.md
       - Assessing a build: operating/assessing.md
+      - Making a release: operating/releasing.md
       - The review application: operating/review-app.md
       - Deployment: operating/deployment.md
   - Reference:

@@ -96,6 +96,10 @@ are."**
 : [The review application](operating/review-app.md) → [How a flow is decided](deciding/index.md)
   → [Harmonisation steps](reference/harmonisation-steps.md)
 
+**"I am publishing a release."**
+
+: [Making a release](operating/releasing.md) → [What changed in each release](using/releases.md)
+
 If a term is unfamiliar, check the [Glossary](concepts/glossary.md).
 
 ## Project status
