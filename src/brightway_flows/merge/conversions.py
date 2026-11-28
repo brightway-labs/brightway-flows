@@ -180,10 +180,12 @@ def _same_unit(left: str, right: str) -> bool:
 
     By IRI where `units.json` knows both, so that a table's `kg` and a flow's
     `kilogram` agree.  Two units it does not know are compared as text, which is
-    weaker but still refuses a pair that does not even spell the same.
+    weaker but still refuses a pair that does not even spell the same.  When
+    only one is known the two differ: `mJ`, which lookup refuses, would
+    otherwise equal `MJ` as text.
     """
     left_iri, right_iri = unit_iri_for(left), unit_iri_for(right)
-    if left_iri and right_iri:
+    if left_iri or right_iri:
         return left_iri == right_iri
     return left.strip().casefold() == right.strip().casefold()
 

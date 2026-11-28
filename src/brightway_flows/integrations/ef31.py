@@ -22,6 +22,7 @@ from brightway_flows.domain.lcia.records import (
     flow_entries,
     stated_category,
 )
+from brightway_flows.domain.units import prefix_case_differs
 from brightway_flows.filesystem import EF31_ZIP_FILEPATH
 from brightway_flows.integrations.chebi import load_chebi_index
 from brightway_flows.pipeline import normalize
@@ -457,7 +458,7 @@ def _resolve_unit(unit_name: str, units_index: dict[str, dict]) -> tuple[dict | 
         entry = units_index["by_notation"].get(_normalize_unit_token(mapped))
         return entry, multiplier
     entry = units_index["by_notation"].get(token)
-    if entry is not None:
+    if entry is not None and not prefix_case_differs(unit_name, entry["notation"]):
         return entry, 1.0
     entry = units_index["by_label"].get(token)
     if entry is not None:

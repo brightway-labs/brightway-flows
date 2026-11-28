@@ -10,6 +10,7 @@ anything but ``units.json``.
 from __future__ import annotations
 
 import math
+import re
 from enum import StrEnum
 from functools import lru_cache
 from typing import Any
@@ -108,6 +109,32 @@ def _normalize_unit_token(value: str) -> str:
     return token
 
 
+@lru_cache(maxsize=1)
+def _prefixed_notations() -> frozenset[str]:
+    """Notations made of another notation behind a prefix letter whose two
+    cases are two prefixes -- milli and mega, pico and peta: `MJ` from `J`."""
+    notations = {
+        r["notation"]
+        for r in orjson.loads(UNITS_FILEPATH.read_bytes())
+        if r.get("notation")
+    }
+    return frozenset(
+        n
+        for n in notations
+        if n[:1] in "mMpPzZyYrRqQ" and re.split(r"\W", n[1:])[0] in notations
+    )
+
+
+def prefix_case_differs(unit: str, notation: str) -> bool:
+    """Whether *unit* spells *notation* with its prefix in the other case: lookup
+    folds case, as source lists capitalise at random, but `mJ` is not `MJ` (#388)."""
+    return (
+        notation in _prefixed_notations()
+        and _normalize_unit_token(unit) == _normalize_unit_token(notation)
+        and unit.strip()[:1] != notation[:1]
+    )
+
+
 def build_units_index() -> dict[str, dict[str, Any]]:
     """Load units.json and return a normalized-token → row mapping."""
     data = orjson.loads(UNITS_FILEPATH.read_bytes())
@@ -139,7 +166,7 @@ def resolve_unit_notation(
         if row:
             return row["notation"], row.get("iri") or ""
     row = by_notation.get(tok)
-    if row is not None:
+    if row is not None and not prefix_case_differs(unit, row["notation"]):
         return row["notation"], row.get("iri") or ""
     return None
 
@@ -181,6 +208,8 @@ def unit_row_for(unit: str) -> dict[str, Any] | None:
     row = _UNITS_INDEX_CACHE.get(token)
     if row is None and (alias := UNIT_ALIASES.get(token)):
         row = _UNITS_INDEX_CACHE.get(_normalize_unit_token(alias))
+    if row is not None and prefix_case_differs(unit, row["notation"]):
+        return None
     return row
 
 
